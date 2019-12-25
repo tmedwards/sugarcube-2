@@ -13,7 +13,7 @@
     "babel-cli": "^6.26.0",
     "babel-preset-es2015": "^6.24.1",
     "clean-css": "^4.1.9",
-    "eslint": "^4.17.0",
+    "eslint": "^4.18.2",
     "node-getopt": "^0.2.3",
     "semver": "^5.5.0",
     "uglify-js": "^2.8.29"
