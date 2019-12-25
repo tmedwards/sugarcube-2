@@ -924,10 +924,6 @@
 						$image.attr('align', this.args[0].align);
 					}
 
-					if (this.args[0].hasOwnProperty('link')) {
-						passage = this.args[0].link;
-					}
-
 					passage = this.args[0].link;
 				}
 				else {
