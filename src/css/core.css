@@ -1,0 +1,289 @@
+/***********************************************************************************************************************
+
+	css/core.css
+
+	Copyright © 2013–2019 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
+	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
+
+***********************************************************************************************************************/
+
+/*
+	Default structural styles.
+*/
+html {
+	/*
+		We define the base font size and line height here as they affect the layout
+		of the base page elements (i.e. `#ui-bar`, `#ui-dialog`, and `#story`).
+	*/
+	font: 16px/1 Helmet, Freesans, sans-serif;
+}
+
+/* Story data styling. */
+#store-area, tw-storydata {
+	display: none !important;
+	z-index: 0;
+}
+
+/* Special no transition styling. */
+.no-transition {
+	transition: none !important;
+}
+
+
+/*
+	Default appearance styles.
+*/
+*:focus {
+	outline: thin dotted;
+}
+*:disabled {
+	cursor: not-allowed !important;
+}
+body {
+	color: #eee;
+	background-color: #111;
+}
+a {
+	cursor: pointer;
+	color: #68d;
+	text-decoration: none;
+	transition-duration: 200ms;
+}
+a:hover {
+	color: #8af;
+	text-decoration: underline;
+}
+a.link-broken {
+	color: #c22;
+}
+a.link-broken:hover {
+	color: #e44;
+}
+a[disabled], span.link-disabled {
+	color: #aaa;
+	cursor: not-allowed !important;
+	/*
+		NOTE: Do not use `pointer-events` here as it disables
+		the display of a cursor in some browsers.
+
+		pointer-events: none;
+	*/
+	text-decoration: none;
+}
+area {
+	cursor: pointer;
+}
+button {
+	cursor: pointer;
+	color: #eee;
+	background-color: #35a;
+	border: 1px solid #57c;
+	line-height: normal;
+	padding: 0.4em;
+	transition-duration: 200ms;
+	user-select: none;
+}
+button:hover {
+	background-color: #57c;
+	border-color: #79e;
+}
+button:disabled {
+	background-color: #444;
+	border: 1px solid #666;
+}
+input, select, textarea {
+	color: #eee;
+	background-color: transparent;
+	border: 1px solid #444;
+	padding: 0.4em;
+}
+select {
+	padding: 0.34em 0.4em;
+}
+input[type="text"] {
+	min-width: 18em;
+}
+textarea {
+	min-width: 30em;
+	resize: vertical;
+}
+input[type="checkbox"], input[type="file"], input[type="radio"], select {
+	cursor: pointer;
+}
+/* BEGIN: input[type="range"] */
+input[type="range"] {
+	-webkit-appearance: none;
+	min-height: 1.2em;
+}
+input[type="range"]:focus {
+	outline: none;
+}
+input[type="range"]::-webkit-slider-runnable-track {
+	background: #222;
+	border: 1px solid #444;
+	border-radius: 0;
+	cursor: pointer;
+	height: 10px;
+	width: 100%;
+}
+input[type="range"]::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	background: #35a;
+	border: 1px solid #57c;
+	border-radius: 0;
+	cursor: pointer;
+	height: 18px;
+	/*
+		NOTE: Ideally, `margin-top` should be `0` for Edge/Spartan (ca. v17), but
+		real WebKit/Blink-based browsers need it.  Since there's more of them and
+		Edge is co-opting the prefix anyway, we cater to them.  Edge will simply
+		have to look ever so slightly off.
+	*/
+	margin-top: -5px;
+	width: 33px;
+}
+input[type="range"]:focus::-webkit-slider-runnable-track {
+	background: #222;
+}
+input[type="range"]::-moz-range-track {
+	background: #222;
+	border: 1px solid #444;
+	border-radius: 0;
+	cursor: pointer;
+	height: 10px;
+	width: 100%;
+}
+input[type="range"]::-moz-range-thumb {
+	background: #35a;
+	border: 1px solid #57c;
+	border-radius: 0;
+	cursor: pointer;
+	height: 18px;
+	width: 33px;
+}
+input[type="range"]::-ms-track {
+	background: transparent;
+	border-color: transparent;
+	color: transparent;
+	cursor: pointer;
+	height: 10px;
+	width: calc(100% - 1px);
+}
+input[type="range"]::-ms-fill-lower {
+	background: #222;
+	border: 1px solid #444;
+	border-radius: 0;
+}
+input[type="range"]::-ms-fill-upper {
+	background: #222;
+	border: 1px solid #444;
+	border-radius: 0;
+}
+input[type="range"]::-ms-thumb {
+	background: #35a;
+	border: 1px solid #57c;
+	border-radius: 0;
+	cursor: pointer;
+	height: 16px;
+	width: 33px;
+}
+/* END: input[type="range"] */
+input:not(:disabled):focus, select:not(:disabled):focus, textarea:not(:disabled):focus,
+input:not(:disabled):hover, select:not(:disabled):hover, textarea:not(:disabled):hover {
+	background-color: #333;
+	border-color: #eee;
+}
+hr {
+	display: block;
+	height: 1px;
+	border: none;
+	border-top: 1px solid #eee;
+	margin: 1em 0;
+	padding: 0;
+}
+audio, canvas, progress, video {
+	max-width: 100%;
+	vertical-align: middle;
+}
+
+.error-view {
+	background-color: #511;
+	border-left: 0.5em solid #c22;
+	display: inline-block;
+	margin: 0.1em;
+	max-width: 100%;
+	padding: 0 0.25em;
+	position: relative;
+}
+.error-view > .error-toggle {
+	background-color: transparent;
+	border: none;
+	line-height: inherit;
+	left: 0;
+	padding: 0;
+	position: absolute;
+	top: 0;
+	width: 1.75em;
+}
+.error-view > .error {
+	display: inline-block;
+	margin-left: 0.25em;
+}
+.error-view > .error-toggle + .error {
+	margin-left: 1.5em;
+}
+.error-view > .error-source[hidden] {
+	display: none;
+}
+.error-view > .error-source:not([hidden]) {
+	background-color: rgba(0, 0, 0, 0.2);
+	display: block;
+	margin: 0 0 0.25em;
+	overflow-x: auto;
+	padding: 0.25em;
+}
+
+.highlight, .marked {
+	color: yellow;
+	font-weight: bold;
+	font-style: italic;
+}
+.nobr {
+	white-space: nowrap;
+}
+
+[data-icon]:before,
+[data-icon-before]:before,
+[data-icon-after]:after,
+.error-view > .error-toggle:before,
+.error-view > .error:before,
+a.link-external:after {
+	font-family: "tme-fa-icons";
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+	speak: none;
+}
+[data-icon]:before {
+	content: attr(data-icon);
+}
+[data-icon-before]:before {
+	content: attr(data-icon-before) "\00a0";
+}
+[data-icon-after]:after {
+	content: "\00a0" attr(data-icon-after);
+}
+.error-view > .error-toggle:before {
+	content: "\e81a";
+}
+.error-view > .error-toggle.enabled:before {
+	content: "\e818";
+}
+.error-view > .error:before {
+	content: "\e80d\00a0\00a0";
+}
+a.link-external:after {
+	content: "\00a0\e80e";
+}

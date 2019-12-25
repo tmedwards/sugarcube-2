@@ -1,0 +1,32 @@
+/***********************************************************************************************************************
+
+	css/core-passage.css
+
+	Copyright © 2013–2019 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
+	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
+
+***********************************************************************************************************************/
+
+/*
+	Default appearance styles.
+*/
+.passage {
+	line-height: 1.75;
+	text-align: left;
+	transition: opacity 400ms ease-in;
+}
+.passage-in {
+	opacity: 0;
+}
+.passage ul, .passage ol {
+	margin-left: 0.5em;
+	padding-left: 1.5em;
+}
+.passage table {
+	margin: 1em 0;
+	border-collapse: collapse;
+	font-size: 100%;
+}
+.passage tr, .passage th, .passage td, .passage caption {
+	padding: 3px;
+}

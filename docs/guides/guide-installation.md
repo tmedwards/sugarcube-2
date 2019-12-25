@@ -1,0 +1,88 @@
+<!-- ***********************************************************************************************
+	Guide: Installation
+************************************************************************************************ -->
+<h1 id="guide-installation">Guide: Installation</h1>
+
+This is a reference on how to install SugarCube in Tweego, Twine&nbsp;2, and Twine&nbsp;1/Twee.
+
+**NOTE (Twine&nbsp;2):** Newer versions of Twine&nbsp;2 come bundled with a version of SugarCube v2, so you only need to read these instructions if you want to install a newer version of SugarCube v2 than is bundled or a non-standard release.
+
+
+<!-- ***************************************************************************
+	Local Installation For Tweego
+**************************************************************************** -->
+<span id="guide-installation-tweego"></span>
+## Local Install For Tweego
+
+See [Tweego's documentation](http://www.motoslave.net/tweego/docs/) for more information.
+
+
+<!-- ***************************************************************************
+	Local Installation For Twine 2
+**************************************************************************** -->
+<span id="guide-installation-twine2"></span>
+## Local Install For Twine&nbsp;2
+
+There are two primary branches of Twine&nbsp;2 as far as SugarCube is concerned:
+
+* Those that bundle SugarCube v2: Any series of Twine&nbsp;2 with a version ≥2.1.
+* Those that do not bundle SugarCube v2: Only the older Twine&nbsp;2.0 series.
+
+Regardless of the version of Twine&nbsp;2 you're using, follow these instructions to install a local copy of SugarCube v2:
+
+1. Download the current version of [SugarCube v2 for Twine&nbsp;2](http://www.motoslave.net/sugarcube/2/#downloads)—comes as a ZIP archive.  **NOTE:** There are separate downloads for Twine&nbsp;≥2.1 and Twine&nbsp;2.0, so you ***must*** ensure that you download the one that matches your version of Twine&nbsp;2 or you will likely run into issues.
+2. Extract the archive to a safe location on your computer and make note of the path to it.  Make sure to keep the files together if you move them out of the included directory.
+3. Launch Twine&nbsp;2.
+4. Click on the `Formats` link in the Twine&nbsp;2 sidebar.
+5. In the dialog that opens, click on the `Add a New Format` tab.
+6. Finally, paste a [file URL](http://en.wikipedia.org/wiki/File_URI_scheme) to the `format.js` file, based upon the path from step #2, into the textbox and click the `+Add` button (see below for examples).
+
+### UNIX (and similar) file URL examples
+
+**NOTE:** If constructing the file URL from a shell path, ensure that either it does not contain escapes or you properly convert them into the correct URL percent-encoded form.
+
+If the full path to the contents of the archive is something like:
+
+```
+/home/soandso/Twine/StoryFormats/SugarCube-2/format.js
+```
+
+Then the file URL to it would be:
+
+```
+file:///home/soandso/Twine/StoryFormats/SugarCube-2/format.js
+```
+
+### Windows file URL examples
+If the full path to the contents of the archive is something like:
+
+```
+C:\Users\soandso\Documents\Twine\StoryFormats\SugarCube-2\format.js
+```
+
+Then the file URL to it would be (note the changed slashes):
+
+```
+file:///C:/Users/soandso/Documents/Twine/StoryFormats/SugarCube-2/format.js
+```
+
+
+<!-- ***************************************************************************
+	Local Installation For Twine 1/Twee
+**************************************************************************** -->
+<span id="guide-installation-twine1-twee"></span>
+## Local Install For Twine&nbsp;1/Twee
+
+Follow these instructions to install a local copy of SugarCube v2:
+
+1. Download the current version of [SugarCube v2 for Twine&nbsp;1/Twee](http://www.motoslave.net/sugarcube/2/#downloads)—comes as a ZIP archive.
+2. Go to your Twine&nbsp;1/Twee installation directory and open the `targets` directory within.
+3. Move the downloaded archive into the `targets` directory and extract it, included directory and all.
+
+If you followed the steps correctly, within Twine&nbsp;1/Twee's `targets` directory you should now have a `sugarcube-2` directory, which contains several files—e.g., `header.html`, `sugarcube-2.py`, etc.
+
+**NOTE:** Due to a flaw in the current release of Twine&nbsp;1/Twee (v1.4.2), if you rename the directory included in the archive (or simply copy its contents to your current SugarCube v2 install), then you ***must*** ensure that the file with the extension `.py` (the story format's custom Twine&nbsp;1 Header class file) within is named the same as the directory—i.e. the name of the directory and `.py` file must match.
+
+For example, if the name of SugarCube's directory is `sugarcube`, then the name of the `.py` file within must be `sugarcube.py`.  Similarly, if the directory is `sugarcube-2`, then the name of the `.py` file within must be `sugarcube-2.py`.  Etc.
+
+The directory and `.py` file names within the archive available for download are already properly matched—as `sugarcube-2` and `sugarcube-2.py`—and to avoid issues it recommended that you simply do not rename them.

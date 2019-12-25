@@ -1,0 +1,215 @@
+/***********************************************************************************************************************
+
+	css/ui-bar.css
+
+	Copyright © 2013–2019 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
+	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
+
+***********************************************************************************************************************/
+
+/*
+	Patches to the core styles.
+*/
+#story {
+	margin-left: 20em;
+	transition: margin-left 200ms ease-in;
+}
+#ui-bar.stowed ~ #story {
+	margin-left: 4.5em;
+}
+@media screen and (max-width: 1136px) {
+	#story {
+		margin-left: 19em;
+	}
+	#ui-bar.stowed ~ #story {
+		margin-left: 3.5em;
+	}
+}
+/*
+	At very narrow viewport widths, set `#story{margin-left}` equal to the value
+	of `#ui-bar.stowed~#story{margin-left}`, so that `#ui-bar` will side over top
+	of `#story` when unstowed, rather than shoving it over.
+*/
+@media screen and (max-width: 768px) {
+	#story {
+		margin-left: 3.5em;
+	}
+}
+
+
+/*
+	Default structural styles.
+*/
+#ui-bar {
+	position: fixed;
+	z-index: 50;
+	top: 0;
+	left: 0;
+	width: 17.5em;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	transition: left 200ms ease-in;
+}
+#ui-bar.stowed {
+	left: -15.5em;
+}
+#ui-bar-body {
+	height: 90%; /* fallback for browsers without support for calc() */
+	height: calc(100% - 2.5em);
+	margin: 2.5em 0;
+	padding: 0 1.5em;
+}
+#ui-bar.stowed #ui-bar-history,
+#ui-bar.stowed #ui-bar-body {
+	visibility: hidden;
+	transition: visibility 200ms step-end;
+}
+
+
+/*
+	Default appearance styles.
+*/
+#ui-bar {
+	background-color: #222;
+	border-right: 1px solid #444;
+	text-align: center;
+}
+#ui-bar-tray {
+	position: absolute;
+	top: 0.2em;
+	left: 0;
+	right: 0;
+}
+#ui-bar a {
+	text-decoration: none;
+}
+#ui-bar hr {
+	border-color: #444;
+}
+#ui-bar-toggle,
+#ui-bar-history [id|="history"] {
+	font-size: 1.2em;
+	line-height: inherit;
+	color: #eee;
+	background-color: transparent;
+	border: 1px solid #444;
+}
+#ui-bar-toggle {
+	display: block;
+	position: absolute;
+	top: 0;
+	right: 0;
+	border-right: none;
+	padding: 0.3em 0.45em 0.25em;
+}
+#ui-bar.stowed #ui-bar-toggle {
+	padding: 0.3em 0.35em 0.25em 0.55em;
+}
+#ui-bar-toggle:hover {
+	background-color: #444;
+	border-color: #eee;
+}
+#ui-bar-history {
+	margin: 0 auto;
+}
+#ui-bar-history [id|="history"] {
+	padding: 0.2em 0.45em 0.35em;
+}
+#ui-bar-history #history-jumpto {
+	padding: 0.2em 0.665em 0.35em;
+}
+#ui-bar-history [id|="history"]:not(:first-child) {
+	margin-left: 1.2em;
+}
+#ui-bar-history [id|="history"]:hover {
+	background-color: #444;
+	border-color: #eee;
+}
+#ui-bar-history [id|="history"]:disabled {
+	color: #444;
+	background-color: transparent;
+	border-color: #444;
+}
+#ui-bar-body {
+	line-height: 1.5;
+	overflow: auto;
+}
+#ui-bar-body > :not(:first-child) {
+	margin-top: 2em;
+}
+#story-title {
+	margin: 0;
+	font-size: 162.5%;
+}
+#story-author {
+	margin-top: 2em;
+	font-weight: bold;
+}
+#menu ul {
+	margin: 1em 0 0;
+	padding: 0;
+	list-style: none;
+	border: 1px solid #444;
+}
+#menu ul:empty {
+	display: none;
+}
+#menu li {
+	margin: 0;
+}
+#menu li:not(:first-child) {
+	border-top: 1px solid #444;
+}
+#menu li a {
+	display: block;
+	padding: 0.25em 0.75em;
+	border: 1px solid transparent;
+	color: #eee;
+	text-transform: uppercase;
+}
+#menu li a:hover {
+	background-color: #444;
+	border-color: #eee;
+}
+
+/* Stop text selection on certain UI elements. */
+#ui-bar-history [id|="history"],
+#ui-bar-toggle,
+#menu a {
+	user-select: none;
+}
+
+
+/*
+	Default font icon styles.
+*/
+#ui-bar-toggle:before,
+#ui-bar-history [id|="history"],
+#menu-core li[id|="menu-item"] a:before {
+	font-family: "tme-fa-icons";
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+	speak: none;
+}
+#ui-bar-toggle:before {
+	content: "\e81d";
+}
+#ui-bar.stowed #ui-bar-toggle:before {
+	content: "\e81e";
+}
+#menu-item-saves a:before {
+	content: "\e82b\00a0";
+}
+#menu-item-settings a:before {
+	content: "\e82d\00a0";
+}
+#menu-item-restart a:before {
+	content: "\e82c\00a0";
+}
+#menu-item-share a:before {
+	content: "\e82f\00a0";
+}

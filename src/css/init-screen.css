@@ -1,0 +1,62 @@
+/***********************************************************************************************************************
+
+	css/init-screen.css
+
+	Copyright © 2013–2019 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
+	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
+
+***********************************************************************************************************************/
+
+@keyframes init-loading-spin {
+	0%   { transform: rotate(0deg); }
+	100% { transform: rotate(360deg); }
+}
+#init-screen {
+	display: none;
+	z-index: 100000;
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	height: 100%;
+	width: 100%;
+	font: 28px/1 Helmet, Freesans, sans-serif;
+	font-weight: bold;
+	color: #eee;
+	background-color: #111;
+	text-align: center;
+}
+#init-screen > div {
+	display: none;
+	position: relative;
+	margin: 0 auto;
+	max-width: 1136px;
+	top: 25%;
+}
+html[data-init="no-js"] #init-screen, html[data-init="lacking"] #init-screen, html[data-init="loading"] #init-screen {
+	display: block;
+}
+html[data-init="no-js"] #init-no-js, html[data-init="lacking"] #init-lacking {
+	display: block;
+	padding: 0 1em;
+}
+html[data-init="no-js"] #init-no-js {
+	color: red;
+}
+html[data-init="loading"] #init-loading {
+	display: block;
+	border: 24px solid transparent;
+	border-radius: 50%;
+	border-top-color: #7f7f7f;
+	border-bottom-color: #7f7f7f;
+	width: 100px;
+	height: 100px;
+	animation: init-loading-spin 2s linear infinite;
+}
+html[data-init="loading"] #init-loading > div {
+	text-indent: 9999em;
+	overflow: hidden;
+	white-space: nowrap;
+}
+html[data-init="loading"] #ui-bar, html[data-init="loading"] #passages {
+	display: none;
+}

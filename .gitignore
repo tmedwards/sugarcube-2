@@ -1,0 +1,16 @@
+# Scripts
+*.sh
+
+# Documentation
+*.html
+
+# Development
+dist/
+node_modules/
+.build
+.tern-project
+
+# Miscellaneous
+_*
+CHANGELOG*
+TODO*
