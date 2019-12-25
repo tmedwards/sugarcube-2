@@ -200,7 +200,7 @@ A range definition object should have some of the following properties:
 * **`label`:** (*string*) Label to use for the control.
 * **`min`:** (*number*) The minimum value.
 * **`max`:** (*number*) The maximum value.
-* **`step`:** (*number*) Limits the increments to which the value may be set.  It must be evenly divisible into the full range—i.e. `max - min`.
+* **`step`:** (*number*) Limits the increments to which the value may be set.  It must be evenly divisible into the full range—i.e., `max - min`.
 * **`desc`:** (optional, *string*) Description explaining the control in greater detail.
 * **`default`:** (optional, *number*) The default value for the setting and default state of the control.  Leaving it undefined means to use the value of `max` as the default.
 * **`onInit`:** (optional, *function*) The function to call during initialization.

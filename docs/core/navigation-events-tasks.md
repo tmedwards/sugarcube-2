@@ -27,7 +27,7 @@ In order of processing: *(for reference, this also shows the `Passage…` and UI
 	1. [`PassageFooter` special passage](#special-passage-passagefooter).
 	2. `:passagerender` event.
 	3. `postrender` tasks.
-4. Passage display.  Happens after the display—i.e. output—of the incoming passage.
+4. Passage display.  Happens after the display—i.e., output—of the incoming passage.
 	1. [`PassageDone` special passage](#special-passage-passagedone).
 	2. `:passagedisplay` event.
 	3. `postdisplay` tasks.
@@ -162,7 +162,7 @@ $(document).on(':passagerender', function (ev) {
 <span id="navigation-event-passagedisplay"></span>
 ### `:passagedisplay` event
 
-Triggered after the display—i.e. output—of the incoming passage.
+Triggered after the display—i.e., output—of the incoming passage.
 
 #### Since:
 
@@ -325,7 +325,7 @@ postrender["Some Task Name"] = function (content, taskName) {
 <span id="navigation-task-postdisplay"></span>
 ### `postdisplay` task functions
 
-Executed after the display—i.e. output—of the incoming passage.
+Executed after the display—i.e., output—of the incoming passage.
 
 #### Since:
 

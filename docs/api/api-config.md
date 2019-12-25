@@ -622,7 +622,7 @@ Config.ui.updateStoryElements = false;
 <span id="config-api-property-addvisitedlinkclass"></span>
 ### `Config.addVisitedLinkClass` ↔ *boolean* (default: `false`)
 
-Determines whether the `link-visited` class is added to internal passage links that go to previously visited passages—i.e. the passage already exists within the story history.
+Determines whether the `link-visited` class is added to internal passage links that go to previously visited passages—i.e., the passage already exists within the story history.
 
 **NOTE:** You *must* provide your own styling for the `link-visited` class as none is provided by default.
 
@@ -649,7 +649,7 @@ An example style: (Twine&nbsp;2: goes in Story Stylesheet; Twine&nbsp;1/Twee: go
 <span id="config-api-property-cleanupwikifieroutput"></span>
 ### `Config.cleanupWikifierOutput` ↔ *boolean* (default: `false`)
 
-Determines whether the output of the Wikifier is post-processed into more sane markup—i.e. where appropriate, it tries to transition the plethora of `<br>` elements into `<p>` elements.
+Determines whether the output of the Wikifier is post-processed into more sane markup—i.e., where appropriate, it tries to transition the plethora of `<br>` elements into `<p>` elements.
 
 #### Since:
 
@@ -668,7 +668,7 @@ Config.cleanupWikifierOutput = true;
 
 Indicates whether SugarCube is running in test mode, which enables debug views.  See [`Test Mode`](#guide-test-mode) for more information.
 
-**NOTE:** This property is automatically set based on whether you're using a testing mode in a Twine compiler—i.e. *Test* mode in Twine&nbsp;2, *Test Play From Here* in Twine&nbsp;1, or the test mode options (`-t, --test`) in Tweego.  You may, however, forcibly enable it if you need to for some reason—e.g., if you're using another compiler, which doesn't offer a way to enable test mode.
+**NOTE:** This property is automatically set based on whether you're using a testing mode in a Twine compiler—i.e., *Test* mode in Twine&nbsp;2, *Test Play From Here* in Twine&nbsp;1, or the test mode options (`-t, --test`) in Tweego.  You may, however, forcibly enable it if you need to for some reason—e.g., if you're using another compiler, which doesn't offer a way to enable test mode.
 
 #### Since:
 

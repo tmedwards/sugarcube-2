@@ -3,11 +3,11 @@
 ************************************************************************************************ -->
 <h1 id="state-api"><code>State</code> API</h1>
 
-The story history contains moments (states) created during play.  Since it is possible to navigate the history—i.e. move backward and forward though the moments within the history—it may contain both past moments—i.e. moments that have been played—and future moments—i.e. moments that had been played, but have been rewound/undone, yet are still available to be restored.
+The story history contains moments (states) created during play.  Since it is possible to navigate the history—i.e., move backward and forward though the moments within the history—it may contain both past moments—i.e., moments that have been played—and future moments—i.e., moments that had been played, but have been rewound/undone, yet are still available to be restored.
 
-In addition to the history, there is also the active moment—i.e. present—and expired moments—i.e. moments that had been played, but have expired from the history, thus cannot be navigated to.
+In addition to the history, there is also the active moment—i.e., present—and expired moments—i.e., moments that had been played, but have expired from the history, thus cannot be navigated to.
 
-API members dealing with the history work upon either the active moment—i.e. present—or one of the history subsets: the full in-play history—i.e. past + future—the past in-play subset—i.e. past only—or the extended past subset—i.e. expired + past.  These instances will be noted.
+API members dealing with the history work upon either the active moment—i.e., present—or one of the history subsets: the full in-play history—i.e., past + future—the past in-play subset—i.e., past only—or the extended past subset—i.e., expired + past.  These instances will be noted.
 
 <!-- *********************************************************************** -->
 
@@ -524,7 +524,7 @@ State.prng.isEnabled()  → Returns whether the seedable PRNG is enabled
 <span id="state-api-getter-prng-pull"></span>
 ### `State.prng.pull` → *integer* | *NaN*
 
-Returns the current pull count—i.e. how many requests have been made—from the [seedable PRNG](#state-api-method-prng-init) or, if the PRNG is not enabled, `NaN`.
+Returns the current pull count—i.e., how many requests have been made—from the [seedable PRNG](#state-api-method-prng-init) or, if the PRNG is not enabled, `NaN`.
 
 **NOTE:** The pull count is automatically included within saves and sessions, so this is not especially useful outside of debugging purposes.
 

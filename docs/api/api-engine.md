@@ -59,7 +59,7 @@ Moves backward one moment within the full history (past + future), if possible, 
 #### Example:
 
 ```
-Engine.backward()  → Rewinds the full history by one moment—i.e. undoes the moment
+Engine.backward()  → Rewinds the full history by one moment—i.e., undoes the moment
 ```
 
 <!-- *********************************************************************** -->
@@ -78,7 +78,7 @@ Moves forward one moment within the full history (past + future), if possible, a
 #### Example:
 
 ```
-Engine.forward()  → Fast forwards the full history by one moment—i.e. redoes the moment
+Engine.forward()  → Fast forwards the full history by one moment—i.e., redoes the moment
 ```
 
 <!-- *********************************************************************** -->
@@ -99,8 +99,8 @@ Activates the moment at the given offset from the active (present) moment within
 #### Example:
 
 ```
-Engine.go(2)   → Fast forwards the full history by two moments—i.e. redoes the moments
-Engine.go(-4)  → Rewinds the full history by four moments—i.e. undoes the moments
+Engine.go(2)   → Fast forwards the full history by two moments—i.e., redoes the moments
+Engine.go(-4)  → Rewinds the full history by four moments—i.e., undoes the moments
 ```
 
 <!-- *********************************************************************** -->
@@ -149,7 +149,7 @@ Engine.isIdle()  → Returns whether the engine is idle
 <span id="engine-api-method-isplaying"></span>
 ### `Engine.isPlaying()` → *boolean*
 
-Returns whether the engine is processing a turn—i.e. passage navigation has been triggered.
+Returns whether the engine is processing a turn—i.e., passage navigation has been triggered.
 
 #### Since:
 
@@ -196,7 +196,7 @@ Renders and displays the passage referenced by the given title, optionally witho
 #### Parameters:
 
 * **`passageTitle`:** (*string*) The title of the passage to play.
-* **`noHistory`:** (optional, *boolean*) Disables the update of the history—i.e. no moment is added to the history.
+* **`noHistory`:** (optional, *boolean*) Disables the update of the history—i.e., no moment is added to the history.
 
 #### Example:
 

@@ -81,7 +81,7 @@ Follow these instructions to install a local copy of SugarCube v2:
 
 If you followed the steps correctly, within Twine&nbsp;1/Twee's `targets` directory you should now have a `sugarcube-2` directory, which contains several files—e.g., `header.html`, `sugarcube-2.py`, etc.
 
-**NOTE:** Due to a flaw in the current release of Twine&nbsp;1/Twee (v1.4.2), if you rename the directory included in the archive (or simply copy its contents to your current SugarCube v2 install), then you ***must*** ensure that the file with the extension `.py` (the story format's custom Twine&nbsp;1 Header class file) within is named the same as the directory—i.e. the name of the directory and `.py` file must match.
+**NOTE:** Due to a flaw in the current release of Twine&nbsp;1/Twee (v1.4.2), if you rename the directory included in the archive (or simply copy its contents to your current SugarCube v2 install), then you ***must*** ensure that the file with the extension `.py` (the story format's custom Twine&nbsp;1 Header class file) within is named the same as the directory—i.e., the name of the directory and `.py` file must match.
 
 For example, if the name of SugarCube's directory is `sugarcube`, then the name of the `.py` file within must be `sugarcube.py`.  Similarly, if the directory is `sugarcube-2`, then the name of the `.py` file within must be `sugarcube-2.py`.  Etc.
 

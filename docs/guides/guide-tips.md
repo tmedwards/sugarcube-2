@@ -56,7 +56,7 @@ As a basic working definition, non-generic object types—a.k.a. classes—are i
 
 Most of the commonly used native non-generic object types are already fully compatible with and supported for use within story variables—e.g., `Array`, `Date`, `Map`, and `Set`.  Non-native/custom non-generic object types, on the other hand, must be made compatible to be successfully stored within story variables.
 
-Making custom non-generic object types fully compatible requires that two methods be added to their prototype, `.clone()` and `.toJSON()`, to support cloning—i.e. deep copying—instances of the type.
+Making custom non-generic object types fully compatible requires that two methods be added to their prototype, `.clone()` and `.toJSON()`, to support cloning—i.e., deep copying—instances of the type.
 
 * The `.clone()` method needs to return a clone of the instance.
 * The `.toJSON()` method needs to return a code string that when evaluated will return a clone of the instance.

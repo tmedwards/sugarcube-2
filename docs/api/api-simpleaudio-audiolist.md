@@ -3,7 +3,7 @@
 **************************************************************************** -->
 <h1 id="audiolist-api"><code>AudioList</code> API</h1>
 
-Audio lists (playlists) are useful for playing tracks in a sequence—i.e. one after another.
+Audio lists (playlists) are useful for playing tracks in a sequence—i.e., one after another.
 
 See the other audio APIs for additional information: [`SimpleAudio` API](#simpleaudio-api), [`AudioTrack` API](#audiotrack-api), [`AudioRunner` API](#audiorunner-api).
 

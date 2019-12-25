@@ -512,7 +512,7 @@ if (SimpleAudio.groups.has(":ui")) {
 <span id="simpleaudio-api-method-lists-add"></span>
 ### `SimpleAudio.lists.add(listId, sources…)`
 
-Adds a playlist with the given list ID.  Playlists are useful for playing tracks in a sequence—i.e. one after another.
+Adds a playlist with the given list ID.  Playlists are useful for playing tracks in a sequence—i.e., one after another.
 
 **NOTE:** If you simply want to apply actions to multiple tracks simultaneously, then you want a [group](#simpleaudio-api-method-groups-add) instead.
 

@@ -14,7 +14,7 @@
 <span id="markup-naked-variable"></span>
 ## Naked Variable
 
-In addition to using one of the print macros ([`<<print>>`](#macros-macro-print), [`<<=>>`](#macros-macro-equal), [`<<->>`](#macros-macro-hyphen)) to print the values of TwineScript variables, SugarCube's naked variable markup allows printing them simply by including them within your normal passage text—i.e. variables in passage text are interpolated into their values.
+In addition to using one of the print macros ([`<<print>>`](#macros-macro-print), [`<<=>>`](#macros-macro-equal), [`<<->>`](#macros-macro-hyphen)) to print the values of TwineScript variables, SugarCube's naked variable markup allows printing them simply by including them within your normal passage text—i.e., variables in passage text are interpolated into their values.
 
 The following forms are supported by the naked variable markup:
 
@@ -70,7 +70,7 @@ Well hello there, $name.
 Well hello there, Mr. Freeman.
 ```
 
-Because variables within your passage text are transformed into their values automatically, if you actually want to output a variable as-is—i.e. without interpolation; e.g., for a tutorial, debug output, or whatever—then you'll need to escape it in some fashion.  For example:
+Because variables within your passage text are transformed into their values automatically, if you actually want to output a variable as-is—i.e., without interpolation; e.g., for a tutorial, debug output, or whatever—then you'll need to escape it in some fashion.  For example:
 
 ```
 /* Using the nowiki markup: """…""" (triple double-quotes) */
@@ -103,11 +103,11 @@ The variable <code>$name</code> is set to: Mr. Freeman
 <span id="markup-link"></span>
 ## Link
 
-SugarCube's link markup consists of a required `Link` component and optional `Text` and `Setter` components.  The `Link` and `Text` components may be either plain text or any valid TwineScript expression, which will be evaluated early—i.e. when the link is initially processed.  The `Setter` component, which only works with passage links, must be a valid [TwineScript expression](#twinescript-expressions), of the [`<<set>>` macro](#macros-macro-set) variety, which will be evaluated late—i.e. when the link is clicked on.
+SugarCube's link markup consists of a required `Link` component and optional `Text` and `Setter` components.  The `Link` and `Text` components may be either plain text or any valid TwineScript expression, which will be evaluated early—i.e., when the link is initially processed.  The `Setter` component, which only works with passage links, must be a valid [TwineScript expression](#twinescript-expressions), of the [`<<set>>` macro](#macros-macro-set) variety, which will be evaluated late—i.e., when the link is clicked on.
 
 The `Link` component value may be the title of a passage or any valid URL to a resource (local or remote).
 
-In addition to the standard pipe separator (`|`) used to separate the `Link` and `Text` components (as seen below), SugarCube also supports the arrow separators (`->` &amp; `<-`).  Particular to the arrow separators, the arrows' direction determines the order of the components, with the arrow always pointing at the `Link` component—i.e. the right arrow works like the pipe separator, `Text->Link`, while the left arrow is reversed, `Link<-Text`.
+In addition to the standard pipe separator (`|`) used to separate the `Link` and `Text` components (as seen below), SugarCube also supports the arrow separators (`->` &amp; `<-`).  Particular to the arrow separators, the arrows' direction determines the order of the components, with the arrow always pointing at the `Link` component—i.e., the right arrow works like the pipe separator, `Text->Link`, while the left arrow is reversed, `Link<-Text`.
 
 <table>
 <caption>For the following examples assume: <code>$go</code> is <code>&quot;Grocery&quot;</code> and <code>$show</code> is <code>&quot;Go buy milk&quot;</code></caption>
@@ -156,11 +156,11 @@ In addition to the standard pipe separator (`|`) used to separate the `Link` and
 <span id="markup-image"></span>
 ## Image
 
-SugarCube's image markup consists of a required `Image` component and optional `Title`, `Link`, and `Setter` components.  The `Image`, `Title`, and `Link` components may be either plain text or any valid TwineScript expression, which will be evaluated early—i.e. when the link is initially processed.  The `Setter` component, which only works with passage links, must be a valid TwineScript expression, of the [`<<set>>` macro](#macros-macro-set) variety, which will be evaluated late—i.e. when the link is clicked on.
+SugarCube's image markup consists of a required `Image` component and optional `Title`, `Link`, and `Setter` components.  The `Image`, `Title`, and `Link` components may be either plain text or any valid TwineScript expression, which will be evaluated early—i.e., when the link is initially processed.  The `Setter` component, which only works with passage links, must be a valid [TwineScript expression](#twinescript-expressions), of the [`<<set>>` macro](#macros-macro-set) variety, which will be evaluated late—i.e., when the link is clicked on.
 
 The `Image` component value may be any valid URL to an image resource (local or remote) or the title of an [embedded image passage (Twine&nbsp;1 &amp; Tweego only)](http://twinery.org/wiki/image).  The `Link` component value may be the title of a passage or any valid URL to a resource (local or remote).
 
-In addition to the standard pipe separator (`|`) used to separate the `Image` and `Title` components (as seen below), SugarCube also supports the arrow separators (`->` &amp; `<-`).  Particular to the arrow separators, the arrows' direction determines the order of the components, with the arrow always pointing at the `Image` component—i.e. the right arrow works like the pipe separator, `Title->Image`, while the left arrow is reversed, `Image<-Title`.
+In addition to the standard pipe separator (`|`) used to separate the `Image` and `Title` components (as seen below), SugarCube also supports the arrow separators (`->` &amp; `<-`).  Particular to the arrow separators, the arrows' direction determines the order of the components, with the arrow always pointing at the `Image` component—i.e., the right arrow works like the pipe separator, `Title->Image`, while the left arrow is reversed, `Image<-Title`.
 
 <table>
 <caption>For the following examples assume: <code>$src</code> is <code>home.png</code>, <code>$go</code> is <code>&quot;Home&quot;</code>, and <code>$show</code> is <code>&quot;Go home&quot;</code></caption>

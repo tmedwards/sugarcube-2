@@ -27,7 +27,7 @@ Add new macro(s).
 A macro definition object should have some of the following properties (only `handler` is absolutely required):
 
 * **`skipArgs`:** (optional, *boolean*) Disables parsing argument strings into discrete arguments.  Used by macros that only use the raw/full argument strings.
-* **`tags`:** (optional, *null* | *string array*) Signifies that the macro is a container macro—i.e. not self-closing.  An array of the names of the child tags, or `null` if there are no child tags.
+* **`tags`:** (optional, *null* | *string array*) Signifies that the macro is a container macro—i.e., not self-closing.  An array of the names of the child tags, or `null` if there are no child tags.
 * **`handler`:** (*function*) The macro's main function.  It will be called without arguments, but with its `this` set to a [macro context object](#macrocontext-api).
 
 Additional properties may be added for internal use.

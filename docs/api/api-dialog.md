@@ -194,7 +194,7 @@ You cannot obtain data about the closing dialog from the dialog itself—e.g., t
 
 #### Event object properties: *none*
 
-**NOTE:** While there are no custom properties, the event is fired from the dialog's body, thus the `target` property will refer to its body element—i.e. `#ui-dialog-body`.
+**NOTE:** While there are no custom properties, the event is fired from the dialog's body, thus the `target` property will refer to its body element—i.e., `#ui-dialog-body`.
 
 #### Example:
 
@@ -223,7 +223,7 @@ Global synthetic event triggered as the first step in closing the dialog when [`
 
 #### Event object properties: *none*
 
-**NOTE:** While there are no custom properties, the event is fired from the dialog's body, thus the `target` property will refer to its body element—i.e. `#ui-dialog-body`.
+**NOTE:** While there are no custom properties, the event is fired from the dialog's body, thus the `target` property will refer to its body element—i.e., `#ui-dialog-body`.
 
 #### Example:
 
@@ -252,7 +252,7 @@ Global synthetic event triggered as the last step in opening the dialog when [`D
 
 #### Event object properties: *none*
 
-**NOTE:** While there are no custom properties, the event is fired from the dialog's body, thus the `target` property will refer to its body element—i.e. `#ui-dialog-body`.
+**NOTE:** While there are no custom properties, the event is fired from the dialog's body, thus the `target` property will refer to its body element—i.e., `#ui-dialog-body`.
 
 #### Example:
 
@@ -281,7 +281,7 @@ Global synthetic event triggered as the first step in opening the dialog when [`
 
 #### Event object properties: *none*
 
-**NOTE:** While there are no custom properties, the event is fired from the dialog's body, thus the `target` property will refer to its body element—i.e. `#ui-dialog-body`.
+**NOTE:** While there are no custom properties, the event is fired from the dialog's body, thus the `target` property will refer to its body element—i.e., `#ui-dialog-body`.
 
 #### Example:
 

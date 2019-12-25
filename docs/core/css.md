@@ -117,11 +117,11 @@ For example, if the tag name was `Sector_42`, then it would become both the `dat
 	</tr>
 	<tr>
 		<td><code>.passage .link-visited<a href="#css-example-selectors-fn1">1</a></code></td>
-		<td>Selects all internal link elements within the passage element whose passages are within the in-play story history—i.e. passages the player has been to before.</td>
+		<td>Selects all internal link elements within the passage element whose passages are within the in-play story history—i.e., passages the player has been to before.</td>
 	</tr>
 	<tr>
 		<td><code>.passage .link-internal:not(.link-visited)<a href="#css-example-selectors-fn1">1</a></code></td>
-		<td>Selects all internal link elements within the passage element whose passages are not within the in-play story history—i.e. passages the player has never been to before.</td>
+		<td>Selects all internal link elements within the passage element whose passages are not within the in-play story history—i.e., passages the player has never been to before.</td>
 	</tr>
 </tbody>
 </table>

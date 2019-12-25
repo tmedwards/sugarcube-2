@@ -20,7 +20,7 @@ The discrete argument type of macros are also fairly straightforward, most of th
 
 Passing the name of a variable as an argument is problematic because variable substitution occurs automatically in SugarCube macros.  Meaning that when you pass a variable as an argument, its value is passed to the macro rather than its name.
 
-Normally, this is exactly what you want to happen.  Occasionally, however, macros will need the name of a variable rather than its value—e.g., data input macros like `<<textbox>>`—so that they may modify the variable.  To resolve these instances, you will need to quote the name of the variable—i.e. instead of passing `$pie` as normal, you'd pass `"$pie"`.  These, rare, instances are noted in the macros' documentation and shown in their examples.
+Normally, this is exactly what you want to happen.  Occasionally, however, macros will need the name of a variable rather than its value—e.g., data input macros like `<<textbox>>`—so that they may modify the variable.  To resolve these instances, you will need to quote the name of the variable—i.e., instead of passing `$pie` as normal, you'd pass `"$pie"`.  These, rare, instances are noted in the macros' documentation and shown in their examples.
 
 #### Passing an expression as an argument
 
@@ -65,7 +65,7 @@ A better solution, however, would be to use a backquote<a href="#macros-argument
 
 Captures story $variables and temporary \_variables, creating localized versions of their values within the macro body.
 
-**NOTE:** Use of this macro is *only* necessary when you need to localize a variable's value for use with an asynchronous macro—i.e. a macro whose contents are executed at some later time, rather than when it's invoked; e.g., [interactive macros](#macros-interactive), [`<<repeat>>`](#macros-macro-repeat), [`<<timed>>`](#macros-macro-timed).  Generally, this means only when the variable's value will change between the time the asynchronous macro is invoked and when it's activated—e.g., a loop variable.
+**NOTE:** Use of this macro is *only* necessary when you need to localize a variable's value for use with an asynchronous macro—i.e., a macro whose contents are executed at some later time, rather than when it's invoked; e.g., [interactive macros](#macros-interactive), [`<<repeat>>`](#macros-macro-repeat), [`<<timed>>`](#macros-macro-timed).  Generally, this means only when the variable's value will change between the time the asynchronous macro is invoked and when it's activated—e.g., a loop variable.
 
 #### Since:
 
@@ -257,14 +257,14 @@ This macro has been deprecated and should no longer be used.  See the <a href="#
 <span id="macros-macro-run"></span>
 ### `<<run expression>>`
 
-*Functionally identical to [`<<set>>`](#macros-macro-set).  Intended to be mnemonically better for uses where the expression is arbitrary code, rather than variables to set—i.e. `<<run>>` to run code, `<<set>>` to set variables.*
+*Functionally identical to [`<<set>>`](#macros-macro-set).  Intended to be mnemonically better for uses where the expression is arbitrary code, rather than variables to set—i.e., `<<run>>` to run code, `<<set>>` to set variables.*
 
 <!-- *********************************************************************** -->
 
 <span id="macros-macro-script"></span>
 ### `<<script>> … <</script>>`
 
-Silently executes its contents as *pure* JavaScript code—i.e. it performs no story or temporary variable substitution or TwineScript operator processing.  For instances where you need to run some pure JavaScript and don't want to waste time performing extra processing on code that has no story or temporary variables or TwineScript operators in it and/or worry about the parser possibly clobbering the code.
+Silently executes its contents as *pure* JavaScript code—i.e., it performs no story or temporary variable substitution or TwineScript operator processing.  For instances where you need to run some pure JavaScript and don't want to waste time performing extra processing on code that has no story or temporary variables or TwineScript operators in it and/or worry about the parser possibly clobbering the code.
 
 **NOTE:** The predefined variable `output`, which is a reference to a local content buffer, is available for use within the macro's code contents.  Once the code has been fully executed, the contents of the buffer, if any, will be output.
 
@@ -1003,7 +1003,7 @@ Creates a cycling link, used to modify the value of the variable with the given 
 ##### `<<cycle>>`
 
 * **`receiverName`:** The name of the variable to modify, which *must* be quoted—e.g., `"$foo"`.  Object and array property references are also supported—e.g., `"$foo.bar"`, `"$foo['bar']"`, & `"$foo[0]"`.
-* **`autoselect`:** (optional) Keyword, used to signify that an option should be automatically selected as the cycle default based on the current value of the target variable.  **NOTE:** Automatic option selection will fail on non-primitive values—i.e. on arrays and objects.
+* **`autoselect`:** (optional) Keyword, used to signify that an option should be automatically selected as the cycle default based on the current value of the target variable.  **NOTE:** Automatic option selection will fail on non-primitive values—i.e., on arrays and objects.
 
 ##### `<<option>>`
 
@@ -1223,7 +1223,7 @@ Creates a listbox, used to modify the value of the variable with the given name.
 ##### `<<listbox>>`
 
 * **`receiverName`:** The name of the variable to modify, which *must* be quoted—e.g., `"$foo"`.  Object and array property references are also supported—e.g., `"$foo.bar"`, `"$foo['bar']"`, & `"$foo[0]"`.
-* **`autoselect`:** (optional) Keyword, used to signify that an option should be automatically selected as the listbox default based on the current value of the target variable.  **NOTE:** Automatic option selection will fail on non-primitive values—i.e. on arrays and objects.
+* **`autoselect`:** (optional) Keyword, used to signify that an option should be automatically selected as the listbox default based on the current value of the target variable.  **NOTE:** Automatic option selection will fail on non-primitive values—i.e., on arrays and objects.
 
 ##### `<<option>>`
 
@@ -1889,7 +1889,7 @@ I saw a <span id="dog"><span class="macro-replace-insert">Catahoula Cur</span></
 <span id="macros-macro-toggleclass"></span>
 ### `<<toggleclass selector classNames>>`
 
-Toggles classes on the selected element(s)—i.e. adding them if they don't exist, removing them if they do.
+Toggles classes on the selected element(s)—i.e., adding them if they don't exist, removing them if they do.
 
 **SEE:** [DOM macro warning](#macros-dom).
 
@@ -2193,7 +2193,7 @@ Controls the master audio settings.
 * **`actionList`:** The list of actions to perform.  Available actions are:
 	* **`load`:** Pause playback of *all* tracks and, if they're not already in the process of loading, force them to drop any existing data and begin loading.  **NOTE:** This *should not* be done lightly if your audio sources are on the network, as it forces the player to begin downloading them.
 	* **`mute`:** Mute the master volume (effectively volume `0`, except without changing the volume level).
-	* **`muteonhide`:** Enable automatic muting of the master volume when losing visibility—i.e. when switched to another tab or the browser window is minimized.
+	* **`muteonhide`:** Enable automatic muting of the master volume when losing visibility—i.e., when switched to another tab or the browser window is minimized.
 	* **`nomuteonhide`:** Disable automatic muting of the master volume when losing visibility (this is the default).
 	* **`stop`:** Stop playback of *all* tracks.
 	* **`unload`:** Stop playback of *all* tracks and force them to drop any existing data.  **NOTE:** Once unloaded, playback cannot occur until a `load` action is issued for each track—either a master `load` action, to affect all tracks, or an `<<audio>>`/`<<playlist>>` `load` action, to affect only certain tracks.
@@ -2675,7 +2675,7 @@ I'll have <span id="drink">some water</span>, please.\
 <span id="macros-macro-widget"></span>
 ### `<<widget widgetName>> … <</widget>>`
 
-Creates a new widget macro (henceforth, widget) with the given name.  Widgets allow you to create macros by using the standard macros and markup that you use normally within your story.  Widgets may access arguments passed to them via the `$args` array-like object, whose indices are zero-based—i.e. `$args[0]` is the first parsed argument, `$args[1]` is the second, etc.  Additionally, the full argument string—in raw and parsed forms—may be accessed via the `$args.raw` and `$args.full` properties.
+Creates a new widget macro (henceforth, widget) with the given name.  Widgets allow you to create macros by using the standard macros and markup that you use normally within your story.  Widgets may access arguments passed to them via the `$args` array-like object, whose indices are zero-based—i.e., `$args[0]` is the first parsed argument, `$args[1]` is the second, etc.  Additionally, the full argument string—in raw and parsed forms—may be accessed via the `$args.raw` and `$args.full` properties.
 
 <p role="note" class="warning"><b>Warning:</b>
 Widgets should <em>always</em> be defined within a <code>widget</code>-tagged passage—any widgets that are not may be lost on page reload—and you may use as few or as many such passages as you desire.  <em>Do not</em> add a <code>widget</code> tag to any of the <a href="#special-passages">specially named passages</a> and attempt to define your widgets there.

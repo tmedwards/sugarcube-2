@@ -124,7 +124,7 @@ The text of a container macro parsed into discrete payload objects by tag.  Payl
 * **`args`:** (*array*) The current tag's argument string parsed into an array of discrete arguments.  Equivalent in function to [`<MacroContext>.args`](#macrocontext-api-prototype-property-args).
 	* **`args.full`:** (*string*) The current tag's argument string after converting all TwineScript syntax elements into their native JavaScript counterparts.  Equivalent in function to [`<MacroContext>.args.full`](#macrocontext-api-prototype-property-args-full).
 	* **`args.raw`:** (*string*) The current tag's unprocessed argument string.  Equivalent in function to [`<MacroContext>.args.raw`](#macrocontext-api-prototype-property-args-raw).
-* **`contents`:** (*string*) The current tag's contents—i.e. the text between the current tag and the next.
+* **`contents`:** (*string*) The current tag's contents—i.e., the text between the current tag and the next.
 
 #### Since:
 

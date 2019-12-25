@@ -61,10 +61,10 @@ either("Blueberry", "Cherry", "Pecan")  → Returns a random pie from the whole 
 either($pies)  → Returns a random pie from the whole array
 
 // Using singular values and arrays; given: $letters = ["A", "B"]
-either($letters, "C", "D")  → Returns a random value from the whole list—i.e. "A", "B", "C", "D"
+either($letters, "C", "D")  → Returns a random value from the whole list—i.e., "A", "B", "C", "D"
 
 // Using multiple arrays; given: $letters = ["A", "B"] & $numerals = ["1", "2"]
-either($letters, $numerals)  → Returns a random value from the whole list—i.e. "A", "B", "1", "2"
+either($letters, $numerals)  → Returns a random value from the whole list—i.e., "A", "B", "1", "2"
 ```
 
 <!-- *********************************************************************** -->
@@ -93,7 +93,7 @@ Removes the specified key, and its associated value, from the story metadata sto
 <span id="functions-function-hasvisited"></span>
 ### `hasVisited(passages…)` → *boolean*
 
-Returns whether the passage with the given title occurred within the story history.  If multiple passage titles are given, returns the logical-AND aggregate of the set—i.e. `true` if all were found, `false` if any were not found.
+Returns whether the passage with the given title occurred within the story history.  If multiple passage titles are given, returns the logical-AND aggregate of the set—i.e., `true` if all were found, `false` if any were not found.
 
 #### Since:
 
@@ -375,7 +375,7 @@ Returns the title of the most recent previous passage whose title does not match
 <span id="functions-function-random"></span>
 ### `random([min ,] max)` → *integer*
 
-Returns a pseudo-random whole number (integer) within the range of the given bounds (inclusive)—i.e. [min,&nbsp;max].
+Returns a pseudo-random whole number (integer) within the range of the given bounds (inclusive)—i.e., [min,&nbsp;max].
 
 **NOTE:** By default, it uses [`Math.random()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random) as its source of (non-deterministic) randomness, however, when the seedable PRNG has been enabled, via [`State.prng.init()`](#state-api-method-prng-init), it uses the (deterministic) seeded PRNG instead.
 
@@ -400,7 +400,7 @@ random(1, 6)  → Returns a number in the range 1–6
 <span id="functions-function-randomfloat"></span>
 ### `randomFloat([min ,] max)` → *float*
 
-Returns a pseudo-random decimal number (floating-point) within the range of the given bounds (inclusive for the minimum, exclusive for the maximum)—i.e. [min,&nbsp;max).
+Returns a pseudo-random decimal number (floating-point) within the range of the given bounds (inclusive for the minimum, exclusive for the maximum)—i.e., [min,&nbsp;max).
 
 **NOTE:** By default, it uses [`Math.random()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random) as its source of (non-deterministic) randomness, however, when the seedable PRNG has been enabled, via [`State.prng.init()`](#state-api-method-prng-init), it uses the (deterministic) seeded PRNG instead.
 

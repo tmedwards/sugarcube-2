@@ -30,7 +30,7 @@ Concatenates one or more members to the end of the base array and returns the re
 
 #### Parameters:
 
-* **`members`:** (*any*) The members to concatenate.  Members that are arrays will be merged—i.e. their members will be concatenated, rather than the array itself.
+* **`members`:** (*any*) The members to concatenate.  Members that are arrays will be merged—i.e., their members will be concatenated, rather than the array itself.
 
 #### Example:
 
@@ -56,7 +56,7 @@ Concatenates one or more unique members to the end of the base array and returns
 
 #### Parameters:
 
-* **`members`:** (*any*) The members to concatenate.  Members that are arrays will be merged—i.e. their members will be concatenated, rather than the array itself.
+* **`members`:** (*any*) The members to concatenate.  Members that are arrays will be merged—i.e., their members will be concatenated, rather than the array itself.
 
 #### Example:
 
@@ -742,7 +742,7 @@ Makes the target element(s) WAI-ARIA-compatible clickables—meaning that variou
 An options object should have some of the following properties:
 
 * **`namespace`:** (*string*) A period-separated list of event namespaces.
-* **`one`:** (*boolean*) Whether the clickables are single-use—i.e. the handler callback runs only once and then removes itself.  If omitted, defaults to `false`.
+* **`one`:** (*boolean*) Whether the clickables are single-use—i.e., the handler callback runs only once and then removes itself.  If omitted, defaults to `false`.
 * **`selector`:** (*string*) A selector applied to the target element(s) to filter the descendants that triggered the event. If omitted or `null`, the event is always handled when it reaches the target element(s).
 * **`data`:** (*any*) Data to be passed to the handler in [`event.data`](http://api.jquery.com/event.data/) when an event is triggered.
 * **`controls`:** (*string*) Value for the `aria-controls` attribute.

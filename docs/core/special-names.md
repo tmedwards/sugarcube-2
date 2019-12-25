@@ -123,7 +123,7 @@ Used for pre-story-start initialization tasks, like variable initialization (hap
 <span id="special-passage-storyinterface"></span>
 ### `StoryInterface`
 
-Used to replace SugarCube's default UI.  Its contents are treated as raw HTML markup—i.e. *none* of SugarCube's special HTML processing is performed.  It must contain, at least, an element with the ID `passages`, which will be the main passage display area.  Elements, aside from the `#passages` element, may include a `data-passage` content attribute, which denotes that the element should be updated via the specified passage—the passage will be processed as normal, meaning that markup and macros will work as expected.
+Used to replace SugarCube's default UI.  Its contents are treated as raw HTML markup—i.e., *none* of SugarCube's special HTML processing is performed.  It must contain, at least, an element with the ID `passages`, which will be the main passage display area.  Elements, aside from the `#passages` element, may include a `data-passage` content attribute, which denotes that the element should be updated via the specified passage—the passage will be processed as normal, meaning that markup and macros will work as expected.
 
 **NOTE:** Elements that include a `data-passage` content attribute must not themselves contain additional elements—since such elements' contents are replaced each turn via their associated passage, any child elements would be lost.
 

@@ -28,9 +28,9 @@ The names of both story and temporary variables have a certain format that they 
 
 The very first, and mandatory, character is their sigil, which denotes whether they are a story or temporary variable.  The sigil must be a dollar sign (`$`) for story variables or an underscore (`_`) for temporary variables.
 
-The second, and also mandatory, character of the variable name may be one of the following: the letters A though Z (in upper or lower case), the dollar sign, and the underscore (i.e. `A-Za-z$_`)—after their initial use as the sigil, the dollar sign and underscore become regular variable characters.
+The second, and also mandatory, character of the variable name may be one of the following: the letters A though Z (in upper or lower case), the dollar sign, and the underscore (i.e., `A-Za-z$_`)—after their initial use as the sigil, the dollar sign and underscore become regular variable characters.
 
-Subsequent, optional, characters have the same set as the second with the addition of numerals (i.e. `0-9`, so the full set is `A-Za-z0-9$_`).  No other characters are allowed.
+Subsequent, optional, characters have the same set as the second with the addition of numerals (i.e., `0-9`, so the full set is `A-Za-z0-9$_`).  No other characters are allowed.
 
 A few examples of valid names:
 

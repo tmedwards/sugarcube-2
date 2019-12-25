@@ -6,7 +6,7 @@
 **NOTE:** There are several [configuration settings for saves](#config-api-saves), which it would be wise to familiarize yourself with.
 
 <p role="note" class="warning"><b>Warning:</b>
-In-browser saves—i.e. autosave and slot saves—are largely incompatible with private browsing modes, which cause all in-browser storage mechanisms to either persist only for the lifetime of the browsing session or fail outright.
+In-browser saves—i.e., autosave and slot saves—are largely incompatible with private browsing modes, which cause all in-browser storage mechanisms to either persist only for the lifetime of the browsing session or fail outright.
 </p>
 
 
