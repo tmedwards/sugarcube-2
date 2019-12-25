@@ -14,11 +14,11 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 	// Map of normal passages.
 	const _passages = {};
 
-	// List of style passages.
-	const _styles = [];
-
 	// List of script passages.
 	const _scripts = [];
+
+	// List of style passages.
+	const _styles = [];
 
 	// List of widget passages.
 	const _widgets = [];
@@ -354,6 +354,21 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 	/*******************************************************************************************************************
 		Passage Functions.
 	*******************************************************************************************************************/
+	function passagesAdd(passage) {
+		if (!(passage instanceof Passage)) {
+			throw new TypeError('Story.passages.add passage parameter must be an instance of Passage');
+		}
+
+		const title = passage.title;
+
+		if (!_passages.hasOwnProperty(title)) {
+			_passages[title] = passage;
+			return true;
+		}
+
+		return false;
+	}
+
 	function passagesHas(title) {
 		let type = typeof title;
 
@@ -364,26 +379,20 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 			return _passages.hasOwnProperty(String(title));
 
 		// Invalid types.  We do the extra processing just to make a nicer error.
-		case 'boolean':
-		case 'function':
-			type = `a ${type}`;
-			break;
-
 		case 'undefined':
 			/* no-op */
 			break;
 
-		default: // 'object'
-			if (title === null) {
-				type = 'null';
-			}
-			else {
-				type = `an ${type}`;
-			}
+		case 'object':
+			type = title === null ? 'null' : 'an object';
+			break;
+
+		default: // 'bigint', 'boolean', 'function', 'symbol'
+			type = `a ${type}`;
 			break;
 		}
 
-		throw new TypeError(`Story.has title parameter cannot be ${type}`);
+		throw new TypeError(`Story.passages.has title parameter cannot be ${type}`);
 	}
 
 	function passagesGet(title) {
@@ -401,29 +410,96 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 		/* eslint-enable indent */
 
 		// Invalid types.  We do the extra processing just to make a nicer error.
-		case 'boolean':
-		case 'function':
-			type = `a ${type}`;
-			break;
-
 		case 'undefined':
 			/* no-op */
 			break;
 
-		default: // 'object'
-			if (title === null) {
-				type = 'null';
-			}
-			else {
-				type = `an ${type}`;
-			}
+		case 'object':
+			type = title === null ? 'null' : 'an object';
+			break;
+
+		default: // 'bigint', 'boolean', 'function', 'symbol'
+			type = `a ${type}`;
 			break;
 		}
 
-		throw new TypeError(`Story.get title parameter cannot be ${type}`);
+		throw new TypeError(`Story.passages.get title parameter cannot be ${type}`);
 	}
 
-	function passagesLookup(key, value, sortKey = 'title') {
+	function passagesGetAllRegular() {
+		// NOTE: Return an immutable copy, rather than the internal mutable original.
+		return Object.freeze(Object.assign({}, _passages));
+	}
+
+	function passagesGetAllScript() {
+		// NOTE: Return an immutable copy, rather than the internal mutable original.
+		return Object.freeze(Array.from(_scripts));
+	}
+
+	function passagesGetAllStylesheet() {
+		// NOTE: Return an immutable copy, rather than the internal mutable original.
+		return Object.freeze(Array.from(_styles));
+	}
+
+	function passagesGetAllWidget() {
+		// NOTE: Return an immutable copy, rather than the internal mutable original.
+		return Object.freeze(Array.from(_widgets));
+	}
+
+	function passagesLookup(key, value) {
+		const results = [];
+
+		Object.keys(_passages).forEach(name => {
+			const passage = _passages[name];
+
+			// Objects (sans `null`).
+			if (typeof passage[key] === 'object' && passage[key] !== null) {
+				// The only object type currently supported is `Array`, since the
+				// non-method `Passage` object properties currently yield only either
+				// primitives or arrays.
+				if (passage[key] instanceof Array && passage[key].some(m => Util.sameValueZero(m, value))) {
+					results.push(passage);
+				}
+			}
+
+			// All other types (incl. `null`).
+			else if (Util.sameValueZero(passage[key], value)) {
+				results.push(passage);
+			}
+		});
+
+		/* eslint-disable no-nested-ternary */
+		// QUESTION: Do we really need to sort the list?
+		results.sort((a, b) => a.title === b.title ? 0 : a.title < b.title ? -1 : +1);
+		/* eslint-enable no-nested-ternary */
+
+		return results;
+	}
+
+	function passagesLookupWith(predicate) {
+		if (typeof predicate !== 'function') {
+			throw new Error('Story.passages.lookupWith predicate parameter must be a function');
+		}
+
+		const results = [];
+
+		Object.keys(_passages).forEach(name => {
+			const passage = _passages[name];
+
+			if (predicate(passage)) {
+				results.push(passage);
+			}
+		});
+
+		/* eslint-disable no-nested-ternary */
+		// QUESTION: Do we really need to sort the list?
+		results.sort((a, b) => a.title === b.title ? 0 : a.title < b.title ? -1 : +1);
+		/* eslint-enable no-nested-ternary */
+
+		return results;
+	}
+
+	function passagesLegacyLookup(key, value, sortKey = 'title') {
 		const pnames  = Object.keys(_passages);
 		const results = [];
 
@@ -467,9 +543,9 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 		return results;
 	}
 
-	function passagesLookupWith(filter, sortKey = 'title') {
-		if (typeof filter !== 'function') {
-			throw new Error('Story.lookupWith filter parameter must be a function');
+	function passagesLegacyLookupWith(predicate, sortKey = 'title') {
+		if (typeof predicate !== 'function') {
+			throw new Error('Story.lookupWith predicate parameter must be a function');
 		}
 
 		const pnames  = Object.keys(_passages);
@@ -478,7 +554,7 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 		for (let i = 0; i < pnames.length; ++i) {
 			const passage = _passages[pnames[i]];
 
-			if (filter(passage)) {
+			if (predicate(passage)) {
 				results.push(passage);
 			}
 		}
@@ -495,31 +571,36 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 		Module Exports.
 	*******************************************************************************************************************/
 	return Object.freeze(Object.defineProperties({}, {
-		/*
-			Passage Containers.
-
-			TODO: These should probably have getters, rather than being exported directly.
-		*/
-		passages : { value : _passages },
-		styles   : { value : _styles },
-		scripts  : { value : _scripts },
-		widgets  : { value : _widgets },
-
-		/*
-			Story Functions.
-		*/
+		// Story Functions.
 		load  : { value : storyLoad },
 		init  : { value : storyInit },
 		title : { get : storyTitle },
 		domId : { get : storyDomId },
 		ifId  : { get : storyIfId },
 
+		// Passage Functions.
+		passages : {
+			value : Object.freeze(Object.defineProperties({}, {
+				add              : { value : passagesAdd },
+				has              : { value : passagesHas },
+				get              : { value : passagesGet },
+				getAllRegular    : { value : passagesGetAllRegular },
+				getAllScript     : { value : passagesGetAllScript },
+				getAllStylesheet : { value : passagesGetAllStylesheet },
+				getAllWidget     : { value : passagesGetAllWidget },
+				lookup           : { value : passagesLookup },
+				lookupWith       : { value : passagesLookupWith }
+			}))
+		},
+
 		/*
-			Passage Functions.
+			Legacy Aliases.
 		*/
+		// Passage Functions.
+		add        : { value : passagesAdd },
 		has        : { value : passagesHas },
 		get        : { value : passagesGet },
-		lookup     : { value : passagesLookup },
-		lookupWith : { value : passagesLookupWith }
+		lookup     : { value : passagesLegacyLookup },
+		lookupWith : { value : passagesLegacyLookupWith }
 	}));
 })();
