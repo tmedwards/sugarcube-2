@@ -9,42 +9,6 @@
 /* global Patterns */
 
 /*
-	DOM API Polyfills.
-*/
-(() => {
-	'use strict';
-
-	/*******************************************************************************************************************
-		Polyfills.
-	*******************************************************************************************************************/
-	/*
-		Returns the target's first child `Element` or `null` if there are no child elements.
-	*/
-	(domApi => {
-		if (domApi && domApi.prototype && domApi.prototype.firstElementChild == null) { // lazy equality for null
-			const ELEMENT_NODE = Node.ELEMENT_NODE;
-
-			Object.defineProperty(domApi.prototype, 'firstElementChild', {
-				get() {
-					const nodes = this.childNodes; // WARNING: This is a live collection.
-
-					for (let i = 0; i < nodes.length; ++i) {
-						const node = nodes[i];
-
-						if (node.nodeType === ELEMENT_NODE) {
-							return node;
-						}
-					}
-
-					return null;
-				}
-			});
-		}
-	})(window.Node || window.Element);
-})();
-
-
-/*
 	JavaScript Polyfills.
 
 	NOTE: The ES5 and ES6 polyfills come from the vendored `es5-shim.js` and `es6-shim.js` libraries.
