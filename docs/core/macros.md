@@ -1686,6 +1686,10 @@ I saw a <span id="dog">dog<span class="macro-append-insert"> chasing a cat</span
 
 Outputs a copy of the contents of the selected element(s).
 
+<p role="note" class="warning"><b>Warning:</b>
+Most interactive elements—e.g., passage links, <a href="#macros-interactive">interactive macros</a>, etc.—cannot be properly copied via <code>&lt;&lt;copy&gt;&gt;</code>.  Attempting to do so will, usually, result in something that's non-functional.
+</p>
+
 **SEE:** [DOM macro warning](#macros-dom).
 
 #### Since:
