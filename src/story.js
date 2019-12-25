@@ -158,7 +158,7 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 			if (_passages.hasOwnProperty('StoryTitle')) {
 				const buf = document.createDocumentFragment();
 				new Wikifier(buf, _passages.StoryTitle.processText().trim());
-				_storySetTitle(buf.textContent.trim());
+				_storySetTitle(buf.textContent);
 			}
 			else {
 				throw new Error('cannot find the "StoryTitle" special passage');
@@ -300,12 +300,18 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 		}
 	}
 
-	function _storySetTitle(title) {
-		if (title == null || title === '') { // lazy equality for null
-			throw new Error('story title cannot be null or empty');
+	function _storySetTitle(rawTitle) {
+		if (rawTitle == null) { // lazy equality for null
+			throw new Error('story title must not be null or undefined');
 		}
 
-		document.title = _title = Util.unescape(title);
+		const title = Util.unescape(String(rawTitle)).trim();
+
+		if (title === '') { // lazy equality for null
+			throw new Error('story title must not be empty or consist solely of whitespace');
+		}
+
+		document.title = _title = title;
 
 		// TODO: In v3 the `_domId` should be created from a combination of the
 		// `_title` slug and the IFID, if available, to avoid collisions between
