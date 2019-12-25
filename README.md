@@ -52,7 +52,7 @@ node build.js
 
 Assuming that completed with no errors, the story format, in Twine 1 and Twine 2 flavors, should be output to the `dist` directory.  Congratulations!
 
-**NOTE:** SugarCube's development dependencies are occasionally updated—last updated on: Feb 12, 2017.  If you receive errors when attempting to build, then you probably need to update your cached dependencies.  You may do this via the `npm update` command or, in extreme cases, by deleting the local `node_modules` directory and rerunning `npm install`.
+**NOTE:** SugarCube's development dependencies are occasionally updated.  If you receive errors when attempting to build, then you probably need to update your cached dependencies.  You may do this via the `npm update` command or, in extreme cases, by deleting the local `node_modules` directory and rerunning `npm install`.
 
 **TIP:** If you'd like additional options when building—e.g., debug builds, limiting the build to a particular version of Twine, etc.—then you may request help from `build.js` by specifying the help (`-h`, `--help`) option.  For example:
 
