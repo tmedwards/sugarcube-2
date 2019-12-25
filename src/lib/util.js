@@ -91,20 +91,20 @@ var Util = (() => { // eslint-disable-line no-unused-vars, no-var
 
 		SEE: http://ecma-international.org/ecma-262/8.0/#sec-samevaluezero
 	*/
-	function utilSameValueZero(valA, valB) {
+	function utilSameValueZero(a, b) {
 		/*
 			NOTE: This comparison could also be implemented thus:
 
 				```
-				valA === valB ||
-				typeof valA === 'number' && typeof valB === 'number' &&
-				Number.isNaN(valA) && Number.isNaN(valB)
+				a === b ||
+				typeof a === 'number' && typeof b === 'number' &&
+				Number.isNaN(a) && Number.isNaN(b)
 				```
 
 			That's needlessly verbose, however, as `NaN` is the only value in
 			the language which is not reflexive.
 		*/
-		return valA === valB || valA !== valA && valB !== valB;
+		return a === b || a !== a && b !== b;
 	}
 
 
