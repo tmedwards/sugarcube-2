@@ -437,11 +437,12 @@
 ## [`Story` API](#story-api)
 
 * [`Story.domId`](#story-api-getter-domid)
+* [`Story.ifId`](#story-api-getter-ifid)
 * [`Story.title`](#story-api-getter-title)
-* [`Story.get()`](#story-api-method-get)
-* [`Story.has()`](#story-api-method-has)
-* [`Story.lookup()`](#story-api-method-lookup)
-* [`Story.lookupWith()`](#story-api-method-lookupwith)
+* [`Story.passages.get()`](#story-api-method-passages-get)
+* [`Story.passages.has()`](#story-api-method-passages-has)
+* [`Story.passages.lookup()`](#story-api-method-passages-lookup)
+* [`Story.passages.lookupWith()`](#story-api-method-passages-lookupwith)
 
 ## [`Template` API](#template-api)
 
