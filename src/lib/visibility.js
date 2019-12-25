@@ -59,7 +59,7 @@ var Visibility = (() => { // eslint-disable-line no-unused-vars, no-var
 		}
 		catch (ex) { /* no-op */ }
 
-		return null;
+		return undefined;
 	})();
 
 
@@ -85,8 +85,8 @@ var Visibility = (() => { // eslint-disable-line no-unused-vars, no-var
 		state    : { value : visibilityState },
 
 		// Properties.
-		hiddenProperty : { value : vendor.hiddenProperty },
-		stateProperty  : { value : vendor.stateProperty },
-		changeEvent    : { value : vendor.changeEvent }
+		hiddenProperty : { value : vendor && vendor.hiddenProperty },
+		stateProperty  : { value : vendor && vendor.stateProperty },
+		changeEvent    : { value : vendor && vendor.changeEvent }
 	}));
 })();
