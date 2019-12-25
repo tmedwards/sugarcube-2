@@ -174,16 +174,16 @@ body.forest a:hover { color: lime; }
 <span id="css-built-ins"></span>
 ## Built-in Stylesheets
 
-These are SugarCube's built-in stylesheets, in order of load/cascade.  The most interesting of which, from an end-user's standpoint, are 4–10.  The links go to the most recent release versions of each in [SugarCube's public source code repository](https://bitbucket.org/tmedwards/sugarcube).
+These are SugarCube's built-in stylesheets, in order of load/cascade.  The most interesting of which, from an end-user's standpoint, are 4–10.  The links go to the most recent release versions of each in SugarCube's [source code repository](https://github.com/tmedwards/sugarcube-2).
 
-1. [normalize.css](https://bitbucket.org/tmedwards/sugarcube/raw/v2-release/src/vendor/normalize.css)
-2. [init-screen.css](https://bitbucket.org/tmedwards/sugarcube/raw/v2-release/src/css/init-screen.css)
-3. [font.css](https://bitbucket.org/tmedwards/sugarcube/raw/v2-release/src/css/font.css)
-4. [core.css](https://bitbucket.org/tmedwards/sugarcube/raw/v2-release/src/css/core.css)
-5. [core-display.css](https://bitbucket.org/tmedwards/sugarcube/raw/v2-release/src/css/core-display.css)
-6. [core-passage.css](https://bitbucket.org/tmedwards/sugarcube/raw/v2-release/src/css/core-passage.css)
-7. [core-macro.css](https://bitbucket.org/tmedwards/sugarcube/raw/v2-release/src/css/core-macro.css)
-8. [ui-dialog.css](https://bitbucket.org/tmedwards/sugarcube/raw/v2-release/src/css/ui-dialog.css)
-9. [ui.css](https://bitbucket.org/tmedwards/sugarcube/raw/v2-release/src/css/ui.css)
-10. [ui-bar.css](https://bitbucket.org/tmedwards/sugarcube/raw/v2-release/src/css/ui-bar.css)
-11. [ui-debug.css](https://bitbucket.org/tmedwards/sugarcube/raw/v2-release/src/css/ui-debug.css)
+1. [normalize.css](https://raw.githubusercontent.com/tmedwards/sugarcube-2/master/src/vendor/normalize.css)
+2. [init-screen.css](https://raw.githubusercontent.com/tmedwards/sugarcube-2/master/src/css/init-screen.css)
+3. [font.css](https://raw.githubusercontent.com/tmedwards/sugarcube-2/master/src/css/font.css)
+4. [core.css](https://raw.githubusercontent.com/tmedwards/sugarcube-2/master/src/css/core.css)
+5. [core-display.css](https://raw.githubusercontent.com/tmedwards/sugarcube-2/master/src/css/core-display.css)
+6. [core-passage.css](https://raw.githubusercontent.com/tmedwards/sugarcube-2/master/src/css/core-passage.css)
+7. [core-macro.css](https://raw.githubusercontent.com/tmedwards/sugarcube-2/master/src/css/core-macro.css)
+8. [ui-dialog.css](https://raw.githubusercontent.com/tmedwards/sugarcube-2/master/src/css/ui-dialog.css)
+9. [ui.css](https://raw.githubusercontent.com/tmedwards/sugarcube-2/master/src/css/ui.css)
+10. [ui-bar.css](https://raw.githubusercontent.com/tmedwards/sugarcube-2/master/src/css/ui-bar.css)
+11. [ui-debug.css](https://raw.githubusercontent.com/tmedwards/sugarcube-2/master/src/css/ui-debug.css)

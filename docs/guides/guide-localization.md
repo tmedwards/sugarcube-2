@@ -44,7 +44,7 @@ Properties on the strings localization object (`l10nStrings`) may be set within 
 
 Due to the number of individual strings, and the length of some of them, it's recommended that you simply read the source code of the latest release version.
 
-**Source:** [`l10n/strings.js` @bitbucket.org](https://bitbucket.org/tmedwards/sugarcube/src/v2-release/src/l10n/strings.js)
+**Source:** [`l10n/strings.js` @github.com](https://github.com/tmedwards/sugarcube-2/blob/master/src/l10n/strings.js)
 
 ### Examples
 
