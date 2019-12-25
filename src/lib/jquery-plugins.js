@@ -186,17 +186,18 @@
 			const $disableable    = this.filter('button,fieldset,input,menuitem,optgroup,option,select,textarea');
 
 			if (disable) {
-				// Add content attributes `disabled` and `aria-disabled`, for non-disableable elements.
+				// Add boolean content attribute `disabled` and set non-boolean content attribute
+				// `aria-disabled` to `'true'`, for non-disableable elements.
 				$nonDisableable.each(function () {
 					this.setAttribute('disabled', '');
-					this.setAttribute('aria-disabled', '');
+					this.setAttribute('aria-disabled', 'true');
 				});
 
-				// Set IDL attribute `disabled` to `true` and add content attribute `aria-disabled`,
-				// for disableable elements.
+				// Set IDL attribute `disabled` to `true` and set non-boolean content attribute
+				// `aria-disabled` to `'true'`, for disableable elements.
 				$disableable.each(function () {
 					this.disabled = true;
-					this.setAttribute('aria-disabled', '');
+					this.setAttribute('aria-disabled', 'true');
 				});
 			}
 			else {
