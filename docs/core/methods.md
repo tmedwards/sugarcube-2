@@ -396,6 +396,24 @@ $pies.pluckMany(3)  → Removes three random pies from the array and returns the
 
 <!-- *********************************************************************** -->
 
+<span id="methods-array-prototype-method-pop"></span>
+### `<Array>.pop()` → *any*
+
+Removes and returns the last member from the array, or `undefined` if the array is empty.
+
+#### Since: *native JavaScript method*
+
+#### Parameters: *none*
+
+#### Example:
+
+```
+// Given: $fruits = ["Apples", "Oranges", "Pears"]
+$fruits.pop()  → Returns "Pears"; $fruits ["Apples", "Oranges"]
+```
+
+<!-- *********************************************************************** -->
+
 <span id="methods-array-prototype-method-push"></span>
 ### `<Array>.push(members…)` → *number*
 
@@ -482,6 +500,24 @@ Randomly selects the given number of unique members from the array and returns t
 ```
 // Given: $pies = ["Blueberry", "Cherry", "Cream", "Pecan", "Pumpkin"]
 $pies.randomMany(3)  → Returns a new array containing three unique random pies from the array
+```
+
+<!-- *********************************************************************** -->
+
+<span id="methods-array-prototype-method-shift"></span>
+### `<Array>.shift()` → *any*
+
+Removes and returns the first member from the array, or `undefined` if the array is empty.
+
+#### Since: *native JavaScript method*
+
+#### Parameters: *none*
+
+#### Example:
+
+```
+// Given: $fruits = ["Apples", "Oranges", "Pears"]
+$fruits.shift()  → Returns "Apples"; $fruits ["Oranges", "Pears"]
 ```
 
 <!-- *********************************************************************** -->
