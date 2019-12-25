@@ -5,7 +5,7 @@
 
 This is a collection of tips, from how-tos to best practices.
 
-Suggestions for new entries may be submitted by [creating a new issue](https://bitbucket.org/tmedwards/sugarcube/issues?status=new&status=open) at SugarCube's [code repository](https://bitbucket.org/tmedwards/sugarcube/).
+Suggestions for new entries may be submitted by [creating a new issue](https://github.com/tmedwards/sugarcube-2/issues) at SugarCube's [source code repository](https://github.com/tmedwards/sugarcube-2).
 
 <!-- *********************************************************************** -->
 
