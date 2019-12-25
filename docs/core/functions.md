@@ -554,7 +554,7 @@ or [[stand your ground|Eaten by a grue]]?
 <span id="functions-function-turns"></span>
 ### `turns()` → *integer*
 
-Returns the number of passages that the player has visited.
+Returns the total number (count) of played turns currently in effect—i.e., the number of played moments up to the present moment; future (rewound/undone) moments are not included within the total.
 
 #### Since:
 

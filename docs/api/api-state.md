@@ -166,7 +166,7 @@ State.top.variables  → The variables of the most recent moment within the full
 <span id="state-api-getter-turns"></span>
 ### `State.turns` → *integer*
 
-Returns the total number of played moments within the extended past history (expired + past).
+Returns the total number (count) of played moments within the extended past history (expired + past).
 
 #### Since:
 
