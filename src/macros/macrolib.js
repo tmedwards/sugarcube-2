@@ -431,7 +431,7 @@
 						}
 						else if (
 							   Config.macros.ifAssignmentError
-							&& /[^!=&^|<>*/%+-]=[^=]/.test(this.payload[i].args.full)
+							&& /[^!=&^|<>*/%+-]=[^=>]/.test(this.payload[i].args.full)
 						) {
 							return this.error(`assignment operator found within <<${this.payload[i].name}>> clause${i > 0 ? ' (#' + i + ')' : ''} (perhaps you meant to use an equality operator: ==, ===, eq, is), invalid: ${this.payload[i].args.raw}`);
 						}
