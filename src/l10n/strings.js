@@ -54,7 +54,7 @@ var l10nStrings = { // eslint-disable-line no-unused-vars, no-var
 	debugBarWatchNone   : 'Delete all',
 	debugBarLabelAdd    : 'Add',
 	debugBarLabelWatch  : 'Watch',
-	debugBarLabelTurn   : 'Turn', // as-in: (noun) chance to act (in a game), moment, period
+	debugBarLabelTurn   : 'Turn', // (noun) chance to act (in a game), moment, period
 	debugBarLabelViews  : 'Views',
 	debugBarViewsToggle : 'Toggle the debug views',
 	debugBarWatchToggle : 'Toggle the watch panel',
@@ -71,7 +71,7 @@ var l10nStrings = { // eslint-disable-line no-unused-vars, no-var
 		Jump To.
 	*/
 	jumptoTitle       : 'Jump To',
-	jumptoTurn        : 'Turn', // as-in: (noun) chance to act (in a game), moment, period
+	jumptoTurn        : 'Turn', // (noun) chance to act (in a game), moment, period
 	jumptoUnavailable : 'No jump points currently available\u2026',
 
 	/*
@@ -126,6 +126,6 @@ var l10nStrings = { // eslint-disable-line no-unused-vars, no-var
 	/*
 		Macros.
 	*/
-	macroBackText   : 'Back',  // as-in: (verb) rewind, revert
-	macroReturnText : 'Return' // as-in: (verb) go/send back
+	macroBackText   : 'Back',  // (verb) rewind, revert
+	macroReturnText : 'Return' // (verb) go/send back
 };
