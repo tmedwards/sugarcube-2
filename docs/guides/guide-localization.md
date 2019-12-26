@@ -42,9 +42,7 @@ In use, replacement patterns are replaced recursively, so replacement strings ma
 
 Properties on the strings localization object (`l10nStrings`) may be set within your project's script section (Twine&nbsp;2: the Story JavaScript, Twine&nbsp;1/Twee: a `script`-tagged passage) to override the defaults.
 
-Due to the number of individual strings, and the length of some of them, it's recommended that you simply read the source code of the latest release version.
-
-**Source:** [`l10n/strings.js` @github.com](https://github.com/tmedwards/sugarcube-2/blob/master/src/l10n/strings.js)
+For the template that should be used as the basis of localizations, see the [`locale/l10n-template.js` file @github.com](https://github.com/tmedwards/sugarcube-2/tree/develop/locale/).
 
 ### Examples
 
