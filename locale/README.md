@@ -4,6 +4,8 @@ This directory contains a collection of localizations for SugarCube's default UI
 
 For more information about the guidelines used to create these localizations, see the [*Localization* guide](http://www.motoslave.net/sugarcube/2/docs/#guide-localization).
 
+For the template that should be used as the basis of submitted localizations, see the `l10n-template.js` file within this directory.
+
 ## Contributors
 
 * 简体中文 (`chs.js`) – Liyro Pen.
