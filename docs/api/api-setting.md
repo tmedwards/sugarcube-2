@@ -216,7 +216,7 @@ Setting.addRange("masterVolume", {
 	max      : 10,
 	step     : 1,
 	onChange : function () {
-		$.wiki("<<masteraudio volume " + (settings["masterVolume"] / 10) + ">>");
+		SimpleAudio.volume(settings.masterVolume / 10);
 	}
 }); // default value not defined, so max value (10) is used
 ```
@@ -224,7 +224,7 @@ Setting.addRange("masterVolume", {
 // NOTE: Whole numbers (range: 0–10) are used within the control itself for
 // the sake of Internet Explorer, whose range input value tooltip only does
 // something useful if the value is an integer.  The value is divided by 10
-// when passed to <<masteraudio>>, since volume levels range from 0 to 1.
+// when passed to SimpleAudio.volume(), since volume levels range 0–1.
 -->
 
 <!-- *********************************************************************** -->
