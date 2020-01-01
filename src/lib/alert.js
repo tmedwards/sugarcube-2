@@ -51,7 +51,7 @@ var Alert = (() => { // eslint-disable-line no-unused-vars, no-var
 			}
 		}
 
-		if (typeof error === 'object' && error.stack) {
+		if (typeof error === 'object' && error !== null && error.stack) {
 			mesg += `\n\nStack Trace:\n${error.stack}`;
 		}
 
