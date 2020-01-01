@@ -111,14 +111,13 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 		history : Object.freeze({
 			get controls() { return _historyControls; },
 			set controls(value) {
-				_historyControls = Boolean(value);
+				const controls = Boolean(value);
 
-				// Force `Config.history.controls` to `false`, when limited to `1` moment.
-				if (_historyControls && _historyMaxStates === 1) {
-					_historyControls = false;
+				if (_historyMaxStates === 1 && controls) {
 					throw new Error('Config.history.controls must be false when Config.history.maxStates is 1');
-					// console.warn('Config.history.controls must be false when Config.history.maxStates is 1');
 				}
+
+				_historyControls = controls;
 			},
 
 			get maxStates() { return _historyMaxStates; },
