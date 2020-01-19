@@ -113,14 +113,16 @@ var Util = (() => { // eslint-disable-line no-unused-vars, no-var
 	*******************************************************************************************************************/
 	/*
 		Returns a trimmed and encoded slug of the passed string that should be safe
-		for use as a filename, DOM ID, and DOM class name.
+		for use as a DOM ID or class name.
 
-		NOTE: The range of illegal characters consists of: C0 controls, double quote,
-		number, dollar, percent, ampersand, single quote, asterisk, plus, comma,
-		forward slash, colon, semi-colon, less-than, equals, greater-than, question
-		mark, backslash, caret, backquote/grave, pipe/vertical-bar, delete, C1 controls.
+		NOTE: The range of illegal characters consists of: C0 controls, exclamation,
+		double quote, number, dollar, percent, ampersand, single quote, left paren,
+		right paren, asterisk, plus, comma, hyphen, period, forward slash, colon,
+		semi-colon, less-than, equals, greater-than, question, at, left bracket,
+		backslash, right bracket, caret, backquote/grave, left brace, pipe/vertical-bar,
+		right brace, tilde, delete, C1 controls.
 	*/
-	const _illegalSlugCharsRe = /[\x00-\x1f"#$%&'*+,/:;<=>?\\^`|\x7f-\x9f]+/g; // eslint-disable-line no-control-regex
+	const _illegalSlugCharsRe = /[\x00-\x1f!"#$%&'()*+,\-./:;<=>?@[\\\]^`{|}~\x7f-\x9f]+/g; // eslint-disable-line no-control-regex
 	/* legacy */
 	const _isInvalidSlugRe = /^-*$/; // Matches the empty string or one comprised solely of hyphens.
 	/* /legacy */
