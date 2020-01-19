@@ -1168,6 +1168,7 @@
 				let cycleIdx = selectedIdx;
 				jQuery(document.createElement('a'))
 					.wikiWithOptions({ profile : 'core' }, options[selectedIdx].label)
+					.attr('id', `${this.name}-${varId}`)
 					.addClass(`macro-${this.name}`)
 					.ariaClick({ namespace : '.macros' }, this.createShadowWrapper(function () {
 						cycleIdx = (cycleIdx + 1) % options.length;
