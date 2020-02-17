@@ -89,7 +89,6 @@ var Has = (() => { // eslint-disable-line no-unused-vars, no-var
 		return false;
 	})();
 
-
 	// Is the transition end event available and by what name?
 	const hasTransitionEndEvent = (() => {
 		try {

@@ -152,12 +152,7 @@ var UIBar = (() => { // eslint-disable-line no-unused-vars, no-var
 				? Config.ui.stowBarInitially
 				: jQuery(window).width() <= Config.ui.stowBarInitially
 		) {
-			(() => {
-				const $uiBarStory = jQuery(_$uiBar).add('#story');
-				$uiBarStory.addClass('no-transition');
-				_$uiBar.addClass('stowed');
-				setTimeout(() => $uiBarStory.removeClass('no-transition'), Engine.minDomActionDelay);
-			})();
+			uiBarStow(true);
 		}
 
 		// Set up the #ui-bar-toggle and #ui-bar-history widgets.

@@ -54,6 +54,12 @@
 #ui-bar.stowed {
 	left: -15.5em;
 }
+#ui-bar-tray {
+	position: absolute;
+	top: 0.2em;
+	left: 0;
+	right: 0;
+}
 #ui-bar-body {
 	height: 90%; /* fallback for browsers without support for calc() */
 	height: calc(100% - 2.5em);
@@ -74,12 +80,6 @@
 	background-color: #222;
 	border-right: 1px solid #444;
 	text-align: center;
-}
-#ui-bar-tray {
-	position: absolute;
-	top: 0.2em;
-	left: 0;
-	right: 0;
 }
 #ui-bar a {
 	text-decoration: none;
