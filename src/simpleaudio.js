@@ -62,6 +62,62 @@ var SimpleAudio = (() => { // eslint-disable-line no-unused-vars, no-var
 
 
 	/*******************************************************************************************************************
+		Feature Detection Functions.
+	*******************************************************************************************************************/
+	// Return whether the `<HTMLAudioElement>.play()` method returns a `Promise`.
+	//
+	// NOTE: The initial result is cached for future calls.
+	const _hasPlayPromise = (function () {
+		// Cache of whether `<HTMLAudioElement>.play()` returns a `Promise`.
+		let _isPromise = null;
+
+		function _hasPlayPromise() {
+			if (_isPromise !== null) {
+				return _isPromise;
+			}
+
+			_isPromise = false;
+
+			if (Has.audio) {
+				try {
+					const audio = document.createElement('audio');
+
+					// NOTE (ca. Jan 01, 2020): Firefox will still log an "Autoplay is only allowed
+					// when […] media is muted." message to the console when attempting the test
+					// below, even though the audio has been muted.  Stay classy, Firefox.
+					//
+					// QUESTION (ca. Jan 01, 2020): Keep this?  It's only here to appease Firefox,
+					// but doesn't seem to work as Firefox seems to ignore mute in violation of the
+					// `HTMLAudioElement` specification—willfully or simply a bug, I can't say.
+					audio.muted = true;
+
+					const value = audio.play();
+
+					// Silence "Uncaught (in promise)" console errors from Blink.
+					//
+					// NOTE: Swallowing errors is generally bad, but in this case we know there's
+					// going to be an error regardless, since there's no source, and we don't actually
+					// care about the error, since we just want the return value, so we consign it
+					// to the bit bucket.
+					//
+					// NOTE: We don't ensure that the return value is not `undefined` here because
+					// having the attempted call to `<Promise>.catch()` on an `undefined` value throw
+					// is acceptable, since it will be caught and `false` eventually returned.
+					value.catch(() => { /* no-op */ });
+
+					_isPromise = value instanceof Promise;
+				}
+				catch (ex) { /* no-op */ }
+			}
+
+			return _isPromise;
+		}
+
+		return _hasPlayPromise;
+	})();
+
+
+	/*******************************************************************************************************************
 		AudioTrack Class.
 	*******************************************************************************************************************/
 	class AudioTrack {
@@ -403,25 +459,28 @@ var SimpleAudio = (() => { // eslint-disable-line no-unused-vars, no-var
 				this.audio.preload = 'auto';
 			}
 
-			if (Has.audioPromise) {
-				return this.audio.play();
-			}
+			return _hasPlayPromise()
+				? this.audio.play()
+				: new Promise((resolve, reject) => {
+					if (this.isPlaying()) {
+						resolve();
+					}
+					else {
+						jQuery(this.audio)
+							.off('.AudioTrack_play')
+							.one('error.AudioTrack_play playing.AudioTrack_play timeupdate.AudioTrack_play', ev => {
+								jQuery(this).off('.AudioTrack_play');
 
-			return new Promise((resolve, reject) => {
-				jQuery(this.audio)
-					.off('.AudioTrack_play')
-					.one('error.AudioTrack_play playing.AudioTrack_play', ev => {
-						jQuery(this).off('.AudioTrack_play');
-
-						if (ev.type === 'error') {
-							reject(new Error('unknown error'));
-						}
-						else {
-							resolve();
-						}
-					});
-				this.audio.play();
-			});
+								if (ev.type === 'error') {
+									reject(new Error('unknown error'));
+								}
+								else {
+									resolve();
+								}
+							});
+						this.audio.play();
+					}
+				});
 		}
 
 		playWhenAllowed() {

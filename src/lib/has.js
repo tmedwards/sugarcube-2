@@ -26,19 +26,6 @@ var Has = (() => { // eslint-disable-line no-unused-vars, no-var
 		return false;
 	})();
 
-	// Does the `<HTMLAudioElement>.play()` method return a `Promise`?
-	const hasAudioElementPromise = hasAudioElement && (() => {
-		try {
-			// We do the test this way to silence "Uncaught (in promise)" console errors.
-			const value = document.createElement('audio').play();
-			value.catch(() => { /* no-op */ });
-			return value instanceof Promise;
-		}
-		catch (ex) { /* no-op */ }
-
-		return false;
-	})();
-
 	// Is the `File` API available?
 	const hasFile = (() => {
 		try {
@@ -129,7 +116,6 @@ var Has = (() => { // eslint-disable-line no-unused-vars, no-var
 	// Module Exports.
 	return Object.freeze({
 		audio              : hasAudioElement,
-		audioPromise       : hasAudioElementPromise,
 		fileAPI            : hasFile,
 		geolocation        : hasGeolocation,
 		mutationObserver   : hasMutationObserver,
