@@ -181,6 +181,14 @@
 								*/
 								try {
 									macro.handler.call(this.context);
+									/*
+										QUESTION: Swap to the following, which passes macro arguments in
+										as parameters to the handler function, in addition to them being
+										available on its `this`?  If so, it might still be something to
+										hold off on until v3, when the legacy macro API is removed.
+
+										macro.handler.apply(this.context, this.context.args);
+									*/
 								}
 								finally {
 									this.context = this.context.parent;
@@ -188,7 +196,7 @@
 							}
 
 							/*
-								Old-style macros.
+								[DEPRECATED] Old-style/legacy macros.
 							*/
 							else {
 								/*
