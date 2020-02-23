@@ -15,32 +15,6 @@ var Util = (() => { // eslint-disable-line no-unused-vars, no-var
 		Type Functions.
 	*******************************************************************************************************************/
 	/*
-		Returns a pseudo-enumeration created from the given array or generic object.
-	*/
-	function utilToEnum(obj) {
-		if (obj instanceof Array) {
-			return Object.freeze(obj.reduce((pe, key, i) => {
-				pe[key] = i; // eslint-disable-line no-param-reassign
-				return pe;
-			}, Object.create(null)));
-		}
-		else if (obj instanceof Object) {
-			return Object.freeze(Object.assign(Object.create(null), obj));
-		}
-
-		throw new TypeError('Util.toEnum obj parameter must be an array or generic object');
-	}
-
-	/*
-		Returns the value of the `@@toStringTag` property of the given object.
-
-		NOTE: In ≤ES5, returns the value of the `[[Class]]` internal slot.
-	*/
-	function utilToStringTag(obj) {
-		return Object.prototype.toString.call(obj).slice(8, -1);
-	}
-
-	/*
 		Returns the value yielded by `typeof` (for primitives), the `@@toStringTag`
 		internal property (for objects), and `'null'` for `null`.
 
@@ -53,6 +27,21 @@ var Util = (() => { // eslint-disable-line no-unused-vars, no-var
 		return baseType === 'object'
 			? Object.prototype.toString.call(obj).slice(8, -1)
 			: baseType;
+	}
+
+	/*
+		Returns whether the passed value is a boolean or one of the strings "true"
+		or "false".
+	*/
+	function utilIsBoolean(obj) {
+		return typeof obj === 'boolean' || typeof obj === 'string' && (obj === 'true' || obj === 'false');
+	}
+
+	/*
+		Returns whether the passed value is iterable.
+	*/
+	function utilIsIterable(obj) {
+		return obj != null && typeof obj[Symbol.iterator] === 'function'; // lazy equality for null
 	}
 
 	/*
@@ -79,14 +68,6 @@ var Util = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 	/*
-		Returns whether the passed value is a boolean or one of the strings "true"
-		or "false".
-	*/
-	function utilIsBoolean(obj) {
-		return typeof obj === 'boolean' || typeof obj === 'string' && (obj === 'true' || obj === 'false');
-	}
-
-	/*
 		Returns whether the passed values pass a SameValueZero comparison.
 
 		SEE: http://ecma-international.org/ecma-262/8.0/#sec-samevaluezero
@@ -105,6 +86,46 @@ var Util = (() => { // eslint-disable-line no-unused-vars, no-var
 			the language which is not reflexive.
 		*/
 		return a === b || a !== a && b !== b;
+	}
+
+	/*
+		Returns a pseudo-enumeration created from the given Array, Map, Set, or generic object.
+	*/
+	function utilToEnum(obj) {
+		const pEnum = Object.create(null);
+
+		if (obj instanceof Array) {
+			obj.forEach((val, i) => pEnum[String(val)] = i);
+		}
+		else if (obj instanceof Set) {
+			// NOTE: Use `<Array>.forEach()` here rather than `<Set>.forEach()`
+			// as the latter does not provide the indices we require.
+			Array.from(obj).forEach((val, i) => pEnum[String(val)] = i);
+		}
+		else if (obj instanceof Map) {
+			obj.forEach((val, key) => pEnum[String(key)] = val);
+		}
+		else if (
+			   typeof obj === 'object'
+			&& obj !== null
+			&& Object.getPrototypeOf(obj) === Object.prototype
+		) {
+			Object.assign(pEnum, obj);
+		}
+		else {
+			throw new TypeError('Util.toEnum obj parameter must be an Array, Map, Set, or generic object');
+		}
+
+		return Object.freeze(pEnum);
+	}
+
+	/*
+		Returns the value of the `@@toStringTag` property of the given object.
+
+		NOTE: In ≤ES5, returns the value of the `[[Class]]` internal slot.
+	*/
+	function utilToStringTag(obj) {
+		return Object.prototype.toString.call(obj).slice(8, -1);
 	}
 
 
@@ -126,6 +147,7 @@ var Util = (() => { // eslint-disable-line no-unused-vars, no-var
 	/* legacy */
 	const _isInvalidSlugRe = /^-*$/; // Matches the empty string or one comprised solely of hyphens.
 	/* /legacy */
+
 	function utilSlugify(str) {
 		const base = String(str).trim();
 
@@ -533,12 +555,13 @@ var Util = (() => { // eslint-disable-line no-unused-vars, no-var
 		/*
 			Type Functions.
 		*/
+		getType       : { value : utilGetType },
+		isBoolean     : { value : utilIsBoolean },
+		isIterable    : { value : utilIsIterable },
+		isNumeric     : { value : utilIsNumeric },
+		sameValueZero : { value : utilSameValueZero },
 		toEnum        : { value : utilToEnum },
 		toStringTag   : { value : utilToStringTag },
-		getType       : { value : utilGetType },
-		isNumeric     : { value : utilIsNumeric },
-		isBoolean     : { value : utilIsBoolean },
-		sameValueZero : { value : utilSameValueZero },
 
 		/*
 			String Encoding Functions.
