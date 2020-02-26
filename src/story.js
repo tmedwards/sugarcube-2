@@ -597,7 +597,6 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 			Legacy Aliases.
 		*/
 		// Passage Functions.
-		add        : { value : passagesAdd },
 		has        : { value : passagesHas },
 		get        : { value : passagesGet },
 		lookup     : { value : passagesLegacyLookup },
