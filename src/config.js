@@ -56,16 +56,11 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 
 
 	/*******************************************************************************
-		Utility Functions.
+		Error Constants.
 	*******************************************************************************/
 
-	function _throwHistoryModeError() {
-		throw new Error('Config.history.mode has been deprecated and is no longer used by SugarCube, please remove it from your code');
-	}
-
-	function _throwHistoryTrackingError() {
-		throw new Error('Config.history.tracking has been deprecated, use Config.history.maxStates instead');
-	}
+	const _errHistoryModeDeprecated     = 'Config.history.mode has been deprecated and is no longer used by SugarCube, please remove it from your code';
+	const _errHistoryTrackingDeprecated = 'Config.history.tracking has been deprecated, use Config.history.maxStates instead';
 
 
 	/*******************************************************************************
@@ -109,6 +104,7 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 			State history settings.
 		*/
 		history : Object.freeze({
+			// TODO: (v3) This should be under UI settings → `Config.ui.historyControls`.
 			get controls() { return _historyControls; },
 			set controls(value) {
 				const controls = Boolean(value);
@@ -136,10 +132,10 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 
 			// legacy
 			// Die if deprecated state history settings are accessed.
-			get mode()  { _throwHistoryModeError(); },
-			set mode(_) { _throwHistoryModeError(); },
-			get tracking()  { _throwHistoryTrackingError(); },
-			set tracking(_) { _throwHistoryTrackingError(); }
+			get mode()  { throw new Error(_errHistoryModeDeprecated); },
+			set mode(_) { throw new Error(_errHistoryModeDeprecated); },
+			get tracking()  { throw new Error(_errHistoryTrackingDeprecated); },
+			set tracking(_) { throw new Error(_errHistoryTrackingDeprecated); }
 			// /legacy
 		}),
 
@@ -191,6 +187,7 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 				_passagesDescriptions = value;
 			},
 
+			// TODO: (v3) This should be under Navigation settings → `Config.navigation.updateTitle`.
 			get displayTitles() { return _passagesDisplayTitles; },
 			set displayTitles(value) { _passagesDisplayTitles = Boolean(value); },
 
@@ -210,6 +207,7 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 				_passagesOnProcess = value;
 			},
 
+			// TODO: (v3) This should be under Navigation settings → `Config.navigation.(start|startingPassage)`.
 			get start() { return _passagesStart; },
 			set start(value) {
 				if (value != null) { // lazy equality for null
@@ -223,6 +221,7 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 				_passagesStart = value;
 			},
 
+			// TODO: (v3) This should be under Navigation settings → `Config.navigation.transitionOut`.
 			get transitionOut() { return _passagesTransitionOut; },
 			set transitionOut(value) {
 				if (value != null) { // lazy equality for null
