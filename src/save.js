@@ -26,9 +26,6 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			savesObjClear();
 			Config.saves.autoload = undefined;
 			Config.saves.autosave = undefined;
-			Config.saves.isAllowed = undefined;
-			Config.saves.onLoad = undefined;
-			Config.saves.onSave = undefined;
 			Config.saves.slots = 0;
 			return false;
 		}
