@@ -8,7 +8,7 @@
 ***********************************************************************************************************************/
 /*
 	global Alert, Config, DebugView, Dialog, Has, LoadScreen, Save, State, Story, StyleWrapper, UI, UIBar, Util,
-	       Wikifier, postdisplay, predisplay, prehistory
+	       Wikifier, postdisplay, postrender, predisplay, prehistory, prerender
 */
 
 var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
@@ -347,26 +347,18 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 
 		let passageTitle = title;
 
-		/*
-			Update the engine state.
-		*/
+		// Update the engine state.
 		_state = States.Playing;
 
-		/*
-			Reset the temporary state and variables objects.
-		*/
+		// Reset the temporary state and variables objects.
 		TempState = {}; // eslint-disable-line no-undef
 		State.clearTemporary();
 
-		/*
-			Debug view setup.
-		*/
+		// Debug view setup.
 		let passageReadyOutput;
 		let passageDoneOutput;
 
-		/*
-			Execute the navigation override callback.
-		*/
+		// Execute the navigation override callback.
 		if (typeof Config.navigation.override === 'function') {
 			try {
 				const overrideTitle = Config.navigation.override(passageTitle);
@@ -378,60 +370,48 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 			catch (ex) { /* no-op */ }
 		}
 
-		/*
-			Retrieve the passage by the given title.
-
-			NOTE: The values of the `title` parameter and `passageTitle` variable
-			may be empty, strings, or numbers (though using a number as reference
-			to a numeric title should be discouraged), so after loading the passage,
-			always refer to `passage.title` and never to the others.
-		*/
+		// Retrieve the passage by the given title.
+		//
+		// NOTE: The values of the `title` parameter and `passageTitle` variable
+		// may be empty, strings, or numbers (though using a number as reference
+		// to a numeric title should be discouraged), so after loading the passage,
+		// always refer to `passage.title` and never to the others.
 		const passage = Story.get(passageTitle);
 
-		/*
-			Execute the pre-history events and tasks.
-		*/
+		// Execute the pre-history events and tasks.
 		jQuery.event.trigger({
 			type : ':passageinit',
 			passage
 		});
-		Object.keys(prehistory).forEach(function (task) {
+		Object.keys(prehistory).forEach(task => {
 			if (typeof prehistory[task] === 'function') {
-				prehistory[task].call(this, task);
+				prehistory[task].call(passage, task);
 			}
-		}, passage);
+		});
 
-		/*
-			Create a new entry in the history.
-		*/
+		// Create a new entry in the history.
 		if (!noHistory) {
 			State.create(passage.title);
 		}
 
-		/*
-			Update the last play time.
-
-			NOTE: This is mostly for event, task, and special passage code,
-			though the likelihood of it being needed this early is low.  This
-			will be updated again later at the end.
-		*/
-		_lastPlay = Util.now();
-
-		/*
-			Clear `<body>` classes.
-		*/
+		// Clear the document body's classes.
 		if (document.body.className) {
 			document.body.className = '';
 		}
 
-		/*
-			Execute pre-display tasks and the `PassageReady` special passage.
-		*/
-		Object.keys(predisplay).forEach(function (task) {
+		// Update the last play time.
+		//
+		// NOTE: This is mostly for event, task, and special passage code,
+		// though the likelihood of it being needed this early is low.  This
+		// will be updated again later at the end.
+		_lastPlay = Util.now();
+
+		// Execute pre-display tasks and the `PassageReady` special passage.
+		Object.keys(predisplay).forEach(task => {
 			if (typeof predisplay[task] === 'function') {
-				predisplay[task].call(this, task);
+				predisplay[task].call(passage, task);
 			}
-		}, passage);
+		});
 
 		if (Story.has('PassageReady')) {
 			try {
@@ -443,25 +423,80 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 			}
 		}
 
-		/*
-			Update the engine state.
-		*/
+		// Update the engine state.
 		_state = States.Rendering;
 
-		/*
-			Render the incoming passage and add it to the page.
-		*/
-		const $incoming = jQuery(passage.render());
-		const passages  = document.getElementById('passages');
+		// Get the passage's tags as a string, or `null` if there aren't any.
+		const dataTags = passage.tags.length > 0 ? passage.tags.join(' ') : null;
 
-		if (passages.hasChildNodes()) {
+		// Create and set up the incoming passage element.
+		const passageEl = document.createElement('div');
+		jQuery(passageEl)
+			.attr({
+				id             : passage.domId,
+				'data-passage' : passage.title,
+				'data-tags'    : dataTags
+			})
+			.addClass(`passage ${passage.className}`);
+
+		// Add the passage's classes and tags to the document body.
+		jQuery(document.body)
+			.attr('data-tags', dataTags)
+			.addClass(passage.className);
+
+		// Add the passage's tags to the document element.
+		jQuery(document.documentElement)
+			.attr('data-tags', dataTags);
+
+		// Execute pre-render events and tasks.
+		jQuery.event.trigger({
+			type    : ':passagestart',
+			content : passageEl,
+			passage
+		});
+		Object.keys(prerender).forEach(task => {
+			if (typeof prerender[task] === 'function') {
+				prerender[task].call(passage, passageEl, task);
+			}
+		});
+
+		// Render the `PassageHeader` passage, if it exists, into the passage element.
+		if (Story.has('PassageHeader')) {
+			new Wikifier(passageEl, Story.get('PassageHeader').processText());
+		}
+
+		// Render the passage into its element.
+		passageEl.appendChild(passage.render());
+
+		// Render the `PassageFooter` passage, if it exists, into the passage element.
+		if (Story.has('PassageFooter')) {
+			new Wikifier(passageEl, Story.get('PassageFooter').processText());
+		}
+
+		// Execute post-render events and tasks.
+		jQuery.event.trigger({
+			type    : ':passagerender',
+			content : passageEl,
+			passage
+		});
+		Object.keys(postrender).forEach(task => {
+			if (typeof postrender[task] === 'function') {
+				postrender[task].call(passage, passageEl, task);
+			}
+		});
+
+		// Cache the passage container.
+		const containerEl = document.getElementById('passages');
+
+		// Empty the passage container.
+		if (containerEl.hasChildNodes()) {
 			if (
 				   typeof Config.passages.transitionOut === 'number'
 				|| typeof Config.passages.transitionOut === 'string'
 				&& Config.passages.transitionOut !== ''
 				&& Has.transitionEndEvent
 			) {
-				[...passages.childNodes].forEach(outgoing => {
+				[...containerEl.childNodes].forEach(outgoing => {
 					const $outgoing = jQuery(outgoing);
 
 					if (outgoing.nodeType === Node.ELEMENT_NODE && $outgoing.hasClass('passage')) {
@@ -493,35 +528,28 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 				});
 			}
 			else {
-				jQuery(passages).empty();
+				jQuery(containerEl).empty();
 			}
 		}
 
-		$incoming
+		// Append the passage element to the passage container and set up its transition.
+		jQuery(passageEl)
 			.addClass('passage-in')
-			.appendTo(passages);
-		setTimeout(() => $incoming.removeClass('passage-in'), minDomActionDelay);
+			.appendTo(containerEl);
+		setTimeout(() => jQuery(passageEl).removeClass('passage-in'), minDomActionDelay);
 
-		/*
-			Set the document title, if necessary.
-		*/
+		// Update the document title, if necessary.
 		if (Config.passages.displayTitles && passage.title !== Config.passages.start) {
 			document.title = `${passage.title} | ${Story.title}`;
 		}
 
-		/*
-			Scroll the window to the top.
-		*/
+		// Scroll the window to the top.
 		window.scroll(0, 0);
 
-		/*
-			Update the engine state.
-		*/
+		// Update the engine state.
 		_state = States.Playing;
 
-		/*
-			Execute post-display events, tasks, and the `PassageDone` special passage.
-		*/
+		// Execute post-display events, tasks, and the `PassageDone` special passage.
 		if (Story.has('PassageDone')) {
 			try {
 				passageDoneOutput = Wikifier.wikifyEval(Story.get('PassageDone').text);
@@ -536,15 +564,13 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 			type : ':passagedisplay',
 			passage
 		});
-		Object.keys(postdisplay).forEach(function (task) {
+		Object.keys(postdisplay).forEach(task => {
 			if (typeof postdisplay[task] === 'function') {
-				postdisplay[task].call(this, task);
+				postdisplay[task].call(passage, task);
 			}
-		}, passage);
+		});
 
-		/*
-			Update the other interface elements, if necessary.
-		*/
+		// Update the other interface elements, if necessary.
 		if (_updating !== null) {
 			_updating.forEach(pair => {
 				jQuery(pair.element).empty();
@@ -555,10 +581,8 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 			UIBar.update();
 		}
 
-		/*
-			Add the completed debug views for `StoryInit`, `PassageReady`, and `PassageDone`
-			to the incoming passage element.
-		*/
+		// Add the completed debug views for `StoryInit`, `PassageReady`, and `PassageDone`
+		// to the incoming passage element.
 		if (Config.debug) {
 			let debugView;
 
@@ -572,7 +596,7 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 				);
 				debugView.modes({ hidden : true });
 				debugView.append(passageReadyOutput);
-				$incoming.prepend(debugView.output);
+				jQuery(passageEl).prepend(debugView.output);
 			}
 
 			// Append the `PassageDone` debug view.
@@ -585,18 +609,16 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 				);
 				debugView.modes({ hidden : true });
 				debugView.append(passageDoneOutput);
-				$incoming.append(debugView.output);
+				jQuery(passageEl).append(debugView.output);
 			}
 
 			// Prepend the cached `StoryInit` debug view, if we're showing the first moment/turn.
 			if (State.turns === 1 && _storyInitDebugView != null) { // lazy equality for null
-				$incoming.prepend(_storyInitDebugView);
+				jQuery(passageEl).prepend(_storyInitDebugView);
 			}
 		}
 
-		/*
-			Last second post-processing for accessibility and other things.
-		*/
+		// Last second post-processing for accessibility and other things.
 		_hideOutlines(); // initially hide outlines
 		jQuery('#story')
 			// Add `link-external` to all `href` bearing `<a>` elements which don't have it.
@@ -608,9 +630,7 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 			.not('[tabindex]')
 			.attr('tabindex', 0);
 
-		/*
-			Handle autosaves.
-		*/
+		// Handle autosaves.
 		switch (typeof Config.saves.autosave) {
 		case 'boolean':
 			if (Config.saves.autosave) {
@@ -629,26 +649,19 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 			break;
 		}
 
-		/*
-			Execute post-play events.
-		*/
+		// Execute post-play events.
 		jQuery.event.trigger({
 			type : ':passageend',
 			passage
 		});
 
-		/*
-			Reset the engine state.
-		*/
+		// Reset the engine state.
 		_state = States.Idle;
 
-		/*
-			Update the last play time.
-		*/
+		// Update the last play time.
 		_lastPlay = Util.now();
 
-		// TODO: Let this return the jQuery wrapped element, rather than just the element.
-		return $incoming[0];
+		return passageEl;
 	}
 
 

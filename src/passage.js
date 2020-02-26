@@ -6,7 +6,7 @@
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* global Config, L10n, Story, Util, Wikifier, postrender, prerender */
+/* global Config, L10n, Util, Wikifier */
 
 var Passage = (() => { // eslint-disable-line no-unused-vars, no-var
 	'use strict';
@@ -216,69 +216,14 @@ var Passage = (() => { // eslint-disable-line no-unused-vars, no-var
 		}
 
 		render() {
-			if (DEBUG) { console.log(`[<Passage: "${this.title}">.render()]`); }
-
-			const dataTags = this.tags.length > 0 ? this.tags.join(' ') : null;
-
-			// Create and set up the new passage element.
-			const passageEl = document.createElement('div');
-			jQuery(passageEl)
-				.attr({
-					id             : this.domId,
-					'data-passage' : this.title,
-					'data-tags'    : dataTags
-				})
-				.addClass(`passage ${this.className}`);
-
-			// Add the passage's classes and tags to <body>.
-			jQuery(document.body)
-				.attr('data-tags', dataTags)
-				.addClass(this.className);
-
-			// Add the passage's tags to <html>.
-			jQuery(document.documentElement).attr('data-tags', dataTags);
-
-			// Execute pre-render events and tasks.
-			jQuery.event.trigger({
-				type    : ':passagestart',
-				content : passageEl,
-				passage : this
-			});
-			Object.keys(prerender).forEach(task => {
-				if (typeof prerender[task] === 'function') {
-					prerender[task].call(this, passageEl, task);
-				}
-			});
-
-			// Wikify the PassageHeader passage, if it exists, into the passage element.
-			if (Story.has('PassageHeader')) {
-				new Wikifier(passageEl, Story.get('PassageHeader').processText());
-			}
-
-			// Wikify the passage into its element.
-			new Wikifier(passageEl, this.processText());
-
-			// Wikify the PassageFooter passage, if it exists, into the passage element.
-			if (Story.has('PassageFooter')) {
-				new Wikifier(passageEl, Story.get('PassageFooter').processText());
-			}
-
-			// Execute post-render events and tasks.
-			jQuery.event.trigger({
-				type    : ':passagerender',
-				content : passageEl,
-				passage : this
-			});
-			Object.keys(postrender).forEach(task => {
-				if (typeof postrender[task] === 'function') {
-					postrender[task].call(this, passageEl, task);
-				}
-			});
+			// Wikify the passage into a document fragment.
+			const frag = document.createDocumentFragment();
+			new Wikifier(frag, this.processText());
 
 			// Update the excerpt cache to reflect the rendered text.
-			this._excerpt = Passage.getExcerptFromNode(passageEl);
+			this._excerpt = Passage.getExcerptFromNode(frag);
 
-			return passageEl;
+			return frag;
 		}
 
 		static getExcerptFromNode(node, count) {
