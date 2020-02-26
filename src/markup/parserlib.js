@@ -1616,6 +1616,11 @@
 
 				if (evalShorthand || name.startsWith('sc-eval:')) {
 					const newName = name.slice(evalShorthand ? 1 : 8); // Remove eval directive prefix.
+
+					if (newName === 'data-setter') {
+						throw new Error(`evaluation directive is not allowed on the data-setter attribute: "${name}"`);
+					}
+
 					let result;
 
 					// Evaluate the value as TwineScript.
