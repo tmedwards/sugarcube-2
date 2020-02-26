@@ -243,7 +243,7 @@ Story.lookup("tags", "forest");
 ### <span class="deprecated">`Story.lookupWith(predicate [, sortProperty])` → *`Passage` object array*</span>
 
 <p role="note" class="warning"><b>Deprecated:</b>
-This method has been deprecated and should no longer be used.  See the <a href="#story-api-method-passages-filter"><code>Story.passages.filter()</code></a> method for its replacement.
+This method has been deprecated and should no longer be used.  See the <a href="#story-api-method-passages-lookupwith"><code>Story.passages.lookupWith()</code></a> method for its replacement.
 </p>
 
 Returns a new array filled with all `Passage` objects that pass the test implemented by the given predicate function or an empty array, if no objects pass.
