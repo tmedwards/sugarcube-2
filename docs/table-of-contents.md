@@ -223,8 +223,10 @@
 	* [`Setting`](#special-variable-setting)
 	* [`settings`](#special-variable-settings)
 	* [`setup`](#special-variable-setup)
+	* [`SimpleAudio`](#special-variable-simpleaudio)
 	* [`State`](#special-variable-state)
 	* [`Story`](#special-variable-story)
+	* [`Template`](#special-variable-template)
 	* [`UI`](#special-variable-ui)
 	* [`UIBar`](#special-variable-uibar)
 

@@ -534,7 +534,6 @@ Player settings object, set up by the author/developer.  See [`Setting` API](#se
 * `v2.0.0`
 <!-- *********************************************************************** -->
 
-
 <span id="special-variable-setup"></span>
 ### `setup`
 
@@ -543,6 +542,17 @@ Object that authors/developers may use to set up various bits of static data.  G
 #### Since:
 
 * `v2.0.0`
+
+<!-- *********************************************************************** -->
+
+<span id="special-variable-simpleaudio"></span>
+### `SimpleAudio`
+
+SimpleAudio API.  See [`SimpleAudio` API](#simpleaudio-api) for more information.
+
+#### Since:
+
+* `v2.28.0`
 
 <!-- *********************************************************************** -->
 
@@ -565,6 +575,17 @@ Story API.  See [`Story` API](#story-api) for more information.
 #### Since:
 
 * `v2.0.0`
+
+<!-- *********************************************************************** -->
+
+<span id="special-variable-template"></span>
+### `Template`
+
+Template API.  See [`Template` API](#template-api) for more information.
+
+#### Since:
+
+* `v2.29.0`
 
 <!-- *********************************************************************** -->
 
