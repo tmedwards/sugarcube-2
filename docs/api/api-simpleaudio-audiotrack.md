@@ -124,7 +124,9 @@ aTrack.fadeOut(8, 1);
 
 Interrupts an in-progress fade of the track, or does nothing if no fade is progressing.
 
-**NOTE:** This does not alter the volume level.
+<p role="note"><b>Note:</b>
+This does not alter the volume level.
+</p>
 
 #### Since:
 
@@ -145,7 +147,9 @@ aTrack.fadeStop();
 
 Returns whether enough data has been loaded to play the track through to the end without interruption.
 
-**NOTE:** This is an estimate calculated by the browser based upon the currently downloaded data and the download rate.
+<p role="note"><b>Note:</b>
+This is an estimate calculated by the browser based upon the currently downloaded data and the download rate.
+</p>
 
 #### Since:
 
@@ -210,7 +214,9 @@ if (aTrack.hasNoData()) {
 
 Returns whether, at least, some of the track's data has been loaded.
 
-**NOTE:** The [`<AudioTrack>.hasData()` method](#audiotrack-api-prototype-method-hasdata) is generally more useful.
+<p role="note"><b>Note:</b>
+The <a href="#audiotrack-api-prototype-method-hasdata"><code>&lt;AudioTrack&gt;.hasData()</code> method</a> is generally more useful.
+</p>
 
 #### Since:
 
@@ -466,7 +472,9 @@ if (aTrack.isUnloaded()) {
 
 Pauses playback of the track and, if it's not already in the process of loading, forces it to drop any existing data and begin loading.
 
-**NOTE:** This *should not* be done lightly if your audio sources are on the network, as it forces the player to begin downloading them.
+<p role="note" class="warning"><b>Warning:</b>
+This <em>should not</em> be done lightly if your audio sources are on the network, as it forces players to begin downloading them.
+</p>
 
 #### Since:
 
@@ -543,7 +551,9 @@ aTrack.mute(false);
 
 Removes event handlers from the track.  Returns a reference to the current `AudioTrack` instance for chaining.
 
-**NOTE:** Shorthand for [jQuery's `.off()` method](http://api.jquery.com/off/) applied to the audio element.
+<p role="note"><b>Note:</b>
+Shorthand for <a href="http://api.jquery.com/off/">jQuery's <code>.off()</code> method</a> applied to the audio element.
+</p>
 
 <p role="note" class="warning"><b>Warning:</b>
 The <code>SimpleAudio</code> APIs use events internally for various pieces of functionality.  To prevent conflicts, it is <strong><em>strongly</em></strong> suggested that you specify a custom user namespace—e.g., <code>.myEvents</code>—when attaching your own handlers.  It is further <strong><em>strongly</em></strong> suggested that you provide that same custom user namespace when removing them.
@@ -555,7 +565,9 @@ The <code>SimpleAudio</code> APIs use events internally for various pieces of fu
 
 #### Parameters:
 
-**SEE:** [`<jQuery>.off()`](http://api.jquery.com/off/) in the jQuery API docs for more information.
+<p role="note" class="see"><b>See:</b>
+<a href="http://api.jquery.com/off/"><code>&lt;jQuery&gt;.off()</code></a> in the jQuery API docs for more information.
+</p>
 
 #### Example:
 
@@ -571,7 +583,9 @@ aTrack.off('ended.myEvents');
 
 Attaches event handlers to the track.  Returns a reference to the current `AudioTrack` instance for chaining.
 
-**NOTE:** Shorthand for [jQuery's `.on()` method](http://api.jquery.com/on/) applied to the audio element.
+<p role="note"><b>Note:</b>
+Shorthand for <a href="http://api.jquery.com/on/">jQuery's <code>.on()</code> method</a> applied to the audio element.
+</p>
 
 <p role="note" class="warning"><b>Warning:</b>
 The <code>SimpleAudio</code> APIs use events internally for various pieces of functionality.  To prevent conflicts, it is <strong><em>strongly</em></strong> suggested that you specify a custom user namespace—e.g., <code>.myEvents</code>—when attaching your own handlers.  It is further <strong><em>strongly</em></strong> suggested that you provide that same custom user namespace when removing them.
@@ -583,7 +597,9 @@ The <code>SimpleAudio</code> APIs use events internally for various pieces of fu
 
 #### Parameters:
 
-**SEE:** [`<jQuery>.on()`](http://api.jquery.com/on/) in the jQuery API docs for more information.
+<p role="note" class="see"><b>See:</b>
+<a href="http://api.jquery.com/on/"><code>&lt;jQuery&gt;.on()</code></a> in the jQuery API docs for more information.
+</p>
 
 #### Example:
 
@@ -601,7 +617,9 @@ aTrack.on('ended.myEvents', function () {
 
 Attaches single-use event handlers to the track.  Returns a reference to the current `AudioTrack` instance for chaining.
 
-**NOTE:** Shorthand for [jQuery's `.one()` method](http://api.jquery.com/one/) applied to the audio element.
+<p role="note"><b>Note:</b>
+Shorthand for <a href="http://api.jquery.com/one/">jQuery's <code>.one()</code> method</a> applied to the audio element.
+</p>
 
 <p role="note" class="warning"><b>Warning:</b>
 The <code>SimpleAudio</code> APIs use events internally for various pieces of functionality.  To prevent conflicts, it is <strong><em>strongly</em></strong> suggested that you specify a custom user namespace—e.g., <code>.myEvents</code>—when attaching your own handlers.  It is further <strong><em>strongly</em></strong> suggested that you provide that same custom user namespace when removing them.
@@ -613,7 +631,9 @@ The <code>SimpleAudio</code> APIs use events internally for various pieces of fu
 
 #### Parameters:
 
-**SEE:** [`<jQuery>.one()`](http://api.jquery.com/one/) in the jQuery API docs for more information.
+<p role="note" class="see"><b>See:</b>
+<a href="http://api.jquery.com/one/"><code>&lt;jQuery&gt;.one()</code></a> in the jQuery API docs for more information.
+</p>
 
 #### Example:
 
@@ -740,8 +760,6 @@ someTrack.stop();
 
 Gets or sets the track's current time in seconds.  When used to set a value, returns a reference to the current `AudioTrack` instance for chaining.
 
-<!-- **NOTE:** Changing the track's current time is colloquially, though incorrectly, also known as *seeking*. -->
-
 #### Since:
 
 * `v2.28.0`
@@ -770,7 +788,9 @@ aTrack.time(aTrack.duration() - 30);
 
 Stops playback of the track and forces it to drop any existing data.
 
-**NOTE:** Once unloaded, playback cannot occur until the track's data is loaded again.
+<p role="note"><b>Note:</b>
+Once unloaded, playback cannot occur until the track's data is loaded again.
+</p>
 
 #### Since:
 
@@ -860,7 +880,9 @@ aTrack.on(':fading', function (ev) {
 
 Synthetic event triggered on the track when playback is stopped after [`<AudioTrack>.stop()`](#audiotrack-api-prototype-method-stop) is called—either manually or as part of another process.
 
-**SEE:** [`ended`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/ended_event) and [`pause`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/pause_event) for information on somewhat similar native events.
+<p role="note" class="see"><b>See:</b>
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/ended_event"><code>ended</code></a> and <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/pause_event"><code>pause</code></a> for information on somewhat similar native events.
+</p>
 
 #### Since:
 

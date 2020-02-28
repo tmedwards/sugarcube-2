@@ -84,7 +84,9 @@ someTracks.fadeOut(8, 1);
 
 Interrupts an in-progress fade of the selected tracks, or does nothing if no fade is progressing.
 
-**NOTE:** This does not alter the volume level.
+<p role="note"><b>Note:</b>
+This does not alter the volume level.
+</p>
 
 #### Since:
 
@@ -105,7 +107,9 @@ someTracks.fadeStop();
 
 Pauses playback of the selected tracks and, if they're not already in the process of loading, forces them to drop any existing data and begin loading.
 
-**NOTE:** This *should not* be done lightly if your audio sources are on the network, as it forces the player to begin downloading them.
+<p role="note" class="warning"><b>Warning:</b>
+This <em>should not</em> be done lightly if your audio sources are on the network, as it forces players to begin downloading them.
+</p>
 
 #### Since:
 
@@ -176,7 +180,9 @@ someTracks.mute(false);
 
 Removes event handlers from the selected tracks.  Returns a reference to the current `AudioRunner` instance for chaining.
 
-**NOTE:** Shorthand for [jQuery's `.off()` method](http://api.jquery.com/off/) applied to each of the audio elements.
+<p role="note"><b>Note:</b>
+Shorthand for <a href="http://api.jquery.com/off/">jQuery's <code>.off()</code> method</a> applied to each of the audio elements.
+</p>
 
 <p role="note" class="warning"><b>Warning:</b>
 The <code>SimpleAudio</code> APIs use events internally for various pieces of functionality.  To prevent conflicts, it is <strong><em>strongly</em></strong> suggested that you specify a custom user namespace—e.g., <code>.myEvents</code>—when attaching your own handlers.  It is further <strong><em>strongly</em></strong> suggested that you provide that same custom user namespace when removing them.
@@ -188,7 +194,9 @@ The <code>SimpleAudio</code> APIs use events internally for various pieces of fu
 
 #### Parameters:
 
-**SEE:** [`<jQuery>.off()`](http://api.jquery.com/off/) in the jQuery API docs for more information.
+<p role="note" class="see"><b>See:</b>
+<a href="http://api.jquery.com/off/"><code>&lt;jQuery&gt;.off()</code></a> in the jQuery API docs for more information.
+</p>
 
 #### Example:
 
@@ -204,7 +212,9 @@ someTracks.off('ended.myEvents');
 
 Attaches event handlers to the selected tracks.  Returns a reference to the current `AudioRunner` instance for chaining.
 
-**NOTE:** Shorthand for [jQuery's `.on()` method](http://api.jquery.com/on/) applied to each of the audio elements.
+<p role="note"><b>Note:</b>
+Shorthand for <a href="http://api.jquery.com/on/">jQuery's <code>.on()</code> method</a> applied to each of the audio elements.
+</p>
 
 <p role="note" class="warning"><b>Warning:</b>
 The <code>SimpleAudio</code> APIs use events internally for various pieces of functionality.  To prevent conflicts, it is <strong><em>strongly</em></strong> suggested that you specify a custom user namespace—e.g., <code>.myEvents</code>—when attaching your own handlers.  It is further <strong><em>strongly</em></strong> suggested that you provide that same custom user namespace when removing them.
@@ -216,7 +226,9 @@ The <code>SimpleAudio</code> APIs use events internally for various pieces of fu
 
 #### Parameters:
 
-**SEE:** [`<jQuery>.on()`](http://api.jquery.com/on/) in the jQuery API docs for more information.
+<p role="note" class="see"><b>See:</b>
+<a href="http://api.jquery.com/on/"><code>&lt;jQuery&gt;.on()</code></a> in the jQuery API docs for more information.
+</p>
 
 #### Example:
 
@@ -234,7 +246,9 @@ someTracks.on('ended.myEvents', function () {
 
 Attaches single-use event handlers to the selected tracks.  Returns a reference to the current `AudioRunner` instance for chaining.
 
-**NOTE:** Shorthand for [jQuery's `.one()` method](http://api.jquery.com/one/) applied to each of the audio elements.
+<p role="note"><b>Note:</b>
+Shorthand for <a href="http://api.jquery.com/one/">jQuery's <code>.one()</code> method</a> applied to each of the audio elements.
+</p>
 
 <p role="note" class="warning"><b>Warning:</b>
 The <code>SimpleAudio</code> APIs use events internally for various pieces of functionality.  To prevent conflicts, it is <strong><em>strongly</em></strong> suggested that you specify a custom user namespace—e.g., <code>.myEvents</code>—when attaching your own handlers.  It is further <strong><em>strongly</em></strong> suggested that you provide that same custom user namespace when removing them.
@@ -246,7 +260,9 @@ The <code>SimpleAudio</code> APIs use events internally for various pieces of fu
 
 #### Parameters:
 
-**SEE:** [`<jQuery>.one()`](http://api.jquery.com/one/) in the jQuery API docs for more information.
+<p role="note" class="see"><b>See:</b>
+<a href="http://api.jquery.com/one/"><code>&lt;jQuery&gt;.one()</code></a> in the jQuery API docs for more information.
+</p>
 
 #### Example:
 
@@ -362,7 +378,9 @@ someTracks.time(30);
 
 Stops playback of the selected tracks and forces them to drop any existing data.
 
-**NOTE:** Once unloaded, playback cannot occur until the selected tracks' data is loaded again.
+<p role="note"><b>Note:</b>
+Once unloaded, playback cannot occur until the selected tracks' data is loaded again.
+</p>
 
 #### Since:
 

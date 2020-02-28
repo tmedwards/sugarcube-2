@@ -65,7 +65,9 @@ A better solution, however, would be to use a backquote<a href="#macros-argument
 
 Captures story $variables and temporary \_variables, creating localized versions of their values within the macro body.
 
-**NOTE:** Use of this macro is *only* necessary when you need to localize a variable's value for use with an asynchronous macro—i.e., a macro whose contents are executed at some later time, rather than when it's invoked; e.g., [interactive macros](#macros-interactive), [`<<repeat>>`](#macros-macro-repeat), [`<<timed>>`](#macros-macro-timed).  Generally, this means only when the variable's value will change between the time the asynchronous macro is invoked and when it's activated—e.g., a loop variable.
+<p role="note"><b>Note:</b>
+Use of this macro is <em>only</em> necessary when you need to localize a variable's value for use with an asynchronous macro—i.e., a macro whose contents are executed at some later time, rather than when it's invoked; e.g., <a href="#macros-interactive">interactive macros</a>, <a href="#macros-macro-repeat"><code>&lt;&lt;repeat&gt;&gt;</code></a>, <a href="#macros-macro-timed"><code>&lt;&lt;timed&gt;&gt;</code></a>.  Generally, this means only when the variable's value will change between the time the asynchronous macro is invoked and when it's activated—e.g., a loop variable.
+</p>
 
 #### Since:
 
@@ -124,7 +126,7 @@ Sets story $variables and temporary \_variables based on the given expression.
 <tr>
 <th><code>to</code></th>
 <td>Assigns the value on the right-hand side of the operator to the left-hand side.</td>
-<td><code>&lt;&lt;set $apples to 6&gt;&gt;</code></td>
+<td><pre><code>&lt;&lt;set $apples to 6&gt;&gt;</code></pre></td>
 </tr>
 </tbody>
 </table>
@@ -143,32 +145,32 @@ Sets story $variables and temporary \_variables based on the given expression.
 <tr>
 <th><code>=</code></th>
 <td>Assigns the value on the right-hand side of the operator to the left-hand side.</td>
-<td><code>&lt;&lt;set $apples = 6&gt;&gt;</code></td>
+<td><pre><code>&lt;&lt;set $apples = 6&gt;&gt;</code></pre></td>
 </tr>
 <tr>
 <th><code>+=</code></th>
 <td>Adds the value on the right-hand side of the operator to the current value on the left-hand side and assigns the result to the left-hand side.</td>
-<td><code>&lt;&lt;set $apples += 1&gt;&gt;</code></td>
+<td><pre><code>&lt;&lt;set $apples += 1&gt;&gt;</code></pre></td>
 </tr>
 <tr>
 <th><code>-=</code></th>
 <td>Subtracts the value on the right-hand side of the operator from the current value on the left-hand side and assigns the result to the left-hand side.</td>
-<td><code>&lt;&lt;set $apples -= 1&gt;&gt;</code></td>
+<td><pre><code>&lt;&lt;set $apples -= 1&gt;&gt;</code></pre></td>
 </tr>
 <tr>
 <th><code>&#x2a;=</code></th>
 <td>Multiplies the current value on the left-hand side of the operator by the value on the right-hand side and assigns the result to the left-hand side.</td>
-<td><code>&lt;&lt;set $apples &#x2a;= 2&gt;&gt;</code></td>
+<td><pre><code>&lt;&lt;set $apples &#x2a;= 2&gt;&gt;</code></pre></td>
 </tr>
 <tr>
 <th><code>/=</code></th>
 <td>Divides the current value on the left-hand side of the operator by the value on the right-hand side and assigns the result to the left-hand side.</td>
-<td><code>&lt;&lt;set $apples /= 2&gt;&gt;</code></td>
+<td><pre><code>&lt;&lt;set $apples /= 2&gt;&gt;</code></pre></td>
 </tr>
 <tr>
 <th><code>%=</code></th>
 <td>Divides the current value on the left-hand side of the operator by the value on the right-hand side and assigns the remainder to the left-hand side.</td>
-<td><code>&lt;&lt;set $apples %= 10&gt;&gt;</code></td>
+<td><pre><code>&lt;&lt;set $apples %= 10&gt;&gt;</code></pre></td>
 </tr>
 </tbody>
 </table>
@@ -222,7 +224,9 @@ This macro has been deprecated and should no longer be used.  See the <a href="#
 
 *Functionally identical to [`<<set>>`](#macros-macro-set), save that it also causes the values of story $variables to persist over page reloads, game restarts, and even browser restarts.  Does not cause temporary \_variables to persist.*
 
-**NOTE:** Generally, you do not need, or want, to use `<<remember>>`, as it is only useful in very specific circumstances and problematic in most others.  Unless you *know* that you need to use it, you very likely do not.
+<p role="note"><b>Note:</b>
+Generally, you do not need, or want, to use <code>&lt;&lt;remember&gt;&gt;</code>, as it is only useful in very specific circumstances and problematic in most others.  Unless you <em>know</em> that you need to use it, you very likely do not.
+</p>
 
 #### Since:
 
@@ -266,7 +270,9 @@ This macro has been deprecated and should no longer be used.  See the <a href="#
 
 Silently executes its contents as *pure* JavaScript code—i.e., it performs no story or temporary variable substitution or TwineScript operator processing.  For instances where you need to run some pure JavaScript and don't want to waste time performing extra processing on code that has no story or temporary variables or TwineScript operators in it and/or worry about the parser possibly clobbering the code.
 
-**NOTE:** The predefined variable `output`, which is a reference to a local content buffer, is available for use within the macro's code contents.  Once the code has been fully executed, the contents of the buffer, if any, will be output.
+<p role="note"><b>Note:</b>
+The predefined variable <code>output</code>, which is a reference to a local content buffer, is available for use within the macro's code contents.  Once the code has been fully executed, the contents of the buffer, if any, will be output.
+</p>
 
 #### Since:
 
@@ -303,7 +309,9 @@ Silently executes its contents as *pure* JavaScript code—i.e., it performs no 
 
 Outputs the result of the given expression.  This macro is an alias for [`<<print>>`](#macros-macro-print).
 
-**NOTE:** If you only need to print the value of a TwineScript variable, then you may simply include it in your normal passage text and it will be printed automatically via the [naked variable markup](#markup-naked-variable).
+<p role="note"><b>Note:</b>
+If you only need to print the value of a TwineScript variable, then you may simply include it in your normal passage text and it will be printed automatically via the <a href="#markup-naked-variable">naked variable markup</a>.
+</p>
 
 #### Since:
 
@@ -330,7 +338,9 @@ You weigh <<= $weight.toFixed(2)>> kg.  → Outputs: You weigh 74.65 kg.
 
 Outputs the result of the given expression.  This macro is functionally identical to [`<<print>>`](#macros-macro-print), save that it also encodes HTML special characters in the output.
 
-**NOTE:** If you only need to print the value of a TwineScript variable, then you may simply include it in your normal passage text and it will be printed automatically via the [naked variable markup](#markup-naked-variable).
+<p role="note"><b>Note:</b>
+If you only need to print the value of a TwineScript variable, then you may simply include it in your normal passage text and it will be printed automatically via the <a href="#markup-naked-variable">naked variable markup</a>.
+</p>
 
 #### Since:
 
@@ -389,7 +399,9 @@ Outputs the contents of the passage with the given name, optionally wrapping it 
 
 Executes its contents and outputs the result, after removing leading/trailing newlines and replacing all remaining sequences of newlines with single spaces.
 
-**NOTE:** The [`nobr` special tag](#special-tag-nobr) and [`Config.passages.nobr` setting](#config-api-property-passages-nobr) applies the same processing to an entire passage or all passages, respectively.  The [line continuation markup](#markup-line-continuation) performs a similar function, though in a slightly different way.
+<p role="note"><b>Note:</b>
+The <a href="#special-tag-nobr"><code>nobr</code> special tag</a> and <a href="#config-api-property-passages-nobr"><code>Config.passages.nobr</code> setting</a> applies the same processing to an entire passage or all passages, respectively.  The <a href="#markup-line-continuation">line continuation markup</a> performs a similar function, though in a slightly different way.
+</p>
 
 #### Since:
 
@@ -417,7 +429,9 @@ cherry
 
 Outputs the result of the given expression.
 
-**NOTE:** If you only need to print the value of a TwineScript variable, then you may simply include it in your normal passage text and it will be printed automatically via the [naked variable markup](#markup-naked-variable).
+<p role="note"><b>Note:</b>
+If you only need to print the value of a TwineScript variable, then you may simply include it in your normal passage text and it will be printed automatically via the <a href="#markup-naked-variable">naked variable markup</a>.
+</p>
 
 #### Since:
 
@@ -505,7 +519,9 @@ This macro has been deprecated and should no longer be used.  See the <a href="#
 
 Executes its contents if the given conditional expression evaluates to `true`.  If the condition evaluates to `false` and an `<<elseif>>` or `<<else>>` exists, then other contents can be executed.
 
-**NOTE:** SugarCube does not trim whitespace from the contents of `<<if>>` macros, so that authors don't have to resort to various kludges to get whitespace where they want it.  This means, however, that extra care must be taken when writing them to ensure that unwanted whitespace is not created within the final output.
+<p role="note"><b>Note:</b>
+SugarCube does not trim whitespace from the contents of <code>&lt;&lt;if&gt;&gt;</code> macros, so that authors don't have to resort to various kludges to get whitespace where they want it.  This means, however, that extra care must be taken when writing them to ensure that unwanted whitespace is not created within the final output.
+</p>
 
 #### Since:
 
@@ -529,72 +545,74 @@ Executes its contents if the given conditional expression evaluates to `true`.  
 <tr>
 <th><code>is</code></th>
 <td>Evaluates to <code>true</code> if both sides are <span title="Both sides have the same type and value." class="info"><em>strictly</em> equal</span>.</td>
-<td><code>&lt;&lt;if $bullets is 6&gt;&gt;</code></td>
+<td><pre><code>&lt;&lt;if $bullets is 6&gt;&gt;</code></pre></td>
 </tr>
 <tr>
 <th><code>isnot</code></th>
 <td>Evaluates to <code>true</code> if both sides are <span title="Both sides do not have the same type and/or value." class="info"><em>strictly</em> not equal</span>.</td>
-<td><code>&lt;&lt;if $pie isnot "cherry"&gt;&gt;</code></td>
+<td><pre><code>&lt;&lt;if $pie isnot "cherry"&gt;&gt;</code></pre></td>
 </tr>
 <tr>
 <th><code>eq</code></th>
 <td>Evaluates to <code>true</code> if both sides are <span title="Both sides have the same value or coerce into the same value." class="info">equivalent</span>.</td>
-<td><code>&lt;&lt;if $bullets eq 6&gt;&gt;</code></td>
+<td><pre><code>&lt;&lt;if $bullets eq 6&gt;&gt;</code></pre></td>
 </tr>
 <tr>
 <th><code>neq</code></th>
 <td>Evaluates to <code>true</code> if both sides are <span title="Both sides do not have the same value nor do they coerce into the same value." class="info">not equivalent</span>.</td>
-<td><code>&lt;&lt;if $pie neq "cherry"&gt;&gt;</code></td>
+<td><pre><code>&lt;&lt;if $pie neq "cherry"&gt;&gt;</code></pre></td>
 </tr>
 <tr>
 <th><code>gt</code></th>
 <td>Evaluates to <code>true</code> if the left side is greater than the right side.</td>
-<td><code>&lt;&lt;if $cash gt 5&gt;&gt;</code></td>
+<td><pre><code>&lt;&lt;if $cash gt 5&gt;&gt;</code></pre></td>
 </tr>
 <tr>
 <th><code>gte</code></th>
 <td>Evaluates to <code>true</code> if the left side is greater than or equal to the right side.</td>
-<td><code>&lt;&lt;if $foundStars gte $neededStars&gt;&gt;</code></td>
+<td><pre><code>&lt;&lt;if $foundStars gte $neededStars&gt;&gt;</code></pre></td>
 </tr>
 <tr>
 <th><code>lt</code></th>
 <td>Evaluates to <code>true</code> if the left side is less than the right side.</td>
-<td><code>&lt;&lt;if $shoeCount lt ($peopleCount * 2)&gt;&gt;</code></td>
+<td><pre><code>&lt;&lt;if $shoeCount lt ($peopleCount * 2)&gt;&gt;</code></pre></td>
 </tr>
 <tr>
 <th><code>lte</code></th>
 <td>Evaluates to <code>true</code> if the left side is less than or equal to the right side.</td>
-<td><code>&lt;&lt;if $level lte 30&gt;&gt;</code></td>
+<td><pre><code>&lt;&lt;if $level lte 30&gt;&gt;</code></pre></td>
 </tr>
 <tr>
 <th><code>not</code></th>
 <td>Flips a <code>true</code> evaluation to <code>false</code>, and vice versa.</td>
-<td><code>&lt;&lt;if not $hungry&gt;&gt;</code></td>
+<td><pre><code>&lt;&lt;if not $hungry&gt;&gt;</code></pre></td>
 </tr>
 <tr>
 <th><code>and</code></th>
 <td>Evaluates to <code>true</code> if all subexpressions evaluate to <code>true</code>.</td>
-<td><code>&lt;&lt;if $age gte 20 and $age lte 30&gt;&gt;</code></td>
+<td><pre><code>&lt;&lt;if $age gte 20 and $age lte 30&gt;&gt;</code></pre></td>
 </tr>
 <tr>
 <th><code>or</code></th>
 <td>Evaluates to <code>true</code> if any subexpressions evaluate to <code>true</code>.</td>
-<td><code>&lt;&lt;if $friend is "Sue" or $friend is "Dan"&gt;&gt;</code></td>
+<td><pre><code>&lt;&lt;if $friend is "Sue" or $friend is "Dan"&gt;&gt;</code></pre></td>
 </tr>
 <tr>
 <th><code>def</code></th>
 <td>Evaluates to <code>true</code> if the right side is defined.</td>
-<td><code>&lt;&lt;if def $mushrooms&gt;&gt;</code></td>
+<td><pre><code>&lt;&lt;if def $mushrooms&gt;&gt;</code></pre></td>
 </tr>
 <tr>
 <th><code>ndef</code></th>
 <td>Evaluates to <code>true</code> if the right side is not defined.</td>
-<td><code>&lt;&lt;if ndef $bottlecaps&gt;&gt;</code></td>
+<td><pre><code>&lt;&lt;if ndef $bottlecaps&gt;&gt;</code></pre></td>
 </tr>
 </tbody>
 </table>
 
-**NOTE:** The `def` and `ndef` operators have very low precedence, so it is ***strongly*** recommended that if you mix them with other operators, that you wrap them in parentheses—e.g., `(def $style) and ($style is "girly")`.
+<p role="note" class="warning"><b>Warning:</b>
+The <code>def</code> and <code>ndef</code> operators have very low precedence, so it is <strong><em>strongly</em></strong> recommended that if you mix them with other operators, that you wrap them in parentheses—e.g., <code>(def $style) and ($style is "girly")</code>.
+</p>
 
 #### JavaScript conditional operators: *(not an exhaustive list)*
 
@@ -610,56 +628,56 @@ Executes its contents if the given conditional expression evaluates to `true`.  
 <tr>
 <th><code>===</code></th>
 <td>Evaluates to <code>true</code> if both sides are <span title="Both sides have the same type and value." class="info"><em>strictly</em> equal</span>.</td>
-<td><code>&lt;&lt;if $bullets === 6&gt;&gt;</code></td>
+<td><pre><code>&lt;&lt;if $bullets === 6&gt;&gt;</code></pre></td>
 </tr>
 <tr>
 <th><code>!==</code></th>
 <td>Evaluates to <code>true</code> if both sides are <span title="Both sides do not have the same type and/or value." class="info"><em>strictly</em> not equal</span>.</td>
-<td><code>&lt;&lt;if $pie !== "cherry"&gt;&gt;</code></td>
+<td><pre><code>&lt;&lt;if $pie !== "cherry"&gt;&gt;</code></pre></td>
 </tr>
 <tr>
 <th><code>==</code></th>
 <td>Evaluates to <code>true</code> if both sides are <span title="Both sides have the same value or coerce into the same value." class="info">equivalent</span>.</td>
-<td><code>&lt;&lt;if $bullets == 6&gt;&gt;</code></td>
+<td><pre><code>&lt;&lt;if $bullets == 6&gt;&gt;</code></pre></td>
 </tr>
 <tr>
 <th><code>!=</code></th>
 <td>Evaluates to <code>true</code> if both sides are <span title="Both sides do not have the same value nor do they coerce into the same value." class="info">not equivalent</span>.</td>
-<td><code>&lt;&lt;if $pie != "cherry"&gt;&gt;</code></td>
+<td><pre><code>&lt;&lt;if $pie != "cherry"&gt;&gt;</code></pre></td>
 </tr>
 <tr>
 <th><code>&gt;</code></th>
 <td>Evaluates to <code>true</code> if the left side is greater than the right side.</td>
-<td><code>&lt;&lt;if $cash &gt; 5&gt;&gt;</code></td>
+<td><pre><code>&lt;&lt;if $cash &gt; 5&gt;&gt;</code></pre></td>
 </tr>
 <tr>
 <th><code>&gt;=</code></th>
 <td>Evaluates to <code>true</code> if the left side is greater than or equal to the right side.</td>
-<td><code>&lt;&lt;if $foundStars &gt;= $neededStars&gt;&gt;</code></td>
+<td><pre><code>&lt;&lt;if $foundStars &gt;= $neededStars&gt;&gt;</code></pre></td>
 </tr>
 <tr>
 <th><code>&lt;</code></th>
 <td>Evaluates to <code>true</code> if the left side is less than the right side.</td>
-<td><code>&lt;&lt;if $shoeCount &lt; ($peopleCount * 2)&gt;&gt;</code></td>
+<td><pre><code>&lt;&lt;if $shoeCount &lt; ($peopleCount * 2)&gt;&gt;</code></pre></td>
 </tr>
 <tr>
 <th><code>&lt;=</code></th>
 <td>Evaluates to <code>true</code> if the left side is less than or equal to the right side.</td>
-<td><code>&lt;&lt;if $level &lt;= 30&gt;&gt;</code></td>
+<td><pre><code>&lt;&lt;if $level &lt;= 30&gt;&gt;</code></pre></td>
 </tr>
 <tr>
 <th><code>!</code></th>
 <td>Flips a <code>true</code> evaluation to <code>false</code>, and vice versa.</td>
-<td><code>&lt;&lt;if !$hungry&gt;&gt;</code></td>
+<td><pre><code>&lt;&lt;if !$hungry&gt;&gt;</code></pre></td>
 <tr>
 <th><code>&amp;&amp;</code></th>
 <td>Evaluates to <code>true</code> if all subexpressions evaluate to <code>true</code>.</td>
-<td><code>&lt;&lt;if $age &gt;= 20 &amp;&amp; $age &lt;= 30&gt;&gt;</code></td>
+<td><pre><code>&lt;&lt;if $age &gt;= 20 &amp;&amp; $age &lt;= 30&gt;&gt;</code></pre></td>
 </tr>
 <tr>
 <th><code>||</code></th>
 <td>Evaluates to <code>true</code> if any subexpressions evaluate to <code>true</code>.</td>
-<td><code>&lt;&lt;if $friend === "Sue" || $friend === "Dan"&gt;&gt;</code></td>
+<td><pre><code>&lt;&lt;if $friend === "Sue" || $friend === "Dan"&gt;&gt;</code></pre></td>
 </tr>
 </tr>
 </tbody>
@@ -705,7 +723,9 @@ Executes its contents if the given conditional expression evaluates to `true`.  
 
 Repeatedly executes its contents. There are three forms: a conditional-only form, a 3-part conditional form, and a range form.
 
-**SEE ALSO:** [`<<break>>`](#macros-macro-break) and [`<<continue>>`](#macros-macro-continue).
+<p role="note" class="see"><b>See Also:</b>
+<a href="#macros-macro-break"><code>&lt;&lt;break&gt;&gt;</code></a> and <a href="#macros-macro-continue"><code>&lt;&lt;continue&gt;&gt;</code></a>.
+</p>
 
 ##### Since:
 
@@ -721,7 +741,9 @@ Repeatedly executes its contents. There are three forms: a conditional-only form
 
 Executes its contents while the given conditional expression evaluates to `true`.  If no conditional expression is given, it is equivalent to specifying `true`.
 
-**NOTE:** The maximum number of loop iterations in the conditional forms is not unlimited by default, however, it is configurable.  See [`Config.macros.maxLoopIterations`](#config-api-property-macros-maxloopiterations) for more information.
+<p role="note"><b>Note:</b>
+The maximum number of loop iterations in the conditional forms is not unlimited by default, however, it is configurable.  See <a href="#config-api-property-macros-maxloopiterations"><code>Config.macros.maxLoopIterations</code></a> for more information.
+</p>
 
 ##### Arguments:
 
@@ -788,7 +810,9 @@ Iterates through all enumerable entries of the given collection.  For each itera
 </tbody>
 </table>
 
-**NOTE:** Strings are iterated by Unicode code point, however, due to historic reasons they are comprised of, and indexed by, individual UTF-16 code units.  This means that some code points may span multiple code units—e.g., the character 💩 is one code point, but two code units.
+<p role="note"><b>Note:</b>
+Strings are iterated by Unicode code point, however, due to historic reasons they are comprised of, and indexed by, individual UTF-16 code units.  This means that some code points may span multiple code units—e.g., the character 💩 is one code point, but two code units.
+</p>
 
 ##### Example:
 
@@ -831,7 +855,9 @@ Used within [`<<for>>`](#macros-macro-for) macros.  Terminates the execution of 
 
 Used within [`<<for>>`](#macros-macro-for) macros.  Terminates the execution of the current iteration of the current `<<for>>` and begins execution of the next iteration.
 
-**NOTE:** May eat line-breaks in certain situations.
+<p role="note"><b>Note:</b>
+May eat line-breaks in certain situations.
+</p>
 
 #### Since:
 
@@ -846,7 +872,9 @@ Used within [`<<for>>`](#macros-macro-for) macros.  Terminates the execution of 
 
 Evaluates the given expression and compares it to the value(s) within its `<<case>>` children.  The value(s) within each case are compared to the result of the expression given to the parent `<<switch>>`.  Upon a successful match, the matching case will have its contents executed.  If no cases match and an optional default case exists, which must be the final case, then its contents will be executed.  At most one case will execute.
 
-**NOTE:** SugarCube does not trim whitespace from the contents of `<<case>>`/`<<default>>` macros, so that authors don't have to resort to various kludges to get whitespace where they want it.  However, this means that extra care must be taken when writing them to ensure that unwanted whitespace is not created within the final output.
+<p role="note"><b>Note:</b>
+SugarCube does not trim whitespace from the contents of <code>&lt;&lt;case&gt;&gt;</code>/<code>&lt;&lt;default&gt;&gt;</code> macros, so that authors don't have to resort to various kludges to get whitespace where they want it.  However, this means that extra care must be taken when writing them to ensure that unwanted whitespace is not created within the final output.
+</p>
 
 #### Since:
 
@@ -910,9 +938,13 @@ Interactive macros are both asynchronous and require interaction from the player
 
 Creates a button that silently executes its contents when clicked, optionally forwarding the player to another passage.  May be called either with the link text and passage name as separate arguments, with a link markup, or with an image markup.  This macro is functionally identical to [`<<link>>`](#macros-macro-link), save that it uses a button element (`<button>`) rather than an anchor element (`<a>`).
 
-**SEE:** [Interactive macro warning](#macros-interactive-warning).
+<p role="note" class="see"><b>See:</b>
+<a href="#macros-interactive-warning">Interactive macro warning</a>.
+</p>
 
-**NOTE:** If you simply need a passage link that modifies variables, both the [link markup](#markup-link) and [image markup](#markup-image) offer setter variants.
+<p role="note"><b>Note:</b>
+If you simply need a passage link that modifies variables, both the <a href="#markup-link">link markup</a> and <a href="#markup-image">image markup</a> offer setter variants.
+</p>
 
 #### Since:
 
@@ -954,7 +986,9 @@ Strength: <<set $pcStr to 10>><span id="stats-str"><<print $pcStr>></span> \
 
 Creates a checkbox, used to modify the value of the variable with the given name.
 
-**SEE:** [Interactive macro warning](#macros-interactive-warning).
+<p role="note" class="see"><b>See:</b>
+<a href="#macros-interactive-warning">Interactive macro warning</a>.
+</p>
 
 #### Since:
 
@@ -992,7 +1026,9 @@ What pies do you enjoy?
 
 Creates a cycling link, used to modify the value of the variable with the given name.  The cycling options are populated via `<<option>>` and/or `<<optionsfrom>>`.
 
-**SEE:** [Interactive macro warning](#macros-interactive-warning).
+<p role="note" class="see"><b>See:</b>
+<a href="#macros-interactive-warning">Interactive macro warning</a>.
+</p>
 
 #### Since:
 
@@ -1077,9 +1113,13 @@ What's your favorite pie?
 
 Creates a link that silently executes its contents when clicked, optionally forwarding the player to another passage.  May be called either with the link text and passage name as separate arguments, with a link markup, or with an image markup.
 
-**SEE:** [Interactive macro warning](#macros-interactive-warning).
+<p role="note" class="see"><b>See:</b>
+<a href="#macros-interactive-warning">Interactive macro warning</a>.
+</p>
 
-**NOTE:** If you simply need a passage link that modifies variables, both the [link markup](#markup-link) and [image markup](#markup-image) offer setter variants.
+<p role="note"><b>Note:</b>
+If you simply need a passage link that modifies variables, both the <a href="#markup-link">link markup</a> and <a href="#markup-image">image markup</a> offer setter variants.
+</p>
 
 #### Since:
 
@@ -1121,7 +1161,9 @@ Strength: <<set $pcStr to 10>><span id="stats-str"><<print $pcStr>></span> \
 
 Creates a single-use link that deactivates itself and appends its contents to its link text when clicked.  Essentially, a combination of [`<<link>>`](#macros-macro-link) and [`<<append>>`](#macros-macro-append).
 
-**SEE:** [Interactive macro warning](#macros-interactive-warning).
+<p role="note" class="see"><b>See:</b>
+<a href="#macros-interactive-warning">Interactive macro warning</a>.
+</p>
 
 #### Since:
 
@@ -1150,7 +1192,9 @@ I spy with my little <<linkappend "eye" t8n>>, a crab rangoon<</linkappend>>.
 
 Creates a single-use link that deactivates itself and prepends its contents to its link text when clicked.  Essentially, a combination of [`<<link>>`](#macros-macro-link) and [`<<prepend>>`](#macros-macro-prepend).
 
-**SEE:** [Interactive macro warning](#macros-interactive-warning).
+<p role="note" class="see"><b>See:</b>
+<a href="#macros-interactive-warning">Interactive macro warning</a>.
+</p>
 
 #### Since:
 
@@ -1179,7 +1223,9 @@ I <<linkprepend "like" t8n>>do not <</linkprepend>> lemons.
 
 Creates a single-use link that deactivates itself and replaces its link text with its contents when clicked.  Essentially, a combination of [`<<link>>`](#macros-macro-link) and [`<<replace>>`](#macros-macro-replace).
 
-**SEE:** [Interactive macro warning](#macros-interactive-warning).
+<p role="note" class="see"><b>See:</b>
+<a href="#macros-interactive-warning">Interactive macro warning</a>.
+</p>
 
 #### Since:
 
@@ -1208,7 +1254,9 @@ I'll have a <<linkreplace "cupcake">>slice of key lime pie<</linkreplace>>, plea
 
 Creates a listbox, used to modify the value of the variable with the given name.  The list options are populated via `<<option>>` and/or `<<optionsfrom>>`.
 
-**SEE:** [Interactive macro warning](#macros-interactive-warning).
+<p role="note" class="see"><b>See:</b>
+<a href="#macros-interactive-warning">Interactive macro warning</a>.
+</p>
 
 #### Since:
 
@@ -1297,7 +1345,9 @@ What's your favorite pie?
 
 Creates a radio button, used to modify the value of the variable with the given name.  Multiple `<<radiobutton>>` macros may be set up to modify the same variable, which makes them part of a radio button group.
 
-**SEE:** [Interactive macro warning](#macros-interactive-warning).
+<p role="note" class="see"><b>See:</b>
+<a href="#macros-interactive-warning">Interactive macro warning</a>.
+</p>
 
 #### Since:
 
@@ -1318,7 +1368,9 @@ What's your favorite pie?
 * <<radiobutton "$pie" "coconut cream">> Coconut cream?
 ```
 
-**NOTE:** For accessibility reasons, it's recommended that you wrap each `<<radiobutton>>` and its accompanying text within a `<label>` element.  Doing so allows interactions with the text to also trigger its `<<radiobutton>>`.  For example:
+<p role="note" class="tip"><b>Tip:</b>
+For accessibility reasons, it's recommended that you wrap each <code>&lt;&lt;radiobutton&gt;&gt;</code> and its accompanying text within a <code>&lt;label&gt;</code> element.  Doing so allows interactions with the text to also trigger its <code>&lt;&lt;radiobutton&gt;&gt;</code>.
+</p>
 
 ```
 What's your favorite pie?
@@ -1334,7 +1386,9 @@ What's your favorite pie?
 
 Creates a multiline text input block, used to modify the value of the variable with the given name.
 
-**SEE:** [Interactive macro warning](#macros-interactive-warning).
+<p role="note" class="see"><b>See:</b>
+<a href="#macros-interactive-warning">Interactive macro warning</a>.
+</p>
 
 #### Since:
 
@@ -1365,7 +1419,9 @@ Write a short essay about pies:
 
 Creates a text input box, used to modify the value of the variable with the given name, optionally forwarding the player to another passage.
 
-**SEE:** [Interactive macro warning](#macros-interactive-warning).
+<p role="note" class="see"><b>See:</b>
+<a href="#macros-interactive-warning">Interactive macro warning</a>.
+</p>
 
 #### Since:
 
@@ -1461,7 +1517,9 @@ Creates a list of single-use passage links.  Each link removes itself and all ot
 
 Creates a link that undoes past moments within the story history.  May be called with, optional, link text or with a link or image markup.
 
-**NOTE:** If you want to return to a previously visited passage, rather than undo a moment within the history, see the [`<<return>>` macro](#macros-macro-return) or the [`previous()` function](#functions-function-previous).
+<p role="note"><b>Note:</b>
+If you want to return to a previously visited passage, rather than undo a moment within the history, see the <a href="#macros-macro-return"><code>&lt;&lt;return&gt;&gt;</code> macro</a> or the <a href="#functions-function-previous"><code>previous()</code> function</a>.
+</p>
 
 #### Since:
 
@@ -1505,7 +1563,9 @@ Creates a link that undoes past moments within the story history.  May be called
 
 Creates a single-use passage link that deactivates itself and all other `<<choice>>` links within the originating passage when activated.  May be called either with the passage name and link text as separate arguments, with a link markup, or with a image markup.
 
-**NOTE:** Normally, when both link and text arguments are accepted, the order is text then link.  However, due to a historical artifact, the arguments for the separate argument form of `<<choice>>` are in the reverse order (link then text).
+<p role="note" class="warning"><b>Warning:</b>
+Normally, when both link and text arguments are accepted, the order is text then link.  However, due to a historical artifact, the arguments for the separate argument form of <code>&lt;&lt;choice&gt;&gt;</code> are in the reverse order (link then text).
+</p>
 
 #### Since:
 
@@ -1555,7 +1615,9 @@ Creates a single-use passage link that deactivates itself and all other `<<choic
 
 Creates a link that returns to a previously visited passage.  May be called with, optional, link text or with a link or image markup.
 
-**NOTE:** If you want to undo previous moments within the history, rather than return to a passage, see the [`<<back>>` macro](#macros-macro-back).
+<p role="note"><b>Note:</b>
+If you want to undo previous moments within the history, rather than return to a passage, see the <a href="#macros-macro-back"><code>&lt;&lt;back&gt;&gt;</code> macro</a>.
+</p>
 
 #### Since:
 
@@ -1599,7 +1661,10 @@ Creates a link that returns to a previously visited passage.  May be called with
 <span id="macros-dom"></span>
 ## DOM Macros
 
-**WARNING:** All DOM macros require the elements to be manipulated to be on the page.  As a consequence, you cannot use them directly within a passage to modify elements within said passage, since the elements they are targeting are still rendering, thus not yet on the page.  You must, generally, use them with a interactive macro—e.g., [`<<link>>`](#macros-macro-link)—or within the [`PassageDone`](#special-passage-passagedone) special passage.  Elements that are already part of the page, on the other hand, present no issues.
+<span id="macros-dom-warning"></span>
+<p role="note" class="warning"><b>Warning:</b>
+All DOM macros require the elements to be manipulated to be on the page.  As a consequence, you cannot use them directly within a passage to modify elements within said passage, since the elements they are targeting are still rendering, thus not yet on the page.  You must, generally, use them with a interactive macro—e.g., <a href="#macros-macro-link"><code>&lt;&lt;link&gt;&gt;</code> macro</a>—or within the <a href="#special-passage-passagedone"><code>PassageDone</code> special passage</a>.  Elements that are already part of the page, on the other hand, present no issues.
+</p>
 
 <!-- *********************************************************************** -->
 
@@ -1608,7 +1673,9 @@ Creates a link that returns to a previously visited passage.  May be called with
 
 Adds classes to the selected element(s).
 
-**SEE:** [DOM macro warning](#macros-dom).
+<p role="note" class="see"><b>See:</b>
+<a href="#macros-dom-warning">DOM macro warning</a>.
+</p>
 
 #### Since:
 
@@ -1634,7 +1701,9 @@ Adds classes to the selected element(s).
 
 Executes its contents and appends the output to the contents of the selected element(s).
 
-**SEE:** [DOM macro warning](#macros-dom).
+<p role="note" class="see"><b>See:</b>
+<a href="#macros-dom-warning">DOM macro warning</a>.
+</p>
 
 #### Since:
 
@@ -1690,7 +1759,9 @@ Outputs a copy of the contents of the selected element(s).
 Most interactive elements—e.g., passage links, <a href="#macros-interactive">interactive macros</a>, etc.—cannot be properly copied via <code>&lt;&lt;copy&gt;&gt;</code>.  Attempting to do so will, usually, result in something that's non-functional.
 </p>
 
-**SEE:** [DOM macro warning](#macros-dom).
+<p role="note" class="see"><b>See:</b>
+<a href="#macros-dom-warning">DOM macro warning</a>.
+</p>
 
 #### Since:
 
@@ -1726,7 +1797,9 @@ I'll have a <span id="snack-dest">slice of Key lime pie too</span>, thanks.
 
 Executes its contents and prepends the output to the contents of the selected element(s).
 
-**SEE:** [DOM macro warning](#macros-dom).
+<p role="note" class="see"><b>See:</b>
+<a href="#macros-dom-warning">DOM macro warning</a>.
+</p>
 
 #### Since:
 
@@ -1778,9 +1851,13 @@ I saw a <span id="dog"><span class="macro-prepend-insert">big </span>dog</span>.
 
 Removes the selected element(s).
 
-**SEE:** [DOM macro warning](#macros-dom).
+<p role="note" class="see"><b>See:</b>
+<a href="#macros-dom-warning">DOM macro warning</a>.
+</p>
 
-**NOTE:** If you simply want to empty the selected element(s), not remove them outright, you should use an empty [`<<replace>>`](#macros-macro-replace) instead.
+<p role="note"><b>Note:</b>
+If you simply want to empty the selected element(s), not remove them outright, you should use an empty <a href="#macros-macro-replace"><code>&lt;&lt;replace&gt;&gt;</code> macro</a> instead.
+</p>
 
 #### Since:
 
@@ -1812,7 +1889,9 @@ I'd like a cupcake, please.
 
 Removes classes from the selected element(s).
 
-**SEE:** [DOM macro warning](#macros-dom).
+<p role="note" class="see"><b>See:</b>
+<a href="#macros-dom-warning">DOM macro warning</a>.
+</p>
 
 #### Since:
 
@@ -1839,7 +1918,9 @@ Removes classes from the selected element(s).
 
 Executes its contents and replaces the contents of the selected element(s) with the output.
 
-**SEE:** [DOM macro warning](#macros-dom).
+<p role="note" class="see"><b>See:</b>
+<a href="#macros-dom-warning">DOM macro warning</a>.
+</p>
 
 #### Since:
 
@@ -1891,7 +1972,9 @@ I saw a <span id="dog"><span class="macro-replace-insert">Catahoula Cur</span></
 
 Toggles classes on the selected element(s)—i.e., adding them if they don't exist, removing them if they do.
 
-**SEE:** [DOM macro warning](#macros-dom).
+<p role="note" class="see"><b>See:</b>
+<a href="#macros-dom-warning">DOM macro warning</a>.
+</p>
 
 #### Since:
 
@@ -1929,9 +2012,13 @@ The audio subsystem that supports the audio macros comes with some built-in <a h
 
 Controls the playback of audio tracks, which must be set up via [`<<cacheaudio>>`](#macros-macro-cacheaudio).
 
-**SEE:** [Audio macro limitations](#macros-audio-limitations).
+<p role="note" class="see"><b>See:</b>
+<a href="#macros-audio-limitations">Audio macro limitations</a>.
+</p>
 
-**NOTE:** The `<<audio>>` macro cannot affect playlist tracks that have been copied into their respective playlist—meaning those set up via [`<<createplaylist>>`](#macros-macro-createplaylist) with its `copy` action or all tracks set up via, the deprecated, [`<<setplaylist>>`](#macros-macro-setplaylist)—as playlist copies are solely under the control of their playlist.
+<p role="note"><b>Note:</b>
+The <code>&lt;&lt;audio&gt;&gt;</code> macro cannot affect playlist tracks that have been copied into their respective playlist—meaning those set up via <a href="#macros-macro-createplaylist"><code>&lt;&lt;createplaylist&gt;&gt;</code></a> with its <code>copy</code> action or all tracks set up via, the deprecated, <a href="#macros-macro-setplaylist"><code>&lt;&lt;setplaylist&gt;&gt;</code></a>—as playlist copies are solely under the control of their playlist.
+</p>
 
 #### Since:
 
@@ -2044,8 +2131,10 @@ Group IDs allow several tracks to be selected simultaneously without needing to 
 
 ##### Using the `load` and `unload` actions
 
-**NOTE:** Be *very careful* with these if your audio sources are on the network, as you are forcing players to begin downloading them.  Not everyone has
-blazing fast internet with unlimited data—especially true for mobile users.  Pease, *do not* take your players' bandwidth and data usage lightly.
+<p role="note" class="warning"><b>Warning:</b>
+Be <em>very careful</em> with these if your audio sources are on the network, as you are forcing players to begin downloading them.  Not everyone has
+blazing fast internet with unlimited data—especially true for mobile users.  Pease, <strong><em>do not</em></strong> take your players' bandwidth and data usage lightly.
+</p>
 
 ```
 → If it's not currently loading, drop existing data buffers and load the track
@@ -2062,7 +2151,9 @@ blazing fast internet with unlimited data—especially true for mobile users.  P
 
 Caches an audio track for use by the other audio macros.
 
-**NOTE:** The [`StoryInit`](#special-passage-storyinit) special passage is normally the best place to set up tracks.
+<p role="note"><b>Note:</b>
+The <a href="#special-passage-storyinit"><code>StoryInit</code> special passage</a> is normally the best place to set up tracks.
+</p>
 
 #### Since:
 
@@ -2097,7 +2188,9 @@ Caches an audio track for use by the other audio macros.
 
 Collects tracks, which must be set up via [`<<cacheaudio>>`](#macros-macro-cacheaudio), into a group via its `<<track>>` children.  Groups are useful for applying actions to multiple tracks simultaneously and/or excluding the included tracks from a larger set when applying actions.
 
-**NOTE:** The [`StoryInit`](#special-passage-storyinit) special passage is normally the best place to set up groups.
+<p role="note"><b>Note:</b>
+The <a href="#special-passage-storyinit"><code>StoryInit</code> special passage</a> is normally the best place to set up groups.
+</p>
 
 #### Since:
 
@@ -2136,7 +2229,9 @@ Collects tracks, which must be set up via [`<<cacheaudio>>`](#macros-macro-cache
 
 Collects tracks, which must be set up via [`<<cacheaudio>>`](#macros-macro-cacheaudio), into a playlist via its `<<track>>` children.
 
-**NOTE:** The [`StoryInit`](#special-passage-storyinit) special passage is normally the best place to set up playlists.
+<p role="note"><b>Note:</b>
+The <a href="#special-passage-storyinit"><code>StoryInit</code> special passage</a> is normally the best place to set up playlists.
+</p>
 
 #### Since:
 
@@ -2181,7 +2276,9 @@ Collects tracks, which must be set up via [`<<cacheaudio>>`](#macros-macro-cache
 
 Controls the master audio settings.
 
-**SEE:** [Audio macro limitations](#macros-audio-limitations).
+<p role="note" class="see"><b>See:</b>
+<a href="#macros-audio-limitations">Audio macro limitations</a>.
+</p>
 
 #### Since:
 
@@ -2226,8 +2323,10 @@ Controls the master audio settings.
 
 ##### Using the `load` and `unload` actions
 
-**NOTE:** Be *very careful* with these if your audio sources are on the network, as you are forcing players to begin downloading them.  Not everyone has
-blazing fast internet with unlimited data—especially true for mobile users.  Pease, *do not* take your players' bandwidth and data usage lightly.
+<p role="note" class="warning"><b>Warning:</b>
+Be <em>very careful</em> with these if your audio sources are on the network, as you are forcing players to begin downloading them.  Not everyone has
+blazing fast internet with unlimited data—especially true for mobile users.  Pease, <strong><em>do not</em></strong> take your players' bandwidth and data usage lightly.
+</p>
 
 ```
 → If they're not currently loading, drop existing data buffers and load all tracks
@@ -2244,7 +2343,9 @@ blazing fast internet with unlimited data—especially true for mobile users.  P
 
 Controls the playback of the playlist, which must be set up via [`<<createplaylist>>`](#macros-macro-createplaylist)—the deprecated [`<<setplaylist>>`](#macros-macro-setplaylist) may be used instead, though it is not recommended.
 
-**SEE:** [Audio macro limitations](#macros-audio-limitations).
+<p role="note" class="see"><b>See:</b>
+<a href="#macros-audio-limitations">Audio macro limitations</a>.
+</p>
 
 #### Since:
 
@@ -2343,8 +2444,10 @@ Controls the playback of the playlist, which must be set up via [`<<createplayli
 
 ##### Using the `load` and `unload` actions
 
-**NOTE:** Be *very careful* with these if your audio sources are on the network, as you are forcing players to begin downloading them.  Not everyone has
-blazing fast internet with unlimited data—especially true for mobile users.  Pease, *do not* take your players' bandwidth and data usage lightly.
+<p role="note" class="warning"><b>Warning:</b>
+Be <em>very careful</em> with these if your audio sources are on the network, as you are forcing players to begin downloading them.  Not everyone has
+blazing fast internet with unlimited data—especially true for mobile users.  Pease, <strong><em>do not</em></strong> take your players' bandwidth and data usage lightly.
+</p>
 
 ```
 → If they're not currently loading, drop existing data buffers and load all of the playlist's tracks
@@ -2361,7 +2464,9 @@ blazing fast internet with unlimited data—especially true for mobile users.  P
 
 Removes the audio group with the given ID.
 
-**NOTE:** You may not remove the predefined group IDs (`:all`, `:looped`, `:muted`, `:paused`, `:playing`) or the `:not` group modifier.
+<p role="note"><b>Note:</b>
+You may not remove the predefined group IDs (<code>:all</code>, <code>:looped</code>, <code>:muted</code>, <code>:paused</code>, <code>:playing</code>) or the <code>:not</code> group modifier.
+</p>
 
 #### Since:
 
@@ -2407,7 +2512,9 @@ Removes the playlist with the given ID.
 
 Displays the loading screen until *all* currently registered audio has either loaded to a playable state or aborted loading due to errors.  Requires tracks to be set up via [`<<cacheaudio>>`](#macros-macro-cacheaudio).
 
-**NOTE:** This macro should be invoked ***once*** following any invocations of `<<cacheaudio>>` and `<<createplaylist>>`, if any `<<track>>` definitions used the `copy` keyword, for which you want the loading screen displayed.
+<p role="note"><b>Note:</b>
+This macro should be invoked <strong><em>once</em></strong> following any invocations of <code>&lt;&lt;cacheaudio&gt;&gt;</code> and <code>&lt;&lt;createplaylist&gt;&gt;</code>, if any <code>&lt;&lt;track&gt;&gt;</code> definitions used the <code>copy</code> keyword, for which you want the loading screen displayed.
+</p>
 
 #### Since:
 
@@ -2453,7 +2560,9 @@ This macro has been deprecated and should no longer be used.  See the <a href="#
 
 Collects audio tracks, which must be set up via [`<<cacheaudio>>`](#macros-macro-cacheaudio), into a playlist by making its own independent copies of the tracks, rather than simply referencing the existing versions.  Copies are solely under the control of the playlist—meaning [`<<audio>>`](#macros-macro-audio) actions cannot affect them, even when using group IDs.
 
-**NOTE:** The [`StoryInit`](#special-passage-storyinit) special passage is normally the best place to set up playlists.
+<p role="note"><b>Note:</b>
+The <a href="#special-passage-storyinit"><code>StoryInit</code> special passage</a> is normally the best place to set up playlists.
+</p>
 
 #### Since:
 
@@ -2488,7 +2597,9 @@ This macro has been deprecated and should no longer be used.  See the <a href="#
 
 Immediately stops the playback of all tracks, which must be set up via [`<<cacheaudio>>`](#macros-macro-cacheaudio).
 
-**NOTE:** Does not affect playlist tracks that have been copied into their respective playlist—meaning those set up via [`<<createplaylist>>`](#macros-macro-createplaylist) with its `copy` action or all tracks set up via, the deprecated, [`<<setplaylist>>`](#macros-macro-setplaylist).
+<p role="note"><b>Note:</b>
+Does not affect playlist tracks that have been copied into their respective playlist—meaning those set up via <a href="#macros-macro-createplaylist"><code>&lt;&lt;createplaylist&gt;&gt;</code></a> with its <code>copy</code> action or all tracks set up via, the deprecated, <a href="#macros-macro-setplaylist"><code>&lt;&lt;setplaylist&gt;&gt;</code></a>.
+</p>
 
 #### Since:
 
@@ -2517,7 +2628,9 @@ Immediately stops the playback of all tracks, which must be set up via [`<<cache
 
 Immediately forwards the player to the passage with the given name.  May be called either with the passage name or with a link markup.
 
-**NOTE:** In most cases, you will not need to use `<<goto>>` as there are often better and easier ways to forward the player.  For example, a common use of [`<<link>>`](#macros-macro-link) is to perform various actions before forwarding the player to another passage.  In that case, unless you need to dynamically determine the destination passage within the `<<link>>` body, `<<goto>>` is unnecessary as `<<link>>` already includes the ability to forward the player.
+<p role="note"><b>Note:</b>
+In most cases, you will not need to use <code>&lt;&lt;goto&gt;&gt;</code> as there are often better and easier ways to forward the player.  For example, a common use of <a href="#macros-macro-link"><code>&lt;&lt;link&gt;&gt;</code></a> is to perform various actions before forwarding the player to another passage.  In that case, unless you need to dynamically determine the destination passage within the <code>&lt;&lt;link&gt;&gt;</code> body, <code>&lt;&lt;goto&gt;&gt;</code> is unnecessary as <code>&lt;&lt;link&gt;&gt;</code> already includes the ability to forward the player.
+</p>
 
 <p role="note" class="warning"><b>Warning:</b>
 <code>&lt;&lt;goto&gt;&gt;</code> <strong><em>does not</em></strong> terminate passage rendering in the passage where it was encountered, so care must be taken to ensure that no unwanted state modifications occur after its call.
@@ -2556,7 +2669,9 @@ Immediately forwards the player to the passage with the given name.  May be call
 
 Repeatedly executes its contents after the given delay, inserting any output into the passage in its place.  May be terminated by a [`<<stop>>`](#macros-macro-stop) macro.
 
-**NOTE:** Passage navigation terminates all pending timed executions.
+<p role="note"><b>Note:</b>
+Passage navigation terminates all pending timed executions.
+</p>
 
 #### Since:
 
@@ -2608,7 +2723,9 @@ Used within [`<<repeat>>`](#macros-macro-repeat) macros.  Terminates the executi
 
 Executes its contents after the given delay, inserting any output into the passage in its place.  Additional timed executions may be chained via `<<next>>`.
 
-**NOTE:** Passage navigation terminates all pending timed executions.
+<p role="note"><b>Note:</b>
+Passage navigation terminates all pending timed executions.
+</p>
 
 #### Since:
 
@@ -2675,7 +2792,7 @@ I'll have <span id="drink">some water</span>, please.\
 <span id="macros-macro-widget"></span>
 ### `<<widget widgetName>> … <</widget>>`
 
-Creates a new widget macro (henceforth, widget) with the given name.  Widgets allow you to create macros by using the standard macros and markup that you use normally within your story.  Widgets may access arguments passed to them via the `$args` array-like object, whose indices are zero-based—i.e., `$args[0]` is the first parsed argument, `$args[1]` is the second, etc.  Additionally, the full argument string—in raw and parsed forms—may be accessed via the `$args.raw` and `$args.full` properties.
+Creates a new widget macro (henceforth, widget) with the given name.  Widgets allow you to create macros by using the standard macros and markup that you use normally within your story.  Widgets may access arguments passed to them via the `$args` array-like object—see below for details.
 
 <p role="note" class="warning"><b>Warning:</b>
 Widgets should <em>always</em> be defined within a <code>widget</code>-tagged passage—any widgets that are not may be lost on page reload—and you may use as few or as many such passages as you desire.  <em>Do not</em> add a <code>widget</code> tag to any of the <a href="#special-passages">specially named passages</a> and attempt to define your widgets there.
@@ -2689,14 +2806,17 @@ The <code>$args</code> array-like object should be treated as though it were imm
 
 * `v2.0.0`
 
-#### Notes:
-
-* The `$args` variable is used internally to store passed arguments and the full argument string.  When a widget is called, any existing `$args` variable is stored for the duration of the call and restored after.  This means that non-widget use of an `$args` variable is safe.  **NOTE:** This does have the effect that an `$args` variable external to a widget is inaccessible to it unless passed in as an argument.
-* The variables used in widgets are part of a story's variable store, so if temp/scratch variables are needed, care *must be* taken not to overwrite important story variables.  Also, temp/scratch variables should normally be initialized or you could pick up a value from a previous execution.
-
 #### Arguments:
 
-* **`widgetName`:** The name of the created widget, which should not contain whitespace or angle brackets (`<`, `>`).  If the name of an existing widget is chosen, the new widget will overwrite the older version.  The names of existing standard macros are invalid widget names, so you cannot overwrite standard macros, and any attempts to do so will cause an error.
+* **`widgetName`:** The name of the created widget, which should not contain whitespace or angle brackets (`<`, `>`).  If the name of an existing widget is chosen, the new widget will overwrite the older version.  **NOTE:** The names of existing macros are invalid widget names and any attempts to use such a name will cause an error.
+
+#### `$args` array-like object:
+
+The `$args` variable is used internally to store arguments passed to the widget—as zero-based indices; i.e., `$args[0]` is the first parsed argument, `$args[1]` is the second, etc—and the full argument string in raw and parsed forms—accessed via the `$args.raw` and `$args.full` properties.
+
+When a widget is called, any existing `$args` variable is stored for the duration of the call and restored after.  This means that non-widget use of an `$args` variable is completely safe, though this does have the effect that an `$args` variable external to a widget is inaccessible to it unless passed in as an argument.
+
+Unless localized by use of the [`<<capture>>` macro](#macros-macro-capture), any story or temporary variables used within widgets are part of a story's normal variable store, so care *must be* taken not to accidentally either overwrite or pick up an existing value.
 
 #### Example:
 

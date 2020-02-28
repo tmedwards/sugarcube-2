@@ -5,7 +5,9 @@
 
 This is a reference for localizing SugarCube's default UI text, in general, and its `l10nStrings` object specifically.
 
-**NOTE:** If you're simply looking to download ready-to-use localizations, see [SugarCube's website](http://www.motoslave.net/sugarcube/2/#downloads) (under *Downloads > Localizations*).
+<p role="note"><b>Note:</b>
+If you're simply looking to download ready-to-use localizations, see <a href="http://www.motoslave.net/sugarcube/2/#downloads">SugarCube's website</a> (under <em>Downloads &gt; Localizations</em>).
+</p>
 
 #### Since:
 

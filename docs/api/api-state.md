@@ -16,7 +16,9 @@ API members dealing with the history work upon either the active moment—i.e., 
 
 Returns the active (present) moment.
 
-**NOTE:** Using `State.active` directly is generally unnecessary as there exist a number of shortcut properties, [`State.passage`](#state-api-getter-passage) and [`State.variables`](#state-api-getter-variables), and story functions, [`passage()`](#functions-function-passage) and [`variables()`](#functions-function-variables), which grant access to its normal properties.
+<p role="note"><b>Note:</b>
+Using <code>State.active</code> directly is generally unnecessary as there exist a number of shortcut properties, <a href="#state-api-getter-passage"><code>State.passage</code></a> and <a href="#state-api-getter-variables"><code>State.variables</code></a>, and story functions, <a href="#functions-function-passage"><code>passage()</code></a> and <a href="#functions-function-variables"><code>variables()</code></a>, which grant access to its normal properties.
+</p>
 
 #### Since:
 
@@ -54,7 +56,9 @@ State.bottom.variables  → The variables of the least recent moment within the 
 
 Returns the current moment from the full in-play history (past + future), which is the pre-play version of the active moment.
 
-**WARNING:** `State.current` is *not* a synonym for [`State.active`](#state-api-getter-active).  You will, very likely, never need to use `State.current` directly within your code.
+<p role="note" class="warning"><b>Warning:</b>
+<code>State.current</code> <em>is not</em> a synonym for <a href="#state-api-getter-active"><code>State.active</code></a>.  You will, very likely, never need to use <code>State.current</code> directly within your code.
+</p>
 
 #### Since:
 
@@ -105,23 +109,6 @@ State.passage  → The passage title of the present moment
 
 <!-- *********************************************************************** -->
 
-<span id="state-api-getter-temporary"></span>
-### `State.temporary` → *object*
-
-Returns the current temporary variables.
-
-#### Since:
-
-* `v2.13.0`
-
-#### Example:
-
-```
-State.temporary  → The current temporary variables
-```
-
-<!-- *********************************************************************** -->
-
 <span id="state-api-getter-size"></span>
 ### `State.size` → *integer*
 
@@ -143,12 +130,31 @@ if (State.size === 0) {
 
 <!-- *********************************************************************** -->
 
+<span id="state-api-getter-temporary"></span>
+### `State.temporary` → *object*
+
+Returns the current temporary variables.
+
+#### Since:
+
+* `v2.13.0`
+
+#### Example:
+
+```
+State.temporary  → The current temporary variables
+```
+
+<!-- *********************************************************************** -->
+
 <span id="state-api-getter-top"></span>
 ### `State.top` → *object*
 
 Returns the topmost (most recent) moment from the full in-play history (past + future).
 
-**WARNING:** `State.top` is *not* a synonym for [`State.active`](#state-api-getter-active).  You will, very likely, never need to use `State.top` directly within your code.
+<p role="note" class="warning"><b>Warning:</b>
+<code>State.top</code> <em>is not</em> a synonym for <a href="#state-api-getter-active"><code>State.active</code></a>.  You will, very likely, never need to use <code>State.top</code> directly within your code.
+</p>
 
 #### Since:
 
@@ -225,7 +231,9 @@ State.getVar("$charName")  → Returns the value of $charName
 
 Returns whether any moments with the given title exist within the past in-play history (past only).
 
-**NOTE:** `State.has()` *does not* check expired moments.  If you need to know if the player has ever been to a particular passage, then you must use the [`State.hasPlayed()`](#state-api-method-hasplayed) method or the [`hasVisited()`](#functions-function-hasvisited) story function.
+<p role="note"><b>Note:</b>
+<code>State.has()</code> <em>does not</em> check expired moments.  If you need to know if the player has ever been to a particular passage, then you <em>must</em> use the <a href="#state-api-method-hasplayed"><code>State.hasPlayed()</code></a> method or the <a href="#functions-function-hasvisited"><code>hasVisited()</code></a> story function.
+</p>
 
 #### Since:
 
@@ -248,7 +256,9 @@ State.has("The Ducky")  → Returns whether a moment matching "The Ducky" exists
 
 Returns whether any moments with the given title exist within the extended past history (expired + past).
 
-**NOTE:** If you need to check for multiple passages, the [`hasVisited()`](#functions-function-hasvisited) story function will likely be more convenient to use.
+<p role="note"><b>Note:</b>
+If you need to check for multiple passages, the <a href="#functions-function-hasvisited"><code>hasVisited()</code></a> story function will likely be more convenient to use.
+</p>
 
 #### Since:
 
@@ -447,7 +457,9 @@ if (State.metadata.has('achievements')) {
 
 Sets the specified key and value within the story metadata store, which causes them to persist over story and browser restarts—n.b. private browsing modes do interfere with this.  To update the value associated with a key, simply set it again.
 
-**NOTE:** The story metadata, like saves, is tied to the specific story it was generated with.  It is not a mechanism for moving data between stories.
+<p role="note"><b>Note:</b>
+The story metadata, like saves, is tied to the specific story it was generated with.  It is not a mechanism for moving data between stories.
+</p>
 
 <p role="note" class="warning"><b>Warning:</b>
 The story metadata store <strong><em>is not</em></strong>, and should not be used as, a replacement for saves.  Examples of good uses: achievement tracking, new game+ data, playthrough statistics, etc.
@@ -483,7 +495,9 @@ State.metadata.set('ngplus', true);
 
 Initializes the seedable pseudo-random number generator (PRNG) and integrates it into the story state and saves.  Once initialized, the [`State.random()`](#state-api-method-random) method and story functions, [`random()`](#functions-function-random) and [`randomFloat()`](#functions-function-randomfloat), return deterministic results from the seeded PRNG—by default, they return non-deterministic results from [`Math.random()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random).
 
-**NOTE:** `State.prng.init()` *must be* called during story initialization, within either a script section (Twine&nbsp;2: the Story JavaScript, Twine&nbsp;1/Twee: a `script`-tagged passage) or the `StoryInit` special passage.  Additionally, it is ***strongly*** recommended that you do not specify any arguments to `State.prng.init()` and allow it to automatically seed itself.  If you should chose to use an explicit seed, however, it is ***strongly*** recommended that you also enable additional entropy, otherwise all playthroughs for all players will be exactly the same.
+<p role="note"><b>Note:</b>
+<code>State.prng.init()</code> <em>must be</em> called during story initialization, within either a script section (Twine&nbsp;2: the Story JavaScript, Twine&nbsp;1/Twee: a <code>script</code>-tagged passage) or the <code>StoryInit</code> special passage.  Additionally, it is <strong><em>strongly</em></strong> recommended that you do not specify any arguments to <code>State.prng.init()</code> and allow it to automatically seed itself.  If you should chose to use an explicit seed, however, it is <strong><em>strongly</em></strong> recommended that you also enable additional entropy, otherwise all playthroughs for all players will be exactly the same.
+</p>
 
 #### Since:
 
@@ -526,7 +540,9 @@ State.prng.isEnabled()  → Returns whether the seedable PRNG is enabled
 
 Returns the current pull count—i.e., how many requests have been made—from the [seedable PRNG](#state-api-method-prng-init) or, if the PRNG is not enabled, `NaN`.
 
-**NOTE:** The pull count is automatically included within saves and sessions, so this is not especially useful outside of debugging purposes.
+<p role="note"><b>Note:</b>
+The pull count is automatically included within saves and sessions, so this is not especially useful outside of debugging purposes.
+</p>
 
 #### Since:
 
@@ -545,7 +561,9 @@ State.prng.pull  → Returns the current PRNG pull count
 
 Returns the seed from the [seedable PRNG](#state-api-method-prng-init) or, if the PRNG is not enabled, `null`.
 
-**NOTE:** The seed is automatically included within saves and sessions, so this is not especially useful outside of debugging purposes.
+<p role="note"><b>Note:</b>
+The seed is automatically included within saves and sessions, so this is not especially useful outside of debugging purposes.
+</p>
 
 #### Since:
 
@@ -564,7 +582,9 @@ State.prng.seed  → Returns the PRNG seed
 
 Returns a pseudo-random decimal number (floating-point) in the range `0` (inclusive) up to, but not including, `1` (exclusive).
 
-**NOTE:** By default, it simply returns non-deterministic results from [`Math.random()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random), however, when the seedable PRNG has been enabled, via [`State.prng.init()`](#state-api-method-prng-init), it returns deterministic results from the seeded PRNG instead.
+<p role="note"><b>Note:</b>
+By default, it simply returns non-deterministic results from <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random"><code>Math.random()</code></a>, however, when the seedable PRNG has been enabled, via <a href="#state-api-method-prng-init"><code>State.prng.init()</code></a>, it returns deterministic results from the seeded PRNG instead.
+</p>
 
 #### Since:
 

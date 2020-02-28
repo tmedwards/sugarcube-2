@@ -29,13 +29,13 @@ The following forms are supported by the naked variable markup:
 <tbody>
 	<tr>
 		<td>Simple variable</td>
-		<td><code>$variable</code></td>
-		<td><code>$name</code></td>
+		<td><pre><code>$variable</code></pre></td>
+		<td><pre><code>$name</code></pre></td>
 	</tr>
 	<tr>
 		<td>Property access,<br>dot notation</td>
-		<td><code>$variable.property</code></td>
-		<td><code>$thing.name</code></td>
+		<td><pre><code>$variable.property</code></pre></td>
+		<td><pre><code>$thing.name</code></pre></td>
 	</tr>
 	<tr>
 		<td>Index/property access,<br>square bracket notation</td>
@@ -240,7 +240,7 @@ body {
 ## HTML Attribute
 
 <p role="note" class="warning"><b>Warning:</b>
-None of these features work with the <a href="#markup-verbatim-html">verbatim HTML markup</a>.
+None of these features work within the <a href="#markup-verbatim-html">verbatim HTML markup</a>.
 </p>
 
 <!-- *********************************************************************** -->
@@ -316,7 +316,10 @@ HTML attributes may be prefixed with directives, special text, which trigger spe
 <dl>
 <dt>Evaluation directive: <code>sc-eval:</code>, <code>@</code></dt>
 <dd>
-	<p>The evaluation directive causes the attribute's value to be evaluated as TwineScript.  Post-evaluation, the directive will be removed from the attribute's name and the result of the evaluation will be used as the actual value of the attribute.</p>
+	<p>	The evaluation directive causes the attribute's value to be evaluated as TwineScript.  Post-evaluation, the directive will be removed from the attribute's name and the result of the evaluation will be used as the actual value of the attribute.</p>
+	<p role="note" class="warning"><b>Warning:</b>
+	The evaluation directive is not allowed on the <a href="#markup-html-attribute-special"><code>data-setter</code> attribute</a>—as its function is to evaluate its contents upon activation of its own element—and any such attempt will cause an error.
+	</p>
 	<table>
 	<caption>For the following examples assume: <code>_id</code> is <code>&quot;foo&quot;</code></caption>
 	<thead>
@@ -328,12 +331,12 @@ HTML attributes may be prefixed with directives, special text, which trigger spe
 	</thead>
 	<tbody>
 		<tr>
-			<td><code>sc-eval:<i>attribute-name</i></code></td>
+			<td><pre><code>sc-eval:<i>attribute-name</i></code></pre></td>
 			<td><pre><code>&lt;span sc-eval:id=&quot;_id&quot;&gt;…&lt;/span&gt;</code></pre></td>
 			<td><pre><code>&lt;span id=&quot;foo&quot;&gt;…&lt;/span&gt;</code></pre></td>
 		</tr>
 		<tr>
-			<td><code>@<i>attribute-name</i></code></td>
+			<td><pre><code>@<i>attribute-name</i></code></pre></td>
 			<td><pre><code>&lt;span @id=&quot;_id&quot;&gt;…&lt;/span&gt;</code></pre></td>
 			<td><pre><code>&lt;span id=&quot;foo&quot;&gt;…&lt;/span&gt;</code></pre></td>
 		</tr>
@@ -374,9 +377,13 @@ The rain in Spain falls¬
 
 Yield the single line in the final output:
 
-    The rain in Spain falls mainly on the plain.
+```
+The rain in Spain falls mainly on the plain.
+```
 
-**NOTE:** The [`<<nobr>>` macro](#macros-macro-nobr), [`nobr` special tag](#special-tag-nobr), and [`Config.passages.nobr` setting](#config-api-property-passages-nobr) all perform a similar, though slightly different, function.
+<p role="note"><b>Note:</b>
+The <a href="#macros-macro-nobr"><code>&lt;&lt;nobr&gt;&gt;</code> macro</a>, <a href="#special-tag-nobr"><code>nobr</code> special tag</a>, and <a href="#config-api-property-passages-nobr"><code>Config.passages.nobr</code> setting</a> all perform a similar, though slightly different, function.
+</p>
 
 
 <!-- ***************************************************************************
@@ -443,7 +450,9 @@ An exclamation point (`!`) that begins a line defines the heading markup.  It co
 <span id="markup-style"></span>
 ## Style
 
-**NOTE:** Because the style markups use the same tokens to begin and end each markup, the same style cannot be nested within itself.
+<p role="note" class="warning"><b>Warning:</b>
+Because the style markups use the same tokens to begin and end each markup, the same style cannot be nested within itself.
+</p>
 
 <table>
 <thead>
@@ -655,7 +664,7 @@ The verbatim text markup disables processing of *all* markup contained within—
 <span id="markup-verbatim-html"></span>
 ## Verbatim HTML
 
-A set of opening and closing &lt;html&gt; tags (`<html></html>`) defines the verbatim HTML markup.  The verbatim HTML markup disables processing of *all* markup contained within—both SugarCube and HTML—passing its contents directly into the output as HTML markup for the browser.  Thus, you should only use plain HTML markup within the verbatim markup—meaning using none of SugarCube's special HTML [attributes](#markup-html-attribute-special) or [directives](#markup-html-attribute-directive).
+A set of opening and closing &lt;html&gt; tags—i.e., `<html></html>`—defines the verbatim HTML markup.  The verbatim HTML markup disables processing of *all* markup contained within—both SugarCube and HTML—passing its contents directly into the output as HTML markup for the browser.  Thus, you should only use plain HTML markup within the verbatim markup—meaning using none of SugarCube's special HTML [attributes](#markup-html-attribute-special) or [directives](#markup-html-attribute-directive).
 
 <p role="note"><b>Note:</b>
 You should virtually never need to use the verbatim HTML markup.
@@ -668,7 +677,7 @@ You should virtually never need to use the verbatim HTML markup.
 <span id="markup-custom-style"></span>
 ## Custom Style
 
-<p role="note"><b>Note:</b>
+<p role="note" class="warning"><b>Warning:</b>
 Because the custom style markup uses the same tokens to begin and end the markup, it cannot be nested within itself.
 </p>
 
@@ -741,7 +750,9 @@ She was always willing to lend her ear to anyone.
 <span id="markup-comment"></span>
 ## Comment
 
-**NOTE:** Comments used within passage markup are not rendered into the page output.
+<p role="note"><b>Note:</b>
+Comments used within passage markup are not rendered into the page output.
+</p>
 
 <table>
 <thead>

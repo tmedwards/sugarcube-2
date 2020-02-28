@@ -67,7 +67,7 @@ The hierarchy of the document body, including associated HTML IDs and class name
 
 #### Story data chunks:
 
-**NOTE:** Periods of ellipsis (`…`) signify data that is generated at compile time.
+Periods of ellipsis (`…`) signify data that is generated at compile time.
 
 ##### Twine 2 style data chunk
 

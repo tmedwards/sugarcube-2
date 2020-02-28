@@ -106,7 +106,9 @@ aList.fadeOut(8, 1);
 
 Interrupts an in-progress fade of the currently playing track, or does nothing if no fade is progressing.
 
-**NOTE:** This does not alter the volume level.
+<p role="note"><b>Note:</b>
+This does not alter the volume level.
+</p>
 
 #### Since:
 
@@ -232,7 +234,9 @@ if (aList.isStopped()) {
 
 Pauses playback of the playlist and, if they're not already in the process of loading, forces its tracks to drop any existing data and begin loading.
 
-**NOTE:** This *should not* be done lightly if your audio sources are on the network, as it forces the player to begin downloading them.
+<p role="note" class="warning"><b>Warning:</b>
+This <em>should not</em> be done lightly if your audio sources are on the network, as it forces players to begin downloading them.
+</p>
 
 #### Since:
 
@@ -485,7 +489,9 @@ var listTime = aList.time();
 
 Stops playback of the playlist and forces its tracks to drop any existing data.
 
-**NOTE:** Once unloaded, playback cannot occur until the track's data is loaded again.
+<p role="note"><b>Note:</b>
+Once unloaded, playback cannot occur until the track's data is loaded again.
+</p>
 
 #### Since:
 

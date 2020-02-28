@@ -17,7 +17,7 @@ Opens the built-in alert dialog, displaying the given message to the player.
 #### Parameters:
 
 * **`message`:** (*string*) The message to display to the player.
-* **`options`:** (optional, *null* | *object*) The options object.  See [`Dialog.addClickHandler()`](#dialog-api-method-addclickhandler) for more information.
+* **`options`:** (optional, *null* | *object*) The options object.  See [`Dialog.open()`](#dialog-api-method-open) for more information.
 * **`closeFn`:** (optional, *null* | *function*) The function to execute whenever the dialog is closed.
 
 #### Example:
@@ -39,7 +39,7 @@ Opens the built-in jump to dialog, which is populated via the [`bookmark` tag](#
 
 #### Parameters:
 
-* **`options`:** (optional, *null* | *object*) The options object.  See [`Dialog.addClickHandler()`](#dialog-api-method-addclickhandler) for more information.
+* **`options`:** (optional, *null* | *object*) The options object.  See [`Dialog.open()`](#dialog-api-method-open) for more information.
 * **`closeFn`:** (optional, *null* | *function*) The function to execute whenever the dialog is closed.
 
 #### Example:
@@ -61,7 +61,7 @@ Opens the built-in restart dialog, prompting the player to restart the story.
 
 #### Parameters:
 
-* **`options`:** (optional, *null* | *object*) The options object.  See [`Dialog.addClickHandler()`](#dialog-api-method-addclickhandler) for more information.
+* **`options`:** (optional, *null* | *object*) The options object.  See [`Dialog.open()`](#dialog-api-method-open) for more information.
 
 #### Example:
 
@@ -82,7 +82,7 @@ Opens the built-in saves dialog.
 
 #### Parameters:
 
-* **`options`:** (optional, *null* | *object*) The options object.  See [`Dialog.addClickHandler()`](#dialog-api-method-addclickhandler) for more information.
+* **`options`:** (optional, *null* | *object*) The options object.  See [`Dialog.open()`](#dialog-api-method-open) for more information.
 * **`closeFn`:** (optional, *null* | *function*) The function to execute whenever the dialog is closed.
 
 #### Example:
@@ -104,7 +104,7 @@ Opens the built-in settings dialog, which is populated from the [`Setting` API](
 
 #### Parameters:
 
-* **`options`:** (optional, *null* | *object*) The options object.  See [`Dialog.addClickHandler()`](#dialog-api-method-addclickhandler) for more information.
+* **`options`:** (optional, *null* | *object*) The options object.  See [`Dialog.open()`](#dialog-api-method-open) for more information.
 * **`closeFn`:** (optional, *null* | *function*) The function to execute whenever the dialog is closed.
 
 #### Example:
@@ -126,7 +126,7 @@ Opens the built-in share dialog, which is populated from the [`StoryShare` passa
 
 #### Parameters:
 
-* **`options`:** (optional, *null* | *object*) The options object.  See [`Dialog.addClickHandler()`](#dialog-api-method-addclickhandler) for more information.
+* **`options`:** (optional, *null* | *object*) The options object.  See [`Dialog.open()`](#dialog-api-method-open) for more information.
 * **`closeFn`:** (optional, *null* | *function*) The function to execute whenever the dialog is closed.
 
 #### Example:

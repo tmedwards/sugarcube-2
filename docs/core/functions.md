@@ -10,7 +10,9 @@
 
 Returns a deep copy of the given value.
 
-**NOTE:** Only the primitives, generic objects, some JavaScript natives (specifically: `Array`, `Date`, `Map`, `RegExp`, and `Set`), and DOM node objects are supported by default.  Unsupported objects will need a `.clone()` method to be properly supported by the `cone()` function—when called on such an object, it will simply defer to the local method.
+<p role="note"><b>Note:</b>
+Only the primitives, generic objects, some JavaScript natives (specifically: <code>Array</code>, <code>Date</code>, <code>Map</code>, <code>RegExp</code>, and <code>Set</code>), and DOM node objects are supported by default.  Unsupported object types, either native or custom, will need to implement <code>.clone()</code> method to be properly supported by the <code>cone()</code> function—when called on such an object, it will simply defer to the local method; see the <a href="#guide-tips-non-generic-object-types"><em>Non-generic object types (a.k.a. classes)</em> guide</a> for more information.
+</p>
 
 #### Since:
 
@@ -49,7 +51,7 @@ Returns a random value from its given arguments.
 
 #### Parameters:
 
-* **`list`:** (*any*) The list of values to operate on.  May be any combination of singular values, actual arrays, or array-like objects.  All values will be concatenated into a single list for selection.  **NOTE:** Does not flatten nested arrays—if this is required, the [`<Array>.flatten()`](#methods-array-prototype-method-flatten) method may be used to flatten the nested arrays prior to passing them to `either()`.
+* **`list`:** (*any*) The list of values to operate on.  May be any combination of singular values, actual arrays, or array-like objects.  All values will be concatenated into a single list for selection.  **NOTE:** Does not flatten nested arrays—if this is required, the [`<Array>.flat()`](#methods-array-prototype-method-flat) method may be used to flatten the nested arrays prior to passing them to `either()`.
 
 #### Example:
 
@@ -144,9 +146,13 @@ Returns the number of turns that have passed since the last instance of the pass
 
 Load and integrate external JavaScript scripts.
 
-**NOTE:** Loading is done asynchronously at run time, so if the script must be available within a tight time frame, then you should use the `Promise` returned by the function to ensure the script is loaded before before it is needed.
+<p role="note"><b>Note:</b>
+Loading is done asynchronously at run time, so if the script must be available within a tight time frame, then you should use the <code>Promise</code> returned by the function to ensure that the script is loaded before it is needed.
+</p>
 
-**NOTE:** A script section (Twine&nbsp;2: the Story JavaScript; Twine&nbsp;1/Twee: a `script`-tagged passage) is normally the best place to call `importScripts()`.
+<p role="note"><b>Note:</b>
+A script section (Twine&nbsp;2: the Story JavaScript; Twine&nbsp;1/Twee: a <code>script</code>-tagged passage) is normally the best place to call <code>importScripts()</code>.
+</p>
 
 #### Since:
 
@@ -229,9 +235,13 @@ setup.aScriptImport
 
 Load and integrate external CSS stylesheets.
 
-**NOTE:** Loading is done asynchronously at run time, so if the stylesheet must be available within a tight time frame, then you should use the `Promise` returned by the function to ensure the stylesheet is loaded before it is needed.
+<p role="note"><b>Note:</b>
+Loading is done asynchronously at run time, so if the stylesheet must be available within a tight time frame, then you should use the <code>Promise</code> returned by the function to ensure that the stylesheet is loaded before it is needed.
+</p>
 
-**NOTE:** A script section (Twine&nbsp;2: the Story JavaScript; Twine&nbsp;1/Twee: a `script`-tagged passage) is normally the best place to call `importStyles()`.
+<p role="note"><b>Note:</b>
+A script section (Twine&nbsp;2: the Story JavaScript; Twine&nbsp;1/Twee: a <code>script</code>-tagged passage) is normally the best place to call <code>importStyles()</code>.
+</p>
 
 #### Since:
 
@@ -300,7 +310,9 @@ importStyles("https://somesite/a/path/a.css")
 
 Sets the specified key and value within the story metadata store, which causes them to persist over story and browser restarts.  To update the value associated with a key, simply set it again.
 
-**NOTE:** The story metadata, like saves, is tied to the specific story it was generated with.  It is not a mechanism for moving data between stories.
+<p role="note"><b>Note:</b>
+The story metadata, like saves, is tied to the specific story it was generated with.  It is not a mechanism for moving data between stories.
+</p>
 
 <p role="note" class="warning"><b>Warning:</b>
 The story metadata store <strong><em>is not</em></strong>, and should not be used as, a replacement for saves.  Examples of good uses: achievement tracking, new game+ data, playthrough statistics, etc.
@@ -377,7 +389,9 @@ Returns the title of the most recent previous passage whose title does not match
 
 Returns a pseudo-random whole number (integer) within the range of the given bounds (inclusive)—i.e., [min,&nbsp;max].
 
-**NOTE:** By default, it uses [`Math.random()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random) as its source of (non-deterministic) randomness, however, when the seedable PRNG has been enabled, via [`State.prng.init()`](#state-api-method-prng-init), it uses the (deterministic) seeded PRNG instead.
+<p role="note"><b>Note:</b>
+By default, it uses <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random"><code>Math.random()</code></a> as its source of (non-deterministic) randomness, however, when the seedable PRNG has been enabled, via <a href="#state-api-method-prng-init"><code>State.prng.init()</code></a>, it uses that (deterministic) seeded PRNG instead.
+</p>
 
 #### Since:
 
@@ -402,7 +416,9 @@ random(1, 6)  → Returns a number in the range 1–6
 
 Returns a pseudo-random decimal number (floating-point) within the range of the given bounds (inclusive for the minimum, exclusive for the maximum)—i.e., [min,&nbsp;max).
 
-**NOTE:** By default, it uses [`Math.random()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random) as its source of (non-deterministic) randomness, however, when the seedable PRNG has been enabled, via [`State.prng.init()`](#state-api-method-prng-init), it uses the (deterministic) seeded PRNG instead.
+<p role="note"><b>Note:</b>
+By default, it simply returns non-deterministic results from <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random"><code>Math.random()</code></a>, however, when the seedable PRNG has been enabled, via <a href="#state-api-method-prng-init"><code>State.prng.init()</code></a>, it returns deterministic results from the seeded PRNG instead.
+</p>
 
 #### Since:
 
@@ -465,7 +481,9 @@ Renders the selected passage into the target element, replacing any existing con
 
 #### Example:
 
-**NOTE:** As it is highly unlikely that either an array of passage names or default text will be needed in the vast majority of cases, only a few basic examples will be given.
+<p role="note"><b>Note:</b>
+As it is highly unlikely that either an array of passage names or default text will be needed in the vast majority of cases, only a few basic examples will be given.
+</p>
 
 ```
 // Using an ID; given an existing element on the page: <div id="my-display"></div>

@@ -3,7 +3,9 @@
 ************************************************************************************************ -->
 <h1 id="save-api"><code>Save</code> API</h1>
 
-**NOTE:** There are several [configuration settings for saves](#config-api-saves), which it would be wise to familiarize yourself with.
+<p role="note"><b>Note:</b>
+There are several <a href="#config-api-saves">configuration settings for saves</a> that it would be wise for you to familiarize yourself with.
+</p>
 
 <p role="note" class="warning"><b>Warning:</b>
 In-browser saves—i.e., autosave and slot saves—are largely incompatible with private browsing modes, which cause all in-browser storage mechanisms to either persist only for the lifetime of the browsing session or fail outright.
@@ -16,7 +18,9 @@ In-browser saves—i.e., autosave and slot saves—are largely incompatible with
 <span id="save-api-save-objects"></span>
 ## Save Objects
 
-**NOTE:** Adding additional properties directly to save objects is not recommended.  Instead, use the `metadata` property.
+<p role="note"><b>Note:</b>
+Adding additional properties directly to save objects is not recommended.  Instead, use the <code>metadata</code> property.
+</p>
 
 Save objects have some of the following properties:
 

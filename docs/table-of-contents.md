@@ -5,7 +5,7 @@
 <header role="banner">
 <div id="header-logo"></div>
 <h1>SugarCube v2 Documentation</h1>
-<time datetime="{{.ISO_DATE}}">{{.DATE}}</time>
+<div><tt>{{.VERSION}}</tt> (<time datetime="{{.ISO_DATE}}">{{.DATE}}</time>)</div>
 </header>
 
 ## [Introduction](#introduction)
@@ -414,8 +414,8 @@
 * [`State.current`](#state-api-getter-current)
 * [`State.length`](#state-api-getter-length)
 * [`State.passage`](#state-api-getter-passage)
-* [`State.temporary`](#state-api-getter-temporary)
 * [`State.size`](#state-api-getter-size)
+* [`State.temporary`](#state-api-getter-temporary)
 * [`State.top`](#state-api-getter-top)
 * [`State.turns`](#state-api-getter-turns)
 * [`State.variables`](#state-api-getter-variables)

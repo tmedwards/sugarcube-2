@@ -49,7 +49,9 @@ See the MDN article [<i>Media formats for HTML audio and video</i>](https://deve
 
 #### Media passage special tags
 
-**NOTE:** As with all special tags, media passage tags are case sensitive, so their spelling and capitalization must be *exactly* as shown.
+<p role="note"><b>Note:</b>
+As with all special tags, media passage tags are case sensitive, so their spelling and capitalization must be <em>exactly</em> as shown.
+</p>
 
 <table>
 <thead>

@@ -34,7 +34,9 @@ A version of the above code in SugarCube might look like this:
 <<link 'Go somewhere else' `either('this passage', 'that passage', 'the other passage')`>><</link>>
 ```
 
-**SEE:** [Macro Arguments](#macros-arguments).
+<p role="note" class="see"><b>See:</b>
+<a href="#macros-arguments">Macro Arguments</a>.
+</p>
 
 ### Container Macros
 
@@ -93,7 +95,9 @@ SugarCube's `<<link>>` and `<<button>>` macros can also accept the link markup a
 
 ### DOM Macros
 
-**NOTE:** Harlowe refers to these as "revision macros".
+<p role="note"><b>Note:</b>
+Harlowe refers to these as "revision macros".
+</p>
 
 SugarCube's DOM macros can target any HTML element on the page, not just hooks, and unlike their Harlowe equivalents, they cannot target arbitrary strings.  You can use custom style markup or HTML to create the elements, and then target them with a query selector.
 
@@ -121,7 +125,9 @@ The man says, "@@#target;<<= _greetings.random()>>@@."
 <</link>>
 ```
 
-**NOTE:** The [DOM macros](#macros-dom) do have a limitation that you should familiarize yourself with.
+<p role="note"><b>Note:</b>
+The <a href="#macros-dom">DOM macros</a> do have a limitation that you should familiarize yourself with.
+</p>
 
 ### The Goto Macro
 

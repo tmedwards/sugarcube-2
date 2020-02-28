@@ -14,7 +14,9 @@ See the [Variables](https://twinery.org/wiki/variable) and [About Expressions](h
 <span id="twinescript-variables"></span>
 ## Variables
 
-**NOTE:** Temporary variables were added in `v2.3.0`.
+<p role="note"><b>Note:</b>
+Temporary variables were added in <code>v2.3.0</code>.
+</p>
 
 A variable is a bit of storage where you may stash a value for later use.  In SugarCube, they come in two types: story variables and temporary variables.  Story variables are a part of the story history and exist for the lifetime of a playthrough session.  Temporary variables do not become part of the story history and only exist for the lifetime of the moment/turn that they're created in.  You'll likely use story variables most often throughout your project—though, temporary variables are perfect candidates for things like loop variables, if you're using the [`<<for>>`](#macros-macro-for) macro.
 
@@ -50,7 +52,9 @@ _COUNT
 
 ### Using Variables
 
-**NOTE:** This is not an exhaustive list.  There are many ways to use and interact with variables.
+<p role="note"><b>Note:</b>
+This is not an exhaustive list.  There are many ways to use and interact with variables.
+</p>
 
 To modify the values contained within variables, see the [`<<set>>`](#macros-macro-set) macro and [setter links](#markup-link).
 

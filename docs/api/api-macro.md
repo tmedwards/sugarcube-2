@@ -3,7 +3,9 @@
 ************************************************************************************************ -->
 <h1 id="macro-api"><code>Macro</code> API</h1>
 
-Sibling to the [`MacroContext` API](#macrocontext-api).
+<p role="note" class="see"><b>See Also:</b>
+<a href="#macrocontext-api"><code>MacroContext</code> API</a>.
+</p>
 
 <!-- *********************************************************************** -->
 

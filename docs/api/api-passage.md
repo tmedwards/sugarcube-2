@@ -3,7 +3,7 @@
 ************************************************************************************************ -->
 <h1 id="passage-api"><code>Passage</code> API</h1>
 
-Instances of the `Passage` object are returned by the [`Story.get()`](#story-api-method-get) static method.
+Instances of the `Passage` object are returned by the [`Story.passages.get()`](#story-api-method-passages-get) static method.
 
 All properties of `Passage` objects should be treated as if they were ***read-only***, as modifying them could result in unexpected behavior.
 
@@ -56,7 +56,7 @@ The title of the passage.
 <span id="passage-api-prototype-method-description"></span>
 ### `<Passage>.description()` → *string*
 
-Returns the description of the passage (created from either an excerpt of the passage or the [`Config.passages.descriptions`](#config-api-property-passages-descriptions) object).
+Returns the description of the passage, created from either an excerpt of the passage or the [`Config.passages.descriptions` setting](#config-api-property-passages-descriptions).
 
 #### Since:
 

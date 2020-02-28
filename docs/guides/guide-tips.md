@@ -45,7 +45,9 @@ In your menu passages, your long return links will simply reference the `$return
 <<link "Return" $return>><</link>>
 ```
 
-**NOTE (Twine&nbsp;2):** Unfortunately, due to how the Twine&nbsp;2 automatic passage creation feature currently works, using the link markup form will cause a passage named `$return` to be created that will need to be deleted.  To avoid this problem, it's suggested that you use the separate argument form of [`<<link>>`](#macros-macro-link) in Twine&nbsp;2—as shown above.
+<p role="note"><b>Note (Twine&nbsp;2):</b>
+Unfortunately, due to how the Twine&nbsp;2 automatic passage creation feature currently works, using the link markup form will cause a passage named <code>$return</code> to be created that will need to be deleted.  To avoid this problem, it's suggested that you use the separate argument form of <a href="#macros-macro-link"><code>&lt;&lt;link&gt;&gt;</code></a> in Twine&nbsp;2—as shown above.
+</p>
 
 <!-- *********************************************************************** -->
 

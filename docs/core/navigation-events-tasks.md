@@ -91,6 +91,8 @@ Triggered before the rendering of the incoming passage.
 
 #### Example:
 
+##### Basic usage
+
 ```
 /* Execute the handler function each time the event triggers. */
 $(document).on(':passagestart', function (ev) {
@@ -103,15 +105,15 @@ $(document).one(':passagestart', function (ev) {
 });
 ```
 
-Modifying the content buffer:
+##### Modifying the content buffer
 
 ```
 /*
-	Process the markup "Begin at the //beginning//." and append the result
+	Process the markup "In the //beginning//." and append the result
 	to the incoming passage's element.
 */
 $(document).on(':passagestart', function (ev) {
-	$(ev.content).wiki("Begin at the //beginning//.");
+	$(ev.content).wiki("In the //beginning//.");
 });
 ```
 
@@ -133,6 +135,8 @@ Triggered after the rendering of the incoming passage.
 
 #### Example:
 
+##### Basic usage
+
 ```
 /* Execute the handler function each time the event triggers. */
 $(document).on(':passagerender', function (ev) {
@@ -145,15 +149,15 @@ $(document).one(':passagerender', function (ev) {
 });
 ```
 
-Modifying the content buffer:
+##### Modifying the content buffer
 
 ```
 /*
-	Process the markup "At the //end// of all things." and append the result
+	Process the markup "At the //end// of some renderings." and append the result
 	to the incoming passage's element.
 */
 $(document).on(':passagerender', function (ev) {
-	$(ev.content).wiki("At the //end// of all things.");
+	$(ev.content).wiki("At the //end// of some renderings.");
 });
 ```
 
@@ -166,13 +170,17 @@ Triggered after the display—i.e., output—of the incoming passage.
 
 #### Since:
 
-* `v2.20.0`
+* `v2.20.0`: Basic syntax.
+* `v2.31.0`: Added `content` property to event object.
 
 #### Event object properties:
 
+* **`content`:** (*`HTMLElement` object*) The element holding the fully rendered content of the incoming passage.
 * **`passage`:** (*`Passage` object*) The incoming passage object.  See the [`Passage` API](#passage-api) for more information.
 
 #### Example:
+
+##### Basic usage
 
 ```
 /* Execute the handler function each time the event triggers. */
@@ -186,6 +194,18 @@ $(document).one(':passagedisplay', function (ev) {
 });
 ```
 
+##### Modifying the content buffer
+
+```
+/*
+	Process the markup "It's //showtime//!" and append the result
+	to the incoming passage's element.
+*/
+$(document).on(':passagedisplay', function (ev) {
+	$(ev.content).wiki("It's //showtime//!");
+});
+```
+
 <!-- *********************************************************************** -->
 
 <span id="navigation-event-passageend"></span>
@@ -195,13 +215,17 @@ Triggered at the end of passage navigation.
 
 #### Since:
 
-* `v2.20.0`
+* `v2.20.0`: Basic syntax.
+* `v2.31.0`: Added `content` property to event object.
 
 #### Event object properties:
 
+* **`content`:** (*`HTMLElement` object*) The element holding the fully rendered content of the incoming passage.
 * **`passage`:** (*`Passage` object*) The incoming passage object.  See the [`Passage` API](#passage-api) for more information.
 
 #### Example:
+
+##### Basic usage
 
 ```
 /* Execute the handler function each time the event triggers. */
@@ -215,6 +239,18 @@ $(document).one(':passageend', function (ev) {
 });
 ```
 
+##### Modifying the content buffer
+
+```
+/*
+	Process the markup "So long and //thanks for all the fish//!" and append the result
+	to the incoming passage's element.
+*/
+$(document).on(':passageend', function (ev) {
+	$(ev.content).wiki("So long and //thanks for all the fish//!");
+});
+```
+
 
 <!-- ***************************************************************************
 	Tasks
@@ -224,7 +260,9 @@ $(document).one(':passageend', function (ev) {
 
 Navigation tasks are functions that are called at specific points during passage navigation.
 
-**NOTE:** Tasks are an older method of enabling passage navigation events and you are encouraged to use [navigation events](#navigation-events) instead as they allow for easier control and are triggered at better points during navigation.
+<p role="note"><b>Note:</b>
+Tasks are an older method of enabling passage navigation events and you are encouraged to use <a href="#navigation-events">navigation events</a> instead as they allow for easier control and are triggered at better points during navigation.
+</p>
 
 <!-- *********************************************************************** -->
 

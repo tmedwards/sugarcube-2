@@ -5,7 +5,9 @@
 
 This is a reference on how to update existing SugarCube code to work with newer versions of SugarCube.
 
-**NOTE:** The majority of newer SugarCube versions do not have any changes that would require an update.  For those versions that do, the updates are normally completely elective and may be addressed at your leisure, or not at all.  Sometimes there are breaking changes, however, and these must be addressed immediately.
+<p role="note"><b>Note:</b>
+The majority of newer SugarCube versions do not have any changes that would require an update.  For those versions that do, the updates are normally completely elective and may be addressed at your leisure, or not at all.  Sometimes there are breaking changes, however, and these must be addressed immediately.
+</p>
 
 
 <!-- ***************************************************************************

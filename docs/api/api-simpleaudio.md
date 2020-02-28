@@ -31,7 +31,9 @@ The audio subsystem is based upon the HTML Media Elements APIs and comes with so
 
 Pauses playback of *all* currently registered tracks and, if they're not already in the process of loading, force them to drop any existing data and begin loading.
 
-**NOTE:** This *should not* be done lightly if your audio sources are on the network, as it forces the player to begin downloading them.
+<p role="note" class="warning"><b>Warning:</b>
+This <em>should not</em> be done lightly if your audio sources are on the network, as it forces players to begin downloading them.
+</p>
 
 #### Since:
 
@@ -52,7 +54,9 @@ SimpleAudio.load();
 
 Displays the loading screen until *all* currently registered audio tracks have either loaded to a playable state or aborted loading due to errors.  The loading process is as described in [`SimpleAudio.load()`](#simpleaudio-api-method-load).
 
-**NOTE:** This *should not* be done lightly if your audio sources are on the network, as it forces the player to begin downloading them.
+<p role="note" class="warning"><b>Warning:</b>
+This <em>should not</em> be done lightly if your audio sources are on the network, as it forces players to begin downloading them.
+</p>
 
 #### Since:
 
@@ -197,7 +201,9 @@ SimpleAudio.stop();
 
 Stops playback of *all* currently registered tracks and force them to drop any existing data.
 
-**NOTE:** Once a track has been unloaded, playback cannot occur until it is reloaded.
+<p role="note"><b>Note:</b>
+Once a track has been unloaded, playback cannot occur until it is reloaded.
+</p>
 
 #### Since:
 
@@ -282,7 +288,9 @@ SimpleAudio.tracks.add("what", "mp3|http://an-audio-service.com/a-user/a-track-i
 
 Deletes all audio tracks.
 
-**NOTE:** Cannot delete tracks solely under the control of a playlist.
+<p role="note"><b>Note:</b>
+Cannot delete tracks solely under the control of a playlist.
+</p>
 
 #### Since:
 
@@ -303,7 +311,9 @@ SimpleAudio.tracks.clear();
 
 Deletes the audio track with the given track ID.
 
-**NOTE:** Cannot delete tracks solely under the control of a playlist.
+<p role="note"><b>Note:</b>
+Cannot delete tracks solely under the control of a playlist.
+</p>
 
 <p role="note" class="warning"><b>Warning:</b>
 Does not currently remove the track from either groups or playlists.  Thus, any groups or playlists containing the deleted track should be rebuilt.
@@ -330,7 +340,9 @@ SimpleAudio.tracks.delete("bgm_space");
 
 Returns the [`AudioTrack` instance](#audiotrack-api) with the given track ID, or `null` on failure.
 
-**NOTE:** To affect multiple tracks and/or groups at once, see the [`SimpleAudio.select()` method](#simpleaudio-api-method-select).
+<p role="note"><b>Note:</b>
+To affect multiple tracks and/or groups at once, see the <a href="#simpleaudio-api-method-select"><code>SimpleAudio.select()</code> method</a>.
+</p>
 
 #### Since:
 
@@ -392,7 +404,9 @@ if (SimpleAudio.tracks.has("bgm_space")) {
 
 Adds an audio group with the given group ID.  Groups are useful for applying actions to multiple tracks simultaneously and/or excluding the included tracks from a larger set when applying actions.
 
-**NOTE:** If you want to play tracks in a sequence, then you want a [playlist](#simpleaudio-api-method-lists-add) instead.
+<p role="note"><b>Note:</b>
+If you want to play tracks in a sequence, then you want a <a href="#simpleaudio-api-method-lists-add">playlist</a> instead.
+</p>
 
 #### Since:
 
@@ -417,7 +431,9 @@ SimpleAudio.groups.add(":ui", "ui_beep", "ui_boop", "ui_swish");
 
 Deletes all audio groups.
 
-**NOTE:** Only deletes the groups themselves, does not affect their component tracks.
+<p role="note"><b>Note:</b>
+Only deletes the groups themselves, does not affect their component tracks.
+</p>
 
 #### Since:
 
@@ -438,7 +454,9 @@ SimpleAudio.groups.clear();
 
 Deletes the audio group with the given group ID.
 
-**NOTE:** Only deletes the group itself, does not affect its component tracks.
+<p role="note"><b>Note:</b>
+Only deletes the group itself, does not affect its component tracks.
+</p>
 
 #### Since:
 
@@ -461,7 +479,9 @@ SimpleAudio.groups.delete(":ui");
 
 Returns the array of track IDs with the given group ID, or `null` on failure.
 
-**NOTE:** To actually affect multiple tracks and/or groups, see the [`SimpleAudio.select()` method](#simpleaudio-api-method-select).
+<p role="note"><b>Note:</b>
+To actually affect multiple tracks and/or groups, see the <a href="#simpleaudio-api-method-select"><code>SimpleAudio.select()</code> method</a>.
+</p>
 
 #### Since:
 
@@ -514,7 +534,9 @@ if (SimpleAudio.groups.has(":ui")) {
 
 Adds a playlist with the given list ID.  Playlists are useful for playing tracks in a sequence—i.e., one after another.
 
-**NOTE:** If you simply want to apply actions to multiple tracks simultaneously, then you want a [group](#simpleaudio-api-method-groups-add) instead.
+<p role="note"><b>Note:</b>
+If you simply want to apply actions to multiple tracks simultaneously, then you want a <a href="#simpleaudio-api-method-groups-add">group</a> instead.
+</p>
 
 #### Since:
 

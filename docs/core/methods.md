@@ -237,7 +237,9 @@ $npa.flat(2)  → Returns ["Alfa", "Bravo", "Charlie", "Delta", "Echo", "Foxtrot
 
 Returns a new array consisting of the result of calling the given mapping function on every element in the source array and then concatenating all sub-array elements into it recursively up to a depth of `1`.  Does not modify the original.
 
-**NOTE:** Identical to calling `<Array>.map(…).flat()`.
+<p role="note"><b>Note:</b>
+Identical to calling <code>&lt;Array&gt;.map(…).flat()</code>.
+</p>
 
 #### Since: *native JavaScript method*
 
@@ -688,7 +690,9 @@ Array.random($pies)  → Returns a random pie from the array
 
 Returns the given code string, and optional data chunk, wrapped within the JSON deserialization revive wrapper.  Intended to allow authors to easily wrap their custom object types (a.k.a. classes) revival code and associated data within the revive wrapper, which should be returned from an object instance's `.toJSON()` method, so that the instance may be properly revived upon deserialization.
 
-**SEE:** [Non-generic object types (a.k.a. classes)](#guide-tips-non-generic-object-types) for more detailed information.
+<p role="note" class="see"><b>See:</b>
+The <a href="#guide-tips-non-generic-object-types"><em>Non-generic object types (a.k.a. classes)</em> guide</a> for more detailed information.
+</p>
 
 #### Since:
 
@@ -789,7 +793,9 @@ $('<a>Click me</a>')
 
 Changes the disabled state of the target WAI-ARIA-compatible clickable element(s).  Returns a reference to the current `jQuery` object for chaining.
 
-**NOTE:** This method is meant to work with clickables created via [`<jQuery>.ariaClick()`](#methods-jquery-prototype-method-ariaclick) and may not work with clickables from other sources.  SugarCube uses `<jQuery>.ariaClick()` internally to handle all its various link markup and macros.
+<p role="note"><b>Note:</b>
+This method is meant to work with clickables created via <a href="#methods-jquery-prototype-method-ariaclick"><code>&lt;jQuery&gt;.ariaClick()</code></a> and may not work with clickables from other sources.  SugarCube uses <code>&lt;jQuery&gt;.ariaClick()</code> internally to handle all of its various link markup and macros.
+</p>
 
 #### Since:
 
@@ -813,7 +819,9 @@ $('#so-clicky').ariaDisabled(false)  → Enables the target element
 ### `<jQuery>.ariaIsDisabled()` → *`boolean`*
 Returns whether any of the target WAI-ARIA-compatible clickable element(s) are disabled.
 
-**NOTE:** This method is meant to work with clickables created via [`<jQuery>.ariaClick()`](#methods-jquery-prototype-method-ariaclick) and may not work with clickables from other sources.  SugarCube uses `<jQuery>.ariaClick()` internally to handle all its various link markup and macros.
+<p role="note"><b>Note:</b>
+This method is meant to work with clickables created via <a href="#methods-jquery-prototype-method-ariaclick"><code>&lt;jQuery&gt;.ariaClick()</code></a> and may not work with clickables from other sources.  SugarCube uses <code>&lt;jQuery&gt;.ariaClick()</code> internally to handle all of its various link markup and macros.
+</p>
 
 #### Since:
 
@@ -994,8 +1002,9 @@ RegExp.escape('That will be $5 (cash only)')   → Returns 'That will be \$5 \(c
 <span id="methods-string"></span>
 ## String Methods
 
+<span id="methods-string-note"></span>
 <p role="note"><b>Note:</b>
-Strings in TwineScript/JavaScript are Unicode, however, due to historic reasons they are comprised of, and indexed by, individual UTF-16 code units rather than code points.  This means that some code points may span multiple code units—e.g., the character 💩 is one code point, but two code units.
+Strings in TwineScript/JavaScript are Unicode, however, due to historic reasons they are comprised of, and indexed by, individual UTF-16 code units rather than code points.  This means that some code points may span multiple code units—e.g., the emoji 💩 is one code point, but two code units.
 </p>
 
 <!-- *********************************************************************** -->
@@ -1029,7 +1038,9 @@ $text.count("ow", 8)  → Returns 2
 
 Returns the first Unicode code point within the string.  Does not modify the original.
 
-**SEE:** [String Methods note](#methods-string).
+<p role="note" class="see"><b>See:</b>
+<a href="#methods-string-note">String methods note</a>.
+</p>
 
 #### Since:
 
@@ -1061,10 +1072,14 @@ Returns a formatted string, after replacing each format item in the given format
 #### Parameters:
 
 * **`format`:** (*string*) The format string, which consists of normal text and format items.
-	* Format items have the syntax `{index[,alignment]}`, square-brackets denoting optional elements.
-		* **`index`:** (*integer*) The (zero-based) index of the argument whose string representation will replace the format item.
-		* **`alignment`:** (optional, *integer*) The total length of the field into which the argument is inserted, and whether it's right- or left-aligned (positive aligns right, negative aligns left).
 * **`arguments`:** (*any* | *array*) Either a list of arguments, which correspond by-index to the format items within the format string, or an array, whose members correspond by-index.
+
+#### Format items:
+
+A format item has the syntax `{index[,alignment]}`, square-brackets denoting optional elements.
+
+* **`index`:** (*integer*) The (zero-based) index of the argument whose string representation will replace the format item.
+* **`alignment`:** (optional, *integer*) The total length of the field into which the argument is inserted, and whether it's right- or left-aligned (positive aligns right, negative aligns left).
 
 #### Example:
 
@@ -1106,7 +1121,9 @@ $text.includes("pow")      → Returns false
 
 Returns the last Unicode code point within the string.  Does not modify the original.
 
-**SEE:** [String Methods note](#methods-string).
+<p role="note" class="see"><b>See:</b>
+<a href="#methods-string-note">String methods note</a>.
+</p>
 
 #### Since:
 
@@ -1131,7 +1148,9 @@ $text.last()  → Returns "🙊"
 
 Returns the string with its first Unicode code point converted to upper case, according to any locale-specific rules.  Does not modify the original.
 
-**SEE:** [String Methods note](#methods-string).
+<p role="note" class="see"><b>See:</b>
+<a href="#methods-string-note">String methods note</a>.
+</p>
 
 #### Since:
 
@@ -1156,7 +1175,9 @@ $text.toLocaleUpperFirst()  → Returns "İki"
 
 Returns the string with its first Unicode code point converted to upper case.  Does not modify the original.
 
-**SEE:** [String Methods note](#methods-string).
+<p role="note" class="see"><b>See:</b>
+<a href="#methods-string-note">String methods note</a>.
+</p>
 
 #### Since:
 

@@ -383,7 +383,9 @@ That probably won't be very pleasing to the eye, however, so you will likely nee
 
 Determines whether the autosave, if it exists, is automatically loaded upon story startup.  Valid values are boolean `true`, which simply causes the autosave to be loaded, the string `"prompt"`, which prompts the player via a dialog to load the autosave, or a function, which causes the autosave to be loaded if its return value is truthy.
 
-**NOTE:** If the autosave cannot be loaded, for any reason, then the start passage is loaded instead.
+<p role="note"><b>Note:</b>
+If the autosave cannot be loaded, for any reason, then the start passage is loaded instead.
+</p>
 
 #### Since:
 
@@ -597,7 +599,9 @@ Config.ui.stowBarInitially = 800;
 
 Determines whether certain elements within the UI bar are updated when passages are displayed.  The affected elements are the story: banner, subtitle, author, caption, and menu.
 
-**NOTE:** SugarCube uses the story's title as the basis for the key used to store and load data used when playing the story and for saves.  Because of this, the story title is not included in updates and it is ***strongly*** recommended that you do not add any kind of dynamic code to it.
+<p role="note"><b>Note:</b>
+The story title is not included in updates because SugarCube uses it as the basis for the key used to store and load data used when playing the story and for saves.
+</p>
 
 #### Since:
 
@@ -624,7 +628,9 @@ Config.ui.updateStoryElements = false;
 
 Determines whether the `link-visited` class is added to internal passage links that go to previously visited passages—i.e., the passage already exists within the story history.
 
-**NOTE:** You *must* provide your own styling for the `link-visited` class as none is provided by default.
+<p role="note"><b>Note:</b>
+You <em>must</em> provide your own styling for the <code>link-visited</code> class as none is provided by default.
+</p>
 
 #### Since:
 
@@ -636,7 +642,9 @@ Determines whether the `link-visited` class is added to internal passage links t
 Config.addVisitedLinkClass = true;
 ```
 
-An example style: (Twine&nbsp;2: goes in Story Stylesheet; Twine&nbsp;1/Twee: goes in a `stylesheet`-tagged passage)
+#### CSS styles:
+
+You will also need to specify a `.link-visited` style that defines the properties visited links should have. For example:
 
 ```
 .link-visited {
@@ -666,9 +674,11 @@ Config.cleanupWikifierOutput = true;
 <span id="config-api-property-debug"></span>
 ### `Config.debug` ↔ *boolean* (default: `false`)
 
-Indicates whether SugarCube is running in test mode, which enables debug views.  See [`Test Mode`](#guide-test-mode) for more information.
+Indicates whether SugarCube is running in test mode, which enables debug views.  See the [*Test Mode* guide](#guide-test-mode) for more information.
 
-**NOTE:** This property is automatically set based on whether you're using a testing mode in a Twine compiler—i.e., *Test* mode in Twine&nbsp;2, *Test Play From Here* in Twine&nbsp;1, or the test mode options (`-t, --test`) in Tweego.  You may, however, forcibly enable it if you need to for some reason—e.g., if you're using another compiler, which doesn't offer a way to enable test mode.
+<p role="note"><b>Note:</b>
+This property is automatically set based on whether you're using a testing mode in a Twine compiler—i.e., <em>Test</em> mode in Twine&nbsp;2, <em>Test Play From Here</em> in Twine&nbsp;1, or the test mode option (<code>-t</code>, <code>--test</code>) in Tweego.  You may, however, forcibly enable it if you need to for some reason—e.g., if you're using another compiler, which doesn't offer a way to enable test mode.
+</p>
 
 #### Since:
 

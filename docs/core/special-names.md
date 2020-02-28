@@ -5,10 +5,11 @@
 
 Passage, tag, and variable names that have special meaning to SugarCube.
 
-#### Notes
+<span id="special-names-warning"></span>
+#### Warning
 
-1. All special names listed herein are case sensitive, so their spelling and capitalization must be *exactly* as shown.
-2. *Never* combine special passages with special tags.  By doing so, you will probably break things in subtle and hard to detect ways.
+1. All special names listed herein are case sensitive, so their spelling and capitalization must be ***exactly*** as shown.
+2. ***Never*** combine special passages with special tags.  By doing so, you will probably break things in subtle and hard to detect ways.
 
 
 <!-- ***************************************************************************
@@ -125,7 +126,9 @@ Used for pre-story-start initialization tasks, like variable initialization (hap
 
 Used to replace SugarCube's default UI.  Its contents are treated as raw HTML markup—i.e., *none* of SugarCube's special HTML processing is performed.  It must contain, at least, an element with the ID `passages`, which will be the main passage display area.  Elements, aside from the `#passages` element, may include a `data-passage` content attribute, which denotes that the element should be updated via the specified passage—the passage will be processed as normal, meaning that markup and macros will work as expected.
 
-**NOTE:** Elements that include a `data-passage` content attribute must not themselves contain additional elements—since such elements' contents are replaced each turn via their associated passage, any child elements would be lost.
+<p role="note" class="warning"><b>Warning:</b>
+Elements that include a <code>data-passage</code> content attribute <em>should not</em> themselves contain additional elements—since such elements' contents are replaced each turn via their associated passage, any child elements would be lost.
+</p>
 
 #### Since:
 
@@ -157,7 +160,9 @@ Used to replace SugarCube's default UI.  Its contents are treated as raw HTML ma
 
 Used to populate the story's menu items in the UI bar (element ID: `menu-story`).
 
-**NOTE:** The story menu only displays links—specifically, anything that creates an anchor element (`<a>`).  While it renders content just as any other passage does, instead of displaying the rendered output as-is, it sifts through the output and builds its menu from the generated links contained therein.
+<p role="note"><b>Note:</b>
+The story menu only displays links—specifically, anything that creates an anchor element (<code>&lt;a&gt;</code>).  While it renders content just as any other passage does, instead of displaying the rendered output as-is, it sifts through the output and builds its menu from the generated links contained therein.
+</p>
 
 #### Since:
 
@@ -184,7 +189,9 @@ Used to populate the story's menu items in the UI bar (element ID: `menu-story`)
 
 Used to populate the contents of the Share dialog.  Intended for social media links.
 
-**NOTE:** The Share dialog only displays links—specifically, anything that creates an anchor element (`<a>`).  While it renders content just as any other passage does, instead of displaying the rendered output as-is, it sifts through the output and builds its menu from the generated links contained therein.
+<p role="note"><b>Note:</b>
+The Share dialog only displays links—specifically, anything that creates an anchor element (<code>&lt;a&gt;</code>).  While it renders content just as any other passage does, instead of displaying the rendered output as-is, it sifts through the output and builds its contents from the generated links contained therein.
+</p>
 
 #### Since:
 
@@ -208,7 +215,7 @@ Sets the story's subtitle in the UI bar (element ID: `story-subtitle`).
 
 **Twine&nbsp;2:**  *Unused.*  The story's title/name is part of the story project.
 
-**Twine&nbsp;1/Twee:**  *Required.*  Sets the story's title in the UI bar and elsewhere (element ID: `story-title`).  **NOTE:** The story title should the project's plain text title and contain no markup.
+**Twine&nbsp;1/Twee:**  *Required.*  Sets the story's title in the UI bar and elsewhere (element ID: `story-title`).  **NOTE:** The story title should the project's plain text title, containing no code or markup, as SugarCube uses it as the basis for the key used to store and load data used when playing the story and for saves.
 
 #### Since:
 

@@ -29,7 +29,9 @@ UIBar.destroy();
 
 Hides the UI bar.  Returns a reference to the `UIBar` object for chaining.
 
-**NOTE:** This does not reclaim the space reserved for the UI bar.  Thus, a call to [`UIBar.stow()`](#uibar-api-method-stow) may also be necessary.  Alternatively, if you simply want the UI bar gone completely and permanently, either using [`UIBar.destroy()`](#uibar-api-method-destroy) or the [`StoryInterface` special passage](#special-passage-storyinterface) may be a better choice.
+<p role="note"><b>Note:</b>
+This does not reclaim the space reserved for the UI bar.  Thus, a call to <a href="#uibar-api-method-stow"><code>UIBar.stow()</code></a> may also be necessary.  Alternatively, if you simply want the UI bar gone completely and permanently, either using <a href="#uibar-api-method-destroy"><code>UIBar.destroy()</code></a> or the <a href="#special-passage-storyinterface"><code>StoryInterface</code> special passage</a> may be a better choice.
+</p>
 
 #### Since:
 

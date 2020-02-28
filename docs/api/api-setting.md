@@ -234,7 +234,9 @@ Setting.addRange("masterVolume", {
 
 Loads the settings from storage.
 
-**NOTE:** The API automatically calls this method at startup, so you should never need to call this method manually.
+<p role="note"><b>Note:</b>
+The API automatically calls this method at startup, so you should never need to call this method manually.
+</p>
 
 #### Since:
 
@@ -280,7 +282,9 @@ Setting.reset();
 
 Saves the settings to storage.
 
-**NOTE:** The controls of the Settings dialog automatically call this method when settings are changed, so you should normally never need to call this method manually.  Only when manually modifying the values of `settings` object properties, outside of the controls, would you need to call this method.
+<p role="note"><b>Note:</b>
+The controls of the Settings dialog automatically call this method when settings are changed, so you should normally never need to call this method manually.  Only when manually modifying the values of <code>settings</code> object properties, outside of the controls, would you need to call this method.
+</p>
 
 #### Since:
 

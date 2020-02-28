@@ -10,7 +10,9 @@
 
 Appends the given content to the dialog's content area.  Returns a reference to the `Dialog` object for chaining.
 
-**NOTE:** If your content contains any SugarCube markup, you'll need to use the [`Dialog.wiki()`](#dialog-api-method-wiki) method instead.
+<p role="note"><b>Note:</b>
+If your content contains any SugarCube markup, you'll need to use the <a href="#dialog-api-method-wiki"><code>Dialog.wiki()</code> method</a> instead.
+</p>
 
 #### Since:
 
@@ -102,7 +104,9 @@ if (Dialog.isOpen("saves")) {
 
 Opens the dialog.  Returns a reference to the `Dialog` object for chaining.
 
-**NOTE:** Call this only after populating the dialog with content.
+<p role="note"><b>Note:</b>
+Call this only after populating the dialog with content.
+</p>
 
 #### Since:
 
@@ -110,8 +114,15 @@ Opens the dialog.  Returns a reference to the `Dialog` object for chaining.
 
 #### Parameters:
 
-* **`options`:** (optional, *null* | *object*) The options object.  See [`Dialog.addClickHandler()`](#dialog-api-method-addclickhandler) for more information.
+* **`options`:** (optional, *null* | *object*) The options to be used when opening the dialog.
 * **`closeFn`:** (optional, *null* | *function*) The function to execute whenever the dialog is closed.
+
+#### Options object:
+
+An options object should have some of the following properties:
+
+* **`top`:** Top y-coordinate of the dialog (default: `50`; in pixels, but without the unit).
+* **`opacity`:** Opacity of the overlay (default: `0.8`).
 
 #### Example:
 
@@ -161,7 +172,9 @@ Dialog.open();
 
 Renders the given [markup](#markup) and appends it to the dialog's content area.  Returns a reference to the `Dialog` object for chaining.
 
-**NOTE:** If your content consists of DOM nodes, you'll need to use the [`Dialog.append()`](#dialog-api-method-append) method instead.
+<p role="note"><b>Note:</b>
+If your content consists of DOM nodes, you'll need to use the <a href="#dialog-api-method-append"><code>Dialog.append()</code> method</a> instead.
+</p>
 
 #### Since:
 
@@ -194,7 +207,9 @@ You cannot obtain data about the closing dialog from the dialog itself—e.g., t
 
 #### Event object properties: *none*
 
-**NOTE:** While there are no custom properties, the event is fired from the dialog's body, thus the `target` property will refer to its body element—i.e., `#ui-dialog-body`.
+<p role="note"><b>Note:</b>
+While there are no custom properties, the event is fired from the dialog's body, thus the <code>target</code> property will refer to its body element—i.e., <code>#ui-dialog-body</code>.
+</p>
 
 #### Example:
 
@@ -223,7 +238,9 @@ Global synthetic event triggered as the first step in closing the dialog when [`
 
 #### Event object properties: *none*
 
-**NOTE:** While there are no custom properties, the event is fired from the dialog's body, thus the `target` property will refer to its body element—i.e., `#ui-dialog-body`.
+<p role="note"><b>Note:</b>
+While there are no custom properties, the event is fired from the dialog's body, thus the <code>target</code> property will refer to its body element—i.e., <code>#ui-dialog-body</code>.
+</p>
 
 #### Example:
 
@@ -252,7 +269,9 @@ Global synthetic event triggered as the last step in opening the dialog when [`D
 
 #### Event object properties: *none*
 
-**NOTE:** While there are no custom properties, the event is fired from the dialog's body, thus the `target` property will refer to its body element—i.e., `#ui-dialog-body`.
+<p role="note"><b>Note:</b>
+While there are no custom properties, the event is fired from the dialog's body, thus the <code>target</code> property will refer to its body element—i.e., <code>#ui-dialog-body</code>.
+</p>
 
 #### Example:
 
@@ -281,7 +300,9 @@ Global synthetic event triggered as the first step in opening the dialog when [`
 
 #### Event object properties: *none*
 
-**NOTE:** While there are no custom properties, the event is fired from the dialog's body, thus the `target` property will refer to its body element—i.e., `#ui-dialog-body`.
+<p role="note"><b>Note:</b>
+While there are no custom properties, the event is fired from the dialog's body, thus the <code>target</code> property will refer to its body element—i.e., <code>#ui-dialog-body</code>.
+</p>
 
 #### Example:
 
@@ -316,9 +337,7 @@ Adds WAI-ARIA-compatible mouse/keyboard event handlers to the target element(s) 
 #### Parameters:
 
 * **`target`:** (*`HTMLElement` object* | *`jQuery` object* | *string*) The DOM element(s) to attach the handler to—may be either an `HTMLElement` object, a `jQuery` object, or a jQuery-style selector set.
-* **`options`:** (optional, *null* | *object*) The options object; the currently understood properties are:
-	* **`top`:** Top y-coordinate of the dialog (default: `50`; in pixels, but without the unit).
-	* **`opacity`:** Opacity of the overlay (default: `0.8`).
+* **`options`:** (optional, *null* | *object*) The options object.  See [`Dialog.open()`](#dialog-api-method-open) for more information.
 * **`startFn`:** (optional, *null* | *function*) The function to execute at the start of `Dialog.addClickHandler()`.  This is commonly used to setup the dialog.
 * **`doneFn`:** (optional, *null* | *function*) The function to execute at the end of `Dialog.addClickHandler()`.
 * **`closeFn`:** (optional, *null* | *function*) The function to execute whenever the associated dialog is closed.

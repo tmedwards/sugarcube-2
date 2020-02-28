@@ -3,7 +3,11 @@
 **************************************************************************** -->
 <h1 id="macrocontext-api"><code>MacroContext</code> API</h1>
 
-Sibling to the [`Macro` API](#macro-api).  Macro handlers are called with no arguments, but with their `this` set to a macro (execution) context object.  Macro context objects contain the following data and method properties.
+<p role="note" class="see"><b>See Also:</b>
+<a href="#macro-api"><code>Macro</code> API</a>.
+</p>
+
+Macro handlers are called with no arguments, but with their `this` set to a macro (execution) context object.  Macro context objects contain the following data and method properties.
 
 <!-- *********************************************************************** -->
 
@@ -212,7 +216,7 @@ this.contextSelectAll(includeAncestor);  → Returns an array of all <<include>>
 <span id="macrocontext-api-prototype-method-createshadowwrapper"></span>
 ### `<MacroContext>.createShadowWrapper(callback [, doneCallback [, startCallback]])` → *function*
 
-Returns a callback function that wraps the specified callback functions to provide access to the variable shadowing system used by the `<<capture>>` macro.
+Returns a callback function that wraps the specified callback functions to provide access to the variable shadowing system used by the [`<<capture>>` macro](#macros-macro-capture).
 
 <p role="note" class="note"><b>Note:</b>
 All of the specified callbacks are invoked as the wrapper is invoked—meaning, with their <code>this</code> set to the <code>this</code> of the wrapper and with whatever parameters were passed to the wrapper.
