@@ -38,123 +38,8 @@ The title of the story.
 
 <!-- *********************************************************************** -->
 
-<span id="story-api-method-passages-get"></span>
-### `Story.passages.get(title)` → *`Passage` object*
-
-Returns the `Passage` object referenced by the given title, or an empty `Passage` object on failure.
-
-<p role="note"><b>Note:</b>
-This method will not return &quot;code&quot; passages—i.e., script, stylesheet, and widget passages.
-</p>
-
-#### Since:
-
-* `v2.31.0`
-
-#### Parameters:
-
-* **`title`:** (*string*) The title of the `Passage` object to return.
-
-#### Example:
-
-```
-Story.passages.get("The Ducky")  → Returns the Passage object matching "The Ducky"
-```
-
-<!-- *********************************************************************** -->
-
-<span id="story-api-method-passages-has"></span>
-### `Story.passages.has(title)` → *boolean*
-
-Returns whether a `Passage` object referenced by the given title exists.
-
-<p role="note"><b>Note:</b>
-This method will not detect &quot;code&quot; passages—i.e., script, stylesheet, and widget passages.
-</p>
-
-#### Since:
-
-* `v2.31.0`
-
-#### Parameters:
-
-* **`title`:** (*string*) The title of the `Passage` object whose existence will be verified.
-
-#### Example:
-
-```
-Story.passages.has("The Ducky")  → Returns whether a Passage object matching "The Ducky" exists
-```
-
-<!-- *********************************************************************** -->
-
-<span id="story-api-method-passages-lookup"></span>
-### `Story.passages.lookup(propertyName , searchValue)` → *`Passage` object array*
-
-Returns a new array filled with all `Passage` objects that contain the given property, whose value matches the given search value, or an empty array, if no matches are made.
-
-<p role="note"><b>Note:</b>
-This method will not return &quot;code&quot; passages—i.e., script, stylesheet, and widget passages.
-</p>
-
-#### Since:
-
-* `v2.31.0`
-
-#### Parameters:
-
-* **`propertyName`:** (*string*) The name of property whose value will be compared to the search value.
-* **`searchValue`:** (*string* | *number*) The value to search for within the matched property.  The type of the property determines how the search occurs—non-arrays are directly compared, while arrays are searched.  If the property's value, for non-arrays, or any of its members, for arrays, match, then the `Passage` object is added to the results.
-
-#### Example:
-
-```
-→ Returns all 'forest'-tagged Passage objects
-Story.passages.lookup("tags", "forest");
-```
-
-<!-- *********************************************************************** -->
-
-<span id="story-api-method-passages-lookupwith"></span>
-### `Story.passages.lookupWith(predicate)` → *`Passage` object array*
-
-Returns a new array filled with all `Passage` objects that pass the test implemented by the given predicate function or an empty array, if no objects pass.
-
-<p role="note"><b>Note:</b>
-This method will not return &quot;code&quot; passages—i.e., script, stylesheet, and widget passages.
-</p>
-
-#### Since:
-
-* `v2.31.0`
-
-#### Parameters:
-
-* **`predicate`:** (*function*) The function used to test each `Passage` object, which is passed into the function as its sole parameter.  If the function returns `true`, then the `Passage` object is added to the results.
-
-#### Example:
-
-```
-→ Returns all 'forest'-tagged Passage objects
-Story.passages.lookupWith(function (p) {
-	return p.tags.includes("forest");
-});
-
-→ Returns all Passage objects whose titles contain whitespace
-var hasWhitespaceRegExp = /\s/;
-Story.passages.lookupWith(function (p) {
-	return hasWhitespaceRegExp.test(p.title);
-});
-```
-
-<!-- *********************************************************************** -->
-
 <span id="story-api-method-get"></span>
-### <span class="deprecated">`Story.get(title)` → *`Passage` object*</span>
-
-<p role="note" class="warning"><b>Deprecated:</b>
-This method has been deprecated and should no longer be used.  See the <a href="#story-api-method-passages-get"><code>Story.passages.get()</code></a> method for its replacement.
-</p>
+### `Story.get(title)` → *`Passage` object*
 
 Returns the `Passage` object referenced by the given title, or an empty `Passage` object on failure.
 
@@ -179,11 +64,7 @@ Story.get("The Ducky")  → Returns the Passage object matching "The Ducky"
 <!-- *********************************************************************** -->
 
 <span id="story-api-method-has"></span>
-### <span class="deprecated">`Story.has(title)` → *boolean*</span>
-
-<p role="note" class="warning"><b>Deprecated:</b>
-This method has been deprecated and should no longer be used.  See the <a href="#story-api-method-passages-has"><code>Story.passages.has()</code></a> method for its replacement.
-</p>
+### `Story.has(title)` → *boolean*
 
 Returns whether a `Passage` object referenced by the given title exists.
 
@@ -208,11 +89,7 @@ Story.has("The Ducky")  → Returns whether a Passage object matching "The Ducky
 <!-- *********************************************************************** -->
 
 <span id="story-api-method-lookup"></span>
-### <span class="deprecated">`Story.lookup(propertyName , searchValue [, sortProperty])` → *`Passage` object array*</span>
-
-<p role="note" class="warning"><b>Deprecated:</b>
-This method has been deprecated and should no longer be used.  See the <a href="#story-api-method-passages-lookup"><code>Story.passages.lookup()</code></a> method for its replacement.
-</p>
+### `Story.lookup(propertyName , searchValue [, sortProperty])` → *`Passage` object array*
 
 Returns a new array filled with all `Passage` objects that contain the given property, whose value matches the given search value, or an empty array, if no matches are made.
 
@@ -240,11 +117,7 @@ Story.lookup("tags", "forest");
 <!-- *********************************************************************** -->
 
 <span id="story-api-method-lookupwith"></span>
-### <span class="deprecated">`Story.lookupWith(predicate [, sortProperty])` → *`Passage` object array*</span>
-
-<p role="note" class="warning"><b>Deprecated:</b>
-This method has been deprecated and should no longer be used.  See the <a href="#story-api-method-passages-lookupwith"><code>Story.passages.lookupWith()</code></a> method for its replacement.
-</p>
+### `Story.lookupWith(predicate [, sortProperty])` → *`Passage` object array*
 
 Returns a new array filled with all `Passage` objects that pass the test implemented by the given predicate function or an empty array, if no objects pass.
 
@@ -264,6 +137,11 @@ This method will not return &quot;code&quot; passages—i.e., script, stylesheet
 #### Example:
 
 ```
+→ Returns all 'forest'-tagged Passage objects, sorted by their titles
+Story.lookupWith(function (p) {
+	return p.tags.includes("forest");
+});
+
 → Returns all Passage objects whose titles contain whitespace, sorted by their titles
 var hasWhitespaceRegExp = /\s/;
 Story.lookupWith(function (p) {

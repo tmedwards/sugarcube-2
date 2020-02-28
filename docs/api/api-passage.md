@@ -3,7 +3,7 @@
 ************************************************************************************************ -->
 <h1 id="passage-api"><code>Passage</code> API</h1>
 
-Instances of the `Passage` object are returned by the [`Story.passages.get()`](#story-api-method-passages-get) static method.
+Instances of the `Passage` object are returned by the [`Story.get()`](#story-api-method-get) static method.
 
 All properties of `Passage` objects should be treated as if they were ***read-only***, as modifying them could result in unexpected behavior.
 
