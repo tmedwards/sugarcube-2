@@ -356,7 +356,7 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 	*******************************************************************************************************************/
 	function passagesAdd(passage) {
 		if (!(passage instanceof Passage)) {
-			throw new TypeError('Story.passages.add passage parameter must be an instance of Passage');
+			throw new TypeError('Story.add passage parameter must be an instance of Passage');
 		}
 
 		const title = passage.title;
@@ -392,7 +392,7 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 			break;
 		}
 
-		throw new TypeError(`Story.passages.has title parameter cannot be ${type}`);
+		throw new TypeError(`Story.has title parameter cannot be ${type}`);
 	}
 
 	function passagesGet(title) {
@@ -423,7 +423,7 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 			break;
 		}
 
-		throw new TypeError(`Story.passages.get title parameter cannot be ${type}`);
+		throw new TypeError(`Story.get title parameter cannot be ${type}`);
 	}
 
 	function passagesGetAllRegular() {
@@ -446,7 +446,7 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 		return Object.freeze(Array.from(_widgets));
 	}
 
-	function passagesLookup(key, value) {
+	function passagesLookup(key, value  /* legacy */, sortKey = 'title'/* /legacy */) {
 		const results = [];
 
 		Object.keys(_passages).forEach(name => {
@@ -468,17 +468,24 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 			}
 		});
 
-		/* eslint-disable no-nested-ternary */
-		// QUESTION: Do we really need to sort the list?
-		results.sort((a, b) => a.title === b.title ? 0 : a.title < b.title ? -1 : +1);
-		/* eslint-enable no-nested-ternary */
+		// For v3.
+		// /* eslint-disable no-nested-ternary */
+		// // QUESTION: Do we really need to sort the list?
+		// results.sort((a, b) => a.title === b.title ? 0 : a.title < b.title ? -1 : +1);
+		// /* eslint-enable no-nested-ternary */
+
+		/* legacy */
+		/* eslint-disable eqeqeq, no-nested-ternary, max-len */
+		results.sort((a, b) => a[sortKey] == b[sortKey] ? 0 : a[sortKey] < b[sortKey] ? -1 : +1); // lazy equality for null
+		/* eslint-enable eqeqeq, no-nested-ternary, max-len */
+		/* /legacy */
 
 		return results;
 	}
 
-	function passagesLookupWith(predicate) {
+	function passagesLookupWith(predicate /* legacy */, sortKey = 'title'/* /legacy */) {
 		if (typeof predicate !== 'function') {
-			throw new Error('Story.passages.lookupWith predicate parameter must be a function');
+			throw new Error('Story.lookupWith predicate parameter must be a function');
 		}
 
 		const results = [];
@@ -491,77 +498,17 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 			}
 		});
 
-		/* eslint-disable no-nested-ternary */
-		// QUESTION: Do we really need to sort the list?
-		results.sort((a, b) => a.title === b.title ? 0 : a.title < b.title ? -1 : +1);
-		/* eslint-enable no-nested-ternary */
+		// For v3.
+		// /* eslint-disable no-nested-ternary */
+		// // QUESTION: Do we really need to sort the list?
+		// results.sort((a, b) => a.title === b.title ? 0 : a.title < b.title ? -1 : +1);
+		// /* eslint-enable no-nested-ternary */
 
-		return results;
-	}
-
-	function passagesLegacyLookup(key, value, sortKey = 'title') {
-		const pnames  = Object.keys(_passages);
-		const results = [];
-
-		for (let i = 0; i < pnames.length; ++i) {
-			const passage = _passages[pnames[i]];
-
-			if (passage.hasOwnProperty(key)) {
-				switch (typeof passage[key]) {
-				case 'undefined':
-					/* no-op */
-					break;
-
-				case 'object':
-					// Only arrays are supported at present, since the only non-method
-					// `Passage` object properties yield either primitives or arrays.
-					/* eslint-disable eqeqeq */
-					if (
-						passage[key] instanceof Array &&
-						passage[key].some(val => val == value) // lazy equality, since null & undefined are both possible
-					) {
-						results.push(passage);
-					}
-					/* eslint-enable eqeqeq */
-					break;
-
-				default:
-					/* eslint-disable eqeqeq */
-					if (passage[key] == value) { // lazy equality, since null & undefined are both possible
-						results.push(passage);
-					}
-					/* eslint-enable eqeqeq */
-					break;
-				}
-			}
-		}
-
+		/* legacy */
 		/* eslint-disable eqeqeq, no-nested-ternary, max-len */
 		results.sort((a, b) => a[sortKey] == b[sortKey] ? 0 : a[sortKey] < b[sortKey] ? -1 : +1); // lazy equality for null
 		/* eslint-enable eqeqeq, no-nested-ternary, max-len */
-
-		return results;
-	}
-
-	function passagesLegacyLookupWith(predicate, sortKey = 'title') {
-		if (typeof predicate !== 'function') {
-			throw new Error('Story.lookupWith predicate parameter must be a function');
-		}
-
-		const pnames  = Object.keys(_passages);
-		const results = [];
-
-		for (let i = 0; i < pnames.length; ++i) {
-			const passage = _passages[pnames[i]];
-
-			if (predicate(passage)) {
-				results.push(passage);
-			}
-		}
-
-		/* eslint-disable eqeqeq, no-nested-ternary, max-len */
-		results.sort((a, b) => a[sortKey] == b[sortKey] ? 0 : a[sortKey] < b[sortKey] ? -1 : +1); // lazy equality for null
-		/* eslint-enable eqeqeq, no-nested-ternary, max-len */
+		/* /legacy */
 
 		return results;
 	}
@@ -579,27 +526,14 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 		ifId  : { get : storyIfId },
 
 		// Passage Functions.
-		passages : {
-			value : Object.freeze(Object.defineProperties({}, {
-				add              : { value : passagesAdd },
-				has              : { value : passagesHas },
-				get              : { value : passagesGet },
-				getAllRegular    : { value : passagesGetAllRegular },
-				getAllScript     : { value : passagesGetAllScript },
-				getAllStylesheet : { value : passagesGetAllStylesheet },
-				getAllWidget     : { value : passagesGetAllWidget },
-				lookup           : { value : passagesLookup },
-				lookupWith       : { value : passagesLookupWith }
-			}))
-		},
-
-		/*
-			Legacy Aliases.
-		*/
-		// Passage Functions.
-		has        : { value : passagesHas },
-		get        : { value : passagesGet },
-		lookup     : { value : passagesLegacyLookup },
-		lookupWith : { value : passagesLegacyLookupWith }
+		add              : { value : passagesAdd },
+		has              : { value : passagesHas },
+		get              : { value : passagesGet },
+		getAllRegular    : { value : passagesGetAllRegular },
+		getAllScript     : { value : passagesGetAllScript },
+		getAllStylesheet : { value : passagesGetAllStylesheet },
+		getAllWidget     : { value : passagesGetAllWidget },
+		lookup           : { value : passagesLookup },
+		lookupWith       : { value : passagesLookupWith }
 	}));
 })();
