@@ -364,7 +364,6 @@
 * [`<Passage>.title`](#passage-api-prototype-getter-title)
 * [`<Passage>.description()`](#passage-api-prototype-method-description)
 * [`<Passage>.processText()`](#passage-api-prototype-method-processtext)
-* [`<Passage>.render()`](#passage-api-prototype-method-render)
 
 ## [`Save` API](#save-api)
 
