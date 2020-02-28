@@ -561,7 +561,8 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 		}
 
 		jQuery.event.trigger({
-			type : ':passagedisplay',
+			type    : ':passagedisplay',
+			content : passageEl,
 			passage
 		});
 		Object.keys(postdisplay).forEach(task => {
@@ -651,7 +652,8 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 
 		// Execute post-play events.
 		jQuery.event.trigger({
-			type : ':passageend',
+			type    : ':passageend',
+			content : passageEl,
 			passage
 		});
 
