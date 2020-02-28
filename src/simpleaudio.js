@@ -2021,16 +2021,24 @@ var SimpleAudio = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 	function masterMuteOnHidden(mute) {
+		// NOTE: IE 9 doesn't support the Page Visibility API at all,
+		// so we bail out if necessary.
+		if (!Visibility.changeEvent) {
+			return false;
+		}
+
 		if (mute == null) { // lazy equality for null
 			return _masterMuteOnHidden;
 		}
 
 		_masterMuteOnHidden = !!mute;
 
+		const namespace = '.SimpleAudio_masterMuteOnHidden';
+
 		if (_masterMuteOnHidden) {
-			const visibilityChange = `${Visibility.changeEvent}.SimpleAudio_masterMuteOnHidden`;
+			const visibilityChange = `${Visibility.changeEvent}${namespace}`;
 			jQuery(document)
-				.off(visibilityChange)
+				.off(namespace)
 				.on(visibilityChange, () => masterMute(Visibility.isHidden()));
 
 			// Only change the mute state initially if hidden.
@@ -2039,7 +2047,7 @@ var SimpleAudio = (() => { // eslint-disable-line no-unused-vars, no-var
 			}
 		}
 		else {
-			jQuery(document).off('.SimpleAudio_masterMuteOnHidden');
+			jQuery(document).off(namespace);
 		}
 	}
 
