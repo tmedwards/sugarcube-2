@@ -8,7 +8,7 @@
 <span id="story-api-getter-domid"></span>
 ### `Story.domId` → *string*
 
-The DOM ID of the story—created from the slugified story title.
+The DOM ID of the story, created from the slugified story title.
 
 #### Since:
 

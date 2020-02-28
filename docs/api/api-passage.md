@@ -12,7 +12,7 @@ All properties of `Passage` objects should be treated as if they were ***read-on
 <span id="passage-api-prototype-getter-domid"></span>
 ### `<Passage>.domId` → *string*
 
-The DOM ID of the passage (created from the slugified passage title).
+The DOM ID of the passage, created from the slugified passage title.
 
 #### Since:
 
@@ -67,7 +67,9 @@ Returns the description of the passage, created from either an excerpt of the pa
 #### Example:
 
 ```
-Story.get("The Ducky").description()  → Returns the description of "The Ducky" passage
+var passage = Story.get("The Ducky");
+
+passage.description()  → Returns the description of "The Ducky" passage
 ```
 
 <!-- *********************************************************************** -->
@@ -75,7 +77,7 @@ Story.get("The Ducky").description()  → Returns the description of "The Ducky"
 <span id="passage-api-prototype-method-processtext"></span>
 ### `<Passage>.processText()` → *string*
 
-Returns the text of the `Passage` object (similar to `<Passage>.text`) after applying `nobr` tag and image passage processing to it.
+Returns the processed text of the passage, created from applying `nobr` tag and image passage processing to its raw text.
 
 #### Since:
 
@@ -86,7 +88,9 @@ Returns the text of the `Passage` object (similar to `<Passage>.text`) after app
 #### Example:
 
 ```
-Story.get("The Ducky").processText()  → Returns the fully processed text of "The Ducky" passage
+var passage = Story.get("The Ducky");
+
+passage.processText()  → Returns the fully processed text of "The Ducky" passage
 ```
 
 <!-- *********************************************************************** -->
