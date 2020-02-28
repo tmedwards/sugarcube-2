@@ -167,7 +167,7 @@ var Util = (() => { // eslint-disable-line no-unused-vars, no-var
 			.replace(/[_\s\u2013\u2014-]+/g, '-');
 
 		// For v3.
-		// return base.replace(_illegalSlugCharsRe, '_');
+		// return base.replace(_illegalSlugCharsRe, '-');
 	}
 
 	/*
