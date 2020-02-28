@@ -88,3 +88,24 @@ Returns the text of the `Passage` object (similar to `<Passage>.text`) after app
 ```
 Story.get("The Ducky").processText()  → Returns the fully processed text of "The Ducky" passage
 ```
+
+<!-- *********************************************************************** -->
+
+<span id="passage-api-prototype-method-render"></span>
+### `<Passage>.render()` → *`DocumentFragment` object*
+
+Returns a [document fragment](https://developer.mozilla.org/en-US/docs/Web/API/DocumentFragment) containing the rendered/wikified text of the passage, as returned by [`<Passage>.processText()`](#passage-api-prototype-method-processtext).
+
+#### Since:
+
+* `v2.31.0`
+
+#### Parameters: *none*
+
+#### Example:
+
+```
+var passage = Story.get("The Ducky");
+
+passage.render()  → Returns the render of "The Ducky" passage
+```
