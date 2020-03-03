@@ -124,6 +124,7 @@ var Passage = (() => { // eslint-disable-line no-unused-vars, no-var
 			return this.classes.join(' ');
 		}
 
+		// TODO: (v3) This should be → `get source`.
 		get text() {
 			if (this.element == null) { // lazy equality for null
 				const passage = Util.escape(this.title);
@@ -184,6 +185,7 @@ var Passage = (() => { // eslint-disable-line no-unused-vars, no-var
 			return this._excerpt;
 		}
 
+		// TODO: (v3) This should be → `get text`.
 		processText() {
 			if (this.element == null) { // lazy equality for null
 				return this.text;
