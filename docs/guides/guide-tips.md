@@ -26,11 +26,11 @@ The most common way to resolve this arbitrarily long return issue is to use a bi
 For example, the code to record the last non-menu passage: (Twine&nbsp;2: the Story JavaScript, Twine&nbsp;1/Twee: a `script`-tagged passage)
 
 ```
-predisplay['set-return-variable'] = function () {
-	if (!tags().includes('noreturn')) {
-		State.variables['return'] = passage();
+$(document).on(':passagestart', function (ev) {
+	if (!ev.passage.tags.includes('noreturn')) {
+		State.variables.return = ev.passage.title;
 	}
-};
+});
 ```
 
 You'll need to tag each and every one of your menu passages with `noreturn`—you may use any tag you wish (e.g., `menu`, `inventory`), just ensure you change the name in the code if you decide upon another.  If necessary, you may also use multiple tags by switching from [`<Array>.includes()`](#methods-array-prototype-method-includes) to [`<Array>.includesAny()`](#methods-array-prototype-method-includesany) in the above example.
