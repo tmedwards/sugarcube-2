@@ -173,26 +173,27 @@ jQuery(() => {
 			DebugBar.init();
 		}
 
-		// Set a timer to start the interfaces (necessary due to DOM readiness issues in some browsers).
+		// Set a recurring timer to start the interfaces (necessary due to DOM readiness issues in some browsers).
 		const $window    = $(window);
 		const vprCheckId = setInterval(() => {
+			// If `$window.width()` returns a non-zero value, bail out and wait.
 			if (!$window.width()) {
 				return;
 			}
 
+			// Clear the recurring timer.
 			clearInterval(vprCheckId);
-			setTimeout(() => {
-				// Start the UI bar interface.
-				UIBar.start();
 
-				// Start the debug bar interface.
-				if (Config.debug) {
-					DebugBar.start();
-				}
+			// Start the UI bar interface.
+			UIBar.start();
 
-				// Release the loading screen lock.
-				LoadScreen.unlock(lockId);
-			}, Engine.minDomActionDelay);
+			// Start the debug bar interface.
+			if (Config.debug) {
+				DebugBar.start();
+			}
+
+			// Release the loading screen lock after a short delay.
+			setTimeout(() => LoadScreen.unlock(lockId), Engine.minDomActionDelay * 2);
 		}, Engine.minDomActionDelay);
 
 		// Finally, export identifiers for debugging purposes.
