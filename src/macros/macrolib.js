@@ -248,10 +248,7 @@
 				Scripting.evalJavaScript(this.payload[0].contents, output);
 			}
 			catch (ex) {
-				return this.error(
-					`bad evaluation: ${typeof ex === 'object' ? ex.message : ex}`,
-					`${this.source + this.payload[0].contents}<</${this.name}>>`
-				);
+				return this.error(`bad evaluation: ${typeof ex === 'object' ? ex.message : ex}`);
 			}
 
 			// Custom debug view setup.
@@ -368,7 +365,7 @@
 
 			if (Config.debug) {
 				// Custom debug view setup.
-				this.debugView.modes({ hidden : true });
+				this.debugView.modes({ block : true, hidden : true });
 				this.output.appendChild(frag);
 			}
 			else {
@@ -376,10 +373,7 @@
 				const errList = [...frag.querySelectorAll('.error')].map(errEl => errEl.textContent);
 
 				if (errList.length > 0) {
-					return this.error(
-						`error${errList.length === 1 ? '' : 's'} within contents (${errList.join('; ')})`,
-						`${this.source + this.payload[0].contents}<</${this.name}>>`
-					);
+					return this.error(`error${errList.length === 1 ? '' : 's'} within contents (${errList.join('; ')})`);
 				}
 			}
 		}
