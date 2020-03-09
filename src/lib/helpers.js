@@ -103,9 +103,9 @@ var { // eslint-disable-line no-var
 			Duplicate the original object's own enumerable properties, which will
 			include expando properties on non-generic objects.
 
-			NOTE: This does not preserve ES5 property attributes.  Neither does
-			the delta coding or serialization code, however, so it's not really
-			an issue at the moment.
+			NOTE: This preserves neither symbol properties nor ES5 property attributes.
+			Neither does the delta coding or serialization code, however, so it's not
+			really an issue at the moment.
 		*/
 		Object.keys(orig).forEach(name => copy[name] = clone(orig[name]));
 

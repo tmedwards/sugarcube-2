@@ -110,16 +110,15 @@ window.SugarCube = {};
 jQuery(() => {
 	'use strict';
 
+	if (DEBUG) { console.log('[SugarCube/main()] Document loaded; beginning startup.'); }
+
+	/*
+		WARNING!
+
+		The ordering of the code within this function is critically important,
+		so be careful when mucking around with it.
+	*/
 	try {
-		if (DEBUG) { console.log('[SugarCube/main()] Document loaded; beginning startup.'); }
-
-		/*
-			WARNING!
-
-			The ordering of the code within this function is critically important,
-			so be careful when mucking around with it.
-		*/
-
 		// Acquire an initial lock for and initialize the loading screen.
 		const lockId = LoadScreen.lock();
 		LoadScreen.init();
