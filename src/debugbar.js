@@ -43,7 +43,7 @@ var DebugBar = (() => { // eslint-disable-line no-unused-vars, no-var
 			.append(
 				/* eslint-disable max-len */
 				  '<div id="debug-bar">'
-				+     '<div id="debug-bar-watch" aria-hidden="true" hidden="hidden">'
+				+     '<div id="debug-bar-watch">'
 				+         `<div>${L10n.get('debugBarNoWatches')}</div>>`
 				+     '</div>'
 				+     '<div>'
@@ -91,29 +91,9 @@ var DebugBar = (() => { // eslint-disable-line no-unused-vars, no-var
 			Set up the debug bar's local event handlers.
 		*/
 		$barToggle
-			.ariaClick(() => {
-				if (_stowed) {
-					debugBarUnstow();
-				}
-				else {
-					debugBarStow();
-				}
-				_stowed = !_stowed;
-				_updateSession();
-			});
+			.ariaClick(debugBarToggle);
 		$watchToggle
-			.ariaClick(() => {
-				if (_$watchBody.attr('hidden')) {
-					_$watchBody.removeAttr('aria-hidden hidden');
-				}
-				else {
-					_$watchBody.attr({
-						'aria-hidden' : true,
-						hidden        : 'hidden'
-					});
-				}
-				_updateSession();
-			});
+			.ariaClick(debugBarWatchToggle);
 		$watchInput
 			.on(':addwatch', function () {
 				debugBarWatchAdd(this.value.trim());
@@ -130,7 +110,7 @@ var DebugBar = (() => { // eslint-disable-line no-unused-vars, no-var
 		$watchAll
 			.ariaClick(debugBarWatchAddAll);
 		$watchNone
-			.ariaClick(debugBarWatchDeleteAll);
+			.ariaClick(debugBarWatchClear);
 		_$turnSelect
 			.on('change', function () {
 				Engine.goTo(Number(this.value));
@@ -152,11 +132,15 @@ var DebugBar = (() => { // eslint-disable-line no-unused-vars, no-var
 				_updateWatchBody();
 				_updateWatchList();
 			})
-			// Set up a handler for engine resets.
-			.on(':enginerestart.debug-bar', () => {
-				// Delete the active debug session.
-				session.delete('debugState');
-			});
+			// Set up a handler for engine resets to clear the active debug session.
+			.on(':enginerestart.debug-bar', _clearSession);
+
+		/*
+			Initially enable debug views if there's no active debug session.
+		*/
+		if (!_hasSession()) {
+			DebugView.enable();
+		}
 	}
 
 	function debugBarStart() {
@@ -172,14 +156,29 @@ var DebugBar = (() => { // eslint-disable-line no-unused-vars, no-var
 		_updateWatchList();
 	}
 
+	function debugBarIsStowed() {
+		return _stowed;
+	}
+
 	function debugBarStow() {
-		_$debugBar.css('right', `-${_$debugBar.outerWidth()}px`);
+		_debugBarStowNoUpdate();
+		_stowed = true;
 		_updateSession();
 	}
 
 	function debugBarUnstow() {
-		_$debugBar.css('right', 0);
+		_debugBarUnstowNoUpdate();
+		_stowed = false;
 		_updateSession();
+	}
+
+	function debugBarToggle() {
+		if (_stowed) {
+			debugBarUnstow();
+		}
+		else {
+			debugBarStow();
+		}
 	}
 
 	function debugBarWatchAdd(varName) {
@@ -204,14 +203,7 @@ var DebugBar = (() => { // eslint-disable-line no-unused-vars, no-var
 		_updateSession();
 	}
 
-	function debugBarWatchDelete(varName) {
-		_watchList.delete(varName);
-		_updateWatchBody();
-		_updateWatchList();
-		_updateSession();
-	}
-
-	function debugBarWatchDeleteAll() {
+	function debugBarWatchClear() {
 		for (let i = _watchList.length - 1; i >= 0; --i) {
 			_watchList.pop();
 		}
@@ -221,13 +213,70 @@ var DebugBar = (() => { // eslint-disable-line no-unused-vars, no-var
 		_updateSession();
 	}
 
+	function debugBarWatchDelete(varName) {
+		_watchList.delete(varName);
+		_updateWatchBody();
+		_updateWatchList();
+		_updateSession();
+	}
+
+	function debugBarWatchDisable() {
+		_debugBarWatchDisableNoUpdate();
+		_updateSession();
+	}
+
+	function debugBarWatchEnable() {
+		_debugBarWatchEnableNoUpdate();
+		_updateSession();
+	}
+
+	function debugBarWatchIsEnabled() {
+		return !_$watchBody.attr('hidden');
+	}
+
+	function debugBarWatchToggle() {
+		if (_$watchBody.attr('hidden')) {
+			debugBarWatchEnable();
+		}
+		else {
+			debugBarWatchDisable();
+		}
+	}
+
 
 	/*******************************************************************************************************************
 		Utility Functions.
 	*******************************************************************************************************************/
+	function _debugBarStowNoUpdate() {
+		_$debugBar.css('right', `-${_$debugBar.outerWidth()}px`);
+	}
+
+	function _debugBarUnstowNoUpdate() {
+		_$debugBar.css('right', 0);
+	}
+
+	function _debugBarWatchDisableNoUpdate() {
+		_$watchBody.attr({
+			'aria-hidden' : true,
+			hidden        : 'hidden'
+		});
+	}
+
+	function _debugBarWatchEnableNoUpdate() {
+		_$watchBody.removeAttr('aria-hidden hidden');
+	}
+
+	function _clearSession() {
+		session.delete('debugState');
+	}
+
+	function _hasSession() {
+		return session.has('debugState');
+	}
+
 	function _restoreSession() {
-		if (!session.has('debugState')) {
-			return;
+		if (!_hasSession()) {
+			return false;
 		}
 
 		const debugState = session.get('debugState');
@@ -237,13 +286,10 @@ var DebugBar = (() => { // eslint-disable-line no-unused-vars, no-var
 		_watchList.push(...debugState.watchList);
 
 		if (debugState.watchEnabled) {
-			_$watchBody.removeAttr('aria-hidden hidden');
+			_debugBarWatchEnableNoUpdate();
 		}
 		else {
-			_$watchBody.attr({
-				'aria-hidden' : true,
-				hidden        : 'hidden'
-			});
+			_debugBarWatchDisableNoUpdate();
 		}
 
 		if (debugState.viewsEnabled) {
@@ -252,13 +298,15 @@ var DebugBar = (() => { // eslint-disable-line no-unused-vars, no-var
 		else {
 			DebugView.disable();
 		}
+
+		return true;
 	}
 
 	function _updateSession() {
 		session.set('debugState', {
 			stowed       : _stowed,
 			watchList    : _watchList,
-			watchEnabled : !_$watchBody.attr('hidden'),
+			watchEnabled : debugBarWatchIsEnabled(),
 			viewsEnabled : DebugView.isEnabled()
 		});
 	}
@@ -481,17 +529,27 @@ var DebugBar = (() => { // eslint-disable-line no-unused-vars, no-var
 		/*
 			Debug Bar Functions.
 		*/
-		init   : { value : debugBarInit },
-		start  : { value : debugBarStart },
-		stow   : { value : debugBarStow },
-		unstow : { value : debugBarUnstow },
+		init     : { value : debugBarInit },
+		isStowed : { value : debugBarIsStowed },
+		start    : { value : debugBarStart },
+		stow     : { value : debugBarStow },
+		toggle   : { value : debugBarToggle },
+		unstow   : { value : debugBarUnstow },
 
 		/*
 			Watch Functions.
 		*/
-		watch      : { value : debugBarWatchAdd },
-		watchAll   : { value : debugBarWatchAddAll },
-		unwatch    : { value : debugBarWatchDelete },
-		unwatchAll : { value : debugBarWatchDeleteAll }
+		watch : {
+			value : Object.freeze(Object.defineProperties({}, {
+				add       : { value : debugBarWatchAdd },
+				all       : { value : debugBarWatchAddAll },
+				clear     : { value : debugBarWatchClear },
+				delete    : { value : debugBarWatchDelete },
+				disable   : { value : debugBarWatchDisable },
+				enable    : { value : debugBarWatchEnable },
+				isEnabled : { value : debugBarWatchIsEnabled },
+				toggle    : { value : debugBarWatchToggle }
+			}))
+		}
 	}));
 })();
