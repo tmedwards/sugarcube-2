@@ -106,9 +106,9 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 
 			this.output = output;
 
-			if (options != null && typeof options === 'object') { // lazy equality for null
+			if (options != null && typeof options === 'object' || Wikifier.Option.length > 0) { // lazy equality for null
 				oldOptions = this.options;
-				this.options = Object.assign({}, this.options, options);
+				this.options = Object.assign({}, this.options, Wikifier.Option.options, options);
 			}
 
 			const parsersProfile   = Wikifier.Parser.Profile.get(this.options.profile);
@@ -322,6 +322,62 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 			return urlRegExp.test(link) || /[/.?#]/.test(link);
 		}
 	}
+
+
+	/*******************************************************************************************************************
+		Option Static Object.
+	*******************************************************************************************************************/
+	Object.defineProperty(Wikifier, 'Option', {
+		value : (() => {
+			// Options array (stack).
+			let _optionsStack = [];
+
+
+			/*
+				GlobalOption Functions.
+			*/
+			function optionLength() {
+				return _optionsStack.length;
+			}
+
+			function optionGetter() {
+				return Object.assign({}, ..._optionsStack);
+			}
+
+			function optionClear() {
+				_optionsStack = [];
+			}
+
+			function optionGet(idx) {
+				return _optionsStack[idx];
+			}
+
+			function optionPop() {
+				return _optionsStack.pop();
+			}
+
+			function optionPush(options) {
+				if (typeof options !== 'object' || options === null) {
+					throw new TypeError(`Wikifier.Option.push options parameter must be an object (received: ${Util.getType(options)})`);
+				}
+
+				return _optionsStack.push(options);
+			}
+
+
+			/*
+				Exports.
+			*/
+			return Object.freeze(Object.defineProperties({}, {
+				length  : { get : optionLength },
+				options : { get : optionGetter },
+				clear   : { value : optionClear },
+				get     : { value : optionGet },
+				pop     : { value : optionPop },
+				push    : { value : optionPush }
+			}));
+		})()
+	});
 
 
 	/*******************************************************************************************************************
