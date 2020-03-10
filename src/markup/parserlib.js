@@ -1576,10 +1576,19 @@
 					}
 
 					if (terminatorMatch) {
-						w.subWikify(el, terminator, {
-							ignoreTerminatorCase : true,
-							nobr                 : isNobr
-						});
+						/*
+							NOTE: There's no catch clause here because this try/finally exists
+							solely to ensure that the options stack is properly restored in
+							the event that an uncaught exception is thrown during the call to
+							`subWikify()`.
+						*/
+						try {
+							Wikifier.Option.push({ nobr : isNobr });
+							w.subWikify(el, terminator, { ignoreTerminatorCase : true });
+						}
+						finally {
+							Wikifier.Option.pop();
+						}
 
 						/*
 							Debug view modification.  If the current element has any debug
