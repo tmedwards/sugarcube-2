@@ -1502,13 +1502,13 @@
 			'xmlProlog', 'verbatimHtml', 'verbatimSvgTag', 'verbatimScriptTag',
 			and 'styleTag'.
 		*/
-		name          : 'htmlTag',
-		profiles      : ['core'],
-		match         : '<\\w+(?:\\s+[^\\u0000-\\u001F\\u007F-\\u009F\\s"\'>\\/=]+(?:\\s*=\\s*(?:"[^"]*?"|\'[^\']*?\'|[^\\s"\'=<>`]+))?)*\\s*\\/?>',
-		tagRe         : /^<(\w+)/,
-		mediaElements : ['audio', 'img', 'source', 'track', 'video'], // NOTE: The `<picture>` element should not be in this list.
-		nobrElements  : ['audio', 'colgroup', 'datalist', 'dl', 'figure', 'ol', 'optgroup', 'picture', 'select', 'table', 'tbody', 'tfoot', 'thead', 'tr', 'ul', 'video'],
-		voidElements  : ['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'keygen', 'link', 'menuitem', 'meta', 'param', 'source', 'track', 'wbr'],
+		name      : 'htmlTag',
+		profiles  : ['core'],
+		match     : '<\\w+(?:\\s+[^\\u0000-\\u001F\\u007F-\\u009F\\s"\'>\\/=]+(?:\\s*=\\s*(?:"[^"]*?"|\'[^\']*?\'|[^\\s"\'=<>`]+))?)*\\s*\\/?>',
+		tagRe     : /^<(\w+)/,
+		mediaTags : ['audio', 'img', 'source', 'track', 'video'], // NOTE: The `<picture>` element should not be in this list.
+		nobrTags  : ['audio', 'colgroup', 'datalist', 'dl', 'figure', 'meter', 'ol', 'optgroup', 'picture', 'progress', 'ruby', 'select', 'table', 'tbody', 'tfoot', 'thead', 'tr', 'ul', 'video'],
+		voidTags  : ['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'keygen', 'link', 'menuitem', 'meta', 'param', 'source', 'track', 'wbr'],
 
 		handler(w) {
 			const tagMatch = this.tagRe.exec(w.matchText);
@@ -1516,8 +1516,8 @@
 			const tagName  = tag && tag.toLowerCase();
 
 			if (tagName) {
-				const isVoid = this.voidElements.includes(tagName) || w.matchText.endsWith('/>');
-				const isNobr = this.nobrElements.includes(tagName);
+				const isVoid = this.voidTags.includes(tagName) || w.matchText.endsWith('/>');
+				const isNobr = this.nobrTags.includes(tagName);
 				let terminator;
 				let terminatorMatch;
 
@@ -1676,7 +1676,7 @@
 
 			if (passage !== '') {
 				// Media element, so attempt media passage transclusion.
-				if (this.mediaElements.includes(tagName)) {
+				if (this.mediaTags.includes(tagName)) {
 					if (passage.slice(0, 5) !== 'data:' && Story.has(passage)) {
 						passage = Story.get(passage);
 
