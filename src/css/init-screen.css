@@ -13,7 +13,7 @@
 }
 #init-screen {
 	display: none;
-	z-index: 100000;
+	z-index: 500000;
 	position: fixed;
 	top: 0px;
 	left: 0px;
