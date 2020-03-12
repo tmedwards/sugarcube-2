@@ -7,8 +7,8 @@
 
 ***********************************************************************************************************************/
 /*
-	global Alert, Browser, Config, Dialog, Engine, Has, LoadScreen, SimpleStore, L10n, Macro, Passage, Save,
-	       Scripting, Setting, SimpleAudio, State, Story, UI, UIBar, DebugBar, Util, Visibility, Wikifier
+	global Alert, Browser, Config, Dialog, Engine, Fullscreen, Has, LoadScreen, SimpleStore, L10n, Macro, Passage,
+	       Save, Scripting, Setting, SimpleAudio, State, Story, UI, UIBar, DebugBar, Util, Visibility, Wikifier
 */
 /* eslint-disable no-var */
 
@@ -201,6 +201,7 @@ jQuery(() => {
 			Config,
 			Dialog,
 			Engine,
+			Fullscreen,
 			Has,
 			L10n,
 			Macro,
