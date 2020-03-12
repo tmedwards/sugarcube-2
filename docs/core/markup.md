@@ -694,8 +694,8 @@ Because the custom style markup uses the same tokens to begin and end the markup
 	<tr>
 		<td rowspan="2">Inline</td>
 		<td rowspan="2"><pre><code>@@<i>style-list</i><a href="#markup-custom-style-fn1">1</a>;Text@@</code></pre></td>
-		<td><pre><code>@@#foo;.bar;Text@@</code></pre></td>
-		<td><pre><code>&lt;span id="foo" class="bar"&gt;Text&lt;/span&gt;</code></pre></td>
+		<td><pre><code>@@#alfa;.bravo;Text@@</code></pre></td>
+		<td><pre><code>&lt;span id="alfa" class="bravo"&gt;Text&lt;/span&gt;</code></pre></td>
 	</tr>
 	<tr>
 		<td><pre><code>@@color:red;Text@@</code></pre></td>
@@ -704,8 +704,8 @@ Because the custom style markup uses the same tokens to begin and end the markup
 	<tr>
 		<td rowspan="2">Block</td>
 		<td rowspan="2"><pre><code>@@<i>style-list</i><a href="#markup-custom-style-fn1">1</a>;<br>Text<br>@@</code></pre></td>
-		<td><pre><code>@@#foo;.bar;<br>Text<br>@@</code></pre></td>
-		<td><pre><code>&lt;div id="foo" class="bar"&gt;Text&lt;/div&gt;</code></pre></td>
+		<td><pre><code>@@#alfa;.bravo;<br>Text<br>@@</code></pre></td>
+		<td><pre><code>&lt;div id="alfa" class="bravo"&gt;Text&lt;/div&gt;</code></pre></td>
 	</tr>
 	<tr>
 		<td><pre><code>@@color:red;<br>Text<br>@@</code></pre></td>
@@ -715,7 +715,15 @@ Because the custom style markup uses the same tokens to begin and end the markup
 </table>
 
 <ol class="note">
-<li id="markup-custom-style-fn1">The style-list should be a semi-colon (<code>;</code>) separated list consisting of a single, unique hash-prefixed ID—e.g., <code>#foo</code>—and/or any number of dot-prefixed class names—e.g., <code>.bar</code>—and/or style properties—e.g., <code>color:red</code>.</li>
+<li id="markup-custom-style-fn1">
+	The style-list should be a semi-colon (<code>;</code>) separated list consisting of one or more of the following:
+	<ul>
+	<li>A single unique hash-prefixed ID—e.g., <code>#alfa</code>.</li>
+	<li>Dot-prefixed class names—e.g., <code>.bravo</code>.</li>
+	<li>Style properties—e.g., <code>color:red</code>.</li>
+	</ul>
+	Further, the ID and class names components may be conjoined without need of extra semi-colons—e.g., <code>#alfa;.bravo;.charlie;</code> may also be written as <code>#alfa.bravo.charlie;</code>.
+</li>
 </ol>
 
 
