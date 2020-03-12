@@ -67,16 +67,16 @@ var SimpleAudio = (() => { // eslint-disable-line no-unused-vars, no-var
 	// Return whether the `<HTMLAudioElement>.play()` method returns a `Promise`.
 	//
 	// NOTE: The initial result is cached for future calls.
-	const _hasPlayPromise = (function () {
+	const _playReturnsPromise = (function () {
 		// Cache of whether `<HTMLAudioElement>.play()` returns a `Promise`.
-		let _isPromise = null;
+		let _hasPromise = null;
 
-		function _hasPlayPromise() {
-			if (_isPromise !== null) {
-				return _isPromise;
+		function _playReturnsPromise() {
+			if (_hasPromise !== null) {
+				return _hasPromise;
 			}
 
-			_isPromise = false;
+			_hasPromise = false;
 
 			if (Has.audio) {
 				try {
@@ -105,15 +105,15 @@ var SimpleAudio = (() => { // eslint-disable-line no-unused-vars, no-var
 					// is acceptable, since it will be caught and `false` eventually returned.
 					value.catch(() => { /* no-op */ });
 
-					_isPromise = value instanceof Promise;
+					_hasPromise = value instanceof Promise;
 				}
 				catch (ex) { /* no-op */ }
 			}
 
-			return _isPromise;
+			return _hasPromise;
 		}
 
-		return _hasPlayPromise;
+		return _playReturnsPromise;
 	})();
 
 
@@ -459,7 +459,9 @@ var SimpleAudio = (() => { // eslint-disable-line no-unused-vars, no-var
 				this.audio.preload = 'auto';
 			}
 
-			return _hasPlayPromise()
+			const namespace = '.AudioTrack_play';
+
+			return _playReturnsPromise()
 				? this.audio.play()
 				: new Promise((resolve, reject) => {
 					if (this.isPlaying()) {
@@ -467,12 +469,12 @@ var SimpleAudio = (() => { // eslint-disable-line no-unused-vars, no-var
 					}
 					else {
 						jQuery(this.audio)
-							.off('.AudioTrack_play')
-							.one('error.AudioTrack_play playing.AudioTrack_play timeupdate.AudioTrack_play', ev => {
-								jQuery(this).off('.AudioTrack_play');
+							.off(namespace)
+							.one(`error${namespace} playing${namespace} timeupdate${namespace}`, ev => {
+								jQuery(this).off(namespace);
 
 								if (ev.type === 'error') {
-									reject(new Error('unknown error'));
+									reject(new Error('unknown audio play error'));
 								}
 								else {
 									resolve();
