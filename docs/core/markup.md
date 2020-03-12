@@ -3,9 +3,9 @@
 ************************************************************************************************ -->
 <h1 id="markup">Markup</h1>
 
-#### Since:
-
-* `v2.0.0`: All markup except where noted.
+<p role="note"><b>Note:</b>
+Except where noted, all markup has been available since <code>v2.0.0</code>.
+</p>
 
 
 <!-- ***************************************************************************
@@ -722,7 +722,7 @@ Because the custom style markup uses the same tokens to begin and end the markup
 	<li>Dot-prefixed class names—e.g., <code>.bravo</code>.</li>
 	<li>Style properties—e.g., <code>color:red</code>.</li>
 	</ul>
-	Further, the ID and class names components may be conjoined without need of extra semi-colons—e.g., <code>#alfa;.bravo;.charlie;</code> may also be written as <code>#alfa.bravo.charlie;</code>.
+	As of <code>v2.31.0</code>, the ID and class names components may be conjoined without need of extra semi-colons—e.g., <code>#alfa;.bravo;.charlie;</code> may also be written as <code>#alfa.bravo.charlie;</code>.
 </li>
 </ol>
 
