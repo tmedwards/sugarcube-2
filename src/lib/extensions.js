@@ -1214,8 +1214,9 @@
 	});
 
 	/*
-		Returns a bound function that supplies the given arguments to the base function, followed
-		by the arguments are supplied to the bound function, whenever it is called.
+		Returns a bound function that supplies the given arguments to the base
+		function, followed by the arguments are supplied to the bound function,
+		whenever it is called.
 	*/
 	Object.defineProperty(Function.prototype, 'partial', {
 		configurable : true,
@@ -1320,8 +1321,8 @@
 	}
 
 	/*
-		Returns a formatted string, after replacing each format item in the given format string
-		with the text equivalent of the corresponding argument's value.
+		Returns a formatted string, after replacing each format item in the given
+		format string with the text equivalent of the corresponding argument's value.
 	*/
 	(() => {
 		const _formatRegExp    = /{(\d+)(?:,([+-]?\d+))?}/g;
@@ -1483,7 +1484,8 @@
 	});
 
 	/*
-		Returns a copy of the base string with `delCount` characters replaced with `replacement`, starting at `startAt`.
+		Returns a copy of the base string with `delCount` characters replaced with
+		`replacement`, starting at `startAt`.
 	*/
 	Object.defineProperty(String.prototype, 'splice', {
 		configurable : true,
@@ -1538,7 +1540,8 @@
 	});
 
 	/*
-		Returns an array of strings, split from the string, or an empty array if the string is empty.
+		Returns an array of strings, split from the string, or an empty array if the
+		string is empty.
 	*/
 	Object.defineProperty(String.prototype, 'splitOrEmpty', {
 		configurable : true,

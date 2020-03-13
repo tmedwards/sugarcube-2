@@ -11,9 +11,6 @@
 var Setting = (() => { // eslint-disable-line no-unused-vars, no-var
 	'use strict';
 
-	// Setting definition array.
-	const _definitions = [];
-
 	// Setting control types object (pseudo-enumeration).
 	const Types = Util.toEnum({
 		Header : 0,
@@ -21,6 +18,9 @@ var Setting = (() => { // eslint-disable-line no-unused-vars, no-var
 		List   : 2,
 		Range  : 3
 	});
+
+	// Setting definition array.
+	const _definitions = [];
 
 
 	/*******************************************************************************************************************

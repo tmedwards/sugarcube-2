@@ -33,15 +33,15 @@ var Template = (() => { // eslint-disable-line no-unused-vars, no-var
 			   !_validType(template)
 			&& !(template instanceof Array && template.length > 0 && template.every(_validType))
 		) {
-			throw new Error(`invalid template type (${name}); templates must be: functions, strings, or an array of either`);
+			throw new TypeError(`invalid template type (${name}); templates must be: functions, strings, or an array of either`);
 		}
 
 		(name instanceof Array ? name : [name]).forEach(name => {
-			if (_templates.has(name)) {
-				throw new Error(`cannot clobber existing template ?${name}`);
-			}
 			if (!_validNameRe.test(name)) {
 				throw new Error(`invalid template name "${name}"`);
+			}
+			if (_templates.has(name)) {
+				throw new Error(`cannot clobber existing template ?${name}`);
 			}
 
 			_templates.set(name, template);
