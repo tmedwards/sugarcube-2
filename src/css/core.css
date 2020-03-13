@@ -31,7 +31,7 @@ html {
 
 
 /*
-	Default appearance styles.
+	Fullscreen appearance styles.
 */
 /*
 html:fullscreen {
@@ -51,6 +51,7 @@ html:fullscreen {
 body {
 	color: #eee;
 	background-color: #111;
+	overflow: auto;
 }
 a {
 	cursor: pointer;
