@@ -25,6 +25,7 @@ var Visibility = (() => { // eslint-disable-line no-unused-vars, no-var
 			* Opera 12 (Presto) doesn't change the visibility state when the browser is minimized.
 	*/
 
+	// Vendor properties object.
 	const vendor = (() => {
 		try {
 			return Object.freeze([
