@@ -54,7 +54,7 @@ Unfortunately, due to how the Twine&nbsp;2 automatic passage creation feature cu
 <span id="guide-tips-non-generic-object-types"></span>
 ### Non-generic object types (a.k.a. classes)
 
-As a basic working definition, non-generic object types—a.k.a. classes—are instantiable objects whose prototype is not `Object`—e.g., `Array` is a native non-generic object type.
+As a basic working definition, non-generic object types—a.k.a. classes—are instantiable objects whose own prototype is not `Object`—e.g., `Array` is a native non-generic object type.
 
 Most of the commonly used native non-generic object types are already fully compatible with and supported for use within story variables—e.g., `Array`, `Date`, `Map`, and `Set`.  Non-native/custom non-generic object types, on the other hand, must be made compatible to be successfully stored within story variables.
 
@@ -65,7 +65,7 @@ Making custom non-generic object types fully compatible requires that two method
 
 In both cases, since the end goal is roughly the same, this means creating a new instance of the base object type and populating it with clones of the original instance's data.  There is no one size fits all example for either of these methods because an instance's properties, and the data contained therein, are what determine what you need to do.
 
-#### Examples:
+#### Examples: *(not an exhaustive list)*
 
 ##### Config/option object parameter constructor (automatic copying of own data)
 
