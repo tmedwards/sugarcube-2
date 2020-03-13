@@ -4,7 +4,7 @@
 
 	Localization by: Konstantin Kitmanov.
 
-	Copyright © 2017 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
+	Copyright © 2017–2020 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 	For more information about the guidelines used to create this localization, see:
@@ -22,7 +22,7 @@
 	/* Errors. */
 	l10nStrings.errorTitle              = 'Ошибка';
 	l10nStrings.errorToggle             = 'Режим просмотра ошибок';
-	l10nStrings.errorNonexistentPassage = 'Параграф "{passage}" не существует';
+	l10nStrings.errorNonexistentPassage = 'Параграф "{passage}" не существует'; // NOTE: `passage` is supplied locally
 	l10nStrings.errorSaveMissingData    = 'в сохранении нет необходимых данных. Сохранение было повреждено или загружен неверный файл';
 	l10nStrings.errorSaveIdMismatch     = 'сохранение от другой {identity}';
 
@@ -54,7 +54,7 @@
 
 	/* Jump To. */
 	l10nStrings.jumptoTitle       = 'Перейти на';
-	l10nStrings.jumptoTurn        = 'Ход';
+	l10nStrings.jumptoTurn        = 'Ход'; // (noun) chance to act (in a game), moment, period
 	l10nStrings.jumptoUnavailable = 'В данный момент нет точек для перехода\u2026';
 
 	/* Saves. */
@@ -92,6 +92,6 @@
 	l10nStrings.autoloadPrompt = 'Найдено автосохранение. Загрузить его или начать сначала?';
 
 	/* Macros. */
-	l10nStrings.macroBackText   = 'Назад';
-	l10nStrings.macroReturnText = 'Вернуться';
+	l10nStrings.macroBackText   = 'Назад'; // (verb) rewind, revert
+	l10nStrings.macroReturnText = 'Вернуться'; // (verb) go/send back
 })();

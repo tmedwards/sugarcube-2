@@ -124,6 +124,6 @@
 	l10nStrings.autoloadPrompt = 'An autosave exists. Load it now or go to the start?';
 
 	/* Macros. */
-	l10nStrings.macroBackText   = 'Back';  // (verb) rewind, revert
+	l10nStrings.macroBackText   = 'Back'; // (verb) rewind, revert
 	l10nStrings.macroReturnText = 'Return'; // (verb) go/send back
 })();
