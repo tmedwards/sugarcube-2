@@ -214,7 +214,7 @@ if (aTrack.hasNoData()) {
 
 Returns whether, at least, some of the track's data has been loaded.
 
-<p role="note"><b>Note:</b>
+<p role="note" class="tip"><b>Tip:</b>
 The <a href="#audiotrack-api-prototype-method-hasdata"><code>&lt;AudioTrack&gt;.hasData()</code> method</a> is generally more useful.
 </p>
 
