@@ -64,26 +64,38 @@ var Visibility = (() => { // eslint-disable-line no-unused-vars, no-var
 	})();
 
 
-	/*******************************************************************************************************************
-		Functions.
-	*******************************************************************************************************************/
-	function visibilityIsHidden() {
-		// return Boolean(vendor && document[vendor.stateProperty] === 'hidden');
-		return Boolean(vendor && document[vendor.hiddenProperty]); // historical, but probably better for 1st edition
+	/*******************************************************************************
+		API Functions.
+	*******************************************************************************/
+
+	function getVendor() {
+		return vendor;
 	}
 
-	function visibilityState() {
+	function getVisibility() {
 		return vendor && document[vendor.stateProperty] || 'visible';
 	}
 
+	function isEnabled() {
+		return Boolean(vendor);
+	}
 
-	/*******************************************************************************************************************
+	function isHidden() {
+		// return Boolean(vendor && document[vendor.stateProperty] === 'hidden');
+		return Boolean(vendor && document[vendor.hiddenProperty]); // NOTE: Historical, but probably better for 1st edition.
+	}
+
+
+	/*******************************************************************************
 		Module Exports.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	return Object.freeze(Object.defineProperties({}, {
 		// Functions.
-		isHidden : { value : visibilityIsHidden },
-		state    : { value : visibilityState },
+		vendor    : { get : getVendor },
+		state     : { get : getVisibility },
+		isEnabled : { value : isEnabled },
+		isHidden  : { value : isHidden },
 
 		// Properties.
 		hiddenProperty : { value : vendor && vendor.hiddenProperty },

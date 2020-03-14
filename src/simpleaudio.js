@@ -2023,9 +2023,8 @@ var SimpleAudio = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 	function masterMuteOnHidden(mute) {
-		// NOTE: IE 9 doesn't support the Page Visibility API at all,
-		// so we bail out if necessary.
-		if (!Visibility.changeEvent) {
+		// NOTE: Some older browsers—notably: IE 9—do not support the Page Visibility API.
+		if (!Visibility.isEnabled()) {
 			return false;
 		}
 
