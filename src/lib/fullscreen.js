@@ -118,7 +118,29 @@ var Fullscreen = (() => { // eslint-disable-line no-unused-vars, no-var
 
 
 	/*******************************************************************************
-		Fullscreen Functions.
+		Utility Functions.
+	*******************************************************************************/
+
+	function _selectElement(requestedEl) {
+		let selectedEl = requestedEl || document.documentElement;
+
+		// Document element scrolling workaround for older browsers.
+		if (
+			   selectedEl === document.documentElement
+			&& (
+				   vendor.requestFn === 'msRequestFullscreen'   // IE 11
+				|| Browser.isOpera && Browser.operaVersion < 15 // Opera 12 (Presto)
+			)
+		) {
+			selectedEl = document.body;
+		}
+
+		return selectedEl;
+	}
+
+
+	/*******************************************************************************
+		API Functions.
 	*******************************************************************************/
 
 	function getVendor() {
@@ -131,6 +153,12 @@ var Fullscreen = (() => { // eslint-disable-line no-unused-vars, no-var
 
 	function init() {
 		if (_initialized) {
+			return;
+		}
+
+		_initialized = true;
+
+		if (!vendor) {
 			return;
 		}
 
@@ -165,14 +193,12 @@ var Fullscreen = (() => { // eslint-disable-line no-unused-vars, no-var
 							id   : 'style-body-ms-backdrop',
 							type : 'text/css'
 						})
-						.appendTo(document.head)
+						.insertBefore('#style-story')
 						.get(0) // return the <style> element itself
 					)()
 				)).set(`body::-ms-backdrop{${backdrop}}`);
 			}
 		}
-
-		_initialized = true;
 	}
 
 	function isEnabled() {
@@ -183,20 +209,18 @@ var Fullscreen = (() => { // eslint-disable-line no-unused-vars, no-var
 		return Boolean(vendor && document[vendor.element]);
 	}
 
-	function requestFullscreen(options, element = document.documentElement) {
-		if (!vendor || typeof element[vendor.requestFn] !== 'function') {
+	function requestFullscreen(options, requestedEl) {
+		if (!vendor) {
+			return Promise.reject(new Error('fullscreen not supported'));
+		}
+
+		const element = _selectElement(requestedEl);
+
+		if (typeof element[vendor.requestFn] !== 'function') {
 			return Promise.reject(new Error('fullscreen not supported'));
 		}
 		if (isFullscreen()) {
 			return Promise.resolve();
-		}
-
-		// Document element scrolling workaround for older browsers—notably: IE 11 and Opera 12 (Presto).
-		if (
-			   element === document.documentElement
-			&& (vendor.requestFn === 'msRequestFullscreen' || Browser.isOpera && Browser.operaVersion < 15)
-		) {
-			element = document.body; // eslint-disable-line no-param-reassign
 		}
 
 		if (_returnsPromise()) {
@@ -255,22 +279,26 @@ var Fullscreen = (() => { // eslint-disable-line no-unused-vars, no-var
 		}
 	}
 
-	function toggleFullscreen(options, element = document.documentElement) {
-		return isFullscreen() ? exitFullscreen() : requestFullscreen(options, element);
+	function toggleFullscreen(options, requestedEl) {
+		return isFullscreen() ? exitFullscreen() : requestFullscreen(options, requestedEl);
 	}
 
-	function onChange(handlerFn, element = document.documentElement) {
+	function onChange(handlerFn, requestedEl) {
 		if (!vendor) {
 			return;
 		}
+
+		const element = _selectElement(requestedEl);
 
 		$(element).on(vendor.changeEvent, handlerFn);
 	}
 
-	function offChange(handlerFn, element = document.documentElement) {
+	function offChange(handlerFn, requestedEl) {
 		if (!vendor) {
 			return;
 		}
+
+		const element = _selectElement(requestedEl);
 
 		if (handlerFn) {
 			$(element).off(vendor.changeEvent, handlerFn);
@@ -280,18 +308,22 @@ var Fullscreen = (() => { // eslint-disable-line no-unused-vars, no-var
 		}
 	}
 
-	function onError(handlerFn, element = document.documentElement) {
+	function onError(handlerFn, requestedEl) {
 		if (!vendor) {
 			return;
 		}
+
+		const element = _selectElement(requestedEl);
 
 		$(element).on(vendor.errorEvent, handlerFn);
 	}
 
-	function offError(handlerFn, element = document.documentElement) {
+	function offError(handlerFn, requestedEl) {
 		if (!vendor) {
 			return;
 		}
+
+		const element = _selectElement(requestedEl);
 
 		if (handlerFn) {
 			$(element).off(vendor.errorEvent, handlerFn);

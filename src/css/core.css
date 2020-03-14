@@ -33,15 +33,15 @@ html {
 /*
 	Fullscreen appearance styles.
 */
-/*
-html:fullscreen {
-	background-color: #111;
-}
-*/
 *:fullscreen { /* Cause Blink/WebKit to behave like Gecko. */
 	height: 100%;
 	width: 100%;
 }
+
+
+/*
+	Default appearance styles.
+*/
 *:focus {
 	outline: thin dotted;
 }
