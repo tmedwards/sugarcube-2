@@ -6,7 +6,7 @@
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* global Browser, StyleWrapper */
+/* global Browser */
 
 var Fullscreen = (() => { // eslint-disable-line no-unused-vars, no-var
 	'use strict';
@@ -66,9 +66,6 @@ var Fullscreen = (() => { // eslint-disable-line no-unused-vars, no-var
 
 		return undefined;
 	})();
-
-	// Whether initialization is complete.
-	let _initialized = false;
 
 
 	/*******************************************************************************
@@ -149,56 +146,6 @@ var Fullscreen = (() => { // eslint-disable-line no-unused-vars, no-var
 
 	function getElement() {
 		return (vendor || null) && document[vendor.element];
-	}
-
-	function init() {
-		if (_initialized) {
-			return;
-		}
-
-		_initialized = true;
-
-		if (!vendor) {
-			return;
-		}
-
-		// (IE 11) Copy `body` background styles to `body::-ms-backdrop`.
-		if (vendor.requestFn === 'msRequestFullscreen') {
-			const $body     = jQuery(document.body);
-			const baseStyle = {
-				background              : '',            // UA: ''
-				'background-attachment' : 'scroll',      // UA: 'scroll'
-				'background-clip'       : 'border-box',  // UA: 'border-box'
-				'background-color'      : 'transparent', // UA: 'transparent', SC: 'rgb(17, 17, 17)'
-				'background-image'      : 'none',        // UA: 'none'
-				'background-origin'     : 'padding-box', // UA: 'padding-box'
-				'background-position'   : '0% 0%',       // UA: '0% 0%'
-				'background-repeat'     : 'repeat',      // UA: 'repeat'
-				'background-size'       : 'auto'         // UA: 'auto'
-			};
-			const backdrop  = Object.keys(baseStyle).reduce((style, prop) => {
-				const current = $body.css(prop);
-
-				if (current !== baseStyle[prop]) {
-					style += `${prop}:${current};`; // eslint-disable-line no-param-reassign
-				}
-
-				return style;
-			}, '');
-
-			if (backdrop) {
-				(new StyleWrapper(
-					(() => jQuery(document.createElement('style'))
-						.attr({
-							id   : 'style-body-ms-backdrop',
-							type : 'text/css'
-						})
-						.insertBefore('#style-story')
-						.get(0) // return the <style> element itself
-					)()
-				)).set(`body::-ms-backdrop{${backdrop}}`);
-			}
-		}
 	}
 
 	function isEnabled() {
@@ -341,7 +288,6 @@ var Fullscreen = (() => { // eslint-disable-line no-unused-vars, no-var
 	return Object.freeze(Object.defineProperties({}, {
 		vendor       : { get : getVendor },
 		element      : { get : getElement },
-		init         : { value : init },
 		isEnabled    : { value : isEnabled },
 		isFullscreen : { value : isFullscreen },
 		request      : { value : requestFullscreen },

@@ -37,6 +37,9 @@ html {
 	height: 100%;
 	width: 100%;
 }
+body::-ms-backdrop { /* Prevent IE 11 from hiding the `body` element's background. */
+	background: none;
+}
 
 
 /*

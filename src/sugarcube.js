@@ -143,7 +143,6 @@ jQuery(() => {
 
 		// Initialize the story (largely load the user styles, scripts, and widgets).
 		Story.init();
-		Fullscreen.init();
 
 		// Initialize the localization (must be done after story initialization).
 		L10n.init();
