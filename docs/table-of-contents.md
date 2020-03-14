@@ -6,7 +6,7 @@
 <div id="header-logo"></div>
 <h1>SugarCube v2 Documentation</h1>
 <div><tt>{{.VERSION}}</tt> (<time datetime="{{.ISO_DATE}}">{{.DATE}}</time>)</div>
-<div>To search: <kbd>CTRL</kbd>+<kbd>F</kbd> or <kbd>F3</kbd></div>
+<div>Find in page: <kbd>CTRL</kbd>+<kbd>F</kbd> or <kbd>F3</kbd></div>
 </header>
 
 ## [Introduction](#introduction)
@@ -212,6 +212,7 @@
 	* [`Engine`](#special-variable-engine)
 	* [`jQuery`](#special-variable-jquery)
 	* [`l10nStrings`](#special-variable-l10nstrings)
+	* [`Fullscreen`](#special-variable-fullscreen)
 	* [`LoadScreen`](#special-variable-loadscreen)
 	* [`Macro`](#special-variable-macro)
 	* [`Passage`](#special-variable-passage)
@@ -325,6 +326,19 @@
 * [`Engine.restart()`](#engine-api-method-restart)
 * [`Engine.show()`](#engine-api-method-show)
 * [`:enginerestart`](#engine-api-event-enginerestart)
+
+## [`Fullscreen` API](#fullscreen-api)
+
+* [`Fullscreen.element`](#fullscreen-api-getter-element)
+* [`Fullscreen.isEnabled()`](#fullscreen-api-method-isenabled)
+* [`Fullscreen.isFullscreen()`](#fullscreen-api-method-isfullscreen)
+* [`Fullscreen.request()`](#fullscreen-api-method-request)
+* [`Fullscreen.exit()`](#fullscreen-api-method-exit)
+* [`Fullscreen.toggle()`](#fullscreen-api-method-toggle)
+* [`Fullscreen.onChange()`](#fullscreen-api-method-onchange)
+* [`Fullscreen.offChange()`](#fullscreen-api-method-offchange)
+* [`Fullscreen.onError()`](#fullscreen-api-method-onerror)
+* [`Fullscreen.offError()`](#fullscreen-api-method-offerror)
 
 ## [`LoadScreen` API](#loadscreen-api)
 

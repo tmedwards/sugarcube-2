@@ -399,6 +399,17 @@ Engine API.  See [`Engine` API](#engine-api) for more information.
 
 <!-- *********************************************************************** -->
 
+<span id="special-variable-fullscreen"></span>
+### `Fullscreen`
+
+Fullscreen API.  See [`Fullscreen` API](#fullscreen-api) for more information.
+
+#### Since:
+
+* `v2.31.0`
+
+<!-- *********************************************************************** -->
+
 <span id="special-variable-jquery"></span>
 ### `jQuery`
 
