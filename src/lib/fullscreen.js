@@ -148,7 +148,7 @@ var Fullscreen = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 	function getElement() {
-		return vendor && document[vendor.element];
+		return (vendor || null) && document[vendor.element];
 	}
 
 	function init() {
