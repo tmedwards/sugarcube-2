@@ -1421,14 +1421,6 @@
 	});
 
 	Wikifier.Parser.add({
-		name      : 'verbatimSvgTag',
-		profiles  : ['core'],
-		match     : '<[Ss][Vv][Gg][^>]*>',
-		lookahead : /(<[Ss][Vv][Gg][^>]*>(?:.|\n)*?<\/[Ss][Vv][Gg]>)/gm,
-		handler   : _verbatimTagHandler
-	});
-
-	Wikifier.Parser.add({
 		name      : 'verbatimScriptTag',
 		profiles  : ['core'],
 		match     : '<[Ss][Cc][Rr][Ii][Pp][Tt][^>]*>',
@@ -1491,6 +1483,155 @@
 				jQuery(document.createDocumentFragment())
 					.append(match[1] + css + match[3])
 					.appendTo(w.output);
+			}
+		}
+	});
+
+	Wikifier.Parser.add({
+		name      : 'svgTag',
+		profiles  : ['core'],
+		match     : '<[Ss][Vv][Gg][^>]*>',
+		lookahead : /(<[Ss][Vv][Gg][^>]*>(?:.|\n)*?<\/[Ss][Vv][Gg]>)/gm,
+		namespace : 'http://www.w3.org/2000/svg',
+
+		handler(w) {
+			this.lookahead.lastIndex = w.matchStart;
+
+			const match = this.lookahead.exec(w.source);
+
+			if (match && match.index === w.matchStart) {
+				w.nextMatch = this.lookahead.lastIndex;
+
+				const $frag = jQuery(document.createDocumentFragment()).append(match[1]);
+
+				// Postprocess the relevant SVG element nodes.
+				$frag.find('a[data-passage],image[data-passage]').each((_, el) => {
+					const tagName = el.tagName.toLowerCase();
+
+					try {
+						this.processAttributeDirectives(el);
+					}
+					catch (ex) {
+						return throwError(
+							w.output,
+							`svg|<${tagName}>: ${ex.message}`,
+							`${w.matchText}\u2026`
+						);
+					}
+
+					if (el.hasAttribute('data-passage')) {
+						this.processDataAttributes(el, tagName);
+					}
+				});
+
+				$frag.appendTo(w.output);
+			}
+		},
+
+		processAttributeDirectives(el) {
+			// NOTE: The `.attributes` property yields a live collection, so we
+			// must make a non-live copy of it as we will be adding and removing
+			// members of said collection if any directives are found.
+			[...el.attributes].forEach(({ name, value }) => {
+				const evalShorthand = name[0] === '@';
+
+				if (evalShorthand || name.startsWith('sc-eval:')) {
+					const newName = name.slice(evalShorthand ? 1 : 8); // Remove eval directive prefix.
+
+					if (newName === 'data-setter') {
+						throw new Error(`evaluation directive is not allowed on the data-setter attribute: "${name}"`);
+					}
+
+					let result;
+
+					// Evaluate the value as TwineScript.
+					try {
+						result = Scripting.evalTwineScript(value);
+					}
+					catch (ex) {
+						throw new Error(`bad evaluation from attribute directive "${name}": ${ex.message}`);
+					}
+
+					// Assign the result to the new attribute and remove the old one.
+					try {
+						/*
+							NOTE: Most browsers (ca. Nov 2017) have broken `setAttribute()`
+							method implementations that throw on attribute names that start
+							with, or contain, various symbols that are completely valid per
+							the specification.  Thus this code could fail if the user chooses
+							attribute names that, after removing the directive prefix, are
+							unpalatable to `setAttribute()`.
+						*/
+						el.setAttribute(newName, result);
+						el.removeAttribute(name);
+					}
+					catch (ex) {
+						throw new Error(`cannot transform attribute directive "${name}" into attribute "${newName}"`);
+					}
+				}
+			});
+		},
+
+		processDataAttributes(el, tagName) {
+			let passage = el.getAttribute('data-passage');
+
+			if (passage == null) { // lazy equality for null
+				return;
+			}
+
+			const evaluated = Wikifier.helpers.evalPassageId(passage);
+
+			if (evaluated !== passage) {
+				passage = evaluated;
+				el.setAttribute('data-passage', evaluated);
+			}
+
+			if (passage !== '') {
+				// '<image>' element, so attempt media passage transclusion.
+				if (tagName === 'image') {
+					if (passage.slice(0, 5) !== 'data:' && Story.has(passage)) {
+						passage = Story.get(passage);
+
+						if (passage.tags.includes('Twine.image')) {
+							// NOTE: SVG `.href` IDL attribute is read-only,
+							// so set its `href` content attribute instead.
+							el.setAttribute('href', passage.text.trim());
+						}
+					}
+				}
+
+				// Elsewise, assume a link element of some type—e.g., '<a>'.
+				else {
+					let setter = el.getAttribute('data-setter');
+					let setFn;
+
+					if (setter != null) { // lazy equality for null
+						setter = String(setter).trim();
+
+						if (setter !== '') {
+							setFn = Wikifier.helpers.createShadowSetterCallback(Scripting.parse(setter));
+						}
+					}
+
+					if (Story.has(passage)) {
+						el.classList.add('link-internal');
+
+						if (Config.addVisitedLinkClass && State.hasPlayed(passage)) {
+							el.classList.add('link-visited');
+						}
+					}
+					else {
+						el.classList.add('link-broken');
+					}
+
+					jQuery(el).ariaClick({ one : true }, function () {
+						if (typeof setFn === 'function') {
+							setFn.call(this);
+						}
+
+						Engine.play(passage);
+					});
+				}
 			}
 		}
 	});
@@ -1712,7 +1853,7 @@
 					}
 				}
 
-				// Elsewise, assume a link element of some type—e.g. '<a>', '<area>', '<button>', etc.
+				// Elsewise, assume a link element of some type—e.g., '<a>', '<area>', '<button>', etc.
 				else {
 					let setter = el.getAttribute('data-setter');
 					let setFn;
