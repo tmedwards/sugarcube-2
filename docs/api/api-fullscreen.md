@@ -3,6 +3,25 @@
 ************************************************************************************************ -->
 <h1 id="fullscreen-api"><code>Fullscreen</code> API</h1>
 
+<span id="fullscreen-api-backgrounds"></span>
+#### Backgrounds
+
+If you wish to use custom backgrounds, either simply colors or with images, then you should place them on the `body` element.  For example:
+
+```
+body {
+	background: #111 fixed url("images/background.png") center / contain no-repeat;
+}
+```
+
+<p role="note" class="warning"><b>Warning:</b>
+You should not place background properties on the <code>html</code> element in addition to the <code>body</code> element as this can cause background jitter in Internet Explorer when scrolling.
+</p>
+
+<p role="note" class="warning"><b>Warning:</b>
+If setting a background image via the <code>background</code> shorthand property, then you should also specify a <code>background-color</code> value with it or include a separate <code>background-color</code> property after the <code>background</code> property.  The reason being is that the <code>background</code> property resets the background color, so if you do not set one either as one of its values or via a following <code>background-color</code> property, then the browser's default background color could show through if the background image does not cover the entire viewport or includes transparency.
+</p>
+
 <span id="fullscreen-api-limitations"></span>
 #### Limitations
 
@@ -71,6 +90,10 @@ Fullscreen.isFullscreen()  → Whether fullscreen mode is active
 ### `Fullscreen.request([options [, requestedEl]])` → *`Promise` object*
 
 Request that the browser enter fullscreen mode.
+
+<p role="note" class="see"><b>See:</b>
+<a href="#fullscreen-api-backgrounds">Backgrounds</a> and <a href="#fullscreen-api-limitations">limitations</a>.
+</p>
 
 #### Since:
 
