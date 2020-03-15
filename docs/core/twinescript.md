@@ -5,8 +5,6 @@
 
 TwineScript in SugarCube is, essentially, JavaScript with an extra spoonful of sugar on top to make it a bit nicer for the uninitiated.
 
-See the [Variables](https://twinery.org/wiki/variable) and [About Expressions](https://twinery.org/wiki/expression) sections of the [Twine&nbsp;1/Twee reference documentation](https://twinery.org/wiki/twine1:reference) for additional information.
-
 
 <!-- ***************************************************************************
 	Variables
@@ -97,6 +95,10 @@ Unsupported object types, either native or custom, can be made compatible by imp
 **************************************************************************** -->
 <span id="twinescript-expressions"></span>
 ## Expressions
+
+<p role="note" class="see"><b>See Also:</b>
+While not specifically about SugarCube, the <a href="https://twinery.org/wiki/expression">About Expressions</a> section of the <a href="https://twinery.org/wiki/twine1:reference">Twine&nbsp;1 reference documentation</a> may also be helpful.
+</p>
 
 Expressions are simply units of code that yield values when evaluated.  For example:
 
