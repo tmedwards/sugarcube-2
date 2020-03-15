@@ -25,13 +25,13 @@ Additionally, macros in SugarCube do not return values, so macros cannot be used
 Consider the following Harlowe code:
 
 ```
-(link-goto: 'Go somewhere else', (either: 'this passage', 'that passage', 'the other passage'))
+(link-goto: "Go somewhere else", (either: "this passage", "that passage", "the other passage"))
 ```
 
 A version of the above code in SugarCube might look like this:
 
 ```
-<<link 'Go somewhere else' `either('this passage', 'that passage', 'the other passage')`>><</link>>
+<<link "Go somewhere else" `either("this passage", "that passage", "the other passage")`>><</link>>
 ```
 
 <p role="note" class="see"><b>See:</b>
@@ -74,17 +74,17 @@ SugarCube does not have any equivalents to Harlowe's `(click:)` family of macros
 Consider the following Harlowe link macros:
 
 ```
-(link: 'Hey there.')[Hay is for horses.]
-(link-repeat: 'Get some money')[(set: $cash to it + 1)]
-(link-goto: 'Move on', 'next passage')
+(link: "Hey there.")[Hay is for horses.]
+(link-repeat: "Get some money")[(set: $cash to it + 1)]
+(link-goto: "Move on", "next passage")
 ```
 
 The equivalent SugarCube code for each link might look something like this:
 
 ```
-<<linkreplace 'Hey there.'>>Hay is for horses.<</link>>
-<<link 'Get some money'>><<set $cash += 1>><</link>>
-<<link 'Move on' 'next passage'>><</link>>
+<<linkreplace "Hey there.">>Hay is for horses.<</linkreplace>>
+<<link "Get some money">><<set $cash += 1>><</link>>
+<<link "Move on" "next passage">><</link>>
 ```
 
 SugarCube's `<<link>>` and `<<button>>` macros can also accept the link markup as an argument:
@@ -104,11 +104,11 @@ SugarCube's DOM macros can target any HTML element on the page, not just hooks, 
 Consider the following Harlowe code:
 
 ```
-(set: _greetings to (a: 'hi', 'hello', 'good day', 'greetings'))\
+(set: _greetings to (a: "hi", "hello", "good day", "greetings"))\
 The man says, "|target>[(either: ..._greetings)]."
 
 {
-(link-repeat: 'Change')[
+(link-repeat: "Change")[
 	(replace: ?target)[(either: ..._greetings)]
 ]
 }
@@ -117,11 +117,11 @@ The man says, "|target>[(either: ..._greetings)]."
 The equivalent SugarCube code to achieve a similar result would be:
 
 ```
-<<set _greetings to ['hi', 'hello', 'good day', 'greetings']>>\
+<<set _greetings to ["hi", "hello", "good day", "greetings"]>>\
 The man says, "@@#target;<<= _greetings.random()>>@@."
 
-<<link 'Change'>>
-	<<replace '#target'>><<= _greetings.random()>><</replace>>
+<<link "Change">>
+	<<replace "#target">><<= _greetings.random()>><</replace>>
 <</link>>
 ```
 
@@ -138,7 +138,7 @@ Consider this Harlowe code:
 ```
 :: some passage
 (set: $count to 0)
-(goto: 'next')
+(goto: "next")
 (set: $count to it + 1)
 
 :: next
@@ -152,7 +152,7 @@ The equivalent SugarCube code works a bit differently:
 ```
 :: some passage
 <<set $count to 0>>
-<<goto 'next'>>
+<<goto "next">>
 <<set $count += 1>>
 
 :: next
@@ -178,13 +178,13 @@ SugarCube's user input macros, like [`<<textbox>>`](#macros-macro-textbox), cann
 For example, if you wanted to ask the user to enter a name, your code may look like this in Harlowe:
 
 ```
-(set: $name to (prompt: 'What is your name?', 'Frank'))
+(set: $name to (prompt: "What is your name?", "Frank"))
 ```
 
 In SugarCube, you would likely want to use the `<<textbox>>` macro instead, and pass `$name` in as the receiving variable:
 
 ```
-<label>What is your name? <<textbox '$name' 'Frank'>></label>
+<label>What is your name? <<textbox "$name" "Frank">></label>
 ```
 
 Harlowe's newer input macros, like `(dropdown:)` and `(cycling-link:)` use "bound" variables, which are similar in concept to SugarCube's receiver variables.
@@ -204,15 +204,15 @@ SugarCube, like JavaScript, will try to make sense of expressions passed to it b
 
 ```
 <<set $number to 1>>
-<<set $string to '2'>>
-<<= $string + $number>> /* '21' */
+<<set $string to "2">>
+<<= $string + $number>> /* "21" */
 ```
 
-In the above case, since the string value `'2'` cannot be added to a number value, the number value is *coerced* into a string, and the two strings are then *concatenated*.  In Harlowe, the same operation will yield an error:
+In the above case, since the string value `"2"` cannot be added to a number value, the number value is *coerced* into a string, and the two strings are then *concatenated*.  In Harlowe, the same operation will yield an error:
 
 ```
 (set: $number to 1)
-(set: $string to '2')
+(set: $string to "2")
 (print: $string + $number) <!-- error! -->
 ```
 
@@ -222,9 +222,9 @@ In Harlowe:
 
 ```
 (set: $number to 1)
-(set: $string to '2')
+(set: $string to "2")
 (print: $string + $number) <!-- error! -->
-(print: $string + (str: $number)) <!-- '21' -->
+(print: $string + (str: $number)) <!-- "21" -->
 (print: (num: $string) + $number) <!-- 3 -->
 ```
 
@@ -232,9 +232,9 @@ In SugarCube:
 
 ```
 <<set $number to 1>>
-<<set $string to '2'>>
-<<= $string + $number>> /* '21' */
-<<= $string + String($number)>> /* '21' */
+<<set $string to "2">>
+<<= $string + $number>> /* "21" */
+<<= $string + String($number)>> /* "21" */
 <<= Number($string) + $number>> /* 3 */
 ```
 
@@ -246,40 +246,40 @@ Using an array in Harlowe:
 
 ```
 (set: $array to (a:))
-(set: $array to it + (a: 'something'))
-(if: $array contains 'something')[…]
+(set: $array to it + (a: "something"))
+(if: $array contains "something")[…]
 ```
 
 In SugarCube:
 
 ```
 <<set $array to []>>
-<<run $array.push('something')>>
-<<if $array.includes('something')>>…<</if>>
+<<run $array.push("something")>>
+<<if $array.includes("something")>>…<</if>>
 ```
 
 Using a datamap in Harlowe:
 
 ```
-(set: $map to (dm: 'key', 'value'))
-(set: $map's key to 'another value')
+(set: $map to (dm: "key", "value"))
+(set: $map's key to "another value")
 (if: $map contains key)[…]
 ```
 
 In SugarCube:
 
 ```
-<<set $map to new Map(['key', 'value'])>>
-<<run $map.set('key', 'another value')>>
-<<if $map.has('key')>>…<</if>>
+<<set $map to new Map(["key", "value"])>>
+<<run $map.set("key", "another value")>>
+<<if $map.has("key")>>…<</if>>
 ```
 
 SugarCube also allows the use of JavaScript generic objects, which may be better in some situations than a map:
 
 ```
-<<set $object to { key : 'value' }>>
-<<set $object.key to 'another value'>>
-<<if $object.hasOwnProperty('key')>>…<</if>>
+<<set $object to { key : "value" }>>
+<<set $object.key to "another value">>
+<<if $object.hasOwnProperty("key")>>…<</if>>
 ```
 
 Another important difference in the way Harlowe handles its non-primitive data types like arrays, datamaps, and datasets is that they are *passed by value* rather than *passed by reference*.
@@ -287,7 +287,7 @@ Another important difference in the way Harlowe handles its non-primitive data t
 Consider the following Harlowe code:
 
 ```
-(set: $player to (dm: 'hp', 100, 'mp', 50))
+(set: $player to (dm: "hp", 100, "mp", 50))
 (set: $partyMember to $player)
 (set: $partyMember's hp to it - 50)
 (print: $player's hp) <!-- 100 -->
