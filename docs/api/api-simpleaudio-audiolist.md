@@ -5,7 +5,9 @@
 
 Audio lists (playlists) are useful for playing tracks in a sequence—i.e., one after another.
 
-See the other audio APIs for additional information: [`SimpleAudio` API](#simpleaudio-api), [`AudioTrack` API](#audiotrack-api), [`AudioRunner` API](#audiorunner-api).
+<p role="note" class="see"><b>See Also:</b>
+<a href="#simpleaudio-api"><code>SimpleAudio</code> API</a>, <a href="#audiotrack-api"><code>AudioTrack</code> API</a>, and <a href="#audiorunner-api"><code>AudioRunner</code> API</a>.
+</p>
 
 <!-- *********************************************************************** -->
 

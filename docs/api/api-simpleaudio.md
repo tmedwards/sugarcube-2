@@ -5,7 +5,9 @@
 
 The core audio subsystem and backend for the [audio macros](#macros-audio).
 
-See the other audio APIs for additional information: [`AudioTrack` API](#audiotrack-api), [`AudioRunner` API](#audiorunner-api), [`AudioList` API](#audiolist-api).
+<p role="note" class="see"><b>See Also:</b>
+<a href="#audiotrack-api"><code>AudioTrack</code> API</a>, <a href="#audiorunner-api"><code>AudioRunner</code> API</a>, and <a href="#audiolist-api"><code>AudioList</code> API</a>.
+</p>
 
 <span id="simpleaudio-api-limitations"></span>
 #### Limitations
