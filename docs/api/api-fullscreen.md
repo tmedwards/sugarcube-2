@@ -3,6 +3,8 @@
 ************************************************************************************************ -->
 <h1 id="fullscreen-api"><code>Fullscreen</code> API</h1>
 
+Provides access to browser's fullscreen functionality.
+
 <span id="fullscreen-api-backgrounds"></span>
 #### Backgrounds
 
@@ -15,7 +17,7 @@ body {
 ```
 
 <p role="note" class="warning"><b>Warning:</b>
-You should not place background properties on the <code>html</code> element in addition to the <code>body</code> element as this can cause background jitter in Internet Explorer when scrolling.
+It is <strong><em>strongly recommended</em></strong> that you do not place background properties on the <code>html</code> element in addition to the <code>body</code> element as this can cause background jitter in Internet Explorer when scrolling outside of fullscreen mode.
 </p>
 
 <p role="note" class="warning"><b>Warning:</b>
@@ -27,7 +29,7 @@ If setting a background image via the <code>background</code> shorthand property
 
 The <code>Fullscreen</code> API comes with some built-in limitations:
 
-1. Fullscreen requests must be initiated by the player—generally via click/touch.
+1. Fullscreen requests must be initiated by the player, generally via click/touch—i.e., the request must be made as a result of player interaction; e.g., activating a button/link/etc whose code makes the request.
 
 <!-- *********************************************************************** -->
 
@@ -102,7 +104,7 @@ Request that the browser enter fullscreen mode.
 #### Parameters:
 
 * **`options`:** (optional, *object*) The fullscreen options object.
-* **`requestedEl`:** (optional, *`HTMLElement` object*) The element to enter fullscreen mode with.
+* **`requestedEl`:** (optional, *`HTMLElement` object*) The element to enter fullscreen mode with.  If omitted, defaults to the entire page.
 
 #### Options object:
 
@@ -114,7 +116,7 @@ A fullscreen options object should have some of the following properties:
 	* `"show"`: Request that the browser's navigation UI be shown.  The screen dimensions allocated to the element will be clamped to leave room for the UI.
 
 <p role="note"><b>Note:</b>
-Browsers are not required to honor the <code>navigationUI</code> setting.
+Browsers are not currently required to honor the <code>navigationUI</code> setting.
 </p>
 
 #### Example:
@@ -158,7 +160,7 @@ Fullscreen.exit();
 <span id="fullscreen-api-method-toggle"></span>
 ### `Fullscreen.toggle([options [, requestedEl]])` → *`Promise` object*
 
-Request that the browser toggle fullscreen mode.
+Request that the browser toggle fullscreen mode—i.e., enter or exit as appropriate.
 
 #### Since:
 
@@ -167,7 +169,7 @@ Request that the browser toggle fullscreen mode.
 #### Parameters:
 
 * **`options`:** (optional, *object*) The fullscreen options object.  See [`Fullscreen.request()`](#fullscreen-api-method-request) for more information.
-* **`requestedEl`:** (optional, *`HTMLElement` object*) The element to toggle fullscreen mode with.
+* **`requestedEl`:** (optional, *`HTMLElement` object*) The element to toggle fullscreen mode with.  If omitted, defaults to the entire page.
 
 #### Example:
 
