@@ -3,7 +3,7 @@
 ************************************************************************************************ -->
 <h1 id="fullscreen-api"><code>Fullscreen</code> API</h1>
 
-Provides access to browser's fullscreen functionality.
+Provides access to browsers' fullscreen functionality.
 
 <span id="fullscreen-api-backgrounds"></span>
 #### Backgrounds
