@@ -7,7 +7,7 @@
 
 ***********************************************************************************************************************/
 /*
-	global Alert, Dialog, Engine, L10n, Setting, State, Story, UI, Config, setPageElement
+	global Alert, Dialog, Engine, L10n, Setting, State, Story, UI, Config, setDisplayTitle, setPageElement
 */
 
 var UIBar = (() => { // eslint-disable-line no-unused-vars, no-var
@@ -188,12 +188,19 @@ var UIBar = (() => { // eslint-disable-line no-unused-vars, no-var
 			jQuery('#ui-bar-history').remove();
 		}
 
-		// Set up the title.
-		if (TWINE1) { // for Twine 1
-			setPageElement('story-title', 'StoryTitle', Story.title);
+		// Set up the story display title.
+		if (Story.has('StoryDisplayTitle')) {
+			if (Config.ui.updateStoryElements) {
+				setDisplayTitle(Story.get('StoryDisplayTitle').processText());
+			}
 		}
-		else { // for Twine 2
-			jQuery('#story-title').text(Story.title);
+		else {
+			if (TWINE1) { // for Twine 1
+				setPageElement('story-title', 'StoryTitle', Story.title);
+			}
+			else { // for Twine 2
+				jQuery('#story-title').text(Story.title);
+			}
 		}
 
 		// Set up the dynamic page elements.
@@ -313,6 +320,9 @@ var UIBar = (() => { // eslint-disable-line no-unused-vars, no-var
 
 		// Set up the (non-navigation) dynamic page elements.
 		setPageElement('story-banner', 'StoryBanner');
+		if (Story.has('StoryDisplayTitle')) {
+			setDisplayTitle(Story.get('StoryDisplayTitle').processText());
+		}
 		setPageElement('story-subtitle', 'StorySubtitle');
 		setPageElement('story-author', 'StoryAuthor');
 		setPageElement('story-caption', 'StoryCaption');

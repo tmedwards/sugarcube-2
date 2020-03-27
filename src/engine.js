@@ -8,7 +8,7 @@
 ***********************************************************************************************************************/
 /*
 	global Alert, Config, DebugView, Dialog, Has, LoadScreen, Save, State, Story, StyleWrapper, UI, UIBar, Util,
-	       Wikifier, postdisplay, postrender, predisplay, prehistory, prerender
+	       Wikifier, postdisplay, postrender, predisplay, prehistory, prerender, setDisplayTitle
 */
 
 var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
@@ -538,8 +538,14 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 			.appendTo(containerEl);
 		setTimeout(() => jQuery(passageEl).removeClass('passage-in'), minDomActionDelay);
 
-		// Update the document title, if necessary.
-		if (Config.passages.displayTitles && passage.title !== Config.passages.start) {
+		// Update the story display title, if necessary.
+		if (Story.has('StoryDisplayTitle')) {
+			// NOTE: We don't have an `else` here because that case will be handled later (below).
+			if (_updating !== null || !Config.ui.updateStoryElements) {
+				setDisplayTitle(Story.get('StoryDisplayTitle').processText());
+			}
+		}
+		else if (Config.passages.displayTitles && passage.title !== Config.passages.start) {
 			document.title = `${passage.title} | ${Story.title}`;
 		}
 
