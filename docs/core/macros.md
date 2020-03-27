@@ -1539,21 +1539,40 @@ If you want to return to a previously visited passage, rather than undo a moment
 
 * **`imageMarkup`:** The image markup to use (regular syntax only, no setters).
 
-#### Example:
+#### Examples:
+
+##### Basic usage
 
 ```
-<<back>>                      → Undo the previous moment
+→ Creates a link that undoes the most recent moment, with default text
+<<back>>
+```
 
-→ Link text form
-<<back "Home.">>              → Undo the previous moment, with link text "Home."
+##### Link text form
 
-→ Link markup form
-<<back [[HQ]]>>               → Undo moments until the most recent "HQ" moment is reached
-<<back [[Home.|HQ]]>>         → Undo moments until the most recent "HQ" moment is reached, with link text "Home."
+```
+→ Creates a link that undoes the most recent moment, with text "Home."
+<<back "Home.">>
+```
 
-→ Image markup form
-<<back [img[home.png]]>>      → Undo the previous moment, with link image "home.png"
-<<back [img[home.png][HQ]]>>  → Undo moments until the most recent "HQ" moment is reached, with link image "home.png"
+##### Link markup form
+
+```
+→ Creates a link that undoes past moments until the most recent "HQ" moment is reached, with default text
+<<back [[HQ]]>>
+
+→ Creates a link that undoes past moments until the most recent "HQ" moment is reached, with text "Home."
+<<back [[Home.|HQ]]>>
+```
+
+##### Image markup form
+
+```
+→ Creates a link that undoes the most recent moment, with image "home.png"
+<<back [img[home.png]]>>
+
+→ Creates a link that undoes past moments until the most recent "HQ" moment is reached, with image "home.png"
+<<back [img[home.png][HQ]]>>
 ```
 
 <!-- *********************************************************************** -->
@@ -1613,7 +1632,7 @@ Normally, when both link and text arguments are accepted, the order is text then
 <span id="macros-macro-return"></span>
 ### `<<return [linkText]>>`<br>`<<return linkMarkup>>`<br>`<<return imageMarkup>>`
 
-Creates a link that returns to a previously visited passage.  May be called with, optional, link text or with a link or image markup.
+Creates a link that navigates forward to a previously visited passage.  May be called with, optional, link text or with a link or image markup.
 
 <p role="note"><b>Note:</b>
 If you want to undo previous moments within the history, rather than return to a passage, see the <a href="#macros-macro-back"><code>&lt;&lt;back&gt;&gt;</code> macro</a>.
@@ -1637,21 +1656,44 @@ If you want to undo previous moments within the history, rather than return to a
 
 * **`imageMarkup`:** The image markup to use (regular syntax only, no setters).
 
-#### Example:
+#### Examples:
+
+<p role="note"><b>Note:</b>
+The versions that forward to a specific passage are largely unnecessary, as you could simply use a normal link, and exist solely for compatibility with the <a href="#macros-macro-back"><code>&lt;&lt;back&gt;&gt;</code> macro</a>.
+</p>
+
+##### Basic usage
 
 ```
-<<return>>                      → Go to the previous passage
+→ Creates a link that forwards to the previous passage, with default text
+<<return>>
+```
 
-→ Link text form
-<<return "Home.">>              → Go to the previous passage, with link text "Home."
+##### Link text form
 
-→ Link markup form
-<<return [[HQ]]>>               → Go to the "HQ" passage
-<<return [[Home.|HQ]]>>         → Go to the "HQ" passage, with link text "Home."
+```
+→ Creates a link that forwards to the previous passage, with text "Home."
+<<return "Home.">>
+```
 
-→ Image markup form
-<<return [img[home.png]]>>      → Go to the previous passage, with link image "home.png"
-<<return [img[home.png][HQ]]>>  → Go to the "HQ" passage, with link image "home.png"
+##### Link markup form
+
+```
+→ Creates a link that forwards to the "HQ" passage, with default text
+<<return [[HQ]]>>
+
+→ Creates a link that forwards to the "HQ" passage, with text "Home."
+<<return [[Home.|HQ]]>>
+```
+
+##### Image markup form
+
+```
+→ Creates a link that forwards to the previous passage, with image "home.png"
+<<return [img[home.png]]>>
+
+→ Creates a link that forwards to the "HQ" passage, with image "home.png"
+<<return [img[home.png][HQ]]>>
 ```
 
 
