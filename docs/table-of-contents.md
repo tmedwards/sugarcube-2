@@ -187,6 +187,7 @@
 	* [`StoryAuthor`](#special-passage-storyauthor)
 	* [`StoryBanner`](#special-passage-storybanner)
 	* [`StoryCaption`](#special-passage-storycaption)
+	* [`StoryDisplayTitle`](#special-passage-storydisplaytitle)
 	* [`StoryInit`](#special-passage-storyinit)
 	* [`StoryInterface`](#special-passage-storyinterface)
 	* [`StoryMenu`](#special-passage-storymenu)

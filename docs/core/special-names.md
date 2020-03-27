@@ -110,6 +110,17 @@ Used to populate the story's caption area in the UI bar (element ID: `story-capt
 
 <!-- *********************************************************************** -->
 
+<span id="special-passage-storydisplaytitle"></span>
+### `StoryDisplayTitle`
+
+Sets the story's display title in the browser's titlebar and the UI bar (element ID: `story-title`).  If omitted, the story title will be used instead.
+
+#### Since:
+
+* `v2.31.0`
+
+<!-- *********************************************************************** -->
+
 <span id="special-passage-storyinit"></span>
 ### `StoryInit`
 
@@ -213,9 +224,17 @@ Sets the story's subtitle in the UI bar (element ID: `story-subtitle`).
 <span id="special-passage-storytitle"></span>
 ### `StoryTitle`
 
-**Twine&nbsp;2:**  *Unused.*  The story's title/name is part of the story project.
+<p role="note" class="warning"><b>Warning:</b>
+The story title is used to create the storage ID that is used to store all player data, both temporary and persistent.  It should be plain text, containing no code, markup, or macros of any kind.
+</p>
 
-**Twine&nbsp;1/Twee:**  *Required.*  Sets the story's title in the UI bar and elsewhere (element ID: `story-title`).  **NOTE:** The story title should the project's plain text title, containing no code or markup, as SugarCube uses it as the basis for the key used to store and load data used when playing the story and for saves.
+<p role="note" class="tip"><b>Tip:</b>
+If you want to set a title for display that contains code, markup, or macros, see the <a href="#special-passage-storydisplaytitle"><code>StoryDisplayTitle</code> special passage</a>.
+</p>
+
+**Twine&nbsp;2:**  *Unused.*  The story's title is part of the story project.
+
+**Twine&nbsp;1/Twee:**  *Required.*  Sets the story's title.
 
 #### Since:
 
