@@ -196,7 +196,7 @@ jQuery(() => {
 		}, Engine.minDomActionDelay);
 
 		// Finally, export identifiers for debugging purposes.
-		window.SugarCube = {
+		window.SugarCube = Object.freeze(Object.assign(Object.create(null), {
 			Browser,
 			Config,
 			Dialog,
@@ -223,7 +223,7 @@ jQuery(() => {
 			setup,
 			storage,
 			version
-		};
+		}));
 
 		if (DEBUG) { console.log('[SugarCube/main()] Startup complete; story ready.'); }
 	}
