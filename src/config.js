@@ -320,7 +320,7 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 			get slots() { return _savesSlots; },
 			set slots(value) {
 				if (!Number.isSafeInteger(value) || value < 0) {
-					throw new RangeError('Config.saves.slots must be a non-negative integer');
+					throw new TypeError(`Config.saves.slots must be a non-negative integer (received: ${Util.getType(value)})`);
 				}
 
 				_savesSlots = value;
@@ -342,7 +342,7 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 					   valueType !== 'boolean'
 					&& (valueType !== 'number' || !Number.isSafeInteger(value) || value < 0)
 				) {
-					throw new TypeError(`Config.passages.transitionOut must be a boolean or non-negative integer (received: ${valueType})`);
+					throw new TypeError(`Config.ui.stowBarInitially must be a boolean or non-negative integer (received: ${valueType})`);
 				}
 
 				_uiStowBarInitially = value;
