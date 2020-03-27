@@ -22,7 +22,7 @@ If your content contains any SugarCube markup, you'll need to use the <a href="#
 
 * **`content`:** The content to append.  As this method is essentially a shortcut for `jQuery(Dialog.body()).append(…)`, see [jQuery's `append()`](https://api.jquery.com/append/) method for the range of valid content types.
 
-#### Example:
+#### Examples:
 
 ```
 Dialog.append("Cry 'Havoc!', and let slip the <em>ponies</em> of <strong>friendship</strong>.");
@@ -43,7 +43,7 @@ Returns a reference to the dialog's content area.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 jQuery(Dialog.body()).append("Cry 'Havoc!', and let slip the <em>ponies</em> of <strong>friendship</strong>.");
@@ -64,7 +64,7 @@ Closes the dialog.  Returns a reference to the `Dialog` object for chaining.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 Dialog.close();
@@ -85,7 +85,7 @@ Returns whether the dialog is currently open.
 
 * **`classNames`:** (optional, *string*) The space-separated-list of classes to check for when determining the state of the dialog.  Each of the built-in dialogs contains a name-themed class that can be tested for in this manner—e.g., the Saves dialog contains the class `saves`.
 
-#### Example:
+#### Examples:
 
 ```
 if (Dialog.isOpen()) {
@@ -124,7 +124,7 @@ An options object should have some of the following properties:
 * **`top`:** Top y-coordinate of the dialog (default: `50`; in pixels, but without the unit).
 * **`opacity`:** Opacity of the overlay (default: `0.8`).
 
-#### Example:
+#### Examples:
 
 ```
 Dialog.open();
@@ -146,7 +146,7 @@ Prepares the dialog for use and returns a reference to its content area.
 * **`title`:** (optional, *string*) The title of the dialog.
 * **`classNames`:** (optional, *string*) The space-separated-list of classes to add to the dialog.
 
-#### Example:
+#### Examples:
 
 ```
 // Basic example.
@@ -184,7 +184,7 @@ If your content consists of DOM nodes, you'll need to use the <a href="#dialog-a
 
 * **`wikiMarkup`:** The markup to render.
 
-#### Example:
+#### Examples:
 
 ```
 Dialog.wiki("Cry 'Havoc!', and let slip the //ponies// of ''friendship''.");
@@ -211,7 +211,7 @@ You cannot obtain data about the closing dialog from the dialog itself—e.g., t
 While there are no custom properties, the event is fired from the dialog's body, thus the <code>target</code> property will refer to its body element—i.e., <code>#ui-dialog-body</code>.
 </p>
 
-#### Example:
+#### Examples:
 
 ```
 /* Execute the handler function when the event triggers. */
@@ -242,7 +242,7 @@ Global synthetic event triggered as the first step in closing the dialog when [`
 While there are no custom properties, the event is fired from the dialog's body, thus the <code>target</code> property will refer to its body element—i.e., <code>#ui-dialog-body</code>.
 </p>
 
-#### Example:
+#### Examples:
 
 ```
 /* Execute the handler function when the event triggers. */
@@ -273,7 +273,7 @@ Global synthetic event triggered as the last step in opening the dialog when [`D
 While there are no custom properties, the event is fired from the dialog's body, thus the <code>target</code> property will refer to its body element—i.e., <code>#ui-dialog-body</code>.
 </p>
 
-#### Example:
+#### Examples:
 
 ```
 /* Execute the handler function when the event triggers. */
@@ -304,7 +304,7 @@ Global synthetic event triggered as the first step in opening the dialog when [`
 While there are no custom properties, the event is fired from the dialog's body, thus the <code>target</code> property will refer to its body element—i.e., <code>#ui-dialog-body</code>.
 </p>
 
-#### Example:
+#### Examples:
 
 ```
 /* Execute the handler function when the event triggers. */
@@ -342,7 +342,7 @@ Adds WAI-ARIA-compatible mouse/keyboard event handlers to the target element(s) 
 * **`doneFn`:** (optional, *null* | *function*) The function to execute at the end of `Dialog.addClickHandler()`.
 * **`closeFn`:** (optional, *null* | *function*) The function to execute whenever the associated dialog is closed.
 
-#### Example:
+#### Examples:
 
 ```
 // Commonly used something like the following.

@@ -59,7 +59,7 @@ Triggered before the modification of the state history.
 
 * **`passage`:** (*`Passage` object*) The incoming passage object.  See the [`Passage` API](#passage-api) for more information.
 
-#### Example:
+#### Examples:
 
 ```
 /* Execute the handler function each time the event triggers. */
@@ -89,7 +89,7 @@ Triggered before the rendering of the incoming passage.
 * **`content`:** (*`HTMLElement` object*) The, currently, empty element that will eventually hold the rendered content of the incoming passage.
 * **`passage`:** (*`Passage` object*) The incoming passage object.  See the [`Passage` API](#passage-api) for more information.
 
-#### Example:
+#### Examples:
 
 ##### Basic usage
 
@@ -133,7 +133,7 @@ Triggered after the rendering of the incoming passage.
 * **`content`:** (*`HTMLElement` object*) The element holding the fully rendered content of the incoming passage.
 * **`passage`:** (*`Passage` object*) The incoming passage object.  See the [`Passage` API](#passage-api) for more information.
 
-#### Example:
+#### Examples:
 
 ##### Basic usage
 
@@ -178,7 +178,7 @@ Triggered after the display—i.e., output—of the incoming passage.
 * **`content`:** (*`HTMLElement` object*) The element holding the fully rendered content of the incoming passage.
 * **`passage`:** (*`Passage` object*) The incoming passage object.  See the [`Passage` API](#passage-api) for more information.
 
-#### Example:
+#### Examples:
 
 ##### Basic usage
 
@@ -223,7 +223,7 @@ Triggered at the end of passage navigation.
 * **`content`:** (*`HTMLElement` object*) The element holding the fully rendered content of the incoming passage.
 * **`passage`:** (*`Passage` object*) The incoming passage object.  See the [`Passage` API](#passage-api) for more information.
 
-#### Example:
+#### Examples:
 
 ##### Basic usage
 
@@ -279,7 +279,7 @@ Executed before the modification of the state history.
 
 * **`taskName`:** (*string*) The name of the executing task.
 
-#### Example:
+#### Examples:
 
 ```
 prehistory["Some Task Name"] = function (taskName) {
@@ -302,7 +302,7 @@ Executed before the rendering of the incoming passage.
 
 * **`taskName`:** (*string*) The name of the executing task.
 
-#### Example:
+#### Examples:
 
 ```
 predisplay["Some Task Name"] = function (taskName) {
@@ -326,7 +326,7 @@ Executed before the rendering of the incoming passage.
 * **`content`:** (*`HTMLElement` object*) The, likely, empty element that will eventually hold the rendered content of the incoming passage.
 * **`taskName`:** (*string*) The name of the executing task.
 
-#### Example:
+#### Examples:
 
 ```
 prerender["Some Task Name"] = function (content, taskName) {
@@ -350,7 +350,7 @@ Executed after the rendering of the incoming passage.
 * **`content`:** (*`HTMLElement` object*) The element holding the fully rendered content of the incoming passage.
 * **`taskName`:** (*string*) The name of the executing task.
 
-#### Example:
+#### Examples:
 
 ```
 postrender["Some Task Name"] = function (content, taskName) {
@@ -373,7 +373,7 @@ Executed after the display—i.e., output—of the incoming passage.
 
 * **`taskName`:** (*string*) The name of the executing task.
 
-#### Example:
+#### Examples:
 
 ```
 postdisplay["Some Task Name"] = function (taskName) {

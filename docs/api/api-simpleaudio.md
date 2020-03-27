@@ -43,7 +43,7 @@ This <em>should not</em> be done lightly if your audio sources are on the networ
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 SimpleAudio.load();
@@ -66,7 +66,7 @@ This <em>should not</em> be done lightly if your audio sources are on the networ
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 SimpleAudio.loadWithScreen();
@@ -87,7 +87,7 @@ Gets or sets the mute state for the master volume (default: `false`).
 
 * **`state`:** (optional, *boolean*) The mute state.
 
-#### Example:
+#### Examples:
 
 ```
 // Get the current master volume mute state.
@@ -115,7 +115,7 @@ Gets or sets the mute-on-hidden state for the master volume (default: `false`). 
 
 * **`state`:** (optional, *boolean*) The mute-on-hidden state.
 
-#### Example:
+#### Examples:
 
 ```
 // Get the current master volume mute-on-hidden state.
@@ -143,7 +143,7 @@ Returns an [`AudioRunner` instance](#audiorunner-api) for the tracks matching th
 
 * **`selector`:** (*string*) The list of audio track(s) and/or group ID(s), separated by spaces.  There are several predefined group IDs (`:all`, `:looped`, `:muted`, `:paused`, `:playing`).  The `:not()` group modifier syntax (`groupId:not(selector)`) allows a group to have some of its tracks excluded from selection.
 
-#### Example:
+#### Examples:
 
 ##### Basic usage
 
@@ -190,7 +190,7 @@ Stops playback of *all* currently registered tracks.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 SimpleAudio.stop();
@@ -213,7 +213,7 @@ Once a track has been unloaded, playback cannot occur until it is reloaded.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 SimpleAudio.unload();
@@ -234,7 +234,7 @@ Gets or sets the master volume level (default: `1`).
 
 * **`level`:** (optional, *number*) The volume level to set.  Valid values are floating-point numbers in the range `0` (silent) to `1` (loudest)—e.g., `0` is 0%, `0.5` is 50%, `1` is 100%.
 
-#### Example:
+#### Examples:
 
 ```
 // Get the current master volume level.
@@ -267,7 +267,7 @@ Adds an audio track with the given track ID.
 * **`trackId`:** (*string*) The ID of the track, which will be used to reference it.
 * **`sources`:** (*any* | *array*) The audio sources for the track, which may be a list of sources or an array.  Only one is required, though supplying additional sources in differing formats is recommended, as no single format is supported by all browsers.  A source must be either a URL (absolute or relative) to an audio resource, the name of an audio passage, or a data URI.  In rare cases where the audio format cannot be automatically detected from the source (URLs are parsed for a file extension, data URIs are parsed for the media type), a format specifier may be prepended to the front of each source to manually specify the format (syntax: `formatId|`, where `formatId` is the audio format—generally, whatever the file extension would normally be; e.g., `mp3`, `mp4`, `ogg`, `weba`, `wav`).
 
-#### Example:
+#### Examples:
 
 ```
 // Cache a track with the ID "boom" and one source via relative URL
@@ -300,7 +300,7 @@ Cannot delete tracks solely under the control of a playlist.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 SimpleAudio.tracks.clear();
@@ -329,7 +329,7 @@ Does not currently remove the track from either groups or playlists.  Thus, any 
 
 * **`trackId`:** (*string*) The ID of the track.
 
-#### Example:
+#### Examples:
 
 ```
 SimpleAudio.tracks.delete("bgm_space");
@@ -354,7 +354,7 @@ To affect multiple tracks and/or groups at once, see the <a href="#simpleaudio-a
 
 * **`trackId`:** (*string*) The ID of the track.
 
-#### Example:
+#### Examples:
 
 ##### Basic usage
 
@@ -384,7 +384,7 @@ Returns whether an audio track with the given track ID exists.
 
 * **`trackId`:** (*string*) The ID of the track.
 
-#### Example:
+#### Examples:
 
 ```
 if (SimpleAudio.tracks.has("bgm_space")) {
@@ -419,7 +419,7 @@ If you want to play tracks in a sequence, then you want a <a href="#simpleaudio-
 * **`groupId`:** (*string*) The ID of the group, which will be used to reference it and *must* begin with a colon.  **NOTE:** There are several predefined group IDs (`:all`, `:looped`, `:muted`, `:paused`, `:playing`) and the `:not` group modifier that cannot be reused/overwritten.
 * **`trackIds`:** (*any* | *array*) The IDs of the tracks to make part of the group, which may be a list of track IDs or an array.
 
-#### Example:
+#### Examples:
 
 ```
 // Set up a group ":ui" with the tracks: "ui_beep", "ui_boop", and "ui_swish"
@@ -443,7 +443,7 @@ Only deletes the groups themselves, does not affect their component tracks.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 SimpleAudio.groups.clear();
@@ -468,7 +468,7 @@ Only deletes the group itself, does not affect its component tracks.
 
 * **`groupId`:** (*string*) The ID of the group.
 
-#### Example:
+#### Examples:
 
 ```
 SimpleAudio.groups.delete(":ui");
@@ -493,7 +493,7 @@ To actually affect multiple tracks and/or groups, see the <a href="#simpleaudio-
 
 * **`groupId`:** (*string*) The ID of the group.
 
-#### Example:
+#### Examples:
 
 ```
 SimpleAudio.groups.get(":ui")  → Returns the array of track IDs matching ":ui"
@@ -514,7 +514,7 @@ Returns whether an audio group with the given group ID exists.
 
 * **`groupId`:** (*string*) The ID of the group.
 
-#### Example:
+#### Examples:
 
 ```
 if (SimpleAudio.groups.has(":ui")) {
@@ -562,7 +562,7 @@ Track descriptor objects come in two forms and should have some of the noted pro
   * **`sources`:** (*string array*) The audio sources for the track.  Only one is required, though supplying additional sources in differing formats is recommended, as no single format is supported by all browsers.  A source must be either a URL (absolute or relative) to an audio resource, the name of an audio passage, or a data URI.  In rare cases where the audio format cannot be automatically detected from the source (URLs are parsed for a file extension, data URIs are parsed for the media type), a format specifier may be prepended to the front of each source to manually specify the format (syntax: `formatId|`, where `formatId` is the audio format—generally, whatever the file extension would normally be; e.g., `mp3`, `mp4`, `ogg`, `weba`, `wav`).
   * **`volume`:** (optional, *number*) The base volume level of the track within the playlist.  If omitted, defaults to `1` (loudest).  Valid values are floating-point numbers in the range `0` (silent) to `1` (loudest)—e.g., `0` is 0%, `0.5` is 50%, `1` is 100%.
 
-#### Example:
+#### Examples:
 
 ##### Basic usage with track IDs
 
@@ -640,7 +640,7 @@ Deletes all playlists.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 SimpleAudio.lists.clear();
@@ -661,7 +661,7 @@ Deletes the playlist with the given list ID.
 
 * **`listId`:** (*string*) The ID of the playlist.
 
-#### Example:
+#### Examples:
 
 ```
 SimpleAudio.lists.delete("bgm_lacuna");
@@ -682,7 +682,7 @@ Returns the [`AudioList` instance](#audiolist-api) with the given list ID, or `n
 
 * **`listId`:** (*string*) The ID of the playlist.
 
-#### Example:
+#### Examples:
 
 ##### Basic usage
 
@@ -712,7 +712,7 @@ Returns whether a playlist with the given list ID exists.
 
 * **`listId`:** (*string*) The ID of the playlist.
 
-#### Example:
+#### Examples:
 
 ```
 if (SimpleAudio.lists.has("bgm_lacuna")) {

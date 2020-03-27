@@ -55,7 +55,7 @@ This method will not return &quot;code&quot; passages—i.e., script, stylesheet
 
 * **`title`:** (*string*) The title of the `Passage` object to return.
 
-#### Example:
+#### Examples:
 
 ```
 Story.get("The Ducky")  → Returns the Passage object matching "The Ducky"
@@ -80,7 +80,7 @@ This method will not detect &quot;code&quot; passages—i.e., script, stylesheet
 
 * **`title`:** (*string*) The title of the `Passage` object whose existence will be verified.
 
-#### Example:
+#### Examples:
 
 ```
 Story.has("The Ducky")  → Returns whether a Passage object matching "The Ducky" exists
@@ -107,7 +107,7 @@ This method will not return &quot;code&quot; passages—i.e., script, stylesheet
 * **`searchValue`:** (*string* | *number*) The value to search for within the matched property.  The type of the property determines how the search occurs—non-arrays are directly compared, while arrays are searched.  If the property's value, for non-arrays, or any of its members, for arrays, match, then the `Passage` object is added to the results.
 * **`sortProperty`:** (optional, *string*) The property whose value will be used to lexicographically sort the returned array.  If not given, the `Passage` object's `title` property is used.
 
-#### Example:
+#### Examples:
 
 ```
 → Returns all 'forest'-tagged Passage objects, sorted by their titles
@@ -134,7 +134,7 @@ This method will not return &quot;code&quot; passages—i.e., script, stylesheet
 * **`predicate`:** (*function*) The function used to test each `Passage` object, which is passed into the function as its sole parameter.  If the function returns `true`, then the `Passage` object is added to the results.
 * **`sortProperty`:** (optional, *string*) The property whose value will be used to lexicographically sort the returned array.  If not given, the `Passage` object's `title` property is used.
 
-#### Example:
+#### Examples:
 
 ```
 → Returns all 'forest'-tagged Passage objects, sorted by their titles

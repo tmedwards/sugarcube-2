@@ -77,7 +77,7 @@ Use of this macro is <em>only</em> necessary when you need to localize a variabl
 
 * **`variableList`:** A list of story $variables and/or temporary \_variables.
 
-#### Example:
+#### Examples:
 
 ```
 → Using <<capture>> to localize a temporary loop variable for use within a <<linkappend>>
@@ -175,7 +175,7 @@ Sets story $variables and temporary \_variables based on the given expression.
 </tbody>
 </table>
 
-#### Example:
+#### Examples:
 
 ```
 → Using the TwineScript "to" operator
@@ -206,7 +206,7 @@ Unsets story $variables and temporary \_variables.
 
 * **`variableList`:** A list of story $variables and/or temporary \_variables.
 
-#### Example:
+#### Examples:
 
 ```
 <<unset $cheese, $chestEmpty, $gold>>
@@ -280,7 +280,7 @@ The predefined variable <code>output</code>, which is a reference to a local con
 
 #### Arguments: *none*
 
-#### Example:
+#### Examples:
 
 ```
 → Basic
@@ -309,7 +309,7 @@ The predefined variable <code>output</code>, which is a reference to a local con
 
 Outputs the result of the given expression.  This macro is an alias for [`<<print>>`](#macros-macro-print).
 
-<p role="note"><b>Note:</b>
+<p role="note" class="tip"><b>Tip:</b>
 If you only need to print the value of a TwineScript variable, then you may simply include it in your normal passage text and it will be printed automatically via the <a href="#markup-naked-variable">naked variable markup</a>.
 </p>
 
@@ -321,7 +321,7 @@ If you only need to print the value of a TwineScript variable, then you may simp
 
 * **`expression`:** A valid expression.  See [Expressions](#twinescript-expressions) for more information.
 
-#### Example:
+#### Examples:
 
 ```
 → Assuming $gold is 5
@@ -338,7 +338,7 @@ You weigh <<= $weight.toFixed(2)>> kg.  → Outputs: You weigh 74.65 kg.
 
 Outputs the result of the given expression.  This macro is functionally identical to [`<<print>>`](#macros-macro-print), save that it also encodes HTML special characters in the output.
 
-<p role="note"><b>Note:</b>
+<p role="note" class="tip"><b>Tip:</b>
 If you only need to print the value of a TwineScript variable, then you may simply include it in your normal passage text and it will be printed automatically via the <a href="#markup-naked-variable">naked variable markup</a>.
 </p>
 
@@ -350,7 +350,7 @@ If you only need to print the value of a TwineScript variable, then you may simp
 
 * **`expression`:** A valid expression.  See [Expressions](#twinescript-expressions) for more information.
 
-#### Example:
+#### Examples:
 
 ```
 → Assuming $gold is 5
@@ -383,7 +383,7 @@ Outputs the contents of the passage with the given name, optionally wrapping it 
 * **`linkMarkup`:** The link markup to use (regular syntax only, no setters).
 * **`elementName`:** *Identical to the passage name form.*
 
-#### Example:
+#### Examples:
 
 ```
 <<include "Go West">>          → Include the passage "Go West"
@@ -409,7 +409,7 @@ The <a href="#special-tag-nobr"><code>nobr</code> special tag</a> and <a href="#
 
 #### Arguments: *none*
 
-#### Example:
+#### Examples:
 
 ```
 → Given: $feeling eq "blue", outputs: I'd like a blueberry pie.
@@ -429,7 +429,7 @@ cherry
 
 Outputs the result of the given expression.
 
-<p role="note"><b>Note:</b>
+<p role="note" class="tip"><b>Tip:</b>
 If you only need to print the value of a TwineScript variable, then you may simply include it in your normal passage text and it will be printed automatically via the <a href="#markup-naked-variable">naked variable markup</a>.
 </p>
 
@@ -441,7 +441,7 @@ If you only need to print the value of a TwineScript variable, then you may simp
 
 * **`expression`:** A valid expression.  See [Expressions](#twinescript-expressions) for more information.
 
-#### Example:
+#### Examples:
 
 ```
 → Assuming $gold is 5
@@ -464,7 +464,7 @@ Causes any output generated within its body to be discarded, except for errors (
 
 #### Arguments: *none*
 
-#### Example:
+#### Examples:
 
 ```
 → Basic
@@ -683,7 +683,7 @@ The <code>def</code> and <code>ndef</code> operators have very low precedence, s
 </tbody>
 </table>
 
-#### Example:
+#### Examples:
 
 ```
 <<if $daysUntilLoanDue is 0>><<include "Panic">><</if>>
@@ -751,7 +751,7 @@ The maximum number of loop iterations in the conditional forms is not unlimited 
 * **`conditional`:** (optional) A valid conditional expression, evaluated prior to each loop iteration.  As long as the expression evaluates to `true`, the loop is executed.  See [`<<if>>`](#macros-macro-if) for more information.
 * **`post`:** (optional) A valid expression, evaluated after each loop iteration.  Typically used to update counter variable(s).  See [`<<set>>`](#macros-macro-set) for more information.
 
-##### Example: *(only 3-part conditional form shown)*
+##### Examples: *(only 3-part conditional form shown)*
 
 ```
 → Example setup
@@ -814,7 +814,7 @@ Iterates through all enumerable entries of the given collection.  For each itera
 Strings are iterated by Unicode code point, however, due to historic reasons they are comprised of, and indexed by, individual UTF-16 code units.  This means that some code points may span multiple code units—e.g., the character 💩 is one code point, but two code units.
 </p>
 
-##### Example:
+##### Examples:
 
 ```
 → Example setup
@@ -890,7 +890,7 @@ SugarCube does not trim whitespace from the contents of <code>&lt;&lt;case&gt;&g
 
 * **`valueList`:** A space separated list of values to compare against the result of the switch expression.
 
-#### Example:
+#### Examples:
 
 ```
 → Without a default case
@@ -965,7 +965,7 @@ If you simply need a passage link that modifies variables, both the <a href="#ma
 
 * **`imageMarkup`:** The image markup to use (regular syntax only, no setters).
 
-#### Example:
+#### Examples:
 
 ```
 → Without forwarding: a very basic statistic setting example
@@ -1001,7 +1001,9 @@ Creates a checkbox, used to modify the value of the variable with the given name
 * **`checkedValue`:** The value set by the checkbox when checked.
 * **`checked`:** (optional) Keyword, used to signify that the checkbox should be in the checked state.
 
-#### Example:
+#### Examples:
+
+##### Basic usage
 
 ```
 What pies do you enjoy?
@@ -1010,7 +1012,11 @@ What pies do you enjoy?
 * <<checkbox "$pieCoconutCream" false true checked>> Coconut cream?
 ```
 
-**NOTE:** For accessibility reasons, it's recommended that you wrap each `<<checkbox>>` and its accompanying text within a `<label>` element.  Doing so allows interactions with the text to also trigger its `<<checkbox>>`.  For example:
+##### With a `<label>` element
+
+<p role="note" class="tip"><b>Tip:</b>
+For accessibility reasons, it's recommended that you wrap each <code>&lt;&lt;checkbox&gt;&gt;</code> and its accompanying text within a <code>&lt;label&gt;</code> element.  Doing so allows interactions with the text to also trigger its <code>&lt;&lt;checkbox&gt;&gt;</code>.
+</p>
 
 ```
 What pies do you enjoy?
@@ -1071,7 +1077,7 @@ Creates a cycling link, used to modify the value of the variable with the given 
 	</tbody>
 	</table>
 
-#### Example:
+#### Examples:
 
 ##### Using `<<option>>`
 
@@ -1140,7 +1146,7 @@ If you simply need a passage link that modifies variables, both the <a href="#ma
 
 * **`imageMarkup`:** The image markup to use (regular syntax only, no setters).
 
-#### Example:
+#### Examples:
 
 ```
 → Without forwarding: a very basic statistic setting example
@@ -1175,7 +1181,7 @@ Creates a single-use link that deactivates itself and appends its contents to it
 * **`transition`:** (optional) Keyword, used to signify that a CSS transition should be applied to the incoming insertions.
 * **`t8n`:** (optional) Keyword, alias for **`transition`**.
 
-#### Example:
+#### Examples:
 
 ```
 → Without a transition
@@ -1206,7 +1212,7 @@ Creates a single-use link that deactivates itself and prepends its contents to i
 * **`transition`:** (optional) Keyword, used to signify that a CSS transition should be applied to the incoming insertions.
 * **`t8n`:** (optional) Keyword, alias for **`transition`**.
 
-#### Example:
+#### Examples:
 
 ```
 → Without a transition
@@ -1237,7 +1243,7 @@ Creates a single-use link that deactivates itself and replaces its link text wit
 * **`transition`:** (optional) Keyword, used to signify that a CSS transition should be applied to the incoming insertions.
 * **`t8n`:** (optional) Keyword, alias for **`transition`**.
 
-#### Example:
+#### Examples:
 
 ```
 → Without a transition
@@ -1303,7 +1309,7 @@ Creates a listbox, used to modify the value of the variable with the given name.
 	</tbody>
 	</table>
 
-#### Example:
+#### Examples:
 
 ##### Using `<<option>>`
 
@@ -1359,7 +1365,9 @@ Creates a radio button, used to modify the value of the variable with the given 
 * **`checkedValue`:** The value set by the radio button when checked.
 * **`checked`:** (optional) Keyword, used to signify that the radio button should be in the checked state.
 
-#### Example:
+#### Examples:
+
+##### Basic usage
 
 ```
 What's your favorite pie?
@@ -1367,6 +1375,8 @@ What's your favorite pie?
 * <<radiobutton "$pie" "cherry">> Cherry?
 * <<radiobutton "$pie" "coconut cream">> Coconut cream?
 ```
+
+##### With a `<label>` element
 
 <p role="note" class="tip"><b>Tip:</b>
 For accessibility reasons, it's recommended that you wrap each <code>&lt;&lt;radiobutton&gt;&gt;</code> and its accompanying text within a <code>&lt;label&gt;</code> element.  Doing so allows interactions with the text to also trigger its <code>&lt;&lt;radiobutton&gt;&gt;</code>.
@@ -1400,7 +1410,7 @@ Creates a multiline text input block, used to modify the value of the variable w
 * **`defaultValue`:** The default value of the text block.
 * **`autofocus`:** (optional) Keyword, used to signify that the text block should automatically receive focus.  Only use the keyword *once* per page; attempting to focus more than one element is undefined behavior.
 
-#### Example:
+#### Examples:
 
 ```
 → Creates a text block that modifies $pieEssay
@@ -1434,7 +1444,7 @@ Creates a text input box, used to modify the value of the variable with the give
 * **`passage`:** (optional) The name of the passage to go to if the return/enter key is pressed.  May be called either with the passage name or with a link markup.
 * **`autofocus`:** (optional) Keyword, used to signify that the text box should automatically receive focus.  Only use the keyword *once* per page; attempting to focus more than one element is undefined behavior.
 
-#### Example:
+#### Examples:
 
 ```
 → Creates a text box that modifies $pie
@@ -1496,7 +1506,7 @@ Creates a list of single-use passage links.  Each link removes itself and all ot
 
 * **`imageMarkupList`:** A space separated list of image markup to use (full syntax supported, including setters).
 
-#### Example:
+#### Examples:
 
 ```
 → Passage list form
@@ -1605,7 +1615,7 @@ Normally, when both link and text arguments are accepted, the order is text then
 
 * **`imageMarkup`:** The image markup to use (full syntax supported, including setters).
 
-#### Example:
+#### Examples:
 
 ```
 → Separate argument form
@@ -1728,7 +1738,7 @@ Adds classes to the selected element(s).
 * **`selector`:** The CSS/jQuery-style selector used to target element(s).
 * **`classNames`:** The names of the classes, separated by spaces.
 
-#### Example:
+#### Examples:
 
 ```
 <<addclass "body" "day rain">>  → Add the classes "day" and "rain" to the <body> element
@@ -1758,7 +1768,7 @@ Executes its contents and appends the output to the contents of the selected ele
 * **`transition`:** (optional) Keyword, used to signify that a CSS transition should be applied to the incoming insertions.
 * **`t8n`:** (optional) Keyword, alias for **`transition`**.
 
-#### Example:
+#### Examples:
 
 ##### Without a transition
 
@@ -1813,7 +1823,7 @@ Most interactive elements—e.g., passage links, <a href="#macros-interactive">i
 
 * **`selector`:** The CSS/jQuery-style selector used to target element(s).
 
-#### Example:
+#### Examples:
 
 ```
 → Example setup
@@ -1854,7 +1864,7 @@ Executes its contents and prepends the output to the contents of the selected el
 * **`transition`:** (optional) Keyword, used to signify that a CSS transition should be applied to the incoming insertions.
 * **`t8n`:** (optional) Keyword, alias for **`transition`**.
 
-#### Example:
+#### Examples:
 
 ##### Without a transition
 
@@ -1909,7 +1919,7 @@ If you simply want to empty the selected element(s), not remove them outright, y
 
 * **`selector`:** The CSS/jQuery-style selector used to target element(s).
 
-#### Example:
+#### Examples:
 
 ```
 → Given the following
@@ -1944,7 +1954,7 @@ Removes classes from the selected element(s).
 * **`selector`:** The CSS/jQuery-style selector used to target element(s).
 * **`classNames`:** (optional) The names of the classes, separated by spaces.  If no class names are given, removes all classes.
 
-#### Example:
+#### Examples:
 
 ```
 <<removeclass "body" "day rain">>  → Remove the classes "day" and "rain" from the <body> element
@@ -2027,7 +2037,7 @@ Toggles classes on the selected element(s)—i.e., adding them if they don't exi
 * **`selector`:** The CSS/jQuery-style selector used to target element(s).
 * **`classNames`:** The names of the classes, separated by spaces.
 
-#### Example:
+#### Examples:
 
 ```
 <<toggleclass "body" "day rain">>  → Toggle the classes "day" and "rain" on the <body> element
@@ -2094,7 +2104,7 @@ The <code>&lt;&lt;audio&gt;&gt;</code> macro cannot affect playlist tracks that 
 
 Group IDs allow several tracks to be selected simultaneously without needing to specify each one individually.  There are several predefined group IDs (`:all`, `:looped`, `:muted`, `:paused`, `:playing`) and custom IDs may be defined via [`<<createaudiogroup>>`](#macros-macro-createaudiogroup).  The `:not()` group modifier syntax (`groupId:not(trackIdList)`) allows a group to have some of its tracks excluded from selection.
 
-#### Example:
+#### Examples:
 
 ##### Basic usage with group IDs
 
@@ -2207,7 +2217,7 @@ The <a href="#special-passage-storyinit"><code>StoryInit</code> special passage<
 * **`trackId`:** The ID of the track, which will be used to reference it.
 * **`sourceList`:** A space separated list of sources for the track.  Only one is required, though supplying additional sources in differing formats is recommended, as no single format is supported by all browsers.  A source must be either a URL (absolute or relative) to an audio resource, the name of an audio passage, or a data URI.  In rare cases where the audio format cannot be automatically detected from the source (URLs are parsed for a file extension, data URIs are parsed for the media type), a format specifier may be prepended to the front of each source to manually specify the format (syntax: `formatId|`, where `formatId` is the audio format—generally, whatever the file extension would normally be; e.g., `mp3`, `mp4`, `ogg`, `weba`, `wav`).
 
-#### Example:
+#### Examples:
 
 ```
 → Cache a track with the ID "boom" and one source via relative URL
@@ -2248,7 +2258,7 @@ The <a href="#special-passage-storyinit"><code>StoryInit</code> special passage<
 
 * **`trackId`:** The ID of the track.
 
-#### Example:
+#### Examples:
 
 ```
 → Given the following (best done in the StoryInit special passage)
@@ -2293,7 +2303,7 @@ The <a href="#special-passage-storyinit"><code>StoryInit</code> special passage<
 	* **`volume` *`level`*:** (optional) Set the base volume of the track within the playlist to the specified level.  If omitted, defaults to the track's current volume.  Valid values are floating-point numbers in the range `0` (silent) to `1` (loudest)—e.g., `0` is 0%, `0.5` is 50%, `1` is 100%.
 	* **`own`:** (optional) Keyword, used to signify that the playlist should create its own independent copy of the track, rather than simply referencing the existing version.  Owned copies are solely under the control of their playlist—meaning [`<<audio>>`](#macros-macro-audio) actions cannot affect them, even when using group IDs.
 
-#### Example:
+#### Examples:
 
 ```
 → Given the following setup (best done in the StoryInit special passage)
@@ -2339,7 +2349,7 @@ Controls the master audio settings.
 	* **`unmute`:** Unmute the master volume (this is the default).
 	* **`volume` *`level`*:** Set the master volume to the specified level.  Valid values are floating-point numbers in the range `0` (silent) to `1` (loudest)—e.g., `0` is 0%, `0.5` is 50%, `1` is 100%.
 
-#### Example:
+#### Examples:
 
 ##### Basic usage
 
@@ -2424,7 +2434,7 @@ Controls the playback of the playlist, which must be set up via [`<<createplayli
 
 * **`actionList`:** *Identical to the `<<createplaylist>>`-compatible form.*
 
-#### Example: *(only `<<createplaylist>>`-compatible form shown)*
+#### Examples: *(only `<<createplaylist>>`-compatible form shown)*
 
 ##### Basic usage
 
@@ -2518,7 +2528,7 @@ You may not remove the predefined group IDs (<code>:all</code>, <code>:looped</c
 
 * **`groupId`:** The ID of the group.
 
-#### Example:
+#### Examples:
 
 ```
 → Given a group set up via <<createaudiogroup ":ui">>…<</createplaylist>>
@@ -2540,7 +2550,7 @@ Removes the playlist with the given ID.
 
 * **`listId`:** The ID of the playlist.
 
-#### Example:
+#### Examples:
 
 ```
 → Given a playlist set up via <<createplaylist "bgm_lacuna">>…<</createplaylist>>
@@ -2564,7 +2574,7 @@ This macro should be invoked <strong><em>once</em></strong> following any invoca
 
 #### Arguments: *none*
 
-#### Example:
+#### Examples:
 
 ##### Basic usage
 
@@ -2615,7 +2625,7 @@ The <a href="#special-passage-storyinit"><code>StoryInit</code> special passage<
 
 * **`trackIdList`:** A space separated list of track ID(s) for the playlist (only one is required).
 
-#### Example:
+#### Examples:
 
 ```
 → Given the following (best done in the StoryInit special passage)
@@ -2650,7 +2660,7 @@ Does not affect playlist tracks that have been copied into their respective play
 
 #### Arguments: *none*
 
-#### Example:
+#### Examples:
 
 ```
 <<stopallaudio>>
@@ -2692,7 +2702,7 @@ In most cases, you will not need to use <code>&lt;&lt;goto&gt;&gt;</code> as the
 
 * **`linkMarkup`:** The link markup to use (regular syntax only, no setters).
 
-#### Example:
+#### Examples:
 
 ```
 → Passage name form
@@ -2725,7 +2735,7 @@ Passage navigation terminates all pending timed executions.
 * **`transition`:** (optional) Keyword, used to signify that a CSS transition should be applied to the incoming insertions.
 * **`t8n`:** (optional) Keyword, alias for **`transition`**.
 
-#### Example:
+#### Examples:
 
 ```
 → A countdown timer
@@ -2785,7 +2795,7 @@ Passage navigation terminates all pending timed executions.
 
 * **`delay`:** (optional) The amount of time to delay, as a valid [CSS time value](https://developer.mozilla.org/en-US/docs/Web/CSS/time)—e.g., `5s` and `500ms`.  The minimum delay is `40ms`.  If omitted, the last delay specified, from a `<<next>>` or the parent `<<timed>>`, will be used.
 
-#### Example:
+#### Examples:
 
 ```
 → Insert some text after 5 seconds with a transition
@@ -2860,7 +2870,7 @@ When a widget is called, any existing `$args` variable is stored for the duratio
 
 Unless localized by use of the [`<<capture>>` macro](#macros-macro-capture), any story or temporary variables used within widgets are part of a story's normal variable store, so care *must be* taken not to accidentally either overwrite or pick up an existing value.
 
-#### Example:
+#### Examples:
 
 ```
 → Creating a gender pronoun widget

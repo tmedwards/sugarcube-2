@@ -34,7 +34,7 @@ A macro definition object should have some of the following properties (only `ha
 
 Additional properties may be added for internal use.
 
-#### Example:
+#### Examples:
 
 ```
 /*
@@ -77,7 +77,7 @@ Remove existing macro(s).
 
 * **`name`:** (*string* | *string array*) Name, or array of names, of the macro(s) to remove.
 
-#### Example:
+#### Examples:
 
 ```
 Macro.delete("amacro")
@@ -99,7 +99,7 @@ Return the named macro definition, or `null` on failure.
 
 * **`name`:** (*string*) Name of the macro whose definition should be returned.
 
-#### Example:
+#### Examples:
 
 ```
 Macro.get("print")
@@ -120,7 +120,7 @@ Returns whether the named macro exists.
 
 * **`name`:** (*string*) Name of the macro to search for.
 
-#### Example:
+#### Examples:
 
 ```
 Macro.has("print")
@@ -141,7 +141,7 @@ Return the named macro tag's parents array (includes the names of all macros who
 
 * **`name`:** (*string*) Name of the macro tag whose parents array should be returned.
 
-#### Example:
+#### Examples:
 
 ```
 Macro.tags.get("else")  → For the standard library, returns: ["if"]
@@ -162,7 +162,7 @@ Returns whether the named macro tag exists.
 
 * **`name`:** (*string*) Name of the macro tag to search for.
 
-#### Example:
+#### Examples:
 
 ```
 Macro.tags.has("else")

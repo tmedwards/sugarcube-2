@@ -26,7 +26,7 @@ Starts playback of the selected tracks and fades them between the specified star
 * **`toVol`:** (*number*) The destination volume level.
 * **`fromVol`:** (optional, *number*) The starting volume level.  If omitted, defaults to the tracks' current volume level.
 
-#### Example:
+#### Examples:
 
 ```
 // Fade the selected tracks from volume 0 to 1 over 6 seconds.
@@ -49,7 +49,7 @@ Starts playback of the selected tracks and fades them from the specified volume 
 * **`duration`:** (*number*) The number of seconds over which the tracks should be faded.
 * **`fromVol`:** (optional, *number*) The starting volume level.  If omitted, defaults to the tracks' current volume level.
 
-#### Example:
+#### Examples:
 
 ```
 // Fade the selected tracks in from volume 0 over 5 seconds.
@@ -72,7 +72,7 @@ Starts playback of the selected tracks and fades them from the specified volume 
 * **`duration`:** (*number*) The number of seconds over which the tracks should be faded.
 * **`fromVol`:** (optional, *number*) The starting volume level.  If omitted, defaults to the tracks' current volume level.
 
-#### Example:
+#### Examples:
 
 ```
 // Fade the selected tracks out from volume 1 over 8 seconds.
@@ -96,7 +96,7 @@ This does not alter the volume level.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 someTracks.fadeStop();
@@ -119,7 +119,7 @@ This <em>should not</em> be done lightly if your audio sources are on the networ
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 someTracks.load();
@@ -140,7 +140,7 @@ Sets the selected tracks' repeating playback state (default: `false`).  Returns 
 
 * **`state`:** (*boolean*) The loop state.
 
-#### Example:
+#### Examples:
 
 ```
 // Loop the selected tracks.
@@ -165,7 +165,7 @@ Sets the selected tracks' volume mute state (default: `false`).  Returns a refer
 
 * **`state`:** (*boolean*) The mute state.
 
-#### Example:
+#### Examples:
 
 ```
 // Mute the selected tracks' volume.
@@ -200,7 +200,7 @@ The <code>SimpleAudio</code> APIs use events internally for various pieces of fu
 <a href="http://api.jquery.com/off/"><code>&lt;jQuery&gt;.off()</code></a> in the jQuery API docs for more information.
 </p>
 
-#### Example:
+#### Examples:
 
 ```
 // Remove any handlers for the ended event.
@@ -232,7 +232,7 @@ The <code>SimpleAudio</code> APIs use events internally for various pieces of fu
 <a href="http://api.jquery.com/on/"><code>&lt;jQuery&gt;.on()</code></a> in the jQuery API docs for more information.
 </p>
 
-#### Example:
+#### Examples:
 
 ```
 // Add a handler for the ended event.
@@ -266,7 +266,7 @@ The <code>SimpleAudio</code> APIs use events internally for various pieces of fu
 <a href="http://api.jquery.com/one/"><code>&lt;jQuery&gt;.one()</code></a> in the jQuery API docs for more information.
 </p>
 
-#### Example:
+#### Examples:
 
 ```
 // Add a single-use handler for the ended event.
@@ -288,7 +288,7 @@ Pauses playback of the selected tracks.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 someTracks.pause();
@@ -307,7 +307,7 @@ Begins playback of the selected tracks.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 someTracks.play();
@@ -326,7 +326,7 @@ Begins playback of the selected tracks or, failing that, sets the tracks to begi
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 someTracks.playWhenAllowed();
@@ -345,7 +345,7 @@ Stops playback of the selected tracks.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 someTrack.stop();
@@ -366,7 +366,7 @@ Sets the selected tracks' current time in seconds.  Returns a reference to the c
 
 * **`seconds`:** (*number*) The time to set.  Valid values are floating-point numbers in the range `0` (start) to the maximum duration—e.g., `60` is `60` is sixty seconds in, `90.5` is ninety-point-five seconds in.
 
-#### Example:
+#### Examples:
 
 ```
 // Set the selected tracks' current time to 30 seconds from their beginning.
@@ -390,7 +390,7 @@ Once unloaded, playback cannot occur until the selected tracks' data is loaded a
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 someTracks.unload();
@@ -411,7 +411,7 @@ Sets the selected tracks' volume level (default: `1`).  Returns a reference to t
 
 * **`level`:** (*number*) The volume level to set.  Valid values are floating-point numbers in the range `0` (silent) to `1` (loudest)—e.g., `0` is 0%, `0.5` is 50%, `1` is 100%.
 
-#### Example:
+#### Examples:
 
 ```
 // Set the selected tracks' volume level to 75%.

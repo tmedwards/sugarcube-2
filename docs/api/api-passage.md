@@ -64,7 +64,7 @@ Returns the description of the passage, created from either an excerpt of the pa
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 var passage = Story.get("The Ducky");
@@ -85,7 +85,7 @@ Returns the processed text of the passage, created from applying `nobr` tag and 
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 var passage = Story.get("The Ducky");

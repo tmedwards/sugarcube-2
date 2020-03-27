@@ -20,7 +20,7 @@ The argument string parsed into an array of discrete arguments.
 
 * `v2.0.0`
 
-#### Example:
+#### Examples:
 
 ```
 // Given: <<someMacro "a" "b" "c">>
@@ -41,7 +41,7 @@ The argument string after converting all TwineScript syntax elements into their 
 
 * `v2.0.0`
 
-#### Example:
+#### Examples:
 
 ```
 // Given: <<if "a" is "b">>
@@ -59,7 +59,7 @@ The unprocessed argument string.
 
 * `v2.0.0`
 
-#### Example:
+#### Examples:
 
 ```
 // Given: <<if "a" is "b">>
@@ -77,7 +77,7 @@ The name of the macro.
 
 * `v2.0.0`
 
-#### Example:
+#### Examples:
 
 ```
 // Given: <<someMacro …>>
@@ -160,7 +160,7 @@ Returns whether any of the macro's ancestors passed the test implemented by the 
 
 * **`filter`:** (*function*) The function used to test each ancestor execution context object, which is passed in as its sole parameter.
 
-#### Example:
+#### Examples:
 
 ```
 var includeAncestor = function (ctx) { return ctx.name === "include"; };
@@ -182,7 +182,7 @@ Returns the first of the macro's ancestors that passed the test implemented by t
 
 * **`filter`:** (*function*) The function used to test each ancestor execution context object, which is passed in as its sole parameter.
 
-#### Example:
+#### Examples:
 
 ```
 var includeAncestor = function (ctx) { return ctx.name === "include"; };
@@ -204,7 +204,7 @@ Returns a new array containing all of the macro's ancestors that passed the test
 
 * **`filter`:** (*function*) The function used to test each ancestor execution context object, which is passed in as its sole parameter.
 
-#### Example:
+#### Examples:
 
 ```
 var includeAncestor = function (ctx) { return ctx.name === "include"; };
@@ -237,7 +237,7 @@ Only useful when you have an asynchronous callback that invokes code/content tha
 * **`doneCallback`:** (optional, *function*) The finalization callback function, executed after the main `callback` returns.  Does not receive access to variable shadows.
 * **`startCallback`:** (optional, *function*) The initialization callback function, executed before the main `callback` is invoked.  Does not receive access to variable shadows.
 
-#### Example:
+#### Examples:
 
 ##### Basic usage
 
@@ -291,7 +291,7 @@ Renders the message prefixed with the name of the macro and returns `false`.
 
 * **`message`:** (*string*) The error message to output.
 
-#### Example:
+#### Examples:
 
 ```
 // Given: <<someMacro …>>

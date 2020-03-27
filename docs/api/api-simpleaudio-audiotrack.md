@@ -22,7 +22,7 @@ Returns a new independent copy of the track.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 var trackCopy = aTrack.clone();
@@ -41,7 +41,7 @@ Returns the track's total playtime in seconds, `Infinity` for a stream, or `NaN`
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 var trackLength = aTrack.duration();
@@ -64,7 +64,7 @@ Starts playback of the track and fades it between the specified starting and des
 * **`toVol`:** (*number*) The destination volume level.
 * **`fromVol`:** (optional, *number*) The starting volume level.  If omitted, defaults to the track's current volume level.
 
-#### Example:
+#### Examples:
 
 ```
 // Fade the track from volume 0 to 1 over 6 seconds.
@@ -88,7 +88,7 @@ Starts playback of the track and fades it from the specified volume level to `1`
 * **`duration`:** (*number*) The number of seconds over which the track should be faded.
 * **`fromVol`:** (optional, *number*) The starting volume level.  If omitted, defaults to the track's current volume level.
 
-#### Example:
+#### Examples:
 
 ```
 // Fade the track in from volume 0 over 5 seconds.
@@ -112,7 +112,7 @@ Starts playback of the track and fades it from the specified volume level to `0`
 * **`duration`:** (*number*) The number of seconds over which the track should be faded.
 * **`fromVol`:** (optional, *number*) The starting volume level.  If omitted, defaults to the track's current volume level.
 
-#### Example:
+#### Examples:
 
 ```
 // Fade the track out from volume 1 over 8 seconds.
@@ -136,7 +136,7 @@ This does not alter the volume level.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 aTrack.fadeStop();
@@ -159,7 +159,7 @@ This is an estimate calculated by the browser based upon the currently downloade
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 if (aTrack.hasData()) {
@@ -180,7 +180,7 @@ Returns whether, at least, the track's metadata has been loaded.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 if (aTrack.hasMetadata()) {
@@ -201,7 +201,7 @@ Returns whether none of the track's data has been loaded.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 if (aTrack.hasNoData()) {
@@ -226,7 +226,7 @@ The <a href="#audiotrack-api-prototype-method-hasdata"><code>&lt;AudioTrack&gt;.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 if (aTrack.hasSomeData()) {
@@ -247,7 +247,7 @@ Returns whether any valid sources were registered.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 if (aTrack.hasSource()) {
@@ -268,7 +268,7 @@ Returns whether playback of the track has ended.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 if (aTrack.isEnded()) {
@@ -289,7 +289,7 @@ Returns whether a fade is in-progress on the track.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 if (aTrack.isFading()) {
@@ -310,7 +310,7 @@ Returns whether an error has occurred.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 if (aTrack.isFailed()) {
@@ -331,7 +331,7 @@ Returns whether the track is loading data.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 if (aTrack.isLoading()) {
@@ -354,7 +354,7 @@ Returns whether playback of the track has been paused.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 if (aTrack.isPaused()) {
@@ -375,7 +375,7 @@ Returns whether the track is playing.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 if (aTrack.isPlaying()) {
@@ -396,7 +396,7 @@ Returns whether the track is seeking.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 if (aTrack.isSeeking()) {
@@ -417,7 +417,7 @@ Returns whether playback of the track has been stopped.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 if (aTrack.isStopped()) {
@@ -438,7 +438,7 @@ Returns whether the track is currently unavailable for playback.  Possible reaso
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 if (aTrack.isUnavailable()) {
@@ -459,7 +459,7 @@ Returns whether the track's sources are currently unloaded.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 if (aTrack.isUnloaded()) {
@@ -484,7 +484,7 @@ This <em>should not</em> be done lightly if your audio sources are on the networ
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 aTrack.load();
@@ -505,7 +505,7 @@ Gets or sets the track's repeating playback state (default: `false`).  When used
 
 * **`state`:** (optional, *boolean*) The loop state.
 
-#### Example:
+#### Examples:
 
 ```
 // Get the track's current loop state.
@@ -533,7 +533,7 @@ Gets or sets the track's volume mute state (default: `false`).  When used to set
 
 * **`state`:** (optional, *boolean*) The mute state.
 
-#### Example:
+#### Examples:
 
 ```
 // Get the track's current volume mute state.
@@ -571,7 +571,7 @@ The <code>SimpleAudio</code> APIs use events internally for various pieces of fu
 <a href="http://api.jquery.com/off/"><code>&lt;jQuery&gt;.off()</code></a> in the jQuery API docs for more information.
 </p>
 
-#### Example:
+#### Examples:
 
 ```
 // Remove any handlers for the ended event.
@@ -603,7 +603,7 @@ The <code>SimpleAudio</code> APIs use events internally for various pieces of fu
 <a href="http://api.jquery.com/on/"><code>&lt;jQuery&gt;.on()</code></a> in the jQuery API docs for more information.
 </p>
 
-#### Example:
+#### Examples:
 
 ```
 // Add a handler for the ended event.
@@ -637,7 +637,7 @@ The <code>SimpleAudio</code> APIs use events internally for various pieces of fu
 <a href="http://api.jquery.com/one/"><code>&lt;jQuery&gt;.one()</code></a> in the jQuery API docs for more information.
 </p>
 
-#### Example:
+#### Examples:
 
 ```
 // Add a single-use handler for the ended event.
@@ -659,7 +659,7 @@ Pauses playback of the track.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 aTrack.pause();
@@ -678,7 +678,7 @@ Begins playback of the track.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ##### Basic usage
 
@@ -711,7 +711,7 @@ Begins playback of the track or, failing that, sets the track to begin playback 
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 aTrack.playWhenAllowed();
@@ -730,7 +730,7 @@ Returns how much remains of the track's total playtime in seconds, `Infinity` fo
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 var trackRemains = aTrack.remaining();
@@ -749,7 +749,7 @@ Stops playback of the track.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 someTrack.stop();
@@ -770,7 +770,7 @@ Gets or sets the track's current time in seconds.  When used to set a value, ret
 
 * **`seconds`:** (optional, *number*) The time to set.  Valid values are floating-point numbers in the range `0` (start) to the maximum duration—e.g., `60` is `60` is sixty seconds in, `90.5` is ninety-point-five seconds in.
 
-#### Example:
+#### Examples:
 
 ```
 // Get the track's current time.
@@ -800,7 +800,7 @@ Once unloaded, playback cannot occur until the track's data is loaded again.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 aTrack.unload();
@@ -821,7 +821,7 @@ Gets or sets the track's volume level (default: `1`).  When used to set the volu
 
 * **`level`:** (optional, *number*) The volume level to set.  Valid values are floating-point numbers in the range `0` (silent) to `1` (loudest)—e.g., `0` is 0%, `0.5` is 50%, `1` is 100%.
 
-#### Example:
+#### Examples:
 
 ```
 // Get the track's current volume level.
@@ -844,7 +844,7 @@ Synthetic event triggered on the track when a fade completes normally.
 
 #### Event object properties: *none*
 
-#### Example:
+#### Examples:
 
 ```
 /* Execute the handler function when the event triggers. */
@@ -866,7 +866,7 @@ Synthetic event triggered on the track when a fade starts.
 
 #### Event object properties: *none*
 
-#### Example:
+#### Examples:
 
 ```
 /* Execute the handler function when the event triggers. */
@@ -892,7 +892,7 @@ Synthetic event triggered on the track when playback is stopped after [`<AudioTr
 
 #### Event object properties: *none*
 
-#### Example:
+#### Examples:
 
 ```
 /* Execute the handler function when the event triggers. */

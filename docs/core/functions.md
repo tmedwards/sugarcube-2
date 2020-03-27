@@ -22,7 +22,7 @@ Only the primitives, generic objects, some JavaScript natives (specifically: <co
 
 * **`original`:** (*any*) The object to value.
 
-#### Example:
+#### Examples:
 
 ```
 // Without clone(); given the generic object: $foo = { id : 1 }
@@ -53,7 +53,7 @@ Returns a random value from its given arguments.
 
 * **`list`:** (*any*) The list of values to operate on.  May be any combination of singular values, actual arrays, or array-like objects.  All values will be concatenated into a single list for selection.  **NOTE:** Does not flatten nested arrays—if this is required, the [`<Array>.flat()`](#methods-array-prototype-method-flat) method may be used to flatten the nested arrays prior to passing them to `either()`.
 
-#### Example:
+#### Examples:
 
 ```
 // Using singular values
@@ -84,7 +84,7 @@ Removes the specified key, and its associated value, from the story metadata sto
 
 * **`key`:** (*string*) The key to remove.
 
-#### Example:
+#### Examples:
 
 ```
 <<run forget('achievements')>>
@@ -105,7 +105,7 @@ Returns whether the passage with the given title occurred within the story histo
 
 * **`passages`:** (*string* | *string array*) The title(s) of the passage(s) to search for.  May be a list or an array of passages.
 
-#### Example:
+#### Examples:
 
 ```
 <<if hasVisited("Bar")>>…has been to the Bar…<</if>>
@@ -129,7 +129,7 @@ Returns the number of turns that have passed since the last instance of the pass
 
 * **`passages`:** (*string* | *string array*) The title(s) of the passage(s) to search for.  May be a list or an array of passages.
 
-#### Example:
+#### Examples:
 
 ```
 <<if lastVisited("Bar") is -1>>…has never been to the Bar…<</if>>
@@ -162,7 +162,7 @@ A script section (Twine&nbsp;2: the Story JavaScript; Twine&nbsp;1/Twee: a <code
 
 * **`urls`:** (*string* | *string array*) The URLs of the external scripts to import.  Loose URLs are imported concurrently, arrays of URLs are imported sequentially.
 
-#### Example:
+#### Examples:
 
 ##### Basic usage
 
@@ -251,7 +251,7 @@ A script section (Twine&nbsp;2: the Story JavaScript; Twine&nbsp;1/Twee: a <code
 
 * **`urls`:** (*string* | *string array*) The URLs of the external stylesheets to import.  Loose URLs are imported concurrently, arrays of URLs are imported sequentially.
 
-#### Example:
+#### Examples:
 
 ##### Basic usage
 
@@ -331,7 +331,7 @@ This feature is largely incompatible with private browsing modes, which cause al
 * **`key`:** (*string*) The key that should be set.
 * **`value`:** (*any*) The value to set.
 
-#### Example:
+#### Examples:
 
 ```
 // Sets 'achievements', with the given value, in the metadata store.
@@ -354,7 +354,7 @@ Returns the title of the active (present) passage.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 <<if passage() is "Café">>…the current passage is the Café passage…<</if>>
@@ -373,7 +373,7 @@ Returns the title of the most recent previous passage whose title does not match
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 <<if previous() is "Café">>…the most recent non-active passage is the Café passage…<</if>>
@@ -402,7 +402,7 @@ By default, it uses <a href="https://developer.mozilla.org/en-US/docs/Web/JavaSc
 * **`min`:** (optional, *integer*) The lower bound of the random number (inclusive).  If omitted, will default to `0`.
 * **`max`:** (*integer*) The upper bound of the random number (inclusive).
 
-#### Example:
+#### Examples:
 
 ```
 random(5)     → Returns a number in the range 0–5
@@ -429,7 +429,7 @@ By default, it simply returns non-deterministic results from <a href="https://de
 * **`min`:** (optional, *float*) The lower bound of the random number (inclusive).  If omitted, will default to `0.0`.
 * **`max`:** (*float*) The upper bound of the random number (exclusive).
 
-#### Example:
+#### Examples:
 
 ```
 randomFloat(5.0)       → Returns a number in the range 0.0–4.9999999…
@@ -452,7 +452,7 @@ Returns the value associated with the specified key from the story metadata stor
 * **`key`:** (*string*) The key whose value should be returned.
 * **`defaultValue`:** (optional, *any*) The value to return if the key doesn't exist.
 
-#### Example:
+#### Examples:
 
 ```
 // Set setup.achievements to the 'achievements' metadata or an empty generic object.
@@ -479,7 +479,7 @@ Renders the selected passage into the target element, replacing any existing con
 * **`passages`:** (*string* | *string array*) The name(s) of the passage(s) to search for.  May be a single passage or an array of passages.  If an array of passage names is specified, the first passage to be found is used.
 * **`defaultText`:** (optional, *string*) The default text to use if no passages are found.
 
-#### Example:
+#### Examples:
 
 <p role="note"><b>Note:</b>
 As it is highly unlikely that either an array of passage names or default text will be needed in the vast majority of cases, only a few basic examples will be given.
@@ -508,7 +508,7 @@ Returns a new array consisting of all of the tags of the given passages.
 
 * **`passages`:** (optional, *string* | *string array*) The passages from which to collect tags.  May be a list or an array of passages.  If omitted, will default to the current passage.
 
-#### Example:
+#### Examples:
 
 ```
 <<if tags().includes("forest")>>…the current passage is part of the forest…<</if>>
@@ -528,7 +528,7 @@ Returns a reference to the current temporary variables store (equivalent to: [`S
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 // Given: _selection is 'Zagnut Bar'
@@ -550,7 +550,7 @@ Returns the number of milliseconds that have passed since the current passage wa
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 → Links that vary based on the time
@@ -580,7 +580,7 @@ Returns the total number (count) of played turns currently in effect—i.e., the
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 <<print "This is turn #" + turns()>>
@@ -599,7 +599,7 @@ Returns a reference to the active (present) story variables store (equivalent to
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 // Given: $hasGoldenKey is true
@@ -623,7 +623,7 @@ Returns the number of times that the passage with the given title occurred withi
 
 * **`passages`:** (optional, *string* | *string array*) The title(s) of the passage(s) to search for.  May be a list or an array of passages.  If omitted, will default to the current passage.
 
-#### Example:
+#### Examples:
 
 ```
 <<if visited() is 3>>…this is the third visit to the current passage…<</if>>
@@ -647,7 +647,7 @@ Returns the number of passages within the story history that are tagged with all
 
 * **`tags`:** (*string* | *string array*) The tags to search for.  May be a list or an array of tags.
 
-#### Example:
+#### Examples:
 
 ```
 <<if visitedTags("forest")>>…has been to some part of the forest at least once…<</if>>

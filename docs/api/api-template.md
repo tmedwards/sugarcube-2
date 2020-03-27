@@ -14,7 +14,7 @@ Returns the number of existing templates.
 
 * `v2.29.0`
 
-#### Example:
+#### Examples:
 
 ```
 if (Template.size === 0) {
@@ -48,7 +48,7 @@ Function templates should return a string, which may itself contain markup.  The
 
 String templates consist solely of a string, which may itself contain markup.
 
-#### Example:
+#### Examples:
 
 ##### Basic usage
 
@@ -99,7 +99,7 @@ Remove existing template(s).
 
 * **`name`:** (*string* | *string array*) Name, or array of names, of the template(s) to remove.
 
-#### Example:
+#### Examples:
 
 ```
 /* Deletes the template ?yolo. */
@@ -124,7 +124,7 @@ Return the named template definition, or `null` on failure.
 
 * **`name`:** (*string*) Name of the template whose definition should be returned.
 
-#### Example:
+#### Examples:
 
 ```
 /* Returns the template ?yolo, or null if it doesn't exist. */
@@ -146,7 +146,7 @@ Returns whether the named template exists.
 
 * **`name`:** (*string*) Name of the template to search for.
 
-#### Example:
+#### Examples:
 
 ```
 if (Template.has('yolo')) {

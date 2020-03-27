@@ -20,7 +20,7 @@ Opens the built-in alert dialog, displaying the given message to the player.
 * **`options`:** (optional, *null* | *object*) The options object.  See [`Dialog.open()`](#dialog-api-method-open) for more information.
 * **`closeFn`:** (optional, *null* | *function*) The function to execute whenever the dialog is closed.
 
-#### Example:
+#### Examples:
 
 ```
 UI.alert("You smell of elderberries!");
@@ -42,7 +42,7 @@ Opens the built-in jump to dialog, which is populated via the [`bookmark` tag](#
 * **`options`:** (optional, *null* | *object*) The options object.  See [`Dialog.open()`](#dialog-api-method-open) for more information.
 * **`closeFn`:** (optional, *null* | *function*) The function to execute whenever the dialog is closed.
 
-#### Example:
+#### Examples:
 
 ```
 UI.jumpto();
@@ -63,7 +63,7 @@ Opens the built-in restart dialog, prompting the player to restart the story.
 
 * **`options`:** (optional, *null* | *object*) The options object.  See [`Dialog.open()`](#dialog-api-method-open) for more information.
 
-#### Example:
+#### Examples:
 
 ```
 UI.restart();
@@ -85,7 +85,7 @@ Opens the built-in saves dialog.
 * **`options`:** (optional, *null* | *object*) The options object.  See [`Dialog.open()`](#dialog-api-method-open) for more information.
 * **`closeFn`:** (optional, *null* | *function*) The function to execute whenever the dialog is closed.
 
-#### Example:
+#### Examples:
 
 ```
 UI.saves();
@@ -107,7 +107,7 @@ Opens the built-in settings dialog, which is populated from the [`Setting` API](
 * **`options`:** (optional, *null* | *object*) The options object.  See [`Dialog.open()`](#dialog-api-method-open) for more information.
 * **`closeFn`:** (optional, *null* | *function*) The function to execute whenever the dialog is closed.
 
-#### Example:
+#### Examples:
 
 ```
 UI.settings();
@@ -129,7 +129,7 @@ Opens the built-in share dialog, which is populated from the [`StoryShare` passa
 * **`options`:** (optional, *null* | *object*) The options object.  See [`Dialog.open()`](#dialog-api-method-open) for more information.
 * **`closeFn`:** (optional, *null* | *function*) The function to execute whenever the dialog is closed.
 
-#### Example:
+#### Examples:
 
 ```
 UI.share();

@@ -20,7 +20,7 @@ Acquires a loading screen lock and returns its ID.  Displays the loading screen,
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 LoadScreen.lock()  → Locks the loading screen and returns the lock ID
@@ -41,7 +41,7 @@ Releases the loading screen lock with the given ID.  Hides the loading screen, i
 
 * **`lockId`:** (*integer*) The loading screen lock ID.
 
-#### Example:
+#### Examples:
 
 ```
 var lockId = LoadScreen.lock();

@@ -21,7 +21,7 @@ Adds a header to the Settings dialog.
 * **`name`:** (*string*) Name of the header.
 * **`desc`:** (optional, *string*) Description explaining the header in greater detail.
 
-#### Example:
+#### Examples:
 
 ```
 // Setting up a basic header
@@ -58,7 +58,7 @@ A toggle definition object should have some of the following properties:
 * **`onInit`:** (optional, *function*) The function to call during initialization.
 * **`onChange`:** (optional, *function*) The function to call when the control's state is changed.
 
-#### Example:
+#### Examples:
 
 ##### Basic toggle setting
 
@@ -125,7 +125,7 @@ A list definition object should have some of the following properties:
 * **`onInit`:** (optional, *function*) The function to call during initialization.
 * **`onChange`:** (optional, *function*) The function to call when the control's state is changed.
 
-#### Example:
+#### Examples:
 
 ```
 // Setting up a basic list control for the settings property 'difficulty'
@@ -206,7 +206,7 @@ A range definition object should have some of the following properties:
 * **`onInit`:** (optional, *function*) The function to call during initialization.
 * **`onChange`:** (optional, *function*) The function to call when the control's state is changed.
 
-#### Example:
+#### Examples:
 
 ```
 // Setting up a volume control for the settings property 'masterVolume' w/ callback
@@ -244,7 +244,7 @@ The API automatically calls this method at startup, so you should never need to 
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 Setting.load();
@@ -265,7 +265,7 @@ Resets the setting with the given name to its default value.  If no name is give
 
 * **`name`:** (optional, *string*) Name of the `settings` object property to reset.
 
-#### Example:
+#### Examples:
 
 ```
 // Reset the setting 'difficulty'
@@ -292,7 +292,7 @@ The controls of the Settings dialog automatically call this method when settings
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 Setting.save();

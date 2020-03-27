@@ -64,7 +64,7 @@ Deletes all slot saves and the autosave, if it's enabled.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 Save.clear()
@@ -87,7 +87,7 @@ Returns the saves object.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 Save.get()
@@ -106,7 +106,7 @@ Returns whether both the slot saves and autosave are available and ready.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 if (Save.ok()) {
@@ -132,7 +132,7 @@ Returns the total number of available slots.
 
 * `v2.0.0`
 
-#### Example:
+#### Examples:
 
 ```
 Save.slots.length
@@ -151,7 +151,7 @@ Returns the total number of filled slots.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 Save.slots.count()
@@ -172,7 +172,7 @@ Deletes a save from the given slot.
 
 * **`slot`:** (*integer*) Save slot index (0-based).
 
-#### Example:
+#### Examples:
 
 ```
 Save.slots.delete(5)  → Deletes the sixth slot save
@@ -193,7 +193,7 @@ Returns a save object from the given slot or `null`, if there was no save in the
 
 * **`slot`:** (*integer*) Save slot index (0-based).
 
-#### Example:
+#### Examples:
 
 ```
 Save.slots.get(5)  → Returns the sixth slot save
@@ -214,7 +214,7 @@ Returns whether the given slot is filled.
 
 * **`slot`:** (*integer*) Save slot index (0-based).
 
-#### Example:
+#### Examples:
 
 ```
 if (Save.slots.has(5)) {
@@ -235,7 +235,7 @@ Returns whether there are any filled slots.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 Save.slots.isEmpty()  → Effectively returns: Save.slots.count() === 0
@@ -256,7 +256,7 @@ Loads a save from the given slot.
 
 * **`slot`:** (*integer*) Save slot index (0-based).
 
-#### Example:
+#### Examples:
 
 ```
 Save.slots.load(5)  → Load the sixth slot save
@@ -275,7 +275,7 @@ Returns whether the slot saves are available and ready.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 if (Save.slots.ok()) {
@@ -300,7 +300,7 @@ Saves to the given slot.
 * **`title`:** (optional, *string*) The title of the save.  If omitted or `null`, defaults to the passage's description.
 * **`metadata`:** (optional, *any*) The data to be stored in the save object's `metadata` property.  Must be JSON-serializable.
 
-#### Example:
+#### Examples:
 
 ```
 → Save to the sixth slot save with the default title and no metadata
@@ -336,7 +336,7 @@ Deletes the autosave.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 Save.autosave.delete()  → Deletes the autosave
@@ -355,7 +355,7 @@ Returns the save object from the autosave or `null`, if there was no autosave.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 Save.autosave.get()  → Returns the autosave
@@ -374,7 +374,7 @@ Returns whether the autosave is filled.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 if (Save.autosave.has()) {
@@ -395,7 +395,7 @@ Loads the autosave.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 Save.autosave.load()  → Load the autosave
@@ -414,7 +414,7 @@ Returns whether the autosave is available and ready.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 if (Save.autosave.ok()) {
@@ -438,7 +438,7 @@ Saves to the autosave.
 * **`title`:** (optional, *string*) The title of the save.  If omitted or `null`, defaults to the passage's description.
 * **`metadata`:** (optional, *any*) The data to be stored in the save object's `metadata` property.  Must be JSON-serializable.
 
-#### Example:
+#### Examples:
 
 ```
 → Save to the autosave with the default title and no metadata
@@ -478,7 +478,7 @@ Saves to disk.
 * **`filename`:** (optional, *string*) The base filename of the save, which gets slugified to remove most symbols.  Appended to this is a datestamp (format: `YYYMMDD-hhmmss`) and the file extension `.save`—e.g., `"The Scooby Chronicles"` would result in the full filename: `the-scooby-chronicles-{datestamp}.save`.  If omitted or `null`, defaults to the story's title.
 * **`metadata`:** (optional, *any*) The data to be stored in the save object's `metadata` property.  Must be JSON-serializable.
 
-#### Example:
+#### Examples:
 
 ```
 → Export a save with the default filename and no metadata
@@ -511,7 +511,7 @@ Loads a save from disk.
 
 * **`event`:** (*event object*) The event object that was passed to the `change` event handler of the associated `<input type="file">` element.
 
-#### Example:
+#### Examples:
 
 ##### Basic usage
 
@@ -579,7 +579,7 @@ Returns a save as a serialized string, or `null` if saving is not allowed within
 
 * **`metadata`:** (optional, *any*) The data to be stored as metadata.  Must be JSON-serializable.
 
-#### Example:
+#### Examples:
 
 ```
 → Serialize a save with no metadata
@@ -610,7 +610,7 @@ Deserializes the given save string, created via [`Save.serialize()`](#save-api-m
 
 * **`saveStr`:** (*string*) The serialized save string.
 
-#### Example:
+#### Examples:
 
 ```
 → Deserialize a save with no metadata

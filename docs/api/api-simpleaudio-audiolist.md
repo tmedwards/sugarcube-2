@@ -22,7 +22,7 @@ Returns the playlist's total playtime in seconds, `Infinity` if it contains any 
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 var listLength = aList.duration();
@@ -46,7 +46,7 @@ Starts playback of the playlist and fades the currently playing track between th
 * **`toVol`:** (*number*) The destination volume level.
 * **`fromVol`:** (optional, *number*) The starting volume level.  If omitted, defaults to the currently playing track's current volume level.
 
-#### Example:
+#### Examples:
 
 ```
 // Fade the playlist from volume 0 to 1 over 6 seconds.
@@ -70,7 +70,7 @@ Starts playback of the playlist and fades the currently playing track from the s
 * **`duration`:** (*number*) The number of seconds over which the currently playing track should be faded.
 * **`fromVol`:** (optional, *number*) The starting volume level.  If omitted, defaults to the currently playing track's current volume level.
 
-#### Example:
+#### Examples:
 
 ```
 // Fade the playlist in from volume 0 over 5 seconds.
@@ -94,7 +94,7 @@ Starts playback of the playlist and fades the currently playing track from the s
 * **`duration`:** (*number*) The number of seconds over which the currently playing track should be faded.
 * **`fromVol`:** (optional, *number*) The starting volume level.  If omitted, defaults to the currently playing track's current volume level.
 
-#### Example:
+#### Examples:
 
 ```
 // Fade the playlist out from volume 1 over 8 seconds.
@@ -118,7 +118,7 @@ This does not alter the volume level.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 aList.fadeStop();
@@ -137,7 +137,7 @@ Returns whether playback of the playlist has ended.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 if (aList.isEnded()) {
@@ -158,7 +158,7 @@ Returns whether a fade is in-progress on the currently playing track.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 if (aList.isFading()) {
@@ -179,7 +179,7 @@ Returns whether playback of the playlist has been paused.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 if (aList.isPaused()) {
@@ -200,7 +200,7 @@ Returns whether the playlist is playing.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 if (aList.isPlaying()) {
@@ -221,7 +221,7 @@ Returns whether playback of the playlist has been stopped.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 if (aList.isStopped()) {
@@ -246,7 +246,7 @@ This <em>should not</em> be done lightly if your audio sources are on the networ
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 aList.load();
@@ -267,7 +267,7 @@ Gets or sets the playlist's repeating playback state (default: `false`).  When u
 
 * **`state`:** (optional, *boolean*) The loop state.
 
-#### Example:
+#### Examples:
 
 ```
 // Get the playlist's current loop state.
@@ -295,7 +295,7 @@ Gets or sets the playlist's volume mute state (default: `false`).  When used to 
 
 * **`state`:** (optional, *boolean*) The mute state.
 
-#### Example:
+#### Examples:
 
 ```
 // Get the playlist's current volume mute state.
@@ -321,7 +321,7 @@ Pauses playback of the playlist.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 aList.pause();
@@ -341,7 +341,7 @@ Begins playback of the playlist.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ##### Basic usage
 
@@ -374,7 +374,7 @@ Begins playback of the playlist or, failing that, sets the playlist to begin pla
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 aList.playWhenAllowed();
@@ -393,7 +393,7 @@ Returns how much remains of the playlist's total playtime in seconds, `Infinity`
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 var listRemains = aList.remaining();
@@ -414,7 +414,7 @@ Gets or sets the playlist's randomly shuffled playback state (default: `false`).
 
 * **`state`:** (optional, *boolean*) The shuffle state.
 
-#### Example:
+#### Examples:
 
 ```
 // Get the playlist's current shuffle state.
@@ -440,7 +440,7 @@ Skips ahead to the next track in the playlist, if any.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 someTrack.skip();
@@ -459,7 +459,7 @@ Stops playback of the playlist.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 someTrack.stop();
@@ -478,7 +478,7 @@ Returns the playlist's current time in seconds, or `NaN` if no metadata exists.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 var listTime = aList.time();
@@ -501,7 +501,7 @@ Once unloaded, playback cannot occur until the track's data is loaded again.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 aList.unload();
@@ -522,7 +522,7 @@ Gets or sets the playlist's volume level (default: `1`).  When used to set the v
 
 * **`level`:** (optional, *number*) The volume level to set.  Valid values are floating-point numbers in the range `0` (silent) to `1` (loudest)—e.g., `0` is 0%, `0.5` is 50%, `1` is 100%.
 
-#### Example:
+#### Examples:
 
 ```
 // Get the playlist's current volume level.

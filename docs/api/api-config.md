@@ -27,7 +27,7 @@ Determines whether the audio subsystem automatically pauses tracks that have bee
 
 * `v2.28.0`
 
-#### Example:
+#### Examples:
 
 ```
 Config.audio.pauseOnFadeToZero = false;
@@ -48,7 +48,7 @@ It is unlikely that you will ever want to disable this setting.
 
 * `v2.28.0`
 
-#### Example:
+#### Examples:
 
 ```
 Config.audio.preloadMetadata = false;
@@ -72,7 +72,7 @@ Determines whether the story's history controls (Backward, Jump To, & Forward bu
 
 * `v2.0.0`
 
-#### Example:
+#### Examples:
 
 ```
 Config.history.controls = false;
@@ -89,7 +89,7 @@ Sets the maximum number of states (moments) to which the history is allowed to g
 
 * `v2.0.0`
 
-#### Example:
+#### Examples:
 
 ```
 // No history limit (you should never do this!)
@@ -124,7 +124,7 @@ This setting exists because it's unlikely that you'll ever want to actually perf
 
 * `v2.0.0`
 
-#### Example:
+#### Examples:
 
 ```
 // No error is returned when = is used within an <<if>> or <<elseif>> conditional
@@ -146,7 +146,7 @@ This setting exists to prevent a misconfigured loop from making the browser unre
 
 * `v2.0.0`
 
-#### Example:
+#### Examples:
 
 ```
 // Allow only 5000 iterations
@@ -171,7 +171,7 @@ Allows the destination of passage navigation to be overridden.  The callback is 
 
 * `v2.13.0`
 
-#### Example:
+#### Examples:
 
 ```
 Config.navigation.override = function (destinationPassage) {
@@ -219,7 +219,7 @@ Determines whether alternate passage descriptions are used by the Saves and Rewi
 
 * `v2.0.0`
 
-#### Example:
+#### Examples:
 
 ```
 // Uses passages' titles
@@ -249,7 +249,7 @@ Determines whether passage titles are combined with the story title, within the 
 
 * `v2.0.0`
 
-#### Example:
+#### Examples:
 
 ```
 Config.passages.displayTitles = true;
@@ -270,7 +270,7 @@ Does not affect <code>script</code> or <code>stylesheet</code> tagged passages, 
 
 * `v2.19.0`
 
-#### Example:
+#### Examples:
 
 ```
 Config.passages.nobr = true;
@@ -291,7 +291,7 @@ The function will be called just before the built-in no-break passage processing
 
 * `v2.30.0`
 
-#### Example:
+#### Examples:
 
 ```
 /* Change instancess of "cat" to "dog". */
@@ -311,7 +311,7 @@ Sets the starting passage, the very first passage that will be displayed.
 
 * `v2.0.0`
 
-#### Example:
+#### Examples:
 
 ```
 Config.passages.start = "That Other Starting Passage";
@@ -332,7 +332,7 @@ If using an integer delay, ideally, it should probably be slightly longer than t
 
 * `v2.0.0`
 
-#### Example:
+#### Examples:
 
 ```
 // Remove outgoing elements when their opacity animation ends
@@ -391,7 +391,7 @@ If the autosave cannot be loaded, for any reason, then the start passage is load
 
 * `v2.0.0`
 
-#### Example:
+#### Examples:
 
 ```
 // Automatically loads the autosave
@@ -422,7 +422,7 @@ When setting the value to boolean <code>true</code>, you will likely also need t
 * `v2.0.0`: Basic syntax.
 * `v2.30.0`: Added function values and deprecated string values.
 
-#### Example:
+#### Examples:
 
 ```
 // Autosaves every passage
@@ -448,7 +448,7 @@ Sets the story ID associated with saves.
 
 * `v2.0.0`
 
-#### Example:
+#### Examples:
 
 ```
 Config.saves.id = "a-big-huge-story-part-1";
@@ -465,7 +465,7 @@ Determines whether saving is allowed within the current context.  The callback i
 
 * `v2.0.0`
 
-#### Example:
+#### Examples:
 
 ```
 Config.saves.isAllowed = function () {
@@ -488,7 +488,7 @@ See the <a href="#save-api-save-objects">save objects</a> section of the <a href
 
 * `v2.0.0`
 
-#### Example:
+#### Examples:
 
 ```
 Config.saves.onLoad = function (save) {
@@ -511,7 +511,7 @@ See the <a href="#save-api-save-objects">save objects</a> section of the <a href
 
 * `v2.0.0`
 
-#### Example:
+#### Examples:
 
 ```
 Config.saves.onSave = function (save) {
@@ -530,7 +530,7 @@ Sets the maximum number of available save slots.
 
 * `v2.0.0`
 
-#### Example:
+#### Examples:
 
 ```
 Config.saves.slots = 4;
@@ -551,7 +551,7 @@ This setting is only used to set the <code>version</code> property of saves.  Th
 
 * `v2.0.0`
 
-#### Example:
+#### Examples:
 
 ```
 // As an integer (recommended)
@@ -579,7 +579,7 @@ Determines whether the UI bar (sidebar) starts in the stowed (shut) state initia
 
 * `v2.11.0`
 
-#### Example:
+#### Examples:
 
 ```
 // As a boolean; always start stowed
@@ -607,7 +607,7 @@ The story title is not included in updates because SugarCube uses it as the basi
 
 * `v2.0.0`
 
-#### Example:
+#### Examples:
 
 ```
 // If you don't need those elements to update
@@ -636,7 +636,7 @@ You <em>must</em> provide your own styling for the <code>link-visited</code> cla
 
 * `v2.0.0`
 
-#### Example:
+#### Examples:
 
 ```
 Config.addVisitedLinkClass = true;
@@ -663,7 +663,7 @@ Determines whether the output of the Wikifier is post-processed into more sane m
 
 * `v2.0.0`
 
-#### Example:
+#### Examples:
 
 ```
 Config.cleanupWikifierOutput = true;
@@ -684,7 +684,7 @@ This property is automatically set based on whether you're using a testing mode 
 
 * `v2.2.0`
 
-#### Example:
+#### Examples:
 
 ```
 // Forcibly enable test mode
@@ -712,7 +712,7 @@ Sets the integer delay (in milliseconds) before the loading screen is dismissed,
 
 * `v2.0.0`
 
-#### Example:
+#### Examples:
 
 ```
 // Delay the dismissal of the loading screen by 2000ms (2s)

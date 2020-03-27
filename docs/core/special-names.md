@@ -146,7 +146,7 @@ Elements that include a <code>data-passage</code> content attribute <em>should n
 * `v2.18.0`: Basic syntax.
 * `v2.28.0`: Added processing of the `data-passage` content attribute.
 
-#### Example:
+#### Examples:
 
 ##### Minimal working example
 
@@ -179,7 +179,7 @@ The story menu only displays links—specifically, anything that creates an anch
 
 * `v2.0.0`
 
-#### Example:
+#### Examples:
 
 ```
 [[Inventory]]

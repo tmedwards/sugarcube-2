@@ -14,7 +14,7 @@ Returns a timestamp representing the last time `Engine.play()` was called.
 
 * `v2.0.0`
 
-#### Example:
+#### Examples:
 
 ```
 Engine.lastPlay  → The timestamp at which Engine.play() was last called
@@ -37,7 +37,7 @@ Returns the current state of the engine (`"idle"`, `"playing"`, `"rendering"`).
 * **`"playing"`:** Passage navigation has been triggered and a turn is being processed.
 * **`"rendering"`:** The incoming passage is being rendered and added to the page—takes place during turn processing, so implies `"playing"`.
 
-#### Example:
+#### Examples:
 
 ```
 Engine.state  → Returns the current state of the engine
@@ -56,7 +56,7 @@ Moves backward one moment within the full history (past + future), if possible, 
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 Engine.backward()  → Rewinds the full history by one moment—i.e., undoes the moment
@@ -75,7 +75,7 @@ Moves forward one moment within the full history (past + future), if possible, a
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 Engine.forward()  → Fast forwards the full history by one moment—i.e., redoes the moment
@@ -96,7 +96,7 @@ Activates the moment at the given offset from the active (present) moment within
 
 * **`offset`:** (*integer*) The offset from the active (present) moment of the moment to go to.
 
-#### Example:
+#### Examples:
 
 ```
 Engine.go(2)   → Fast forwards the full history by two moments—i.e., redoes the moments
@@ -118,7 +118,7 @@ Activates the moment at the given index within the full state history and show i
 
 * **`index`:** (*integer*) The index of the moment to go to.
 
-#### Example:
+#### Examples:
 
 ```
 Engine.goTo(0)  → Goes to the first moment
@@ -138,7 +138,7 @@ Returns whether the engine is idle.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 Engine.isIdle()  → Returns whether the engine is idle
@@ -157,7 +157,7 @@ Returns whether the engine is processing a turn—i.e., passage navigation has b
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 Engine.isPlaying()  → Returns whether the engine is playing
@@ -176,7 +176,7 @@ Returns whether the engine is rendering the incoming passage.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 Engine.isRendering()  → Returns whether the engine is rendering
@@ -198,7 +198,7 @@ Renders and displays the passage referenced by the given title, optionally witho
 * **`passageTitle`:** (*string*) The title of the passage to play.
 * **`noHistory`:** (optional, *boolean*) Disables the update of the history—i.e., no moment is added to the history.
 
-#### Example:
+#### Examples:
 
 ```
 Engine.play("Foo")        → Renders, displays, and adds a moment for the passage "Foo" to the history
@@ -226,7 +226,7 @@ In general, you should not call this method directly.  Instead, call the <a href
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 Engine.restart()  → Restarts the story
@@ -245,7 +245,7 @@ Renders and displays the active (present) moment's associated passage without ad
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 Engine.show()  → Renders and displays the present passage without adding new history
@@ -264,7 +264,7 @@ Global synthetic event triggered just before the page is reloaded when [`Engine.
 
 #### Event object properties: *none*
 
-#### Example:
+#### Examples:
 
 ```
 /* Execute the handler function when the event triggers. */

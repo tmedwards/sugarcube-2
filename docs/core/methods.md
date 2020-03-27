@@ -32,7 +32,7 @@ Concatenates one or more members to the end of the base array and returns the re
 
 * **`members`:** (*any*) The members to concatenate.  Members that are arrays will be merged—i.e., their members will be concatenated, rather than the array itself.
 
-#### Example:
+#### Examples:
 
 ```
 // Given: $fruits1 = ["Apples", "Oranges"], $fruits2 = ["Pears", "Plums"]
@@ -58,7 +58,7 @@ Concatenates one or more unique members to the end of the base array and returns
 
 * **`members`:** (*any*) The members to concatenate.  Members that are arrays will be merged—i.e., their members will be concatenated, rather than the array itself.
 
-#### Example:
+#### Examples:
 
 ```
 // Given: $fruits1 = ["Apples", "Oranges"], $fruits2 = ["Pears", "Plums"]
@@ -85,7 +85,7 @@ Returns the number of times that the given member was found within the array, st
 * **`needle`:** (*any*) The member to count.
 * **`position`:** (optional, *integer*) The zero-based index at which to begin searching for `needle`.  If omitted, will default to `0`.
 
-#### Example:
+#### Examples:
 
 ```
 // Given: $fruits = ["Apples", "Oranges", "Plums", "Oranges"]
@@ -108,7 +108,7 @@ Removes all instances of the given members from the array and returns a new arra
 
 * **`needles`:** (*any* | *array*) The members to remove.  May be a list of members or an array.
 
-#### Example:
+#### Examples:
 
 ```
 // Given: $fruits = ["Apples", "Oranges", "Plums", "Oranges"]
@@ -131,7 +131,7 @@ Removes all of the members at the given indices from the array and returns a new
 
 * **`indices`:** (*integer* | *array*) The indices of the members to remove.  May be a list of indices or an array.
 
-#### Example:
+#### Examples:
 
 ```
 // Given: $fruits = ["Apples", "Oranges", "Plums", "Oranges"]
@@ -159,7 +159,7 @@ Removes all of the members that pass the test implemented by the given predicate
 	* **`array`:** (optional, *array*) The array being processed.
 * **`thisArg`:** (optional, *any*) The value to use as `this` when executing `predicate`.
 
-#### Example:
+#### Examples:
 
 ```
 // Given: $fruits = ["Apples", "Apricots", "Oranges"]
@@ -200,7 +200,7 @@ Returns the first member from the array.  Does not modify the original.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 // Given: $pies = ["Blueberry", "Cherry", "Cream", "Pecan", "Pumpkin"]
@@ -220,7 +220,7 @@ Returns a new array consisting of the source array with all sub-array elements c
 
 * **`depth`:** (optional, *integer*) The number of nested array levels should be flattened.  If omitted, will default to `1`.
 
-#### Example:
+#### Examples:
 
 ```
 // Given: $npa = [["Alfa", "Bravo"], [["Charlie", "Delta"], ["Echo"]], "Foxtrot"]
@@ -251,7 +251,7 @@ Identical to calling <code>&lt;Array&gt;.map(…).flat()</code>.
 	* **`array`:** (optional, *array*) The array being processed.
 * **`thisArg`:** (optional, *any*) The value to use as `this` when executing `callback`.
 
-#### Example:
+#### Examples:
 
 ```
 // Given: $npa = ["Alfa", "Bravo Charlie", "Delta Echo Foxtrot"]
@@ -276,7 +276,7 @@ Returns whether the given member was found within the array, starting the search
 * **`needle`:** (*any*) The member to find.
 * **`position`:** (optional, *integer*) The zero-based index at which to begin searching for `needle`.  If omitted, will default to `0`.
 
-#### Example:
+#### Examples:
 
 ```
 // Given: $pies = ["Blueberry", "Cherry", "Cream", "Pecan", "Pumpkin"]
@@ -299,7 +299,7 @@ Returns whether all of the given members were found within the array.
 
 * **`needles`:** (*any* | *array*) The members to find.  May be a list of members or an array.
 
-#### Example:
+#### Examples:
 
 ```
 // Given: $pies = ["Blueberry", "Cherry", "Cream", "Pecan", "Pumpkin"]
@@ -324,7 +324,7 @@ Returns whether any of the given members were found within the array.
 
 * **`needles`:** (*any* | *array*) The members to find.  May be a list of members or an array.
 
-#### Example:
+#### Examples:
 
 ```
 // Given: $pies = ["Blueberry", "Cherry", "Cream", "Pecan", "Pumpkin"]
@@ -347,7 +347,7 @@ Returns the last member from the array.  Does not modify the original.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 // Given: $pies = ["Blueberry", "Cherry", "Cream", "Pecan", "Pumpkin"]
@@ -367,7 +367,7 @@ Removes and returns a random member from the array.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 // Given: $pies = ["Blueberry", "Cherry", "Cream", "Pecan", "Pumpkin"]
@@ -389,7 +389,7 @@ Randomly removes the given number of members from the base array and returns the
 
 * **`want`:** (optional, *integer*) The number of members to pluck.
 
-#### Example:
+#### Examples:
 
 ```
 // Given: $pies = ["Blueberry", "Cherry", "Cream", "Pecan", "Pumpkin"]
@@ -407,7 +407,7 @@ Removes and returns the last member from the array, or `undefined` if the array 
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 // Given: $fruits = ["Apples", "Oranges", "Pears"]
@@ -427,7 +427,7 @@ Appends one or more members to the end of the base array and returns its new len
 
 * **`members`:** (*any*) The members to append.
 
-#### Example:
+#### Examples:
 
 ```
 // Given: $fruits = ["Apples", "Oranges"]
@@ -452,7 +452,7 @@ Appends one or more unique members to the end of the base array and returns its 
 
 * **`members`:** (*any*) The members to append.
 
-#### Example:
+#### Examples:
 
 ```
 // Given: $fruits = ["Apples", "Oranges"]
@@ -475,7 +475,7 @@ Returns a random member from the array.  Does not modify the original.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 // Given: $pies = ["Blueberry", "Cherry", "Cream", "Pecan", "Pumpkin"]
@@ -497,7 +497,7 @@ Randomly selects the given number of unique members from the array and returns t
 
 * **`want`:** (optional, *integer*) The number of members to select.
 
-#### Example:
+#### Examples:
 
 ```
 // Given: $pies = ["Blueberry", "Cherry", "Cream", "Pecan", "Pumpkin"]
@@ -515,7 +515,7 @@ Removes and returns the first member from the array, or `undefined` if the array
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 // Given: $fruits = ["Apples", "Oranges", "Pears"]
@@ -535,7 +535,7 @@ Randomly shuffles the array.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 // Given: $pies = ["Blueberry", "Cherry", "Cream", "Pecan", "Pumpkin"]
@@ -555,7 +555,7 @@ Prepends one or more members to the beginning of the base array and returns its 
 
 * **`members`:** (*any*) The members to append.
 
-#### Example:
+#### Examples:
 
 ```
 // Given: $fruits = ["Oranges", "Plums"]
@@ -580,7 +580,7 @@ Prepends one or more unique members to the beginning of the base array and retur
 
 * **`members`:** (*any*) The members to append.
 
-#### Example:
+#### Examples:
 
 ```
 // Given: $fruits = ["Oranges", "Plums"]
@@ -669,7 +669,7 @@ Returns a random member from the array or array-like object.  Does not modify th
 
 * **`array`:** (*array*) The array to operate on.  May be an actual array or an array-like object.
 
-#### Example:
+#### Examples:
 
 ```
 // Given: $pies = ["Blueberry", "Cherry", "Cream", "Pecan", "Pumpkin"]
@@ -704,7 +704,7 @@ The <a href="#guide-tips-non-generic-object-types"><em>Non-generic object types 
 * **`codeString`:** (*string*) The revival code string to wrap.
 * **`reviveData`:** (optional, *any*) The data that should be made available to the evaluated revival code during deserialization via the special `$ReviveData$` variable.  **WARNING:** Attempting to pass the value of an object instance's `this` directly as the `reviveData` parameter will trigger out of control recursion in the serializer, so a clone of the instance's own data must be passed instead.
 
-#### Example:
+#### Examples:
 
 ```
 JSON.reviveWrapper( /* valid JavaScript code string */ );             → Without data chunk
@@ -753,7 +753,7 @@ An options object should have some of the following properties:
 * **`pressed`:** (*string*) Value for the `aria-pressed` attribute (valid values: `"true"`, `"false"`).
 * **`label`:** (*string*) Value for the `aria-label` and `title` attributes.
 
-#### Example:
+#### Examples:
 
 ```
 // Given an existing element: <a id="so-clicky">Click me</a>
@@ -805,7 +805,7 @@ This method is meant to work with clickables created via <a href="#methods-jquer
 
 * **`state`:** (*boolean*) The disabled state to apply.  Truthy to disable the element(s), falsy to enable them.
 
-#### Example:
+#### Examples:
 
 ```
 // Given an existing WAI-ARIA-compatible clickable element with the ID "so-clicky"
@@ -829,7 +829,7 @@ This method is meant to work with clickables created via <a href="#methods-jquer
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 // Given an existing WAI-ARIA-compatible clickable element with the ID "so-clicky"
@@ -856,7 +856,7 @@ Wikifies the given content source(s) and discards the result.  If there were err
 
 * **`sources`:** (*string*) The list of content sources.
 
-#### Example:
+#### Examples:
 
 ```
 $.wiki('<<somemacro>>');  → Invokes the <<somemacro>> macro, discarding any output
@@ -877,7 +877,7 @@ Wikifies the given content source(s) and appends the result to the target elemen
 
 * **`sources`:** (*string*) The list of content sources.
 
-#### Example:
+#### Examples:
 
 ```
 // Given an element: <div id="the-box"></div>
@@ -908,7 +908,7 @@ Returns the given number clamped to the specified bounds.  Does not modify the o
 * **`min`:** (*integer*) The lower bound of the number.
 * **`max`:** (*integer*) The upper bound of the number.
 
-#### Example:
+#### Examples:
 
 ```
 Math.clamp($stat, 0, 200)  → Clamps $stat to the bounds 0–200 and returns the new value
@@ -930,7 +930,7 @@ Returns the whole (integer) part of the given number by removing its fractional 
 
 * **`num`:** (*number*) The number to truncate to an integer.
 
-#### Example:
+#### Examples:
 
 ```
 Math.trunc(12.7)   → Returns 12
@@ -960,7 +960,7 @@ Returns the number clamped to the specified bounds.  Does not modify the origina
 * **`min`:** (*integer*) The lower bound of the number.
 * **`max`:** (*integer*) The upper bound of the number.
 
-#### Example:
+#### Examples:
 
 ```
 $stat.clamp(0, 200)  → Clamps $stat to the bounds 0–200 and returns the new value
@@ -989,7 +989,7 @@ Returns the given string with all regular expression metacharacters escaped.  Do
 
 * **`text`:** (*string*) The string to escape.
 
-#### Example:
+#### Examples:
 
 ```
 RegExp.escape('That will be $5 (cash only)')   → Returns 'That will be \$5 \(cash only\)'
@@ -1023,7 +1023,7 @@ Returns the number of times that the given substring was found within the string
 * **`needle`:** (*any*) The substring to count.
 * **`position`:** (optional, *integer*) The zero-based index at which to begin searching for `needle`.  If omitted, will default to `0`.
 
-#### Example:
+#### Examples:
 
 ```
 // Given: $text = "How now, brown cow."
@@ -1048,7 +1048,7 @@ Returns the first Unicode code point within the string.  Does not modify the ori
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 // Given: $text = "abc"
@@ -1081,7 +1081,7 @@ A format item has the syntax `{index[,alignment]}`, square-brackets denoting opt
 * **`index`:** (*integer*) The (zero-based) index of the argument whose string representation will replace the format item.
 * **`alignment`:** (optional, *integer*) The total length of the field into which the argument is inserted, and whether it's right- or left-aligned (positive aligns right, negative aligns left).
 
-#### Example:
+#### Examples:
 
 ```
 String.format("{0}, {1}!", "Hello", "World")      → List of arguments; Returns "Hello, World!"
@@ -1104,7 +1104,7 @@ Returns whether the given substring was found within the string, starting the se
 * **`needle`:** (*any*) The substring to find.
 * **`position`:** (optional, *integer*) The zero-based index at which to begin searching for `needle`.  If omitted, will default to `0`.
 
-#### Example:
+#### Examples:
 
 ```
 // Given: $text = "How now, brown cow."
@@ -1131,7 +1131,7 @@ Returns the last Unicode code point within the string.  Does not modify the orig
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 // Given: $text = "abc"
@@ -1158,7 +1158,7 @@ Returns the string with its first Unicode code point converted to upper case, ac
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 // Using the Turkish (Türkçe) locale and given: $text = "ışık"
@@ -1185,7 +1185,7 @@ Returns the string with its first Unicode code point converted to upper case.  D
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 // Given: $text = "hello."

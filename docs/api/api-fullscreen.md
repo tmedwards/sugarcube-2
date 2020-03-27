@@ -42,7 +42,7 @@ Returns the current fullscreen element or, if fullscreen mode is not active, `nu
 
 * `v2.31.0`
 
-#### Example:
+#### Examples:
 
 ```
 Fullscreen.element  → The current fullscreen element
@@ -61,7 +61,7 @@ Returns whether fullscreen is both supported and enabled.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 Fullscreen.isEnabled()  → Whether fullscreen mode is available
@@ -80,7 +80,7 @@ Returns whether fullscreen mode is currently active.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 Fullscreen.isFullscreen()  → Whether fullscreen mode is active
@@ -119,7 +119,7 @@ A fullscreen options object should have some of the following properties:
 Browsers are not currently required to honor the <code>navigationUI</code> setting.
 </p>
 
-#### Example:
+#### Examples:
 
 ##### Basic usage (recommended)
 
@@ -148,7 +148,7 @@ Request that the browser exit fullscreen mode.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 /* Request to exit fullscreen mode. */
@@ -171,7 +171,7 @@ Request that the browser toggle fullscreen mode—i.e., enter or exit as appropr
 * **`options`:** (optional, *object*) The fullscreen options object.  See [`Fullscreen.request()`](#fullscreen-api-method-request) for more information.
 * **`requestedEl`:** (optional, *`HTMLElement` object*) The element to toggle fullscreen mode with.  If omitted, defaults to the entire page.
 
-#### Example:
+#### Examples:
 
 ##### Basic usage (recommended)
 
@@ -203,7 +203,7 @@ Attaches fullscreen change event handlers.
 * **`handlerFn`:** (*function*) The function to invoke when fullscreen mode is changed.
 * **`requestedEl`:** (optional, *`HTMLElement` object*) The element to attach the handler to.
 
-#### Example:
+#### Examples:
 
 ##### Basic usage (recommended)
 
@@ -239,7 +239,7 @@ Removes fullscreen change event handlers.
 * **`handlerFn`:** (optional, *function*) The function to remove.  If omitted, will remove all handler functions.
 * **`requestedEl`:** (optional, *`HTMLElement` object*) The element to remove the handler(s) from.
 
-#### Example:
+#### Examples:
 
 ##### Basic usage (recommended)
 
@@ -283,7 +283,7 @@ Attaches fullscreen error event handlers.
 * **`handlerFn`:** (*function*) The function to invoke when fullscreen mode encounters an error.
 * **`requestedEl`:** (optional, *`HTMLElement` object*) The element to attach the handler to.
 
-#### Example:
+#### Examples:
 
 ##### Basic usage (recommended)
 
@@ -319,7 +319,7 @@ Removes fullscreen error event handlers.
 * **`handlerFn`:** (optional, *function*) The function to remove.  If omitted, will remove all handler functions.
 * **`requestedEl`:** (optional, *`HTMLElement` object*) The element to remove the handler(s) from.
 
-#### Example:
+#### Examples:
 
 ##### Basic usage (recommended)
 

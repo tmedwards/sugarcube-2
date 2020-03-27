@@ -16,7 +16,7 @@ Completely removes the UI bar and all of its associated styles and event handler
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 UIBar.destroy();
@@ -39,7 +39,7 @@ This does not reclaim the space reserved for the UI bar.  Thus, a call to <a hre
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ##### Basic usage
 
@@ -66,7 +66,7 @@ Returns whether the UI bar is currently hidden.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 if (UIBar.isHidden()) {
@@ -91,7 +91,7 @@ Returns whether the UI bar is currently stowed.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 if (UIBar.isStowed()) {
@@ -116,7 +116,7 @@ Shows the UI bar.  Returns a reference to the `UIBar` object for chaining.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ##### Basic usage
 
@@ -146,7 +146,7 @@ Stows the UI bar, so that it takes up less space.  Returns a reference to the `U
 
 * **`noAnimation`:** (optional, *boolean*) Whether to skip the default animation.
 
-#### Example:
+#### Examples:
 
 ##### Basic usage
 
@@ -176,7 +176,7 @@ Unstows the UI bar, so that it is fully accessible again.  Returns a reference t
 
 * **`noAnimation`:** (optional, *boolean*) Whether to skip the default animation.
 
-#### Example:
+#### Examples:
 
 ##### Basic usage
 

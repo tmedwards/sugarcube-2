@@ -24,7 +24,7 @@ Using <code>State.active</code> directly is generally unnecessary as there exist
 
 * `v2.0.0`
 
-#### Example:
+#### Examples:
 
 ```
 State.active.title      → The title of the present moment
@@ -42,7 +42,7 @@ Returns the bottommost (least recent) moment from the full in-play history (past
 
 * `v2.0.0`
 
-#### Example:
+#### Examples:
 
 ```
 State.bottom.title      → The title of the least recent moment within the full in-play history
@@ -64,7 +64,7 @@ Returns the current moment from the full in-play history (past + future), which 
 
 * `v2.8.0`
 
-#### Example:
+#### Examples:
 
 ```
 State.current.title      → The title of the current moment within the full in-play history
@@ -82,7 +82,7 @@ Returns the number of moments within the past in-play history (past only).
 
 * `v2.0.0`
 
-#### Example:
+#### Examples:
 
 ```
 if (State.length === 0) {
@@ -101,7 +101,7 @@ Returns the title of the passage associated with the active (present) moment.
 
 * `v2.0.0`
 
-#### Example:
+#### Examples:
 
 ```
 State.passage  → The passage title of the present moment
@@ -120,7 +120,7 @@ Returns the number of moments within the full in-play history (past + future).
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 if (State.size === 0) {
@@ -139,7 +139,7 @@ Returns the current temporary variables.
 
 * `v2.13.0`
 
-#### Example:
+#### Examples:
 
 ```
 State.temporary  → The current temporary variables
@@ -160,7 +160,7 @@ Returns the topmost (most recent) moment from the full in-play history (past + f
 
 * `v2.0.0`
 
-#### Example:
+#### Examples:
 
 ```
 State.top.title      → The title of the most recent moment within the full in-play history
@@ -178,7 +178,7 @@ Returns the total number (count) of played moments within the extended past hist
 
 * `v2.0.0`
 
-#### Example:
+#### Examples:
 
 ```
 if (State.turns === 1) {
@@ -197,7 +197,7 @@ Returns the variables from the active (present) moment.
 
 * `v2.0.0`
 
-#### Example:
+#### Examples:
 
 ```
 State.variables  → The variables of the present moment
@@ -218,7 +218,7 @@ Returns the value of the story or temporary variable by the given name.
 
 * **`varName`:** (*string*) The name of the story or temporary variable, including its sigil—e.g., `$charName`.
 
-#### Example:
+#### Examples:
 
 ```
 State.getVar("$charName")  → Returns the value of $charName
@@ -243,7 +243,7 @@ Returns whether any moments with the given title exist within the past in-play h
 
 * **`passageTitle`:** (*string*) The title of the moment whose existence will be verified.
 
-#### Example:
+#### Examples:
 
 ```
 State.has("The Ducky")  → Returns whether a moment matching "The Ducky" exists
@@ -268,7 +268,7 @@ If you need to check for multiple passages, the <a href="#functions-function-has
 
 * **`passageTitle`:** (*string*) The title of the moment whose existence will be verified.
 
-#### Example:
+#### Examples:
 
 ```
 State.hasPlayed("The Ducky")  → Returns whether a moment matching "The Ducky" ever existed
@@ -289,7 +289,7 @@ Returns the moment, relative to the bottom of the past in-play history (past onl
 
 * **`index`:** (*integer*) The index of the moment to return.
 
-#### Example:
+#### Examples:
 
 ```
 State.index(0)                 → Returns the least recent moment within the past in-play history
@@ -310,7 +310,7 @@ Returns whether the full in-play history (past + future) is empty.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 if (State.isEmpty()) {
@@ -333,7 +333,7 @@ Returns the moment, relative to the top of the past in-play history (past only),
 
 * **`offset`:** (optional, *integer*) The offset, from the top of the past in-play history, of the moment to return.  If not given, an offset of `0` is used.
 
-#### Example:
+#### Examples:
 
 ```
 State.peek()                  → Returns the most recent moment within the past in-play history
@@ -353,7 +353,7 @@ Returns the size of the story metadata store—i.e., the number of stored pairs.
 
 * `v2.30.0`
 
-#### Example:
+#### Examples:
 
 ```
 // Determines whether the metadata store has any members.
@@ -375,7 +375,7 @@ Empties the story metadata store.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 // Removes all values from the metadata store.
@@ -397,7 +397,7 @@ Removes the specified key, and its associated value, from the story metadata sto
 
 * **`key`:** (*string*) The key to delete.
 
-#### Example:
+#### Examples:
 
 ```
 // Removes 'achievements' from the metadata store.
@@ -419,7 +419,7 @@ Returns the value associated with the specified key from the story metadata stor
 
 * **`key`:** (*string*) The key whose value should be returned.
 
-#### Example:
+#### Examples:
 
 ```
 // Returns the value of 'achievements' from the metadata store.
@@ -441,7 +441,7 @@ Returns whether the specified key exists within the story metadata store.
 
 * **`key`:** (*string*) The key whose existence should be tested.
 
-#### Example:
+#### Examples:
 
 ```
 // Returns whether 'achievements' exists within the metadata store.
@@ -478,7 +478,7 @@ This feature is largely incompatible with private browsing modes, which cause al
 * **`key`:** (*string*) The key that should be set.
 * **`value`:** (*any*) The value to set.
 
-#### Example:
+#### Examples:
 
 ```
 // Sets 'achievements', with the given value, in the metadata store.
@@ -508,7 +508,7 @@ Initializes the seedable pseudo-random number generator (PRNG) and integrates it
 * **`seed`:** (optional, *string*) The explicit seed used to initialize the pseudo-random number generator.
 * **`useEntropy`:** (optional, *boolean*) Enables the use of additional entropy to pad the specified explicit seed.
 
-#### Example:
+#### Examples:
 
 ```
 State.prng.init()                       → Automatically seed the PRNG (recommended)
@@ -527,7 +527,7 @@ Returns whether the [seedable PRNG](#state-api-method-prng-init) has been enable
 
 * `v2.29.0`
 
-#### Example:
+#### Examples:
 
 ```
 State.prng.isEnabled()  → Returns whether the seedable PRNG is enabled
@@ -548,7 +548,7 @@ The pull count is automatically included within saves and sessions, so this is n
 
 * `v2.29.0`
 
-#### Example:
+#### Examples:
 
 ```
 State.prng.pull  → Returns the current PRNG pull count
@@ -569,7 +569,7 @@ The seed is automatically included within saves and sessions, so this is not esp
 
 * `v2.29.0`
 
-#### Example:
+#### Examples:
 
 ```
 State.prng.seed  → Returns the PRNG seed
@@ -592,7 +592,7 @@ By default, it simply returns non-deterministic results from <a href="https://de
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 State.random()  → Returns a pseudo-random floating-point number in the range [0, 1)
@@ -614,7 +614,7 @@ Sets the value of the story or temporary variable by the given name.  Returns wh
 * **`varName`:** (*string*) The name of the story or temporary variable, including its sigil—e.g., `$charName`.
 * **`value`:** (*any*) The value to assign.
 
-#### Example:
+#### Examples:
 
 ```
 State.setVar("$charName", "Jane Doe")  → Assigns the string "Jane Doe" to $charName
