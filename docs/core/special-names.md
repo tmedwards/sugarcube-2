@@ -67,7 +67,7 @@ Used for pre-passage-display tasks, like redoing dynamic changes (happens before
 <span id="special-passage-start"></span>
 ### `Start`
 
-**Twine&nbsp;2:**  *Not special.*  Any passage may be chosen as the starting passage by selecting it via the *Start Story Here* passage context-menu item—n.b. older versions of Twine&nbsp;2 used a <i class="fa fa-rocket"></i> (rocket ship icon) for the same purpose.
+**Twine&nbsp;2:**  *Not special.*  Any passage may be chosen as the starting passage by selecting it via the *Start Story Here* passage context-menu item—n.b. older versions of Twine&nbsp;2 used a rocket ship icon for the same purpose.
 
 **Twine&nbsp;1/Twee:**  *Required.*  The starting passage, the first passage displayed.  Configurable, see [`Config.passages.start`](#config-api-property-passages-start) for more information.
 
@@ -189,9 +189,11 @@ The story menu only displays links—specifically, anything that creates an anch
 <!-- *********************************************************************** -->
 
 <span id="special-passage-storysettings"></span>
-### `StorySettings`<i class="fa fa-fw fa-ban fa-margin-left warn"></i>
+### `StorySettings`
 
-***Unused by SugarCube.***  The [Configuration API](#config-api) serves the same basic purpose.
+<p role="note" class="warning"><b>Warning:</b>
+Unused by SugarCube.  The <a href="#config-api"><code>Config</code> API</a> serves the same basic purpose.
+</p>
 
 <!-- *********************************************************************** -->
 
