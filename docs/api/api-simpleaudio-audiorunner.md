@@ -348,7 +348,7 @@ Stops playback of the selected tracks.
 #### Examples:
 
 ```
-someTrack.stop();
+someTracks.stop();
 ```
 
 <!-- *********************************************************************** -->

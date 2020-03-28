@@ -250,25 +250,3 @@ Renders and displays the active (present) moment's associated passage without ad
 ```
 Engine.show()  → Renders and displays the present passage without adding new history
 ```
-
-<!-- *********************************************************************** -->
-
-<span id="engine-api-event-enginerestart"></span>
-### `:enginerestart` event
-
-Global synthetic event triggered just before the page is reloaded when [`Engine.restart()`](#engine-api-method-restart) is called.  Allows last second bookkeeping tasks.
-
-#### Since:
-
-* `v2.23.0`
-
-#### Event object properties: *none*
-
-#### Examples:
-
-```
-/* Execute the handler function when the event triggers. */
-$(document).on(':enginerestart', function (ev) {
-	/* JavaScript code */
-});
-```

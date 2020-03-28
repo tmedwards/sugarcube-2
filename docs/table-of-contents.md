@@ -242,21 +242,31 @@
 
 ## [HTML](#html)
 
-## [Navigation Events &amp; Tasks](#navigation-events-tasks)
+## [Events &amp; Tasks](#events)
 
-* [Overview](#navigation-overview)
-* [Events](#navigation-events)
+* [`Dialog` Events](#events-dialog)
+	* [`:dialogclosed`](#events-dialog-event-dialogclosed)
+	* [`:dialogclosing`](#events-dialog-event-dialogclosing)
+	* [`:dialogopened`](#events-dialog-event-dialogopened)
+	* [`:dialogopening`](#events-dialog-event-dialogopening)
+* [Navigation Events &amp; Tasks](#events-navigation)
 	* [`:passageinit`](#navigation-event-passageinit)
 	* [`:passagestart`](#navigation-event-passagestart)
 	* [`:passagerender`](#navigation-event-passagerender)
 	* [`:passagedisplay`](#navigation-event-passagedisplay)
 	* [`:passageend`](#navigation-event-passageend)
-* [Tasks](#navigation-tasks)
 	* [`prehistory`](#navigation-task-prehistory)
 	* [`predisplay`](#navigation-task-predisplay)
 	* [`prerender`](#navigation-task-prerender)
 	* [`postrender`](#navigation-task-postrender)
 	* [`postdisplay`](#navigation-task-postdisplay)
+* [`SimpleAudio` Events](#events-simpleaudio)
+	* [`:faded`](#events-simpleaudio-event-faded)
+	* [`:fading`](#events-simpleaudio-event-fading)
+	* [`:stopped`](#events-simpleaudio-event-stopped)
+* [System Events](#events-system)
+	* [`:storyready`](#events-system-event-storyready)
+	* [`:enginerestart`](#events-startup-teardown-event-enginerestart)
 
 ----
 
@@ -307,10 +317,6 @@
 * [`Dialog.open()`](#dialog-api-method-open)
 * [`Dialog.setup()`](#dialog-api-method-setup)
 * [`Dialog.wiki()`](#dialog-api-method-wiki)
-* [`:dialogclosed`](#dialog-api-event-dialogclosed)
-* [`:dialogclosing`](#dialog-api-event-dialogclosing)
-* [`:dialogopened`](#dialog-api-event-dialogopened)
-* [`:dialogopening`](#dialog-api-event-dialogopening)
 
 ## [`Engine` API](#engine-api)
 
@@ -326,7 +332,6 @@
 * [`Engine.play()`](#engine-api-method-play)
 * [`Engine.restart()`](#engine-api-method-restart)
 * [`Engine.show()`](#engine-api-method-show)
-* [`:enginerestart`](#engine-api-event-enginerestart)
 
 ## [`Fullscreen` API](#fullscreen-api)
 
@@ -490,9 +495,6 @@
 * [`<AudioTrack>.time()`](#audiotrack-api-prototype-method-time)
 * [`<AudioTrack>.unload()`](#audiotrack-api-prototype-method-unload)
 * [`<AudioTrack>.volume()`](#audiotrack-api-prototype-method-volume)
-* [`:faded`](#audiotrack-api-event-faded)
-* [`:fading`](#audiotrack-api-event-fading)
-* [`:stopped`](#audiotrack-api-event-stopped)
 
 ## <i class="child-heading" aria-hidden="true"></i> [`AudioRunner` API](#audiorunner-api)
 

@@ -72,8 +72,9 @@ Periods of ellipsis (`…`) signify data that is generated at compile time.
 ##### Twine 2 style data chunk
 
 ```
-<tw-storydata name="…" startnode="…" creator="…" creator-version="…" ifid="…" zoom="…" format="…" format-version="…" options="…" hidden>
-	<!-- Passage data nodes -->
+<tw-storydata name="…" startnode="…" creator="…" creator-version="…"
+	ifid="…" zoom="…" format="…" format-version="…" options="…" hidden>
+	<!-- Passage data nodes… -->
 </tw-storydata>
 ```
 
@@ -81,6 +82,6 @@ Periods of ellipsis (`…`) signify data that is generated at compile time.
 
 ```
 <div id="store-area" data-size="…" hidden>
-	<!-- Passage data nodes -->
+	<!-- Passage data nodes… -->
 </div>
 ```
