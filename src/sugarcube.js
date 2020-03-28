@@ -191,6 +191,9 @@ jQuery(() => {
 				DebugBar.start();
 			}
 
+			// Trigger the `:storyready` global synthetic event.
+			jQuery.event.trigger({ type : ':storyready' });
+
 			// Release the loading screen lock after a short delay.
 			setTimeout(() => LoadScreen.unlock(lockId), Engine.minDomActionDelay * 2);
 		}, Engine.minDomActionDelay);
