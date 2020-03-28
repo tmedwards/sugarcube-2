@@ -175,7 +175,7 @@ jQuery(() => {
 		// Set a recurring timer to start the interfaces (necessary due to DOM readiness issues in some browsers).
 		const $window    = $(window);
 		const vprCheckId = setInterval(() => {
-			// If `$window.width()` returns a non-zero value, bail out and wait.
+			// If `$window.width()` returns a zero value, bail out and wait.
 			if (!$window.width()) {
 				return;
 			}
