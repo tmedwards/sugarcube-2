@@ -904,7 +904,7 @@ Returns the given number clamped to the specified bounds.  Does not modify the o
 
 #### Parameters:
 
-* **`num`:** (*number* | *string*) The number to clamp.  May be an actual number or a numerical string.
+* **`num`:** (*number*) The number to clamp.  May be an actual number or a numerical string.
 * **`min`:** (*integer*) The lower bound of the number.
 * **`max`:** (*integer*) The upper bound of the number.
 
@@ -922,9 +922,7 @@ Math.clamp($stat, 1, 6.6)  → Clamps $stat to the bounds 1–6.6 and returns th
 
 Returns the whole (integer) part of the given number by removing its fractional part, if any.  Does not modify the original.
 
-#### Since:
-
-* `v2.0.0`
+#### Since: *native JavaScript method*
 
 #### Parameters:
 
