@@ -222,12 +222,6 @@ Unsets story $variables and temporary \_variables.
 This macro has been deprecated and should no longer be used.  See the <a href="#functions-function-memorize"><code>memorize()</code></a> and <a href="#functions-function-recall"><code>recall()</code></a> functions for its replacement.
 </p>
 
-*Functionally identical to [`<<set>>`](#macros-macro-set), save that it also causes the values of story $variables to persist over page reloads, game restarts, and even browser restarts.  Does not cause temporary \_variables to persist.*
-
-<p role="note"><b>Note:</b>
-Generally, you do not need, or want, to use <code>&lt;&lt;remember&gt;&gt;</code>, as it is only useful in very specific circumstances and problematic in most others.  Unless you <em>know</em> that you need to use it, you very likely do not.
-</p>
-
 #### Since:
 
 * `v2.0.0`: Basic syntax.
@@ -241,8 +235,6 @@ Generally, you do not need, or want, to use <code>&lt;&lt;remember&gt;&gt;</code
 <p role="note" class="warning"><b>Deprecated:</b>
 This macro has been deprecated and should no longer be used.  See the <a href="#functions-function-forget"><code>forget()</code></a> function for its replacement.
 </p>
-
-*Functionally identical to [`<<unset>>`](#macros-macro-unset), save that it also removes the story $variables from the  [`<<remember>>`](#macros-macro-remember) store.  Does not affect temporary \_variables.*
 
 #### Since:
 
@@ -2610,33 +2602,10 @@ This macro should be invoked <strong><em>once</em></strong> following any invoca
 This macro has been deprecated and should no longer be used.  See the <a href="#macros-macro-createplaylist"><code>&lt;&lt;createplaylist&gt;&gt;</code></a> macro for its replacement.
 </p>
 
-Collects audio tracks, which must be set up via [`<<cacheaudio>>`](#macros-macro-cacheaudio), into a playlist by making its own independent copies of the tracks, rather than simply referencing the existing versions.  Copies are solely under the control of the playlist—meaning [`<<audio>>`](#macros-macro-audio) actions cannot affect them, even when using group IDs.
-
-<p role="note"><b>Note:</b>
-The <a href="#special-passage-storyinit"><code>StoryInit</code> special passage</a> is normally the best place to set up playlists.
-</p>
-
 #### Since:
 
 * `v2.0.0`: Basic syntax.
 * `v2.8.0`: Deprecated in favor of `<<createplaylist>>`.
-
-#### Arguments:
-
-* **`trackIdList`:** A space separated list of track ID(s) for the playlist (only one is required).
-
-#### Examples:
-
-```
-→ Given the following (best done in the StoryInit special passage)
-<<cacheaudio "swamped"       "media/audio/Swamped.mp3">>
-<<cacheaudio "heavens_a_lie" "media/audio/Heaven's_A_Lie.mp3">>
-<<cacheaudio "closer"        "media/audio/Closer.mp3">>
-<<cacheaudio "to_the_edge"   "media/audio/To_The_Edge.mp3">>
-
-→ Set up the playlist with the tracks: "swamped", "heavens_a_lie", "closer", and "to_the_edge"
-<<setplaylist "swamped" "heavens_a_lie" "closer" "to_the_edge">>
-```
 
 <!-- *********************************************************************** -->
 
@@ -2647,24 +2616,10 @@ The <a href="#special-passage-storyinit"><code>StoryInit</code> special passage<
 This macro has been deprecated and should no longer be used.  See the <a href="#macros-macro-audio"><code>&lt;&lt;audio&gt;&gt;</code></a> macro for its replacement.
 </p>
 
-Immediately stops the playback of all tracks, which must be set up via [`<<cacheaudio>>`](#macros-macro-cacheaudio).
-
-<p role="note"><b>Note:</b>
-Does not affect playlist tracks that have been copied into their respective playlist—meaning those set up via <a href="#macros-macro-createplaylist"><code>&lt;&lt;createplaylist&gt;&gt;</code></a> with its <code>copy</code> action or all tracks set up via, the deprecated, <a href="#macros-macro-setplaylist"><code>&lt;&lt;setplaylist&gt;&gt;</code></a>.
-</p>
-
 #### Since:
 
 * `v2.0.0`: Basic syntax.
 * `v2.8.0`: Deprecated in favor of `<<audio ":all" stop>>`.
-
-#### Arguments: *none*
-
-#### Examples:
-
-```
-<<stopallaudio>>
-```
 
 
 <!-- ***************************************************************************

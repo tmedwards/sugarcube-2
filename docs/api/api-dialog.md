@@ -199,27 +199,7 @@ Dialog.wiki("Cry 'Havoc!', and let slip the //ponies// of ''friendship''.");
 This method has been deprecated and should no longer be used.  The core of what it does is simply to wrap a call to <a href="#dialog-api-method-open"><code>Dialog.open()</code></a> within a call to <a href="#methods-jquery-prototype-method-ariaclick"><code>&lt;jQuery&gt;.ariaClick()</code></a>, which can be done directly and with greater flexibility.
 </p>
 
-Adds WAI-ARIA-compatible mouse/keyboard event handlers to the target element(s) that open the dialog when activated.
-
 #### Since:
 
 * `v2.0.0`: Basic syntax.
 * `v2.29.0`: Deprecated.
-
-#### Parameters:
-
-* **`target`:** (*`HTMLElement` object* | *`jQuery` object* | *string*) The DOM element(s) to attach the handler to—may be either an `HTMLElement` object, a `jQuery` object, or a jQuery-style selector set.
-* **`options`:** (optional, *null* | *object*) The options object.  See [`Dialog.open()`](#dialog-api-method-open) for more information.
-* **`startFn`:** (optional, *null* | *function*) The function to execute at the start of `Dialog.addClickHandler()`.  This is commonly used to setup the dialog.
-* **`doneFn`:** (optional, *null* | *function*) The function to execute at the end of `Dialog.addClickHandler()`.
-* **`closeFn`:** (optional, *null* | *function*) The function to execute whenever the associated dialog is closed.
-
-#### Examples:
-
-```
-// Commonly used something like the following.
-Dialog.addClickHandler("#some-element", null, function () {
-	Dialog.setup("My Dialog Title", "my-dialog-class");
-	Dialog.wiki(Story.get("MyDialogContents").processText());
-});
-```

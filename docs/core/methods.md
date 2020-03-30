@@ -665,17 +665,6 @@ Returns a random member from the array or array-like object.  Does not modify th
 * `v2.0.0`: Basic syntax.
 * `v2.20.0`: Deprecated.
 
-#### Parameters:
-
-* **`array`:** (*array*) The array to operate on.  May be an actual array or an array-like object.
-
-#### Examples:
-
-```
-// Given: $pies = ["Blueberry", "Cherry", "Cream", "Pecan", "Pumpkin"]
-Array.random($pies)  → Returns a random pie from the array
-```
-
 
 <!-- ***************************************************************************
 	JSON
