@@ -124,11 +124,21 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 				.appendTo(document.head)
 				.get(0) // return the <style> element itself
 		)());
+		let _lastOutlineEvent;
 		jQuery(document).on(
 			'mousedown.aria-outlines keydown.aria-outlines',
-			ev => ev.type === 'keydown'
-				? _showOutlines()
-				: _hideOutlines()
+			ev => {
+				if (ev.type !== _lastOutlineEvent) {
+					_lastOutlineEvent = ev.type;
+
+					if (ev.type === 'keydown') {
+						_showOutlines();
+					}
+					else {
+						_hideOutlines();
+					}
+				}
+			}
 		);
 	}
 
@@ -707,7 +717,7 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 		Utility Functions.
 	*******************************************************************************************************************/
 	function _hideOutlines() {
-		_outlinePatch.set('*:focus{outline:none}');
+		_outlinePatch.set('*:focus{outline:none;}');
 	}
 
 	function _showOutlines() {
