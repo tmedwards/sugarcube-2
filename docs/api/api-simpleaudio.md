@@ -9,7 +9,7 @@ The core audio subsystem and backend for the [audio macros](#macros-audio).
 <a href="#audiotrack-api"><code>AudioTrack</code> API</a>, <a href="#audiorunner-api"><code>AudioRunner</code> API</a>, and <a href="#audiolist-api"><code>AudioList</code> API</a>.
 </p>
 
-#### Limitations {#simpleaudio-api-limitations}
+#### Audio limitations {#simpleaudio-api-limitations}
 
 The audio subsystem is based upon the HTML Media Elements APIs and comes with some built-in limitations:
 
