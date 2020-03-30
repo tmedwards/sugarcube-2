@@ -1,12 +1,11 @@
 <!-- ***********************************************************************************************
 	UI API
 ************************************************************************************************ -->
-<h1 id="ui-api"><code>UI</code> API</h1>
+# `UI` API {#ui-api}
 
 <!-- *********************************************************************** -->
 
-<span id="ui-api-method-alert"></span>
-### `UI.alert(message [, options [, closeFn]])`
+### `UI.alert(message [, options [, closeFn]])` {#ui-api-method-alert}
 
 Opens the built-in alert dialog, displaying the given message to the player.
 
@@ -28,8 +27,7 @@ UI.alert("You smell of elderberries!");
 
 <!-- *********************************************************************** -->
 
-<span id="ui-api-method-jumpto"></span>
-### `UI.jumpto([options [, closeFn]])`
+### `UI.jumpto([options [, closeFn]])` {#ui-api-method-jumpto}
 
 Opens the built-in jump to dialog, which is populated via the [`bookmark` tag](#special-tag-bookmark).
 
@@ -50,8 +48,7 @@ UI.jumpto();
 
 <!-- *********************************************************************** -->
 
-<span id="ui-api-method-restart"></span>
-### `UI.restart([options])`
+### `UI.restart([options])` {#ui-api-method-restart}
 
 Opens the built-in restart dialog, prompting the player to restart the story.
 
@@ -71,8 +68,7 @@ UI.restart();
 
 <!-- *********************************************************************** -->
 
-<span id="ui-api-method-saves"></span>
-### `UI.saves([options [, closeFn]])`
+### `UI.saves([options [, closeFn]])` {#ui-api-method-saves}
 
 Opens the built-in saves dialog.
 
@@ -93,8 +89,7 @@ UI.saves();
 
 <!-- *********************************************************************** -->
 
-<span id="ui-api-method-settings"></span>
-### `UI.settings([options [, closeFn]])`
+### `UI.settings([options [, closeFn]])` {#ui-api-method-settings}
 
 Opens the built-in settings dialog, which is populated from the [`Setting` API](#setting-api).
 
@@ -115,8 +110,7 @@ UI.settings();
 
 <!-- *********************************************************************** -->
 
-<span id="ui-api-method-share"></span>
-### `UI.share([options [, closeFn]])`
+### `UI.share([options [, closeFn]])` {#ui-api-method-share}
 
 Opens the built-in share dialog, which is populated from the [`StoryShare` passage](#special-passage-storyshare).
 

@@ -1,12 +1,11 @@
 <!-- ***********************************************************************************************
 	Fullscreen API
 ************************************************************************************************ -->
-<h1 id="fullscreen-api"><code>Fullscreen</code> API</h1>
+# `Fullscreen` API {#fullscreen-api}
 
 Provides access to browsers' fullscreen functionality.
 
-<span id="fullscreen-api-backgrounds"></span>
-#### Backgrounds
+#### Backgrounds {#fullscreen-api-backgrounds}
 
 If you wish to use custom backgrounds, either simply colors or with images, then you should place them on the `body` element.  For example:
 
@@ -24,8 +23,7 @@ It is <strong><em>strongly recommended</em></strong> that you do not place backg
 If setting a background image via the <code>background</code> shorthand property, then you should also specify a <code>background-color</code> value with it or include a separate <code>background-color</code> property after the <code>background</code> property.  The reason being is that the <code>background</code> property resets the background color, so if you do not set one either as one of its values or via a following <code>background-color</code> property, then the browser's default background color could show through if the background image does not cover the entire viewport or includes transparency.
 </p>
 
-<span id="fullscreen-api-limitations"></span>
-#### Limitations
+#### Limitations {#fullscreen-api-limitations}
 
 The <code>Fullscreen</code> API comes with some built-in limitations:
 
@@ -33,8 +31,7 @@ The <code>Fullscreen</code> API comes with some built-in limitations:
 
 <!-- *********************************************************************** -->
 
-<span id="fullscreen-api-getter-element"></span>
-### `Fullscreen.element` → *`HTMLElement` object* | *null*
+### `Fullscreen.element` → *`HTMLElement` object* | *null* {#fullscreen-api-getter-element}
 
 Returns the current fullscreen element or, if fullscreen mode is not active, `null`.
 
@@ -50,8 +47,7 @@ Fullscreen.element  → The current fullscreen element
 
 <!-- *********************************************************************** -->
 
-<span id="fullscreen-api-method-isenabled"></span>
-### `Fullscreen.isEnabled()` → *boolean*
+### `Fullscreen.isEnabled()` → *boolean* {#fullscreen-api-method-isenabled}
 
 Returns whether fullscreen is both supported and enabled.
 
@@ -69,8 +65,7 @@ Fullscreen.isEnabled()  → Whether fullscreen mode is available
 
 <!-- *********************************************************************** -->
 
-<span id="fullscreen-api-method-isfullscreen"></span>
-### `Fullscreen.isFullscreen()` → *boolean*
+### `Fullscreen.isFullscreen()` → *boolean* {#fullscreen-api-method-isfullscreen}
 
 Returns whether fullscreen mode is currently active.
 
@@ -88,8 +83,7 @@ Fullscreen.isFullscreen()  → Whether fullscreen mode is active
 
 <!-- *********************************************************************** -->
 
-<span id="fullscreen-api-method-request"></span>
-### `Fullscreen.request([options [, requestedEl]])` → *`Promise` object*
+### `Fullscreen.request([options [, requestedEl]])` → *`Promise` object* {#fullscreen-api-method-request}
 
 Request that the browser enter fullscreen mode.
 
@@ -137,8 +131,7 @@ Fullscreen.request({ navigationUI : "show" }, myElement);
 
 <!-- *********************************************************************** -->
 
-<span id="fullscreen-api-method-exit"></span>
-### `Fullscreen.exit()` → *`Promise` object*
+### `Fullscreen.exit()` → *`Promise` object* {#fullscreen-api-method-exit}
 
 Request that the browser exit fullscreen mode.
 
@@ -157,8 +150,7 @@ Fullscreen.exit();
 
 <!-- *********************************************************************** -->
 
-<span id="fullscreen-api-method-toggle"></span>
-### `Fullscreen.toggle([options [, requestedEl]])` → *`Promise` object*
+### `Fullscreen.toggle([options [, requestedEl]])` → *`Promise` object* {#fullscreen-api-method-toggle}
 
 Request that the browser toggle fullscreen mode—i.e., enter or exit as appropriate.
 
@@ -189,8 +181,7 @@ Fullscreen.toggle({ navigationUI : "show" }, myElement);
 
 <!-- *********************************************************************** -->
 
-<span id="fullscreen-api-method-onchange"></span>
-### `Fullscreen.onChange(handlerFn [, requestedEl])`
+### `Fullscreen.onChange(handlerFn [, requestedEl])` {#fullscreen-api-method-onchange}
 
 Attaches fullscreen change event handlers.
 
@@ -225,8 +216,7 @@ Fullscreen.onChange(function (ev) {
 
 <!-- *********************************************************************** -->
 
-<span id="fullscreen-api-method-offchange"></span>
-### `Fullscreen.offChange([handlerFn [, requestedEl]])`
+### `Fullscreen.offChange([handlerFn [, requestedEl]])` {#fullscreen-api-method-offchange}
 
 Removes fullscreen change event handlers.
 
@@ -269,8 +259,7 @@ Fullscreen.offChange(originalHandlerFn, myElement);
 
 <!-- *********************************************************************** -->
 
-<span id="fullscreen-api-method-onerror"></span>
-### `Fullscreen.onError(handlerFn [, requestedEl])`
+### `Fullscreen.onError(handlerFn [, requestedEl])` {#fullscreen-api-method-onerror}
 
 Attaches fullscreen error event handlers.
 
@@ -305,8 +294,7 @@ Fullscreen.onError(function (ev) {
 
 <!-- *********************************************************************** -->
 
-<span id="fullscreen-api-method-offerror"></span>
-### `Fullscreen.offError([handlerFn [, requestedEl]])`
+### `Fullscreen.offError([handlerFn [, requestedEl]])` {#fullscreen-api-method-offerror}
 
 Removes fullscreen error event handlers.
 

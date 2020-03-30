@@ -1,7 +1,7 @@
 <!-- ***********************************************************************************************
 	Events & Tasks
 ************************************************************************************************ -->
-<h1 id="events">Events &amp; Tasks</h1>
+# Events &amp; Tasks {#events}
 
 Events are messages that are sent (a.k.a.: fired, triggered) to notify code that something has taken place, from player interactions to automated happenings.  Each event is represented by an object that has properties that may be used to get additional information about what happened.
 
@@ -15,8 +15,7 @@ For standard browser/DOM events, see the <a href="https://developer.mozilla.org/
 <!-- ***************************************************************************
 	`Dialog` Events
 **************************************************************************** -->
-<span id="events-dialog"></span>
-## `Dialog` Events
+## `Dialog` Events {#events-dialog}
 
 `Dialog` events allow the execution of JavaScript code at specific points during the opening and closing of dialogs.
 
@@ -26,8 +25,7 @@ For standard browser/DOM events, see the <a href="https://developer.mozilla.org/
 
 <!-- *********************************************************************** -->
 
-<span id="events-dialog-event-dialogclosed"></span><span id="dialog-api-event-dialogclosed"></span>
-### `:dialogclosed` event
+### `:dialogclosed` event {#events-dialog-event-dialogclosed}
 
 Global event triggered as the last step in closing the dialog when [`Dialog.close()`](#dialog-api-method-close) is called.
 
@@ -61,8 +59,7 @@ $(document).one(':dialogclosed', function (ev) {
 
 <!-- *********************************************************************** -->
 
-<span id="events-dialog-event-dialogclosing"></span><span id="dialog-api-event-dialogclosing"></span>
-### `:dialogclosing` event
+### `:dialogclosing` event {#events-dialog-event-dialogclosing}
 
 Global event triggered as the first step in closing the dialog when [`Dialog.close()`](#dialog-api-method-close) is called.
 
@@ -92,8 +89,7 @@ $(document).one(':dialogclosing', function (ev) {
 
 <!-- *********************************************************************** -->
 
-<span id="events-dialog-event-dialogopened"></span><span id="dialog-api-event-dialogopened"></span>
-### `:dialogopened` event
+### `:dialogopened` event {#events-dialog-event-dialogopened}
 
 Global event triggered as the last step in opening the dialog when [`Dialog.open()`](#dialog-api-method-open) is called.
 
@@ -123,8 +119,7 @@ $(document).one(':dialogopened', function (ev) {
 
 <!-- *********************************************************************** -->
 
-<span id="events-dialog-event-dialogopening"></span><span id="dialog-api-event-dialogopening"></span>
-### `:dialogopening` event
+### `:dialogopening` event {#events-dialog-event-dialogopening}
 
 Global event triggered as the first step in opening the dialog when [`Dialog.open()`](#dialog-api-method-open) is called.
 
@@ -156,9 +151,7 @@ $(document).one(':dialogopening', function (ev) {
 <!-- ***************************************************************************
 	Navigation Events & Tasks
 **************************************************************************** -->
-<span id="events-navigation"></span><span id="navigation-events-tasks"></span><span id="navigation-overview"></span><span id="navigation-events"></span><span id="navigation-tasks"></span>
-
-## Navigation Events &amp; Tasks
+## Navigation Events &amp; Tasks {#events-navigation}
 
 Navigation events, and tasks, allow the execution of JavaScript code at specific points during passage navigation.
 
@@ -193,8 +186,7 @@ In order of processing: *(for reference, this also shows tasks and various speci
 
 <!-- *********************************************************************** -->
 
-<span id="events-navigation-event-passageinit"></span><span id="navigation-event-passageinit"></span>
-### `:passageinit` event
+### `:passageinit` event {#events-navigation-event-passageinit}
 
 Triggered before the modification of the state history.
 
@@ -222,8 +214,7 @@ $(document).one(':passageinit', function (ev) {
 
 <!-- *********************************************************************** -->
 
-<span id="events-navigation-event-passagestart"></span><span id="navigation-event-passagestart"></span>
-### `:passagestart` event
+### `:passagestart` event {#events-navigation-event-passagestart}
 
 Triggered before the rendering of the incoming passage.
 
@@ -266,8 +257,7 @@ $(document).on(':passagestart', function (ev) {
 
 <!-- *********************************************************************** -->
 
-<span id="events-navigation-event-passagerender"></span><span id="navigation-event-passagerender"></span>
-### `:passagerender` event
+### `:passagerender` event {#events-navigation-event-passagerender}
 
 Triggered after the rendering of the incoming passage.
 
@@ -310,8 +300,7 @@ $(document).on(':passagerender', function (ev) {
 
 <!-- *********************************************************************** -->
 
-<span id="events-navigation-event-passagedisplay"></span><span id="navigation-event-passagedisplay"></span>
-### `:passagedisplay` event
+### `:passagedisplay` event {#events-navigation-event-passagedisplay}
 
 Triggered after the display—i.e., output—of the incoming passage.
 
@@ -355,8 +344,7 @@ $(document).on(':passagedisplay', function (ev) {
 
 <!-- *********************************************************************** -->
 
-<span id="events-navigation-event-passageend"></span><span id="navigation-event-passageend"></span>
-### `:passageend` event
+### `:passageend` event {#events-navigation-event-passageend}
 
 Triggered at the end of passage navigation.
 
@@ -400,8 +388,7 @@ $(document).on(':passageend', function (ev) {
 
 <!-- *********************************************************************** -->
 
-<span id="events-navigation-task-prehistory"></span><span id="navigation-task-prehistory"></span>
-### `prehistory` tasks
+### `prehistory` tasks {#events-navigation-task-prehistory}
 
 Executed before the modification of the state history.
 
@@ -427,8 +414,7 @@ prehistory["Some Task Name"] = function (taskName) {
 
 <!-- *********************************************************************** -->
 
-<span id="events-navigation-task-predisplay"></span><span id="navigation-task-predisplay"></span>
-### `predisplay` tasks
+### `predisplay` tasks {#events-navigation-task-predisplay}
 
 Executed before the rendering of the incoming passage.
 
@@ -454,8 +440,7 @@ predisplay["Some Task Name"] = function (taskName) {
 
 <!-- *********************************************************************** -->
 
-<span id="events-navigation-task-prerender"></span><span id="navigation-task-prerender"></span>
-### `prerender` tasks
+### `prerender` tasks {#events-navigation-task-prerender}
 
 Executed before the rendering of the incoming passage.
 
@@ -482,8 +467,7 @@ prerender["Some Task Name"] = function (content, taskName) {
 
 <!-- *********************************************************************** -->
 
-<span id="events-navigation-task-postrender"></span><span id="navigation-task-postrender"></span>
-### `postrender` tasks
+### `postrender` tasks {#events-navigation-task-postrender}
 
 Executed after the rendering of the incoming passage.
 
@@ -510,8 +494,7 @@ postrender["Some Task Name"] = function (content, taskName) {
 
 <!-- *********************************************************************** -->
 
-<span id="events-navigation-task-postdisplay"></span><span id="navigation-task-postdisplay"></span>
-### `postdisplay` tasks
+### `postdisplay` tasks {#events-navigation-task-postdisplay}
 
 Executed after the display—i.e., output—of the incoming passage.
 
@@ -535,8 +518,7 @@ postdisplay["Some Task Name"] = function (taskName) {
 <!-- ***************************************************************************
 	`SimpleAudio` Events
 **************************************************************************** -->
-<span id="events-simpleaudio"></span>
-## `SimpleAudio` Events
+## `SimpleAudio` Events {#events-simpleaudio}
 
 `SimpleAudio` events allow the execution of JavaScript code at specific points during audio playback.
 
@@ -550,8 +532,7 @@ To add or remove event listeners to audio tracks managed by the <a href="#simple
 
 <!-- *********************************************************************** -->
 
-<span id="events-simpleaudio-event-faded"></span><span id="audiotrack-api-event-faded"></span>
-### `:faded` event
+### `:faded` event {#events-simpleaudio-event-faded}
 
 Track event triggered when a fade completes normally.
 
@@ -577,8 +558,7 @@ someTracks.on(':faded', function (ev) {
 
 <!-- *********************************************************************** -->
 
-<span id="events-simpleaudio-event-fading"></span><span id="audiotrack-api-event-fading"></span>
-### `:fading` event
+### `:fading` event {#events-simpleaudio-event-fading}
 
 Track event triggered when a fade starts.
 
@@ -604,8 +584,7 @@ someTracks.on(':fading', function (ev) {
 
 <!-- *********************************************************************** -->
 
-<span id="events-simpleaudio-event-stopped"></span><span id="audiotrack-api-event-stopped"></span>
-### `:stopped` event
+### `:stopped` event {#events-simpleaudio-event-stopped}
 
 Track event triggered when playback is stopped after [`<AudioTrack>.stop()`](#audiotrack-api-prototype-method-stop) or [`<AudioRunner>.stop()`](#audiorunner-api-prototype-method-stop) is called—either manually or as part of another process.
 
@@ -637,15 +616,13 @@ someTracks.on(':stopped', function (ev) {
 <!-- ***************************************************************************
 	System Events
 **************************************************************************** -->
-<span id="events-system"></span>
-## System Events
+## System Events {#events-system}
 
 System events allow the execution of JavaScript code at specific points during story startup and teardown.
 
 <!-- *********************************************************************** -->
 
-<span id="events-system-event-storyready"></span>
-### `:storyready` event
+### `:storyready` event {#events-system-event-storyready}
 
 Global event triggered once just before the dismissal of the loading screen at startup.
 
@@ -666,8 +643,7 @@ $(document).one(':storyready', function (ev) {
 
 <!-- *********************************************************************** -->
 
-<span id="events-system-event-enginerestart"></span><span id="engine-api-event-enginerestart"></span>
-### `:enginerestart` event
+### `:enginerestart` event {#events-system-event-enginerestart}
 
 Global event triggered once just before the page is reloaded when [`Engine.restart()`](#engine-api-method-restart) is called.
 

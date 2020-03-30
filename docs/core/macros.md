@@ -1,14 +1,13 @@
 <!-- ***********************************************************************************************
 	Macros
 ************************************************************************************************ -->
-<h1 id="macros">Macros</h1>
+# Macros {#macros}
 
 
 <!-- ***************************************************************************
 	Macro Arguments
 **************************************************************************** -->
-<span id="macros-arguments"></span>
-## Macro Arguments
+## Macro Arguments {#macros-arguments}
 
 Macros fall into two broad categories based on the kind of arguments they accept: those that want an expression—e.g., `<<set>>` and `<<print>>`—and those that want discrete arguments separated by whitespace—e.g., `<<link>>` and `<<audio>>`.  The documentation for each macro will tell you what it expects.
 
@@ -55,13 +54,11 @@ A better solution, however, would be to use a backquote<a href="#macros-argument
 <!-- ***************************************************************************
 	Variables Macros
 **************************************************************************** -->
-<span id="macros-variables"></span>
-## Variables Macros
+## Variables Macros {#macros-variables}
 
 <!-- *********************************************************************** -->
 
-<span id="macros-macro-capture"></span>
-### `<<capture variableList>> … <</capture>>`
+### `<<capture variableList>> … <</capture>>` {#macros-macro-capture}
 
 Captures story $variables and temporary \_variables, creating localized versions of their values within the macro body.
 
@@ -99,8 +96,7 @@ Use of this macro is <em>only</em> necessary when you need to localize a variabl
 
 <!-- *********************************************************************** -->
 
-<span id="macros-macro-set"></span>
-### `<<set expression>>`
+### `<<set expression>>` {#macros-macro-set}
 
 Sets story $variables and temporary \_variables based on the given expression.
 
@@ -193,8 +189,7 @@ Sets story $variables and temporary \_variables based on the given expression.
 
 <!-- *********************************************************************** -->
 
-<span id="macros-macro-unset"></span>
-### `<<unset variableList>>`
+### `<<unset variableList>>` {#macros-macro-unset}
 
 Unsets story $variables and temporary \_variables.
 
@@ -215,8 +210,7 @@ Unsets story $variables and temporary \_variables.
 
 <!-- *********************************************************************** -->
 
-<span id="macros-macro-remember"></span>
-### <span class="deprecated">`<<remember expression>>`</span>
+### <span class="deprecated">`<<remember expression>>`</span> {#macros-macro-remember}
 
 <p role="note" class="warning"><b>Deprecated:</b>
 This macro has been deprecated and should no longer be used.  See the <a href="#functions-function-memorize"><code>memorize()</code></a> and <a href="#functions-function-recall"><code>recall()</code></a> functions for its replacement.
@@ -229,8 +223,7 @@ This macro has been deprecated and should no longer be used.  See the <a href="#
 
 <!-- *********************************************************************** -->
 
-<span id="macros-macro-forget"></span>
-### <span class="deprecated">`<<forget variableList>>`</span>
+### <span class="deprecated">`<<forget variableList>>`</span> {#macros-macro-forget}
 
 <p role="note" class="warning"><b>Deprecated:</b>
 This macro has been deprecated and should no longer be used.  See the <a href="#functions-function-forget"><code>forget()</code></a> function for its replacement.
@@ -245,20 +238,17 @@ This macro has been deprecated and should no longer be used.  See the <a href="#
 <!-- ***************************************************************************
 	Scripting Macros
 **************************************************************************** -->
-<span id="macros-scripting"></span>
-## Scripting Macros
+## Scripting Macros {#macros-scripting}
 
 <!-- *********************************************************************** -->
 
-<span id="macros-macro-run"></span>
-### `<<run expression>>`
+### `<<run expression>>` {#macros-macro-run}
 
 *Functionally identical to [`<<set>>`](#macros-macro-set).  Intended to be mnemonically better for uses where the expression is arbitrary code, rather than variables to set—i.e., `<<run>>` to run code, `<<set>>` to set variables.*
 
 <!-- *********************************************************************** -->
 
-<span id="macros-macro-script"></span>
-### `<<script>> … <</script>>`
+### `<<script>> … <</script>>` {#macros-macro-script}
 
 Silently executes its contents as *pure* JavaScript code—i.e., it performs no story or temporary variable substitution or TwineScript operator processing.  For instances where you need to run some pure JavaScript and don't want to waste time performing extra processing on code that has no story or temporary variables or TwineScript operators in it and/or worry about the parser possibly clobbering the code.
 
@@ -291,13 +281,11 @@ The predefined variable <code>output</code>, which is a reference to a local con
 <!-- ***************************************************************************
 	Display Macros
 **************************************************************************** -->
-<span id="macros-display"></span>
-## Display Macros
+## Display Macros {#macros-display}
 
 <!-- *********************************************************************** -->
 
-<span id="macros-macro-equal"></span>
-### `<<= expression>>`
+### `<<= expression>>` {#macros-macro-equal}
 
 Outputs the result of the given expression.  This macro is an alias for [`<<print>>`](#macros-macro-print).
 
@@ -325,8 +313,7 @@ You weigh <<= $weight.toFixed(2)>> kg.  → Outputs: You weigh 74.65 kg.
 
 <!-- *********************************************************************** -->
 
-<span id="macros-macro-hyphen"></span>
-### `<<- expression>>`
+### `<<- expression>>` {#macros-macro-hyphen}
 
 Outputs the result of the given expression.  This macro is functionally identical to [`<<print>>`](#macros-macro-print), save that it also encodes HTML special characters in the output.
 
@@ -354,8 +341,7 @@ You weigh <<- $weight.toFixed(2)>> kg.  → Outputs: You weigh 74.65 kg.
 
 <!-- *********************************************************************** -->
 
-<span id="macros-macro-include"></span>
-### `<<include passageName [elementName]>>`<br>`<<include linkMarkup [elementName]>>`
+### `<<include passageName [elementName]>>`<br>`<<include linkMarkup [elementName]>>` {#macros-macro-include}
 
 Outputs the contents of the passage with the given name, optionally wrapping it within an HTML element.  May be called either with the passage name or with a link markup.
 
@@ -386,8 +372,7 @@ Outputs the contents of the passage with the given name, optionally wrapping it 
 
 <!-- *********************************************************************** -->
 
-<span id="macros-macro-nobr"></span>
-### `<<nobr>> … <</nobr>>`
+### `<<nobr>> … <</nobr>>` {#macros-macro-nobr}
 
 Executes its contents and outputs the result, after removing leading/trailing newlines and replacing all remaining sequences of newlines with single spaces.
 
@@ -416,8 +401,7 @@ cherry
 
 <!-- *********************************************************************** -->
 
-<span id="macros-macro-print"></span>
-### `<<print expression>>`
+### `<<print expression>>` {#macros-macro-print}
 
 Outputs the result of the given expression.
 
@@ -445,8 +429,7 @@ You weigh <<print $weight.toFixed(2)>> kg.  → Outputs: You weigh 74.65 kg.
 
 <!-- *********************************************************************** -->
 
-<span id="macros-macro-silently"></span>
-### `<<silently>> … <</silently>>`
+### `<<silently>> … <</silently>>` {#macros-macro-silently}
 
 Causes any output generated within its body to be discarded, except for errors (which will be displayed).  Generally, only really useful for formatting blocks of macros for ease of use/readability, while ensuring that no output is generated, from spacing or whatnot.
 
@@ -485,8 +468,7 @@ Countdown: <span id="countdown">$seconds seconds remaining</span>!\
 
 <!-- *********************************************************************** -->
 
-<span id="macros-macro-display"></span>
-### <span class="deprecated">`<<display passageName [elementName]>>`<br>`<<display linkMarkup [elementName]>>`</span>
+### <span class="deprecated">`<<display passageName [elementName]>>`<br>`<<display linkMarkup [elementName]>>`</span> {#macros-macro-display}
 
 <p role="note" class="warning"><b>Deprecated:</b>
 This macro has been deprecated and should no longer be used.  See the <a href="#macros-macro-include"><code>&lt;&lt;include&gt;&gt;</code></a> macro for its replacement.
@@ -501,13 +483,11 @@ This macro has been deprecated and should no longer be used.  See the <a href="#
 <!-- ***************************************************************************
 	Control Macros
 **************************************************************************** -->
-<span id="macros-control"></span>
-## Control Macros
+## Control Macros {#macros-control}
 
 <!-- *********************************************************************** -->
 
-<span id="macros-macro-if"></span>
-### `<<if conditional>> … [<<elseif conditional>> …] [<<else>> …] <</if>>`
+### `<<if conditional>> … [<<elseif conditional>> …] [<<else>> …] <</if>>` {#macros-macro-if}
 
 Executes its contents if the given conditional expression evaluates to `true`.  If the condition evaluates to `false` and an `<<elseif>>` or `<<else>>` exists, then other contents can be executed.
 
@@ -710,8 +690,7 @@ The <code>def</code> and <code>ndef</code> operators have very low precedence, s
 
 <!-- *********************************************************************** -->
 
-<span id="macros-macro-for"></span>
-### `<<for [conditional]>> … <</for>>`<br>`<<for [init] ; [conditional] ; [post]>> … <</for>>`<br>`<<for [keyVariable ,] valueVariable range collection>> … <</for>>`
+### `<<for [conditional]>> … <</for>>`<br>`<<for [init] ; [conditional] ; [post]>> … <</for>>`<br>`<<for [keyVariable ,] valueVariable range collection>> … <</for>>` {#macros-macro-for}
 
 Repeatedly executes its contents. There are three forms: a conditional-only form, a 3-part conditional form, and a range form.
 
@@ -829,8 +808,7 @@ Strings are iterated by Unicode code point, however, due to historic reasons the
 
 <!-- *********************************************************************** -->
 
-<span id="macros-macro-break"></span>
-### `<<break>>`
+### `<<break>>` {#macros-macro-break}
 
 Used within [`<<for>>`](#macros-macro-for) macros.  Terminates the execution of the current `<<for>>`.
 
@@ -842,8 +820,7 @@ Used within [`<<for>>`](#macros-macro-for) macros.  Terminates the execution of 
 
 <!-- *********************************************************************** -->
 
-<span id="macros-macro-continue"></span>
-### `<<continue>>`
+### `<<continue>>` {#macros-macro-continue}
 
 Used within [`<<for>>`](#macros-macro-for) macros.  Terminates the execution of the current iteration of the current `<<for>>` and begins execution of the next iteration.
 
@@ -859,10 +836,9 @@ May eat line-breaks in certain situations.
 
 <!-- *********************************************************************** -->
 
-<span id="macros-macro-switch"></span>
-### `<<switch expression>> [<<case valueList>> …] [<<default>> …] <</switch>>`
+### `<<switch expression>>`<br><span class="child">`[<<case valueList>> …]`<br>`[<<default>> …]`</span><br>`<</switch>>` {#macros-macro-switch}
 
-Evaluates the given expression and compares it to the value(s) within its `<<case>>` children.  The value(s) within each case are compared to the result of the expression given to the parent `<<switch>>`.  Upon a successful match, the matching case will have its contents executed.  If no cases match and an optional default case exists, which must be the final case, then its contents will be executed.  At most one case will execute.
+Evaluates the given expression and compares it to the value(s) within its `<<case>>` children.  The value(s) within each case are compared to the result of the expression given to the parent `<<switch>>`.  Upon a successful match, the matching case will have its contents executed.  If no cases match and an optional `<<default>>` case exists, which must be the final case, then its contents will be executed.  At most one case will execute.
 
 <p role="note"><b>Note:</b>
 SugarCube does not trim whitespace from the contents of <code>&lt;&lt;case&gt;&gt;</code>/<code>&lt;&lt;default&gt;&gt;</code> macros, so that authors don't have to resort to various kludges to get whitespace where they want it.  However, this means that extra care must be taken when writing them to ensure that unwanted whitespace is not created within the final output.
@@ -912,11 +888,9 @@ SugarCube does not trim whitespace from the contents of <code>&lt;&lt;case&gt;&g
 <!-- ***************************************************************************
 	Interactive Macros
 **************************************************************************** -->
-<span id="macros-interactive"></span>
-## Interactive Macros
+## Interactive Macros {#macros-interactive}
 
-<span id="macros-interactive-warning"></span>
-#### Warning
+#### Warning {#macros-interactive-warning}
 
 Interactive macros are both asynchronous and require interaction from the player.  Thus, there are some potential pitfalls to consider:
 
@@ -925,8 +899,7 @@ Interactive macros are both asynchronous and require interaction from the player
 
 <!-- *********************************************************************** -->
 
-<span id="macros-macro-button"></span>
-### `<<button linkText [passageName]>> … <</button>>`<br>`<<button linkMarkup>> … <</button>>`<br>`<<button imageMarkup>> … <</button>>`
+### `<<button linkText [passageName]>> … <</button>>`<br>`<<button linkMarkup>> … <</button>>`<br>`<<button imageMarkup>> … <</button>>` {#macros-macro-button}
 
 Creates a button that silently executes its contents when clicked, optionally forwarding the player to another passage.  May be called either with the link text and passage name as separate arguments, with a link markup, or with an image markup.  This macro is functionally identical to [`<<link>>`](#macros-macro-link), save that it uses a button element (`<button>`) rather than an anchor element (`<a>`).
 
@@ -973,8 +946,7 @@ Strength: <<set $pcStr to 10>><span id="stats-str"><<print $pcStr>></span> \
 
 <!-- *********************************************************************** -->
 
-<span id="macros-macro-checkbox"></span>
-### `<<checkbox receiverName uncheckedValue checkedValue [checked]>>`
+### `<<checkbox receiverName uncheckedValue checkedValue [checked]>>` {#macros-macro-checkbox}
 
 Creates a checkbox, used to modify the value of the variable with the given name.
 
@@ -1019,8 +991,7 @@ What pies do you enjoy?
 
 <!-- *********************************************************************** -->
 
-<span id="macros-macro-cycle"></span>
-### `<<cycle receiverName [autoselect]>>`<div>`[<<option label [value [selected]]>> …] [<<optionsfrom collection>> …]`</div>`<</cycle>>`
+### `<<cycle receiverName [autoselect]>>`<br><span class="child">`[<<option label [value [selected]]>> …]`<br>`[<<optionsfrom collection>> …]`</span><br>`<</cycle>>` {#macros-macro-cycle}
 
 Creates a cycling link, used to modify the value of the variable with the given name.  The cycling options are populated via `<<option>>` and/or `<<optionsfrom>>`.
 
@@ -1106,8 +1077,7 @@ What's your favorite pie?
 
 <!-- *********************************************************************** -->
 
-<span id="macros-macro-link"></span>
-### `<<link linkText [passageName]>> … <</link>>`<br>`<<link linkMarkup>> … <</link>>`<br>`<<link imageMarkup>> … <</link>>`
+### `<<link linkText [passageName]>> … <</link>>`<br>`<<link linkMarkup>> … <</link>>`<br>`<<link imageMarkup>> … <</link>>` {#macros-macro-link}
 
 Creates a link that silently executes its contents when clicked, optionally forwarding the player to another passage.  May be called either with the link text and passage name as separate arguments, with a link markup, or with an image markup.
 
@@ -1154,8 +1124,7 @@ Strength: <<set $pcStr to 10>><span id="stats-str"><<print $pcStr>></span> \
 
 <!-- *********************************************************************** -->
 
-<span id="macros-macro-linkappend"></span>
-### `<<linkappend linkText [transition|t8n]>> … <</linkappend>>`
+### `<<linkappend linkText [transition|t8n]>> … <</linkappend>>` {#macros-macro-linkappend}
 
 Creates a single-use link that deactivates itself and appends its contents to its link text when clicked.  Essentially, a combination of [`<<link>>`](#macros-macro-link) and [`<<append>>`](#macros-macro-append).
 
@@ -1185,8 +1154,7 @@ I spy with my little <<linkappend "eye" t8n>>, a crab rangoon<</linkappend>>.
 
 <!-- *********************************************************************** -->
 
-<span id="macros-macro-linkprepend"></span>
-### `<<linkprepend linkText [transition|t8n]>> … <</linkprepend>>`
+### `<<linkprepend linkText [transition|t8n]>> … <</linkprepend>>` {#macros-macro-linkprepend}
 
 Creates a single-use link that deactivates itself and prepends its contents to its link text when clicked.  Essentially, a combination of [`<<link>>`](#macros-macro-link) and [`<<prepend>>`](#macros-macro-prepend).
 
@@ -1216,8 +1184,7 @@ I <<linkprepend "like" t8n>>do not <</linkprepend>> lemons.
 
 <!-- *********************************************************************** -->
 
-<span id="macros-macro-linkreplace"></span>
-### `<<linkreplace linkText [transition|t8n]>> … <</linkreplace>>`
+### `<<linkreplace linkText [transition|t8n]>> … <</linkreplace>>` {#macros-macro-linkreplace}
 
 Creates a single-use link that deactivates itself and replaces its link text with its contents when clicked.  Essentially, a combination of [`<<link>>`](#macros-macro-link) and [`<<replace>>`](#macros-macro-replace).
 
@@ -1247,8 +1214,7 @@ I'll have a <<linkreplace "cupcake">>slice of key lime pie<</linkreplace>>, plea
 
 <!-- *********************************************************************** -->
 
-<span id="macros-macro-listbox"></span>
-### `<<listbox receiverName [autoselect]>>`<div>`[<<option label [value [selected]]>> …] [<<optionsfrom collection>> …]`</div>`<</listbox>>`
+### `<<listbox receiverName [autoselect]>>`<br><span class="child">`[<<option label [value [selected]]>> …]`<br>`[<<optionsfrom collection>> …]`</span><br>`<</listbox>>` {#macros-macro-listbox}
 
 Creates a listbox, used to modify the value of the variable with the given name.  The list options are populated via `<<option>>` and/or `<<optionsfrom>>`.
 
@@ -1338,8 +1304,7 @@ What's your favorite pie?
 
 <!-- *********************************************************************** -->
 
-<span id="macros-macro-radiobutton"></span>
-### `<<radiobutton receiverName checkedValue [checked]>>`
+### `<<radiobutton receiverName checkedValue [checked]>>` {#macros-macro-radiobutton}
 
 Creates a radio button, used to modify the value of the variable with the given name.  Multiple `<<radiobutton>>` macros may be set up to modify the same variable, which makes them part of a radio button group.
 
@@ -1383,8 +1348,7 @@ What's your favorite pie?
 
 <!-- *********************************************************************** -->
 
-<span id="macros-macro-textarea"></span>
-### `<<textarea receiverName defaultValue [autofocus]>>`
+### `<<textarea receiverName defaultValue [autofocus]>>` {#macros-macro-textarea}
 
 Creates a multiline text input block, used to modify the value of the variable with the given name.
 
@@ -1416,8 +1380,7 @@ Write a short essay about pies:
 
 <!-- *********************************************************************** -->
 
-<span id="macros-macro-textbox"></span>
-### `<<textbox receiverName defaultValue [passage] [autofocus]>>`
+### `<<textbox receiverName defaultValue [passage] [autofocus]>>` {#macros-macro-textbox}
 
 Creates a text input box, used to modify the value of the variable with the given name, optionally forwarding the player to another passage.
 
@@ -1454,8 +1417,7 @@ What's your favorite pie? <<textbox "$pie" "Blueberry" "Cakes" autofocus>>
 
 <!-- *********************************************************************** -->
 
-<span id="macros-macro-click"></span>
-### <span class="deprecated">`<<click linkText [passageName]>> … <</click>>`<br>`<<click linkMarkup>>`<br>`<<click imageMarkup>>`</span>
+### <span class="deprecated">`<<click linkText [passageName]>> … <</click>>`<br>`<<click linkMarkup>>`<br>`<<click imageMarkup>>`</span> {#macros-macro-click}
 
 <p role="note" class="warning"><b>Deprecated:</b>
 This macro has been deprecated and should no longer be used.  See the <a href="#macros-macro-link"><code>&lt;&lt;link&gt;&gt;</code></a> macro for its replacement.
@@ -1470,13 +1432,11 @@ This macro has been deprecated and should no longer be used.  See the <a href="#
 <!-- ***************************************************************************
 	Links Macros
 **************************************************************************** -->
-<span id="macros-links"></span>
-## Links Macros
+## Links Macros {#macros-links}
 
 <!-- *********************************************************************** -->
 
-<span id="macros-macro-actions"></span>
-### `<<actions passageList>>`<br>`<<actions linkMarkupList>>`<br>`<<actions imageMarkupList>>`
+### `<<actions passageList>>`<br>`<<actions linkMarkupList>>`<br>`<<actions imageMarkupList>>` {#macros-macro-actions}
 
 Creates a list of single-use passage links.  Each link removes itself and all other `<<actions>>` links to the same passage after being activated.  May be called either with a list of passages, with a list of link markup, or with a list of image markup.  Probably most useful when paired with [`<<include>>`](#macros-macro-include).  See the [`<<actions>>`](https://twinery.org/wiki/actions) section of the [Twine&nbsp;1 reference documentation](https://twinery.org/wiki/twine1:reference) for more information.
 
@@ -1514,8 +1474,7 @@ Creates a list of single-use passage links.  Each link removes itself and all ot
 
 <!-- *********************************************************************** -->
 
-<span id="macros-macro-back"></span>
-### `<<back [linkText]>>`<br>`<<back linkMarkup>>`<br>`<<back imageMarkup>>`
+### `<<back [linkText]>>`<br>`<<back linkMarkup>>`<br>`<<back imageMarkup>>` {#macros-macro-back}
 
 Creates a link that undoes past moments within the story history.  May be called with, optional, link text or with a link or image markup.
 
@@ -1579,8 +1538,7 @@ If you want to return to a previously visited passage, rather than undo a moment
 
 <!-- *********************************************************************** -->
 
-<span id="macros-macro-choice"></span>
-### `<<choice passageName [linkText]>>`<br>`<<choice linkMarkup>>`<br>`<<choice imageMarkup>>`
+### `<<choice passageName [linkText]>>`<br>`<<choice linkMarkup>>`<br>`<<choice imageMarkup>>` {#macros-macro-choice}
 
 Creates a single-use passage link that deactivates itself and all other `<<choice>>` links within the originating passage when activated.  May be called either with the passage name and link text as separate arguments, with a link markup, or with a image markup.
 
@@ -1631,8 +1589,7 @@ Normally, when both link and text arguments are accepted, the order is text then
 
 <!-- *********************************************************************** -->
 
-<span id="macros-macro-return"></span>
-### `<<return [linkText]>>`<br>`<<return linkMarkup>>`<br>`<<return imageMarkup>>`
+### `<<return [linkText]>>`<br>`<<return linkMarkup>>`<br>`<<return imageMarkup>>` {#macros-macro-return}
 
 Creates a link that navigates forward to a previously visited passage.  May be called with, optional, link text or with a link or image markup.
 
@@ -1702,8 +1659,7 @@ The versions that forward to a specific passage are largely unnecessary, as you 
 <!-- ***************************************************************************
 	DOM Macros
 **************************************************************************** -->
-<span id="macros-dom"></span>
-## DOM Macros
+## DOM Macros {#macros-dom}
 
 <span id="macros-dom-warning"></span>
 <p role="note" class="warning"><b>Warning:</b>
@@ -1712,8 +1668,7 @@ All DOM macros require the elements to be manipulated to be on the page.  As a c
 
 <!-- *********************************************************************** -->
 
-<span id="macros-macro-addclass"></span>
-### `<<addclass selector classNames>>`
+### `<<addclass selector classNames>>` {#macros-macro-addclass}
 
 Adds classes to the selected element(s).
 
@@ -1740,8 +1695,7 @@ Adds classes to the selected element(s).
 
 <!-- *********************************************************************** -->
 
-<span id="macros-macro-append"></span>
-### `<<append selector [transition|t8n]>> … <</append>>`
+### `<<append selector [transition|t8n]>> … <</append>>` {#macros-macro-append}
 
 Executes its contents and appends the output to the contents of the selected element(s).
 
@@ -1794,8 +1748,7 @@ I saw a <span id="dog">dog<span class="macro-append-insert"> chasing a cat</span
 
 <!-- *********************************************************************** -->
 
-<span id="macros-macro-copy"></span>
-### `<<copy selector>>`
+### `<<copy selector>>` {#macros-macro-copy}
 
 Outputs a copy of the contents of the selected element(s).
 
@@ -1836,8 +1789,7 @@ I'll have a <span id="snack-dest">slice of Key lime pie too</span>, thanks.
 
 <!-- *********************************************************************** -->
 
-<span id="macros-macro-prepend"></span>
-### `<<prepend selector [transition|t8n]>> … <</prepend>>`
+### `<<prepend selector [transition|t8n]>> … <</prepend>>` {#macros-macro-prepend}
 
 Executes its contents and prepends the output to the contents of the selected element(s).
 
@@ -1890,8 +1842,7 @@ I saw a <span id="dog"><span class="macro-prepend-insert">big </span>dog</span>.
 
 <!-- *********************************************************************** -->
 
-<span id="macros-macro-remove"></span>
-### `<<remove selector>>`
+### `<<remove selector>>` {#macros-macro-remove}
 
 Removes the selected element(s).
 
@@ -1928,8 +1879,7 @@ I'd like a cupcake, please.
 
 <!-- *********************************************************************** -->
 
-<span id="macros-macro-removeclass"></span>
-### `<<removeclass selector [classNames]>>`
+### `<<removeclass selector [classNames]>>` {#macros-macro-removeclass}
 
 Removes classes from the selected element(s).
 
@@ -1957,8 +1907,7 @@ Removes classes from the selected element(s).
 
 <!-- *********************************************************************** -->
 
-<span id="macros-macro-replace"></span>
-### `<<replace selector [transition|t8n]>> … <</replace>>`
+### `<<replace selector [transition|t8n]>> … <</replace>>` {#macros-macro-replace}
 
 Executes its contents and replaces the contents of the selected element(s) with the output.
 
@@ -2011,8 +1960,7 @@ I saw a <span id="dog"><span class="macro-replace-insert">Catahoula Cur</span></
 
 <!-- *********************************************************************** -->
 
-<span id="macros-macro-toggleclass"></span>
-### `<<toggleclass selector classNames>>`
+### `<<toggleclass selector classNames>>` {#macros-macro-toggleclass}
 
 Toggles classes on the selected element(s)—i.e., adding them if they don't exist, removing them if they do.
 
@@ -2041,8 +1989,7 @@ Toggles classes on the selected element(s)—i.e., adding them if they don't exi
 <!-- ***************************************************************************
 	Audio Macros
 **************************************************************************** -->
-<span id="macros-audio"></span>
-## Audio Macros
+## Audio Macros {#macros-audio}
 
 <span id="macros-audio-limitations"></span>
 <p role="note" class="warning"><b>Warning:</b>
@@ -2051,8 +1998,7 @@ The audio subsystem that supports the audio macros comes with some built-in <a h
 
 <!-- *********************************************************************** -->
 
-<span id="macros-macro-audio"></span>
-### `<<audio trackIdList actionList>>`
+### `<<audio trackIdList actionList>>` {#macros-macro-audio}
 
 Controls the playback of audio tracks, which must be set up via [`<<cacheaudio>>`](#macros-macro-cacheaudio).
 
@@ -2190,8 +2136,7 @@ blazing fast internet with unlimited data—especially true for mobile users.  P
 
 <!-- *********************************************************************** -->
 
-<span id="macros-macro-cacheaudio"></span>
-### `<<cacheaudio trackId sourceList>>`
+### `<<cacheaudio trackId sourceList>>` {#macros-macro-cacheaudio}
 
 Caches an audio track for use by the other audio macros.
 
@@ -2227,8 +2172,7 @@ The <a href="#special-passage-storyinit"><code>StoryInit</code> special passage<
 
 <!-- *********************************************************************** -->
 
-<span id="macros-macro-createaudiogroup"></span>
-### `<<createaudiogroup groupId>> [<<track trackId>> …] <</createaudiogroup>>`
+### `<<createaudiogroup groupId>>`<br><span class="child">`[<<track trackId>> …]`</span><br>`<</createaudiogroup>>` {#macros-macro-createaudiogroup}
 
 Collects tracks, which must be set up via [`<<cacheaudio>>`](#macros-macro-cacheaudio), into a group via its `<<track>>` children.  Groups are useful for applying actions to multiple tracks simultaneously and/or excluding the included tracks from a larger set when applying actions.
 
@@ -2268,8 +2212,7 @@ The <a href="#special-passage-storyinit"><code>StoryInit</code> special passage<
 
 <!-- *********************************************************************** -->
 
-<span id="macros-macro-createplaylist"></span>
-### `<<createplaylist listId>> [<<track trackId actionList>> …] <</createplaylist>>`
+### `<<createplaylist listId>>`<br><span class="child">`[<<track trackId actionList>> …]`</span><br>`<</createplaylist>>` {#macros-macro-createplaylist}
 
 Collects tracks, which must be set up via [`<<cacheaudio>>`](#macros-macro-cacheaudio), into a playlist via its `<<track>>` children.
 
@@ -2315,8 +2258,7 @@ The <a href="#special-passage-storyinit"><code>StoryInit</code> special passage<
 
 <!-- *********************************************************************** -->
 
-<span id="macros-macro-masteraudio"></span>
-### `<<masteraudio actionList>>`
+### `<<masteraudio actionList>>` {#macros-macro-masteraudio}
 
 Controls the master audio settings.
 
@@ -2382,8 +2324,7 @@ blazing fast internet with unlimited data—especially true for mobile users.  P
 
 <!-- *********************************************************************** -->
 
-<span id="macros-macro-playlist"></span>
-### `<<playlist listId actionList>>`<br><span class="deprecated">`<<playlist actionList>>`</span>
+### `<<playlist listId actionList>>`<br><span class="deprecated">`<<playlist actionList>>`</span> {#macros-macro-playlist}
 
 Controls the playback of the playlist, which must be set up via [`<<createplaylist>>`](#macros-macro-createplaylist)—the deprecated [`<<setplaylist>>`](#macros-macro-setplaylist) may be used instead, though it is not recommended.
 
@@ -2503,8 +2444,7 @@ blazing fast internet with unlimited data—especially true for mobile users.  P
 
 <!-- *********************************************************************** -->
 
-<span id="macros-macro-removeaudiogroup"></span>
-### `<<removeaudiogroup groupId>>`
+### `<<removeaudiogroup groupId>>` {#macros-macro-removeaudiogroup}
 
 Removes the audio group with the given ID.
 
@@ -2529,8 +2469,7 @@ You may not remove the predefined group IDs (<code>:all</code>, <code>:looped</c
 
 <!-- *********************************************************************** -->
 
-<span id="macros-macro-removeplaylist"></span>
-### `<<removeplaylist listId>>`
+### `<<removeplaylist listId>>` {#macros-macro-removeplaylist}
 
 Removes the playlist with the given ID.
 
@@ -2551,8 +2490,7 @@ Removes the playlist with the given ID.
 
 <!-- *********************************************************************** -->
 
-<span id="macros-macro-waitforaudio"></span>
-### `<<waitforaudio>>`
+### `<<waitforaudio>>` {#macros-macro-waitforaudio}
 
 Displays the loading screen until *all* currently registered audio has either loaded to a playable state or aborted loading due to errors.  Requires tracks to be set up via [`<<cacheaudio>>`](#macros-macro-cacheaudio).
 
@@ -2595,8 +2533,7 @@ This macro should be invoked <strong><em>once</em></strong> following any invoca
 
 <!-- *********************************************************************** -->
 
-<span id="macros-macro-setplaylist"></span>
-### <span class="deprecated">`<<setplaylist trackIdList>>`</span>
+### <span class="deprecated">`<<setplaylist trackIdList>>`</span> {#macros-macro-setplaylist}
 
 <p role="note" class="warning"><b>Deprecated:</b>
 This macro has been deprecated and should no longer be used.  See the <a href="#macros-macro-createplaylist"><code>&lt;&lt;createplaylist&gt;&gt;</code></a> macro for its replacement.
@@ -2609,8 +2546,7 @@ This macro has been deprecated and should no longer be used.  See the <a href="#
 
 <!-- *********************************************************************** -->
 
-<span id="macros-macro-stopallaudio"></span>
-### <span class="deprecated">`<<stopallaudio>>`</span>
+### <span class="deprecated">`<<stopallaudio>>`</span> {#macros-macro-stopallaudio}
 
 <p role="note" class="warning"><b>Deprecated:</b>
 This macro has been deprecated and should no longer be used.  See the <a href="#macros-macro-audio"><code>&lt;&lt;audio&gt;&gt;</code></a> macro for its replacement.
@@ -2625,13 +2561,11 @@ This macro has been deprecated and should no longer be used.  See the <a href="#
 <!-- ***************************************************************************
 	Miscellaneous Macros
 **************************************************************************** -->
-<span id="macros-miscellaneous"></span>
-## Miscellaneous Macros
+## Miscellaneous Macros {#macros-miscellaneous}
 
 <!-- *********************************************************************** -->
 
-<span id="macros-macro-goto"></span>
-### `<<goto passageName>>`<br>`<<goto linkMarkup>>`
+### `<<goto passageName>>`<br>`<<goto linkMarkup>>` {#macros-macro-goto}
 
 Immediately forwards the player to the passage with the given name.  May be called either with the passage name or with a link markup.
 
@@ -2671,8 +2605,7 @@ In most cases, you will not need to use <code>&lt;&lt;goto&gt;&gt;</code> as the
 
 <!-- *********************************************************************** -->
 
-<span id="macros-macro-repeat"></span>
-### `<<repeat delay [transition|t8n]>> … <</repeat>>`
+### `<<repeat delay [transition|t8n]>> … <</repeat>>` {#macros-macro-repeat}
 
 Repeatedly executes its contents after the given delay, inserting any output into the passage in its place.  May be terminated by a [`<<stop>>`](#macros-macro-stop) macro.
 
@@ -2712,8 +2645,7 @@ Countdown: <span id="countdown">$seconds seconds remaining</span>!\
 
 <!-- *********************************************************************** -->
 
-<span id="macros-macro-stop"></span>
-### `<<stop>>`
+### `<<stop>>` {#macros-macro-stop}
 
 Used within [`<<repeat>>`](#macros-macro-repeat) macros.  Terminates the execution of the current `<<repeat>>`.
 
@@ -2725,8 +2657,7 @@ Used within [`<<repeat>>`](#macros-macro-repeat) macros.  Terminates the executi
 
 <!-- *********************************************************************** -->
 
-<span id="macros-macro-timed"></span>
-### `<<timed delay [transition|t8n]>> … [<<next [delay]>> …] <</timed>>`
+### `<<timed delay [transition|t8n]>> …`<br><span class="child">`[<<next [delay]>> …]`</span><br>`<</timed>>` {#macros-macro-timed}
 
 Executes its contents after the given delay, inserting any output into the passage in its place.  Additional timed executions may be chained via `<<next>>`.
 
@@ -2796,8 +2727,7 @@ I'll have <span id="drink">some water</span>, please.\
 
 <!-- *********************************************************************** -->
 
-<span id="macros-macro-widget"></span>
-### `<<widget widgetName>> … <</widget>>`
+### `<<widget widgetName>> … <</widget>>` {#macros-macro-widget}
 
 Creates a new widget macro (henceforth, widget) with the given name.  Widgets allow you to create macros by using the standard macros and markup that you use normally within your story.  Widgets may access arguments passed to them via the `$args` array-like object—see below for details.
 

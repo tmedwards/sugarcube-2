@@ -1,7 +1,7 @@
 <!-- ***********************************************************************************************
 	Guide: Installation
 ************************************************************************************************ -->
-<h1 id="guide-installation">Guide: Installation</h1>
+# Guide: Installation {#guide-installation}
 
 This is a reference on how to install SugarCube in Tweego, Twine&nbsp;2, and Twine&nbsp;1/Twee.
 
@@ -13,8 +13,7 @@ Newer versions of Twine&nbsp;2 come bundled with a version of SugarCube v2, so y
 <!-- ***************************************************************************
 	Local Installation For Tweego
 **************************************************************************** -->
-<span id="guide-installation-tweego"></span>
-## Local Install For Tweego
+## Local Install For Tweego {#guide-installation-tweego}
 
 See [Tweego's documentation](http://www.motoslave.net/tweego/docs/) for more information.
 
@@ -22,8 +21,7 @@ See [Tweego's documentation](http://www.motoslave.net/tweego/docs/) for more inf
 <!-- ***************************************************************************
 	Local Installation For Twine 2
 **************************************************************************** -->
-<span id="guide-installation-twine2"></span>
-## Local Install For Twine&nbsp;2
+## Local Install For Twine&nbsp;2 {#guide-installation-twine2}
 
 There are two primary branches of Twine&nbsp;2 as far as SugarCube is concerned:
 
@@ -74,8 +72,7 @@ file:///C:/Users/soandso/Documents/Twine/StoryFormats/SugarCube-2/format.js
 <!-- ***************************************************************************
 	Local Installation For Twine 1/Twee
 **************************************************************************** -->
-<span id="guide-installation-twine1-twee"></span>
-## Local Install For Twine&nbsp;1/Twee
+## Local Install For Twine&nbsp;1/Twee {#guide-installation-twine1-twee}
 
 Follow these instructions to install a local copy of SugarCube v2:
 

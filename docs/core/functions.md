@@ -1,12 +1,11 @@
 <!-- ***********************************************************************************************
 	Functions
 ************************************************************************************************ -->
-<h1 id="functions">Functions</h1>
+# Functions {#functions}
 
 <!-- *********************************************************************** -->
 
-<span id="functions-function-clone"></span>
-### `clone(original)` → *any*
+### `clone(original)` → *any* {#functions-function-clone}
 
 Returns a deep copy of the given value.
 
@@ -40,8 +39,7 @@ $bar.id  → Returns: 5
 
 <!-- *********************************************************************** -->
 
-<span id="functions-function-either"></span>
-### `either(list…)` → *any*
+### `either(list…)` → *any* {#functions-function-either}
 
 Returns a random value from its given arguments.
 
@@ -71,8 +69,7 @@ either($letters, $numerals)  → Returns a random value from the whole list—i.
 
 <!-- *********************************************************************** -->
 
-<span id="functions-function-forget"></span>
-### `forget(key)`
+### `forget(key)` {#functions-function-forget}
 
 Removes the specified key, and its associated value, from the story metadata store.
 
@@ -92,8 +89,7 @@ Removes the specified key, and its associated value, from the story metadata sto
 
 <!-- *********************************************************************** -->
 
-<span id="functions-function-hasvisited"></span>
-### `hasVisited(passages…)` → *boolean*
+### `hasVisited(passages…)` → *boolean* {#functions-function-hasvisited}
 
 Returns whether the passage with the given title occurred within the story history.  If multiple passage titles are given, returns the logical-AND aggregate of the set—i.e., `true` if all were found, `false` if any were not found.
 
@@ -116,8 +112,7 @@ Returns whether the passage with the given title occurred within the story histo
 
 <!-- *********************************************************************** -->
 
-<span id="functions-function-lastvisited"></span>
-### `lastVisited(passages…)` → *integer*
+### `lastVisited(passages…)` → *integer* {#functions-function-lastvisited}
 
 Returns the number of turns that have passed since the last instance of the passage with the given title occurred within the story history or `-1` if it does not exist.  If multiple passage titles are given, returns the lowest count (which can be `-1`).
 
@@ -141,8 +136,7 @@ Returns the number of turns that have passed since the last instance of the pass
 
 <!-- *********************************************************************** -->
 
-<span id="functions-function-importscripts"></span>
-### `importScripts(urls…)` → *`Promise` object*
+### `importScripts(urls…)` → *`Promise` object* {#functions-function-importscripts}
 
 Load and integrate external JavaScript scripts.
 
@@ -230,8 +224,7 @@ setup.aScriptImport
 
 <!-- *********************************************************************** -->
 
-<span id="functions-function-importstyles"></span>
-### `importStyles(urls…)` → *`Promise` object*
+### `importStyles(urls…)` → *`Promise` object* {#functions-function-importstyles}
 
 Load and integrate external CSS stylesheets.
 
@@ -305,8 +298,7 @@ importStyles("https://somesite/a/path/a.css")
 
 <!-- *********************************************************************** -->
 
-<span id="functions-function-memorize"></span>
-### `memorize(key, value)`
+### `memorize(key, value)` {#functions-function-memorize}
 
 Sets the specified key and value within the story metadata store, which causes them to persist over story and browser restarts.  To update the value associated with a key, simply set it again.
 
@@ -343,8 +335,7 @@ This feature is largely incompatible with private browsing modes, which cause al
 
 <!-- *********************************************************************** -->
 
-<span id="functions-function-passage"></span>
-### `passage()` → *string*
+### `passage()` → *string* {#functions-function-passage}
 
 Returns the title of the active (present) passage.
 
@@ -362,8 +353,7 @@ Returns the title of the active (present) passage.
 
 <!-- *********************************************************************** -->
 
-<span id="functions-function-previous"></span>
-### `previous()` → *string*
+### `previous()` → *string* {#functions-function-previous}
 
 Returns the title of the most recent previous passage whose title does not match that of the active passage or an empty string, if there is no such passage.
 
@@ -384,8 +374,7 @@ Returns the title of the most recent previous passage whose title does not match
 
 <!-- *********************************************************************** -->
 
-<span id="functions-function-random"></span>
-### `random([min ,] max)` → *integer*
+### `random([min ,] max)` → *integer* {#functions-function-random}
 
 Returns a pseudo-random whole number (integer) within the range of the given bounds (inclusive)—i.e., [min,&nbsp;max].
 
@@ -411,8 +400,7 @@ random(1, 6)  → Returns a number in the range 1–6
 
 <!-- *********************************************************************** -->
 
-<span id="functions-function-randomfloat"></span>
-### `randomFloat([min ,] max)` → *float*
+### `randomFloat([min ,] max)` → *float* {#functions-function-randomfloat}
 
 Returns a pseudo-random decimal number (floating-point) within the range of the given bounds (inclusive for the minimum, exclusive for the maximum)—i.e., [min,&nbsp;max).
 
@@ -438,8 +426,7 @@ randomFloat(1.0, 6.0)  → Returns a number in the range 1.0–5.9999999…
 
 <!-- *********************************************************************** -->
 
-<span id="functions-function-recall"></span>
-### `recall(key [, defaultValue])` → *any*
+### `recall(key [, defaultValue])` → *any* {#functions-function-recall}
 
 Returns the value associated with the specified key from the story metadata store or, if no such key exists, the specified default value, if any.
 
@@ -464,8 +451,7 @@ Returns the value associated with the specified key from the story metadata stor
 
 <!-- *********************************************************************** -->
 
-<span id="functions-function-setpageelement"></span>
-### `setPageElement(idOrElement , passages [, defaultText])` → *`HTMLElement` object* | *null*
+### `setPageElement(idOrElement , passages [, defaultText])` → *`HTMLElement` object* | *null* {#functions-function-setpageelement}
 
 Renders the selected passage into the target element, replacing any existing content, and returns the element.  If no passages are found and default text is specified, it will be used instead.
 
@@ -495,8 +481,7 @@ setPageElement(myElement, "MyPassage");
 
 <!-- *********************************************************************** -->
 
-<span id="functions-function-tags"></span>
-### `tags([passages…])` → *string array*
+### `tags([passages…])` → *string array* {#functions-function-tags}
 
 Returns a new array consisting of all of the tags of the given passages.
 
@@ -517,8 +502,7 @@ Returns a new array consisting of all of the tags of the given passages.
 
 <!-- *********************************************************************** -->
 
-<span id="functions-function-temporary"></span>
-### `temporary()` → *object*
+### `temporary()` → *object* {#functions-function-temporary}
 
 Returns a reference to the current temporary variables store (equivalent to: [`State.temporary`](#state-api-getter-temporary)).  This is only really useful within pure JavaScript code, as within TwineScript you may simply access temporary variables natively.
 
@@ -539,8 +523,7 @@ if (temporary().selection === 'Zagnut Bar') {
 
 <!-- *********************************************************************** -->
 
-<span id="functions-function-time"></span>
-### `time()` → *integer*
+### `time()` → *integer* {#functions-function-time}
 
 Returns the number of milliseconds that have passed since the current passage was rendered to the page.
 
@@ -569,8 +552,7 @@ or [[stand your ground|Eaten by a grue]]?
 
 <!-- *********************************************************************** -->
 
-<span id="functions-function-turns"></span>
-### `turns()` → *integer*
+### `turns()` → *integer* {#functions-function-turns}
 
 Returns the total number (count) of played turns currently in effect—i.e., the number of played moments up to the present moment; future (rewound/undone) moments are not included within the total.
 
@@ -588,8 +570,7 @@ Returns the total number (count) of played turns currently in effect—i.e., the
 
 <!-- *********************************************************************** -->
 
-<span id="functions-function-variables"></span>
-### `variables()` → *object*
+### `variables()` → *object* {#functions-function-variables}
 
 Returns a reference to the active (present) story variables store (equivalent to: [`State.variables`](#state-api-getter-variables)).  This is only really useful within pure JavaScript code, as within TwineScript you may simply access story variables natively.
 
@@ -610,8 +591,7 @@ if (variables().hasGoldenKey) {
 
 <!-- *********************************************************************** -->
 
-<span id="functions-function-visited"></span>
-### `visited([passages…])` → *integer*
+### `visited([passages…])` → *integer* {#functions-function-visited}
 
 Returns the number of times that the passage with the given title occurred within the story history.  If multiple passage titles are given, returns the lowest count.
 
@@ -634,8 +614,7 @@ Returns the number of times that the passage with the given title occurred withi
 
 <!-- *********************************************************************** -->
 
-<span id="functions-function-visitedtags"></span>
-### `visitedTags(tags…)` → *integer*
+### `visitedTags(tags…)` → *integer* {#functions-function-visitedtags}
 
 Returns the number of passages within the story history that are tagged with all of the given tags.
 

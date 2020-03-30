@@ -1,7 +1,7 @@
 <!-- ***********************************************************************************************
 	Guide: Harlowe to SugarCube
 ************************************************************************************************ -->
-<h1 id="guide-harlowe-to-sugarcube">Guide: Harlowe to SugarCube</h1>
+# Guide: Harlowe to SugarCube {#guide-harlowe-to-sugarcube}
 
 <b><i>Credits: original document by Chapel ([TwineLab](https://twinelab.net/), [GitHub](https://github.com/ChapelR/))</i></b>
 
@@ -11,8 +11,7 @@ There are many differences between Harlowe and SugarCube, this guide will docume
 <!-- ***************************************************************************
 	Macro Overview
 **************************************************************************** -->
-<span id="guide-harlowe-to-sugarcube-macro-overview"></span>
-## Macro Overview
+## Macro Overview {#guide-harlowe-to-sugarcube-macro-overview}
 
 Aside from general syntax, SugarCube macros do not use hooks, separate arguments differently, and don't allow other macros to be passed as arguments.
 
@@ -62,8 +61,7 @@ In SugarCube, you instead open and close the [`<<if>>`](#macros-macro-if) macro 
 <!-- ***************************************************************************
 	Specific Macros
 **************************************************************************** -->
-<span id="guide-harlowe-to-sugarcube-specific-macros"></span>
-## Specific Macros
+## Specific Macros {#guide-harlowe-to-sugarcube-specific-macros}
 
 Some macros in Harlowe and SugarCube share a name but work a bit differently.  We'll cover some of these differences below.
 
@@ -170,8 +168,7 @@ As with `<<link>>` and `<<button>>`, `<<goto>>` can accept link markup as its ar
 <!-- ***************************************************************************
 	User Input
 **************************************************************************** -->
-<span id="guide-harlowe-to-sugarcube-user-input"></span>
-## User Input
+## User Input {#guide-harlowe-to-sugarcube-user-input}
 
 SugarCube's user input macros, like [`<<textbox>>`](#macros-macro-textbox), cannot be nested inside a [`<<set>>`](#macros-macro-set) macro, as you might do with a `(prompt:)` and a `(set:)` in Harlowe.  Instead, the macro is passed a *receiver variable* which is set to the value input by the user.
 
@@ -193,8 +190,7 @@ Harlowe's newer input macros, like `(dropdown:)` and `(cycling-link:)` use "boun
 <!-- ***************************************************************************
 	Data Types
 **************************************************************************** -->
-<span id="guide-harlowe-to-sugarcube-data-types"></span>
-## Data Types
+## Data Types {#guide-harlowe-to-sugarcube-data-types}
 
 Harlowe's implementation of data types differs significantly from SugarCube's.  A data type refers to the "type" of data a variable is holding, such as a number, a string, an array, or anything else.  Harlowe has stricter typing than SugarCube, requiring authors to call macros like `(str:)` or `(num:)` on variables to change their type.  SugarCube, like JavaScript, uses *dynamic* typing.
 

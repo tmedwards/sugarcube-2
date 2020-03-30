@@ -1,7 +1,7 @@
 <!-- ***********************************************************************************************
 	Guide: Localization
 ************************************************************************************************ -->
-<h1 id="guide-localization">Guide: Localization</h1>
+# Guide: Localization {#guide-localization}
 
 This is a reference for localizing SugarCube's default UI text, in general, and its `l10nStrings` object specifically.
 
@@ -24,8 +24,7 @@ To ensure backwards compatibility of existing `strings` objects, if one exists w
 <!-- ***************************************************************************
 	Translation Notes
 **************************************************************************** -->
-<span id="guide-localization-translation-notes"></span>
-## Translation Notes
+## Translation Notes {#guide-localization-translation-notes}
 
 The capitalization and punctuation used within the default replacement strings is deliberate, especially within the error and warning strings.  You would do well to keep your translations similar when possible.
 
@@ -39,8 +38,7 @@ In use, replacement patterns are replaced recursively, so replacement strings ma
 <!-- ***************************************************************************
 	Usage
 **************************************************************************** -->
-<span id="guide-localization-usage"></span>
-## Usage
+## Usage {#guide-localization-usage}
 
 Properties on the strings localization object (`l10nStrings`) may be set within your project's script section (Twine&nbsp;2: the Story JavaScript, Twine&nbsp;1/Twee: a `script`-tagged passage) to override the defaults.
 

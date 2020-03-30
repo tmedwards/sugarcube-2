@@ -1,7 +1,7 @@
 <!-- ***********************************************************************************************
 	Methods
 ************************************************************************************************ -->
-<h1 id="methods">Methods</h1>
+# Methods {#methods}
 
 Most of the methods listed below are SugarCube extensions, with the rest being either JavaScript natives or bundled library methods that are listed here for their utility—though, this is not an exhaustive list.
 
@@ -16,13 +16,11 @@ Additionally.  SugarCube includes polyfills for virtually all JavaScript (ECMASc
 <!-- ***************************************************************************
 	Array
 **************************************************************************** -->
-<span id="methods-array"></span>
-## Array Methods
+## Array Methods {#methods-array}
 
 <!-- *********************************************************************** -->
 
-<span id="methods-array-prototype-method-concat"></span>
-### `<Array>.concat(members…)` → *array*
+### `<Array>.concat(members…)` → *array* {#methods-array-prototype-method-concat}
 
 Concatenates one or more members to the end of the base array and returns the result as a new array.  Does not modify the original.
 
@@ -45,8 +43,7 @@ $fruits1.concat($fruits2, "Pears")   → Returns ["Apples", "Oranges", "Pears", 
 
 <!-- *********************************************************************** -->
 
-<span id="methods-array-prototype-method-concatunique"></span>
-### `<Array>.concatUnique(members…)` → *array*
+### `<Array>.concatUnique(members…)` → *array* {#methods-array-prototype-method-concatunique}
 
 Concatenates one or more unique members to the end of the base array and returns the result as a new array.  Does not modify the original.
 
@@ -71,8 +68,7 @@ $fruits1.concatUnique($fruits2, "Pears")   → Returns ["Apples", "Oranges", "Pe
 
 <!-- *********************************************************************** -->
 
-<span id="methods-array-prototype-method-count"></span>
-### `<Array>.count(needle [, position])` → *integer*
+### `<Array>.count(needle [, position])` → *integer* {#methods-array-prototype-method-count}
 
 Returns the number of times that the given member was found within the array, starting the search at `position`.
 
@@ -95,8 +91,7 @@ $fruits.count("Oranges", 2)  → Returns 1
 
 <!-- *********************************************************************** -->
 
-<span id="methods-array-prototype-method-delete"></span>
-### `<Array>.delete(needles…)` → *array*
+### `<Array>.delete(needles…)` → *array* {#methods-array-prototype-method-delete}
 
 Removes all instances of the given members from the array and returns a new array containing the removed members.
 
@@ -118,8 +113,7 @@ $fruits.delete("Apples", "Plums")  → Returns ["Apples", "Plums"]; $fruits ["Or
 
 <!-- *********************************************************************** -->
 
-<span id="methods-array-prototype-method-deleteat"></span>
-### `<Array>.deleteAt(indices…)` → *array*
+### `<Array>.deleteAt(indices…)` → *array* {#methods-array-prototype-method-deleteat}
 
 Removes all of the members at the given indices from the array and returns a new array containing the removed members.
 
@@ -142,8 +136,7 @@ $fruits.deleteAt(0, 2)  → Returns ["Apples", "Plums"]; $fruits ["Oranges", "Or
 
 <!-- *********************************************************************** -->
 
-<span id="methods-array-prototype-method-deletewith"></span>
-### `<Array>.deleteWith(predicate [, thisArg])` → *array*
+### `<Array>.deleteWith(predicate [, thisArg])` → *array* {#methods-array-prototype-method-deletewith}
 
 Removes all of the members that pass the test implemented by the given predicate function from the array and returns a new array containing the removed members.
 
@@ -189,8 +182,7 @@ $fruits.deleteWith(function (val) {
 
 <!-- *********************************************************************** -->
 
-<span id="methods-array-prototype-method-first"></span>
-### `<Array>.first()` → *any*
+### `<Array>.first()` → *any* {#methods-array-prototype-method-first}
 
 Returns the first member from the array.  Does not modify the original.
 
@@ -209,8 +201,7 @@ $pies.first()  → Returns "Blueberry"
 
 <!-- *********************************************************************** -->
 
-<span id="methods-array-prototype-method-flat"></span>
-### `<Array>.flat(depth)` → *array*
+### `<Array>.flat(depth)` → *array* {#methods-array-prototype-method-flat}
 
 Returns a new array consisting of the source array with all sub-array elements concatenated into it recursively up to the given depth.  Does not modify the original.
 
@@ -232,8 +223,7 @@ $npa.flat(2)  → Returns ["Alfa", "Bravo", "Charlie", "Delta", "Echo", "Foxtrot
 
 <!-- *********************************************************************** -->
 
-<span id="methods-array-prototype-method-flatmap"></span>
-### `<Array>.flatMap(callback [, thisArg])` → *array*
+### `<Array>.flatMap(callback [, thisArg])` → *array* {#methods-array-prototype-method-flatmap}
 
 Returns a new array consisting of the result of calling the given mapping function on every element in the source array and then concatenating all sub-array elements into it recursively up to a depth of `1`.  Does not modify the original.
 
@@ -264,8 +254,7 @@ $npa.flatMap(function (val) {
 
 <!-- *********************************************************************** -->
 
-<span id="methods-array-prototype-method-includes"></span>
-### `<Array>.includes(needle [, position])` → *boolean*
+### `<Array>.includes(needle [, position])` → *boolean* {#methods-array-prototype-method-includes}
 
 Returns whether the given member was found within the array, starting the search at `position`.
 
@@ -286,8 +275,7 @@ Returns whether the given member was found within the array, starting the search
 
 <!-- *********************************************************************** -->
 
-<span id="methods-array-prototype-method-includesall"></span>
-### `<Array>.includesAll(needles…)` → *boolean*
+### `<Array>.includesAll(needles…)` → *boolean* {#methods-array-prototype-method-includesall}
 
 Returns whether all of the given members were found within the array.
 
@@ -311,8 +299,7 @@ Returns whether all of the given members were found within the array.
 
 <!-- *********************************************************************** -->
 
-<span id="methods-array-prototype-method-includesany"></span>
-### `<Array>.includesAny(needles…)` → *boolean*
+### `<Array>.includesAny(needles…)` → *boolean* {#methods-array-prototype-method-includesany}
 
 Returns whether any of the given members were found within the array.
 
@@ -336,8 +323,7 @@ Returns whether any of the given members were found within the array.
 
 <!-- *********************************************************************** -->
 
-<span id="methods-array-prototype-method-last"></span>
-### `<Array>.last()` → *any*
+### `<Array>.last()` → *any* {#methods-array-prototype-method-last}
 
 Returns the last member from the array.  Does not modify the original.
 
@@ -356,8 +342,7 @@ $pies.last()  → Returns "Pumpkin"
 
 <!-- *********************************************************************** -->
 
-<span id="methods-array-prototype-method-pluck"></span>
-### `<Array>.pluck()` → *any*
+### `<Array>.pluck()` → *any* {#methods-array-prototype-method-pluck}
 
 Removes and returns a random member from the array.
 
@@ -376,8 +361,7 @@ $pies.pluck()  → Removes and returns a random pie from the array
 
 <!-- *********************************************************************** -->
 
-<span id="methods-array-prototype-method-pluckmany"></span>
-### `<Array>.pluckMany(want)` → *array*
+### `<Array>.pluckMany(want)` → *array* {#methods-array-prototype-method-pluckmany}
 
 Randomly removes the given number of members from the base array and returns the removed members as a new array.
 
@@ -398,8 +382,7 @@ $pies.pluckMany(3)  → Removes three random pies from the array and returns the
 
 <!-- *********************************************************************** -->
 
-<span id="methods-array-prototype-method-pop"></span>
-### `<Array>.pop()` → *any*
+### `<Array>.pop()` → *any* {#methods-array-prototype-method-pop}
 
 Removes and returns the last member from the array, or `undefined` if the array is empty.
 
@@ -416,8 +399,7 @@ $fruits.pop()  → Returns "Pears"; $fruits ["Apples", "Oranges"]
 
 <!-- *********************************************************************** -->
 
-<span id="methods-array-prototype-method-push"></span>
-### `<Array>.push(members…)` → *number*
+### `<Array>.push(members…)` → *number* {#methods-array-prototype-method-push}
 
 Appends one or more members to the end of the base array and returns its new length.
 
@@ -439,8 +421,7 @@ $fruits.push("Plums", "Plums")  → Returns 4; $fruits ["Apples", "Oranges", "Pl
 
 <!-- *********************************************************************** -->
 
-<span id="methods-array-prototype-method-pushunique"></span>
-### `<Array>.pushUnique(members…)` → *number*
+### `<Array>.pushUnique(members…)` → *number* {#methods-array-prototype-method-pushunique}
 
 Appends one or more unique members to the end of the base array and returns its new length.
 
@@ -464,8 +445,7 @@ $fruits.pushUnique("Plums", "Plums")  → Returns 3; $fruits ["Apples", "Oranges
 
 <!-- *********************************************************************** -->
 
-<span id="methods-array-prototype-method-random"></span>
-### `<Array>.random()` → *any*
+### `<Array>.random()` → *any* {#methods-array-prototype-method-random}
 
 Returns a random member from the array.  Does not modify the original.
 
@@ -484,8 +464,7 @@ $pies.random()  → Returns a random pie from the array
 
 <!-- *********************************************************************** -->
 
-<span id="methods-array-prototype-method-randommany"></span>
-### `<Array>.randomMany(want)` → *array*
+### `<Array>.randomMany(want)` → *array* {#methods-array-prototype-method-randommany}
 
 Randomly selects the given number of unique members from the array and returns the selected members as a new array.  Does not modify the original.
 
@@ -506,8 +485,7 @@ $pies.randomMany(3)  → Returns a new array containing three unique random pies
 
 <!-- *********************************************************************** -->
 
-<span id="methods-array-prototype-method-shift"></span>
-### `<Array>.shift()` → *any*
+### `<Array>.shift()` → *any* {#methods-array-prototype-method-shift}
 
 Removes and returns the first member from the array, or `undefined` if the array is empty.
 
@@ -524,8 +502,7 @@ $fruits.shift()  → Returns "Apples"; $fruits ["Oranges", "Pears"]
 
 <!-- *********************************************************************** -->
 
-<span id="methods-array-prototype-method-shuffle"></span>
-### `<Array>.shuffle()` → *array*
+### `<Array>.shuffle()` → *array* {#methods-array-prototype-method-shuffle}
 
 Randomly shuffles the array.
 
@@ -544,8 +521,7 @@ $pies.shuffle()  → Randomizes the order of the pies in the array
 
 <!-- *********************************************************************** -->
 
-<span id="methods-array-prototype-method-unshift"></span>
-### `<Array>.unshift(members…)` → *number*
+### `<Array>.unshift(members…)` → *number* {#methods-array-prototype-method-unshift}
 
 Prepends one or more members to the beginning of the base array and returns its new length.
 
@@ -567,8 +543,7 @@ $fruits.unshift("Apples", "Apples")  → Returns 4; $fruits ["Apples", "Apples",
 
 <!-- *********************************************************************** -->
 
-<span id="methods-array-prototype-method-unshiftunique"></span>
-### `<Array>.unshiftUnique(members…)` → *number*
+### `<Array>.unshiftUnique(members…)` → *number* {#methods-array-prototype-method-unshiftunique}
 
 Prepends one or more unique members to the beginning of the base array and returns its new length.
 
@@ -592,8 +567,7 @@ $fruits.unshiftUnique("Apples", "Apples")  → Returns 3; $fruits ["Apples", "Or
 
 <!-- *********************************************************************** -->
 
-<span id="methods-array-prototype-method-contains"></span>
-### <span class="deprecated">`<Array>.contains(needle [, position])` → *boolean*</span>
+### <span class="deprecated">`<Array>.contains(needle [, position])` → *boolean*</span> {#methods-array-prototype-method-contains}
 
 <p role="note" class="warning"><b>Deprecated:</b>
 This method has been deprecated and should no longer be used.  See the <a href="#methods-array-prototype-method-includes"><code>&lt;Array&gt;.includes()</code></a> method for its replacement.
@@ -606,8 +580,7 @@ This method has been deprecated and should no longer be used.  See the <a href="
 
 <!-- *********************************************************************** -->
 
-<span id="methods-array-prototype-method-containsall"></span>
-### <span class="deprecated">`<Array>.containsAll(needles…)` → *boolean*</span>
+### <span class="deprecated">`<Array>.containsAll(needles…)` → *boolean*</span> {#methods-array-prototype-method-containsall}
 
 <p role="note" class="warning"><b>Deprecated:</b>
 This method has been deprecated and should no longer be used.  See the <a href="#methods-array-prototype-method-includesall"><code>&lt;Array&gt;.includesAll()</code></a> method for its replacement.
@@ -620,8 +593,7 @@ This method has been deprecated and should no longer be used.  See the <a href="
 
 <!-- *********************************************************************** -->
 
-<span id="methods-array-prototype-method-containsany"></span>
-### <span class="deprecated">`<Array>.containsAny(needles…)` → *boolean*</span>
+### <span class="deprecated">`<Array>.containsAny(needles…)` → *boolean*</span> {#methods-array-prototype-method-containsany}
 
 <p role="note" class="warning"><b>Deprecated:</b>
 This method has been deprecated and should no longer be used.  See the <a href="#methods-array-prototype-method-includesany"><code>&lt;Array&gt;.includesAny()</code></a> method for its replacement.
@@ -634,8 +606,7 @@ This method has been deprecated and should no longer be used.  See the <a href="
 
 <!-- *********************************************************************** -->
 
-<span id="methods-array-prototype-method-flatten"></span>
-### <span class="deprecated">`<Array>.flatten()` → *array*</span>
+### <span class="deprecated">`<Array>.flatten()` → *array*</span> {#methods-array-prototype-method-flatten}
 
 <p role="note" class="warning"><b>Deprecated:</b>
 This method has been deprecated and should no longer be used.  See the <a href="#methods-array-prototype-method-flat"><code>&lt;Array&gt;.flat()</code></a> method for its replacement.  The exactly equivalent call is: <code>&lt;Array&gt;.flat(Infinity)</code>.
@@ -651,8 +622,7 @@ Returns a new array consisting of the flattened source array.  Does not modify t
 
 <!-- *********************************************************************** -->
 
-<span id="methods-array-method-random"></span>
-### <span class="deprecated">`Array.random(array)` → *any*</span>
+### <span class="deprecated">`Array.random(array)` → *any*</span> {#methods-array-method-random}
 
 <p role="note" class="warning"><b>Deprecated:</b>
 This method has been deprecated and should no longer be used.  In general, look to the <a href="#methods-array-prototype-method-random"><code>&lt;Array&gt;.random()</code></a> method instead.  If you need a random member from an array-like object, use the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from"><code>Array.from()</code></a> method to convert it to an array, then use <code>&lt;Array&gt;.random()</code>.
@@ -669,13 +639,11 @@ Returns a random member from the array or array-like object.  Does not modify th
 <!-- ***************************************************************************
 	JSON
 **************************************************************************** -->
-<span id="methods-json"></span>
-## JSON Methods
+## JSON Methods {#methods-json}
 
 <!-- *********************************************************************** -->
 
-<span id="methods-json-method-revivewrapper"></span>
-### `JSON.reviveWrapper(codeString [, reviveData])` → *array*
+### `JSON.reviveWrapper(codeString [, reviveData])` → *array* {#methods-json-method-revivewrapper}
 
 Returns the given code string, and optional data chunk, wrapped within the JSON deserialization revive wrapper.  Intended to allow authors to easily wrap their custom object types (a.k.a. classes) revival code and associated data within the revive wrapper, which should be returned from an object instance's `.toJSON()` method, so that the instance may be properly revived upon deserialization.
 
@@ -711,13 +679,11 @@ return JSON.reviveWrapper('new Character($ReviveData$)', ownData);
 <!-- ***************************************************************************
 	jQuery
 **************************************************************************** -->
-<span id="methods-jquery"></span>
-## jQuery Methods
+## jQuery Methods {#methods-jquery}
 
 <!-- *********************************************************************** -->
 
-<span id="methods-jquery-prototype-method-ariaclick"></span>
-### `<jQuery>.ariaClick([options ,] handler)` → *`jQuery` object*
+### `<jQuery>.ariaClick([options ,] handler)` → *`jQuery` object* {#methods-jquery-prototype-method-ariaclick}
 
 Makes the target element(s) WAI-ARIA-compatible clickables—meaning that various accessibility attributes are set and, in addition to mouse clicks, enter/return and spacebar key presses also activate them.  Returns a reference to the current `jQuery` object for chaining.
 
@@ -777,8 +743,7 @@ $('<a>Click me</a>')
 
 <!-- *********************************************************************** -->
 
-<span id="methods-jquery-prototype-method-ariadisabled"></span>
-### `<jQuery>.ariaDisabled(state)` → *`jQuery` object*
+### `<jQuery>.ariaDisabled(state)` → *`jQuery` object* {#methods-jquery-prototype-method-ariadisabled}
 
 Changes the disabled state of the target WAI-ARIA-compatible clickable element(s).  Returns a reference to the current `jQuery` object for chaining.
 
@@ -804,8 +769,7 @@ $('#so-clicky').ariaDisabled(false)  → Enables the target element
 
 <!-- *********************************************************************** -->
 
-<span id="methods-jquery-prototype-method-ariaisdisabled"></span>
-### `<jQuery>.ariaIsDisabled()` → *`boolean`*
+### `<jQuery>.ariaIsDisabled()` → *`boolean`* {#methods-jquery-prototype-method-ariaisdisabled}
 Returns whether any of the target WAI-ARIA-compatible clickable element(s) are disabled.
 
 <p role="note"><b>Note:</b>
@@ -832,8 +796,7 @@ $('#so-clicky').ariaIsDisabled()  → Returns false
 
 <!-- *********************************************************************** -->
 
-<span id="methods-jquery-method-wiki"></span>
-### `jQuery.wiki(sources…)`
+### `jQuery.wiki(sources…)` {#methods-jquery-method-wiki}
 
 Wikifies the given content source(s) and discards the result.  If there were errors, an exception is thrown.  This is only really useful when you want to invoke a macro for its side-effects and aren't interested in its output.
 
@@ -853,8 +816,7 @@ $.wiki('<<somemacro>>');  → Invokes the <<somemacro>> macro, discarding any ou
 
 <!-- *********************************************************************** -->
 
-<span id="methods-jquery-prototype-method-wiki"></span>
-### `<jQuery>.wiki(sources…)` → *`jQuery` object*
+### `<jQuery>.wiki(sources…)` → *`jQuery` object* {#methods-jquery-prototype-method-wiki}
 
 Wikifies the given content source(s) and appends the result to the target element(s).  Returns a reference to the current `jQuery` object for chaining.
 
@@ -877,13 +839,11 @@ $('#the-box').wiki('Who //are// you?');  → Appends "Who <em>are</em> you?" to 
 <!-- ***************************************************************************
 	Math
 **************************************************************************** -->
-<span id="methods-math"></span>
-## Math Methods
+## Math Methods {#methods-math}
 
 <!-- *********************************************************************** -->
 
-<span id="methods-math-method-clamp"></span>
-### `Math.clamp(num , min , max)` → *number*
+### `Math.clamp(num , min , max)` → *number* {#methods-math-method-clamp}
 
 Returns the given number clamped to the specified bounds.  Does not modify the original.
 
@@ -906,8 +866,7 @@ Math.clamp($stat, 1, 6.6)  → Clamps $stat to the bounds 1–6.6 and returns th
 
 <!-- *********************************************************************** -->
 
-<span id="methods-math-method-trunc"></span>
-### `Math.trunc(num)` → *integer*
+### `Math.trunc(num)` → *integer* {#methods-math-method-trunc}
 
 Returns the whole (integer) part of the given number by removing its fractional part, if any.  Does not modify the original.
 
@@ -928,13 +887,11 @@ Math.trunc(-12.7)  → Returns -12
 <!-- ***************************************************************************
 	Number
 **************************************************************************** -->
-<span id="methods-number"></span>
-## Number Methods
+## Number Methods {#methods-number}
 
 <!-- *********************************************************************** -->
 
-<span id="methods-number-prototype-method-clamp"></span>
-### `<Number>.clamp(min , max)` → *number*
+### `<Number>.clamp(min , max)` → *number* {#methods-number-prototype-method-clamp}
 
 Returns the number clamped to the specified bounds.  Does not modify the original.
 
@@ -958,13 +915,11 @@ $stat.clamp(1, 6.6)  → Clamps $stat to the bounds 1–6.6 and returns the new 
 <!-- ***************************************************************************
 	RegExp
 **************************************************************************** -->
-<span id="methods-regexp"></span>
-## RegExp Methods
+## RegExp Methods {#methods-regexp}
 
 <!-- *********************************************************************** -->
 
-<span id="methods-regexp-method-escape"></span>
-### `RegExp.escape(text)` → *string*
+### `RegExp.escape(text)` → *string* {#methods-regexp-method-escape}
 
 Returns the given string with all regular expression metacharacters escaped.  Does not modify the original.
 
@@ -986,8 +941,7 @@ RegExp.escape('That will be $5 (cash only)')   → Returns 'That will be \$5 \(c
 <!-- ***************************************************************************
 	String
 **************************************************************************** -->
-<span id="methods-string"></span>
-## String Methods
+## String Methods {#methods-string}
 
 <span id="methods-string-note"></span>
 <p role="note"><b>Note:</b>
@@ -996,8 +950,7 @@ Strings in TwineScript/JavaScript are Unicode, however, due to historic reasons 
 
 <!-- *********************************************************************** -->
 
-<span id="methods-string-prototype-method-count"></span>
-### `<String>.count(needle [, position])` → *integer*
+### `<String>.count(needle [, position])` → *integer* {#methods-string-prototype-method-count}
 
 Returns the number of times that the given substring was found within the string, starting the search at `position`.
 
@@ -1020,8 +973,7 @@ $text.count("ow", 8)  → Returns 2
 
 <!-- *********************************************************************** -->
 
-<span id="methods-string-prototype-method-first"></span>
-### `<String>.first()` → *string*
+### `<String>.first()` → *string* {#methods-string-prototype-method-first}
 
 Returns the first Unicode code point within the string.  Does not modify the original.
 
@@ -1047,8 +999,7 @@ $text.first()  → Returns "🙈"
 
 <!-- *********************************************************************** -->
 
-<span id="methods-string-method-format"></span>
-### `String.format(format , arguments…)` → *string*
+### `String.format(format , arguments…)` → *string* {#methods-string-method-format}
 
 Returns a formatted string, after replacing each format item in the given format string with the text equivalent of the corresponding argument's value.
 
@@ -1079,8 +1030,7 @@ String.format("{0,-6}", "foo")                    → Returns "foo   "
 
 <!-- *********************************************************************** -->
 
-<span id="methods-string-prototype-method-includes"></span>
-### `<String>.includes(needle [, position])` → *boolean*
+### `<String>.includes(needle [, position])` → *boolean* {#methods-string-prototype-method-includes}
 
 Returns whether the given substring was found within the string, starting the search at `position`.
 
@@ -1103,8 +1053,7 @@ $text.includes("pow")      → Returns false
 
 <!-- *********************************************************************** -->
 
-<span id="methods-string-prototype-method-last"></span>
-### `<String>.last()` → *string*
+### `<String>.last()` → *string* {#methods-string-prototype-method-last}
 
 Returns the last Unicode code point within the string.  Does not modify the original.
 
@@ -1130,8 +1079,7 @@ $text.last()  → Returns "🙊"
 
 <!-- *********************************************************************** -->
 
-<span id="methods-string-prototype-method-tolocaleupperfirst"></span>
-### `<String>.toLocaleUpperFirst()` → *string*
+### `<String>.toLocaleUpperFirst()` → *string* {#methods-string-prototype-method-tolocaleupperfirst}
 
 Returns the string with its first Unicode code point converted to upper case, according to any locale-specific rules.  Does not modify the original.
 
@@ -1157,8 +1105,7 @@ $text.toLocaleUpperFirst()  → Returns "İki"
 
 <!-- *********************************************************************** -->
 
-<span id="methods-string-prototype-method-toupperfirst"></span>
-### `<String>.toUpperFirst()` → *string*
+### `<String>.toUpperFirst()` → *string* {#methods-string-prototype-method-toupperfirst}
 
 Returns the string with its first Unicode code point converted to upper case.  Does not modify the original.
 

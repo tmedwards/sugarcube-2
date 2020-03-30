@@ -1,7 +1,7 @@
 <!-- ***********************************************************************************************
 	SimpleAudio API
 ************************************************************************************************ -->
-<h1 id="simpleaudio-api"><code>SimpleAudio</code> API</h1>
+# `SimpleAudio` API {#simpleaudio-api}
 
 The core audio subsystem and backend for the [audio macros](#macros-audio).
 
@@ -9,8 +9,7 @@ The core audio subsystem and backend for the [audio macros](#macros-audio).
 <a href="#audiotrack-api"><code>AudioTrack</code> API</a>, <a href="#audiorunner-api"><code>AudioRunner</code> API</a>, and <a href="#audiolist-api"><code>AudioList</code> API</a>.
 </p>
 
-<span id="simpleaudio-api-limitations"></span>
-#### Limitations
+#### Limitations {#simpleaudio-api-limitations}
 
 The audio subsystem is based upon the HTML Media Elements APIs and comes with some built-in limitations:
 
@@ -23,13 +22,11 @@ The audio subsystem is based upon the HTML Media Elements APIs and comes with so
 <!-- ***************************************************************************
 	SimpleAudio General
 **************************************************************************** -->
-<span id="simpleaudio-api-general"></span>
-## General
+## General {#simpleaudio-api-general}
 
 <!-- *********************************************************************** -->
 
-<span id="simpleaudio-api-method-load"></span>
-### `SimpleAudio.load()`
+### `SimpleAudio.load()` {#simpleaudio-api-method-load}
 
 Pauses playback of *all* currently registered tracks and, if they're not already in the process of loading, force them to drop any existing data and begin loading.
 
@@ -51,8 +48,7 @@ SimpleAudio.load();
 
 <!-- *********************************************************************** -->
 
-<span id="simpleaudio-api-method-loadwithscreen"></span>
-### `SimpleAudio.loadWithScreen()`
+### `SimpleAudio.loadWithScreen()` {#simpleaudio-api-method-loadwithscreen}
 
 Displays the loading screen until *all* currently registered audio tracks have either loaded to a playable state or aborted loading due to errors.  The loading process is as described in [`SimpleAudio.load()`](#simpleaudio-api-method-load).
 
@@ -74,8 +70,7 @@ SimpleAudio.loadWithScreen();
 
 <!-- *********************************************************************** -->
 
-<span id="simpleaudio-api-method-mute"></span>
-### `SimpleAudio.mute([state])` → **get:** *boolean* | **set:** *undefined*
+### `SimpleAudio.mute([state])` → **get:** *boolean* | **set:** *undefined* {#simpleaudio-api-method-mute}
 
 Gets or sets the mute state for the master volume (default: `false`).
 
@@ -102,8 +97,7 @@ SimpleAudio.mute(false);
 
 <!-- *********************************************************************** -->
 
-<span id="simpleaudio-api-method-muteonhidden"></span>
-### `SimpleAudio.muteOnHidden([state])` → **get:** *boolean* | **set:** *undefined*
+### `SimpleAudio.muteOnHidden([state])` → **get:** *boolean* | **set:** *undefined* {#simpleaudio-api-method-muteonhidden}
 
 Gets or sets the mute-on-hidden state for the master volume (default: `false`).  The mute-on-hidden state controls whether the master volume is automatically muted/unmuted when the story's browser tab loses/gains visibility.  Loss of visibility is defined as when the browser window is either switched to another tab or minimized.
 
@@ -130,8 +124,7 @@ SimpleAudio.muteOnHidden(false);
 
 <!-- *********************************************************************** -->
 
-<span id="simpleaudio-api-method-select"></span>
-### `SimpleAudio.select(selector)` → *`AudioRunner` object* | *null*
+### `SimpleAudio.select(selector)` → *`AudioRunner` object* | *null* {#simpleaudio-api-method-select}
 
 Returns an [`AudioRunner` instance](#audiorunner-api) for the tracks matching the given selector.
 
@@ -179,8 +172,7 @@ SimpleAudio.select(":all:not(:ui)").volume(0.40);
 
 <!-- *********************************************************************** -->
 
-<span id="simpleaudio-api-method-stop"></span>
-### `SimpleAudio.stop()`
+### `SimpleAudio.stop()` {#simpleaudio-api-method-stop}
 
 Stops playback of *all* currently registered tracks.
 
@@ -198,8 +190,7 @@ SimpleAudio.stop();
 
 <!-- *********************************************************************** -->
 
-<span id="simpleaudio-api-method-unload"></span>
-### `SimpleAudio.unload()`
+### `SimpleAudio.unload()` {#simpleaudio-api-method-unload}
 
 Stops playback of *all* currently registered tracks and force them to drop any existing data.
 
@@ -221,8 +212,7 @@ SimpleAudio.unload();
 
 <!-- *********************************************************************** -->
 
-<span id="simpleaudio-api-method-volume"></span>
-### `SimpleAudio.volume([level])` → **get:** *number* | **set:** *undefined*
+### `SimpleAudio.volume([level])` → **get:** *number* | **set:** *undefined* {#simpleaudio-api-method-volume}
 
 Gets or sets the master volume level (default: `1`).
 
@@ -248,13 +238,11 @@ SimpleAudio.volume(0.75);
 <!-- ***************************************************************************
 	SimpleAudio Tracks
 **************************************************************************** -->
-<span id="simpleaudio-api-tracks"></span>
-## Tracks
+## Tracks {#simpleaudio-api-tracks}
 
 <!-- *********************************************************************** -->
 
-<span id="simpleaudio-api-method-tracks-add"></span>
-### `SimpleAudio.tracks.add(trackId, sources…)`
+### `SimpleAudio.tracks.add(trackId, sources…)` {#simpleaudio-api-method-tracks-add}
 
 Adds an audio track with the given track ID.
 
@@ -285,8 +273,7 @@ SimpleAudio.tracks.add("what", "mp3|http://an-audio-service.com/a-user/a-track-i
 
 <!-- *********************************************************************** -->
 
-<span id="simpleaudio-api-method-tracks-clear"></span>
-### `SimpleAudio.tracks.clear()`
+### `SimpleAudio.tracks.clear()` {#simpleaudio-api-method-tracks-clear}
 
 Deletes all audio tracks.
 
@@ -308,8 +295,7 @@ SimpleAudio.tracks.clear();
 
 <!-- *********************************************************************** -->
 
-<span id="simpleaudio-api-method-tracks-delete"></span>
-### `SimpleAudio.tracks.delete(trackId)`
+### `SimpleAudio.tracks.delete(trackId)` {#simpleaudio-api-method-tracks-delete}
 
 Deletes the audio track with the given track ID.
 
@@ -337,8 +323,7 @@ SimpleAudio.tracks.delete("bgm_space");
 
 <!-- *********************************************************************** -->
 
-<span id="simpleaudio-api-method-tracks-get"></span>
-### `SimpleAudio.tracks.get(trackId)` → *`AudioTrack` object* | *null*
+### `SimpleAudio.tracks.get(trackId)` → *`AudioTrack` object* | *null* {#simpleaudio-api-method-tracks-get}
 
 Returns the [`AudioTrack` instance](#audiotrack-api) with the given track ID, or `null` on failure.
 
@@ -371,8 +356,7 @@ SimpleAudio.tracks.get("swamped").volume(1).play();
 
 <!-- *********************************************************************** -->
 
-<span id="simpleaudio-api-method-tracks-has"></span>
-### `SimpleAudio.tracks.has(trackId)` → *boolean*
+### `SimpleAudio.tracks.has(trackId)` → *boolean* {#simpleaudio-api-method-tracks-has}
 
 Returns whether an audio track with the given track ID exists.
 
@@ -396,13 +380,11 @@ if (SimpleAudio.tracks.has("bgm_space")) {
 <!-- ***************************************************************************
 	SimpleAudio Groups
 **************************************************************************** -->
-<span id="simpleaudio-api-groups"></span>
-## Groups
+## Groups {#simpleaudio-api-groups}
 
 <!-- *********************************************************************** -->
 
-<span id="simpleaudio-api-method-groups-add"></span>
-### `SimpleAudio.groups.add(groupId, trackIds…)`
+### `SimpleAudio.groups.add(groupId, trackIds…)` {#simpleaudio-api-method-groups-add}
 
 Adds an audio group with the given group ID.  Groups are useful for applying actions to multiple tracks simultaneously and/or excluding the included tracks from a larger set when applying actions.
 
@@ -428,8 +410,7 @@ SimpleAudio.groups.add(":ui", "ui_beep", "ui_boop", "ui_swish");
 
 <!-- *********************************************************************** -->
 
-<span id="simpleaudio-api-method-groups-clear"></span>
-### `SimpleAudio.groups.clear()`
+### `SimpleAudio.groups.clear()` {#simpleaudio-api-method-groups-clear}
 
 Deletes all audio groups.
 
@@ -451,8 +432,7 @@ SimpleAudio.groups.clear();
 
 <!-- *********************************************************************** -->
 
-<span id="simpleaudio-api-method-groups-delete"></span>
-### `SimpleAudio.groups.delete(groupId)`
+### `SimpleAudio.groups.delete(groupId)` {#simpleaudio-api-method-groups-delete}
 
 Deletes the audio group with the given group ID.
 
@@ -476,8 +456,7 @@ SimpleAudio.groups.delete(":ui");
 
 <!-- *********************************************************************** -->
 
-<span id="simpleaudio-api-method-groups-get"></span>
-### `SimpleAudio.groups.get(groupId)` → *array* | *null*
+### `SimpleAudio.groups.get(groupId)` → *array* | *null* {#simpleaudio-api-method-groups-get}
 
 Returns the array of track IDs with the given group ID, or `null` on failure.
 
@@ -501,8 +480,7 @@ SimpleAudio.groups.get(":ui")  → Returns the array of track IDs matching ":ui"
 
 <!-- *********************************************************************** -->
 
-<span id="simpleaudio-api-method-groups-has"></span>
-### `SimpleAudio.groups.has(groupId)` → *boolean*
+### `SimpleAudio.groups.has(groupId)` → *boolean* {#simpleaudio-api-method-groups-has}
 
 Returns whether an audio group with the given group ID exists.
 
@@ -526,13 +504,11 @@ if (SimpleAudio.groups.has(":ui")) {
 <!-- ***************************************************************************
 	SimpleAudio Lists
 **************************************************************************** -->
-<span id="simpleaudio-api-lists"></span>
-## Lists
+## Lists {#simpleaudio-api-lists}
 
 <!-- *********************************************************************** -->
 
-<span id="simpleaudio-api-method-lists-add"></span>
-### `SimpleAudio.lists.add(listId, sources…)`
+### `SimpleAudio.lists.add(listId, sources…)` {#simpleaudio-api-method-lists-add}
 
 Adds a playlist with the given list ID.  Playlists are useful for playing tracks in a sequence—i.e., one after another.
 
@@ -629,8 +605,7 @@ SimpleAudio.lists.add("bgm_lacuna",
 
 <!-- *********************************************************************** -->
 
-<span id="simpleaudio-api-method-lists-clear"></span>
-### `SimpleAudio.lists.clear()`
+### `SimpleAudio.lists.clear()` {#simpleaudio-api-method-lists-clear}
 
 Deletes all playlists.
 
@@ -648,8 +623,7 @@ SimpleAudio.lists.clear();
 
 <!-- *********************************************************************** -->
 
-<span id="simpleaudio-api-method-lists-delete"></span>
-### `SimpleAudio.lists.delete(listId)`
+### `SimpleAudio.lists.delete(listId)` {#simpleaudio-api-method-lists-delete}
 
 Deletes the playlist with the given list ID.
 
@@ -669,8 +643,7 @@ SimpleAudio.lists.delete("bgm_lacuna");
 
 <!-- *********************************************************************** -->
 
-<span id="simpleaudio-api-method-lists-get"></span>
-### `SimpleAudio.lists.get(listId)` → *`AudioList` object* | *null*
+### `SimpleAudio.lists.get(listId)` → *`AudioList` object* | *null* {#simpleaudio-api-method-lists-get}
 
 Returns the [`AudioList` instance](#audiolist-api) with the given list ID, or `null` on failure.
 
@@ -699,8 +672,7 @@ SimpleAudio.lists.get("bgm_lacuna").volume(1).loop(true).play();
 
 <!-- *********************************************************************** -->
 
-<span id="simpleaudio-api-method-lists-has"></span>
-### `SimpleAudio.lists.has(listId)` → *boolean*
+### `SimpleAudio.lists.has(listId)` → *boolean* {#simpleaudio-api-method-lists-has}
 
 Returns whether a playlist with the given list ID exists.
 

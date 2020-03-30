@@ -1,7 +1,7 @@
 <!-- ***********************************************************************************************
 	Introduction
 ************************************************************************************************ -->
-<h1 id="introduction">Introduction</h1>
+# Introduction {#introduction}
 
 This documentation is a reference for [SugarCube](http://www.motoslave.net/sugarcube/), a free (gratis and libre) story format for [Twine/Twee](http://twinery.org/).
 

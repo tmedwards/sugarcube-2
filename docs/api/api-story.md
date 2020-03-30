@@ -1,12 +1,11 @@
 <!-- ***********************************************************************************************
 	Story API
 ************************************************************************************************ -->
-<h1 id="story-api"><code>Story</code> API</h1>
+# `Story` API {#story-api}
 
 <!-- *********************************************************************** -->
 
-<span id="story-api-getter-domid"></span>
-### `Story.domId` → *string*
+### `Story.domId` → *string* {#story-api-getter-domid}
 
 The DOM ID of the story, created from the slugified story title.
 
@@ -16,8 +15,7 @@ The DOM ID of the story, created from the slugified story title.
 
 <!-- *********************************************************************** -->
 
-<span id="story-api-getter-ifid"></span>
-### `Story.ifId` → *string*
+### `Story.ifId` → *string* {#story-api-getter-ifid}
 
 The IFID (Interactive Fiction IDentifier) of the story, if any.
 
@@ -27,8 +25,7 @@ The IFID (Interactive Fiction IDentifier) of the story, if any.
 
 <!-- *********************************************************************** -->
 
-<span id="story-api-getter-title"></span>
-### `Story.title` → *string*
+### `Story.title` → *string* {#story-api-getter-title}
 
 The title of the story.
 
@@ -38,8 +35,7 @@ The title of the story.
 
 <!-- *********************************************************************** -->
 
-<span id="story-api-method-get"></span>
-### `Story.get(title)` → *`Passage` object*
+### `Story.get(title)` → *`Passage` object* {#story-api-method-get}
 
 Returns the `Passage` object referenced by the given title, or an empty `Passage` object on failure.
 
@@ -63,8 +59,7 @@ Story.get("The Ducky")  → Returns the Passage object matching "The Ducky"
 
 <!-- *********************************************************************** -->
 
-<span id="story-api-method-has"></span>
-### `Story.has(title)` → *boolean*
+### `Story.has(title)` → *boolean* {#story-api-method-has}
 
 Returns whether a `Passage` object referenced by the given title exists.
 
@@ -88,8 +83,7 @@ Story.has("The Ducky")  → Returns whether a Passage object matching "The Ducky
 
 <!-- *********************************************************************** -->
 
-<span id="story-api-method-lookup"></span>
-### `Story.lookup(propertyName , searchValue [, sortProperty])` → *`Passage` object array*
+### `Story.lookup(propertyName , searchValue [, sortProperty])` → *`Passage` object array* {#story-api-method-lookup}
 
 Returns a new array filled with all `Passage` objects that contain the given property, whose value matches the given search value, or an empty array, if no matches are made.
 
@@ -116,8 +110,7 @@ Story.lookup("tags", "forest");
 
 <!-- *********************************************************************** -->
 
-<span id="story-api-method-lookupwith"></span>
-### `Story.lookupWith(predicate [, sortProperty])` → *`Passage` object array*
+### `Story.lookupWith(predicate [, sortProperty])` → *`Passage` object array* {#story-api-method-lookupwith}
 
 Returns a new array filled with all `Passage` objects that pass the test implemented by the given predicate function or an empty array, if no objects pass.
 

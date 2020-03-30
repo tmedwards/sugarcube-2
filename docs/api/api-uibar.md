@@ -1,12 +1,11 @@
 <!-- ***********************************************************************************************
 	UIBar API
 ************************************************************************************************ -->
-<h1 id="uibar-api"><code>UIBar</code> API</h1>
+# `UIBar` API {#uibar-api}
 
 <!-- *********************************************************************** -->
 
-<span id="uibar-api-method-destroy"></span>
-### `UIBar.destroy()`
+### `UIBar.destroy()` {#uibar-api-method-destroy}
 
 Completely removes the UI bar and all of its associated styles and event handlers.
 
@@ -24,8 +23,7 @@ UIBar.destroy();
 
 <!-- *********************************************************************** -->
 
-<span id="uibar-api-method-hide"></span>
-### `UIBar.hide()` → *`UIBar` object*
+### `UIBar.hide()` → *`UIBar` object* {#uibar-api-method-hide}
 
 Hides the UI bar.  Returns a reference to the `UIBar` object for chaining.
 
@@ -55,8 +53,7 @@ UIBar.hide().stow();
 
 <!-- *********************************************************************** -->
 
-<span id="uibar-api-method-ishidden"></span>
-### `UIBar.isHidden()` → *boolean*
+### `UIBar.isHidden()` → *boolean* {#uibar-api-method-ishidden}
 
 Returns whether the UI bar is currently hidden.
 
@@ -80,8 +77,7 @@ if (!UIBar.isHidden()) {
 
 <!-- *********************************************************************** -->
 
-<span id="uibar-api-method-isstowed"></span>
-### `UIBar.isStowed()` → *boolean*
+### `UIBar.isStowed()` → *boolean* {#uibar-api-method-isstowed}
 
 Returns whether the UI bar is currently stowed.
 
@@ -105,8 +101,7 @@ if (!UIBar.isStowed()) {
 
 <!-- *********************************************************************** -->
 
-<span id="uibar-api-method-show"></span>
-### `UIBar.show()` → *`UIBar` object*
+### `UIBar.show()` → *`UIBar` object* {#uibar-api-method-show}
 
 Shows the UI bar.  Returns a reference to the `UIBar` object for chaining.
 
@@ -132,8 +127,7 @@ UIBar.unstow().show();
 
 <!-- *********************************************************************** -->
 
-<span id="uibar-api-method-stow"></span>
-### `UIBar.stow([noAnimation])` → *`UIBar` object*
+### `UIBar.stow([noAnimation])` → *`UIBar` object* {#uibar-api-method-stow}
 
 Stows the UI bar, so that it takes up less space.  Returns a reference to the `UIBar` object for chaining.
 
@@ -162,8 +156,7 @@ UIBar.stow(true);
 
 <!-- *********************************************************************** -->
 
-<span id="uibar-api-method-unstow"></span>
-### `UIBar.unstow([noAnimation])` → *`UIBar` object*
+### `UIBar.unstow([noAnimation])` → *`UIBar` object* {#uibar-api-method-unstow}
 
 Unstows the UI bar, so that it is fully accessible again.  Returns a reference to the `UIBar` object for chaining.
 

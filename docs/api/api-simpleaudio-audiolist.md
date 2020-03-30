@@ -1,7 +1,7 @@
 <!-- ***************************************************************************
 	AudioList API
 **************************************************************************** -->
-<h1 id="audiolist-api"><code>AudioList</code> API</h1>
+# `AudioList` API {#audiolist-api}
 
 Audio lists (playlists) are useful for playing tracks in a sequence—i.e., one after another.
 
@@ -11,8 +11,7 @@ Audio lists (playlists) are useful for playing tracks in a sequence—i.e., one 
 
 <!-- *********************************************************************** -->
 
-<span id="audiolist-api-prototype-method-duration"></span>
-### `<AudioList>.duration()` → *number*
+### `<AudioList>.duration()` → *number* {#audiolist-api-prototype-method-duration}
 
 Returns the playlist's total playtime in seconds, `Infinity` if it contains any streams, or `NaN` if no metadata exists.
 
@@ -30,8 +29,7 @@ var listLength = aList.duration();
 
 <!-- *********************************************************************** -->
 
-<span id="audiolist-api-prototype-method-fade"></span>
-### `<AudioList>.fade(duration , toVol [, fromVol])` → *`Promise` object*
+### `<AudioList>.fade(duration , toVol [, fromVol])` → *`Promise` object* {#audiolist-api-prototype-method-fade}
 
 Starts playback of the playlist and fades the currently playing track between the specified starting and destination volume levels over the specified number of seconds.
 
@@ -55,8 +53,7 @@ aList.fade(6, 1, 0);
 
 <!-- *********************************************************************** -->
 
-<span id="audiolist-api-prototype-method-fadein"></span>
-### `<AudioList>.fadeIn(duration [, fromVol])` → *`Promise` object*
+### `<AudioList>.fadeIn(duration [, fromVol])` → *`Promise` object* {#audiolist-api-prototype-method-fadein}
 
 Starts playback of the playlist and fades the currently playing track from the specified volume level to `1` (loudest) over the specified number of seconds.
 
@@ -79,8 +76,7 @@ aList.fadeIn(5, 0);
 
 <!-- *********************************************************************** -->
 
-<span id="audiolist-api-prototype-method-fadeout"></span>
-### `<AudioList>.fadeOut(duration [, fromVol])` → *`Promise` object*
+### `<AudioList>.fadeOut(duration [, fromVol])` → *`Promise` object* {#audiolist-api-prototype-method-fadeout}
 
 Starts playback of the playlist and fades the currently playing track from the specified volume level to `0` (silent) over the specified number of seconds.
 
@@ -103,8 +99,7 @@ aList.fadeOut(8, 1);
 
 <!-- *********************************************************************** -->
 
-<span id="audiolist-api-prototype-method-fadestop"></span>
-### `<AudioList>.fadeStop()`
+### `<AudioList>.fadeStop()` {#audiolist-api-prototype-method-fadestop}
 
 Interrupts an in-progress fade of the currently playing track, or does nothing if no fade is progressing.
 
@@ -126,8 +121,7 @@ aList.fadeStop();
 
 <!-- *********************************************************************** -->
 
-<span id="audiolist-api-prototype-method-isended"></span>
-### `<AudioList>.isEnded()` → *boolean*
+### `<AudioList>.isEnded()` → *boolean* {#audiolist-api-prototype-method-isended}
 
 Returns whether playback of the playlist has ended.
 
@@ -147,8 +141,7 @@ if (aList.isEnded()) {
 
 <!-- *********************************************************************** -->
 
-<span id="audiolist-api-prototype-method-isfading"></span>
-### `<AudioList>.isFading()` → *boolean*
+### `<AudioList>.isFading()` → *boolean* {#audiolist-api-prototype-method-isfading}
 
 Returns whether a fade is in-progress on the currently playing track.
 
@@ -168,8 +161,7 @@ if (aList.isFading()) {
 
 <!-- *********************************************************************** -->
 
-<span id="audiolist-api-prototype-method-ispaused"></span>
-### `<AudioList>.isPaused()` → *boolean*
+### `<AudioList>.isPaused()` → *boolean* {#audiolist-api-prototype-method-ispaused}
 
 Returns whether playback of the playlist has been paused.
 
@@ -189,8 +181,7 @@ if (aList.isPaused()) {
 
 <!-- *********************************************************************** -->
 
-<span id="audiolist-api-prototype-method-isplaying"></span>
-### `<AudioList>.isPlaying()` → *boolean*
+### `<AudioList>.isPlaying()` → *boolean* {#audiolist-api-prototype-method-isplaying}
 
 Returns whether the playlist is playing.
 
@@ -210,8 +201,7 @@ if (aList.isPlaying()) {
 
 <!-- *********************************************************************** -->
 
-<span id="audiolist-api-prototype-method-isstopped"></span>
-### `<AudioList>.isStopped()` → *boolean*
+### `<AudioList>.isStopped()` → *boolean* {#audiolist-api-prototype-method-isstopped}
 
 Returns whether playback of the playlist has been stopped.
 
@@ -231,8 +221,7 @@ if (aList.isStopped()) {
 
 <!-- *********************************************************************** -->
 
-<span id="audiolist-api-prototype-method-load"></span>
-### `<AudioList>.load()`
+### `<AudioList>.load()` {#audiolist-api-prototype-method-load}
 
 Pauses playback of the playlist and, if they're not already in the process of loading, forces its tracks to drop any existing data and begin loading.
 
@@ -254,8 +243,7 @@ aList.load();
 
 <!-- *********************************************************************** -->
 
-<span id="audiolist-api-prototype-method-loop"></span>
-### `<AudioList>.loop([state])` → **get:** *boolean* | **set:** *`AudioList` object*
+### `<AudioList>.loop([state])` → **get:** *boolean* | **set:** *`AudioList` object* {#audiolist-api-prototype-method-loop}
 
 Gets or sets the playlist's repeating playback state (default: `false`).  When used to set the loop state, returns a reference to the current `AudioList` instance for chaining.
 
@@ -282,8 +270,7 @@ aList.loop(false);
 
 <!-- *********************************************************************** -->
 
-<span id="audiolist-api-prototype-method-mute"></span>
-### `<AudioList>.mute([state])` → **get:** *boolean* | **set:** *`AudioList` object*
+### `<AudioList>.mute([state])` → **get:** *boolean* | **set:** *`AudioList` object* {#audiolist-api-prototype-method-mute}
 
 Gets or sets the playlist's volume mute state (default: `false`).  When used to set the mute state, returns a reference to the current `AudioList` instance for chaining.
 
@@ -310,8 +297,7 @@ aList.mute(false);
 
 <!-- *********************************************************************** -->
 
-<span id="audiolist-api-prototype-method-pause"></span>
-### `<AudioList>.pause()`
+### `<AudioList>.pause()` {#audiolist-api-prototype-method-pause}
 
 Pauses playback of the playlist.
 
@@ -329,8 +315,7 @@ aList.pause();
 
 <!-- *********************************************************************** -->
 
-<span id="audiolist-api-prototype-method-play"></span>
-### `<AudioList>.play()` → *`Promise` object*
+### `<AudioList>.play()` → *`Promise` object* {#audiolist-api-prototype-method-play}
 
 Begins playback of the playlist.
 
@@ -363,8 +348,7 @@ aList.play()
 
 <!-- *********************************************************************** -->
 
-<span id="audiolist-api-prototype-method-playwhenallowed"></span>
-### `<AudioList>.playWhenAllowed()`
+### `<AudioList>.playWhenAllowed()` {#audiolist-api-prototype-method-playwhenallowed}
 
 Begins playback of the playlist or, failing that, sets the playlist to begin playback as soon as the player has interacted with the document.
 
@@ -382,8 +366,7 @@ aList.playWhenAllowed();
 
 <!-- *********************************************************************** -->
 
-<span id="audiolist-api-prototype-method-remaining"></span>
-### `<AudioList>.remaining()` → *number*
+### `<AudioList>.remaining()` → *number* {#audiolist-api-prototype-method-remaining}
 
 Returns how much remains of the playlist's total playtime in seconds, `Infinity` if it contains any streams, or `NaN` if no metadata exists.
 
@@ -401,8 +384,7 @@ var listRemains = aList.remaining();
 
 <!-- *********************************************************************** -->
 
-<span id="audiolist-api-prototype-method-shuffle"></span>
-### `<AudioList>.shuffle([state])` → **get:** *boolean* | **set:** *`AudioList` object*
+### `<AudioList>.shuffle([state])` → **get:** *boolean* | **set:** *`AudioList` object* {#audiolist-api-prototype-method-shuffle}
 
 Gets or sets the playlist's randomly shuffled playback state (default: `false`).  When used to set the shuffle state, returns a reference to the current `AudioList` instance for chaining.
 
@@ -429,8 +411,7 @@ aList.shuffle(false);
 
 <!-- *********************************************************************** -->
 
-<span id="audiolist-api-prototype-method-skip"></span>
-### `<AudioList>.skip()`
+### `<AudioList>.skip()` {#audiolist-api-prototype-method-skip}
 
 Skips ahead to the next track in the playlist, if any.
 
@@ -448,8 +429,7 @@ someTrack.skip();
 
 <!-- *********************************************************************** -->
 
-<span id="audiolist-api-prototype-method-stop"></span>
-### `<AudioList>.stop()`
+### `<AudioList>.stop()` {#audiolist-api-prototype-method-stop}
 
 Stops playback of the playlist.
 
@@ -467,8 +447,7 @@ someTrack.stop();
 
 <!-- *********************************************************************** -->
 
-<span id="audiolist-api-prototype-method-time"></span>
-### `<AudioList>.time()` → *number*
+### `<AudioList>.time()` → *number* {#audiolist-api-prototype-method-time}
 
 Returns the playlist's current time in seconds, or `NaN` if no metadata exists.
 
@@ -486,8 +465,7 @@ var listTime = aList.time();
 
 <!-- *********************************************************************** -->
 
-<span id="audiolist-api-prototype-method-unload"></span>
-### `<AudioList>.unload()`
+### `<AudioList>.unload()` {#audiolist-api-prototype-method-unload}
 
 Stops playback of the playlist and forces its tracks to drop any existing data.
 
@@ -509,8 +487,7 @@ aList.unload();
 
 <!-- *********************************************************************** -->
 
-<span id="audiolist-api-prototype-method-volume"></span>
-### `<AudioList>.volume([level])` → **get:** *number* | **set:** *`AudioList` object*
+### `<AudioList>.volume([level])` → **get:** *number* | **set:** *`AudioList` object* {#audiolist-api-prototype-method-volume}
 
 Gets or sets the playlist's volume level (default: `1`).  When used to set the volume, returns a reference to the current `AudioList` instance for chaining.
 

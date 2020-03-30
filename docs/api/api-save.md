@@ -1,7 +1,7 @@
 <!-- ***********************************************************************************************
 	Save API
 ************************************************************************************************ -->
-<h1 id="save-api"><code>Save</code> API</h1>
+# `Save` API {#save-api}
 
 <p role="note"><b>Note:</b>
 There are several <a href="#config-api-saves">configuration settings for saves</a> that it would be wise for you to familiarize yourself with.
@@ -15,8 +15,7 @@ In-browser saves—i.e., autosave and slot saves—are largely incompatible with
 <!-- ***************************************************************************
 	Save Objects
 **************************************************************************** -->
-<span id="save-api-save-objects"></span>
-## Save Objects
+## Save Objects {#save-api-save-objects}
 
 <p role="note"><b>Note:</b>
 Adding additional properties directly to save objects is not recommended.  Instead, use the <code>metadata</code> property.
@@ -48,13 +47,11 @@ Each **`moment`** object has the following properties:
 <!-- ***************************************************************************
 	Save General
 **************************************************************************** -->
-<span id="save-api-general"></span>
-## General
+## General {#save-api-general}
 
 <!-- *********************************************************************** -->
 
-<span id="save-api-method-clear"></span>
-### `Save.clear()`
+### `Save.clear()` {#save-api-method-clear}
 
 Deletes all slot saves and the autosave, if it's enabled.
 
@@ -72,8 +69,7 @@ Save.clear()
 
 <!-- *********************************************************************** -->
 
-<span id="save-api-method-get"></span>
-### `Save.get()`
+### `Save.get()` {#save-api-method-get}
 
 Returns the saves object.
 <!--
@@ -95,8 +91,7 @@ Save.get()
 
 <!-- *********************************************************************** -->
 
-<span id="save-api-method-ok"></span>
-### `Save.ok()` → *boolean*
+### `Save.ok()` → *boolean* {#save-api-method-ok}
 
 Returns whether both the slot saves and autosave are available and ready.
 
@@ -118,13 +113,11 @@ if (Save.ok()) {
 <!-- ***************************************************************************
 	Save Slots
 **************************************************************************** -->
-<span id="save-api-slots"></span>
-## Slots
+## Slots {#save-api-slots}
 
 <!-- *********************************************************************** -->
 
-<span id="save-api-getter-slots-length"></span>
-### `Save.slots.length` → *integer*
+### `Save.slots.length` → *integer* {#save-api-getter-slots-length}
 
 Returns the total number of available slots.
 
@@ -140,8 +133,7 @@ Save.slots.length
 
 <!-- *********************************************************************** -->
 
-<span id="save-api-method-slots-count"></span>
-### `Save.slots.count()` → *integer*
+### `Save.slots.count()` → *integer* {#save-api-method-slots-count}
 
 Returns the total number of filled slots.
 
@@ -159,8 +151,7 @@ Save.slots.count()
 
 <!-- *********************************************************************** -->
 
-<span id="save-api-method-slots-delete"></span>
-### `Save.slots.delete(slot)`
+### `Save.slots.delete(slot)` {#save-api-method-slots-delete}
 
 Deletes a save from the given slot.
 
@@ -180,8 +171,7 @@ Save.slots.delete(5)  → Deletes the sixth slot save
 
 <!-- *********************************************************************** -->
 
-<span id="save-api-method-slots-get"></span>
-### `Save.slots.get(slot)` → *object*
+### `Save.slots.get(slot)` → *object* {#save-api-method-slots-get}
 
 Returns a save object from the given slot or `null`, if there was no save in the given slot.
 
@@ -201,8 +191,7 @@ Save.slots.get(5)  → Returns the sixth slot save
 
 <!-- *********************************************************************** -->
 
-<span id="save-api-method-slots-has"></span>
-### `Save.slots.has(slot)` → *boolean*
+### `Save.slots.has(slot)` → *boolean* {#save-api-method-slots-has}
 
 Returns whether the given slot is filled.
 
@@ -224,8 +213,7 @@ if (Save.slots.has(5)) {
 
 <!-- *********************************************************************** -->
 
-<span id="save-api-method-slots-isempty"></span>
-### `Save.slots.isEmpty()` → *boolean*
+### `Save.slots.isEmpty()` → *boolean* {#save-api-method-slots-isempty}
 
 Returns whether there are any filled slots.
 
@@ -243,8 +231,7 @@ Save.slots.isEmpty()  → Effectively returns: Save.slots.count() === 0
 
 <!-- *********************************************************************** -->
 
-<span id="save-api-method-slots-load"></span>
-### `Save.slots.load(slot)`
+### `Save.slots.load(slot)` {#save-api-method-slots-load}
 
 Loads a save from the given slot.
 
@@ -264,8 +251,7 @@ Save.slots.load(5)  → Load the sixth slot save
 
 <!-- *********************************************************************** -->
 
-<span id="save-api-method-slots-ok"></span>
-### `Save.slots.ok()` → *boolean*
+### `Save.slots.ok()` → *boolean* {#save-api-method-slots-ok}
 
 Returns whether the slot saves are available and ready.
 
@@ -285,8 +271,7 @@ if (Save.slots.ok()) {
 
 <!-- *********************************************************************** -->
 
-<span id="save-api-method-slots-save"></span>
-### `Save.slots.save(slot [, title [, metadata]])`
+### `Save.slots.save(slot [, title [, metadata]])` {#save-api-method-slots-save}
 
 Saves to the given slot.
 
@@ -320,13 +305,11 @@ Save.slots.save(5, "Midgar", someMetadata)
 <!-- ***************************************************************************
 	Save Autosave
 **************************************************************************** -->
-<span id="save-api-autosave"></span>
-## Autosave
+## Autosave {#save-api-autosave}
 
 <!-- *********************************************************************** -->
 
-<span id="save-api-method-autosave-delete"></span>
-### `Save.autosave.delete()`
+### `Save.autosave.delete()` {#save-api-method-autosave-delete}
 
 Deletes the autosave.
 
@@ -344,8 +327,7 @@ Save.autosave.delete()  → Deletes the autosave
 
 <!-- *********************************************************************** -->
 
-<span id="save-api-method-autosave-get"></span>
-### `Save.autosave.get()` → *object*
+### `Save.autosave.get()` → *object* {#save-api-method-autosave-get}
 
 Returns the save object from the autosave or `null`, if there was no autosave.
 
@@ -363,8 +345,7 @@ Save.autosave.get()  → Returns the autosave
 
 <!-- *********************************************************************** -->
 
-<span id="save-api-method-autosave-has"></span>
-### `Save.autosave.has()` → *boolean*
+### `Save.autosave.has()` → *boolean* {#save-api-method-autosave-has}
 
 Returns whether the autosave is filled.
 
@@ -384,8 +365,7 @@ if (Save.autosave.has()) {
 
 <!-- *********************************************************************** -->
 
-<span id="save-api-method-autosave-load"></span>
-### `Save.autosave.load()`
+### `Save.autosave.load()` {#save-api-method-autosave-load}
 
 Loads the autosave.
 
@@ -403,8 +383,7 @@ Save.autosave.load()  → Load the autosave
 
 <!-- *********************************************************************** -->
 
-<span id="save-api-method-autosave-ok"></span>
-### `Save.autosave.ok()` → *boolean*
+### `Save.autosave.ok()` → *boolean* {#save-api-method-autosave-ok}
 
 Returns whether the autosave is available and ready.
 
@@ -424,8 +403,7 @@ if (Save.autosave.ok()) {
 
 <!-- *********************************************************************** -->
 
-<span id="save-api-method-autosave-save"></span>
-### `Save.autosave.save([title [, metadata]])`
+### `Save.autosave.save([title [, metadata]])` {#save-api-method-autosave-save}
 
 Saves to the autosave.
 
@@ -458,13 +436,11 @@ Save.autosave.save("Midgar", someMetadata)
 <!-- ***************************************************************************
 	Save Disk
 **************************************************************************** -->
-<span id="save-api-disk"></span>
-## Disk
+## Disk {#save-api-disk}
 
 <!-- *********************************************************************** -->
 
-<span id="save-api-method-export"></span>
-### `Save.export([filename [, metadata]])`
+### `Save.export([filename [, metadata]])` {#save-api-method-export}
 
 Saves to disk.
 
@@ -496,8 +472,7 @@ Save.export("The 7th Fantasy", someMetadata)
 
 <!-- *********************************************************************** -->
 
-<span id="save-api-method-import"></span>
-### `Save.import(event)`
+### `Save.import(event)` {#save-api-method-import}
 
 Loads a save from disk.
 
@@ -561,13 +536,11 @@ jQuery(input).on('change', function (ev) {
 <!-- ***************************************************************************
 	Save Serialization
 **************************************************************************** -->
-<span id="save-api-serialization"></span>
-## Serialization
+## Serialization {#save-api-serialization}
 
 <!-- *********************************************************************** -->
 
-<span id="save-api-method-serialize"></span>
-### `Save.serialize([metadata])` → *string* | *null*
+### `Save.serialize([metadata])` → *string* | *null* {#save-api-method-serialize}
 
 Returns a save as a serialized string, or `null` if saving is not allowed within the current context.
 
@@ -597,8 +570,7 @@ if (myGameState === null) {
 
 <!-- *********************************************************************** -->
 
-<span id="save-api-method-deserialize"></span>
-### `Save.deserialize(saveStr)` → *any* | *null*
+### `Save.deserialize(saveStr)` → *any* | *null* {#save-api-method-deserialize}
 
 Deserializes the given save string, created via [`Save.serialize()`](#save-api-method-serialize), and loads the save.  Returns the bundled metadata, if any, or `null` if the given save could not be deserialized and loaded.
 

@@ -1,7 +1,7 @@
 <!-- ***********************************************************************************************
 	Guide: Test Mode
 ************************************************************************************************ -->
-<h1 id="guide-test-mode">Guide: Test Mode</h1>
+# Guide: Test Mode {#guide-test-mode}
 
 #### Since:
 
@@ -11,8 +11,7 @@
 <!-- ***************************************************************************
 	Introduction
 **************************************************************************** -->
-<span id="guide-test-mode-introduction"></span>
-## Introduction
+## Introduction {#guide-test-mode-introduction}
 
 In test mode, SugarCube will wrap all macros, and some non-macro markup—e.g., link &amp; image markup—within additional HTML elements, called "debug views" ("views" for short).  Views make their associated code visible, thus providing onscreen feedback—they may also be hovered over which, generally, exposes additional information about the underlying code.
 
@@ -28,8 +27,7 @@ In versions of SugarCube ≥v2.23.0, the debugging interface offers additional t
 <!-- ***************************************************************************
 	Enabling Test Mode
 **************************************************************************** -->
-<span id="guide-test-mode-enabling"></span>
-## Enabling Test Mode
+## Enabling Test Mode {#guide-test-mode-enabling}
 
 ### Automatically
 
@@ -77,8 +75,7 @@ The <a href="#config-api-property-debug"><code>Config.debug</code> setting</a> f
 <!-- ***************************************************************************
 	Debug Bar (≥v2.23.0)
 **************************************************************************** -->
-<span id="guide-test-mode-debug-bar"></span>
-## Debug Bar (≥v2.23.0)
+## Debug Bar (≥v2.23.0) {#guide-test-mode-debug-bar}
 
 The debug bar (bottom right corner of the page) allows you to: watch the values of story and temporary variables, toggle the debug views, and jump to any moment/turn within the history.
 
@@ -92,8 +89,7 @@ To jump to any moment/turn within the available history, select the moment/turn 
 <!-- ***************************************************************************
 	Debug Views (≤v2.22.0)
 **************************************************************************** -->
-<span id="guide-test-mode-debug-views"></span>
-## Debug Views (≤v2.22.0)
+## Debug Views (≤v2.22.0) {#guide-test-mode-debug-views}
 
 The debug views themselves may be toggled on and off (default: on) via the *<i class="icon bug"></i>Debug View* button (top of the UI bar).
 

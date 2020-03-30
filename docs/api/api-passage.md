@@ -1,7 +1,7 @@
 <!-- ***********************************************************************************************
 	Passage API
 ************************************************************************************************ -->
-<h1 id="passage-api"><code>Passage</code> API</h1>
+# `Passage` API {#passage-api}
 
 Instances of the `Passage` object are returned by the [`Story.get()`](#story-api-method-get) static method.
 
@@ -9,8 +9,7 @@ All properties of `Passage` objects should be treated as if they were ***read-on
 
 <!-- *********************************************************************** -->
 
-<span id="passage-api-prototype-getter-domid"></span>
-### `<Passage>.domId` → *string*
+### `<Passage>.domId` → *string* {#passage-api-prototype-getter-domid}
 
 The DOM ID of the passage, created from the slugified passage title.
 
@@ -20,8 +19,7 @@ The DOM ID of the passage, created from the slugified passage title.
 
 <!-- *********************************************************************** -->
 
-<span id="passage-api-prototype-getter-tags"></span>
-### `<Passage>.tags` → *string array*
+### `<Passage>.tags` → *string array* {#passage-api-prototype-getter-tags}
 
 The tags of the passage.
 
@@ -31,8 +29,7 @@ The tags of the passage.
 
 <!-- *********************************************************************** -->
 
-<span id="passage-api-prototype-getter-text"></span>
-### `<Passage>.text` → *string*
+### `<Passage>.text` → *string* {#passage-api-prototype-getter-text}
 
 The raw text of the passage.
 
@@ -42,8 +39,7 @@ The raw text of the passage.
 
 <!-- *********************************************************************** -->
 
-<span id="passage-api-prototype-getter-title"></span>
-### `<Passage>.title` → *string*
+### `<Passage>.title` → *string* {#passage-api-prototype-getter-title}
 
 The title of the passage.
 
@@ -53,8 +49,7 @@ The title of the passage.
 
 <!-- *********************************************************************** -->
 
-<span id="passage-api-prototype-method-description"></span>
-### `<Passage>.description()` → *string*
+### `<Passage>.description()` → *string* {#passage-api-prototype-method-description}
 
 Returns the description of the passage, created from either an excerpt of the passage or the [`Config.passages.descriptions` setting](#config-api-property-passages-descriptions).
 
@@ -74,8 +69,7 @@ passage.description()  → Returns the description of "The Ducky" passage
 
 <!-- *********************************************************************** -->
 
-<span id="passage-api-prototype-method-processtext"></span>
-### `<Passage>.processText()` → *string*
+### `<Passage>.processText()` → *string* {#passage-api-prototype-method-processtext}
 
 Returns the processed text of the passage, created from applying `nobr` tag and image passage processing to its raw text.
 

@@ -1,12 +1,11 @@
 <!-- ***********************************************************************************************
 	Engine API
 ************************************************************************************************ -->
-<h1 id="engine-api"><code>Engine</code> API</h1>
+# `Engine` API {#engine-api}
 
 <!-- *********************************************************************** -->
 
-<span id="engine-api-getter-lastplay"></span>
-### `Engine.lastPlay` → *number*
+### `Engine.lastPlay` → *number* {#engine-api-getter-lastplay}
 
 Returns a timestamp representing the last time `Engine.play()` was called.
 
@@ -22,8 +21,7 @@ Engine.lastPlay  → The timestamp at which Engine.play() was last called
 
 <!-- *********************************************************************** -->
 
-<span id="engine-api-getter-state"></span>
-### `Engine.state` → *string*
+### `Engine.state` → *string* {#engine-api-getter-state}
 
 Returns the current state of the engine (`"idle"`, `"playing"`, `"rendering"`).
 
@@ -45,8 +43,7 @@ Engine.state  → Returns the current state of the engine
 
 <!-- *********************************************************************** -->
 
-<span id="engine-api-method-backward"></span>
-### `Engine.backward()` → *boolean*
+### `Engine.backward()` → *boolean* {#engine-api-method-backward}
 
 Moves backward one moment within the full history (past + future), if possible, activating and showing the moment moved to.  Returns whether the history navigation was successful (should only fail if already at the beginning of the full history).
 
@@ -64,8 +61,7 @@ Engine.backward()  → Rewinds the full history by one moment—i.e., undoes the
 
 <!-- *********************************************************************** -->
 
-<span id="engine-api-method-forward"></span>
-### `Engine.forward()` → *boolean*
+### `Engine.forward()` → *boolean* {#engine-api-method-forward}
 
 Moves forward one moment within the full history (past + future), if possible, activating and showing the moment moved to.  Returns whether the history navigation was successful (should only fail if already at the end of the full history).
 
@@ -83,8 +79,7 @@ Engine.forward()  → Fast forwards the full history by one moment—i.e., redoe
 
 <!-- *********************************************************************** -->
 
-<span id="engine-api-method-go"></span>
-### `Engine.go(offset)` → *boolean*
+### `Engine.go(offset)` → *boolean* {#engine-api-method-go}
 
 Activates the moment at the given offset from the active (present) moment within the full state history and show it.  Returns whether the history navigation was successful (should only fail if the offset from the active (present) moment is not within the bounds of the full history).
 
@@ -105,8 +100,7 @@ Engine.go(-4)  → Rewinds the full history by four moments—i.e., undoes the m
 
 <!-- *********************************************************************** -->
 
-<span id="engine-api-method-goto"></span>
-### `Engine.goTo(index)` → *boolean*
+### `Engine.goTo(index)` → *boolean* {#engine-api-method-goto}
 
 Activates the moment at the given index within the full state history and show it.  Returns whether the history navigation was successful (should only fail if the index is not within the bounds of the full history).
 
@@ -127,8 +121,7 @@ Engine.goTo(9)  → Goes to the tenth moment
 
 <!-- *********************************************************************** -->
 
-<span id="engine-api-method-isidle"></span>
-### `Engine.isIdle()` → *boolean*
+### `Engine.isIdle()` → *boolean* {#engine-api-method-isidle}
 
 Returns whether the engine is idle.
 
@@ -146,8 +139,7 @@ Engine.isIdle()  → Returns whether the engine is idle
 
 <!-- *********************************************************************** -->
 
-<span id="engine-api-method-isplaying"></span>
-### `Engine.isPlaying()` → *boolean*
+### `Engine.isPlaying()` → *boolean* {#engine-api-method-isplaying}
 
 Returns whether the engine is processing a turn—i.e., passage navigation has been triggered.
 
@@ -165,8 +157,7 @@ Engine.isPlaying()  → Returns whether the engine is playing
 
 <!-- *********************************************************************** -->
 
-<span id="engine-api-method-isrendering"></span>
-### `Engine.isRendering()` → *boolean*
+### `Engine.isRendering()` → *boolean* {#engine-api-method-isrendering}
 
 Returns whether the engine is rendering the incoming passage.
 
@@ -184,8 +175,7 @@ Engine.isRendering()  → Returns whether the engine is rendering
 
 <!-- *********************************************************************** -->
 
-<span id="engine-api-method-play"></span>
-### `Engine.play(passageTitle [, noHistory])` → *`HTMLElement` object*
+### `Engine.play(passageTitle [, noHistory])` → *`HTMLElement` object* {#engine-api-method-play}
 
 Renders and displays the passage referenced by the given title, optionally without adding a new moment to the history.
 
@@ -207,8 +197,7 @@ Engine.play("Foo", true)  → Renders and displays the passage "Foo", but does n
 
 <!-- *********************************************************************** -->
 
-<span id="engine-api-method-restart"></span>
-### `Engine.restart()`
+### `Engine.restart()` {#engine-api-method-restart}
 
 Restarts the story.
 
@@ -234,8 +223,7 @@ Engine.restart()  → Restarts the story
 
 <!-- *********************************************************************** -->
 
-<span id="engine-api-method-show"></span>
-### `Engine.show()` → *`HTMLElement` object*
+### `Engine.show()` → *`HTMLElement` object* {#engine-api-method-show}
 
 Renders and displays the active (present) moment's associated passage without adding a new moment to the history.
 

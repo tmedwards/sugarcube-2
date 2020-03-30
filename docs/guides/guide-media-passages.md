@@ -1,7 +1,7 @@
 <!-- ***********************************************************************************************
 	Guide: Media Passages
 ************************************************************************************************ -->
-<h1 id="guide-media-passages">Guide: Media Passages</h1>
+# Guide: Media Passages {#guide-media-passages}
 
 Media passages are simply a way to embed media into your project—specially tagged passages that contain the [data URI](https://en.wikipedia.org/wiki/Data_URI_scheme) of a Base64-encoded media source.  Audio, image, video, and <abbr title="Video Text Track">VTT</abbr> passages are supported.
 
@@ -21,8 +21,7 @@ lEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==
 <!-- ***************************************************************************
 	Creation
 **************************************************************************** -->
-<span id="guide-media-passages-creation"></span>
-## Creation
+## Creation {#guide-media-passages-creation}
 
 Generally, it's expected that you will use a compiler that supports the automatic creation of media passages, however, they may be created manually.
 

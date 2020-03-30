@@ -1,7 +1,7 @@
 <!-- ***********************************************************************************************
 	Macro API
 ************************************************************************************************ -->
-<h1 id="macro-api"><code>Macro</code> API</h1>
+# `Macro` API {#macro-api}
 
 <p role="note" class="see"><b>See Also:</b>
 <a href="#macrocontext-api"><code>MacroContext</code> API</a>.
@@ -9,8 +9,7 @@
 
 <!-- *********************************************************************** -->
 
-<span id="macro-api-method-add"></span>
-### `Macro.add(name , definition [, deep])`
+### `Macro.add(name , definition [, deep])` {#macro-api-method-add}
 
 Add new macro(s).
 
@@ -64,8 +63,7 @@ Macro.add('if', {
 
 <!-- *********************************************************************** -->
 
-<span id="macro-api-method-delete"></span>
-### `Macro.delete(name)`
+### `Macro.delete(name)` {#macro-api-method-delete}
 
 Remove existing macro(s).
 
@@ -86,8 +84,7 @@ Macro.delete(["amacro", "bmacro"])
 
 <!-- *********************************************************************** -->
 
-<span id="macro-api-method-get"></span>
-### `Macro.get(name)` → *object*
+### `Macro.get(name)` → *object* {#macro-api-method-get}
 
 Return the named macro definition, or `null` on failure.
 
@@ -107,8 +104,7 @@ Macro.get("print")
 
 <!-- *********************************************************************** -->
 
-<span id="macro-api-method-has"></span>
-### `Macro.has(name)` → *boolean*
+### `Macro.has(name)` → *boolean* {#macro-api-method-has}
 
 Returns whether the named macro exists.
 
@@ -128,8 +124,7 @@ Macro.has("print")
 
 <!-- *********************************************************************** -->
 
-<span id="macro-api-method-tags-get"></span>
-### `Macro.tags.get(name)` → *string array*
+### `Macro.tags.get(name)` → *string array* {#macro-api-method-tags-get}
 
 Return the named macro tag's parents array (includes the names of all macros who have registered the tag as a child), or `null` on failure.
 
@@ -149,8 +144,7 @@ Macro.tags.get("else")  → For the standard library, returns: ["if"]
 
 <!-- *********************************************************************** -->
 
-<span id="macro-api-method-tags-has"></span>
-### `Macro.tags.has(name)` → *boolean*
+### `Macro.tags.has(name)` → *boolean* {#macro-api-method-tags-has}
 
 Returns whether the named macro tag exists.
 

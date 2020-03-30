@@ -1,7 +1,7 @@
 <!-- ***********************************************************************************************
 	Config API
 ************************************************************************************************ -->
-<h1 id="config-api"><code>Config</code> API</h1>
+# `Config` API {#config-api}
 
 The `Config` object controls various aspects of SugarCube's behavior.
 
@@ -13,13 +13,11 @@ The `Config` object controls various aspects of SugarCube's behavior.
 <!-- ***************************************************************************
 	Audio
 **************************************************************************** -->
-<span id="config-api-audio"></span>
-## Audio Settings
+## Audio Settings {#config-api-audio}
 
 <!-- *********************************************************************** -->
 
-<span id="config-api-property-audio-pauseonfadetozero"></span>
-### `Config.audio.pauseOnFadeToZero` ↔ *boolean* (default: `true`)
+### `Config.audio.pauseOnFadeToZero` ↔ *boolean* (default: `true`) {#config-api-property-audio-pauseonfadetozero}
 
 Determines whether the audio subsystem automatically pauses tracks that have been faded to `0` volume (silent).
 
@@ -35,8 +33,7 @@ Config.audio.pauseOnFadeToZero = false;
 
 <!-- *********************************************************************** -->
 
-<span id="config-api-property-audio-preloadmetadata"></span>
-### `Config.audio.preloadMetadata` ↔ *boolean* (default: `true`)
+### `Config.audio.preloadMetadata` ↔ *boolean* (default: `true`) {#config-api-property-audio-preloadmetadata}
 
 Determines whether the audio subsystem attempts to preload track metadata—meaning information about the track (e.g., duration), not its audio frames.
 
@@ -58,13 +55,11 @@ Config.audio.preloadMetadata = false;
 <!-- ***************************************************************************
 	History
 **************************************************************************** -->
-<span id="config-api-history"></span>
-## History Settings
+## History Settings {#config-api-history}
 
 <!-- *********************************************************************** -->
 
-<span id="config-api-property-history-controls"></span>
-### `Config.history.controls` ↔ *boolean* (default: `true`)
+### `Config.history.controls` ↔ *boolean* (default: `true`) {#config-api-property-history-controls}
 
 Determines whether the story's history controls (Backward, Jump To, & Forward buttons) are enabled within the UI bar.
 
@@ -80,8 +75,7 @@ Config.history.controls = false;
 
 <!-- *********************************************************************** -->
 
-<span id="config-api-property-history-maxstates"></span>
-### `Config.history.maxStates` ↔ *integer* (default: `100`)
+### `Config.history.maxStates` ↔ *integer* (default: `100`) {#config-api-property-history-maxstates}
 
 Sets the maximum number of states (moments) to which the history is allowed to grow.  Should the history exceed the limit, states will be dropped from the past (oldest first).  A setting of `0` means that there is no limit to how large the history may grow, though doing so is not recommended.
 
@@ -106,13 +100,11 @@ Config.history.maxStates = 150;
 <!-- ***************************************************************************
 	Macros
 **************************************************************************** -->
-<span id="config-api-macros"></span>
-## Macros Settings ##
+## Macros Settings ## {#config-api-macros}
 
 <!-- *********************************************************************** -->
 
-<span id="config-api-property-macros-ifassignmenterror"></span>
-### `Config.macros.ifAssignmentError` ↔ *boolean* (default: `true`)
+### `Config.macros.ifAssignmentError` ↔ *boolean* (default: `true`) {#config-api-property-macros-ifassignmenterror}
 
 Determines whether the [`<<if>>` macro](#macros-macro-if) returns an error when the `=` assignment operator is used within its conditional—e.g., `<<if $suspect = "Bob">>`.  Does not flag other assignment operators.
 
@@ -133,8 +125,7 @@ Config.macros.ifAssignmentError = false;
 
 <!-- *********************************************************************** -->
 
-<span id="config-api-property-macros-maxloopiterations"></span>
-### `Config.macros.maxLoopIterations` ↔ *integer* (default: `1000`)
+### `Config.macros.maxLoopIterations` ↔ *integer* (default: `1000`) {#config-api-property-macros-maxloopiterations}
 
 Sets the maximum number of iterations allowed before the [`<<for>>` macro](#macros-macro-for) conditional forms are terminated with an error.
 
@@ -157,13 +148,11 @@ Config.macros.maxLoopIterations = 5000;
 <!-- ***************************************************************************
 	Navigation
 **************************************************************************** -->
-<span id="config-api-navigation"></span>
-## Navigation Settings ##
+## Navigation Settings ## {#config-api-navigation}
 
 <!-- *********************************************************************** -->
 
-<span id="config-api-property-navigation-override"></span>
-### `Config.navigation.override` ↔ *function* (default: *none*)
+### `Config.navigation.override` ↔ *function* (default: *none*) {#config-api-property-navigation-override}
 
 Allows the destination of passage navigation to be overridden.  The callback is passed one parameter, the original destination passage title.  If its return value is falsy, the override is cancelled and navigation to the original destination continues unperturbed.  If its return value is truthy, the override succeeds and that value is used as the new destination of the navigation.
 
@@ -197,13 +186,11 @@ Config.navigation.override = function (dest) {
 <!-- ***************************************************************************
 	Passages
 **************************************************************************** -->
-<span id="config-api-passages"></span>
-## Passages Settings ##
+## Passages Settings ## {#config-api-passages}
 
 <!-- *********************************************************************** -->
 
-<span id="config-api-property-passages-descriptions"></span>
-### `Config.passages.descriptions` ↔ *boolean* | *object* | *function* (default: *none*)
+### `Config.passages.descriptions` ↔ *boolean* | *object* | *function* (default: *none*) {#config-api-property-passages-descriptions}
 
 Determines whether alternate passage descriptions are used by the Saves and Rewind menus (by default an excerpt from the passage is used).  Valid values are boolean `true`, which simply causes the passages' titles to be used, an object, which maps passages' titles to their descriptions, or a function, which should return the passages' description.
 
@@ -240,8 +227,7 @@ Config.passages.descriptions = function () {
 
 <!-- *********************************************************************** -->
 
-<span id="config-api-property-passages-displaytitles"></span>
-### `Config.passages.displayTitles` ↔ *boolean* (default: `false`)
+### `Config.passages.displayTitles` ↔ *boolean* (default: `false`) {#config-api-property-passages-displaytitles}
 
 Determines whether passage titles are combined with the story title, within the browser's/tab's titlebar, when passages are displayed.
 
@@ -257,8 +243,7 @@ Config.passages.displayTitles = true;
 
 <!-- *********************************************************************** -->
 
-<span id="config-api-property-passages-nobr"></span>
-### `Config.passages.nobr` ↔ *boolean* (default: `false`)
+### `Config.passages.nobr` ↔ *boolean* (default: `false`) {#config-api-property-passages-nobr}
 
 Determines whether rendering passages have their leading/trailing newlines removed and all remaining sequences of newlines replaced with single spaces before they're rendered.  Equivalent to including the [`nobr` special tag](#special-tag-nobr) on every passage.
 
@@ -278,8 +263,7 @@ Config.passages.nobr = true;
 
 <!-- *********************************************************************** -->
 
-<span id="config-api-property-passages-onprocess"></span>
-### `Config.passages.onProcess` ↔ *function* (default: *none*)
+### `Config.passages.onProcess` ↔ *function* (default: *none*) {#config-api-property-passages-onprocess}
 
 Allows custom processing of passage text.  The function is invoked each time the [`<Passage>.processText()` method](#passage-api-prototype-method-processtext) is called.  It is passed an abbreviated version of the associated passage's [`Passage` instance](#passage-api)—containing only the `tags`, `text`, and `title` properties.  Its return value should be the post-processed text.
 
@@ -306,8 +290,7 @@ Config.passages.onProcess = function (p) {
 
 <!-- *********************************************************************** -->
 
-<span id="config-api-property-passages-start"></span>
-### `Config.passages.start` ↔ *string* (Twine&nbsp;2 default: *user-selected*; Twine&nbsp;1/Twee default: `"Start"`)
+### `Config.passages.start` ↔ *string* (Twine&nbsp;2 default: *user-selected*; Twine&nbsp;1/Twee default: `"Start"`) {#config-api-property-passages-start}
 
 Sets the starting passage, the very first passage that will be displayed.
 
@@ -323,8 +306,7 @@ Config.passages.start = "That Other Starting Passage";
 
 <!-- *********************************************************************** -->
 
-<span id="config-api-property-passages-transitionout"></span>
-### `Config.passages.transitionOut` ↔ *string* | *integer* (default: *none*)
+### `Config.passages.transitionOut` ↔ *string* | *integer* (default: *none*) {#config-api-property-passages-transitionout}
 
 Determines whether outgoing passage transitions are enabled.  Valid values are the name of the property being animated, which causes the outgoing passage element to be removed once that transition animation is complete, or an integer delay (in milliseconds), which causes the outgoing passage element to be removed once the delay has expired.  You will also need some CSS styles to make this work—examples given below.
 
@@ -377,13 +359,11 @@ That probably won't be very pleasing to the eye, however, so you will likely nee
 <!-- ***************************************************************************
 	Saves
 **************************************************************************** -->
-<span id="config-api-saves"></span>
-## Saves Settings ##
+## Saves Settings ## {#config-api-saves}
 
 <!-- *********************************************************************** -->
 
-<span id="config-api-property-saves-autoload"></span>
-### `Config.saves.autoload` ↔ *boolean* | *string* | *function* (default: *none*)
+### `Config.saves.autoload` ↔ *boolean* | *string* | *function* (default: *none*) {#config-api-property-saves-autoload}
 
 Determines whether the autosave, if it exists, is automatically loaded upon story startup.  Valid values are boolean `true`, which simply causes the autosave to be loaded, the string `"prompt"`, which prompts the player via a dialog to load the autosave, or a function, which causes the autosave to be loaded if its return value is truthy.
 
@@ -412,8 +392,7 @@ Config.saves.autoload = function () {
 
 <!-- *********************************************************************** -->
 
-<span id="config-api-property-saves-autosave"></span>
-### `Config.saves.autosave` ↔ *boolean* | *string array* | *function* (default: *none*)
+### `Config.saves.autosave` ↔ *boolean* | *string array* | *function* (default: *none*) {#config-api-property-saves-autosave}
 
 Determines whether the autosave is created/updated when passages are displayed.  Valid values are boolean `true`, which causes the autosave to be updated with every passage, an array of strings, which causes the autosave to be updated for each passage with at least one matching tag, or a function, which causes the autosave to be updated for each passage where its return value is truthy.
 
@@ -443,8 +422,7 @@ Config.saves.autosave = function () {
 
 <!-- *********************************************************************** -->
 
-<span id="config-api-property-saves-id"></span>
-### `Config.saves.id` ↔ *string* (default: *slugified story title*)
+### `Config.saves.id` ↔ *string* (default: *slugified story title*) {#config-api-property-saves-id}
 
 Sets the story ID associated with saves.
 
@@ -460,8 +438,7 @@ Config.saves.id = "a-big-huge-story-part-1";
 
 <!-- *********************************************************************** -->
 
-<span id="config-api-property-saves-isallowed"></span>
-### `Config.saves.isAllowed` ↔ *function* (default: *none*)
+### `Config.saves.isAllowed` ↔ *function* (default: *none*) {#config-api-property-saves-isallowed}
 
 Determines whether saving is allowed within the current context.  The callback is invoked each time a save is requested.  If its return value is falsy, the save is disallowed.  If its return value is truthy, the save is allowed to continue unperturbed.
 
@@ -479,8 +456,7 @@ Config.saves.isAllowed = function () {
 
 <!-- *********************************************************************** -->
 
-<span id="config-api-property-saves-onload"></span>
-### `Config.saves.onLoad` ↔ *function* (default: *none*)
+### `Config.saves.onLoad` ↔ *function* (default: *none*) {#config-api-property-saves-onload}
 
 Performs any required pre-processing before the save data is loaded—e.g., upgrading out-of-date save data.  The callback is passed one parameter, the save object to be processed.  If it encounters an unrecoverable problem during its processing, it may throw an exception containing an error message; the message will be displayed to the player and loading of the save will be terminated.
 
@@ -502,8 +478,7 @@ Config.saves.onLoad = function (save) {
 
 <!-- *********************************************************************** -->
 
-<span id="config-api-property-saves-onsave"></span>
-### `Config.saves.onSave` ↔ *function* (default: *none*)
+### `Config.saves.onSave` ↔ *function* (default: *none*) {#config-api-property-saves-onsave}
 
 Performs any required post-processing before the save data is saved.  The callback is passed one parameter, the save object to be processed.
 
@@ -525,8 +500,7 @@ Config.saves.onSave = function (save) {
 
 <!-- *********************************************************************** -->
 
-<span id="config-api-property-saves-slots"></span>
-### `Config.saves.slots` *integer* (default: `8`)
+### `Config.saves.slots` *integer* (default: `8`) {#config-api-property-saves-slots}
 
 Sets the maximum number of available save slots.
 
@@ -542,8 +516,7 @@ Config.saves.slots = 4;
 
 <!-- *********************************************************************** -->
 
-<span id="config-api-property-saves-version"></span>
-### `Config.saves.version` ↔ *any* (default: *none*)
+### `Config.saves.version` ↔ *any* (default: *none*) {#config-api-property-saves-version}
 
 Sets the `version` property of saves.
 
@@ -569,13 +542,11 @@ Config.saves.version = "v3";
 <!-- ***************************************************************************
 	UI
 **************************************************************************** -->
-<span id="config-api-ui"></span>
-## UI Settings
+## UI Settings {#config-api-ui}
 
 <!-- *********************************************************************** -->
 
-<span id="config-api-property-ui-stowbarinitially"></span>
-### `Config.ui.stowBarInitially` ↔ *boolean* | *integer* (default: `800`)
+### `Config.ui.stowBarInitially` ↔ *boolean* | *integer* (default: `800`) {#config-api-property-ui-stowbarinitially}
 
 Determines whether the UI bar (sidebar) starts in the stowed (shut) state initially.  Valid values are boolean `true`/`false`, which causes the UI bar to always/never start in the stowed state, or an integer, which causes the UI bar to start in the stowed state if the viewport width is less-than-or-equal-to the specified number of pixels.
 
@@ -598,8 +569,7 @@ Config.ui.stowBarInitially = 800;
 
 <!-- *********************************************************************** -->
 
-<span id="config-api-property-ui-updatestoryelements"></span>
-### `Config.ui.updateStoryElements` ↔ *boolean* (default: `true`)
+### `Config.ui.updateStoryElements` ↔ *boolean* (default: `true`) {#config-api-property-ui-updatestoryelements}
 
 Determines whether certain elements within the UI bar are updated when passages are displayed.  The affected elements are the story: banner, subtitle, author, caption, and menu.
 
@@ -622,13 +592,11 @@ Config.ui.updateStoryElements = false;
 <!-- ***************************************************************************
 	Miscellaneous
 **************************************************************************** -->
-<span id="config-api-miscellaneous"></span>
-## Miscellaneous Settings
+## Miscellaneous Settings {#config-api-miscellaneous}
 
 <!-- *********************************************************************** -->
 
-<span id="config-api-property-addvisitedlinkclass"></span>
-### `Config.addVisitedLinkClass` ↔ *boolean* (default: `false`)
+### `Config.addVisitedLinkClass` ↔ *boolean* (default: `false`) {#config-api-property-addvisitedlinkclass}
 
 Determines whether the `link-visited` class is added to internal passage links that go to previously visited passages—i.e., the passage already exists within the story history.
 
@@ -658,8 +626,7 @@ You will also need to specify a `.link-visited` style that defines the propertie
 
 <!-- *********************************************************************** -->
 
-<span id="config-api-property-cleanupwikifieroutput"></span>
-### `Config.cleanupWikifierOutput` ↔ *boolean* (default: `false`)
+### `Config.cleanupWikifierOutput` ↔ *boolean* (default: `false`) {#config-api-property-cleanupwikifieroutput}
 
 Determines whether the output of the Wikifier is post-processed into more sane markup—i.e., where appropriate, it tries to transition the plethora of `<br>` elements into `<p>` elements.
 
@@ -675,8 +642,7 @@ Config.cleanupWikifierOutput = true;
 
 <!-- *********************************************************************** -->
 
-<span id="config-api-property-debug"></span>
-### `Config.debug` ↔ *boolean* (default: `false`)
+### `Config.debug` ↔ *boolean* (default: `false`) {#config-api-property-debug}
 
 Indicates whether SugarCube is running in test mode, which enables debug views.  See the [*Test Mode* guide](#guide-test-mode) for more information.
 
@@ -707,8 +673,7 @@ if (Config.debug) {
 
 <!-- *********************************************************************** -->
 
-<span id="config-api-property-loaddelay"></span>
-### `Config.loadDelay` ↔ *integer* (default: `0`)
+### `Config.loadDelay` ↔ *integer* (default: `0`) {#config-api-property-loaddelay}
 
 Sets the integer delay (in milliseconds) before the loading screen is dismissed, once the document has signaled its readiness.  Not generally necessary, however, some browsers render slower than others and may need a little extra time to get a media-heavy page done.  This allows you to fine tune for those cases.
 

@@ -1,14 +1,13 @@
 <!-- ***********************************************************************************************
 	Setting API
 ************************************************************************************************ -->
-<h1 id="setting-api"><code>Setting</code> API</h1>
+# `Setting` API {#setting-api}
 
 Manages the Settings dialog and [`settings` object](#setting-api-object-settings).
 
 <!-- *********************************************************************** -->
 
-<span id="setting-api-method-addheader"></span>
-### `Setting.addHeader(name [, desc])`
+### `Setting.addHeader(name [, desc])` {#setting-api-method-addheader}
 
 Adds a header to the Settings dialog.
 
@@ -33,8 +32,7 @@ Setting.addHeader("Content Settings", "Settings controlling what content is made
 
 <!-- *********************************************************************** -->
 
-<span id="setting-api-method-addtoggle"></span>
-### `Setting.addToggle(name, definition)`
+### `Setting.addToggle(name, definition)` {#setting-api-method-addtoggle}
 
 Adds the named property to the `settings` object and a toggle control for it to the Settings dialog.
 
@@ -99,8 +97,7 @@ html.widescreen #passages {
 
 <!-- *********************************************************************** -->
 
-<span id="setting-api-method-addlist"></span>
-### `Setting.addList(name, definition)`
+### `Setting.addList(name, definition)` {#setting-api-method-addlist}
 
 Adds the named property to the `settings` object and a list control for it to the Settings dialog.
 
@@ -179,8 +176,7 @@ $("html")
 
 <!-- *********************************************************************** -->
 
-<span id="setting-api-method-addrange"></span>
-### `Setting.addRange(name, definition)`
+### `Setting.addRange(name, definition)` {#setting-api-method-addrange}
 
 Adds the named property to the `settings` object and a range control for it to the Settings dialog.
 
@@ -229,8 +225,7 @@ Setting.addRange("masterVolume", {
 
 <!-- *********************************************************************** -->
 
-<span id="setting-api-method-load"></span>
-### `Setting.load()`
+### `Setting.load()` {#setting-api-method-load}
 
 Loads the settings from storage.
 
@@ -252,8 +247,7 @@ Setting.load();
 
 <!-- *********************************************************************** -->
 
-<span id="setting-api-method-reset"></span>
-### `Setting.reset([name])`
+### `Setting.reset([name])` {#setting-api-method-reset}
 
 Resets the setting with the given name to its default value.  If no name is given, resets all settings.
 
@@ -277,8 +271,7 @@ Setting.reset();
 
 <!-- *********************************************************************** -->
 
-<span id="setting-api-method-save"></span>
-### `Setting.save()`
+### `Setting.save()` {#setting-api-method-save}
 
 Saves the settings to storage.
 
@@ -300,8 +293,7 @@ Setting.save();
 
 <!-- *********************************************************************** -->
 
-<span id="setting-api-object-settings"></span>
-### `settings` object
+### `settings` object {#setting-api-object-settings}
 
 A prototype-less generic object whose properties and values are defined by the [`Setting.addToggle()`](#setting-api-method-addtoggle), [`Setting.addList()`](#setting-api-method-addlist), and [`Setting.addRange()`](#setting-api-method-addrange) methods.
 

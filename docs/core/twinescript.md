@@ -1,7 +1,7 @@
 <!-- ***********************************************************************************************
 	TwineScript
 ************************************************************************************************ -->
-<h1 id="twinescript">TwineScript</h1>
+# TwineScript {#twinescript}
 
 TwineScript in SugarCube is, essentially, JavaScript with an extra spoonful of sugar on top to make it a bit nicer for the uninitiated.
 
@@ -9,8 +9,7 @@ TwineScript in SugarCube is, essentially, JavaScript with an extra spoonful of s
 <!-- ***************************************************************************
 	Variables
 **************************************************************************** -->
-<span id="twinescript-variables"></span>
-## Variables
+## Variables {#twinescript-variables}
 
 <p role="note"><b>Note:</b>
 Temporary variables were added in <code>v2.3.0</code>.
@@ -64,8 +63,7 @@ To control aspects of your project based on the values contained within variable
 <!-- ***************************************************************************
 	Supported Types
 **************************************************************************** -->
-<span id="twinescript-supported-types"></span>
-## Supported Types
+## Supported Types {#twinescript-supported-types}
 
 The following types of values are natively supported by SugarCube and may be safely used within story and temporary variables.
 
@@ -93,8 +91,7 @@ Unsupported object types, either native or custom, can be made compatible by imp
 <!-- ***************************************************************************
 	Expressions
 **************************************************************************** -->
-<span id="twinescript-expressions"></span>
-## Expressions
+## Expressions {#twinescript-expressions}
 
 <p role="note" class="see"><b>See Also:</b>
 While not specifically about SugarCube, the <a href="https://twinery.org/wiki/expression">About Expressions</a> section of the <a href="https://twinery.org/wiki/twine1:reference">Twine&nbsp;1 reference documentation</a> may also be helpful.

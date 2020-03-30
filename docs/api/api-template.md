@@ -1,12 +1,11 @@
 <!-- ***********************************************************************************************
 	Template API
 ************************************************************************************************ -->
-<h1 id="template-api"><code>Template</code> API</h1>
+# `Template` API {#template-api}
 
 <!-- *********************************************************************** -->
 
-<span id="template-api-getter-size"></span>
-### `Template.size` → *number*
+### `Template.size` → *number* {#template-api-getter-size}
 
 Returns the number of existing templates.
 
@@ -24,8 +23,7 @@ if (Template.size === 0) {
 
 <!-- *********************************************************************** -->
 
-<span id="template-api-method-add"></span>
-### `Template.add(name , definition)`
+### `Template.add(name , definition)` {#template-api-method-add}
 
 Add new template(s).
 
@@ -86,8 +84,7 @@ Template.add(['color', 'Color'], function () {
 
 <!-- *********************************************************************** -->
 
-<span id="template-api-method-delete"></span>
-### `Template.delete(name)`
+### `Template.delete(name)` {#template-api-method-delete}
 
 Remove existing template(s).
 
@@ -111,8 +108,7 @@ Template.delete(['yolo', 'nolf']);
 
 <!-- *********************************************************************** -->
 
-<span id="template-api-method-get"></span>
-### `Template.get(name)` → *function* | *string* | *array*
+### `Template.get(name)` → *function* | *string* | *array* {#template-api-method-get}
 
 Return the named template definition, or `null` on failure.
 
@@ -133,8 +129,7 @@ var yolo = Template.get('yolo');
 
 <!-- *********************************************************************** -->
 
-<span id="template-api-method-has"></span>
-### `Template.has(name)` → *boolean*
+### `Template.has(name)` → *boolean* {#template-api-method-has}
 
 Returns whether the named template exists.
 

@@ -1,12 +1,11 @@
 <!-- ***********************************************************************************************
 	Dialog API
 ************************************************************************************************ -->
-<h1 id="dialog-api"><code>Dialog</code> API</h1>
+# `Dialog` API {#dialog-api}
 
 <!-- *********************************************************************** -->
 
-<span id="dialog-api-method-append"></span>
-### `Dialog.append(content)` → *`Dialog` object*
+### `Dialog.append(content)` → *`Dialog` object* {#dialog-api-method-append}
 
 Appends the given content to the dialog's content area.  Returns a reference to the `Dialog` object for chaining.
 
@@ -32,8 +31,7 @@ Dialog.append( /* some DOM nodes */ );
 
 <!-- *********************************************************************** -->
 
-<span id="dialog-api-method-body"></span>
-### `Dialog.body()` → *`HTMLElement` object*
+### `Dialog.body()` → *`HTMLElement` object* {#dialog-api-method-body}
 
 Returns a reference to the dialog's content area.
 
@@ -53,8 +51,7 @@ jQuery(Dialog.body()).wiki("Cry 'Havoc!', and let slip the //ponies// of ''frien
 
 <!-- *********************************************************************** -->
 
-<span id="dialog-api-method-close"></span>
-### `Dialog.close()` → *`Dialog` object*
+### `Dialog.close()` → *`Dialog` object* {#dialog-api-method-close}
 
 Closes the dialog.  Returns a reference to the `Dialog` object for chaining.
 
@@ -72,8 +69,7 @@ Dialog.close();
 
 <!-- *********************************************************************** -->
 
-<span id="dialog-api-method-isopen"></span>
-### `Dialog.isOpen([classNames])` → *boolean*
+### `Dialog.isOpen([classNames])` → *boolean* {#dialog-api-method-isopen}
 
 Returns whether the dialog is currently open.
 
@@ -99,8 +95,7 @@ if (Dialog.isOpen("saves")) {
 
 <!-- *********************************************************************** -->
 
-<span id="dialog-api-method-open"></span>
-### `Dialog.open([options [, closeFn]])` → *`Dialog` object*
+### `Dialog.open([options [, closeFn]])` → *`Dialog` object* {#dialog-api-method-open}
 
 Opens the dialog.  Returns a reference to the `Dialog` object for chaining.
 
@@ -132,8 +127,7 @@ Dialog.open();
 
 <!-- *********************************************************************** -->
 
-<span id="dialog-api-method-setup"></span>
-### `Dialog.setup([title [, classNames]])` → *`HTMLElement` object*
+### `Dialog.setup([title [, classNames]])` → *`HTMLElement` object* {#dialog-api-method-setup}
 
 Prepares the dialog for use and returns a reference to its content area.
 
@@ -167,8 +161,7 @@ Dialog.open();
 
 <!-- *********************************************************************** -->
 
-<span id="dialog-api-method-wiki"></span>
-### `Dialog.wiki(wikiMarkup)` → *`Dialog` object*
+### `Dialog.wiki(wikiMarkup)` → *`Dialog` object* {#dialog-api-method-wiki}
 
 Renders the given [markup](#markup) and appends it to the dialog's content area.  Returns a reference to the `Dialog` object for chaining.
 
@@ -192,8 +185,7 @@ Dialog.wiki("Cry 'Havoc!', and let slip the //ponies// of ''friendship''.");
 
 <!-- *********************************************************************** -->
 
-<span id="dialog-api-method-addclickhandler"></span>
-### <span class="deprecated">`Dialog.addClickHandler(targets [, options [, startFn [, doneFn [, closeFn]]]])`</span>
+### <span class="deprecated">`Dialog.addClickHandler(targets [, options [, startFn [, doneFn [, closeFn]]]])`</span> {#dialog-api-method-addclickhandler}
 
 <p role="note" class="warning"><b>Deprecated:</b>
 This method has been deprecated and should no longer be used.  The core of what it does is simply to wrap a call to <a href="#dialog-api-method-open"><code>Dialog.open()</code></a> within a call to <a href="#methods-jquery-prototype-method-ariaclick"><code>&lt;jQuery&gt;.ariaClick()</code></a>, which can be done directly and with greater flexibility.

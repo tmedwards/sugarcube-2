@@ -1,7 +1,7 @@
 <!-- ***********************************************************************************************
 	Guide: Tips
 ************************************************************************************************ -->
-<h1 id="guide-tips">Guide: Tips</h1>
+# Guide: Tips {#guide-tips}
 
 This is a collection of tips, from how-tos to best practices.
 
@@ -9,8 +9,7 @@ Suggestions for new entries may be submitted by [creating a new issue](https://g
 
 <!-- *********************************************************************** -->
 
-<span id="guide-tips-arbitrarily-long-return"></span>
-### Arbitrarily long return
+### Arbitrarily long return {#guide-tips-arbitrarily-long-return}
 
 <p role="note" class="warning"><b>Warning:</b>
 Navigating back to a previous passage, for whatever reason, can be problematic.  There's no way for the system to know ahead of time whether it's safe to re-execute a passage's contents.  Even if it did know that, there's no way for it to know which operations may or may not have side-effects—e.g., changing variables.  Thus, if you allow players to return to passages, then you should either: ensure the passages contain no code that has side-effects or wrap that code in something to prevent re-execution—e.g., <code>&lt;&lt;if visited() is 1&gt;&gt;side-effects&lt;&lt;/if&gt;&gt;</code>.
@@ -51,8 +50,7 @@ Unfortunately, due to how the Twine&nbsp;2 automatic passage creation feature cu
 
 <!-- *********************************************************************** -->
 
-<span id="guide-tips-non-generic-object-types"></span>
-### Non-generic object types (a.k.a. classes)
+### Non-generic object types (a.k.a. classes) {#guide-tips-non-generic-object-types}
 
 As a basic working definition, non-generic object types—a.k.a. classes—are instantiable objects whose own prototype is not `Object`—e.g., `Array` is a native non-generic object type.
 

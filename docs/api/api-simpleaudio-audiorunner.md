@@ -1,7 +1,7 @@
 <!-- ***************************************************************************
 	AudioRunner API
 **************************************************************************** -->
-<h1 id="audiorunner-api"><code>AudioRunner</code> API</h1>
+# `AudioRunner` API {#audiorunner-api}
 
 Audio runners are useful for performing actions on multiple tracks at once.
 
@@ -11,8 +11,7 @@ Audio runners are useful for performing actions on multiple tracks at once.
 
 <!-- *********************************************************************** -->
 
-<span id="audiorunner-api-prototype-method-fade"></span>
-### `<AudioRunner>.fade(duration , toVol [, fromVol])`
+### `<AudioRunner>.fade(duration , toVol [, fromVol])` {#audiorunner-api-prototype-method-fade}
 
 Starts playback of the selected tracks and fades them between the specified starting and destination volume levels over the specified number of seconds.
 
@@ -35,8 +34,7 @@ someTracks.fade(6, 1, 0);
 
 <!-- *********************************************************************** -->
 
-<span id="audiorunner-api-prototype-method-fadein"></span>
-### `<AudioRunner>.fadeIn(duration [, fromVol])`
+### `<AudioRunner>.fadeIn(duration [, fromVol])` {#audiorunner-api-prototype-method-fadein}
 
 Starts playback of the selected tracks and fades them from the specified volume level to `1` (loudest) over the specified number of seconds.
 
@@ -58,8 +56,7 @@ someTracks.fadeIn(5, 0);
 
 <!-- *********************************************************************** -->
 
-<span id="audiorunner-api-prototype-method-fadeout"></span>
-### `<AudioRunner>.fadeOut(duration [, fromVol])`
+### `<AudioRunner>.fadeOut(duration [, fromVol])` {#audiorunner-api-prototype-method-fadeout}
 
 Starts playback of the selected tracks and fades them from the specified volume level to `0` (silent) over the specified number of seconds.
 
@@ -81,8 +78,7 @@ someTracks.fadeOut(8, 1);
 
 <!-- *********************************************************************** -->
 
-<span id="audiorunner-api-prototype-method-fadestop"></span>
-### `<AudioRunner>.fadeStop()`
+### `<AudioRunner>.fadeStop()` {#audiorunner-api-prototype-method-fadestop}
 
 Interrupts an in-progress fade of the selected tracks, or does nothing if no fade is progressing.
 
@@ -104,8 +100,7 @@ someTracks.fadeStop();
 
 <!-- *********************************************************************** -->
 
-<span id="audiorunner-api-prototype-method-load"></span>
-### `<AudioRunner>.load()`
+### `<AudioRunner>.load()` {#audiorunner-api-prototype-method-load}
 
 Pauses playback of the selected tracks and, if they're not already in the process of loading, forces them to drop any existing data and begin loading.
 
@@ -127,8 +122,7 @@ someTracks.load();
 
 <!-- *********************************************************************** -->
 
-<span id="audiorunner-api-prototype-method-loop"></span>
-### `<AudioRunner>.loop(state)` → *`AudioRunner` object*
+### `<AudioRunner>.loop(state)` → *`AudioRunner` object* {#audiorunner-api-prototype-method-loop}
 
 Sets the selected tracks' repeating playback state (default: `false`).  Returns a reference to the current `AudioRunner` instance for chaining.
 
@@ -152,8 +146,7 @@ someTracks.loop(false);
 
 <!-- *********************************************************************** -->
 
-<span id="audiorunner-api-prototype-method-mute"></span>
-### `<AudioRunner>.mute(state)` → *`AudioRunner` object*
+### `<AudioRunner>.mute(state)` → *`AudioRunner` object* {#audiorunner-api-prototype-method-mute}
 
 Sets the selected tracks' volume mute state (default: `false`).  Returns a reference to the current `AudioRunner` instance for chaining.
 
@@ -177,8 +170,7 @@ someTracks.mute(false);
 
 <!-- *********************************************************************** -->
 
-<span id="audiorunner-api-prototype-method-off"></span>
-### `<AudioRunner>.off(...args)` → *`AudioRunner` object*
+### `<AudioRunner>.off(...args)` → *`AudioRunner` object* {#audiorunner-api-prototype-method-off}
 
 Removes event handlers from the selected tracks.  Returns a reference to the current `AudioRunner` instance for chaining.
 
@@ -209,8 +201,7 @@ someTracks.off('ended.myEvents');
 
 <!-- *********************************************************************** -->
 
-<span id="audiorunner-api-prototype-method-on"></span>
-### `<AudioRunner>.on(...args)` → *`AudioRunner` object*
+### `<AudioRunner>.on(...args)` → *`AudioRunner` object* {#audiorunner-api-prototype-method-on}
 
 Attaches event handlers to the selected tracks.  Returns a reference to the current `AudioRunner` instance for chaining.
 
@@ -243,8 +234,7 @@ someTracks.on('ended.myEvents', function () {
 
 <!-- *********************************************************************** -->
 
-<span id="audiorunner-api-prototype-method-one"></span>
-### `<AudioRunner>.one(...args)` → *`AudioRunner` object*
+### `<AudioRunner>.one(...args)` → *`AudioRunner` object* {#audiorunner-api-prototype-method-one}
 
 Attaches single-use event handlers to the selected tracks.  Returns a reference to the current `AudioRunner` instance for chaining.
 
@@ -277,8 +267,7 @@ someTracks.one('ended.myEvents', function () {
 
 <!-- *********************************************************************** -->
 
-<span id="audiorunner-api-prototype-method-pause"></span>
-### `<AudioRunner>.pause()`
+### `<AudioRunner>.pause()` {#audiorunner-api-prototype-method-pause}
 
 Pauses playback of the selected tracks.
 
@@ -296,8 +285,7 @@ someTracks.pause();
 
 <!-- *********************************************************************** -->
 
-<span id="audiorunner-api-prototype-method-play"></span>
-### `<AudioRunner>.play()`
+### `<AudioRunner>.play()` {#audiorunner-api-prototype-method-play}
 
 Begins playback of the selected tracks.
 
@@ -315,8 +303,7 @@ someTracks.play();
 
 <!-- *********************************************************************** -->
 
-<span id="audiorunner-api-prototype-method-playwhenallowed"></span>
-### `<AudioRunner>.playWhenAllowed()`
+### `<AudioRunner>.playWhenAllowed()` {#audiorunner-api-prototype-method-playwhenallowed}
 
 Begins playback of the selected tracks or, failing that, sets the tracks to begin playback as soon as the player has interacted with the document.
 
@@ -334,8 +321,7 @@ someTracks.playWhenAllowed();
 
 <!-- *********************************************************************** -->
 
-<span id="audiorunner-api-prototype-method-stop"></span>
-### `<AudioRunner>.stop()`
+### `<AudioRunner>.stop()` {#audiorunner-api-prototype-method-stop}
 
 Stops playback of the selected tracks.
 
@@ -353,8 +339,7 @@ someTracks.stop();
 
 <!-- *********************************************************************** -->
 
-<span id="audiorunner-api-prototype-method-time"></span>
-### `<AudioRunner>.time(seconds)` → *`AudioRunner` object*
+### `<AudioRunner>.time(seconds)` → *`AudioRunner` object* {#audiorunner-api-prototype-method-time}
 
 Sets the selected tracks' current time in seconds.  Returns a reference to the current `AudioRunner` instance for chaining.
 
@@ -375,8 +360,7 @@ someTracks.time(30);
 
 <!-- *********************************************************************** -->
 
-<span id="audiorunner-api-prototype-method-unload"></span>
-### `<AudioRunner>.unload()`
+### `<AudioRunner>.unload()` {#audiorunner-api-prototype-method-unload}
 
 Stops playback of the selected tracks and forces them to drop any existing data.
 
@@ -398,8 +382,7 @@ someTracks.unload();
 
 <!-- *********************************************************************** -->
 
-<span id="audiorunner-api-prototype-method-volume"></span>
-### `<AudioRunner>.volume(level)` → *`AudioRunner` object*
+### `<AudioRunner>.volume(level)` → *`AudioRunner` object* {#audiorunner-api-prototype-method-volume}
 
 Sets the selected tracks' volume level (default: `1`).  Returns a reference to the current `AudioRunner` instance for chaining.
 
