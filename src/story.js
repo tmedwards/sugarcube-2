@@ -485,7 +485,7 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 
 	function passagesLookupWith(predicate /* legacy */, sortKey = 'title'/* /legacy */) {
 		if (typeof predicate !== 'function') {
-			throw new Error('Story.lookupWith predicate parameter must be a function');
+			throw new TypeError('Story.lookupWith predicate parameter must be a function');
 		}
 
 		const results = [];
