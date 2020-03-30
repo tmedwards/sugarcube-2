@@ -658,5 +658,5 @@
 * [Translation Notes](#guide-localization-translation-notes)
 * [Usage](#guide-localization-usage)
 
-<div>&nbsp;</div>
+<div aria-hidden="true">&nbsp;</div>
 </nav>

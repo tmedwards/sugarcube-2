@@ -3,7 +3,7 @@
 ************************************************************************************************ -->
 <h1 id="guide-harlowe-to-sugarcube">Guide: Harlowe to SugarCube</h1>
 
-*Credits: original document by Chapel ([TwineLab](https://twinelab.net/), [GitHub](https://github.com/ChapelR/))*
+<b><i>Credits: original document by Chapel ([TwineLab](https://twinelab.net/), [GitHub](https://github.com/ChapelR/))</i></b>
 
 There are many differences between Harlowe and SugarCube, this guide will document some of the most critical you will need to account for if you're coming to SugarCube from a background in Harlowe.
 

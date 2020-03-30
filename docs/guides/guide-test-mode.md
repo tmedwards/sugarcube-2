@@ -43,7 +43,7 @@ To enable test mode from the *Stories* screen, click on the story's gear menu an
 
 To enable test mode from the story editor/map screen, click on the *<i class="icon bug"></i>Test* menu item (right side of the bottom bar).
 
-To enable test mode from the story editor/map screen while starting at a specific passage, hover over a passage and select the *<i class="icon play" title="Test story starting here"></i>* menu item.
+To enable test mode from the story editor/map screen while starting at a specific passage, hover over a passage and select the *<i class="icon play" title="Test story starting here" aria-label="Test story starting here"></i>* menu item.
 
 #### In Twine&nbsp;2 (<v2.2)
 
@@ -51,7 +51,7 @@ To enable test mode from the *Stories* screen, click on the story's gear menu an
 
 To enable test mode from the story editor/map screen, click on the *<i class="icon bug"></i>Test* menu item (right side of the bottom bar).
 
-To enable test mode from the story editor/map screen while starting at a specific passage, hover over a passage and select the *<i class="icon bug" title="Test story starting here"></i>* menu item.
+To enable test mode from the story editor/map screen while starting at a specific passage, hover over a passage and select the *<i class="icon bug" title="Test story starting here" aria-label="Test story starting here"></i>* menu item.
 
 #### In Twine&nbsp;1
 
@@ -82,7 +82,7 @@ The <a href="#config-api-property-debug"><code>Config.debug</code> setting</a> f
 
 The debug bar (bottom right corner of the page) allows you to: watch the values of story and temporary variables, toggle the debug views, and jump to any moment/turn within the history.
 
-The variable watch panel may be toggled via the *Watch&nbsp;<i class="icon toggle-off"></i>* button.  To add a watch for a variable, type its name into the *Add* field and then either press enter/return or click the *<i class="icon plus" title="Add watch"></i>* button—n.b. depending on the age of your browser, you may also see a list of all current variables when interacting with the *Add* field.  To delete a watch, click the *<i class="icon cancel" title="Delete watch"></i>* button next to its name in the watch panel.  To add watches for all current variables, click the *<i class="icon magic" title="Watch all"></i>* button.  To delete all current watches, click the *<i class="icon trash" title="Delete all"></i>* button.
+The variable watch panel may be toggled via the *Watch&nbsp;<i class="icon toggle-off"></i>* button.  To add a watch for a variable, type its name into the *Add* field and then either press enter/return or click the *<i class="icon plus" title="Add watch" aria-label="Add watch"></i>* button—n.b. depending on the age of your browser, you may also see a list of all current variables when interacting with the *Add* field.  To delete a watch, click the *<i class="icon cancel" title="Delete watch" aria-label="Delete watch"></i>* button next to its name in the watch panel.  To add watches for all current variables, click the *<i class="icon magic" title="Watch all" aria-label="Watch all"></i>* button.  To delete all current watches, click the *<i class="icon trash" title="Delete all" aria-label="Delete all"></i>* button.
 
 The debug views may be toggled via the *Views&nbsp;<i class="icon toggle-off"></i>* button.
 
