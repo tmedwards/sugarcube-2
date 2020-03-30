@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 /***********************************************************************************************************************
 
-	build.js (v1.4.11, 2019-05-25)
+	build.js (v1.4.15, 2020-03-29)
 		A Node.js-hosted build script for SugarCube.
 
-	Copyright © 2013–2019 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
+	Copyright © 2013–2020 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
@@ -25,6 +25,7 @@ const CONFIG = {
 			'src/lib/browser.js',
 			'src/lib/has.js',
 			'src/lib/visibility.js',
+			'src/lib/fullscreen.js',
 			'src/lib/helpers.js',
 			'src/lib/jquery-plugins.js',
 			'src/lib/util.js',
@@ -96,33 +97,33 @@ const CONFIG = {
 	twine1 : {
 		build : {
 			src  : 'src/templates/twine1/html.tpl',
-			dest : 'dist/twine1/sugarcube-2/header.html'
+			dest : 'build/twine1/sugarcube-2/header.html'
 		},
 		copy : [
 			{
 				src  : 'src/templates/twine1/sugarcube-2.py',
-				dest : 'dist/twine1/sugarcube-2/sugarcube-2.py'
+				dest : 'build/twine1/sugarcube-2/sugarcube-2.py'
 			},
 			{
 				src  : 'LICENSE',
-				dest : 'dist/twine1/sugarcube-2/LICENSE'
+				dest : 'build/twine1/sugarcube-2/LICENSE'
 			}
 		]
 	},
 	twine2 : {
 		build : {
 			src  : 'src/templates/twine2/html.tpl',
-			dest : 'dist/twine2/sugarcube-2/format.js',
+			dest : 'build/twine2/sugarcube-2/format.js',
 			json : 'src/templates/twine2/config.json'
 		},
 		copy : [
 			{
 				src  : 'icon.svg',
-				dest : 'dist/twine2/sugarcube-2/icon.svg'
+				dest : 'build/twine2/sugarcube-2/icon.svg'
 			},
 			{
 				src  : 'LICENSE',
-				dest : 'dist/twine2/sugarcube-2/LICENSE'
+				dest : 'build/twine2/sugarcube-2/LICENSE'
 			}
 		]
 	}
@@ -223,7 +224,7 @@ if (_opt.options.build) {
 			cssSource : compileStyles(CONFIG.css)                        // combine and minify the app CSS
 		});
 
-		// Process the files that simply need copied into the distribution.
+		// Process the files that simply need copied into the build.
 		projectCopy(CONFIG.twine1.copy);
 	}
 
@@ -260,7 +261,7 @@ if (_opt.options.build) {
 			}
 		});
 
-		// Process the files that simply need copied into the distribution.
+		// Process the files that simply need copied into the build.
 		projectCopy(CONFIG.twine2.copy);
 	}
 
@@ -269,7 +270,7 @@ if (_opt.options.build) {
 })();
 
 // That's all folks!
-console.log('\nBuilds complete!  (check the "dist" directory)');
+console.log('\nBuilds complete!  (check the "build" directory)');
 
 
 /*******************************************************************************

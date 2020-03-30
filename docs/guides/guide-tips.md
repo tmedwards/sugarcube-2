@@ -1,7 +1,7 @@
 <!-- ***********************************************************************************************
 	Guide: Tips
 ************************************************************************************************ -->
-<h1 id="guide-tips">Guide: Tips</h1>
+# Guide: Tips {#guide-tips}
 
 This is a collection of tips, from how-tos to best practices.
 
@@ -9,8 +9,7 @@ Suggestions for new entries may be submitted by [creating a new issue](https://g
 
 <!-- *********************************************************************** -->
 
-<span id="guide-tips-arbitrarily-long-return"></span>
-### Arbitrarily long return
+### Arbitrarily long return {#guide-tips-arbitrarily-long-return}
 
 <p role="note" class="warning"><b>Warning:</b>
 Navigating back to a previous passage, for whatever reason, can be problematic.  There's no way for the system to know ahead of time whether it's safe to re-execute a passage's contents.  Even if it did know that, there's no way for it to know which operations may or may not have side-effects—e.g., changing variables.  Thus, if you allow players to return to passages, then you should either: ensure the passages contain no code that has side-effects or wrap that code in something to prevent re-execution—e.g., <code>&lt;&lt;if visited() is 1&gt;&gt;side-effects&lt;&lt;/if&gt;&gt;</code>.
@@ -26,11 +25,11 @@ The most common way to resolve this arbitrarily long return issue is to use a bi
 For example, the code to record the last non-menu passage: (Twine&nbsp;2: the Story JavaScript, Twine&nbsp;1/Twee: a `script`-tagged passage)
 
 ```
-predisplay['set-return-variable'] = function () {
-	if (!tags().includes('noreturn')) {
-		State.variables['return'] = passage();
+$(document).on(':passagestart', function (ev) {
+	if (!ev.passage.tags.includes('noreturn')) {
+		State.variables.return = ev.passage.title;
 	}
-};
+});
 ```
 
 You'll need to tag each and every one of your menu passages with `noreturn`—you may use any tag you wish (e.g., `menu`, `inventory`), just ensure you change the name in the code if you decide upon another.  If necessary, you may also use multiple tags by switching from [`<Array>.includes()`](#methods-array-prototype-method-includes) to [`<Array>.includesAny()`](#methods-array-prototype-method-includesany) in the above example.
@@ -45,25 +44,26 @@ In your menu passages, your long return links will simply reference the `$return
 <<link "Return" $return>><</link>>
 ```
 
-**NOTE (Twine&nbsp;2):** Unfortunately, due to how the Twine&nbsp;2 automatic passage creation feature currently works, using the link markup form will cause a passage named `$return` to be created that will need to be deleted.  To avoid this problem, it's suggested that you use the separate argument form of [`<<link>>`](#macros-macro-link) in Twine&nbsp;2—as shown above.
+<p role="note"><b>Note (Twine&nbsp;2):</b>
+Unfortunately, due to how the Twine&nbsp;2 automatic passage creation feature currently works, using the link markup form will cause a passage named <code>$return</code> to be created that will need to be deleted.  To avoid this problem, it's suggested that you use the separate argument form of <a href="#macros-macro-link"><code>&lt;&lt;link&gt;&gt;</code></a> in Twine&nbsp;2—as shown above.
+</p>
 
 <!-- *********************************************************************** -->
 
-<span id="guide-tips-non-generic-object-types"></span>
-### Non-generic object types (a.k.a. classes)
+### Non-generic object types (a.k.a. classes) {#guide-tips-non-generic-object-types}
 
-As a basic working definition, non-generic object types—a.k.a. classes—are instantiable objects whose prototype is not `Object`—e.g., `Array` is a native non-generic object type.
+As a basic working definition, non-generic object types—a.k.a. classes—are instantiable objects whose own prototype is not `Object`—e.g., `Array` is a native non-generic object type.
 
 Most of the commonly used native non-generic object types are already fully compatible with and supported for use within story variables—e.g., `Array`, `Date`, `Map`, and `Set`.  Non-native/custom non-generic object types, on the other hand, must be made compatible to be successfully stored within story variables.
 
-Making custom non-generic object types fully compatible requires that two methods be added to their prototype, `.clone()` and `.toJSON()`, to support cloning—i.e. deep copying—instances of the type.
+Making custom non-generic object types fully compatible requires that two methods be added to their prototype, `.clone()` and `.toJSON()`, to support cloning—i.e., deep copying—instances of the type.
 
 * The `.clone()` method needs to return a clone of the instance.
 * The `.toJSON()` method needs to return a code string that when evaluated will return a clone of the instance.
 
 In both cases, since the end goal is roughly the same, this means creating a new instance of the base object type and populating it with clones of the original instance's data.  There is no one size fits all example for either of these methods because an instance's properties, and the data contained therein, are what determine what you need to do.
 
-#### Examples:
+#### Examples: *(not an exhaustive list)*
 
 ##### Config/option object parameter constructor (automatic copying of own data)
 

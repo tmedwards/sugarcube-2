@@ -2,7 +2,7 @@
 
 	markup/wikifier.js
 
-	Copyright © 2013–2019 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
+	Copyright © 2013–2020 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
@@ -106,9 +106,9 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 
 			this.output = output;
 
-			if (options != null && typeof options === 'object') { // lazy equality for null
+			if (options != null && typeof options === 'object' || Wikifier.Option.length > 0) { // lazy equality for null
 				oldOptions = this.options;
-				this.options = Object.assign({}, this.options, options);
+				this.options = Object.assign({}, this.options, Wikifier.Option.options, options);
 			}
 
 			const parsersProfile   = Wikifier.Parser.Profile.get(this.options.profile);
@@ -325,6 +325,62 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 
 
 	/*******************************************************************************************************************
+		Option Static Object.
+	*******************************************************************************************************************/
+	Object.defineProperty(Wikifier, 'Option', {
+		value : (() => {
+			// Options array (stack).
+			let _optionsStack = [];
+
+
+			/*
+				GlobalOption Functions.
+			*/
+			function optionLength() {
+				return _optionsStack.length;
+			}
+
+			function optionGetter() {
+				return Object.assign({}, ..._optionsStack);
+			}
+
+			function optionClear() {
+				_optionsStack = [];
+			}
+
+			function optionGet(idx) {
+				return _optionsStack[idx];
+			}
+
+			function optionPop() {
+				return _optionsStack.pop();
+			}
+
+			function optionPush(options) {
+				if (typeof options !== 'object' || options === null) {
+					throw new TypeError(`Wikifier.Option.push options parameter must be an object (received: ${Util.getType(options)})`);
+				}
+
+				return _optionsStack.push(options);
+			}
+
+
+			/*
+				Exports.
+			*/
+			return Object.freeze(Object.defineProperties({}, {
+				length  : { get : optionLength },
+				options : { get : optionGetter },
+				clear   : { value : optionClear },
+				get     : { value : optionGet },
+				pop     : { value : optionPop },
+				push    : { value : optionPush }
+			}));
+		})()
+	});
+
+
+	/*******************************************************************************************************************
 		Parser Static Object.
 	*******************************************************************************************************************/
 	Object.defineProperty(Wikifier, 'Parser', {
@@ -514,16 +570,17 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 	Object.defineProperties(Wikifier.helpers, {
 		inlineCss : {
 			value : (() => {
-				const lookahead = new RegExp(Patterns.inlineCss, 'gm');
+				const lookaheadRe = new RegExp(Patterns.inlineCss, 'gm');
+				const idOrClassRe = new RegExp(`(${Patterns.cssIdOrClassSigil})(${Patterns.anyLetter}+)`, 'g');
 
 				function helperInlineCss(w) {
 					const css = { classes : [], id : '', styles : {} };
 					let matched;
 
 					do {
-						lookahead.lastIndex = w.nextMatch;
+						lookaheadRe.lastIndex = w.nextMatch;
 
-						const match = lookahead.exec(w.source);
+						const match = lookaheadRe.exec(w.source);
 
 						matched = match && match.index === w.nextMatch;
 
@@ -535,13 +592,21 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 								css.styles[Util.fromCssProperty(match[3])] = match[4].trim();
 							}
 							else if (match[5]) {
-								css.classes = css.classes.concat(match[5].slice(1).split(/\./));
-							}
-							else if (match[6]) {
-								css.id = match[6].slice(1).split(/#/).pop();
+								let subMatch;
+
+								idOrClassRe.lastIndex = 0; // NOTE: Guard against buggy implementations.
+
+								while ((subMatch = idOrClassRe.exec(match[5])) !== null) {
+									if (subMatch[1] === '.') {
+										css.classes.push(subMatch[2]);
+									}
+									else {
+										css.id = subMatch[2];
+									}
+								}
 							}
 
-							w.nextMatch = lookahead.lastIndex; // eslint-disable-line no-param-reassign
+							w.nextMatch = lookaheadRe.lastIndex; // eslint-disable-line no-param-reassign
 						}
 					} while (matched);
 

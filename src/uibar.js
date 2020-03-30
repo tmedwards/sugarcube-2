@@ -2,12 +2,12 @@
 
 	uibar.js
 
-	Copyright © 2013–2019 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
+	Copyright © 2013–2020 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
 /*
-	global Alert, Dialog, Engine, L10n, Setting, State, Story, UI, Config, setPageElement
+	global Alert, Dialog, Engine, L10n, Setting, State, Story, UI, Config, setDisplayTitle, setPageElement
 */
 
 var UIBar = (() => { // eslint-disable-line no-unused-vars, no-var
@@ -152,12 +152,7 @@ var UIBar = (() => { // eslint-disable-line no-unused-vars, no-var
 				? Config.ui.stowBarInitially
 				: jQuery(window).width() <= Config.ui.stowBarInitially
 		) {
-			(() => {
-				const $uiBarStory = jQuery(_$uiBar).add('#story');
-				$uiBarStory.addClass('no-transition');
-				_$uiBar.addClass('stowed');
-				setTimeout(() => $uiBarStory.removeClass('no-transition'), Engine.minDomActionDelay);
-			})();
+			uiBarStow(true);
 		}
 
 		// Set up the #ui-bar-toggle and #ui-bar-history widgets.
@@ -193,12 +188,19 @@ var UIBar = (() => { // eslint-disable-line no-unused-vars, no-var
 			jQuery('#ui-bar-history').remove();
 		}
 
-		// Set up the title.
-		if (TWINE1) { // for Twine 1
-			setPageElement('story-title', 'StoryTitle', Story.title);
+		// Set up the story display title.
+		if (Story.has('StoryDisplayTitle')) {
+			if (Config.ui.updateStoryElements) {
+				setDisplayTitle(Story.get('StoryDisplayTitle').processText());
+			}
 		}
-		else { // for Twine 2
-			jQuery('#story-title').text(Story.title);
+		else {
+			if (TWINE1) { // for Twine 1
+				setPageElement('story-title', 'StoryTitle', Story.title);
+			}
+			else { // for Twine 2
+				jQuery('#story-title').text(Story.title);
+			}
 		}
 
 		// Set up the dynamic page elements.
@@ -318,6 +320,9 @@ var UIBar = (() => { // eslint-disable-line no-unused-vars, no-var
 
 		// Set up the (non-navigation) dynamic page elements.
 		setPageElement('story-banner', 'StoryBanner');
+		if (Story.has('StoryDisplayTitle')) {
+			setDisplayTitle(Story.get('StoryDisplayTitle').processText());
+		}
 		setPageElement('story-subtitle', 'StorySubtitle');
 		setPageElement('story-author', 'StoryAuthor');
 		setPageElement('story-caption', 'StoryCaption');

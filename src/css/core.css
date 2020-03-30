@@ -2,7 +2,7 @@
 
 	css/core.css
 
-	Copyright © 2013–2019 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
+	Copyright © 2013–2020 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
@@ -31,6 +31,18 @@ html {
 
 
 /*
+	Fullscreen appearance styles.
+*/
+*:fullscreen { /* Cause Blink/WebKit to behave like Gecko. */
+	height: 100%;
+	width: 100%;
+}
+body::-ms-backdrop { /* Prevent IE 11 from hiding the `body` element's background. */
+	background: none;
+}
+
+
+/*
 	Default appearance styles.
 */
 *:focus {
@@ -42,6 +54,7 @@ html {
 body {
 	color: #eee;
 	background-color: #111;
+	overflow: auto;
 }
 a {
 	cursor: pointer;

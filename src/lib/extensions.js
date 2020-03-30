@@ -2,47 +2,11 @@
 
 	lib/extensions.js
 
-	Copyright © 2013–2019 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
+	Copyright © 2013–2020 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
 /* global Patterns */
-
-/*
-	DOM API Polyfills.
-*/
-(() => {
-	'use strict';
-
-	/*******************************************************************************************************************
-		Polyfills.
-	*******************************************************************************************************************/
-	/*
-		Returns the target's first child `Element` or `null` if there are no child elements.
-	*/
-	(domApi => {
-		if (domApi && domApi.prototype && domApi.prototype.firstElementChild == null) { // lazy equality for null
-			const ELEMENT_NODE = Node.ELEMENT_NODE;
-
-			Object.defineProperty(domApi.prototype, 'firstElementChild', {
-				get() {
-					const nodes = this.childNodes; // WARNING: This is a live collection.
-
-					for (let i = 0; i < nodes.length; ++i) {
-						const node = nodes[i];
-
-						if (node.nodeType === ELEMENT_NODE) {
-							return node;
-						}
-					}
-
-					return null;
-				}
-			});
-		}
-	})(window.Node || window.Element);
-})();
-
 
 /*
 	JavaScript Polyfills.
@@ -1250,8 +1214,9 @@
 	});
 
 	/*
-		Returns a bound function that supplies the given arguments to the base function, followed
-		by the arguments are supplied to the bound function, whenever it is called.
+		Returns a bound function that supplies the given arguments to the base
+		function, followed by the arguments are supplied to the bound function,
+		whenever it is called.
 	*/
 	Object.defineProperty(Function.prototype, 'partial', {
 		configurable : true,
@@ -1356,8 +1321,8 @@
 	}
 
 	/*
-		Returns a formatted string, after replacing each format item in the given format string
-		with the text equivalent of the corresponding argument's value.
+		Returns a formatted string, after replacing each format item in the given
+		format string with the text equivalent of the corresponding argument's value.
 	*/
 	(() => {
 		const _formatRegExp    = /{(\d+)(?:,([+-]?\d+))?}/g;
@@ -1519,7 +1484,8 @@
 	});
 
 	/*
-		Returns a copy of the base string with `delCount` characters replaced with `replacement`, starting at `startAt`.
+		Returns a copy of the base string with `delCount` characters replaced with
+		`replacement`, starting at `startAt`.
 	*/
 	Object.defineProperty(String.prototype, 'splice', {
 		configurable : true,
@@ -1574,7 +1540,8 @@
 	});
 
 	/*
-		Returns an array of strings, split from the string, or an empty array if the string is empty.
+		Returns an array of strings, split from the string, or an empty array if the
+		string is empty.
 	*/
 	Object.defineProperty(String.prototype, 'splitOrEmpty', {
 		configurable : true,

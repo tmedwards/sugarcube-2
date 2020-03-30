@@ -1,3 +1,25 @@
-# Auto detect text files and perform LF normalization
+## Auto detect text files and perform LF normalization
 * text=auto
 * text eol=lf
+
+## The following files are binary and should be left untouched
+# (note: `binary` is a macro attribute shorthand for `-text -diff`)
+
+# Fonts
+*.eot binary
+*.ttf binary
+*.woff binary
+*.woff2 binary
+
+# Images
+*.gif binary
+*.jpeg binary
+*.jpg binary
+*.pdf binary
+*.png binary
+*.ttf binary
+
+# Archives
+*.7z binary
+*.gz binary
+*.zip binary

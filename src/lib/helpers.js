@@ -2,17 +2,18 @@
 
 	lib/helpers.js
 
-	Copyright © 2013–2019 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
+	Copyright © 2013–2020 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* global L10n, Story, Wikifier */
+/* global Config, L10n, State, Story, Util, Wikifier */
 
 var { // eslint-disable-line no-var
 	/* eslint-disable no-unused-vars */
 	clone,
 	convertBreaks,
 	safeActiveElement,
+	setDisplayTitle,
 	setPageElement,
 	throwError,
 	toStringOrDefault
@@ -20,6 +21,37 @@ var { // eslint-disable-line no-var
 } = (() => {
 	'use strict';
 
+
+	/*******************************************************************************************************************
+		Utility Functions.
+	*******************************************************************************************************************/
+	function _getTextContent(source) {
+		const copy = source.cloneNode(true);
+		const frag = document.createDocumentFragment();
+		let node;
+
+		while ((node = copy.firstChild) !== null) {
+			// Insert spaces before various elements.
+			if (node.nodeType === Node.ELEMENT_NODE) {
+				switch (node.nodeName.toUpperCase()) {
+				case 'BR':
+				case 'DIV':
+				case 'P':
+					frag.appendChild(document.createTextNode(' '));
+					break;
+				}
+			}
+
+			frag.appendChild(node);
+		}
+
+		return frag.textContent;
+	}
+
+
+	/*******************************************************************************************************************
+		Helper Functions.
+	*******************************************************************************************************************/
 	/*
 		Returns a deep copy of the given object.
 
@@ -103,9 +135,9 @@ var { // eslint-disable-line no-var
 			Duplicate the original object's own enumerable properties, which will
 			include expando properties on non-generic objects.
 
-			NOTE: This does not preserve ES5 property attributes.  Neither does
-			the delta coding or serialization code, however, so it's not really
-			an issue at the moment.
+			NOTE: This preserves neither symbol properties nor ES5 property attributes.
+			Neither does the delta coding or serialization code, however, so it's not
+			really an issue at the moment.
 		*/
 		Object.keys(orig).forEach(name => copy[name] = clone(orig[name]));
 
@@ -208,6 +240,34 @@ var { // eslint-disable-line no-var
 		}
 		catch (ex) {
 			return null;
+		}
+	}
+
+	/*
+		Sets the display title.
+	*/
+	function setDisplayTitle(title) {
+		if (typeof title !== 'string') {
+			throw new TypeError(`story display title must be a string (received: ${Util.getType(title)})`);
+		}
+
+		const render = document.createDocumentFragment();
+		new Wikifier(render, title);
+
+		const text = _getTextContent(render).trim();
+
+		// if (text === '') {
+		// 	throw new Error('story display title must not render to an empty string or consist solely of whitespace');
+		// }
+
+		document.title = Config.passages.displayTitles && State.passage !== '' && State.passage !== Config.passages.start
+			? `${State.passage} | ${text}`
+			: text;
+
+		const storyTitle = document.getElementById('story-title');
+
+		if (storyTitle !== null) {
+			jQuery(storyTitle).empty().append(render);
 		}
 	}
 
@@ -348,6 +408,7 @@ var { // eslint-disable-line no-var
 		clone             : { value : clone },
 		convertBreaks     : { value : convertBreaks },
 		safeActiveElement : { value : safeActiveElement },
+		setDisplayTitle   : { value : setDisplayTitle },
 		setPageElement    : { value : setPageElement },
 		throwError        : { value : throwError },
 		toStringOrDefault : { value : toStringOrDefault }

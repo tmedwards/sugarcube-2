@@ -2,11 +2,11 @@
 
 	save.js
 
-	Copyright © 2013–2019 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
+	Copyright © 2013–2020 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* global Config, Dialog, Engine, L10n, State, Story, UI, Util, storage */
+/* global Config, Dialog, Engine, L10n, State, Story, UI, storage */
 
 var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 	'use strict';
@@ -26,9 +26,6 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			savesObjClear();
 			Config.saves.autoload = undefined;
 			Config.saves.autosave = undefined;
-			Config.saves.isAllowed = undefined;
-			Config.saves.onLoad = undefined;
-			Config.saves.onSave = undefined;
 			Config.saves.slots = 0;
 			return false;
 		}
@@ -340,7 +337,19 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			return `${now.getFullYear()}${MM}${DD}-${hh}${mm}${ss}`;
 		}
 
-		const baseName     = filename == null ? Story.domId : Util.slugify(filename); // lazy equality for null
+		function legalizeName(str) {
+			/*
+				NOTE: The range of illegal characters consists of: C0 controls, double quote,
+				number, dollar, percent, ampersand, single quote, asterisk, plus, comma,
+				forward slash, colon, semi-colon, less-than, equals, greater-than, question,
+				backslash, caret, backquote/grave, pipe/vertical-bar, delete, C1 controls.
+			*/
+			return String(str).trim()
+				.replace(/[\x00-\x1f"#$%&'*+,/:;<=>?\\^`|\x7f-\x9f]+/g, '') // eslint-disable-line no-control-regex
+				.replace(/[_\s\u2013\u2014-]+/g, '-'); // legacy
+		}
+
+		const baseName     = filename == null ? Story.domId : legalizeName(filename); // lazy equality for null
 		const saveName     = `${baseName}-${datestamp()}.save`;
 		const supplemental = metadata == null ? {} : { metadata }; // lazy equality for null
 		const saveObj      = LZString.compressToBase64(JSON.stringify(_marshal(supplemental)));
@@ -363,9 +372,9 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 
 			try {
 				saveObj = JSON.parse(
-					/\.json$/i.test(file.name) || /^\{/.test(target.result)
+					/* legacy */ /\.json$/i.test(file.name) || /^\{/.test(target.result)
 						? target.result
-						: LZString.decompressFromBase64(target.result)
+						: /* /legacy */ LZString.decompressFromBase64(target.result)
 				);
 			}
 			catch (ex) { /* no-op; `_unmarshal()` will handle the error */ }

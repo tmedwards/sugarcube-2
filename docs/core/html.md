@@ -1,7 +1,7 @@
 <!-- ***********************************************************************************************
 	HTML
 ************************************************************************************************ -->
-<h1 id="html"><abbr title="HyperText Markup Language">HTML</abbr></h1>
+# <abbr title="HyperText Markup Language">HTML</abbr> {#html}
 
 The hierarchy of the document body, including associated HTML IDs and class names is as follows.
 
@@ -67,13 +67,14 @@ The hierarchy of the document body, including associated HTML IDs and class name
 
 #### Story data chunks:
 
-**NOTE:** Periods of ellipsis (`…`) signify data that is generated at compile time.
+Periods of ellipsis (`…`) signify data that is generated at compile time.
 
 ##### Twine 2 style data chunk
 
 ```
-<tw-storydata name="…" startnode="…" creator="…" creator-version="…" ifid="…" zoom="…" format="…" format-version="…" options="…" hidden>
-	<!-- Passage data nodes -->
+<tw-storydata name="…" startnode="…" creator="…" creator-version="…"
+	ifid="…" zoom="…" format="…" format-version="…" options="…" hidden>
+	<!-- Passage data nodes… -->
 </tw-storydata>
 ```
 
@@ -81,6 +82,6 @@ The hierarchy of the document body, including associated HTML IDs and class name
 
 ```
 <div id="store-area" data-size="…" hidden>
-	<!-- Passage data nodes -->
+	<!-- Passage data nodes… -->
 </div>
 ```

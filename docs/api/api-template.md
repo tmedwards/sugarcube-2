@@ -1,12 +1,11 @@
 <!-- ***********************************************************************************************
 	Template API
 ************************************************************************************************ -->
-<h1 id="template-api"><code>Template</code> API</h1>
+# `Template` API {#template-api}
 
 <!-- *********************************************************************** -->
 
-<span id="template-api-getter-size"></span>
-### `Template.size` → *number*
+### `Template.size` → *number* {#template-api-getter-size}
 
 Returns the number of existing templates.
 
@@ -14,7 +13,7 @@ Returns the number of existing templates.
 
 * `v2.29.0`
 
-#### Example:
+#### Examples:
 
 ```
 if (Template.size === 0) {
@@ -24,8 +23,7 @@ if (Template.size === 0) {
 
 <!-- *********************************************************************** -->
 
-<span id="template-api-method-add"></span>
-### `Template.add(name , definition)`
+### `Template.add(name , definition)` {#template-api-method-add}
 
 Add new template(s).
 
@@ -48,7 +46,7 @@ Function templates should return a string, which may itself contain markup.  The
 
 String templates consist solely of a string, which may itself contain markup.
 
-#### Example:
+#### Examples:
 
 ##### Basic usage
 
@@ -86,8 +84,7 @@ Template.add(['color', 'Color'], function () {
 
 <!-- *********************************************************************** -->
 
-<span id="template-api-method-delete"></span>
-### `Template.delete(name)`
+### `Template.delete(name)` {#template-api-method-delete}
 
 Remove existing template(s).
 
@@ -99,7 +96,7 @@ Remove existing template(s).
 
 * **`name`:** (*string* | *string array*) Name, or array of names, of the template(s) to remove.
 
-#### Example:
+#### Examples:
 
 ```
 /* Deletes the template ?yolo. */
@@ -111,8 +108,7 @@ Template.delete(['yolo', 'nolf']);
 
 <!-- *********************************************************************** -->
 
-<span id="template-api-method-get"></span>
-### `Template.get(name)` → *function* | *string* | *array*
+### `Template.get(name)` → *function* | *string* | *array* {#template-api-method-get}
 
 Return the named template definition, or `null` on failure.
 
@@ -124,7 +120,7 @@ Return the named template definition, or `null` on failure.
 
 * **`name`:** (*string*) Name of the template whose definition should be returned.
 
-#### Example:
+#### Examples:
 
 ```
 /* Returns the template ?yolo, or null if it doesn't exist. */
@@ -133,8 +129,7 @@ var yolo = Template.get('yolo');
 
 <!-- *********************************************************************** -->
 
-<span id="template-api-method-has"></span>
-### `Template.has(name)` → *boolean*
+### `Template.has(name)` → *boolean* {#template-api-method-has}
 
 Returns whether the named template exists.
 
@@ -146,7 +141,7 @@ Returns whether the named template exists.
 
 * **`name`:** (*string*) Name of the template to search for.
 
-#### Example:
+#### Examples:
 
 ```
 if (Template.has('yolo')) {

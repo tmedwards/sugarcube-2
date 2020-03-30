@@ -1,16 +1,17 @@
 <!-- ***********************************************************************************************
 	Functions
 ************************************************************************************************ -->
-<h1 id="functions">Functions</h1>
+# Functions {#functions}
 
 <!-- *********************************************************************** -->
 
-<span id="functions-function-clone"></span>
-### `clone(original)` → *any*
+### `clone(original)` → *any* {#functions-function-clone}
 
 Returns a deep copy of the given value.
 
-**NOTE:** Only the primitives, generic objects, some JavaScript natives (specifically: `Array`, `Date`, `Map`, `RegExp`, and `Set`), and DOM node objects are supported by default.  Unsupported objects will need a `.clone()` method to be properly supported by the `cone()` function—when called on such an object, it will simply defer to the local method.
+<p role="note"><b>Note:</b>
+Only the primitives, generic objects, some JavaScript natives (specifically: <code>Array</code>, <code>Date</code>, <code>Map</code>, <code>RegExp</code>, and <code>Set</code>), and DOM node objects are supported by default.  Unsupported object types, either native or custom, will need to implement <code>.clone()</code> method to be properly supported by the <code>cone()</code> function—when called on such an object, it will simply defer to the local method; see the <a href="#guide-tips-non-generic-object-types"><em>Non-generic object types (a.k.a. classes)</em> guide</a> for more information.
+</p>
 
 #### Since:
 
@@ -20,7 +21,7 @@ Returns a deep copy of the given value.
 
 * **`original`:** (*any*) The object to value.
 
-#### Example:
+#### Examples:
 
 ```
 // Without clone(); given the generic object: $foo = { id : 1 }
@@ -38,8 +39,7 @@ $bar.id  → Returns: 5
 
 <!-- *********************************************************************** -->
 
-<span id="functions-function-either"></span>
-### `either(list…)` → *any*
+### `either(list…)` → *any* {#functions-function-either}
 
 Returns a random value from its given arguments.
 
@@ -49,9 +49,9 @@ Returns a random value from its given arguments.
 
 #### Parameters:
 
-* **`list`:** (*any*) The list of values to operate on.  May be any combination of singular values, actual arrays, or array-like objects.  All values will be concatenated into a single list for selection.  **NOTE:** Does not flatten nested arrays—if this is required, the [`<Array>.flatten()`](#methods-array-prototype-method-flatten) method may be used to flatten the nested arrays prior to passing them to `either()`.
+* **`list`:** (*any*) The list of values to operate on.  May be any combination of singular values, actual arrays, or array-like objects.  All values will be concatenated into a single list for selection.  **NOTE:** Does not flatten nested arrays—if this is required, the [`<Array>.flat()`](#methods-array-prototype-method-flat) method may be used to flatten the nested arrays prior to passing them to `either()`.
 
-#### Example:
+#### Examples:
 
 ```
 // Using singular values
@@ -61,16 +61,15 @@ either("Blueberry", "Cherry", "Pecan")  → Returns a random pie from the whole 
 either($pies)  → Returns a random pie from the whole array
 
 // Using singular values and arrays; given: $letters = ["A", "B"]
-either($letters, "C", "D")  → Returns a random value from the whole list—i.e. "A", "B", "C", "D"
+either($letters, "C", "D")  → Returns a random value from the whole list—i.e., "A", "B", "C", "D"
 
 // Using multiple arrays; given: $letters = ["A", "B"] & $numerals = ["1", "2"]
-either($letters, $numerals)  → Returns a random value from the whole list—i.e. "A", "B", "1", "2"
+either($letters, $numerals)  → Returns a random value from the whole list—i.e., "A", "B", "1", "2"
 ```
 
 <!-- *********************************************************************** -->
 
-<span id="functions-function-forget"></span>
-### `forget(key)`
+### `forget(key)` {#functions-function-forget}
 
 Removes the specified key, and its associated value, from the story metadata store.
 
@@ -82,7 +81,7 @@ Removes the specified key, and its associated value, from the story metadata sto
 
 * **`key`:** (*string*) The key to remove.
 
-#### Example:
+#### Examples:
 
 ```
 <<run forget('achievements')>>
@@ -90,10 +89,9 @@ Removes the specified key, and its associated value, from the story metadata sto
 
 <!-- *********************************************************************** -->
 
-<span id="functions-function-hasvisited"></span>
-### `hasVisited(passages…)` → *boolean*
+### `hasVisited(passages…)` → *boolean* {#functions-function-hasvisited}
 
-Returns whether the passage with the given title occurred within the story history.  If multiple passage titles are given, returns the logical-AND aggregate of the set—i.e. `true` if all were found, `false` if any were not found.
+Returns whether the passage with the given title occurred within the story history.  If multiple passage titles are given, returns the logical-AND aggregate of the set—i.e., `true` if all were found, `false` if any were not found.
 
 #### Since:
 
@@ -103,7 +101,7 @@ Returns whether the passage with the given title occurred within the story histo
 
 * **`passages`:** (*string* | *string array*) The title(s) of the passage(s) to search for.  May be a list or an array of passages.
 
-#### Example:
+#### Examples:
 
 ```
 <<if hasVisited("Bar")>>…has been to the Bar…<</if>>
@@ -114,8 +112,7 @@ Returns whether the passage with the given title occurred within the story histo
 
 <!-- *********************************************************************** -->
 
-<span id="functions-function-lastvisited"></span>
-### `lastVisited(passages…)` → *integer*
+### `lastVisited(passages…)` → *integer* {#functions-function-lastvisited}
 
 Returns the number of turns that have passed since the last instance of the passage with the given title occurred within the story history or `-1` if it does not exist.  If multiple passage titles are given, returns the lowest count (which can be `-1`).
 
@@ -127,7 +124,7 @@ Returns the number of turns that have passed since the last instance of the pass
 
 * **`passages`:** (*string* | *string array*) The title(s) of the passage(s) to search for.  May be a list or an array of passages.
 
-#### Example:
+#### Examples:
 
 ```
 <<if lastVisited("Bar") is -1>>…has never been to the Bar…<</if>>
@@ -139,14 +136,17 @@ Returns the number of turns that have passed since the last instance of the pass
 
 <!-- *********************************************************************** -->
 
-<span id="functions-function-importscripts"></span>
-### `importScripts(urls…)` → *`Promise` object*
+### `importScripts(urls…)` → *`Promise` object* {#functions-function-importscripts}
 
 Load and integrate external JavaScript scripts.
 
-**NOTE:** Loading is done asynchronously at run time, so if the script must be available within a tight time frame, then you should use the `Promise` returned by the function to ensure the script is loaded before before it is needed.
+<p role="note"><b>Note:</b>
+Loading is done asynchronously at run time, so if the script must be available within a tight time frame, then you should use the <code>Promise</code> returned by the function to ensure that the script is loaded before it is needed.
+</p>
 
-**NOTE:** A script section (Twine&nbsp;2: the Story JavaScript; Twine&nbsp;1/Twee: a `script`-tagged passage) is normally the best place to call `importScripts()`.
+<p role="note"><b>Note:</b>
+A script section (Twine&nbsp;2: the Story JavaScript; Twine&nbsp;1/Twee: a <code>script</code>-tagged passage) is normally the best place to call <code>importScripts()</code>.
+</p>
 
 #### Since:
 
@@ -156,7 +156,7 @@ Load and integrate external JavaScript scripts.
 
 * **`urls`:** (*string* | *string array*) The URLs of the external scripts to import.  Loose URLs are imported concurrently, arrays of URLs are imported sequentially.
 
-#### Example:
+#### Examples:
 
 ##### Basic usage
 
@@ -224,14 +224,17 @@ setup.aScriptImport
 
 <!-- *********************************************************************** -->
 
-<span id="functions-function-importstyles"></span>
-### `importStyles(urls…)` → *`Promise` object*
+### `importStyles(urls…)` → *`Promise` object* {#functions-function-importstyles}
 
 Load and integrate external CSS stylesheets.
 
-**NOTE:** Loading is done asynchronously at run time, so if the stylesheet must be available within a tight time frame, then you should use the `Promise` returned by the function to ensure the stylesheet is loaded before it is needed.
+<p role="note"><b>Note:</b>
+Loading is done asynchronously at run time, so if the stylesheet must be available within a tight time frame, then you should use the <code>Promise</code> returned by the function to ensure that the stylesheet is loaded before it is needed.
+</p>
 
-**NOTE:** A script section (Twine&nbsp;2: the Story JavaScript; Twine&nbsp;1/Twee: a `script`-tagged passage) is normally the best place to call `importStyles()`.
+<p role="note"><b>Note:</b>
+A script section (Twine&nbsp;2: the Story JavaScript; Twine&nbsp;1/Twee: a <code>script</code>-tagged passage) is normally the best place to call <code>importStyles()</code>.
+</p>
 
 #### Since:
 
@@ -241,7 +244,7 @@ Load and integrate external CSS stylesheets.
 
 * **`urls`:** (*string* | *string array*) The URLs of the external stylesheets to import.  Loose URLs are imported concurrently, arrays of URLs are imported sequentially.
 
-#### Example:
+#### Examples:
 
 ##### Basic usage
 
@@ -295,12 +298,13 @@ importStyles("https://somesite/a/path/a.css")
 
 <!-- *********************************************************************** -->
 
-<span id="functions-function-memorize"></span>
-### `memorize(key, value)`
+### `memorize(key, value)` {#functions-function-memorize}
 
 Sets the specified key and value within the story metadata store, which causes them to persist over story and browser restarts.  To update the value associated with a key, simply set it again.
 
-**NOTE:** The story metadata, like saves, is tied to the specific story it was generated with.  It is not a mechanism for moving data between stories.
+<p role="note"><b>Note:</b>
+The story metadata, like saves, is tied to the specific story it was generated with.  It is not a mechanism for moving data between stories.
+</p>
 
 <p role="note" class="warning"><b>Warning:</b>
 The story metadata store <strong><em>is not</em></strong>, and should not be used as, a replacement for saves.  Examples of good uses: achievement tracking, new game+ data, playthrough statistics, etc.
@@ -319,7 +323,7 @@ This feature is largely incompatible with private browsing modes, which cause al
 * **`key`:** (*string*) The key that should be set.
 * **`value`:** (*any*) The value to set.
 
-#### Example:
+#### Examples:
 
 ```
 // Sets 'achievements', with the given value, in the metadata store.
@@ -331,8 +335,7 @@ This feature is largely incompatible with private browsing modes, which cause al
 
 <!-- *********************************************************************** -->
 
-<span id="functions-function-passage"></span>
-### `passage()` → *string*
+### `passage()` → *string* {#functions-function-passage}
 
 Returns the title of the active (present) passage.
 
@@ -342,7 +345,7 @@ Returns the title of the active (present) passage.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 <<if passage() is "Café">>…the current passage is the Café passage…<</if>>
@@ -350,8 +353,7 @@ Returns the title of the active (present) passage.
 
 <!-- *********************************************************************** -->
 
-<span id="functions-function-previous"></span>
-### `previous()` → *string*
+### `previous()` → *string* {#functions-function-previous}
 
 Returns the title of the most recent previous passage whose title does not match that of the active passage or an empty string, if there is no such passage.
 
@@ -361,7 +363,7 @@ Returns the title of the most recent previous passage whose title does not match
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 <<if previous() is "Café">>…the most recent non-active passage is the Café passage…<</if>>
@@ -372,12 +374,13 @@ Returns the title of the most recent previous passage whose title does not match
 
 <!-- *********************************************************************** -->
 
-<span id="functions-function-random"></span>
-### `random([min ,] max)` → *integer*
+### `random([min ,] max)` → *integer* {#functions-function-random}
 
-Returns a pseudo-random whole number (integer) within the range of the given bounds (inclusive)—i.e. [min,&nbsp;max].
+Returns a pseudo-random whole number (integer) within the range of the given bounds (inclusive)—i.e., [min,&nbsp;max].
 
-**NOTE:** By default, it uses [`Math.random()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random) as its source of (non-deterministic) randomness, however, when the seedable PRNG has been enabled, via [`State.prng.init()`](#state-api-method-prng-init), it uses the (deterministic) seeded PRNG instead.
+<p role="note"><b>Note:</b>
+By default, it uses <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random"><code>Math.random()</code></a> as its source of (non-deterministic) randomness, however, when the seedable PRNG has been enabled, via <a href="#state-api-method-prng-init"><code>State.prng.init()</code></a>, it uses that (deterministic) seeded PRNG instead.
+</p>
 
 #### Since:
 
@@ -388,7 +391,7 @@ Returns a pseudo-random whole number (integer) within the range of the given bou
 * **`min`:** (optional, *integer*) The lower bound of the random number (inclusive).  If omitted, will default to `0`.
 * **`max`:** (*integer*) The upper bound of the random number (inclusive).
 
-#### Example:
+#### Examples:
 
 ```
 random(5)     → Returns a number in the range 0–5
@@ -397,12 +400,13 @@ random(1, 6)  → Returns a number in the range 1–6
 
 <!-- *********************************************************************** -->
 
-<span id="functions-function-randomfloat"></span>
-### `randomFloat([min ,] max)` → *float*
+### `randomFloat([min ,] max)` → *float* {#functions-function-randomfloat}
 
-Returns a pseudo-random decimal number (floating-point) within the range of the given bounds (inclusive for the minimum, exclusive for the maximum)—i.e. [min,&nbsp;max).
+Returns a pseudo-random decimal number (floating-point) within the range of the given bounds (inclusive for the minimum, exclusive for the maximum)—i.e., [min,&nbsp;max).
 
-**NOTE:** By default, it uses [`Math.random()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random) as its source of (non-deterministic) randomness, however, when the seedable PRNG has been enabled, via [`State.prng.init()`](#state-api-method-prng-init), it uses the (deterministic) seeded PRNG instead.
+<p role="note"><b>Note:</b>
+By default, it simply returns non-deterministic results from <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random"><code>Math.random()</code></a>, however, when the seedable PRNG has been enabled, via <a href="#state-api-method-prng-init"><code>State.prng.init()</code></a>, it returns deterministic results from the seeded PRNG instead.
+</p>
 
 #### Since:
 
@@ -413,7 +417,7 @@ Returns a pseudo-random decimal number (floating-point) within the range of the 
 * **`min`:** (optional, *float*) The lower bound of the random number (inclusive).  If omitted, will default to `0.0`.
 * **`max`:** (*float*) The upper bound of the random number (exclusive).
 
-#### Example:
+#### Examples:
 
 ```
 randomFloat(5.0)       → Returns a number in the range 0.0–4.9999999…
@@ -422,8 +426,7 @@ randomFloat(1.0, 6.0)  → Returns a number in the range 1.0–5.9999999…
 
 <!-- *********************************************************************** -->
 
-<span id="functions-function-recall"></span>
-### `recall(key [, defaultValue])` → *any*
+### `recall(key [, defaultValue])` → *any* {#functions-function-recall}
 
 Returns the value associated with the specified key from the story metadata store or, if no such key exists, the specified default value, if any.
 
@@ -436,7 +439,7 @@ Returns the value associated with the specified key from the story metadata stor
 * **`key`:** (*string*) The key whose value should be returned.
 * **`defaultValue`:** (optional, *any*) The value to return if the key doesn't exist.
 
-#### Example:
+#### Examples:
 
 ```
 // Set setup.achievements to the 'achievements' metadata or an empty generic object.
@@ -448,8 +451,7 @@ Returns the value associated with the specified key from the story metadata stor
 
 <!-- *********************************************************************** -->
 
-<span id="functions-function-setpageelement"></span>
-### `setPageElement(idOrElement , passages [, defaultText])` → *`HTMLElement` object* | *null*
+### `setPageElement(idOrElement , passages [, defaultText])` → *`HTMLElement` object* | *null* {#functions-function-setpageelement}
 
 Renders the selected passage into the target element, replacing any existing content, and returns the element.  If no passages are found and default text is specified, it will be used instead.
 
@@ -463,9 +465,11 @@ Renders the selected passage into the target element, replacing any existing con
 * **`passages`:** (*string* | *string array*) The name(s) of the passage(s) to search for.  May be a single passage or an array of passages.  If an array of passage names is specified, the first passage to be found is used.
 * **`defaultText`:** (optional, *string*) The default text to use if no passages are found.
 
-#### Example:
+#### Examples:
 
-**NOTE:** As it is highly unlikely that either an array of passage names or default text will be needed in the vast majority of cases, only a few basic examples will be given.
+<p role="note"><b>Note:</b>
+As it is highly unlikely that either an array of passage names or default text will be needed in the vast majority of cases, only a few basic examples will be given.
+</p>
 
 ```
 // Using an ID; given an existing element on the page: <div id="my-display"></div>
@@ -477,8 +481,7 @@ setPageElement(myElement, "MyPassage");
 
 <!-- *********************************************************************** -->
 
-<span id="functions-function-tags"></span>
-### `tags([passages…])` → *string array*
+### `tags([passages…])` → *string array* {#functions-function-tags}
 
 Returns a new array consisting of all of the tags of the given passages.
 
@@ -490,7 +493,7 @@ Returns a new array consisting of all of the tags of the given passages.
 
 * **`passages`:** (optional, *string* | *string array*) The passages from which to collect tags.  May be a list or an array of passages.  If omitted, will default to the current passage.
 
-#### Example:
+#### Examples:
 
 ```
 <<if tags().includes("forest")>>…the current passage is part of the forest…<</if>>
@@ -499,8 +502,7 @@ Returns a new array consisting of all of the tags of the given passages.
 
 <!-- *********************************************************************** -->
 
-<span id="functions-function-temporary"></span>
-### `temporary()` → *object*
+### `temporary()` → *object* {#functions-function-temporary}
 
 Returns a reference to the current temporary variables store (equivalent to: [`State.temporary`](#state-api-getter-temporary)).  This is only really useful within pure JavaScript code, as within TwineScript you may simply access temporary variables natively.
 
@@ -510,7 +512,7 @@ Returns a reference to the current temporary variables store (equivalent to: [`S
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 // Given: _selection is 'Zagnut Bar'
@@ -521,8 +523,7 @@ if (temporary().selection === 'Zagnut Bar') {
 
 <!-- *********************************************************************** -->
 
-<span id="functions-function-time"></span>
-### `time()` → *integer*
+### `time()` → *integer* {#functions-function-time}
 
 Returns the number of milliseconds that have passed since the current passage was rendered to the page.
 
@@ -532,7 +533,7 @@ Returns the number of milliseconds that have passed since the current passage wa
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 → Links that vary based on the time
@@ -551,10 +552,9 @@ or [[stand your ground|Eaten by a grue]]?
 
 <!-- *********************************************************************** -->
 
-<span id="functions-function-turns"></span>
-### `turns()` → *integer*
+### `turns()` → *integer* {#functions-function-turns}
 
-Returns the number of passages that the player has visited.
+Returns the total number (count) of played turns currently in effect—i.e., the number of played moments up to the present moment; future (rewound/undone) moments are not included within the total.
 
 #### Since:
 
@@ -562,7 +562,7 @@ Returns the number of passages that the player has visited.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 <<print "This is turn #" + turns()>>
@@ -570,8 +570,7 @@ Returns the number of passages that the player has visited.
 
 <!-- *********************************************************************** -->
 
-<span id="functions-function-variables"></span>
-### `variables()` → *object*
+### `variables()` → *object* {#functions-function-variables}
 
 Returns a reference to the active (present) story variables store (equivalent to: [`State.variables`](#state-api-getter-variables)).  This is only really useful within pure JavaScript code, as within TwineScript you may simply access story variables natively.
 
@@ -581,7 +580,7 @@ Returns a reference to the active (present) story variables store (equivalent to
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 // Given: $hasGoldenKey is true
@@ -592,8 +591,7 @@ if (variables().hasGoldenKey) {
 
 <!-- *********************************************************************** -->
 
-<span id="functions-function-visited"></span>
-### `visited([passages…])` → *integer*
+### `visited([passages…])` → *integer* {#functions-function-visited}
 
 Returns the number of times that the passage with the given title occurred within the story history.  If multiple passage titles are given, returns the lowest count.
 
@@ -605,7 +603,7 @@ Returns the number of times that the passage with the given title occurred withi
 
 * **`passages`:** (optional, *string* | *string array*) The title(s) of the passage(s) to search for.  May be a list or an array of passages.  If omitted, will default to the current passage.
 
-#### Example:
+#### Examples:
 
 ```
 <<if visited() is 3>>…this is the third visit to the current passage…<</if>>
@@ -616,8 +614,7 @@ Returns the number of times that the passage with the given title occurred withi
 
 <!-- *********************************************************************** -->
 
-<span id="functions-function-visitedtags"></span>
-### `visitedTags(tags…)` → *integer*
+### `visitedTags(tags…)` → *integer* {#functions-function-visitedtags}
 
 Returns the number of passages within the story history that are tagged with all of the given tags.
 
@@ -629,7 +626,7 @@ Returns the number of passages within the story history that are tagged with all
 
 * **`tags`:** (*string* | *string array*) The tags to search for.  May be a list or an array of tags.
 
-#### Example:
+#### Examples:
 
 ```
 <<if visitedTags("forest")>>…has been to some part of the forest at least once…<</if>>

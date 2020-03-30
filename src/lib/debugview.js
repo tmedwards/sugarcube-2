@@ -2,7 +2,7 @@
 
 	lib/debugview.js
 
-	Copyright © 2013–2019 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
+	Copyright © 2013–2020 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
@@ -129,9 +129,12 @@ var DebugView = (() => { // eslint-disable-line no-unused-vars, no-var
 		}
 
 		static toggle() {
-			jQuery(document.documentElement).attr('data-debug-view') === 'enabled'
-				? DebugView.disable()
-				: DebugView.enable();
+			if (jQuery(document.documentElement).attr('data-debug-view') === 'enabled') {
+				DebugView.disable();
+			}
+			else {
+				DebugView.enable();
+			}
 		}
 	}
 

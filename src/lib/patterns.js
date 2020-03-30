@@ -2,7 +2,7 @@
 
 	lib/patterns.js
 
-	Copyright © 2013–2019 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
+	Copyright © 2013–2020 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
@@ -98,10 +98,10 @@ var Patterns = (() => { // eslint-disable-line no-unused-vars, no-var
 		Identifier patterns.
 
 		NOTE: Since JavaScript's RegExp syntax does not support Unicode character
-		classes, the correct regular expression to match a valid identifier name
-		(within the scope of our needs) would be on the order of 11–16 kB.  That
-		being the case, for the moment we restrict valid TwineScript identifiers
-		to US-ASCII.
+		classes, the correct regular expression to match a valid identifier name,
+		within the scope of our needs, would be on the order of approximately 5–6
+		or 11–16 KiB, depending on how the pattern was built.  That being the case,
+		for the moment we restrict valid TwineScript identifiers to US-ASCII.
 
 		FIXME: Fix this to, at least, approximate the correct range.
 	*/
@@ -119,6 +119,9 @@ var Patterns = (() => { // eslint-disable-line no-unused-vars, no-var
 	// Template name pattern.
 	const templateName = '[A-Za-z][\\w-]*';
 
+	// CSS ID or class sigil pattern.
+	const cssIdOrClassSigil = '[#.]';
+
 	// CSS image transclusion template pattern.
 	//
 	// NOTE: The alignment syntax isn't supported, but removing it might break uses
@@ -127,12 +130,16 @@ var Patterns = (() => { // eslint-disable-line no-unused-vars, no-var
 
 	// Inline CSS pattern.
 	const inlineCss = (() => {
-		const twStyle   = `(${anyLetter}+)\\(([^\\)\\|\\n]+)\\):`; // [1,2]=style(value):
-		const cssStyle  = `(${anyLetter}+):([^;\\|\\n]+);`;        // [3,4]=style:value;
-		const className = `((?:\\.${anyLetter}+)+);`;              // [5]  =.className;
-		const idName    = `((?:#${anyLetter}+)+);`;                // [6]  =#id;
+		/* legacy */
+		const twStyle   = `(${anyLetter}+)\\(([^\\)\\|\\n]+)\\):`;
+		/* /legacy */
+		const cssStyle  = `${spaceNoTerminator}*(${anyLetter}+)${spaceNoTerminator}*:([^;\\|\\n]+);`;
+		const idOrClass = `${spaceNoTerminator}*((?:${cssIdOrClassSigil}${anyLetter}+${spaceNoTerminator}*)+);`;
 
-		return `${twStyle}|${cssStyle}|${className}|${idName}`;
+		// [1,2] = style(value):
+		// [3,4] = style:value;
+		// [5]   = #id.className;
+		return `${twStyle}|${cssStyle}|${idOrClass}`;
 	})();
 
 	// URL pattern.
@@ -157,6 +164,7 @@ var Patterns = (() => { // eslint-disable-line no-unused-vars, no-var
 		variable,
 		macroName,
 		templateName,
+		cssIdOrClassSigil,
 		cssImage,
 		inlineCss,
 		url

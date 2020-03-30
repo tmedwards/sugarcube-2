@@ -5,7 +5,8 @@
 <header role="banner">
 <div id="header-logo"></div>
 <h1>SugarCube v2 Documentation</h1>
-<time datetime="{{.ISO_DATE}}">{{.DATE}}</time>
+<div><tt>{{.VERSION}}</tt> (<time datetime="{{.ISO_DATE}}">{{.DATE}}</time>)</div>
+<div>Find in page: <kbd>CTRL</kbd>+<kbd>F</kbd> or <kbd>F3</kbd></div>
 </header>
 
 ## [Introduction](#introduction)
@@ -142,10 +143,12 @@
 	* [`<Array>.last()`](#methods-array-prototype-method-last)
 	* [`<Array>.pluck()`](#methods-array-prototype-method-pluck)
 	* [`<Array>.pluckMany()`](#methods-array-prototype-method-pluckmany)
+	* [`<Array>.pop()`](#methods-array-prototype-method-pop)
 	* [`<Array>.push()`](#methods-array-prototype-method-push)
 	* [`<Array>.pushUnique()`](#methods-array-prototype-method-pushunique)
 	* [`<Array>.random()`](#methods-array-prototype-method-random)
 	* [`<Array>.randomMany()`](#methods-array-prototype-method-randommany)
+	* [`<Array>.shift()`](#methods-array-prototype-method-shift)
 	* [`<Array>.shuffle()`](#methods-array-prototype-method-shuffle)
 	* [`<Array>.unshift()`](#methods-array-prototype-method-unshift)
 	* [`<Array>.unshiftUnique()`](#methods-array-prototype-method-unshiftunique)
@@ -184,6 +187,7 @@
 	* [`StoryAuthor`](#special-passage-storyauthor)
 	* [`StoryBanner`](#special-passage-storybanner)
 	* [`StoryCaption`](#special-passage-storycaption)
+	* [`StoryDisplayTitle`](#special-passage-storydisplaytitle)
 	* [`StoryInit`](#special-passage-storyinit)
 	* [`StoryInterface`](#special-passage-storyinterface)
 	* [`StoryMenu`](#special-passage-storymenu)
@@ -209,6 +213,7 @@
 	* [`Engine`](#special-variable-engine)
 	* [`jQuery`](#special-variable-jquery)
 	* [`l10nStrings`](#special-variable-l10nstrings)
+	* [`Fullscreen`](#special-variable-fullscreen)
 	* [`LoadScreen`](#special-variable-loadscreen)
 	* [`Macro`](#special-variable-macro)
 	* [`Passage`](#special-variable-passage)
@@ -221,8 +226,10 @@
 	* [`Setting`](#special-variable-setting)
 	* [`settings`](#special-variable-settings)
 	* [`setup`](#special-variable-setup)
+	* [`SimpleAudio`](#special-variable-simpleaudio)
 	* [`State`](#special-variable-state)
 	* [`Story`](#special-variable-story)
+	* [`Template`](#special-variable-template)
 	* [`UI`](#special-variable-ui)
 	* [`UIBar`](#special-variable-uibar)
 
@@ -235,21 +242,31 @@
 
 ## [HTML](#html)
 
-## [Navigation Events &amp; Tasks](#navigation-events-tasks)
+## [Events &amp; Tasks](#events)
 
-* [Overview](#navigation-overview)
-* [Events](#navigation-events)
+* [`Dialog` Events](#events-dialog)
+	* [`:dialogclosed`](#events-dialog-event-dialogclosed)
+	* [`:dialogclosing`](#events-dialog-event-dialogclosing)
+	* [`:dialogopened`](#events-dialog-event-dialogopened)
+	* [`:dialogopening`](#events-dialog-event-dialogopening)
+* [Navigation Events &amp; Tasks](#events-navigation)
 	* [`:passageinit`](#navigation-event-passageinit)
 	* [`:passagestart`](#navigation-event-passagestart)
 	* [`:passagerender`](#navigation-event-passagerender)
 	* [`:passagedisplay`](#navigation-event-passagedisplay)
 	* [`:passageend`](#navigation-event-passageend)
-* [Tasks](#navigation-tasks)
 	* [`prehistory`](#navigation-task-prehistory)
 	* [`predisplay`](#navigation-task-predisplay)
 	* [`prerender`](#navigation-task-prerender)
 	* [`postrender`](#navigation-task-postrender)
 	* [`postdisplay`](#navigation-task-postdisplay)
+* [`SimpleAudio` Events](#events-simpleaudio)
+	* [`:faded`](#events-simpleaudio-event-faded)
+	* [`:fading`](#events-simpleaudio-event-fading)
+	* [`:stopped`](#events-simpleaudio-event-stopped)
+* [System Events](#events-system)
+	* [`:storyready`](#events-system-event-storyready)
+	* [`:enginerestart`](#events-startup-teardown-event-enginerestart)
 
 ----
 
@@ -300,10 +317,6 @@
 * [`Dialog.open()`](#dialog-api-method-open)
 * [`Dialog.setup()`](#dialog-api-method-setup)
 * [`Dialog.wiki()`](#dialog-api-method-wiki)
-* [`:dialogclosed`](#dialog-api-event-dialogclosed)
-* [`:dialogclosing`](#dialog-api-event-dialogclosing)
-* [`:dialogopened`](#dialog-api-event-dialogopened)
-* [`:dialogopening`](#dialog-api-event-dialogopening)
 
 ## [`Engine` API](#engine-api)
 
@@ -319,7 +332,19 @@
 * [`Engine.play()`](#engine-api-method-play)
 * [`Engine.restart()`](#engine-api-method-restart)
 * [`Engine.show()`](#engine-api-method-show)
-* [`:enginerestart`](#engine-api-event-enginerestart)
+
+## [`Fullscreen` API](#fullscreen-api)
+
+* [`Fullscreen.element`](#fullscreen-api-getter-element)
+* [`Fullscreen.isEnabled()`](#fullscreen-api-method-isenabled)
+* [`Fullscreen.isFullscreen()`](#fullscreen-api-method-isfullscreen)
+* [`Fullscreen.request()`](#fullscreen-api-method-request)
+* [`Fullscreen.exit()`](#fullscreen-api-method-exit)
+* [`Fullscreen.toggle()`](#fullscreen-api-method-toggle)
+* [`Fullscreen.onChange()`](#fullscreen-api-method-onchange)
+* [`Fullscreen.offChange()`](#fullscreen-api-method-offchange)
+* [`Fullscreen.onError()`](#fullscreen-api-method-onerror)
+* [`Fullscreen.offError()`](#fullscreen-api-method-offerror)
 
 ## [`LoadScreen` API](#loadscreen-api)
 
@@ -335,7 +360,7 @@
 * [`Macro.tags.get()`](#macro-api-method-tags-get)
 * [`Macro.tags.has()`](#macro-api-method-tags-has)
 
-## [`MacroContext` API](#macrocontext-api)
+## <i class="child-heading" aria-hidden="true"></i> [`MacroContext` API](#macrocontext-api)
 
 * [`<MacroContext>.args`](#macrocontext-api-prototype-property-args)
 	* [`<MacroContext>.args.full`](#macrocontext-api-prototype-property-args-full)
@@ -403,75 +428,6 @@
 * [`Setting.save()`](#setting-api-method-save)
 * [`settings`](#setting-api-object-settings)
 
-## [`State` API](#state-api)
-
-* [`State.active`](#state-api-getter-active)
-* [`State.bottom`](#state-api-getter-bottom)
-* [`State.current`](#state-api-getter-current)
-* [`State.length`](#state-api-getter-length)
-* [`State.passage`](#state-api-getter-passage)
-* [`State.temporary`](#state-api-getter-temporary)
-* [`State.size`](#state-api-getter-size)
-* [`State.top`](#state-api-getter-top)
-* [`State.turns`](#state-api-getter-turns)
-* [`State.variables`](#state-api-getter-variables)
-* [`State.getVar()`](#state-api-method-getvar)
-* [`State.has()`](#state-api-method-has)
-* [`State.hasPlayed()`](#state-api-method-hasplayed)
-* [`State.index()`](#state-api-method-index)
-* [`State.isEmpty()`](#state-api-method-isempty)
-* [`State.peek()`](#state-api-method-peek)
-* [`State.metadata.size`](#state-api-method-metadata-size)
-* [`State.metadata.clear()`](#state-api-method-metadata-clear)
-* [`State.metadata.delete()`](#state-api-method-metadata-delete)
-* [`State.metadata.get()`](#state-api-method-metadata-get)
-* [`State.metadata.has()`](#state-api-method-metadata-has)
-* [`State.metadata.set()`](#state-api-method-metadata-set)
-* [`State.prng.init()`](#state-api-method-prng-init)
-* [`State.prng.isEnabled()`](#state-api-method-prng-isenabled)
-* [`State.prng.pull`](#state-api-getter-prng-pull)
-* [`State.prng.seed`](#state-api-getter-prng-seed)
-* [`State.random()`](#state-api-method-random)
-* [`State.setVar()`](#state-api-method-setvar)
-
-## [`Story` API](#story-api)
-
-* [`Story.domId`](#story-api-getter-domid)
-* [`Story.title`](#story-api-getter-title)
-* [`Story.get()`](#story-api-method-get)
-* [`Story.has()`](#story-api-method-has)
-* [`Story.lookup()`](#story-api-method-lookup)
-* [`Story.lookupWith()`](#story-api-method-lookupwith)
-
-## [`Template` API](#template-api)
-
-* [`Template.size`](#template-api-getter-size)
-* [`Template.add()`](#template-api-method-add)
-* [`Template.delete()`](#template-api-method-delete)
-* [`Template.get()`](#template-api-method-get)
-* [`Template.has()`](#template-api-method-has)
-
-## [`UI` API](#ui-api)
-
-* [`UI.alert()`](#ui-api-method-alert)
-* [`UI.jumpto()`](#ui-api-method-jumpto)
-* [`UI.restart()`](#ui-api-method-restart)
-* [`UI.saves()`](#ui-api-method-saves)
-* [`UI.settings()`](#ui-api-method-settings)
-* [`UI.share()`](#ui-api-method-share)
-
-## [`UIBar` API](#uibar-api)
-
-* [`UIBar.destroy()`](#uibar-api-method-destroy)
-* [`UIBar.hide()`](#uibar-api-method-hide)
-* [`UIBar.isHidden()`](#uibar-api-method-ishidden)
-* [`UIBar.isStowed()`](#uibar-api-method-isstowed)
-* [`UIBar.show()`](#uibar-api-method-show)
-* [`UIBar.stow()`](#uibar-api-method-stow)
-* [`UIBar.unstow()`](#uibar-api-method-unstow)
-
-----
-
 ## [`SimpleAudio` API](#simpleaudio-api)
 
 * [General](#simpleaudio-api-general)
@@ -502,7 +458,7 @@
 	* [`SimpleAudio.lists.get()`](#simpleaudio-api-method-lists-get)
 	* [`SimpleAudio.lists.has()`](#simpleaudio-api-method-lists-has)
 
-## [`AudioTrack` API](#audiotrack-api)
+## <i class="child-heading" aria-hidden="true"></i> [`AudioTrack` API](#audiotrack-api)
 
 * [`<AudioTrack>.clone()`](#audiotrack-api-prototype-method-clone)
 * [`<AudioTrack>.duration()`](#audiotrack-api-prototype-method-duration)
@@ -539,11 +495,8 @@
 * [`<AudioTrack>.time()`](#audiotrack-api-prototype-method-time)
 * [`<AudioTrack>.unload()`](#audiotrack-api-prototype-method-unload)
 * [`<AudioTrack>.volume()`](#audiotrack-api-prototype-method-volume)
-* [`:faded`](#audiotrack-api-event-faded)
-* [`:fading`](#audiotrack-api-event-fading)
-* [`:stopped`](#audiotrack-api-event-stopped)
 
-## [`AudioRunner` API](#audiorunner-api)
+## <i class="child-heading" aria-hidden="true"></i> [`AudioRunner` API](#audiorunner-api)
 
 * [`<AudioRunner>.fade()`](#audiorunner-api-prototype-method-fade)
 * [`<AudioRunner>.fadeIn()`](#audiorunner-api-prototype-method-fadein)
@@ -563,7 +516,7 @@
 * [`<AudioRunner>.unload()`](#audiorunner-api-prototype-method-unload)
 * [`<AudioRunner>.volume()`](#audiorunner-api-prototype-method-volume)
 
-## [`AudioList` API](#audiolist-api)
+## <i class="child-heading" aria-hidden="true"></i> [`AudioList` API](#audiolist-api)
 
 * [`<AudioList>.duration()`](#audiolist-api-prototype-method-duration)
 * [`<AudioList>.fade()`](#audiolist-api-prototype-method-fade)
@@ -588,6 +541,74 @@
 * [`<AudioList>.time()`](#audiolist-api-prototype-method-time)
 * [`<AudioList>.unload()`](#audiolist-api-prototype-method-unload)
 * [`<AudioList>.volume()`](#audiolist-api-prototype-method-volume)
+
+## [`State` API](#state-api)
+
+* [`State.active`](#state-api-getter-active)
+* [`State.bottom`](#state-api-getter-bottom)
+* [`State.current`](#state-api-getter-current)
+* [`State.length`](#state-api-getter-length)
+* [`State.passage`](#state-api-getter-passage)
+* [`State.size`](#state-api-getter-size)
+* [`State.temporary`](#state-api-getter-temporary)
+* [`State.top`](#state-api-getter-top)
+* [`State.turns`](#state-api-getter-turns)
+* [`State.variables`](#state-api-getter-variables)
+* [`State.getVar()`](#state-api-method-getvar)
+* [`State.has()`](#state-api-method-has)
+* [`State.hasPlayed()`](#state-api-method-hasplayed)
+* [`State.index()`](#state-api-method-index)
+* [`State.isEmpty()`](#state-api-method-isempty)
+* [`State.peek()`](#state-api-method-peek)
+* [`State.metadata.size`](#state-api-method-metadata-size)
+* [`State.metadata.clear()`](#state-api-method-metadata-clear)
+* [`State.metadata.delete()`](#state-api-method-metadata-delete)
+* [`State.metadata.get()`](#state-api-method-metadata-get)
+* [`State.metadata.has()`](#state-api-method-metadata-has)
+* [`State.metadata.set()`](#state-api-method-metadata-set)
+* [`State.prng.init()`](#state-api-method-prng-init)
+* [`State.prng.isEnabled()`](#state-api-method-prng-isenabled)
+* [`State.prng.pull`](#state-api-getter-prng-pull)
+* [`State.prng.seed`](#state-api-getter-prng-seed)
+* [`State.random()`](#state-api-method-random)
+* [`State.setVar()`](#state-api-method-setvar)
+
+## [`Story` API](#story-api)
+
+* [`Story.domId`](#story-api-getter-domid)
+* [`Story.ifId`](#story-api-getter-ifid)
+* [`Story.title`](#story-api-getter-title)
+* [`Story.get()`](#story-api-method-get)
+* [`Story.has()`](#story-api-method-has)
+* [`Story.lookup()`](#story-api-method-lookup)
+* [`Story.lookupWith()`](#story-api-method-lookupwith)
+
+## [`Template` API](#template-api)
+
+* [`Template.size`](#template-api-getter-size)
+* [`Template.add()`](#template-api-method-add)
+* [`Template.delete()`](#template-api-method-delete)
+* [`Template.get()`](#template-api-method-get)
+* [`Template.has()`](#template-api-method-has)
+
+## [`UI` API](#ui-api)
+
+* [`UI.alert()`](#ui-api-method-alert)
+* [`UI.jumpto()`](#ui-api-method-jumpto)
+* [`UI.restart()`](#ui-api-method-restart)
+* [`UI.saves()`](#ui-api-method-saves)
+* [`UI.settings()`](#ui-api-method-settings)
+* [`UI.share()`](#ui-api-method-share)
+
+## [`UIBar` API](#uibar-api)
+
+* [`UIBar.destroy()`](#uibar-api-method-destroy)
+* [`UIBar.hide()`](#uibar-api-method-hide)
+* [`UIBar.isHidden()`](#uibar-api-method-ishidden)
+* [`UIBar.isStowed()`](#uibar-api-method-isstowed)
+* [`UIBar.show()`](#uibar-api-method-show)
+* [`UIBar.stow()`](#uibar-api-method-stow)
+* [`UIBar.unstow()`](#uibar-api-method-unstow)
 
 ----
 
@@ -637,5 +658,5 @@
 * [Translation Notes](#guide-localization-translation-notes)
 * [Usage](#guide-localization-usage)
 
-<div>&nbsp;</div>
+<div aria-hidden="true">&nbsp;</div>
 </nav>

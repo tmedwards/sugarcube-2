@@ -1,12 +1,11 @@
 <!-- ***********************************************************************************************
 	UI API
 ************************************************************************************************ -->
-<h1 id="ui-api"><code>UI</code> API</h1>
+# `UI` API {#ui-api}
 
 <!-- *********************************************************************** -->
 
-<span id="ui-api-method-alert"></span>
-### `UI.alert(message [, options [, closeFn]])`
+### `UI.alert(message [, options [, closeFn]])` {#ui-api-method-alert}
 
 Opens the built-in alert dialog, displaying the given message to the player.
 
@@ -17,10 +16,10 @@ Opens the built-in alert dialog, displaying the given message to the player.
 #### Parameters:
 
 * **`message`:** (*string*) The message to display to the player.
-* **`options`:** (optional, *null* | *object*) The options object.  See [`Dialog.addClickHandler()`](#dialog-api-method-addclickhandler) for more information.
+* **`options`:** (optional, *null* | *object*) The options object.  See [`Dialog.open()`](#dialog-api-method-open) for more information.
 * **`closeFn`:** (optional, *null* | *function*) The function to execute whenever the dialog is closed.
 
-#### Example:
+#### Examples:
 
 ```
 UI.alert("You smell of elderberries!");
@@ -28,8 +27,7 @@ UI.alert("You smell of elderberries!");
 
 <!-- *********************************************************************** -->
 
-<span id="ui-api-method-jumpto"></span>
-### `UI.jumpto([options [, closeFn]])`
+### `UI.jumpto([options [, closeFn]])` {#ui-api-method-jumpto}
 
 Opens the built-in jump to dialog, which is populated via the [`bookmark` tag](#special-tag-bookmark).
 
@@ -39,10 +37,10 @@ Opens the built-in jump to dialog, which is populated via the [`bookmark` tag](#
 
 #### Parameters:
 
-* **`options`:** (optional, *null* | *object*) The options object.  See [`Dialog.addClickHandler()`](#dialog-api-method-addclickhandler) for more information.
+* **`options`:** (optional, *null* | *object*) The options object.  See [`Dialog.open()`](#dialog-api-method-open) for more information.
 * **`closeFn`:** (optional, *null* | *function*) The function to execute whenever the dialog is closed.
 
-#### Example:
+#### Examples:
 
 ```
 UI.jumpto();
@@ -50,8 +48,7 @@ UI.jumpto();
 
 <!-- *********************************************************************** -->
 
-<span id="ui-api-method-restart"></span>
-### `UI.restart([options])`
+### `UI.restart([options])` {#ui-api-method-restart}
 
 Opens the built-in restart dialog, prompting the player to restart the story.
 
@@ -61,9 +58,9 @@ Opens the built-in restart dialog, prompting the player to restart the story.
 
 #### Parameters:
 
-* **`options`:** (optional, *null* | *object*) The options object.  See [`Dialog.addClickHandler()`](#dialog-api-method-addclickhandler) for more information.
+* **`options`:** (optional, *null* | *object*) The options object.  See [`Dialog.open()`](#dialog-api-method-open) for more information.
 
-#### Example:
+#### Examples:
 
 ```
 UI.restart();
@@ -71,8 +68,7 @@ UI.restart();
 
 <!-- *********************************************************************** -->
 
-<span id="ui-api-method-saves"></span>
-### `UI.saves([options [, closeFn]])`
+### `UI.saves([options [, closeFn]])` {#ui-api-method-saves}
 
 Opens the built-in saves dialog.
 
@@ -82,10 +78,10 @@ Opens the built-in saves dialog.
 
 #### Parameters:
 
-* **`options`:** (optional, *null* | *object*) The options object.  See [`Dialog.addClickHandler()`](#dialog-api-method-addclickhandler) for more information.
+* **`options`:** (optional, *null* | *object*) The options object.  See [`Dialog.open()`](#dialog-api-method-open) for more information.
 * **`closeFn`:** (optional, *null* | *function*) The function to execute whenever the dialog is closed.
 
-#### Example:
+#### Examples:
 
 ```
 UI.saves();
@@ -93,8 +89,7 @@ UI.saves();
 
 <!-- *********************************************************************** -->
 
-<span id="ui-api-method-settings"></span>
-### `UI.settings([options [, closeFn]])`
+### `UI.settings([options [, closeFn]])` {#ui-api-method-settings}
 
 Opens the built-in settings dialog, which is populated from the [`Setting` API](#setting-api).
 
@@ -104,10 +99,10 @@ Opens the built-in settings dialog, which is populated from the [`Setting` API](
 
 #### Parameters:
 
-* **`options`:** (optional, *null* | *object*) The options object.  See [`Dialog.addClickHandler()`](#dialog-api-method-addclickhandler) for more information.
+* **`options`:** (optional, *null* | *object*) The options object.  See [`Dialog.open()`](#dialog-api-method-open) for more information.
 * **`closeFn`:** (optional, *null* | *function*) The function to execute whenever the dialog is closed.
 
-#### Example:
+#### Examples:
 
 ```
 UI.settings();
@@ -115,8 +110,7 @@ UI.settings();
 
 <!-- *********************************************************************** -->
 
-<span id="ui-api-method-share"></span>
-### `UI.share([options [, closeFn]])`
+### `UI.share([options [, closeFn]])` {#ui-api-method-share}
 
 Opens the built-in share dialog, which is populated from the [`StoryShare` passage](#special-passage-storyshare).
 
@@ -126,10 +120,10 @@ Opens the built-in share dialog, which is populated from the [`StoryShare` passa
 
 #### Parameters:
 
-* **`options`:** (optional, *null* | *object*) The options object.  See [`Dialog.addClickHandler()`](#dialog-api-method-addclickhandler) for more information.
+* **`options`:** (optional, *null* | *object*) The options object.  See [`Dialog.open()`](#dialog-api-method-open) for more information.
 * **`closeFn`:** (optional, *null* | *function*) The function to execute whenever the dialog is closed.
 
-#### Example:
+#### Examples:
 
 ```
 UI.share();

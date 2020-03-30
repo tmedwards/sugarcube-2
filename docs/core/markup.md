@@ -1,20 +1,19 @@
 <!-- ***********************************************************************************************
 	Markup
 ************************************************************************************************ -->
-<h1 id="markup">Markup</h1>
+# Markup {#markup}
 
-#### Since:
-
-* `v2.0.0`: All markup except where noted.
+<p role="note"><b>Note:</b>
+Except where noted, all markup has been available since <code>v2.0.0</code>.
+</p>
 
 
 <!-- ***************************************************************************
 	Naked Variable
 **************************************************************************** -->
-<span id="markup-naked-variable"></span>
-## Naked Variable
+## Naked Variable {#markup-naked-variable}
 
-In addition to using one of the print macros ([`<<print>>`](#macros-macro-print), [`<<=>>`](#macros-macro-equal), [`<<->>`](#macros-macro-hyphen)) to print the values of TwineScript variables, SugarCube's naked variable markup allows printing them simply by including them within your normal passage text—i.e. variables in passage text are interpolated into their values.
+In addition to using one of the print macros ([`<<print>>`](#macros-macro-print), [`<<=>>`](#macros-macro-equal), [`<<->>`](#macros-macro-hyphen)) to print the values of TwineScript variables, SugarCube's naked variable markup allows printing them simply by including them within your normal passage text—i.e., variables in passage text are interpolated into their values.
 
 The following forms are supported by the naked variable markup:
 
@@ -29,13 +28,13 @@ The following forms are supported by the naked variable markup:
 <tbody>
 	<tr>
 		<td>Simple variable</td>
-		<td><code>$variable</code></td>
-		<td><code>$name</code></td>
+		<td><pre><code>$variable</code></pre></td>
+		<td><pre><code>$name</code></pre></td>
 	</tr>
 	<tr>
 		<td>Property access,<br>dot notation</td>
-		<td><code>$variable.property</code></td>
-		<td><code>$thing.name</code></td>
+		<td><pre><code>$variable.property</code></pre></td>
+		<td><pre><code>$thing.name</code></pre></td>
 	</tr>
 	<tr>
 		<td>Index/property access,<br>square bracket notation</td>
@@ -70,7 +69,7 @@ Well hello there, $name.
 Well hello there, Mr. Freeman.
 ```
 
-Because variables within your passage text are transformed into their values automatically, if you actually want to output a variable as-is—i.e. without interpolation; e.g., for a tutorial, debug output, or whatever—then you'll need to escape it in some fashion.  For example:
+Because variables within your passage text are transformed into their values automatically, if you actually want to output a variable as-is—i.e., without interpolation; e.g., for a tutorial, debug output, or whatever—then you'll need to escape it in some fashion.  For example:
 
 ```
 /* Using the nowiki markup: """…""" (triple double-quotes) */
@@ -100,14 +99,13 @@ The variable <code>$name</code> is set to: Mr. Freeman
 <!-- ***************************************************************************
 	Link
 **************************************************************************** -->
-<span id="markup-link"></span>
-## Link
+## Link {#markup-link}
 
-SugarCube's link markup consists of a required `Link` component and optional `Text` and `Setter` components.  The `Link` and `Text` components may be either plain text or any valid TwineScript expression, which will be evaluated early—i.e. when the link is initially processed.  The `Setter` component, which only works with passage links, must be a valid [TwineScript expression](#twinescript-expressions), of the [`<<set>>` macro](#macros-macro-set) variety, which will be evaluated late—i.e. when the link is clicked on.
+SugarCube's link markup consists of a required `Link` component and optional `Text` and `Setter` components.  The `Link` and `Text` components may be either plain text or any valid TwineScript expression, which will be evaluated early—i.e., when the link is initially processed.  The `Setter` component, which only works with passage links, must be a valid [TwineScript expression](#twinescript-expressions), of the [`<<set>>` macro](#macros-macro-set) variety, which will be evaluated late—i.e., when the link is clicked on.
 
 The `Link` component value may be the title of a passage or any valid URL to a resource (local or remote).
 
-In addition to the standard pipe separator (`|`) used to separate the `Link` and `Text` components (as seen below), SugarCube also supports the arrow separators (`->` &amp; `<-`).  Particular to the arrow separators, the arrows' direction determines the order of the components, with the arrow always pointing at the `Link` component—i.e. the right arrow works like the pipe separator, `Text->Link`, while the left arrow is reversed, `Link<-Text`.
+In addition to the standard pipe separator (`|`) used to separate the `Link` and `Text` components (as seen below), SugarCube also supports the arrow separators (`->` &amp; `<-`).  Particular to the arrow separators, the arrows' direction determines the order of the components, with the arrow always pointing at the `Link` component—i.e., the right arrow works like the pipe separator, `Text->Link`, while the left arrow is reversed, `Link<-Text`.
 
 <table>
 <caption>For the following examples assume: <code>$go</code> is <code>&quot;Grocery&quot;</code> and <code>$show</code> is <code>&quot;Go buy milk&quot;</code></caption>
@@ -153,14 +151,13 @@ In addition to the standard pipe separator (`|`) used to separate the `Link` and
 <!-- ***************************************************************************
 	Image
 **************************************************************************** -->
-<span id="markup-image"></span>
-## Image
+## Image {#markup-image}
 
-SugarCube's image markup consists of a required `Image` component and optional `Title`, `Link`, and `Setter` components.  The `Image`, `Title`, and `Link` components may be either plain text or any valid TwineScript expression, which will be evaluated early—i.e. when the link is initially processed.  The `Setter` component, which only works with passage links, must be a valid TwineScript expression, of the [`<<set>>` macro](#macros-macro-set) variety, which will be evaluated late—i.e. when the link is clicked on.
+SugarCube's image markup consists of a required `Image` component and optional `Title`, `Link`, and `Setter` components.  The `Image`, `Title`, and `Link` components may be either plain text or any valid TwineScript expression, which will be evaluated early—i.e., when the link is initially processed.  The `Setter` component, which only works with passage links, must be a valid [TwineScript expression](#twinescript-expressions), of the [`<<set>>` macro](#macros-macro-set) variety, which will be evaluated late—i.e., when the link is clicked on.
 
 The `Image` component value may be any valid URL to an image resource (local or remote) or the title of an [embedded image passage (Twine&nbsp;1 &amp; Tweego only)](http://twinery.org/wiki/image).  The `Link` component value may be the title of a passage or any valid URL to a resource (local or remote).
 
-In addition to the standard pipe separator (`|`) used to separate the `Image` and `Title` components (as seen below), SugarCube also supports the arrow separators (`->` &amp; `<-`).  Particular to the arrow separators, the arrows' direction determines the order of the components, with the arrow always pointing at the `Image` component—i.e. the right arrow works like the pipe separator, `Title->Image`, while the left arrow is reversed, `Image<-Title`.
+In addition to the standard pipe separator (`|`) used to separate the `Image` and `Title` components (as seen below), SugarCube also supports the arrow separators (`->` &amp; `<-`).  Particular to the arrow separators, the arrows' direction determines the order of the components, with the arrow always pointing at the `Image` component—i.e., the right arrow works like the pipe separator, `Title->Image`, while the left arrow is reversed, `Image<-Title`.
 
 <table>
 <caption>For the following examples assume: <code>$src</code> is <code>home.png</code>, <code>$go</code> is <code>&quot;Home&quot;</code>, and <code>$show</code> is <code>&quot;Go home&quot;</code></caption>
@@ -236,17 +233,15 @@ body {
 <!-- ***************************************************************************
 	HTML Attribute
 **************************************************************************** -->
-<span id="markup-html-attribute"></span>
-## HTML Attribute
+## HTML Attribute {#markup-html-attribute}
 
 <p role="note" class="warning"><b>Warning:</b>
-None of these features work with the <a href="#markup-verbatim-html">verbatim HTML markup</a>.
+None of these features work within the <a href="#markup-verbatim-html">verbatim HTML markup</a>.
 </p>
 
 <!-- *********************************************************************** -->
 
-<span id="markup-html-attribute-special"></span>
-### Special Attribute
+### Special Attribute {#markup-html-attribute-special}
 
 SugarCube provides a few special HTML attributes, which you may add to HTML tags to enable special behaviors.  There are attributes for passage links, media passages, and setters.
 
@@ -308,15 +303,17 @@ SugarCube provides a few special HTML attributes, which you may add to HTML tags
 
 <!-- *********************************************************************** -->
 
-<span id="markup-html-attribute-directive"></span>
-### Attribute Directive
+### Attribute Directive {#markup-html-attribute-directive}
 
 HTML attributes may be prefixed with directives, special text, which trigger special processing of such attributes.
 
 <dl>
 <dt>Evaluation directive: <code>sc-eval:</code>, <code>@</code></dt>
 <dd>
-	<p>The evaluation directive causes the attribute's value to be evaluated as TwineScript.  Post-evaluation, the directive will be removed from the attribute's name and the result of the evaluation will be used as the actual value of the attribute.</p>
+	<p>	The evaluation directive causes the attribute's value to be evaluated as TwineScript.  Post-evaluation, the directive will be removed from the attribute's name and the result of the evaluation will be used as the actual value of the attribute.</p>
+	<p role="note" class="warning"><b>Warning:</b>
+	The evaluation directive is not allowed on the <a href="#markup-html-attribute-special"><code>data-setter</code> attribute</a>—as its function is to evaluate its contents upon activation of its own element—and any such attempt will cause an error.
+	</p>
 	<table>
 	<caption>For the following examples assume: <code>_id</code> is <code>&quot;foo&quot;</code></caption>
 	<thead>
@@ -328,12 +325,12 @@ HTML attributes may be prefixed with directives, special text, which trigger spe
 	</thead>
 	<tbody>
 		<tr>
-			<td><code>sc-eval:<i>attribute-name</i></code></td>
+			<td><pre><code>sc-eval:<i>attribute-name</i></code></pre></td>
 			<td><pre><code>&lt;span sc-eval:id=&quot;_id&quot;&gt;…&lt;/span&gt;</code></pre></td>
 			<td><pre><code>&lt;span id=&quot;foo&quot;&gt;…&lt;/span&gt;</code></pre></td>
 		</tr>
 		<tr>
-			<td><code>@<i>attribute-name</i></code></td>
+			<td><pre><code>@<i>attribute-name</i></code></pre></td>
 			<td><pre><code>&lt;span @id=&quot;_id&quot;&gt;…&lt;/span&gt;</code></pre></td>
 			<td><pre><code>&lt;span id=&quot;foo&quot;&gt;…&lt;/span&gt;</code></pre></td>
 		</tr>
@@ -351,8 +348,7 @@ HTML attributes may be prefixed with directives, special text, which trigger spe
 <!-- ***************************************************************************
 	Line Continuation
 **************************************************************************** -->
-<span id="markup-line-continuation"></span>
-## Line Continuation
+## Line Continuation {#markup-line-continuation}
 
 A backslash (`\`) that begins or ends a line is the line continuation markup.  Upon processing the backslash, associated line break, and all whitespace between them are removed—thus, joining the nearby lines together.  This is mostly useful for controlling whitespace when you want to wrap lines for readability, but not generate extra whitespace upon display, and the [`<<silently>>` macro](#macros-macro-silently) isn't an option because you need to generate output.
 
@@ -374,16 +370,19 @@ The rain in Spain falls¬
 
 Yield the single line in the final output:
 
-    The rain in Spain falls mainly on the plain.
+```
+The rain in Spain falls mainly on the plain.
+```
 
-**NOTE:** The [`<<nobr>>` macro](#macros-macro-nobr), [`nobr` special tag](#special-tag-nobr), and [`Config.passages.nobr` setting](#config-api-property-passages-nobr) all perform a similar, though slightly different, function.
+<p role="note"><b>Note:</b>
+The <a href="#macros-macro-nobr"><code>&lt;&lt;nobr&gt;&gt;</code> macro</a>, <a href="#special-tag-nobr"><code>nobr</code> special tag</a>, and <a href="#config-api-property-passages-nobr"><code>Config.passages.nobr</code> setting</a> all perform a similar, though slightly different, function.
+</p>
 
 
 <!-- ***************************************************************************
 	Heading
 **************************************************************************** -->
-<span id="markup-heading"></span>
-## Heading
+## Heading {#markup-heading}
 
 An exclamation point (`!`) that begins a line defines the heading markup.  It consists of one to six exclamation points, each additional one beyond the first signifying a lesser heading.
 
@@ -440,10 +439,11 @@ An exclamation point (`!`) that begins a line defines the heading markup.  It co
 <!-- ***************************************************************************
 	Style
 **************************************************************************** -->
-<span id="markup-style"></span>
-## Style
+## Style {#markup-style}
 
-**NOTE:** Because the style markups use the same tokens to begin and end each markup, the same style cannot be nested within itself.
+<p role="note" class="warning"><b>Warning:</b>
+Because the style markups use the same tokens to begin and end each markup, the same style cannot be nested within itself.
+</p>
 
 <table>
 <thead>
@@ -498,8 +498,7 @@ An exclamation point (`!`) that begins a line defines the heading markup.  It co
 <!-- ***************************************************************************
 	List
 **************************************************************************** -->
-<span id="markup-list"></span>
-## List
+## List {#markup-list}
 
 An asterisk (`*`) or number sign (`#`) that begins a line defines a member of the unordered or ordered list markup, respectively.  
 
@@ -532,8 +531,7 @@ An asterisk (`*`) or number sign (`#`) that begins a line defines a member of th
 <!-- ***************************************************************************
 	Blockquote
 **************************************************************************** -->
-<span id="markup-blockquote"></span>
-## Blockquote
+## Blockquote {#markup-blockquote}
 
 A right angle bracket (`>`) that begins a line defines the blockquote markup.  It consists of one or more right angle brackets, each additional one beyond the first signifying a level of nested blockquote.
 
@@ -558,8 +556,7 @@ A right angle bracket (`>`) that begins a line defines the blockquote markup.  I
 <!-- ***************************************************************************
 	Code
 **************************************************************************** -->
-<span id="markup-code"></span>
-## Code
+## Code {#markup-code}
 
 <table>
 <thead>
@@ -590,8 +587,7 @@ A right angle bracket (`>`) that begins a line defines the blockquote markup.  I
 <!-- ***************************************************************************
 	Horizontal Rule
 **************************************************************************** -->
-<span id="markup-horizontal-rule"></span>
-## Horizontal Rule
+## Horizontal Rule {#markup-horizontal-rule}
 
 A set of four hyphen/minus characters (`-`) that begins a line defines the horizontal rule markup.
 
@@ -618,8 +614,7 @@ A set of four hyphen/minus characters (`-`) that begins a line defines the horiz
 <!-- ***************************************************************************
 	Verbatim Text
 **************************************************************************** -->
-<span id="markup-verbatim-text"></span><span id="markup-verbatim"></span>
-## Verbatim Text
+## Verbatim Text {#markup-verbatim-text}
 
 The verbatim text markup disables processing of *all* markup contained within—both SugarCube and HTML—passing its contents directly into the output as plain text.
 
@@ -652,10 +647,9 @@ The verbatim text markup disables processing of *all* markup contained within—
 <!-- ***************************************************************************
 	Verbatim HTML
 **************************************************************************** -->
-<span id="markup-verbatim-html"></span>
-## Verbatim HTML
+## Verbatim HTML {#markup-verbatim-html}
 
-A set of opening and closing &lt;html&gt; tags (`<html></html>`) defines the verbatim HTML markup.  The verbatim HTML markup disables processing of *all* markup contained within—both SugarCube and HTML—passing its contents directly into the output as HTML markup for the browser.  Thus, you should only use plain HTML markup within the verbatim markup—meaning using none of SugarCube's special HTML [attributes](#markup-html-attribute-special) or [directives](#markup-html-attribute-directive).
+A set of opening and closing &lt;html&gt; tags—i.e., `<html></html>`—defines the verbatim HTML markup.  The verbatim HTML markup disables processing of *all* markup contained within—both SugarCube and HTML—passing its contents directly into the output as HTML markup for the browser.  Thus, you should only use plain HTML markup within the verbatim markup—meaning using none of SugarCube's special HTML [attributes](#markup-html-attribute-special) or [directives](#markup-html-attribute-directive).
 
 <p role="note"><b>Note:</b>
 You should virtually never need to use the verbatim HTML markup.
@@ -665,10 +659,9 @@ You should virtually never need to use the verbatim HTML markup.
 <!-- ***************************************************************************
 	Custom Style
 **************************************************************************** -->
-<span id="markup-custom-style"></span>
-## Custom Style
+## Custom Style {#markup-custom-style}
 
-<p role="note"><b>Note:</b>
+<p role="note" class="warning"><b>Warning:</b>
 Because the custom style markup uses the same tokens to begin and end the markup, it cannot be nested within itself.
 </p>
 
@@ -685,8 +678,8 @@ Because the custom style markup uses the same tokens to begin and end the markup
 	<tr>
 		<td rowspan="2">Inline</td>
 		<td rowspan="2"><pre><code>@@<i>style-list</i><a href="#markup-custom-style-fn1">1</a>;Text@@</code></pre></td>
-		<td><pre><code>@@#foo;.bar;Text@@</code></pre></td>
-		<td><pre><code>&lt;span id="foo" class="bar"&gt;Text&lt;/span&gt;</code></pre></td>
+		<td><pre><code>@@#alfa;.bravo;Text@@</code></pre></td>
+		<td><pre><code>&lt;span id="alfa" class="bravo"&gt;Text&lt;/span&gt;</code></pre></td>
 	</tr>
 	<tr>
 		<td><pre><code>@@color:red;Text@@</code></pre></td>
@@ -695,8 +688,8 @@ Because the custom style markup uses the same tokens to begin and end the markup
 	<tr>
 		<td rowspan="2">Block</td>
 		<td rowspan="2"><pre><code>@@<i>style-list</i><a href="#markup-custom-style-fn1">1</a>;<br>Text<br>@@</code></pre></td>
-		<td><pre><code>@@#foo;.bar;<br>Text<br>@@</code></pre></td>
-		<td><pre><code>&lt;div id="foo" class="bar"&gt;Text&lt;/div&gt;</code></pre></td>
+		<td><pre><code>@@#alfa;.bravo;<br>Text<br>@@</code></pre></td>
+		<td><pre><code>&lt;div id="alfa" class="bravo"&gt;Text&lt;/div&gt;</code></pre></td>
 	</tr>
 	<tr>
 		<td><pre><code>@@color:red;<br>Text<br>@@</code></pre></td>
@@ -706,15 +699,22 @@ Because the custom style markup uses the same tokens to begin and end the markup
 </table>
 
 <ol class="note">
-<li id="markup-custom-style-fn1">The style-list should be a semi-colon (<code>;</code>) separated list consisting of a single, unique hash-prefixed ID—e.g., <code>#foo</code>—and/or any number of dot-prefixed class names—e.g., <code>.bar</code>—and/or style properties—e.g., <code>color:red</code>.</li>
+<li id="markup-custom-style-fn1">
+	The style-list should be a semi-colon (<code>;</code>) separated list consisting of one or more of the following:
+	<ul>
+	<li>A single unique hash-prefixed ID—e.g., <code>#alfa</code>.</li>
+	<li>Dot-prefixed class names—e.g., <code>.bravo</code>.</li>
+	<li>Style properties—e.g., <code>color:red</code>.</li>
+	</ul>
+	As of <code>v2.31.0</code>, the ID and class names components may be conjoined without need of extra semi-colons—e.g., <code>#alfa;.bravo;.charlie;</code> may also be written as <code>#alfa.bravo.charlie;</code>.
+</li>
 </ol>
 
 
 <!-- ***************************************************************************
 	Template
 **************************************************************************** -->
-<span id="markup-template"></span>
-## Template
+## Template {#markup-template}
 
 A text replacement markup.  The template markup begins with a question mark (`?`) followed by the template name—e.g., `?yolo`—and are set up as functions-that-return-strings, strings, or arrays of either—from which a random member is selected whenever the template is processed.  They are defined via the [`Template` API](#template-api).
 
@@ -738,10 +738,11 @@ She was always willing to lend her ear to anyone.
 <!-- ***************************************************************************
 	Comment
 **************************************************************************** -->
-<span id="markup-comment"></span>
-## Comment
+## Comment {#markup-comment}
 
-**NOTE:** Comments used within passage markup are not rendered into the page output.
+<p role="note"><b>Note:</b>
+Comments used within passage markup are not rendered into the page output.
+</p>
 
 <table>
 <thead>

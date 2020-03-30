@@ -2,7 +2,7 @@
 
 	lib/alert.js
 
-	Copyright © 2013–2019 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
+	Copyright © 2013–2020 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
@@ -51,7 +51,7 @@ var Alert = (() => { // eslint-disable-line no-unused-vars, no-var
 			}
 		}
 
-		if (typeof error === 'object' && error.stack) {
+		if (typeof error === 'object' && error !== null && error.stack) {
 			mesg += `\n\nStack Trace:\n${error.stack}`;
 		}
 

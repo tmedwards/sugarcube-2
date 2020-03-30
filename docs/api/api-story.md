@@ -1,14 +1,13 @@
 <!-- ***********************************************************************************************
 	Story API
 ************************************************************************************************ -->
-<h1 id="story-api"><code>Story</code> API</h1>
+# `Story` API {#story-api}
 
 <!-- *********************************************************************** -->
 
-<span id="story-api-getter-domid"></span>
-### `Story.domId` → *string*
+### `Story.domId` → *string* {#story-api-getter-domid}
 
-The DOM ID of the story (created from the slugified story title).
+The DOM ID of the story, created from the slugified story title.
 
 #### Since:
 
@@ -16,8 +15,17 @@ The DOM ID of the story (created from the slugified story title).
 
 <!-- *********************************************************************** -->
 
-<span id="story-api-getter-title"></span>
-### `Story.title` → *string*
+### `Story.ifId` → *string* {#story-api-getter-ifid}
+
+The IFID (Interactive Fiction IDentifier) of the story, if any.
+
+#### Since:
+
+* `v2.5.0`
+
+<!-- *********************************************************************** -->
+
+### `Story.title` → *string* {#story-api-getter-title}
 
 The title of the story.
 
@@ -27,10 +35,13 @@ The title of the story.
 
 <!-- *********************************************************************** -->
 
-<span id="story-api-method-get"></span>
-### `Story.get(passageTitle)` → *`Passage` object*
+### `Story.get(title)` → *`Passage` object* {#story-api-method-get}
 
 Returns the `Passage` object referenced by the given title, or an empty `Passage` object on failure.
+
+<p role="note"><b>Note:</b>
+This method will not return &quot;code&quot; passages—i.e., script, stylesheet, and widget passages.
+</p>
 
 #### Since:
 
@@ -38,9 +49,9 @@ Returns the `Passage` object referenced by the given title, or an empty `Passage
 
 #### Parameters:
 
-* **`passageTitle`:** (*string*) The title of the `Passage` object to return.
+* **`title`:** (*string*) The title of the `Passage` object to return.
 
-#### Example:
+#### Examples:
 
 ```
 Story.get("The Ducky")  → Returns the Passage object matching "The Ducky"
@@ -48,10 +59,13 @@ Story.get("The Ducky")  → Returns the Passage object matching "The Ducky"
 
 <!-- *********************************************************************** -->
 
-<span id="story-api-method-has"></span>
-### `Story.has(passageTitle)` → *boolean*
+### `Story.has(title)` → *boolean* {#story-api-method-has}
 
 Returns whether a `Passage` object referenced by the given title exists.
+
+<p role="note"><b>Note:</b>
+This method will not detect &quot;code&quot; passages—i.e., script, stylesheet, and widget passages.
+</p>
 
 #### Since:
 
@@ -59,9 +73,9 @@ Returns whether a `Passage` object referenced by the given title exists.
 
 #### Parameters:
 
-* **`passageTitle`:** (*string*) The title of the `Passage` object whose existence will be verified.
+* **`title`:** (*string*) The title of the `Passage` object whose existence will be verified.
 
-#### Example:
+#### Examples:
 
 ```
 Story.has("The Ducky")  → Returns whether a Passage object matching "The Ducky" exists
@@ -69,10 +83,13 @@ Story.has("The Ducky")  → Returns whether a Passage object matching "The Ducky
 
 <!-- *********************************************************************** -->
 
-<span id="story-api-method-lookup"></span>
-### `Story.lookup(propertyName , searchValue [, sortProperty])` → *`Passage` object array*
+### `Story.lookup(propertyName , searchValue [, sortProperty])` → *`Passage` object array* {#story-api-method-lookup}
 
-Returns an array of `Passage` objects each of that must contain a property matching the given name, whose value matches the given needle, or an empty array, if no matches are made.
+Returns a new array filled with all `Passage` objects that contain the given property, whose value matches the given search value, or an empty array, if no matches are made.
+
+<p role="note"><b>Note:</b>
+This method will not return &quot;code&quot; passages—i.e., script, stylesheet, and widget passages.
+</p>
 
 #### Since:
 
@@ -81,10 +98,10 @@ Returns an array of `Passage` objects each of that must contain a property match
 #### Parameters:
 
 * **`propertyName`:** (*string*) The name of property whose value will be compared to the search value.
-* **`searchValue`:** (*string* | *number*) The value to search for within the matched property.  The type of the property determines how the search occurs; direct comparison for non-arrays, while arrays are iterated over.  If the property value, for non-arrays, or any of the property members' values, for arrays, match, then the `Passage` object is added to the results array.
+* **`searchValue`:** (*string* | *number*) The value to search for within the matched property.  The type of the property determines how the search occurs—non-arrays are directly compared, while arrays are searched.  If the property's value, for non-arrays, or any of its members, for arrays, match, then the `Passage` object is added to the results.
 * **`sortProperty`:** (optional, *string*) The property whose value will be used to lexicographically sort the returned array.  If not given, the `Passage` object's `title` property is used.
 
-#### Example:
+#### Examples:
 
 ```
 → Returns all 'forest'-tagged Passage objects, sorted by their titles
@@ -93,10 +110,13 @@ Story.lookup("tags", "forest");
 
 <!-- *********************************************************************** -->
 
-<span id="story-api-method-lookupwith"></span>
-### `Story.lookupWith(filter [, sortProperty])` → *`Passage` object array*
+### `Story.lookupWith(predicate [, sortProperty])` → *`Passage` object array* {#story-api-method-lookupwith}
 
-Returns an array of `Passage` objects that passed the test implemented by the given filter function or an empty array, if no objects pass.
+Returns a new array filled with all `Passage` objects that pass the test implemented by the given predicate function or an empty array, if no objects pass.
+
+<p role="note"><b>Note:</b>
+This method will not return &quot;code&quot; passages—i.e., script, stylesheet, and widget passages.
+</p>
 
 #### Since:
 
@@ -104,12 +124,17 @@ Returns an array of `Passage` objects that passed the test implemented by the gi
 
 #### Parameters:
 
-* **`filter`:** (*function*) The function used to test each `Passage` object, which is passed in as its sole parameter.  If the function returns `true`, then the `Passage` object is added to the results array.
+* **`predicate`:** (*function*) The function used to test each `Passage` object, which is passed into the function as its sole parameter.  If the function returns `true`, then the `Passage` object is added to the results.
 * **`sortProperty`:** (optional, *string*) The property whose value will be used to lexicographically sort the returned array.  If not given, the `Passage` object's `title` property is used.
 
-#### Example:
+#### Examples:
 
 ```
+→ Returns all 'forest'-tagged Passage objects, sorted by their titles
+Story.lookupWith(function (p) {
+	return p.tags.includes("forest");
+});
+
 → Returns all Passage objects whose titles contain whitespace, sorted by their titles
 var hasWhitespaceRegExp = /\s/;
 Story.lookupWith(function (p) {

@@ -1,16 +1,17 @@
 <!-- ***********************************************************************************************
 	Dialog API
 ************************************************************************************************ -->
-<h1 id="dialog-api"><code>Dialog</code> API</h1>
+# `Dialog` API {#dialog-api}
 
 <!-- *********************************************************************** -->
 
-<span id="dialog-api-method-append"></span>
-### `Dialog.append(content)` → *`Dialog` object*
+### `Dialog.append(content)` → *`Dialog` object* {#dialog-api-method-append}
 
 Appends the given content to the dialog's content area.  Returns a reference to the `Dialog` object for chaining.
 
-**NOTE:** If your content contains any SugarCube markup, you'll need to use the [`Dialog.wiki()`](#dialog-api-method-wiki) method instead.
+<p role="note"><b>Note:</b>
+If your content contains any SugarCube markup, you'll need to use the <a href="#dialog-api-method-wiki"><code>Dialog.wiki()</code> method</a> instead.
+</p>
 
 #### Since:
 
@@ -20,7 +21,7 @@ Appends the given content to the dialog's content area.  Returns a reference to 
 
 * **`content`:** The content to append.  As this method is essentially a shortcut for `jQuery(Dialog.body()).append(…)`, see [jQuery's `append()`](https://api.jquery.com/append/) method for the range of valid content types.
 
-#### Example:
+#### Examples:
 
 ```
 Dialog.append("Cry 'Havoc!', and let slip the <em>ponies</em> of <strong>friendship</strong>.");
@@ -30,8 +31,7 @@ Dialog.append( /* some DOM nodes */ );
 
 <!-- *********************************************************************** -->
 
-<span id="dialog-api-method-body"></span>
-### `Dialog.body()` → *`HTMLElement` object*
+### `Dialog.body()` → *`HTMLElement` object* {#dialog-api-method-body}
 
 Returns a reference to the dialog's content area.
 
@@ -41,7 +41,7 @@ Returns a reference to the dialog's content area.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 jQuery(Dialog.body()).append("Cry 'Havoc!', and let slip the <em>ponies</em> of <strong>friendship</strong>.");
@@ -51,8 +51,7 @@ jQuery(Dialog.body()).wiki("Cry 'Havoc!', and let slip the //ponies// of ''frien
 
 <!-- *********************************************************************** -->
 
-<span id="dialog-api-method-close"></span>
-### `Dialog.close()` → *`Dialog` object*
+### `Dialog.close()` → *`Dialog` object* {#dialog-api-method-close}
 
 Closes the dialog.  Returns a reference to the `Dialog` object for chaining.
 
@@ -62,7 +61,7 @@ Closes the dialog.  Returns a reference to the `Dialog` object for chaining.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 Dialog.close();
@@ -70,8 +69,7 @@ Dialog.close();
 
 <!-- *********************************************************************** -->
 
-<span id="dialog-api-method-isopen"></span>
-### `Dialog.isOpen([classNames])` → *boolean*
+### `Dialog.isOpen([classNames])` → *boolean* {#dialog-api-method-isopen}
 
 Returns whether the dialog is currently open.
 
@@ -83,7 +81,7 @@ Returns whether the dialog is currently open.
 
 * **`classNames`:** (optional, *string*) The space-separated-list of classes to check for when determining the state of the dialog.  Each of the built-in dialogs contains a name-themed class that can be tested for in this manner—e.g., the Saves dialog contains the class `saves`.
 
-#### Example:
+#### Examples:
 
 ```
 if (Dialog.isOpen()) {
@@ -97,12 +95,13 @@ if (Dialog.isOpen("saves")) {
 
 <!-- *********************************************************************** -->
 
-<span id="dialog-api-method-open"></span>
-### `Dialog.open([options [, closeFn]])` → *`Dialog` object*
+### `Dialog.open([options [, closeFn]])` → *`Dialog` object* {#dialog-api-method-open}
 
 Opens the dialog.  Returns a reference to the `Dialog` object for chaining.
 
-**NOTE:** Call this only after populating the dialog with content.
+<p role="note"><b>Note:</b>
+Call this only after populating the dialog with content.
+</p>
 
 #### Since:
 
@@ -110,10 +109,17 @@ Opens the dialog.  Returns a reference to the `Dialog` object for chaining.
 
 #### Parameters:
 
-* **`options`:** (optional, *null* | *object*) The options object.  See [`Dialog.addClickHandler()`](#dialog-api-method-addclickhandler) for more information.
+* **`options`:** (optional, *null* | *object*) The options to be used when opening the dialog.
 * **`closeFn`:** (optional, *null* | *function*) The function to execute whenever the dialog is closed.
 
-#### Example:
+#### Options object:
+
+An options object should have some of the following properties:
+
+* **`top`:** Top y-coordinate of the dialog (default: `50`; in pixels, but without the unit).
+* **`opacity`:** Opacity of the overlay (default: `0.8`).
+
+#### Examples:
 
 ```
 Dialog.open();
@@ -121,8 +127,7 @@ Dialog.open();
 
 <!-- *********************************************************************** -->
 
-<span id="dialog-api-method-setup"></span>
-### `Dialog.setup([title [, classNames]])` → *`HTMLElement` object*
+### `Dialog.setup([title [, classNames]])` → *`HTMLElement` object* {#dialog-api-method-setup}
 
 Prepares the dialog for use and returns a reference to its content area.
 
@@ -135,7 +140,7 @@ Prepares the dialog for use and returns a reference to its content area.
 * **`title`:** (optional, *string*) The title of the dialog.
 * **`classNames`:** (optional, *string*) The space-separated-list of classes to add to the dialog.
 
-#### Example:
+#### Examples:
 
 ```
 // Basic example.
@@ -156,12 +161,13 @@ Dialog.open();
 
 <!-- *********************************************************************** -->
 
-<span id="dialog-api-method-wiki"></span>
-### `Dialog.wiki(wikiMarkup)` → *`Dialog` object*
+### `Dialog.wiki(wikiMarkup)` → *`Dialog` object* {#dialog-api-method-wiki}
 
 Renders the given [markup](#markup) and appends it to the dialog's content area.  Returns a reference to the `Dialog` object for chaining.
 
-**NOTE:** If your content consists of DOM nodes, you'll need to use the [`Dialog.append()`](#dialog-api-method-append) method instead.
+<p role="note"><b>Note:</b>
+If your content consists of DOM nodes, you'll need to use the <a href="#dialog-api-method-append"><code>Dialog.append()</code> method</a> instead.
+</p>
 
 #### Since:
 
@@ -171,7 +177,7 @@ Renders the given [markup](#markup) and appends it to the dialog's content area.
 
 * **`wikiMarkup`:** The markup to render.
 
-#### Example:
+#### Examples:
 
 ```
 Dialog.wiki("Cry 'Havoc!', and let slip the //ponies// of ''friendship''.");
@@ -179,156 +185,13 @@ Dialog.wiki("Cry 'Havoc!', and let slip the //ponies// of ''friendship''.");
 
 <!-- *********************************************************************** -->
 
-<span id="dialog-api-event-dialogclosed"></span>
-### `:dialogclosed` event
-
-Global synthetic event triggered as the last step in closing the dialog when [`Dialog.close()`](#dialog-api-method-close) is called.
-
-<p role="note" class="warning"><b>Warning:</b>
-You cannot obtain data about the closing dialog from the dialog itself—e.g., title or classes—when using the <code>:dialogclosed</code> event, as the dialog has already closed and been reset by the time the event is fired.  If you need that kind of information from the dialog itself, then you may use the <a href="#dialog-api-event-dialogclosing"><code>:dialogclosing</code> event</a> instead.
-</p>
-
-#### Since:
-
-* `v2.29.0`
-
-#### Event object properties: *none*
-
-**NOTE:** While there are no custom properties, the event is fired from the dialog's body, thus the `target` property will refer to its body element—i.e. `#ui-dialog-body`.
-
-#### Example:
-
-```
-/* Execute the handler function when the event triggers. */
-$(document).on(':dialogclosed', function (ev) {
-	/* JavaScript code */
-});
-
-/* Execute the handler function exactly once. */
-$(document).one(':dialogclosed', function (ev) {
-	/* JavaScript code */
-});
-```
-
-<!-- *********************************************************************** -->
-
-<span id="dialog-api-event-dialogclosing"></span>
-### `:dialogclosing` event
-
-Global synthetic event triggered as the first step in closing the dialog when [`Dialog.close()`](#dialog-api-method-close) is called.
-
-#### Since:
-
-* `v2.29.0`
-
-#### Event object properties: *none*
-
-**NOTE:** While there are no custom properties, the event is fired from the dialog's body, thus the `target` property will refer to its body element—i.e. `#ui-dialog-body`.
-
-#### Example:
-
-```
-/* Execute the handler function when the event triggers. */
-$(document).on(':dialogclosing', function (ev) {
-	/* JavaScript code */
-});
-
-/* Execute the handler function exactly once. */
-$(document).one(':dialogclosing', function (ev) {
-	/* JavaScript code */
-});
-```
-
-<!-- *********************************************************************** -->
-
-<span id="dialog-api-event-dialogopened"></span>
-### `:dialogopened` event
-
-Global synthetic event triggered as the last step in opening the dialog when [`Dialog.open()`](#dialog-api-method-open) is called.
-
-#### Since:
-
-* `v2.29.0`
-
-#### Event object properties: *none*
-
-**NOTE:** While there are no custom properties, the event is fired from the dialog's body, thus the `target` property will refer to its body element—i.e. `#ui-dialog-body`.
-
-#### Example:
-
-```
-/* Execute the handler function when the event triggers. */
-$(document).on(':dialogopened', function (ev) {
-	/* JavaScript code */
-});
-
-/* Execute the handler function exactly once. */
-$(document).one(':dialogopened', function (ev) {
-	/* JavaScript code */
-});
-```
-
-<!-- *********************************************************************** -->
-
-<span id="dialog-api-event-dialogopening"></span>
-### `:dialogopening` event
-
-Global synthetic event triggered as the first step in opening the dialog when [`Dialog.open()`](#dialog-api-method-open) is called.
-
-#### Since:
-
-* `v2.29.0`
-
-#### Event object properties: *none*
-
-**NOTE:** While there are no custom properties, the event is fired from the dialog's body, thus the `target` property will refer to its body element—i.e. `#ui-dialog-body`.
-
-#### Example:
-
-```
-/* Execute the handler function when the event triggers. */
-$(document).on(':dialogopening', function (ev) {
-	/* JavaScript code */
-});
-
-/* Execute the handler function exactly once. */
-$(document).one(':dialogopening', function (ev) {
-	/* JavaScript code */
-});
-```
-
-<!-- *********************************************************************** -->
-
-<span id="dialog-api-method-addclickhandler"></span>
-### <span class="deprecated">`Dialog.addClickHandler(targets [, options [, startFn [, doneFn [, closeFn]]]])`</span>
+### <span class="deprecated">`Dialog.addClickHandler(targets [, options [, startFn [, doneFn [, closeFn]]]])`</span> {#dialog-api-method-addclickhandler}
 
 <p role="note" class="warning"><b>Deprecated:</b>
 This method has been deprecated and should no longer be used.  The core of what it does is simply to wrap a call to <a href="#dialog-api-method-open"><code>Dialog.open()</code></a> within a call to <a href="#methods-jquery-prototype-method-ariaclick"><code>&lt;jQuery&gt;.ariaClick()</code></a>, which can be done directly and with greater flexibility.
 </p>
 
-Adds WAI-ARIA-compatible mouse/keyboard event handlers to the target element(s) that open the dialog when activated.
-
 #### Since:
 
 * `v2.0.0`: Basic syntax.
 * `v2.29.0`: Deprecated.
-
-#### Parameters:
-
-* **`target`:** (*`HTMLElement` object* | *`jQuery` object* | *string*) The DOM element(s) to attach the handler to—may be either an `HTMLElement` object, a `jQuery` object, or a jQuery-style selector set.
-* **`options`:** (optional, *null* | *object*) The options object; the currently understood properties are:
-	* **`top`:** Top y-coordinate of the dialog (default: `50`; in pixels, but without the unit).
-	* **`opacity`:** Opacity of the overlay (default: `0.8`).
-* **`startFn`:** (optional, *null* | *function*) The function to execute at the start of `Dialog.addClickHandler()`.  This is commonly used to setup the dialog.
-* **`doneFn`:** (optional, *null* | *function*) The function to execute at the end of `Dialog.addClickHandler()`.
-* **`closeFn`:** (optional, *null* | *function*) The function to execute whenever the associated dialog is closed.
-
-#### Example:
-
-```
-// Commonly used something like the following.
-Dialog.addClickHandler("#some-element", null, function () {
-	Dialog.setup("My Dialog Title", "my-dialog-class");
-	Dialog.wiki(Story.get("MyDialogContents").processText());
-});
-```

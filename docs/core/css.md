@@ -1,14 +1,13 @@
 <!-- ***********************************************************************************************
 	CSS
 ************************************************************************************************ -->
-<h1 id="css"><abbr title="Cascading Style Sheets">CSS</abbr></h1>
+# <abbr title="Cascading Style Sheets">CSS</abbr> {#css}
 
 
 <!-- ***************************************************************************
 	Passage Conversions
 **************************************************************************** -->
-<span id="css-passage-conversions"></span>
-## Passage Conversions
+## Passage Conversions {#css-passage-conversions}
 
 IDs and classes automatically generated from passage names and tags are normalized to kebab case with all lowercase letters—which entails: removing characters that are not alphanumerics, underscores, hyphens, en-/em-dashes, or whitespace, then replacing any remaining non-alphanumeric characters with hyphens, one per group, and finally converting the result to lowercase.
 
@@ -46,8 +45,7 @@ For example, if the tag name was `Sector_42`, then it would become both the `dat
 <!-- ***************************************************************************
 	Example Selectors
 **************************************************************************** -->
-<span id="css-example-selectors"></span>
-## Example Selectors
+## Example Selectors {#css-example-selectors}
 
 <table>
 <thead>
@@ -117,11 +115,11 @@ For example, if the tag name was `Sector_42`, then it would become both the `dat
 	</tr>
 	<tr>
 		<td><code>.passage .link-visited<a href="#css-example-selectors-fn1">1</a></code></td>
-		<td>Selects all internal link elements within the passage element whose passages are within the in-play story history—i.e. passages the player has been to before.</td>
+		<td>Selects all internal link elements within the passage element whose passages are within the in-play story history—i.e., passages the player has been to before.</td>
 	</tr>
 	<tr>
 		<td><code>.passage .link-internal:not(.link-visited)<a href="#css-example-selectors-fn1">1</a></code></td>
-		<td>Selects all internal link elements within the passage element whose passages are not within the in-play story history—i.e. passages the player has never been to before.</td>
+		<td>Selects all internal link elements within the passage element whose passages are not within the in-play story history—i.e., passages the player has never been to before.</td>
 	</tr>
 </tbody>
 </table>
@@ -134,8 +132,7 @@ For example, if the tag name was `Sector_42`, then it would become both the `dat
 <!-- ***************************************************************************
 	Warnings
 **************************************************************************** -->
-<span id="css-warnings"></span>
-## Warnings
+## Warnings {#css-warnings}
 
 ### Multiple Stylesheets *(for Twine&nbsp;1/Twee only)*
 
@@ -171,8 +168,7 @@ body.forest a:hover { color: lime; }
 <!-- ***************************************************************************
 	Built-in Stylesheets
 **************************************************************************** -->
-<span id="css-built-ins"></span>
-## Built-in Stylesheets
+## Built-in Stylesheets {#css-built-ins}
 
 These are SugarCube's built-in stylesheets, in order of load/cascade.  The most interesting of which, from an end-user's standpoint, are 4–10.  The links go to the most recent release versions of each in SugarCube's [source code repository](https://github.com/tmedwards/sugarcube-2).
 
