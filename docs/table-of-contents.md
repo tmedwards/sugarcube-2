@@ -639,6 +639,7 @@
 
 * [Local Install For Tweego](#guide-installation-tweego)
 * [Local Install For Twine&nbsp;2](#guide-installation-twine2)
+* [Online Install For Twine&nbsp;2](#guide-installation-twine2-online)
 * [Local Install For Twine&nbsp;1/Twee](#guide-installation-twine1-twee)
 
 ## [Guide: Code Updates](#guide-code-updates)

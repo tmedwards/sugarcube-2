@@ -70,6 +70,18 @@ file:///C:/Users/soandso/Documents/Twine/StoryFormats/SugarCube-2/format.js
 
 
 <!-- ***************************************************************************
+	Online Installation For Twine 2
+**************************************************************************** -->
+## Online Install For Twine&nbsp;2 {#guide-installation-twine2-online}
+
+The online SugarCube install, delivered by the [jsDelivr CDN](https://www.jsdelivr.com/), supports only versions of Twine&nbsp;2 ≥2.1.
+
+Copy the following URL and paste it into the *Add a New Format* tab of the *Formats* menu, from Twine&nbsp;2's sidebar.
+
+**URL:** [https://cdn.jsdelivr.net/gh/tmedwards/sugarcube-2/dist/format.js](https://cdn.jsdelivr.net/gh/tmedwards/sugarcube-2/dist/format.js)
+
+
+<!-- ***************************************************************************
 	Local Installation For Twine 1/Twee
 **************************************************************************** -->
 ## Local Install For Twine&nbsp;1/Twee {#guide-installation-twine1-twee}
