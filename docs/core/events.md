@@ -30,7 +30,7 @@ For standard browser/DOM events, see the <a href="https://developer.mozilla.org/
 Global event triggered as the last step in closing the dialog when [`Dialog.close()`](#dialog-api-method-close) is called.
 
 <p role="note" class="warning"><b>Warning:</b>
-You cannot obtain data about the closing dialog from the dialog itself—e.g., title or classes—when using the <code>:dialogclosed</code> event, as the dialog has already closed and been reset by the time the event is fired.  If you need that kind of information from the dialog itself, then you may use the <a href="#dialog-api-event-dialogclosing"><code>:dialogclosing</code> event</a> instead.
+You cannot obtain data about the closing dialog from the dialog itself—e.g., title or classes—when using the <code>:dialogclosed</code> event, as the dialog has already closed and been reset by the time the event is fired.  If you need that kind of information from the dialog itself, then you may use the <a href="#events-dialog-event-dialogclosing"><code>:dialogclosing</code> event</a> instead.
 </p>
 
 #### Since:
