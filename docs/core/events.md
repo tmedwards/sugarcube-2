@@ -25,7 +25,7 @@ For standard browser/DOM events, see the <a href="https://developer.mozilla.org/
 
 <!-- *********************************************************************** -->
 
-### `:dialogclosed` event {#events-dialog-event-dialogclosed}
+### `:dialogclosed` event<!-- legacy --><span id="dialog-api-event-dialogclosed"></span><!-- /legacy --> {#events-dialog-event-dialogclosed}
 
 Global event triggered as the last step in closing the dialog when [`Dialog.close()`](#dialog-api-method-close) is called.
 
@@ -59,7 +59,7 @@ $(document).one(':dialogclosed', function (ev) {
 
 <!-- *********************************************************************** -->
 
-### `:dialogclosing` event {#events-dialog-event-dialogclosing}
+### `:dialogclosing` event<!-- legacy --><span id="dialog-api-event-dialogclosing"></span><!-- /legacy --> {#events-dialog-event-dialogclosing}
 
 Global event triggered as the first step in closing the dialog when [`Dialog.close()`](#dialog-api-method-close) is called.
 
@@ -89,7 +89,7 @@ $(document).one(':dialogclosing', function (ev) {
 
 <!-- *********************************************************************** -->
 
-### `:dialogopened` event {#events-dialog-event-dialogopened}
+### `:dialogopened` event<!-- legacy --><span id="dialog-api-event-dialogopened"></span><!-- /legacy --> {#events-dialog-event-dialogopened}
 
 Global event triggered as the last step in opening the dialog when [`Dialog.open()`](#dialog-api-method-open) is called.
 
@@ -119,7 +119,7 @@ $(document).one(':dialogopened', function (ev) {
 
 <!-- *********************************************************************** -->
 
-### `:dialogopening` event {#events-dialog-event-dialogopening}
+### `:dialogopening` event<!-- legacy --><span id="dialog-api-event-dialogopening"></span><!-- /legacy --> {#events-dialog-event-dialogopening}
 
 Global event triggered as the first step in opening the dialog when [`Dialog.open()`](#dialog-api-method-open) is called.
 
@@ -151,7 +151,7 @@ $(document).one(':dialogopening', function (ev) {
 <!-- ***************************************************************************
 	Navigation Events & Tasks
 **************************************************************************** -->
-## Navigation Events &amp; Tasks {#events-navigation}
+## Navigation Events &amp; Tasks<!-- legacy --><span id="navigation-events-tasks"></span><span id="navigation-overview"></span><span id="navigation-events"></span><span id="navigation-tasks"></span><!-- /legacy --> {#events-navigation}
 
 Navigation events, and tasks, allow the execution of JavaScript code at specific points during passage navigation.
 
@@ -186,7 +186,7 @@ In order of processing: *(for reference, this also shows tasks and various speci
 
 <!-- *********************************************************************** -->
 
-### `:passageinit` event {#events-navigation-event-passageinit}
+### `:passageinit` event<!-- legacy --><span id="navigation-event-passageinit"></span><!-- /legacy --> {#events-navigation-event-passageinit}
 
 Triggered before the modification of the state history.
 
@@ -214,7 +214,7 @@ $(document).one(':passageinit', function (ev) {
 
 <!-- *********************************************************************** -->
 
-### `:passagestart` event {#events-navigation-event-passagestart}
+### `:passagestart` event<!-- legacy --><span id="navigation-event-passagestart"></span><!-- /legacy --> {#events-navigation-event-passagestart}
 
 Triggered before the rendering of the incoming passage.
 
@@ -257,7 +257,7 @@ $(document).on(':passagestart', function (ev) {
 
 <!-- *********************************************************************** -->
 
-### `:passagerender` event {#events-navigation-event-passagerender}
+### `:passagerender` event<!-- legacy --><span id="navigation-event-passagerender"></span><!-- /legacy --> {#events-navigation-event-passagerender}
 
 Triggered after the rendering of the incoming passage.
 
@@ -300,7 +300,7 @@ $(document).on(':passagerender', function (ev) {
 
 <!-- *********************************************************************** -->
 
-### `:passagedisplay` event {#events-navigation-event-passagedisplay}
+### `:passagedisplay` event<!-- legacy --><span id="navigation-event-passagedisplay"></span><!-- /legacy --> {#events-navigation-event-passagedisplay}
 
 Triggered after the display—i.e., output—of the incoming passage.
 
@@ -344,7 +344,7 @@ $(document).on(':passagedisplay', function (ev) {
 
 <!-- *********************************************************************** -->
 
-### `:passageend` event {#events-navigation-event-passageend}
+### `:passageend` event<!-- legacy --><span id="navigation-event-passageend"></span><!-- /legacy --> {#events-navigation-event-passageend}
 
 Triggered at the end of passage navigation.
 
@@ -388,7 +388,7 @@ $(document).on(':passageend', function (ev) {
 
 <!-- *********************************************************************** -->
 
-### `prehistory` tasks {#events-navigation-task-prehistory}
+### `prehistory` tasks<!-- legacy --><span id="navigation-task-prehistory"></span><!-- /legacy --> {#events-navigation-task-prehistory}
 
 Executed before the modification of the state history.
 
@@ -414,7 +414,7 @@ prehistory["Some Task Name"] = function (taskName) {
 
 <!-- *********************************************************************** -->
 
-### `predisplay` tasks {#events-navigation-task-predisplay}
+### `predisplay` tasks<!-- legacy --><span id="navigation-task-predisplay"></span><!-- /legacy --> {#events-navigation-task-predisplay}
 
 Executed before the rendering of the incoming passage.
 
@@ -440,7 +440,7 @@ predisplay["Some Task Name"] = function (taskName) {
 
 <!-- *********************************************************************** -->
 
-### `prerender` tasks {#events-navigation-task-prerender}
+### `prerender` tasks<!-- legacy --><span id="navigation-task-prerender"></span><!-- /legacy --> {#events-navigation-task-prerender}
 
 Executed before the rendering of the incoming passage.
 
@@ -467,7 +467,7 @@ prerender["Some Task Name"] = function (content, taskName) {
 
 <!-- *********************************************************************** -->
 
-### `postrender` tasks {#events-navigation-task-postrender}
+### `postrender` tasks<!-- legacy --><span id="navigation-task-postrender"></span><!-- /legacy --> {#events-navigation-task-postrender}
 
 Executed after the rendering of the incoming passage.
 
@@ -494,7 +494,7 @@ postrender["Some Task Name"] = function (content, taskName) {
 
 <!-- *********************************************************************** -->
 
-### `postdisplay` tasks {#events-navigation-task-postdisplay}
+### `postdisplay` tasks<!-- legacy --><span id="navigation-task-postdisplay"></span><!-- /legacy --> {#events-navigation-task-postdisplay}
 
 Executed after the display—i.e., output—of the incoming passage.
 
@@ -532,7 +532,7 @@ To add or remove event listeners to audio tracks managed by the <a href="#simple
 
 <!-- *********************************************************************** -->
 
-### `:faded` event {#events-simpleaudio-event-faded}
+### `:faded` event<!-- legacy --><span id="audiotrack-api-event-faded"></span><!-- /legacy --> {#events-simpleaudio-event-faded}
 
 Track event triggered when a fade completes normally.
 
@@ -558,7 +558,7 @@ someTracks.on(':faded', function (ev) {
 
 <!-- *********************************************************************** -->
 
-### `:fading` event {#events-simpleaudio-event-fading}
+### `:fading` event<!-- legacy --><span id="audiotrack-api-event-fading"></span><!-- /legacy --> {#events-simpleaudio-event-fading}
 
 Track event triggered when a fade starts.
 
@@ -584,7 +584,7 @@ someTracks.on(':fading', function (ev) {
 
 <!-- *********************************************************************** -->
 
-### `:stopped` event {#events-simpleaudio-event-stopped}
+### `:stopped` event<!-- legacy --><span id="audiotrack-api-event-stopped"></span><!-- /legacy --> {#events-simpleaudio-event-stopped}
 
 Track event triggered when playback is stopped after [`<AudioTrack>.stop()`](#audiotrack-api-prototype-method-stop) or [`<AudioRunner>.stop()`](#audiorunner-api-prototype-method-stop) is called—either manually or as part of another process.
 
@@ -643,7 +643,7 @@ $(document).one(':storyready', function (ev) {
 
 <!-- *********************************************************************** -->
 
-### `:enginerestart` event {#events-system-event-enginerestart}
+### `:enginerestart` event<!-- legacy --><span id="engine-api-event-enginerestart"></span><!-- /legacy --> {#events-system-event-enginerestart}
 
 Global event triggered once just before the page is reloaded when [`Engine.restart()`](#engine-api-method-restart) is called.
 
