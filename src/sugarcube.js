@@ -199,34 +199,37 @@ jQuery(() => {
 		}, Engine.minDomActionDelay);
 
 		// Finally, export identifiers for debugging purposes.
-		window.SugarCube = Object.freeze(Object.assign(Object.create(null), {
-			Browser,
-			Config,
-			Dialog,
-			Engine,
-			Fullscreen,
-			Has,
-			L10n,
-			Macro,
-			Passage,
-			Save,
-			Scripting,
-			Setting,
-			SimpleAudio,
-			State,
-			Story,
-			UI,
-			UIBar,
-			DebugBar,
-			Util,
-			Visibility,
-			Wikifier,
-			session,
-			settings,
-			setup,
-			storage,
-			version
-		}));
+		Object.defineProperty(window, 'SugarCube', {
+			// WARNING: We need to assign new values at points, so seal it, do not freeze it.
+			value : Object.seal(Object.assign(Object.create(null), {
+				Browser,
+				Config,
+				Dialog,
+				Engine,
+				Fullscreen,
+				Has,
+				L10n,
+				Macro,
+				Passage,
+				Save,
+				Scripting,
+				Setting,
+				SimpleAudio,
+				State,
+				Story,
+				UI,
+				UIBar,
+				DebugBar,
+				Util,
+				Visibility,
+				Wikifier,
+				session,
+				settings,
+				setup,
+				storage,
+				version
+			}))
+		});
 
 		if (DEBUG) { console.log('[SugarCube/main()] Startup complete; story ready.'); }
 	}
