@@ -2216,7 +2216,7 @@
 						break;
 
 					case 'play':
-						selected.play();
+						selected.playWhenAllowed();
 						break;
 
 					case 'stop':
@@ -2780,7 +2780,7 @@
 						break;
 
 					case 'play':
-						list.play();
+						list.playWhenAllowed();
 						break;
 
 					case 'skip':
