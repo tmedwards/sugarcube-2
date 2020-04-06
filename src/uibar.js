@@ -190,9 +190,7 @@ var UIBar = (() => { // eslint-disable-line no-unused-vars, no-var
 
 		// Set up the story display title.
 		if (Story.has('StoryDisplayTitle')) {
-			if (Config.ui.updateStoryElements) {
-				setDisplayTitle(Story.get('StoryDisplayTitle').processText());
-			}
+			setDisplayTitle(Story.get('StoryDisplayTitle').processText());
 		}
 		else {
 			if (TWINE1) { // for Twine 1
