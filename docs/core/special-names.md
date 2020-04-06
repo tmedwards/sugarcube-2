@@ -20,7 +20,7 @@ Passage, tag, and variable names that have special meaning to SugarCube.
 
 ### `PassageDone` {#special-passage-passagedone}
 
-Used for post-passage-display tasks, like redoing dynamic changes (happens after the rendering and display of each passage).  Roughly equivalent to the [`:passagedisplay` event](#navigation-event-passagedisplay).
+Used for post-passage-display tasks, like redoing dynamic changes (happens after the rendering and display of each passage).  Roughly equivalent to the [`:passagedisplay` event](#events-navigation-event-passagedisplay).
 
 #### Since:
 
@@ -30,7 +30,7 @@ Used for post-passage-display tasks, like redoing dynamic changes (happens after
 
 ### `PassageFooter` {#special-passage-passagefooter}
 
-Appended to each rendered passage.  Roughly equivalent to the [`:passagerender` event](#navigation-event-passagerender).
+Appended to each rendered passage.  Roughly equivalent to the [`:passagerender` event](#events-navigation-event-passagerender).
 
 #### Since:
 
@@ -40,7 +40,7 @@ Appended to each rendered passage.  Roughly equivalent to the [`:passagerender` 
 
 ### `PassageHeader` {#special-passage-passageheader}
 
-Prepended to each rendered passage.  Roughly equivalent to the [`:passagestart` event](#navigation-event-passagestart).
+Prepended to each rendered passage.  Roughly equivalent to the [`:passagestart` event](#events-navigation-event-passagestart).
 
 #### Since:
 
@@ -50,7 +50,7 @@ Prepended to each rendered passage.  Roughly equivalent to the [`:passagestart` 
 
 ### `PassageReady` {#special-passage-passageready}
 
-Used for pre-passage-display tasks, like redoing dynamic changes (happens before the rendering of each passage).  Roughly equivalent to the [`:passagestart` event](#navigation-event-passagestart).
+Used for pre-passage-display tasks, like redoing dynamic changes (happens before the rendering of each passage).  Roughly equivalent to the [`:passagestart` event](#events-navigation-event-passagestart).
 
 #### Since:
 

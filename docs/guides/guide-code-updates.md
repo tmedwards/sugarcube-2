@@ -1,7 +1,7 @@
 <!-- ***********************************************************************************************
 	Guide: Code Updates
 ************************************************************************************************ -->
-# Guide: Code Updates {#guide-code-updates}
+# Guide: Code Updates<!-- legacy --><span id="guide-upgrading"></span><!-- /legacy --> {#guide-code-updates}
 
 This is a reference on how to update existing SugarCube code to work with newer versions of SugarCube.
 
@@ -172,7 +172,7 @@ All changes within this version are elective changes that you may address at you
 <!-- ***************************************************************************
 	Updating to any version ≥2.15.0 from a lesser version
 **************************************************************************** -->
-## Updating to any version ≥2.15.0 from a lesser version {#guide-code-updates-2.15.0}
+## Updating to any version ≥2.15.0 from a lesser version<!-- legacy --><span id="guide-upgrading-2.15.0"></span><!-- /legacy --> {#guide-code-updates-2.15.0}
 
 All changes within this version are elective changes that you may address at your leisure.
 
@@ -197,7 +197,7 @@ All changes within this version are elective changes that you may address at you
 <!-- ***************************************************************************
 	Updating to any version ≥2.10.0 from a lesser version
 **************************************************************************** -->
-## Updating to any version ≥2.10.0 from a lesser version {#guide-code-updates-2.10.0}
+## Updating to any version ≥2.10.0 from a lesser version<!-- legacy --><span id="guide-upgrading-2.10.0"></span><!-- /legacy --> {#guide-code-updates-2.10.0}
 
 All changes within this version are elective changes that you may address at your leisure.
 
@@ -237,7 +237,7 @@ The `strings` API object has been replaced by the `l10nStrings` object.  See the
 <!-- ***************************************************************************
 	Updating to any version ≥2.8.0 from a lesser version
 **************************************************************************** -->
-## Updating to any version ≥2.8.0 from a lesser version {#guide-code-updates-2.8.0}
+## Updating to any version ≥2.8.0 from a lesser version<!-- legacy --><span id="guide-upgrading-2.8.0"></span><!-- /legacy --> {#guide-code-updates-2.8.0}
 
 All changes within this version are elective changes that you may address at your leisure.
 
@@ -274,7 +274,7 @@ All changes within this version are elective changes that you may address at you
 <!-- ***************************************************************************
 	Updating to any version ≥2.5.0 from a lesser version
 **************************************************************************** -->
-## Updating to any version ≥2.5.0 from a lesser version {#guide-code-updates-2.5.0}
+## Updating to any version ≥2.5.0 from a lesser version<!-- legacy --><span id="guide-upgrading-2.5.0"></span><!-- /legacy --> {#guide-code-updates-2.5.0}
 
 All changes within this version are elective changes that you may address at your leisure.
 
@@ -368,7 +368,7 @@ Several `UI` API methods have moved to the new `Dialog` API.  See the [`Dialog` 
 <!-- ***************************************************************************
 	Updating to any version ≥2.0.0 from a lesser version
 **************************************************************************** -->
-## Updating to any version ≥2.0.0 from a lesser version {#guide-code-updates-2.0.0}
+## Updating to any version ≥2.0.0 from a lesser version<!-- legacy --><span id="guide-upgrading-2.0.0"></span><!-- /legacy --> {#guide-code-updates-2.0.0}
 
 <p role="note" class="warning"><b>Warning:</b>
 All changes within this version are <strong>breaking changes</strong> that you <strong><em>must</em></strong> address immediately.

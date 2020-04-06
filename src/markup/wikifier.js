@@ -100,15 +100,25 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 		}
 
 		subWikify(output, terminator, options) {
-			// Cache and temporarily replace the current output buffer and options.
+			// Cache and temporarily replace the current output buffer.
 			const oldOutput = this.output;
-			let oldOptions;
-
 			this.output = output;
 
-			if (options != null && typeof options === 'object' || Wikifier.Option.length > 0) { // lazy equality for null
+			let newOptions;
+			let oldOptions;
+
+			// Parser option overrides.
+			if (Wikifier.Option.length > 0) {
+				newOptions = Object.assign(newOptions || {}, Wikifier.Option.options);
+			}
+			// Local parameter option overrides.
+			if (options !== null && typeof options === 'object') {
+				newOptions = Object.assign(newOptions || {}, options);
+			}
+			// If new options exist, cache and temporarily replace the current options.
+			if (newOptions) {
 				oldOptions = this.options;
-				this.options = Object.assign({}, this.options, Wikifier.Option.options, options);
+				this.options = Object.assign({}, this.options, newOptions);
 			}
 
 			const parsersProfile   = Wikifier.Parser.Profile.get(this.options.profile);

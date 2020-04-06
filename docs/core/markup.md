@@ -614,7 +614,7 @@ A set of four hyphen/minus characters (`-`) that begins a line defines the horiz
 <!-- ***************************************************************************
 	Verbatim Text
 **************************************************************************** -->
-## Verbatim Text {#markup-verbatim-text}
+## Verbatim Text<!-- legacy --><span id="markup-verbatim"></span><!-- /legacy --> {#markup-verbatim-text}
 
 The verbatim text markup disables processing of *all* markup contained within—both SugarCube and HTML—passing its contents directly into the output as plain text.
 
