@@ -22,7 +22,7 @@ class Header (header.Header):
 			return OrderedDict()
 
 	def storySettings(self):
-		return "SugarCube 2.x does not support the StorySettings special passage.\n\nInstead, you should use its configuration object, config.\n    See: http://www.motoslave.net/sugarcube/2/docs/config-object.html"
+		return "SugarCube 2.x does not support the StorySettings special passage.\n\nInstead, you should use its configuration object, Config.\n    See: http://www.motoslave.net/sugarcube/2/docs/#config-api"
 
 	def isEndTag(self, name, tag):
 		return (name == ('/' + tag) or name == ('end' + tag))
@@ -33,13 +33,16 @@ class Header (header.Header):
 				'append',
 				'button',
 				'capture',
+				'createaudiogroup',
 				'createplaylist',
+				'cycle',
 				'for',
 				'if',
 				'link',
 				'linkappend',
 				'linkprepend',
 				'linkreplace',
+				'listbox',
 				'nobr',
 				'prepend',
 				'repeat',
@@ -61,6 +64,7 @@ class Header (header.Header):
 				'PassageReady',
 				'StoryBanner',
 				'StoryCaption',
+				'StoryDisplayTitle',
 				'StoryInterface',
 				'StoryShare'
 			]
