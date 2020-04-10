@@ -446,56 +446,6 @@ Passage API.  See [`Passage` API](#passage-api) for more information.
 
 <!-- *********************************************************************** -->
 
-### `postdisplay` {#special-variable-postdisplay}
-
-Post-display task callback object, set up by the author/developer.  See [navigation tasks](#navigation-tasks) for more information.
-
-#### Since:
-
-* `v2.0.0`
-
-<!-- *********************************************************************** -->
-
-### `postrender` {#special-variable-postrender}
-
-Post-render task callback object, set up by the author/developer.  See [navigation tasks](#navigation-tasks) for more information.
-
-#### Since:
-
-* `v2.0.0`
-
-<!-- *********************************************************************** -->
-
-### `predisplay` {#special-variable-predisplay}
-
-Pre-display task callback object, set up by the author/developer.  See [navigation tasks](#navigation-tasks) for more information.
-
-#### Since:
-
-* `v2.0.0`
-
-<!-- *********************************************************************** -->
-
-### `prehistory` {#special-variable-prehistory}
-
-Pre-history task callback object, set up by the author/developer.  See [navigation tasks](#navigation-tasks) for more information.
-
-#### Since:
-
-* `v2.0.0`
-
-<!-- *********************************************************************** -->
-
-### `prerender` {#special-variable-prerender}
-
-Pre-render task callback object, set up by the author/developer.  See [navigation tasks](#navigation-tasks) for more information.
-
-#### Since:
-
-* `v2.0.0`
-
-<!-- *********************************************************************** -->
-
 ### `Save` {#special-variable-save}
 
 Save API.  See [`Save` API](#save-api) for more information.
@@ -592,3 +542,68 @@ UIBar API.  See [`UIBar` API](#uibar-api) for more information.
 #### Since:
 
 * `v2.17.0`
+
+<!-- *********************************************************************** -->
+
+### <span class="deprecated">`postdisplay`</span> {#special-variable-postdisplay}
+
+<p role="note" class="warning"><b>Deprecated:</b>
+<code>postdisplay</code> tasks have been deprecated and should no longer be used.  See the <a href="#events-navigation-event-passagedisplay"><code>:passagedisplay</code> event</a> for its replacement.
+</p>
+
+#### Since:
+
+* `v2.0.0`: Basic support.
+* `v2.31.0`: Deprecated.
+
+<!-- *********************************************************************** -->
+
+### <span class="deprecated">`postrender`</span> {#special-variable-postrender}
+
+<p role="note" class="warning"><b>Deprecated:</b>
+<code>postrender</code> tasks have been deprecated and should no longer be used.  See the <a href="#events-navigation-event-passagerender"><code>:passagerender</code> event</a> for its replacement.
+</p>
+
+#### Since:
+
+* `v2.0.0`: Basic support.
+* `v2.31.0`: Deprecated.
+
+<!-- *********************************************************************** -->
+
+### <span class="deprecated">`predisplay`</span> {#special-variable-predisplay}
+
+<p role="note" class="warning"><b>Deprecated:</b>
+<code>predisplay</code> tasks have been deprecated and should no longer be used.  See the <a href="#events-navigation-event-passagestart"><code>:passagestart</code> event</a> for its replacement.
+</p>
+
+#### Since:
+
+* `v2.0.0`: Basic support.
+* `v2.31.0`: Deprecated.
+
+<!-- *********************************************************************** -->
+
+### <span class="deprecated">`prehistory`</span> {#special-variable-prehistory}
+
+<p role="note" class="warning"><b>Deprecated:</b>
+<code>prehistory</code> tasks have been deprecated and should no longer be used.  See the <a href="#events-navigation-event-passageinit"><code>:passageinit</code> event</a> for its replacement.
+</p>
+
+#### Since:
+
+* `v2.0.0`: Basic support.
+* `v2.31.0`: Deprecated.
+
+<!-- *********************************************************************** -->
+
+### <span class="deprecated">`prerender`</span> {#special-variable-prerender}
+
+<p role="note" class="warning"><b>Deprecated:</b>
+<code>prerender</code> tasks have been deprecated and should no longer be used.  See the <a href="#events-navigation-event-passagestart"><code>:passagestart</code> event</a> for its replacement.
+</p>
+
+#### Since:
+
+* `v2.0.0`: Basic support.
+* `v2.31.0`: Deprecated.

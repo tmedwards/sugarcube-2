@@ -22,7 +22,7 @@ When you have a situation where you're using a set of passages as some kind of m
 
 The most common way to resolve this arbitrarily long return issue is to use a bit of JavaScript to record the last non-menu passage the player visited into a story variable and then to create a link with that.
 
-For example, the code to record the last non-menu passage: (Twine&nbsp;2: the Story JavaScript, Twine&nbsp;1/Twee: a `script`-tagged passage)
+For example, you may use the following JavaScript code to record the last non-menu passage into the `$return` story variable: (Twine&nbsp;2: the Story JavaScript, Twine&nbsp;1/Twee: a `script`-tagged passage)
 
 ```
 $(document).on(':passagestart', function (ev) {

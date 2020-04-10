@@ -1,7 +1,7 @@
 <!-- ***********************************************************************************************
-	Events & Tasks
+	Events
 ************************************************************************************************ -->
-# Events &amp; Tasks {#events}
+# Events {#events}
 
 Events are messages that are sent (a.k.a.: fired, triggered) to notify code that something has taken place, from player interactions to automated happenings.  Each event is represented by an object that has properties that may be used to get additional information about what happened.
 
@@ -149,31 +149,31 @@ $(document).one(':dialogopening', function (ev) {
 
 
 <!-- ***************************************************************************
-	Navigation Events & Tasks
+	Navigation Events
 **************************************************************************** -->
-## Navigation Events &amp; Tasks<!-- legacy --><span id="navigation-events-tasks"></span><span id="navigation-overview"></span><span id="navigation-events"></span><span id="navigation-tasks"></span><!-- /legacy --> {#events-navigation}
+## Navigation Events<!-- legacy --><span id="navigation-events-tasks"></span><span id="navigation-overview"></span><span id="navigation-events"></span><span id="navigation-tasks"></span><!-- /legacy --> {#events-navigation}
 
-Navigation events, and tasks, allow the execution of JavaScript code at specific points during passage navigation.
+Navigation events allow the execution of JavaScript code at specific points during passage navigation.
 
 In order of processing: *(for reference, this also shows tasks and various special passages)*
 
 1. Passage init.  Happens before the modification of the state history.
 	1. `:passageinit` event.
-	2. `prehistory` tasks.
+	2. <span class="deprecated">`prehistory` tasks.</span> *(deprecated)*
 2. Passage start. Happens before the rendering of the incoming passage.
-	1. `predisplay` tasks.
+	1. <span class="deprecated">`predisplay` tasks.</span> *(deprecated)*
 	2. [`PassageReady` special passage](#special-passage-passageready).
 	3. `:passagestart` event.
-	4. `prerender` tasks.
+	4. <span class="deprecated">`prerender` tasks.</span> *(deprecated)*
 	5. [`PassageHeader` special passage](#special-passage-passageheader).
 3. Passage render.  Happens after the rendering of the incoming passage.
 	1. [`PassageFooter` special passage](#special-passage-passagefooter).
 	2. `:passagerender` event.
-	3. `postrender` tasks.
+	3. <span class="deprecated">`postrender` tasks.</span> *(deprecated)*
 4. Passage display.  Happens after the display—i.e., output—of the incoming passage.
 	1. [`PassageDone` special passage](#special-passage-passagedone).
 	2. `:passagedisplay` event.
-	3. `postdisplay` tasks.
+	3. <span class="deprecated">`postdisplay` tasks.</span> *(deprecated)*
 5. UI bar special passages update.  Happens before the end of passage navigation.
 	1. [`StoryBanner` special passage](#special-passage-storybanner).
 	2. [`StoryDisplayTitle` special passage](#special-passage-storydisplaytitle).
@@ -388,131 +388,68 @@ $(document).on(':passageend', function (ev) {
 
 <!-- *********************************************************************** -->
 
-### `prehistory` tasks<!-- legacy --><span id="navigation-task-prehistory"></span><!-- /legacy --> {#events-navigation-task-prehistory}
+### <span class="deprecated">`prehistory` tasks</span><!-- legacy --><span id="navigation-task-prehistory"></span><!-- /legacy --> {#events-navigation-task-prehistory}
 
-Executed before the modification of the state history.
-
-<p role="note"><b>Note:</b>
-Tasks are an older method of enabling passage navigation events and you are encouraged to use <a href="#events-navigation">Navigation Events</a> instead as they allow for easier control and are triggered at better points during navigation.
+<p role="note" class="warning"><b>Deprecated:</b>
+<code>prehistory</code> tasks have been deprecated and should no longer be used.  See the <a href="#events-navigation-event-passageinit"><code>:passageinit</code> event</a> for its replacement.
 </p>
 
 #### Since:
 
-* `v2.0.0`
-
-#### Parameters:
-
-* **`taskName`:** (*string*) The name of the executing task.
-
-#### Examples:
-
-```
-prehistory["Some Task Name"] = function (taskName) {
-	/* JavaScript code */
-};
-```
+* `v2.0.0`: Basic syntax.
+* `v2.31.0`: Deprecated.
 
 <!-- *********************************************************************** -->
 
-### `predisplay` tasks<!-- legacy --><span id="navigation-task-predisplay"></span><!-- /legacy --> {#events-navigation-task-predisplay}
+### <span class="deprecated">`predisplay` tasks</span><!-- legacy --><span id="navigation-task-predisplay"></span><!-- /legacy --> {#events-navigation-task-predisplay}
 
-Executed before the rendering of the incoming passage.
-
-<p role="note"><b>Note:</b>
-Tasks are an older method of enabling passage navigation events and you are encouraged to use <a href="#events-navigation">Navigation Events</a> instead as they allow for easier control and are triggered at better points during navigation.
+<p role="note" class="warning"><b>Deprecated:</b>
+<code>predisplay</code> tasks have been deprecated and should no longer be used.  See the <a href="#events-navigation-event-passagestart"><code>:passagestart</code> event</a> for its replacement.
 </p>
 
 #### Since:
 
-* `v2.0.0`
-
-#### Parameters:
-
-* **`taskName`:** (*string*) The name of the executing task.
-
-#### Examples:
-
-```
-predisplay["Some Task Name"] = function (taskName) {
-	/* JavaScript code */
-};
-```
+* `v2.0.0`: Basic syntax.
+* `v2.31.0`: Deprecated.
 
 <!-- *********************************************************************** -->
 
-### `prerender` tasks<!-- legacy --><span id="navigation-task-prerender"></span><!-- /legacy --> {#events-navigation-task-prerender}
+### <span class="deprecated">`prerender` tasks</span><!-- legacy --><span id="navigation-task-prerender"></span><!-- /legacy --> {#events-navigation-task-prerender}
 
-Executed before the rendering of the incoming passage.
-
-<p role="note"><b>Note:</b>
-Tasks are an older method of enabling passage navigation events and you are encouraged to use <a href="#events-navigation">Navigation Events</a> instead as they allow for easier control and are triggered at better points during navigation.
+<p role="note" class="warning"><b>Deprecated:</b>
+<code>prerender</code> tasks have been deprecated and should no longer be used.  See the <a href="#events-navigation-event-passagestart"><code>:passagestart</code> event</a> for its replacement.
 </p>
 
 #### Since:
 
-* `v2.0.0`
-
-#### Parameters:
-
-* **`content`:** (*`HTMLElement` object*) The, likely, empty element that will eventually hold the rendered content of the incoming passage.
-* **`taskName`:** (*string*) The name of the executing task.
-
-#### Examples:
-
-```
-prerender["Some Task Name"] = function (content, taskName) {
-	/* JavaScript code */
-};
-```
+* `v2.0.0`: Basic syntax.
+* `v2.31.0`: Deprecated.
 
 <!-- *********************************************************************** -->
 
-### `postrender` tasks<!-- legacy --><span id="navigation-task-postrender"></span><!-- /legacy --> {#events-navigation-task-postrender}
+### <span class="deprecated">`postrender` tasks</span><!-- legacy --><span id="navigation-task-postrender"></span><!-- /legacy --> {#events-navigation-task-postrender}
 
-Executed after the rendering of the incoming passage.
-
-<p role="note"><b>Note:</b>
-Tasks are an older method of enabling passage navigation events and you are encouraged to use <a href="#events-navigation">Navigation Events</a> instead as they allow for easier control and are triggered at better points during navigation.
+<p role="note" class="warning"><b>Deprecated:</b>
+<code>postrender</code> tasks have been deprecated and should no longer be used.  See the <a href="#events-navigation-event-passagerender"><code>:passagerender</code> event</a> for its replacement.
 </p>
 
 #### Since:
 
-* `v2.0.0`
-
-#### Parameters:
-
-* **`content`:** (*`HTMLElement` object*) The element holding the fully rendered content of the incoming passage.
-* **`taskName`:** (*string*) The name of the executing task.
-
-#### Examples:
-
-```
-postrender["Some Task Name"] = function (content, taskName) {
-	/* JavaScript code */
-};
-```
+* `v2.0.0`: Basic syntax.
+* `v2.31.0`: Deprecated.
 
 <!-- *********************************************************************** -->
 
-### `postdisplay` tasks<!-- legacy --><span id="navigation-task-postdisplay"></span><!-- /legacy --> {#events-navigation-task-postdisplay}
+### <span class="deprecated">`postdisplay` tasks</span><!-- legacy --><span id="navigation-task-postdisplay"></span><!-- /legacy --> {#events-navigation-task-postdisplay}
 
-Executed after the display—i.e., output—of the incoming passage.
+<p role="note" class="warning"><b>Deprecated:</b>
+<code>postdisplay</code> tasks have been deprecated and should no longer be used.  See the <a href="#events-navigation-event-passagedisplay"><code>:passagedisplay</code> event</a> for its replacement.
+</p>
 
 #### Since:
 
-* `v2.0.0`
-
-#### Parameters:
-
-* **`taskName`:** (*string*) The name of the executing task.
-
-#### Examples:
-
-```
-postdisplay["Some Task Name"] = function (taskName) {
-	/* JavaScript code */
-};
-```
+* `v2.0.0`: Basic syntax.
+* `v2.31.0`: Deprecated.
 
 
 <!-- ***************************************************************************
