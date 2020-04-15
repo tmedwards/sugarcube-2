@@ -1,7 +1,7 @@
 /***********************************************************************************************************************
 	fr.js – Français
 	Localization by: Pierre Kessler.
-	Copyright © 2017 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
+	Copyright © 2020 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 	For more information about the guidelines used to create this localization, see:
 		http://www.motoslave.net/sugarcube/2/docs/#guide-localization
@@ -16,6 +16,7 @@
 
 	/* Errors. */
 	l10nStrings.errorTitle              = 'Erreur';
+	l10nStrings.errorToggle             = 'Afficher l\'erreur';
 	l10nStrings.errorNonexistentPassage = 'le passage "{passage}" n\'existe pas';
 	l10nStrings.errorSaveMissingData    = 'des éléments manquent dans cette sauvegarde. Soit ce fichier n\'en est pas une, soit il est corrompu';
 	l10nStrings.errorSaveIdMismatch     = 'la sauvegarde ne semble pas provenir de cette {identity}';
@@ -26,9 +27,19 @@
 	l10nStrings.warningNoWebStorage   = '{_warningIntroLacking} l\'API de stockage de données{_warningOutroDegraded}';
 	l10nStrings.warningDegraded       = '{_warningIntroLacking} certaines des fonctionnalités requises par l\'{identity}{_warningOutroDegraded}';
 
-	/* Debug View. */
-	l10nStrings.debugViewTitle  = 'Mode débogage';
-	l10nStrings.debugViewToggle = 'Basculer en mode débogage';
+	/* Debug bar. */
+	l10nStrings.debugBarToggle      = 'Afficher la barre de débogage';
+	l10nStrings.debugBarNoWatches   = '\u2014 pas de surveillance active \u2014';
+	l10nStrings.debugBarAddWatch    = 'Ajouter une surveillance';
+	l10nStrings.debugBarDeleteWatch = 'Annuler une surveillance';
+	l10nStrings.debugBarWatchAll    = 'Surveiller tout';
+	l10nStrings.debugBarWatchNone   = 'Ne rien surveiller'; // if you want litteral : 'supprimer tout', but I think it's more what you want
+	l10nStrings.debugBarLabelAdd    = 'Ajouter';
+	l10nStrings.debugBarLabelWatch  = 'Surveillance';
+	l10nStrings.debugBarLabelTurn   = 'Tournant';
+	l10nStrings.debugBarLabelViews  = 'Vues';
+	l10nStrings.debugBarViewsToggle = 'Basculer en mode débogage';
+	l10nStrings.debugBarWatchToggle = 'Afficher la barre de surveillance';
 
 	/* UI bar. */
 	l10nStrings.uiBarToggle   = 'Afficher/cacher la barre d\'interface';
@@ -37,14 +48,13 @@
 	l10nStrings.uiBarJumpto   = 'Aller à un point précis de l\'histoire de l\'{identity}';
 
 	/* Jump To. */
-	l10nStrings.jumptoTitle       = 'Aller à'; //'au' if {passage} is next
-	l10nStrings.jumptoTurn        = 'Bifurquer';
+	l10nStrings.jumptoTitle       = 'Aller à';
+	l10nStrings.jumptoTurn        = 'Tournant';
 	l10nStrings.jumptoUnavailable = 'Aucun point d\'arriver n\'est disponible\u2026';
 
 	/* Saves. */
 	l10nStrings.savesTitle       = 'Sauvegardes';
 	l10nStrings.savesDisallowed  = 'Les sauvegardes sont désactivées pour ce passage.';
-	l10nStrings.savesEmptySlot   = '\u2014 emplacement vide \u2014';
 	l10nStrings.savesIncapable   = '{_warningIntroLacking} soit il n\'a pas la capacité pour prendre en charge les sauvegardes : elles seront désactivées pour cette session.';
 	l10nStrings.savesLabelAuto   = 'Sauvegarde Auto';
 	l10nStrings.savesLabelDelete = 'Effacer';
@@ -54,7 +64,6 @@
 	l10nStrings.savesLabelClear  = 'Effacer tout';
 	l10nStrings.savesLabelSave   = 'Enregistrer';
 	l10nStrings.savesLabelSlot   = 'Emplacement';
-	l10nStrings.savesSavedOn     = 'Enregistré sur';
 	l10nStrings.savesUnavailable = 'Aucun emplacement de sauvegarde n\'a été trouvé\u2026';
 	l10nStrings.savesUnknownDate = 'inconnu';
 
