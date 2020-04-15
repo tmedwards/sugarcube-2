@@ -1,10 +1,15 @@
 /***********************************************************************************************************************
+
 	fr.js – Français
-	Localization by: Pierre Kessler.
-	Copyright © 2020 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
+
+	Localization by: Marc Cornette, Pierre Kessler.
+
+	Copyright © 2017–2020 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
+
 	For more information about the guidelines used to create this localization, see:
 		http://www.motoslave.net/sugarcube/2/docs/#guide-localization
+
 ***********************************************************************************************************************/
 (function () {
 	/* General. */
