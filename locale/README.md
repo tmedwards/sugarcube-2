@@ -11,7 +11,7 @@ For the template that should be used as the basis of localizations, see the `l10
 * 简体中文 (`chs.js`) – Liyro Pen.
 * Deutsch (`de.js`) – Phil Strahl.
 * Español (`es.js`) – Raúl Castellano.
-* Français (`fr.js`) – Pierre Kessler.
+* Français (`fr.js`) – Marc Cornette, Pierre Kessler.
 * Polski (`pl.js`) – ciupac.
 * Português (Brazil) (`pt-BR.js`) – Janos Biro.
 * Português (Portugal) (`pt-PT.js`) – Magma.
