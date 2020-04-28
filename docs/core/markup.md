@@ -350,6 +350,14 @@ HTML attributes may be prefixed with directives, special text, which trigger spe
 **************************************************************************** -->
 ## Line Continuation {#markup-line-continuation}
 
+<p role="note" class="see"><b>See Also:</b>
+The various no-break features—<a href="#macros-macro-nobr"><code>&lt;&lt;nobr&gt;&gt;</code> macro</a>, <a href="#special-tag-nobr"><code>nobr</code> special tag</a>, and <a href="#config-api-property-passages-nobr"><code>Config.passages.nobr</code> setting</a>—all perform a similar, though slightly different, function.
+</p>
+
+<p role="note" class="warning"><b>Warning:</b>
+Line continuations, or any markup that relies on line positioning, are incompatible with the no-break features because of how the latter function.
+</p>
+
 A backslash (`\`) that begins or ends a line is the line continuation markup.  Upon processing the backslash, associated line break, and all whitespace between them are removed—thus, joining the nearby lines together.  This is mostly useful for controlling whitespace when you want to wrap lines for readability, but not generate extra whitespace upon display, and the [`<<silently>>` macro](#macros-macro-silently) isn't an option because you need to generate output.
 
 For example, all of the following: (n.b., `·` represents whitespace that will be removed, `¬` represents line breaks)
@@ -373,10 +381,6 @@ Yield the single line in the final output:
 ```
 The rain in Spain falls mainly on the plain.
 ```
-
-<p role="note"><b>Note:</b>
-The <a href="#macros-macro-nobr"><code>&lt;&lt;nobr&gt;&gt;</code> macro</a>, <a href="#special-tag-nobr"><code>nobr</code> special tag</a>, and <a href="#config-api-property-passages-nobr"><code>Config.passages.nobr</code> setting</a> all perform a similar, though slightly different, function.
-</p>
 
 
 <!-- ***************************************************************************
