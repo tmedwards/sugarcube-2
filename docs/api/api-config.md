@@ -192,7 +192,7 @@ Config.navigation.override = function (dest) {
 
 ### `Config.passages.descriptions` ↔ *boolean* | *object* | *function* (default: *none*) {#config-api-property-passages-descriptions}
 
-Determines whether alternate passage descriptions are used by the Saves and Rewind menus (by default an excerpt from the passage is used).  Valid values are boolean `true`, which simply causes the passages' titles to be used, an object, which maps passages' titles to their descriptions, or a function, which should return the passages' description.
+Determines whether alternate passage descriptions are used by the *Saves* and *Jump To* menus—by default an excerpt from the passage is used.  Valid values are boolean `true`, which simply causes the passages' titles to be used, an object, which maps passages' titles to their descriptions, or a function, which should return the passages' description.
 
 <div role="note"><b>Note:</b>
 <ul class="asnote">
