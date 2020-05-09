@@ -13,15 +13,15 @@ Macros fall into two broad categories based on the kind of arguments they accept
 
 Those that want an expression are fairly straightforward, as you simply supply an [expression](#twinescript-expressions).
 
-The discrete argument type of macros are also fairly straightforward, most of the time, as you simply supply the requisite arguments separated by whitespace.  There are cases, however, where things get a bit more complicated, namely: instances where you need to pass the name of a variable as an argument and those where you want to pass the result of an expression as argument.
+The discrete argument type of macros are also fairly straightforward, most of the time, as you simply supply the requisite arguments separated by whitespace, which may include variables—as SugarCube automatically yields their values to the macro.  There are cases, however, where things get a bit more complicated, namely: instances where you need to pass the name of a variable as an argument, rather than its value, and those where you want to pass the result of an expression as argument.
 
-#### Passing a variable's name as an argument
+#### Argument type macros: passing a variable's name as an argument
 
 Passing the name of a variable as an argument is problematic because variable substitution occurs automatically in SugarCube macros.  Meaning that when you pass a variable as an argument, its value is passed to the macro rather than its name.
 
 Normally, this is exactly what you want to happen.  Occasionally, however, macros will need the name of a variable rather than its value—e.g., data input macros like `<<textbox>>`—so that they may modify the variable.  To resolve these instances, you will need to quote the name of the variable—i.e., instead of passing `$pie` as normal, you'd pass `"$pie"`.  These, rare, instances are noted in the macros' documentation and shown in their examples.
 
-#### Passing an expression as an argument
+#### Argument type macros: passing an expression as an argument
 
 Passing the result of an expression as an argument is problematic for a couple of reasons: because the macro argument parser doesn't treat arguments as expressions by default and because it separates arguments with whitespace.
 
@@ -2700,16 +2700,6 @@ I like green <span id="eggs">eggs</span> and ham!\
 <<next>>It's off to work we go!
 <</timed>>
 
-→ Replace some text in 1 second intervals
-I'll have <span id="drink">some water</span>, please.\
-<<timed 1s>><<replace "#drink">>a glass of milk<</replace>>\
-<<next>><<replace "#drink">>a can of soda<</replace>>\
-<<next>><<replace "#drink">>a cup of coffee<</replace>>\
-<<next>><<replace "#drink">>tea, southern style, sweet<</replace>>\
-<<next>><<replace "#drink">>a scotch, neat<</replace>>\
-<<next>><<replace "#drink">>a bottle of your finest absinthe<</replace>>\
-<</timed>>
-
 → Set a $variable after 4 seconds, 3 seconds, 2 seconds, and 1 second
 <<silently>>
 <<set $choice to 0>>
@@ -2723,6 +2713,17 @@ I'll have <span id="drink">some water</span>, please.\
 	<<set $choice to 4>>
 <</timed>>
 <<silently>>
+
+→ Replace some text with a variable interval
+→ Given: _delay is "2s" the interval will be 2 seconds
+I'll have <span id="drink">some water</span>, please.\
+<<timed _delay>><<replace "#drink">>a glass of milk<</replace>>\
+<<next>><<replace "#drink">>a can of soda<</replace>>\
+<<next>><<replace "#drink">>a cup of coffee<</replace>>\
+<<next>><<replace "#drink">>tea, southern style, sweet<</replace>>\
+<<next>><<replace "#drink">>a scotch, neat<</replace>>\
+<<next>><<replace "#drink">>a bottle of your finest absinthe<</replace>>\
+<</timed>>
 ```
 
 <!-- *********************************************************************** -->
