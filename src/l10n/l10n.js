@@ -173,7 +173,7 @@ var L10n = (() => { // eslint-disable-line no-unused-vars, no-var
 					/*
 						Alert.
 					*/
-					/* none */
+					case 'alertTitle': /* none */ break;
 
 					/*
 						Autoload.

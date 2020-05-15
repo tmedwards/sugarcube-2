@@ -3192,12 +3192,12 @@
 
 				// Custom debug view setup for `<<next>>`.
 				if (Config.debug && item.name === 'next') {
-					$output = jQuery((new DebugView( // eslint-disable-line no-param-reassign
+					$output = jQuery(new DebugView( // eslint-disable-line no-param-reassign
 						$output[0],
 						'macro',
 						item.name,
 						item.source
-					)).output);
+					).output);
 				}
 
 				if (transition) {
