@@ -75,7 +75,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 		UI Functions, Built-ins.
 	*******************************************************************************************************************/
 	function uiOpenAlert(message, /* options, closeFn */ ...args) {
-		jQuery(Dialog.setup('Alert', 'alert'))
+		jQuery(Dialog.setup(L10n.get('alertTitle'), 'alert'))
 			.append(
 				  `<p>${message}</p><ul class="buttons">`
 				+ `<li><button id="alert-ok" class="ui-close">${L10n.get(['alertOk', 'ok'])}</button></li>`

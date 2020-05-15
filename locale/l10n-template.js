@@ -117,6 +117,9 @@
 	/* Share. */
 	l10nStrings.shareTitle = 'Share';
 
+	/* Alert. */
+	l10nStrings.alertTitle = 'Alert';
+
 	/* Autoload. */
 	l10nStrings.autoloadTitle  = 'Autoload';
 	l10nStrings.autoloadCancel = 'Go to start';
