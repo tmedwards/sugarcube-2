@@ -283,10 +283,10 @@ a.link-external:after {
 	content: attr(data-icon);
 }
 [data-icon-before]:before {
-	content: attr(data-icon-before) "\00a0";
+	content: attr(data-icon-before) "\00a0\00a0";
 }
 [data-icon-after]:after {
-	content: "\00a0" attr(data-icon-after);
+	content: "\00a0\00a0" attr(data-icon-after);
 }
 .error-view > .error-toggle:before {
 	content: "\e81a";
