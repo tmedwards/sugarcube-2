@@ -807,19 +807,21 @@ var Scripting = (() => { // eslint-disable-line no-unused-vars, no-var
 	/*
 		Evaluates the given JavaScript code and returns the result, throwing if there were errors.
 	*/
-	function evalJavaScript(code, output) {
-		return (function (code, output) {
+	function evalJavaScript(code, output, data) {
+		return (function (code, output, evalJavaScript$Data$) {
 			return eval(code);
-		}).call(output ? { output } : null, String(code), output);
+		}).call(output ? { output } : null, String(code), output, data);
 	}
 
 	/*
 		Evaluates the given TwineScript code and returns the result, throwing if there were errors.
 	*/
-	function evalTwineScript(code, output) {
-		return (function (code, output) {
+	function evalTwineScript(code, output, data) {
+		// NOTE: Do not move the dollar sign to the front of `evalTwineScript$Data$`,
+		// as `parse()` will break references to it within the code string.
+		return (function (code, output, evalTwineScript$Data$) {
 			return eval(code);
-		}).call(output ? { output } : null, parse(String(code)), output);
+		}).call(output ? { output } : null, parse(String(code)), output, data);
 	}
 	/* eslint-enable no-eval, no-extra-parens, no-unused-vars */
 
