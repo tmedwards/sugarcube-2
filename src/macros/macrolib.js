@@ -1018,12 +1018,22 @@
 			/*
 				Set the variable and input element to the appropriate value and state, as requested.
 			*/
-			if (this.args.length > 3 && this.args[3] === 'checked') {
+			switch (this.args[3]) {
+			case 'autocheck':
+				if (State.getVar(varName) === checkValue) {
+					el.checked = true;
+				}
+				else {
+					State.setVar(varName, uncheckValue);
+				}
+				break;
+			case 'checked':
 				el.checked = true;
 				State.setVar(varName, checkValue);
-			}
-			else {
+				break;
+			default:
 				State.setVar(varName, uncheckValue);
+				break;
 			}
 		}
 	});
@@ -1323,9 +1333,16 @@
 			/*
 				Set the variable to the checked value and the input element to checked, if requested.
 			*/
-			if (this.args.length > 2 && this.args[2] === 'checked') {
+			switch (this.args[2]) {
+			case 'autocheck':
+				if (State.getVar(varName) === checkValue) {
+					el.checked = true;
+				}
+				break;
+			case 'checked':
 				el.checked = true;
 				State.setVar(varName, checkValue);
+				break;
 			}
 		}
 	});
