@@ -1018,7 +1018,7 @@ Creates a cycling link, used to modify the value of the variable with the given 
 
 ##### `<<optionsfrom>>`
 
-* **`collection`:** An expression that yields a valid collection type.  
+* **`collection`:** An expression that yields a valid collection type.
 	<table class="list-table">
 	<tbody>
 		<tr>
@@ -1245,7 +1245,7 @@ Creates a listbox, used to modify the value of the variable with the given name.
 
 ##### `<<optionsfrom>>`
 
-* **`collection`:** An expression that yields a valid collection type.  
+* **`collection`:** An expression that yields a valid collection type.
 	<table class="list-table">
 	<tbody>
 		<tr>
