@@ -946,7 +946,7 @@ Strength: <<set $pcStr to 10>><span id="stats-str"><<print $pcStr>></span> \
 
 <!-- *********************************************************************** -->
 
-### `<<checkbox receiverName uncheckedValue checkedValue [checked]>>` {#macros-macro-checkbox}
+### `<<checkbox receiverName uncheckedValue checkedValue [autocheck|checked]>>` {#macros-macro-checkbox}
 
 Creates a checkbox, used to modify the value of the variable with the given name.
 
@@ -956,18 +956,27 @@ Creates a checkbox, used to modify the value of the variable with the given name
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Basic syntax.
+* `v2.32.0`: Added `autocheck` keyword.
 
 #### Arguments:
 
 * **`receiverName`:** The name of the variable to modify, which *must* be quoted—e.g., `"$foo"`.  Object and array property references are also supported—e.g., `"$foo.bar"`, `"$foo['bar']"`, &amp; `"$foo[0]"`.
 * **`uncheckedValue`:** The value set by the checkbox when unchecked.
 * **`checkedValue`:** The value set by the checkbox when checked.
+* **`autocheck`:** (optional) Keyword, used to signify that the checkbox should be automatically set to the checked state based on the current value of the receiver variable.  **NOTE:** Automatic checking may fail on non-primitive values—i.e., on arrays and objects.
 * **`checked`:** (optional) Keyword, used to signify that the checkbox should be in the checked state.
 
 #### Examples:
 
 ##### Basic usage
+
+```
+What pies do you enjoy?
+* <<checkbox "$pieBlueberry" false true autocheck>> Blueberry?
+* <<checkbox "$pieCherry" false true autocheck>> Cherry?
+* <<checkbox "$pieCoconutCream" false true autocheck>> Coconut cream?
+```
 
 ```
 What pies do you enjoy?
@@ -981,6 +990,13 @@ What pies do you enjoy?
 <p role="note" class="tip"><b>Tip:</b>
 For accessibility reasons, it's recommended that you wrap each <code>&lt;&lt;checkbox&gt;&gt;</code> and its accompanying text within a <code>&lt;label&gt;</code> element.  Doing so allows interactions with the text to also trigger its <code>&lt;&lt;checkbox&gt;&gt;</code>.
 </p>
+
+```
+What pies do you enjoy?
+* <label><<checkbox "$pieBlueberry" false true autocheck>> Blueberry?</label>
+* <label><<checkbox "$pieCherry" false true autocheck>> Cherry?</label>
+* <label><<checkbox "$pieCoconutCream" false true autocheck>> Coconut cream?</label>
+```
 
 ```
 What pies do you enjoy?
@@ -1304,7 +1320,7 @@ What's your favorite pie?
 
 <!-- *********************************************************************** -->
 
-### `<<radiobutton receiverName checkedValue [checked]>>` {#macros-macro-radiobutton}
+### `<<radiobutton receiverName checkedValue [autocheck|checked]>>` {#macros-macro-radiobutton}
 
 Creates a radio button, used to modify the value of the variable with the given name.  Multiple `<<radiobutton>>` macros may be set up to modify the same variable, which makes them part of a radio button group.
 
@@ -1314,17 +1330,26 @@ Creates a radio button, used to modify the value of the variable with the given 
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Basic syntax.
+* `v2.32.0`: Added `autocheck` keyword.
 
 #### Arguments:
 
 * **`receiverName`:** The name of the variable to modify, which *must* be quoted—e.g., `"$foo"`.  Object and array property references are also supported—e.g., `"$foo.bar"`, `"$foo['bar']"`, &amp; `"$foo[0]"`.
 * **`checkedValue`:** The value set by the radio button when checked.
-* **`checked`:** (optional) Keyword, used to signify that the radio button should be in the checked state.
+* **`autocheck`:** (optional) Keyword, used to signify that the radio button should be automatically set to the checked state based on the current value of the receiver variable.  **NOTE:** Automatic checking may fail on non-primitive values—i.e., on arrays and objects.
+* **`checked`:** (optional) Keyword, used to signify that the radio button should be in the checked state.  **NOTE:** Only one radio button in a group—i.e., those using the same receiver variable—should be so checked.
 
 #### Examples:
 
 ##### Basic usage
+
+```
+What's your favorite pie?
+* <<radiobutton "$pie" "blueberry" autocheck>> Blueberry?
+* <<radiobutton "$pie" "cherry" autocheck>> Cherry?
+* <<radiobutton "$pie" "coconut cream" autocheck>> Coconut cream?
+```
 
 ```
 What's your favorite pie?
@@ -1338,6 +1363,13 @@ What's your favorite pie?
 <p role="note" class="tip"><b>Tip:</b>
 For accessibility reasons, it's recommended that you wrap each <code>&lt;&lt;radiobutton&gt;&gt;</code> and its accompanying text within a <code>&lt;label&gt;</code> element.  Doing so allows interactions with the text to also trigger its <code>&lt;&lt;radiobutton&gt;&gt;</code>.
 </p>
+
+```
+What's your favorite pie?
+* <label><<radiobutton "$pie" "blueberry" autocheck>> Blueberry?</label>
+* <label><<radiobutton "$pie" "cherry" autocheck>> Cherry?</label>
+* <label><<radiobutton "$pie" "coconut cream" autocheck>> Coconut cream?</label>
+```
 
 ```
 What's your favorite pie?
