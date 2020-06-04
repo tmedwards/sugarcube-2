@@ -380,28 +380,74 @@
 	});
 
 	/*
-		<<typer [typeSpeed [startDelay]]>>
-			—OR—
-		<<typer [speed timeValue] [delay timeValue]>>
+		<<type [speed timeValue] [delay timeValue] [cursor ("keep"|"none")]>>
 	*/
-	Macro.add('typer', {
-		isAsync : true,
-		tags    : null,
+	Macro.add('type', {
+		isAsync      : true,
+		tags         : null,
+		cursorValues : Object.freeze(['keep', 'none']),
 
 		handler() {
-			// TODO: Decide what argument style to use and finish them.
-			//
-			// TODO: Do we want a `<<next>>` tag, similar to `<<timed>>`?
+			let cursor;
+			let speed  = 40;  // in milliseconds
+			let delay  = 400; // in milliseconds
 
-			const typeSpeed  = this.args.length > 0 ? Util.fromCssTime(this.args[0]) : 40;
-			const startDelay = this.args.length > 1 ? Util.fromCssTime(this.args[1]) : 400;
+			// Process arguments.
+			const args = Array.from(this.args);
 
-			// if (!Number.isSafeInteger(typeSpeed) || typeSpeed < 0) {
-			// 	throw new Error(`typeSpeed time value must be a non-negative integer (received: ${typeSpeed})`);
-			// }
-			// if (!Number.isSafeInteger(startDelay) || startDelay < 0) {
-			// 	throw new Error(`startDelay parameter must be a non-negative integer (received: ${startDelay})`);
-			// }
+			while (args.length > 0) {
+				const arg = args.shift();
+
+				switch (arg) {
+				case 'cursor': {
+					if (args.length === 0) {
+						return this.error('cursor missing required value');
+					}
+
+					const valid = this.self.cursorValues;
+					cursor = args.shift();
+
+					if (!valid.includes(cursor)) {
+						return this.error(`cursor value must be either: "${valid.join('", "')}" (received: ${cursor})`);
+					}
+
+					break;
+				}
+
+				case 'speed': {
+					if (args.length === 0) {
+						return this.error('speed missing required time value');
+					}
+
+					const value = args.shift();
+					speed = Util.fromCssTime(value);
+
+					if (speed < 0) {
+						return this.error(`speed time value must be non-negative (received: ${value})`);
+					}
+
+					break;
+				}
+
+				case 'delay': {
+					if (args.length === 0) {
+						return this.error('delay missing required time value');
+					}
+
+					const value = args.shift();
+					delay = Util.fromCssTime(value);
+
+					if (delay < 0) {
+						throw new Error(`delay time value must be non-negative (received: ${value})`);
+					}
+
+					break;
+				}
+
+				default:
+					return this.error(`unknown action: ${arg}`);
+				}
+			}
 
 			const contents = this.payload[0].contents;
 
@@ -415,16 +461,17 @@
 				this.debugView.modes({ block : true });
 			}
 
+			// Set up our base class name and event namespace.
+			const className = `macro-${this.name}`;
+			const namespace = `.${className}`;
+
 			// Create a target to be later replaced by the typing wrapper.
 			const $target = jQuery(document.createElement('div'))
-				.addClass(`macro-${this.name} macro-${this.name}-target`)
+				.addClass(`${className} ${className}-target`)
 				.appendTo(this.output);
 
-			// Set up our event namespace.
-			const namespace = `.macro-${this.name}`;
-
-			// Set up the typing handler queue for all `<<typer>>` invocations and
-			// event handlers to initiate typing and clean up after navigation.
+			// Set up the typing handler queue for all invocations and event handlers
+			// to initiate typing and clean up after navigation.
 			if (!TempState.macroTyper) {
 				TempState.macroTyper = [];
 				$(document)
@@ -436,7 +483,7 @@
 			// Push our typing handler onto the queue.
 			TempState.macroTyper.push(() => {
 				const $wrapper = jQuery(document.createElement('div'))
-					.addClass(`macro-${this.name}`);
+					.addClass(className);
 
 				new Wikifier($wrapper, contents);
 
@@ -476,6 +523,7 @@
 				$(document)
 					.off(keypressAndNS)
 					.on(keypressAndNS, ev => {
+						// Finish typing if the player aborts via the spacebar.
 						if (
 							ev.which === 32 /* Space */
 							&& (ev.target === document.body || ev.target === document.documentElement)
@@ -486,16 +534,22 @@
 						}
 					})
 					.one(typingStopAndNS, () => {
+						// Return if the queue is empty.
 						if (TempState.macroTyper.length === 0) {
 							jQuery.event.trigger(typingCompleteId);
 							return;
 						}
 
+						// Run the next typing handler in the queue.
 						TempState.macroTyper.shift()();
 					});
 
 				// Set up the typing interval and start/stop event firing.
 				const typeNode = function typeNode() {
+					if (cursor !== 'none') {
+						$wrapper.addClass(`${className}-cursor`);
+					}
+
 					jQuery.event.trigger(typingStartId);
 
 					const typeItId = setInterval(() => {
@@ -508,14 +562,19 @@
 							|| !typer.type()
 						) {
 							clearInterval(typeItId);
+
+							if (cursor !== 'keep') {
+								$wrapper.removeClass(`${className}-cursor`);
+							}
+
 							jQuery.event.trigger(typingStopId);
 						}
-					}, typeSpeed);
+					}, speed);
 				};
 
 				// Kick off typing.
-				if (startDelay) {
-					setTimeout(typeNode, startDelay);
+				if (delay) {
+					setTimeout(typeNode, delay);
 				}
 				else {
 					typeNode();
