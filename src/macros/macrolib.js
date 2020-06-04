@@ -7,8 +7,8 @@
 
 ***********************************************************************************************************************/
 /*
-	global Config, DebugView, Engine, Has, L10n, Macro, Patterns, Scripting, SimpleAudio, State, Story,
-	       TempState, Util, Wikifier, postdisplay, prehistory, storage, toStringOrDefault
+	global Config, DebugView, Engine, Has, L10n, Macro, NodeTyper, Patterns, Scripting, SimpleAudio, State,
+	       Story, TempState, Util, Wikifier, postdisplay, prehistory, storage, toStringOrDefault
 */
 
 (() => {
@@ -376,6 +376,151 @@
 					return this.error(`error${errList.length === 1 ? '' : 's'} within contents (${errList.join('; ')})`);
 				}
 			}
+		}
+	});
+
+	/*
+		<<typer [typeSpeed [startDelay]]>>
+			—OR—
+		<<typer [speed timeValue] [delay timeValue]>>
+	*/
+	Macro.add('typer', {
+		isAsync : true,
+		tags    : null,
+
+		handler() {
+			// TODO: Decide what argument style to use and finish them.
+			//
+			// TODO: Do we want a `<<next>>` tag, similar to `<<timed>>`?
+
+			const typeSpeed  = this.args.length > 0 ? Util.fromCssTime(this.args[0]) : 40;
+			const startDelay = this.args.length > 1 ? Util.fromCssTime(this.args[1]) : 400;
+
+			// if (!Number.isSafeInteger(typeSpeed) || typeSpeed < 0) {
+			// 	throw new Error(`typeSpeed time value must be a non-negative integer (received: ${typeSpeed})`);
+			// }
+			// if (!Number.isSafeInteger(startDelay) || startDelay < 0) {
+			// 	throw new Error(`startDelay parameter must be a non-negative integer (received: ${startDelay})`);
+			// }
+
+			const contents = this.payload[0].contents;
+
+			// Do nothing if there's no content to type out.
+			if (contents.trim() === '') {
+				return;
+			}
+
+			// Custom debug view setup.
+			if (Config.debug) {
+				this.debugView.modes({ block : true });
+			}
+
+			// Create a target to be later replaced by the typing wrapper.
+			const $target = jQuery(document.createElement('div'))
+				.addClass(`macro-${this.name} macro-${this.name}-target`)
+				.appendTo(this.output);
+
+			// Set up our event namespace.
+			const namespace = `.macro-${this.name}`;
+
+			// Set up the typing handler queue for all `<<typer>>` invocations and
+			// event handlers to initiate typing and clean up after navigation.
+			if (!TempState.macroTyper) {
+				TempState.macroTyper = [];
+				$(document)
+					.off(namespace)
+					.one(`:passageend${namespace}`, () => TempState.macroTyper.shift()())
+					.one(`:passageinit${namespace}`, () => $(document).off(namespace));
+			}
+
+			// Push our typing handler onto the queue.
+			TempState.macroTyper.push(() => {
+				const $wrapper = jQuery(document.createElement('div'))
+					.addClass(`macro-${this.name}`);
+
+				new Wikifier($wrapper, contents);
+
+				const passage = State.passage;
+
+				// Skip typing if….
+				if (
+					// …we've visited the passage before.
+					!Config.macros.typeVisitedPassages
+					&& State.passages.slice(0, -1).some(title => title === passage)
+
+					// …there were any content errors.
+					|| $wrapper.find('.error').length > 0
+				) {
+					$target.replaceWith($wrapper);
+
+					if (TempState.macroTyper.length > 0) {
+						TempState.macroTyper.shift()();
+					}
+
+					return;
+				}
+
+				// Create a new `NodeTyper` instance for the wrapper's contents and
+				// replace the target with the typing wrapper.
+				const typer = new NodeTyper($wrapper.get(0));
+				$target.replaceWith($wrapper);
+
+				// Set up event IDs.
+				const typingCompleteId = ':typingcomplete';
+				const typingStartId    = ':typingstart';
+				const typingStopId     = ':typingstop';
+				const keypressAndNS    = `keypress${namespace}`;
+				const typingStopAndNS  = `${typingStopId}${namespace}`;
+
+				// Set up handlers for spacebar aborting and continuations.
+				$(document)
+					.off(keypressAndNS)
+					.on(keypressAndNS, ev => {
+						if (
+							ev.which === 32 /* Space */
+							&& (ev.target === document.body || ev.target === document.documentElement)
+						) {
+							ev.preventDefault();
+							$(document).off(keypressAndNS);
+							typer.finish();
+						}
+					})
+					.one(typingStopAndNS, () => {
+						if (TempState.macroTyper.length === 0) {
+							jQuery.event.trigger(typingCompleteId);
+							return;
+						}
+
+						TempState.macroTyper.shift()();
+					});
+
+				// Set up the typing interval and start/stop event firing.
+				const typeNode = function typeNode() {
+					jQuery.event.trigger(typingStartId);
+
+					const typeItId = setInterval(() => {
+						// Stop typing if….
+						if (
+							// …we've navigated away.
+							State.passage !== passage
+
+							// …we're done typing.
+							|| !typer.type()
+						) {
+							clearInterval(typeItId);
+							jQuery.event.trigger(typingStopId);
+						}
+					}, typeSpeed);
+				};
+
+				// Kick off typing.
+				if (startDelay) {
+					setTimeout(typeNode, startDelay);
+				}
+				else {
+					typeNode();
+				}
+			});
 		}
 	});
 

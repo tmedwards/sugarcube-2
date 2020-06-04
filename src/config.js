@@ -26,8 +26,9 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 	let _historyMaxStates = 100;
 
 	// Macros settings.
-	let _macrosIfAssignmentError = true;
-	let _macrosMaxLoopIterations = 1000;
+	let _macrosIfAssignmentError   = true;
+	let _macrosMaxLoopIterations   = 1000;
+	let _macrosTypeVisitedPassages = true;
 
 	// Navigation settings.
 	let _navigationOverride;
@@ -153,7 +154,10 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 				}
 
 				_macrosMaxLoopIterations = value;
-			}
+			},
+
+			get typeVisitedPassages() { return _macrosTypeVisitedPassages; },
+			set typeVisitedPassages(value) { _macrosTypeVisitedPassages = Boolean(value); }
 		}),
 
 		/*
