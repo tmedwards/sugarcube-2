@@ -552,7 +552,7 @@
 
 					jQuery.event.trigger(typingStartId);
 
-					const typeItId = setInterval(() => {
+					const typeNodeId = setInterval(() => {
 						// Stop typing if….
 						if (
 							// …we've navigated away.
@@ -561,7 +561,7 @@
 							// …we're done typing.
 							|| !typer.type()
 						) {
-							clearInterval(typeItId);
+							clearInterval(typeNodeId);
 
 							if (cursor !== 'keep') {
 								$wrapper.removeClass(`${className}-cursor`);
