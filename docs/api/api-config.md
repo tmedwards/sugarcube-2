@@ -144,6 +144,23 @@ This setting exists to prevent a misconfigured loop from making the browser unre
 Config.macros.maxLoopIterations = 5000;
 ```
 
+<!-- *********************************************************************** -->
+
+### `Config.macros.typeVisitedPassages` ↔ *boolean* (default: `true`) {#config-api-property-macros-typevisitedpassages}
+
+Determines whether the [`<<type>>` macro](#macros-macro-type) types out content on previously visited passages or simply outputs it immediately.
+
+#### Since:
+
+* `v2.32.0`
+
+#### Examples:
+
+```
+// Do not type on previously visited passages
+Config.macros.typeVisitedPassages = false;
+```
+
 
 <!-- ***************************************************************************
 	Navigation

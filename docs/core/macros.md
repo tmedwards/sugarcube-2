@@ -468,6 +468,64 @@ Countdown: <span id="countdown">$seconds seconds remaining</span>!\
 
 <!-- *********************************************************************** -->
 
+### `<<type speed [start delay] [keep|none]>> … <</type>>` {#macros-macro-type}
+
+Outputs its contents a character—technically, a code point—at a time, mimicking a teletype/typewriter.  Can type most content, including links, markup, macros, etc.
+
+<p role="note" class="warning"><b>Warning:</b>
+Interactions with macros or other code that inject content only after some external action or period—e.g., <code>&lt;&lt;linkreplace&gt;&gt;</code>, <code>&lt;&lt;timed&gt;&gt;</code>, etc.—may or may not behave as you'd expect.  Caution is advised.
+</p>
+
+#### Since:
+
+* `v2.32.0`
+
+#### Arguments:
+
+* **`speed`:** The rate at which characters are typed, as a valid [CSS time value](https://developer.mozilla.org/en-US/docs/Web/CSS/time)—e.g., `1s` and `40ms`.  Values in the range `20–60ms` are a good starting point.
+* **`start` *`delay`*:** (optional) The amount of time to delay the start of typing, as a valid [CSS time value](https://developer.mozilla.org/en-US/docs/Web/CSS/time)—e.g., `5s` and `500ms`.  If omitted, defaults to `400ms`.
+* **`keep`:** (optional) Keyword, used to signify that the cursor should be kept after typing is complete.
+* **`none`:** (optional) Keyword, used to signify that the cursor should not be used at all.
+
+#### Examples:
+
+```
+<<type 40ms>>
+	Type characters from this content every 40 milliseconds.  Including [[links]] and ''other markup''!
+<</type>>
+
+<<type 40ms start 2s>>
+	Type characters from this content every 40 milliseconds, starting after a 2 second delay.
+<</type>>
+
+<<type 40ms keep>>
+	Type characters from this content every 40 milliseconds, keeping the cursor after typing is complete.
+<</type>>
+```
+
+#### CSS styles:
+
+The typed text has no default styling.  If you want to change the font or color, then you'll need to change the styling of the `macro-type` class.  For example:
+
+```css
+.macro-type {
+	color: limegreen;
+	font-family: monospace, monospace;
+}
+```
+
+The default cursor is the block element character *right half block* and it has no default font or color styling.  If you want to change the font, color, or character, then you'll need to change the styling of the `:after` pseudo-element of the `macro-type-cursor` class.  For example:
+
+```css
+.macro-type-cursor:after {
+	color: limegreen;
+	content: "\269C\FE0F"; /* Fleur-de-lis emoji */
+	font-family: monospace, monospace;
+}
+```
+
+<!-- *********************************************************************** -->
+
 ### <span class="deprecated">`<<display passageName [elementName]>>`<br>`<<display linkMarkup [elementName]>>`</span> {#macros-macro-display}
 
 <p role="note" class="warning"><b>Deprecated:</b>
