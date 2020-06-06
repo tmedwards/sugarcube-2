@@ -19,8 +19,8 @@ var NodeTyper = (() => { // eslint-disable-line no-unused-vars, no-var
 			if (typeof config !== 'object' || config === null) {
 				throw new Error(`config parameter must be an object (received: ${Util.getType(config)})`);
 			}
-			if (!config.hasOwnProperty('targetNode')) {
-				throw new Error('config parameter object must include a "targetNode" property');
+			if (!config.hasOwnProperty('targetNode') || !(config.targetNode instanceof Node)) {
+				throw new Error('config parameter object "targetNode" property must be a node');
 			}
 
 			Object.defineProperties(this, {
@@ -60,15 +60,16 @@ var NodeTyper = (() => { // eslint-disable-line no-unused-vars, no-var
 				node.nodeValue = '';
 			}
 
-			const childNodes = node.childNodes;
+			let childNode;
 
-			while (childNodes.length > 0) {
+			while ((childNode = node.firstChild) !== null) {
 				this.childNodes.push(new NodeTyper({
-					targetNode : childNodes[0],
+					targetNode : childNode,
 					parentNode : node,
 					classNames : this.classNames
 				}));
-				node.removeChild(childNodes[0]);
+
+				node.removeChild(childNode);
 			}
 		}
 
@@ -77,7 +78,7 @@ var NodeTyper = (() => { // eslint-disable-line no-unused-vars, no-var
 			return false;
 		}
 
-		type(finishValue) {
+		type(flush) {
 			if (this.finished) {
 				return false;
 			}
@@ -86,10 +87,10 @@ var NodeTyper = (() => { // eslint-disable-line no-unused-vars, no-var
 				this.appendTo.appendChild(this.node);
 				this.appendTo = null;
 
-				// Abruptly finish typing this node if….
+				// Immediately finish typing this node if….
 				if (
 					// …it's neither a element or text node.
-					this.node.nodeType > Node.TEXT_NODE
+					this.node.nodeType !== Node.ELEMENT_NODE && this.node.nodeType !== Node.TEXT_NODE
 
 					// …or the computed value of its parent node's `display` property is `'none'`.
 					|| jQuery(this.node.parentNode).css('display') === 'none'
@@ -103,14 +104,14 @@ var NodeTyper = (() => { // eslint-disable-line no-unused-vars, no-var
 			}
 
 			if (this.nodeValue) {
-				if (finishValue) {
-					// NOTE: We concatenate here in case we've already done some processing.
+				if (flush) {
+					// Concatenate here in case we've already done some processing.
 					this.node.nodeValue += this.nodeValue;
 					this.nodeValue = '';
 				}
 				else {
-					// NOTE: We use `Util.charAndPosAt()` here to properly handle Unicode code
-					// points that are comprised of surrogate pairs.
+					// Use `Util.charAndPosAt()` here to properly handle Unicode code points
+					// that are comprised of surrogate pairs.
 					const { char, start, end } = Util.charAndPosAt(this.nodeValue, 0);
 					this.node.nodeValue += char;
 					this.nodeValue = this.nodeValue.slice(1 + end - start);
@@ -124,12 +125,14 @@ var NodeTyper = (() => { // eslint-disable-line no-unused-vars, no-var
 				this.classNames = null;
 			}
 
-			const children = this.childNodes;
+			const childNodes = this.childNodes;
 
-			for (let i = 0; i < children.length; ++i) {
-				if (children[i].type()) {
+			while (childNodes.length > 0) {
+				if (childNodes[0].type()) {
 					return true;
 				}
+
+				childNodes.shift();
 			}
 
 			this.finished = true;
