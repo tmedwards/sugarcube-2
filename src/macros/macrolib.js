@@ -389,8 +389,8 @@
 
 		handler() {
 			let cursor;
-			let speed  = 40;  // in milliseconds
 			let delay  = 400; // in milliseconds
+			let speed  = 40;  // in milliseconds
 
 			// Process arguments.
 			const args = Array.from(this.args);
@@ -509,7 +509,10 @@
 
 				// Create a new `NodeTyper` instance for the wrapper's contents and
 				// replace the target with the typing wrapper.
-				const typer = new NodeTyper($wrapper.get(0));
+				const typer = new NodeTyper({
+					targetNode : $wrapper.get(0),
+					classNames : cursor === 'none' ? null : `${className}-cursor`
+				});
 				$target.replaceWith($wrapper);
 
 				// Set up event IDs.
@@ -546,10 +549,6 @@
 
 				// Set up the typing interval and start/stop event firing.
 				const typeNode = function typeNode() {
-					if (cursor !== 'none') {
-						$wrapper.addClass(`${className}-cursor`);
-					}
-
 					jQuery.event.trigger(typingStartId);
 
 					const typeNodeId = setInterval(() => {
@@ -563,8 +562,8 @@
 						) {
 							clearInterval(typeNodeId);
 
-							if (cursor !== 'keep') {
-								$wrapper.removeClass(`${className}-cursor`);
+							if (cursor === 'keep') {
+								$wrapper.addClass(`${className}-cursor`);
 							}
 
 							jQuery.event.trigger(typingStopId);

@@ -15,10 +15,17 @@ var NodeTyper = (() => { // eslint-disable-line no-unused-vars, no-var
 		NodeTyper Class.
 	*******************************************************************************************************************/
 	class NodeTyper {
-		constructor(node, append) {
+		constructor(config) {
+			if (typeof config !== 'object' || config === null) {
+				throw new Error(`config parameter must be an object (received: ${Util.getType(config)})`);
+			}
+			if (!config.hasOwnProperty('targetNode')) {
+				throw new Error('config parameter object must include a "targetNode" property');
+			}
+
 			Object.defineProperties(this, {
 				node : {
-					value : node
+					value : config.targetNode
 				},
 
 				childNodes : {
@@ -30,9 +37,14 @@ var NodeTyper = (() => { // eslint-disable-line no-unused-vars, no-var
 					value    : ''
 				},
 
-				append : {
+				appendTo : {
 					writable : true,
-					value    : Boolean(append)
+					value    : config.parentNode || null
+				},
+
+				classNames : {
+					writable : true,
+					value    : config.classNames || null
 				},
 
 				finished : {
@@ -41,56 +53,81 @@ var NodeTyper = (() => { // eslint-disable-line no-unused-vars, no-var
 				}
 			});
 
+			const node = this.node;
+
 			if (node.nodeValue) {
 				this.nodeValue = node.nodeValue;
-				node.nodeValue = ''; // eslint-disable-line no-param-reassign
+				node.nodeValue = '';
 			}
 
 			const childNodes = node.childNodes;
 
 			while (childNodes.length > 0) {
-				this.childNodes.push(new NodeTyper(childNodes[0], true));
+				this.childNodes.push(new NodeTyper({
+					targetNode : childNodes[0],
+					parentNode : node,
+					classNames : this.classNames
+				}));
 				node.removeChild(childNodes[0]);
 			}
 		}
 
 		finish() {
-			while (this.type()) /* no-op */;
+			while (this.type(true)) /* no-op */;
+			return false;
 		}
 
-		type(parentNode) {
+		type(finishValue) {
 			if (this.finished) {
 				return false;
 			}
 
-			if (this.append) {
-				if (parentNode) {
-					parentNode.appendChild(this.node);
+			if (this.appendTo) {
+				this.appendTo.appendChild(this.node);
+				this.appendTo = null;
+
+				// Abruptly finish typing this node if….
+				if (
+					// …it's neither a element or text node.
+					this.node.nodeType > Node.TEXT_NODE
+
+					// …or the computed value of its parent node's `display` property is `'none'`.
+					|| jQuery(this.node.parentNode).css('display') === 'none'
+				) {
+					return this.finish();
 				}
 
-				this.append = false;
-
-				// Abruptly finish typing this node if the computed value of its parent node's
-				// `display` property is `'none'`.
-				if (jQuery(parentNode).css('display') === 'none') {
-					return this.finish();
+				if (this.node.parentNode && this.classNames) {
+					jQuery(this.node.parentNode).addClass(this.classNames);
 				}
 			}
 
 			if (this.nodeValue) {
-				// NOTE: We use `Util.charAndPosAt()` here to properly handle Unicode
-				// code points that are comprised of surrogate pairs.
-				const { char, start, end } = Util.charAndPosAt(this.nodeValue, 0);
-				this.node.nodeValue += char;
-				this.nodeValue = this.nodeValue.slice(1 + end - start);
+				if (finishValue) {
+					// NOTE: We concatenate here in case we've already done some processing.
+					this.node.nodeValue += this.nodeValue;
+					this.nodeValue = '';
+				}
+				else {
+					// NOTE: We use `Util.charAndPosAt()` here to properly handle Unicode code
+					// points that are comprised of surrogate pairs.
+					const { char, start, end } = Util.charAndPosAt(this.nodeValue, 0);
+					this.node.nodeValue += char;
+					this.nodeValue = this.nodeValue.slice(1 + end - start);
+				}
+
 				return true;
 			}
 
-			const parent   = this.node;
+			if (this.classNames) {
+				jQuery(this.node.parentNode).removeClass(this.classNames);
+				this.classNames = null;
+			}
+
 			const children = this.childNodes;
 
 			for (let i = 0; i < children.length; ++i) {
-				if (children[i].type(parent)) {
+				if (children[i].type()) {
 					return true;
 				}
 			}
