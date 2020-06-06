@@ -341,7 +341,7 @@ At the very least you will need to specify a `.passage-out` style that defines t
 That probably won't be very pleasing to the eye, however, so you will likely need several styles to make something that looks half-decent.  For example, the following will give you a basic crossfade:
 
 ```
-#story {
+#passages {
 	position: relative;
 }
 .passage {
