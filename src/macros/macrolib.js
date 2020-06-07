@@ -23,6 +23,7 @@
 	Macro.add('capture', {
 		skipArgs : true,
 		tags     : null,
+		tsVarRe  : new RegExp(`(${Patterns.variable})`,'g'),
 
 		handler() {
 			if (this.args.raw.length === 0) {
@@ -37,13 +38,13 @@
 				`Wikifier` call.
 			*/
 			try {
-				const varRe = new RegExp(`(${Patterns.variable})`,'g');
+				const tsVarRe = this.self.tsVarRe;
 				let match;
 
 				/*
 					Cache the existing values of the variables and add a shadow.
 				*/
-				while ((match = varRe.exec(this.args.raw)) !== null) {
+				while ((match = tsVarRe.exec(this.args.raw)) !== null) {
 					const varName = match[1];
 					const varKey  = varName.slice(1);
 					const store   = varName[0] === '$' ? State.variables : State.temporary;
@@ -104,19 +105,20 @@
 	*/
 	Macro.add('unset', {
 		skipArgs : true,
+		jsVarRe  : new RegExp(
+			`State\\.(variables|temporary)\\.(${Patterns.identifier})`,
+			'g'
+		),
 
 		handler() {
 			if (this.args.full.length === 0) {
 				return this.error('no story/temporary variable list specified');
 			}
 
-			const re = new RegExp(
-				`State\\.(variables|temporary)\\.(${Patterns.identifier})`,
-				'g'
-			);
+			const jsVarRe = this.self.jsVarRe;
 			let match;
 
-			while ((match = re.exec(this.args.full)) !== null) {
+			while ((match = jsVarRe.exec(this.args.full)) !== null) {
 				const store = State[match[1]];
 				const name  = match[2];
 
@@ -137,6 +139,7 @@
 	*/
 	Macro.add('remember', {
 		skipArgs : true,
+		jsVarRe  : new RegExp(`State\\.variables\\.(${Patterns.identifier})`, 'g'),
 
 		handler() {
 			if (this.args.full.length === 0) {
@@ -151,10 +154,10 @@
 			}
 
 			const remember = storage.get('remember') || {};
-			const re       = new RegExp(`State\\.variables\\.(${Patterns.identifier})`, 'g');
+			const jsVarRe  = this.self.jsVarRe;
 			let match;
 
-			while ((match = re.exec(this.args.full)) !== null) {
+			while ((match = jsVarRe.exec(this.args.full)) !== null) {
 				const name = match[1];
 				remember[name] = State.variables[name];
 			}
@@ -183,6 +186,7 @@
 	*/
 	Macro.add('forget', {
 		skipArgs : true,
+		jsVarRe  : new RegExp(`State\\.variables\\.(${Patterns.identifier})`, 'g'),
 
 		handler() {
 			if (this.args.full.length === 0) {
@@ -190,11 +194,11 @@
 			}
 
 			const remember = storage.get('remember');
-			const re       = new RegExp(`State\\.variables\\.(${Patterns.identifier})`, 'g');
+			const jsVarRe  = this.self.jsVarRe;
 			let match;
 			let needStore = false;
 
-			while ((match = re.exec(this.args.full)) !== null) {
+			while ((match = jsVarRe.exec(this.args.full)) !== null) {
 				const name = match[1];
 
 				if (State.variables.hasOwnProperty(name)) {
@@ -598,8 +602,10 @@
 		<<if>>, <<elseif>>, & <<else>>
 	*/
 	Macro.add('if', {
-		skipArgs : true,
-		tags     : ['elseif', 'else'],
+		skipArgs   : true,
+		tags       : ['elseif', 'else'],
+		elseifWsRe : /^\s*if\b/i,
+		ifAssignRe : /[^!=&^|<>*/%+-]=[^=>]/,
 
 		handler() {
 			let i;
@@ -608,12 +614,15 @@
 				const len = this.payload.length;
 
 				// Sanity checks.
+				const elseifWsRe = this.self.elseifWsRe;
+				const ifAssignRe = this.self.ifAssignRe;
+
 				for (/* declared previously */ i = 0; i < len; ++i) {
 					/* eslint-disable prefer-template */
 					switch (this.payload[i].name) {
 					case 'else':
 						if (this.payload[i].args.raw.length > 0) {
-							if (/^\s*if\b/i.test(this.payload[i].args.raw)) {
+							if (elseifWsRe.test(this.payload[i].args.raw)) {
 								return this.error(`whitespace is not allowed between the "else" and "if" in <<elseif>> clause${i > 0 ? ' (#' + i + ')' : ''}`);
 							}
 
@@ -631,7 +640,7 @@
 						}
 						else if (
 							   Config.macros.ifAssignmentError
-							&& /[^!=&^|<>*/%+-]=[^=>]/.test(this.payload[i].args.full)
+							&& ifAssignRe.test(this.payload[i].args.full)
 						) {
 							return this.error(`assignment operator found within <<${this.payload[i].name}>> clause${i > 0 ? ' (#' + i + ')' : ''} (perhaps you meant to use an equality operator: ==, ===, eq, is), invalid: ${this.payload[i].args.raw}`);
 						}
@@ -826,9 +835,11 @@
 		/* eslint-disable max-len */
 		skipArgs    : true,
 		tags        : null,
-		_hasRangeRe : new RegExp(`^\\S${Patterns.anyChar}*?\\s+range\\s+\\S${Patterns.anyChar}*?$`),
-		_rangeRe    : new RegExp(`^(?:State\\.(variables|temporary)\\.(${Patterns.identifier})\\s*,\\s*)?State\\.(variables|temporary)\\.(${Patterns.identifier})\\s+range\\s+(\\S${Patterns.anyChar}*?)$`),
-		_3PartRe    : /^([^;]*?)\s*;\s*([^;]*?)\s*;\s*([^;]*?)$/,
+		hasRangeRe  : new RegExp(`^\\S${Patterns.anyChar}*?\\s+range\\s+\\S${Patterns.anyChar}*?$`),
+		rangeRe     : new RegExp(`^(?:State\\.(variables|temporary)\\.(${Patterns.identifier})\\s*,\\s*)?State\\.(variables|temporary)\\.(${Patterns.identifier})\\s+range\\s+(\\S${Patterns.anyChar}*?)$`),
+		threePartRe : /^([^;]*?)\s*;\s*([^;]*?)\s*;\s*([^;]*?)$/,
+		forInRe     : /^\S+\s+in\s+\S+/i,
+		forOfRe     : /^\S+\s+of\s+\S+/i,
 		/* eslint-enable max-len */
 
 		handler() {
@@ -837,18 +848,18 @@
 
 			// Empty form.
 			if (argsStr.length === 0) {
-				this.self._handleFor.call(this, payload, null, true, null);
+				this.self.handleFor.call(this, payload, null, true, null);
 			}
 
 			// Range form.
-			else if (this.self._hasRangeRe.test(argsStr)) {
-				const parts = argsStr.match(this.self._rangeRe);
+			else if (this.self.hasRangeRe.test(argsStr)) {
+				const parts = argsStr.match(this.self.rangeRe);
 
 				if (parts === null) {
 					return this.error('invalid range form syntax, format: [index ,] value range collection');
 				}
 
-				this.self._handleForRange.call(
+				this.self.handleForRange.call(
 					this,
 					payload,
 					{ type : parts[1], name : parts[2] },
@@ -866,10 +877,10 @@
 				// Conditional-only form.
 				if (argsStr.indexOf(';') === -1) {
 					// Sanity checks.
-					if (/^\S+\s+in\s+\S+/i.test(argsStr)) {
+					if (this.self.forInRe.test(argsStr)) {
 						return this.error('invalid syntax, for…in is not supported; see: for…range');
 					}
-					else if (/^\S+\s+of\s+\S+/i.test(argsStr)) {
+					else if (this.self.forOfRe.test(argsStr)) {
 						return this.error('invalid syntax, for…of is not supported; see: for…range');
 					}
 
@@ -878,7 +889,7 @@
 
 				// 3-part conditional form.
 				else {
-					const parts = argsStr.match(this.self._3PartRe);
+					const parts = argsStr.match(this.self.threePartRe);
 
 					if (parts === null) {
 						return this.error('invalid 3-part conditional form syntax, format: [init] ; [condition] ; [post]');
@@ -893,11 +904,11 @@
 					}
 				}
 
-				this.self._handleFor.call(this, payload, init, condition, post);
+				this.self.handleFor.call(this, payload, init, condition, post);
 			}
 		},
 
-		_handleFor(payload, init, condition, post) {
+		handleFor(payload, init, condition, post) {
 			const evalJavaScript = Scripting.evalJavaScript;
 			let first  = true;
 			let safety = Config.macros.maxLoopIterations;
@@ -958,12 +969,12 @@
 			}
 		},
 
-		_handleForRange(payload, indexVar, valueVar, rangeExp) {
+		handleForRange(payload, indexVar, valueVar, rangeExp) {
 			let first     = true;
 			let rangeList;
 
 			try {
-				rangeList = this.self._toRangeList(rangeExp);
+				rangeList = this.self.toRangeList(rangeExp);
 			}
 			catch (ex) {
 				return this.error(ex.message);
@@ -1009,7 +1020,7 @@
 			}
 		},
 
-		_toRangeList(rangeExp) {
+		toRangeList(rangeExp) {
 			const evalJavaScript = Scripting.evalJavaScript;
 			let value;
 
@@ -1422,6 +1433,7 @@
 	Macro.add(['linkappend', 'linkprepend', 'linkreplace'], {
 		isAsync : true,
 		tags    : null,
+		t8nRe   : /^(?:transition|t8n)$/,
 
 		handler() {
 			if (this.args.length === 0) {
@@ -1430,7 +1442,7 @@
 
 			const $link      = jQuery(document.createElement('a'));
 			const $insert    = jQuery(document.createElement('span'));
-			const transition = this.args.length > 1 && /^(?:transition|t8n)$/.test(this.args[1]);
+			const transition = this.args.length > 1 && this.self.t8nRe.test(this.args[1]);
 
 			$link
 				.wikiWithOptions({ profile : 'core' }, this.args[0])
@@ -2138,7 +2150,8 @@
 		<<append>>, <<prepend>>, & <<replace>>
 	*/
 	Macro.add(['append', 'prepend', 'replace'], {
-		tags : null,
+		tags  : null,
+		t8nRe : /^(?:transition|t8n)$/,
 
 		handler() {
 			if (this.args.length === 0) {
@@ -2152,7 +2165,7 @@
 			}
 
 			if (this.payload[0].contents !== '') {
-				const transition = this.args.length > 1 && /^(?:transition|t8n)$/.test(this.args[1]);
+				const transition = this.args.length > 1 && this.self.t8nRe.test(this.args[1]);
 				let $insert;
 
 				if (transition) {
@@ -3218,6 +3231,7 @@
 		isAsync : true,
 		tags    : null,
 		timers  : new Set(),
+		t8nRe   : /^(?:transition|t8n)$/,
 
 		handler() {
 			if (this.args.length === 0) {
@@ -3238,7 +3252,7 @@
 				this.debugView.modes({ block : true });
 			}
 
-			const transition = this.args.length > 1 && /^(?:transition|t8n)$/.test(this.args[1]);
+			const transition = this.args.length > 1 && this.self.t8nRe.test(this.args[1]);
 			const $wrapper   = jQuery(document.createElement('span'))
 				.addClass(`macro-${this.name}`)
 				.appendTo(this.output);
@@ -3353,6 +3367,7 @@
 		isAsync : true,
 		tags    : ['next'],
 		timers  : new Set(),
+		t8nRe   : /^(?:transition|t8n)$/,
 
 		handler() {
 			if (this.args.length === 0) {
@@ -3400,7 +3415,7 @@
 				this.debugView.modes({ block : true });
 			}
 
-			const transition = this.args.length > 1 && /^(?:transition|t8n)$/.test(this.args[1]);
+			const transition = this.args.length > 1 && this.self.t8nRe.test(this.args[1]);
 			const $wrapper   = jQuery(document.createElement('span'))
 				.addClass(`macro-${this.name}`)
 				.appendTo(this.output);
