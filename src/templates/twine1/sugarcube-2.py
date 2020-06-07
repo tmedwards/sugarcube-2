@@ -51,6 +51,7 @@ class Header (header.Header):
 				'switch',
 				'silently',
 				'timed',
+				'type',
 				'widget',
 				# deprecated macros
 				'click'
