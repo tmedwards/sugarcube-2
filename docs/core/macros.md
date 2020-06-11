@@ -514,7 +514,7 @@ The typed text has no default styling.  If you want to change the font or color,
 }
 ```
 
-The default cursor is the block element character *right half block* and it has no default font or color styling.  If you want to change the font, color, or character, then you'll need to change the styling of the `:after` pseudo-element of the `macro-type-cursor` class.  For example:
+The default cursor is the block element character **Right Half Block (U+2590)** and it has no default font or color styling.  If you want to change the font, color, or character, then you'll need to change the styling of the `:after` pseudo-element of the `macro-type-cursor` class.  For example:
 
 ```css
 .macro-type-cursor:after {
