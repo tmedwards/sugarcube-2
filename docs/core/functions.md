@@ -348,7 +348,7 @@ Returns the title of the active (present) passage.
 #### Examples:
 
 ```
-<<if passage() is "Café">>…the current passage is the Café passage…<</if>>
+<<if passage() is "Café">>…the active passage is the Café passage…<</if>>
 ```
 
 <!-- *********************************************************************** -->
@@ -496,7 +496,7 @@ Returns a new array consisting of all of the tags of the given passages.
 #### Examples:
 
 ```
-<<if tags().includes("forest")>>…the current passage is part of the forest…<</if>>
+<<if tags().includes("forest")>>…the active passage is part of the forest…<</if>>
 <<if tags("Lonely Glade").includes("forest")>>…the Lonely Glade passage is part of the forest…<</if>>
 ```
 
