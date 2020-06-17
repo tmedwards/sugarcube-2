@@ -177,7 +177,7 @@ var Util = (() => { // eslint-disable-line no-unused-vars, no-var
 	*/
 	const _htmlCharsRe    = /[&<>"'`]/g;
 	const _hasHtmlCharsRe = new RegExp(_htmlCharsRe.source); // to drop the global flag
-	const _htmlCharsMap   = Object.freeze({
+	const _htmlCharsMap   = utilToEnum({
 		'&' : '&amp;',
 		'<' : '&lt;',
 		'>' : '&gt;',
@@ -205,7 +205,7 @@ var Util = (() => { // eslint-disable-line no-unused-vars, no-var
 	*/
 	const _escapedHtmlRe    = /&(?:amp|#38|#x26|lt|#60|#x3c|gt|#62|#x3e|quot|#34|#x22|apos|#39|#x27|#96|#x60);/gi;
 	const _hasEscapedHtmlRe = new RegExp(_escapedHtmlRe.source, 'i'); // to drop the global flag
-	const _escapedHtmlMap   = Object.freeze({
+	const _escapedHtmlMap   = utilToEnum({
 		'&amp;'  : '&', // ampersand (HTML character entity, XML predefined entity)
 		'&#38;'  : '&', // ampersand (decimal numeric character reference)
 		'&#x26;' : '&', // ampersand (hexadecimal numeric character reference)
