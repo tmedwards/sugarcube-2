@@ -127,7 +127,7 @@ var Passage = (() => { // eslint-disable-line no-unused-vars, no-var
 		// TODO: (v3) This should be → `get source`.
 		get text() {
 			if (this.element == null) { // lazy equality for null
-				const passage = Util.escape(this.title);
+				const passage = Util.escapeMarkup(this.title);
 				const mesg    = `${L10n.get('errorTitle')}: ${L10n.get('errorNonexistentPassage', { passage })}`;
 				return `<div class="error-view"><span class="error">${mesg}</span></div>`;
 			}
