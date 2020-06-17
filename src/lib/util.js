@@ -173,6 +173,54 @@ var Util = (() => { // eslint-disable-line no-unused-vars, no-var
 	/*
 		Returns an entity encoded version of the passed string.
 
+		NOTE: Escapes the five primary HTML special characters, the backquote,
+		and SugarCube markup metacharacters.
+	*/
+	const _markupCharsRe    = /[!"#$&'*\-/<=>?@[\\\]^_`{|}~]/g;
+	const _hasMarkupCharsRe = new RegExp(_markupCharsRe.source); // to drop the global flag
+	const _markupCharsMap   = utilToEnum({
+		/* eslint-disable quote-props */
+		'!'  : '&#33;',
+		'"'  : '&quot;',
+		'#'  : '&#35;',
+		'$'  : '&#36;',
+		'&'  : '&amp;',
+		"'"  : '&#39;',
+		'*'  : '&#42;',
+		'-'  : '&#45;',
+		'/'  : '&#47;',
+		'<'  : '&lt;',
+		'='  : '&#61;',
+		'>'  : '&gt;',
+		'?'  : '&#63;',
+		'@'  : '&#64;',
+		'['  : '&#91;',
+		'\\' : '&#92;',
+		']'  : '&#93;',
+		'^'  : '&#94;',
+		'_'  : '&#95;',
+		'`'  : '&#96;',
+		'{'  : '&#123;',
+		'|'  : '&#124;',
+		'}'  : '&#125;',
+		'~'  : '&#126;'
+		/* eslint-enable quote-props */
+	});
+
+	function utilEscapeMarkup(str) {
+		if (str == null) { // lazy equality for null
+			return '';
+		}
+
+		const val = String(str);
+		return val && _hasMarkupCharsRe.test(val)
+			? val.replace(_markupCharsRe, ch => _markupCharsMap[ch])
+			: val;
+	}
+
+	/*
+		Returns an entity encoded version of the passed string.
+
 		NOTE: Only escapes the five primary special characters and the backquote.
 	*/
 	const _htmlCharsRe    = /[&<>"'`]/g;
@@ -570,6 +618,7 @@ var Util = (() => { // eslint-disable-line no-unused-vars, no-var
 			String Encoding Functions.
 		*/
 		slugify      : { value : utilSlugify },
+		escapeMarkup : { value : utilEscapeMarkup },
 		escape       : { value : utilEscape },
 		unescape     : { value : utilUnescape },
 		charAndPosAt : { value : utilCharAndPosAt },
