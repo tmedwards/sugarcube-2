@@ -621,6 +621,14 @@
 
 * [Creation](#guide-media-passages-creation)
 
+## [Guide: State, Sessions, and Saving](#guide-state-sessions-and-saving)
+
+* [Moments](#guide-state-sessions-and-saving-moments)
+* [Session Preservation](#guide-state-sessions-and-session-preservation)
+* [The Autosave](#guide-state-sessions-and-saving-the-autosave)
+* [What Happens When a Save is Loaded?](#guide-state-sessions-and-saving-what-happens-when-a-save-is-loaded)
+* [Refreshing and Restarting](#guide-state-sessions-and-saving-refreshing-and-restarting)
+
 ## [Guide: Harlowe to SugarCube](#guide-harlowe-to-sugarcube)
 
 * [Macro Overview](#guide-harlowe-to-sugarcube-macro-overview)
