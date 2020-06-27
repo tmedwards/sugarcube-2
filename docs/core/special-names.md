@@ -1,28 +1,26 @@
 <!-- ***********************************************************************************************
 	Special Names
 ************************************************************************************************ -->
-<h1 id="special-names">Special Names</h1>
+# Special Names {#special-names}
 
 Passage, tag, and variable names that have special meaning to SugarCube.
 
-#### Notes
+#### Warning {#special-names-warning}
 
-1. All special names listed herein are case sensitive, so their spelling and capitalization must be *exactly* as shown.
-2. *Never* combine special passages with special tags.  By doing so, you will probably break things in subtle and hard to detect ways.
+1. All special names listed herein are case sensitive, so their spelling and capitalization must be ***exactly*** as shown.
+2. ***Never*** combine special passages with special tags.  By doing so, you will probably break things in subtle and hard to detect ways.
 
 
 <!-- ***************************************************************************
 	Special Passages
 **************************************************************************** -->
-<span id="special-passages"></span>
-## Passage Names
+## Passage Names {#special-passages}
 
 <!-- *********************************************************************** -->
 
-<span id="special-passage-passagedone"></span>
-### `PassageDone`
+### `PassageDone` {#special-passage-passagedone}
 
-Used for post-passage-display tasks, like redoing dynamic changes (happens after the rendering and display of each passage).  Roughly equivalent to the [`:passagedisplay` event](#navigation-event-passagedisplay).
+Used for post-passage-display tasks, like redoing dynamic changes (happens after the rendering and display of each passage).  Roughly equivalent to the [`:passagedisplay` event](#events-navigation-event-passagedisplay).
 
 #### Since:
 
@@ -30,21 +28,9 @@ Used for post-passage-display tasks, like redoing dynamic changes (happens after
 
 <!-- *********************************************************************** -->
 
-<span id="special-passage-passagefooter"></span>
-### `PassageFooter`
+### `PassageFooter` {#special-passage-passagefooter}
 
-Appended to each rendered passage.  Roughly equivalent to the [`:passagerender` event](#navigation-event-passagerender).
-
-#### Since:
-
-* `v2.0.0`
-
-<!-- *********************************************************************** -->
-
-<span id="special-passage-passageheader"></span>
-### `PassageHeader`
-
-Prepended to each rendered passage.  Roughly equivalent to the [`:passagestart` event](#navigation-event-passagestart).
+Appended to each rendered passage.  Roughly equivalent to the [`:passagerender` event](#events-navigation-event-passagerender).
 
 #### Since:
 
@@ -52,10 +38,9 @@ Prepended to each rendered passage.  Roughly equivalent to the [`:passagestart` 
 
 <!-- *********************************************************************** -->
 
-<span id="special-passage-passageready"></span>
-### `PassageReady`
+### `PassageHeader` {#special-passage-passageheader}
 
-Used for pre-passage-display tasks, like redoing dynamic changes (happens before the rendering of each passage).  Roughly equivalent to the [`:passagestart` event](#navigation-event-passagestart).
+Prepended to each rendered passage.  Roughly equivalent to the [`:passagestart` event](#events-navigation-event-passagestart).
 
 #### Since:
 
@@ -63,10 +48,19 @@ Used for pre-passage-display tasks, like redoing dynamic changes (happens before
 
 <!-- *********************************************************************** -->
 
-<span id="special-passage-start"></span>
-### `Start`
+### `PassageReady` {#special-passage-passageready}
 
-**Twine&nbsp;2:**  *Not special.*  Any passage may be chosen as the starting passage by selecting it via the *Start Story Here* passage context-menu item—n.b. older versions of Twine&nbsp;2 used a <i class="fa fa-rocket"></i> (rocket ship icon) for the same purpose.
+Used for pre-passage-display tasks, like redoing dynamic changes (happens before the rendering of each passage).  Roughly equivalent to the [`:passagestart` event](#events-navigation-event-passagestart).
+
+#### Since:
+
+* `v2.0.0`
+
+<!-- *********************************************************************** -->
+
+### `Start` {#special-passage-start}
+
+**Twine&nbsp;2:**  *Not special.*  Any passage may be chosen as the starting passage by selecting it via the *Start Story Here* passage context-menu item—n.b. older versions of Twine&nbsp;2 used a <i class="icon rocket" title="rocket ship" aria-label="rocket ship"></i> icon for the same purpose.
 
 **Twine&nbsp;1/Twee:**  *Required.*  The starting passage, the first passage displayed.  Configurable, see [`Config.passages.start`](#config-api-property-passages-start) for more information.
 
@@ -76,8 +70,7 @@ Used for pre-passage-display tasks, like redoing dynamic changes (happens before
 
 <!-- *********************************************************************** -->
 
-<span id="special-passage-storyauthor"></span>
-### `StoryAuthor`
+### `StoryAuthor` {#special-passage-storyauthor}
 
 Used to populate the authorial byline area in the UI bar (element ID: `story-author`).
 
@@ -87,8 +80,7 @@ Used to populate the authorial byline area in the UI bar (element ID: `story-aut
 
 <!-- *********************************************************************** -->
 
-<span id="special-passage-storybanner"></span>
-### `StoryBanner`
+### `StoryBanner` {#special-passage-storybanner}
 
 Used to populate the story's banner area in the UI bar (element ID: `story-banner`).
 
@@ -98,8 +90,7 @@ Used to populate the story's banner area in the UI bar (element ID: `story-banne
 
 <!-- *********************************************************************** -->
 
-<span id="special-passage-storycaption"></span>
-### `StoryCaption`
+### `StoryCaption` {#special-passage-storycaption}
 
 Used to populate the story's caption area in the UI bar (element ID: `story-caption`).  May also be, and often is, used to add additional story UI elements and content to the UI bar.
 
@@ -109,8 +100,17 @@ Used to populate the story's caption area in the UI bar (element ID: `story-capt
 
 <!-- *********************************************************************** -->
 
-<span id="special-passage-storyinit"></span>
-### `StoryInit`
+### `StoryDisplayTitle` {#special-passage-storydisplaytitle}
+
+Sets the story's display title in the browser's titlebar and the UI bar (element ID: `story-title`).  If omitted, the story title will be used instead.
+
+#### Since:
+
+* `v2.31.0`
+
+<!-- *********************************************************************** -->
+
+### `StoryInit` {#special-passage-storyinit}
 
 Used for pre-story-start initialization tasks, like variable initialization (happens at the beginning of story initialization).
 
@@ -120,19 +120,20 @@ Used for pre-story-start initialization tasks, like variable initialization (hap
 
 <!-- *********************************************************************** -->
 
-<span id="special-passage-storyinterface"></span>
-### `StoryInterface`
+### `StoryInterface` {#special-passage-storyinterface}
 
-Used to replace SugarCube's default UI.  Its contents are treated as raw HTML markup—i.e. *none* of SugarCube's special HTML processing is performed.  It must contain, at least, an element with the ID `passages`, which will be the main passage display area.  Elements, aside from the `#passages` element, may include a `data-passage` content attribute, which denotes that the element should be updated via the specified passage—the passage will be processed as normal, meaning that markup and macros will work as expected.
+Used to replace SugarCube's default UI.  Its contents are treated as raw HTML markup—i.e., *none* of SugarCube's special HTML processing is performed.  It must contain, at least, an element with the ID `passages`, which will be the main passage display area.  Elements, aside from the `#passages` element, may include a `data-passage` content attribute, which denotes that the element should be updated via the specified passage—the passage will be processed as normal, meaning that markup and macros will work as expected.
 
-**NOTE:** Elements that include a `data-passage` content attribute must not themselves contain additional elements—since such elements' contents are replaced each turn via their associated passage, any child elements would be lost.
+<p role="note" class="warning"><b>Warning:</b>
+Elements that include a <code>data-passage</code> content attribute <em>should not</em> themselves contain additional elements—since such elements' contents are replaced each turn via their associated passage, any child elements would be lost.
+</p>
 
 #### Since:
 
 * `v2.18.0`: Basic syntax.
 * `v2.28.0`: Added processing of the `data-passage` content attribute.
 
-#### Example:
+#### Examples:
 
 ##### Minimal working example
 
@@ -152,18 +153,19 @@ Used to replace SugarCube's default UI.  Its contents are treated as raw HTML ma
 
 <!-- *********************************************************************** -->
 
-<span id="special-passage-storymenu"></span>
-### `StoryMenu`
+### `StoryMenu` {#special-passage-storymenu}
 
 Used to populate the story's menu items in the UI bar (element ID: `menu-story`).
 
-**NOTE:** The story menu only displays links—specifically, anything that creates an anchor element (`<a>`).  While it renders content just as any other passage does, instead of displaying the rendered output as-is, it sifts through the output and builds its menu from the generated links contained therein.
+<p role="note"><b>Note:</b>
+The story menu only displays links—specifically, anything that creates an anchor element (<code>&lt;a&gt;</code>).  While it renders content just as any other passage does, instead of displaying the rendered output as-is, it sifts through the output and builds its menu from the generated links contained therein.
+</p>
 
 #### Since:
 
 * `v2.0.0`
 
-#### Example:
+#### Examples:
 
 ```
 [[Inventory]]
@@ -172,19 +174,21 @@ Used to populate the story's menu items in the UI bar (element ID: `menu-story`)
 
 <!-- *********************************************************************** -->
 
-<span id="special-passage-storysettings"></span>
-### `StorySettings`<i class="fa fa-fw fa-ban fa-margin-left warn"></i>
+### `StorySettings` {#special-passage-storysettings}
 
-***Unused by SugarCube.***  The [Configuration API](#config-api) serves the same basic purpose.
+<p role="note" class="warning"><b>Warning:</b>
+Unused by SugarCube.  The <a href="#config-api"><code>Config</code> API</a> serves the same basic purpose.
+</p>
 
 <!-- *********************************************************************** -->
 
-<span id="special-passage-storyshare"></span>
-### `StoryShare`
+### `StoryShare` {#special-passage-storyshare}
 
 Used to populate the contents of the Share dialog.  Intended for social media links.
 
-**NOTE:** The Share dialog only displays links—specifically, anything that creates an anchor element (`<a>`).  While it renders content just as any other passage does, instead of displaying the rendered output as-is, it sifts through the output and builds its menu from the generated links contained therein.
+<p role="note"><b>Note:</b>
+The Share dialog only displays links—specifically, anything that creates an anchor element (<code>&lt;a&gt;</code>).  While it renders content just as any other passage does, instead of displaying the rendered output as-is, it sifts through the output and builds its contents from the generated links contained therein.
+</p>
 
 #### Since:
 
@@ -192,8 +196,7 @@ Used to populate the contents of the Share dialog.  Intended for social media li
 
 <!-- *********************************************************************** -->
 
-<span id="special-passage-storysubtitle"></span>
-### `StorySubtitle`
+### `StorySubtitle` {#special-passage-storysubtitle}
 
 Sets the story's subtitle in the UI bar (element ID: `story-subtitle`).
 
@@ -203,12 +206,19 @@ Sets the story's subtitle in the UI bar (element ID: `story-subtitle`).
 
 <!-- *********************************************************************** -->
 
-<span id="special-passage-storytitle"></span>
-### `StoryTitle`
+### `StoryTitle` {#special-passage-storytitle}
 
-**Twine&nbsp;2:**  *Unused.*  The story's title/name is part of the story project.
+<p role="note" class="warning"><b>Warning:</b>
+The story title is used to create the storage ID that is used to store all player data, both temporary and persistent.  It should be plain text, containing no code, markup, or macros of any kind.
+</p>
 
-**Twine&nbsp;1/Twee:**  *Required.*  Sets the story's title in the UI bar and elsewhere (element ID: `story-title`).  **NOTE:** The story title should the project's plain text title and contain no markup.
+<p role="note" class="tip"><b>Tip:</b>
+If you want to set a title for display that contains code, markup, or macros, see the <a href="#special-passage-storydisplaytitle"><code>StoryDisplayTitle</code> special passage</a>.
+</p>
+
+**Twine&nbsp;2:**  *Unused.*  The story's title is part of the story project.
+
+**Twine&nbsp;1/Twee:**  *Required.*  Sets the story's title.
 
 #### Since:
 
@@ -218,13 +228,11 @@ Sets the story's subtitle in the UI bar (element ID: `story-subtitle`).
 <!-- ***************************************************************************
 	Special Tags
 **************************************************************************** -->
-<span id="special-tags"></span>
-## Tag Names
+## Tag Names {#special-tags}
 
 <!-- *********************************************************************** -->
 
-<span id="special-tag-bookmark"></span>
-### `bookmark`
+### `bookmark` {#special-tag-bookmark}
 
 Registers the passage into the *Jump To* menu.
 
@@ -234,8 +242,7 @@ Registers the passage into the *Jump To* menu.
 
 <!-- *********************************************************************** -->
 
-<span id="special-tag-nobr"></span>
-### `nobr`
+### `nobr` {#special-tag-nobr}
 
 Causes leading/trailing newlines to be removed and all remaining sequences of newlines to be replaced with single spaces before the passage is rendered.  Equivalent to wrapping the entire passage in a [`<<nobr>>` macro](#macros-macro-nobr).  See the [`Config.passages.nobr` setting](#config-api-property-passages-nobr) for a way to apply the same processing to all passages at once.
 
@@ -249,8 +256,7 @@ Does not affect <code>script</code> or <code>stylesheet</code> tagged passages, 
 
 <!-- *********************************************************************** -->
 
-<span id="special-tag-script"></span>
-### `script`
+### `script` {#special-tag-script}
 
 **Twine&nbsp;2:**  *Not special.*  Use the *Edit Story JavaScript* story editor menu item for scripts.
 
@@ -262,8 +268,7 @@ Does not affect <code>script</code> or <code>stylesheet</code> tagged passages, 
 
 <!-- *********************************************************************** -->
 
-<span id="special-tag-stylesheet"></span>
-### `stylesheet`
+### `stylesheet` {#special-tag-stylesheet}
 
 **Twine&nbsp;2:**  *Not special.*  Use the *Edit Story Stylesheet* story editor menu item for styles.
 
@@ -275,8 +280,7 @@ Does not affect <code>script</code> or <code>stylesheet</code> tagged passages, 
 
 <!-- *********************************************************************** -->
 
-<span id="special-tag-twine-audio"></span>
-### `Twine.audio`
+### `Twine.audio` {#special-tag-twine-audio}
 
 Registers the passage as an audio passage.  See [Guide: Media Passages](#guide-media-passages) for more information.
 
@@ -286,8 +290,7 @@ Registers the passage as an audio passage.  See [Guide: Media Passages](#guide-m
 
 <!-- *********************************************************************** -->
 
-<span id="special-tag-twine-image"></span>
-### `Twine.image`
+### `Twine.image` {#special-tag-twine-image}
 
 Registers the passage as an image passage.  See [Guide: Media Passages](#guide-media-passages) for more information.
 
@@ -297,8 +300,7 @@ Registers the passage as an image passage.  See [Guide: Media Passages](#guide-m
 
 <!-- *********************************************************************** -->
 
-<span id="special-tag-twine-video"></span>
-### `Twine.video`
+### `Twine.video` {#special-tag-twine-video}
 
 Registers the passage as a video passage.  See [Guide: Media Passages](#guide-media-passages) for more information.
 
@@ -308,8 +310,7 @@ Registers the passage as a video passage.  See [Guide: Media Passages](#guide-me
 
 <!-- *********************************************************************** -->
 
-<span id="special-tag-twine-vtt"></span>
-### `Twine.vtt`
+### `Twine.vtt` {#special-tag-twine-vtt}
 
 Registers the passage as a <abbr title="Video Text Track">VTT</abbr> passage.  See [Guide: Media Passages](#guide-media-passages) for more information.
 
@@ -319,8 +320,7 @@ Registers the passage as a <abbr title="Video Text Track">VTT</abbr> passage.  S
 
 <!-- *********************************************************************** -->
 
-<span id="special-tag-widget"></span>
-### `widget`
+### `widget` {#special-tag-widget}
 
 Registers the passage as [`<<widget>>` macro](#macros-macro-widget) definitions, which are loaded during startup.
 
@@ -332,13 +332,11 @@ Registers the passage as [`<<widget>>` macro](#macros-macro-widget) definitions,
 <!-- ***************************************************************************
 	Special Variables
 **************************************************************************** -->
-<span id="special-variables"></span>
-## Variable Names
+## Variable Names {#special-variables}
 
 <!-- *********************************************************************** -->
 
-<span id="special-variable-dollar"></span>
-### `$`
+### `$` {#special-variable-dollar}
 
 Alias for `jQuery`, by default.  **NOTE:** This should not be confused with [story variables](#twinescript-variables), which start with a `$`—e.g., `$foo`.
 
@@ -348,8 +346,7 @@ Alias for `jQuery`, by default.  **NOTE:** This should not be confused with [sto
 
 <!-- *********************************************************************** -->
 
-<span id="special-variable-dollar-args"></span>
-### `$args`
+### `$args` {#special-variable-dollar-args}
 
 Widget arguments array (only inside widgets).  See [`<<widget>>`](#macros-macro-widget) for more information.
 
@@ -359,8 +356,7 @@ Widget arguments array (only inside widgets).  See [`<<widget>>`](#macros-macro-
 
 <!-- *********************************************************************** -->
 
-<span id="special-variable-config"></span>
-### `Config`
+### `Config` {#special-variable-config}
 
 Configuration API.  See [`Config` API](#config-api) for more information.
 
@@ -370,8 +366,7 @@ Configuration API.  See [`Config` API](#config-api) for more information.
 
 <!-- *********************************************************************** -->
 
-<span id="special-variable-dialog"></span>
-### `Dialog`
+### `Dialog` {#special-variable-dialog}
 
 Dialog API.  See [`Dialog` API](#dialog-api) for more information.
 
@@ -381,8 +376,7 @@ Dialog API.  See [`Dialog` API](#dialog-api) for more information.
 
 <!-- *********************************************************************** -->
 
-<span id="special-variable-engine"></span>
-### `Engine`
+### `Engine` {#special-variable-engine}
 
 Engine API.  See [`Engine` API](#engine-api) for more information.
 
@@ -392,8 +386,17 @@ Engine API.  See [`Engine` API](#engine-api) for more information.
 
 <!-- *********************************************************************** -->
 
-<span id="special-variable-jquery"></span>
-### `jQuery`
+### `Fullscreen` {#special-variable-fullscreen}
+
+Fullscreen API.  See [`Fullscreen` API](#fullscreen-api) for more information.
+
+#### Since:
+
+* `v2.31.0`
+
+<!-- *********************************************************************** -->
+
+### `jQuery` {#special-variable-jquery}
 
 jQuery library function.
 
@@ -403,8 +406,7 @@ jQuery library function.
 
 <!-- *********************************************************************** -->
 
-<span id="special-variable-l10nstrings"></span>
-### `l10nStrings`
+### `l10nStrings` {#special-variable-l10nstrings}
 
 Strings localization object.  See [Localization](#guide-localization) for more information.
 
@@ -414,8 +416,7 @@ Strings localization object.  See [Localization](#guide-localization) for more i
 
 <!-- *********************************************************************** -->
 
-<span id="special-variable-loadscreen"></span>
-### `LoadScreen`
+### `LoadScreen` {#special-variable-loadscreen}
 
 LoadScreen API.  See [`LoadScreen` API](#loadscreen-api) for more information.
 
@@ -425,8 +426,7 @@ LoadScreen API.  See [`LoadScreen` API](#loadscreen-api) for more information.
 
 <!-- *********************************************************************** -->
 
-<span id="special-variable-macro"></span>
-### `Macro`
+### `Macro` {#special-variable-macro}
 
 Macro API.  See [`Macro` API](#macro-api) for more information.
 
@@ -436,8 +436,7 @@ Macro API.  See [`Macro` API](#macro-api) for more information.
 
 <!-- *********************************************************************** -->
 
-<span id="special-variable-passage"></span>
-### `Passage`
+### `Passage` {#special-variable-passage}
 
 Passage API.  See [`Passage` API](#passage-api) for more information.
 
@@ -447,8 +446,7 @@ Passage API.  See [`Passage` API](#passage-api) for more information.
 
 <!-- *********************************************************************** -->
 
-<span id="special-variable-postdisplay"></span>
-### `postdisplay`
+### `postdisplay` {#special-variable-postdisplay}
 
 Post-display task callback object, set up by the author/developer.  See [navigation tasks](#navigation-tasks) for more information.
 
@@ -458,8 +456,7 @@ Post-display task callback object, set up by the author/developer.  See [navigat
 
 <!-- *********************************************************************** -->
 
-<span id="special-variable-postrender"></span>
-### `postrender`
+### `postrender` {#special-variable-postrender}
 
 Post-render task callback object, set up by the author/developer.  See [navigation tasks](#navigation-tasks) for more information.
 
@@ -469,8 +466,7 @@ Post-render task callback object, set up by the author/developer.  See [navigati
 
 <!-- *********************************************************************** -->
 
-<span id="special-variable-predisplay"></span>
-### `predisplay`
+### `predisplay` {#special-variable-predisplay}
 
 Pre-display task callback object, set up by the author/developer.  See [navigation tasks](#navigation-tasks) for more information.
 
@@ -480,8 +476,7 @@ Pre-display task callback object, set up by the author/developer.  See [navigati
 
 <!-- *********************************************************************** -->
 
-<span id="special-variable-prehistory"></span>
-### `prehistory`
+### `prehistory` {#special-variable-prehistory}
 
 Pre-history task callback object, set up by the author/developer.  See [navigation tasks](#navigation-tasks) for more information.
 
@@ -491,8 +486,7 @@ Pre-history task callback object, set up by the author/developer.  See [navigati
 
 <!-- *********************************************************************** -->
 
-<span id="special-variable-prerender"></span>
-### `prerender`
+### `prerender` {#special-variable-prerender}
 
 Pre-render task callback object, set up by the author/developer.  See [navigation tasks](#navigation-tasks) for more information.
 
@@ -502,8 +496,7 @@ Pre-render task callback object, set up by the author/developer.  See [navigatio
 
 <!-- *********************************************************************** -->
 
-<span id="special-variable-save"></span>
-### `Save`
+### `Save` {#special-variable-save}
 
 Save API.  See [`Save` API](#save-api) for more information.
 
@@ -513,8 +506,7 @@ Save API.  See [`Save` API](#save-api) for more information.
 
 <!-- *********************************************************************** -->
 
-<span id="special-variable-setting"></span>
-### `Setting`
+### `Setting` {#special-variable-setting}
 
 Setting API.  See [`Setting` API](#setting-api) for more information.
 
@@ -524,8 +516,7 @@ Setting API.  See [`Setting` API](#setting-api) for more information.
 
 <!-- *********************************************************************** -->
 
-<span id="special-variable-settings"></span>
-### `settings`
+### `settings` {#special-variable-settings}
 
 Player settings object, set up by the author/developer.  See [`Setting` API](#setting-api) for more information.
 
@@ -534,9 +525,7 @@ Player settings object, set up by the author/developer.  See [`Setting` API](#se
 * `v2.0.0`
 <!-- *********************************************************************** -->
 
-
-<span id="special-variable-setup"></span>
-### `setup`
+### `setup` {#special-variable-setup}
 
 Object that authors/developers may use to set up various bits of static data.  Generally, you would use this for data that does not change and should not be stored within story variables, which would make it part of the history.
 
@@ -546,8 +535,17 @@ Object that authors/developers may use to set up various bits of static data.  G
 
 <!-- *********************************************************************** -->
 
-<span id="special-variable-state"></span>
-### `State`
+### `SimpleAudio` {#special-variable-simpleaudio}
+
+SimpleAudio API.  See [`SimpleAudio` API](#simpleaudio-api) for more information.
+
+#### Since:
+
+* `v2.28.0`
+
+<!-- *********************************************************************** -->
+
+### `State` {#special-variable-state}
 
 State API.  See [`State` API](#state-api) for more information.
 
@@ -557,8 +555,7 @@ State API.  See [`State` API](#state-api) for more information.
 
 <!-- *********************************************************************** -->
 
-<span id="special-variable-story"></span>
-### `Story`
+### `Story` {#special-variable-story}
 
 Story API.  See [`Story` API](#story-api) for more information.
 
@@ -568,8 +565,17 @@ Story API.  See [`Story` API](#story-api) for more information.
 
 <!-- *********************************************************************** -->
 
-<span id="special-variable-ui"></span>
-### `UI`
+### `Template` {#special-variable-template}
+
+Template API.  See [`Template` API](#template-api) for more information.
+
+#### Since:
+
+* `v2.29.0`
+
+<!-- *********************************************************************** -->
+
+### `UI` {#special-variable-ui}
 
 UI API.  See [`UI` API](#ui-api) for more information.
 
@@ -579,8 +585,7 @@ UI API.  See [`UI` API](#ui-api) for more information.
 
 <!-- *********************************************************************** -->
 
-<span id="special-variable-uibar"></span>
-### `UIBar`
+### `UIBar` {#special-variable-uibar}
 
 UIBar API.  See [`UIBar` API](#uibar-api) for more information.
 

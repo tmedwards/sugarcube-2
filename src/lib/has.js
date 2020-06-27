@@ -2,7 +2,7 @@
 
 	lib/has.js
 
-	Copyright © 2013–2019 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
+	Copyright © 2013–2020 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
@@ -20,19 +20,6 @@ var Has = (() => { // eslint-disable-line no-unused-vars, no-var
 	const hasAudioElement = (() => {
 		try {
 			return typeof document.createElement('audio').canPlayType === 'function';
-		}
-		catch (ex) { /* no-op */ }
-
-		return false;
-	})();
-
-	// Does the `<HTMLAudioElement>.play()` method return a `Promise`?
-	const hasAudioElementPromise = hasAudioElement && (() => {
-		try {
-			// We do the test this way to silence "Uncaught (in promise)" console errors.
-			const value = document.createElement('audio').play();
-			value.catch(() => { /* no-op */ });
-			return value instanceof Promise;
 		}
 		catch (ex) { /* no-op */ }
 
@@ -102,7 +89,6 @@ var Has = (() => { // eslint-disable-line no-unused-vars, no-var
 		return false;
 	})();
 
-
 	// Is the transition end event available and by what name?
 	const hasTransitionEndEvent = (() => {
 		try {
@@ -129,7 +115,6 @@ var Has = (() => { // eslint-disable-line no-unused-vars, no-var
 	// Module Exports.
 	return Object.freeze({
 		audio              : hasAudioElement,
-		audioPromise       : hasAudioElementPromise,
 		fileAPI            : hasFile,
 		geolocation        : hasGeolocation,
 		mutationObserver   : hasMutationObserver,

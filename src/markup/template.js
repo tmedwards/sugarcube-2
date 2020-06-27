@@ -2,7 +2,7 @@
 
 	markup/template.js
 
-	Copyright © 2019 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
+	Copyright © 2019–2020 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
@@ -33,15 +33,15 @@ var Template = (() => { // eslint-disable-line no-unused-vars, no-var
 			   !_validType(template)
 			&& !(template instanceof Array && template.length > 0 && template.every(_validType))
 		) {
-			throw new Error(`invalid template type (${name}); templates must be: functions, strings, or an array of either`);
+			throw new TypeError(`invalid template type (${name}); templates must be: functions, strings, or an array of either`);
 		}
 
 		(name instanceof Array ? name : [name]).forEach(name => {
-			if (_templates.has(name)) {
-				throw new Error(`cannot clobber existing template ?${name}`);
-			}
 			if (!_validNameRe.test(name)) {
 				throw new Error(`invalid template name "${name}"`);
+			}
+			if (_templates.has(name)) {
+				throw new Error(`cannot clobber existing template ?${name}`);
 			}
 
 			_templates.set(name, template);

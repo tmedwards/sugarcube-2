@@ -1,12 +1,11 @@
 <!-- ***********************************************************************************************
 	UIBar API
 ************************************************************************************************ -->
-<h1 id="uibar-api"><code>UIBar</code> API</h1>
+# `UIBar` API {#uibar-api}
 
 <!-- *********************************************************************** -->
 
-<span id="uibar-api-method-destroy"></span>
-### `UIBar.destroy()`
+### `UIBar.destroy()` {#uibar-api-method-destroy}
 
 Completely removes the UI bar and all of its associated styles and event handlers.
 
@@ -16,7 +15,7 @@ Completely removes the UI bar and all of its associated styles and event handler
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 UIBar.destroy();
@@ -24,12 +23,13 @@ UIBar.destroy();
 
 <!-- *********************************************************************** -->
 
-<span id="uibar-api-method-hide"></span>
-### `UIBar.hide()` → *`UIBar` object*
+### `UIBar.hide()` → *`UIBar` object* {#uibar-api-method-hide}
 
 Hides the UI bar.  Returns a reference to the `UIBar` object for chaining.
 
-**NOTE:** This does not reclaim the space reserved for the UI bar.  Thus, a call to [`UIBar.stow()`](#uibar-api-method-stow) may also be necessary.  Alternatively, if you simply want the UI bar gone completely and permanently, either using [`UIBar.destroy()`](#uibar-api-method-destroy) or the [`StoryInterface` special passage](#special-passage-storyinterface) may be a better choice.
+<p role="note"><b>Note:</b>
+This does not reclaim the space reserved for the UI bar.  Thus, a call to <a href="#uibar-api-method-stow"><code>UIBar.stow()</code></a> may also be necessary.  Alternatively, if you simply want the UI bar gone completely and permanently, either using <a href="#uibar-api-method-destroy"><code>UIBar.destroy()</code></a> or the <a href="#special-passage-storyinterface"><code>StoryInterface</code> special passage</a> may be a better choice.
+</p>
 
 #### Since:
 
@@ -37,7 +37,7 @@ Hides the UI bar.  Returns a reference to the `UIBar` object for chaining.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ##### Basic usage
 
@@ -53,8 +53,7 @@ UIBar.hide().stow();
 
 <!-- *********************************************************************** -->
 
-<span id="uibar-api-method-ishidden"></span>
-### `UIBar.isHidden()` → *boolean*
+### `UIBar.isHidden()` → *boolean* {#uibar-api-method-ishidden}
 
 Returns whether the UI bar is currently hidden.
 
@@ -64,7 +63,7 @@ Returns whether the UI bar is currently hidden.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 if (UIBar.isHidden()) {
@@ -78,8 +77,7 @@ if (!UIBar.isHidden()) {
 
 <!-- *********************************************************************** -->
 
-<span id="uibar-api-method-isstowed"></span>
-### `UIBar.isStowed()` → *boolean*
+### `UIBar.isStowed()` → *boolean* {#uibar-api-method-isstowed}
 
 Returns whether the UI bar is currently stowed.
 
@@ -89,7 +87,7 @@ Returns whether the UI bar is currently stowed.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 if (UIBar.isStowed()) {
@@ -103,8 +101,7 @@ if (!UIBar.isStowed()) {
 
 <!-- *********************************************************************** -->
 
-<span id="uibar-api-method-show"></span>
-### `UIBar.show()` → *`UIBar` object*
+### `UIBar.show()` → *`UIBar` object* {#uibar-api-method-show}
 
 Shows the UI bar.  Returns a reference to the `UIBar` object for chaining.
 
@@ -114,7 +111,7 @@ Shows the UI bar.  Returns a reference to the `UIBar` object for chaining.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ##### Basic usage
 
@@ -130,8 +127,7 @@ UIBar.unstow().show();
 
 <!-- *********************************************************************** -->
 
-<span id="uibar-api-method-stow"></span>
-### `UIBar.stow([noAnimation])` → *`UIBar` object*
+### `UIBar.stow([noAnimation])` → *`UIBar` object* {#uibar-api-method-stow}
 
 Stows the UI bar, so that it takes up less space.  Returns a reference to the `UIBar` object for chaining.
 
@@ -144,7 +140,7 @@ Stows the UI bar, so that it takes up less space.  Returns a reference to the `U
 
 * **`noAnimation`:** (optional, *boolean*) Whether to skip the default animation.
 
-#### Example:
+#### Examples:
 
 ##### Basic usage
 
@@ -160,8 +156,7 @@ UIBar.stow(true);
 
 <!-- *********************************************************************** -->
 
-<span id="uibar-api-method-unstow"></span>
-### `UIBar.unstow([noAnimation])` → *`UIBar` object*
+### `UIBar.unstow([noAnimation])` → *`UIBar` object* {#uibar-api-method-unstow}
 
 Unstows the UI bar, so that it is fully accessible again.  Returns a reference to the `UIBar` object for chaining.
 
@@ -174,7 +169,7 @@ Unstows the UI bar, so that it is fully accessible again.  Returns a reference t
 
 * **`noAnimation`:** (optional, *boolean*) Whether to skip the default animation.
 
-#### Example:
+#### Examples:
 
 ##### Basic usage
 

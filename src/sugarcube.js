@@ -2,13 +2,13 @@
 
 	sugarcube.js
 
-	Copyright © 2013–2019 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
+	Copyright © 2013–2020 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
 /*
-	global Alert, Browser, Config, Dialog, Engine, Has, LoadScreen, SimpleStore, L10n, Macro, Passage, Save,
-	       Scripting, Setting, SimpleAudio, State, Story, UI, UIBar, DebugBar, Util, Visibility, Wikifier
+	global Alert, Browser, Config, Dialog, Engine, Fullscreen, Has, LoadScreen, SimpleStore, L10n, Macro, Passage,
+	       Save, Scripting, Setting, SimpleAudio, State, Story, UI, UIBar, DebugBar, Util, Visibility, Wikifier
 */
 /* eslint-disable no-var */
 
@@ -110,16 +110,15 @@ window.SugarCube = {};
 jQuery(() => {
 	'use strict';
 
+	if (DEBUG) { console.log('[SugarCube/main()] Document loaded; beginning startup.'); }
+
+	/*
+		WARNING!
+
+		The ordering of the code within this function is critically important,
+		so be careful when mucking around with it.
+	*/
 	try {
-		if (DEBUG) { console.log('[SugarCube/main()] Document loaded; beginning startup.'); }
-
-		/*
-			WARNING!
-
-			The ordering of the code within this function is critically important,
-			so be careful when mucking around with it.
-		*/
-
 		// Acquire an initial lock for and initialize the loading screen.
 		const lockId = LoadScreen.lock();
 		LoadScreen.init();
@@ -173,56 +172,64 @@ jQuery(() => {
 			DebugBar.init();
 		}
 
-		// Set a timer to start the interfaces (necessary due to DOM readiness issues in some browsers).
+		// Set a recurring timer to start the interfaces (necessary due to DOM readiness issues in some browsers).
 		const $window    = $(window);
 		const vprCheckId = setInterval(() => {
+			// If `$window.width()` returns a zero value, bail out and wait.
 			if (!$window.width()) {
 				return;
 			}
 
+			// Clear the recurring timer.
 			clearInterval(vprCheckId);
-			setTimeout(() => {
-				// Start the UI bar interface.
-				UIBar.start();
 
-				// Start the debug bar interface.
-				if (Config.debug) {
-					DebugBar.start();
-				}
+			// Start the UI bar interface.
+			UIBar.start();
 
-				// Release the loading screen lock.
-				LoadScreen.unlock(lockId);
-			}, Engine.minDomActionDelay);
+			// Start the debug bar interface.
+			if (Config.debug) {
+				DebugBar.start();
+			}
+
+			// Trigger the `:storyready` global synthetic event.
+			jQuery.event.trigger({ type : ':storyready' });
+
+			// Release the loading screen lock after a short delay.
+			setTimeout(() => LoadScreen.unlock(lockId), Engine.minDomActionDelay * 2);
 		}, Engine.minDomActionDelay);
 
 		// Finally, export identifiers for debugging purposes.
-		window.SugarCube = {
-			Browser,
-			Config,
-			Dialog,
-			Engine,
-			Has,
-			L10n,
-			Macro,
-			Passage,
-			Save,
-			Scripting,
-			Setting,
-			SimpleAudio,
-			State,
-			Story,
-			UI,
-			UIBar,
-			DebugBar,
-			Util,
-			Visibility,
-			Wikifier,
-			session,
-			settings,
-			setup,
-			storage,
-			version
-		};
+		Object.defineProperty(window, 'SugarCube', {
+			// WARNING: We need to assign new values at points, so seal it, do not freeze it.
+			value : Object.seal(Object.assign(Object.create(null), {
+				Browser,
+				Config,
+				Dialog,
+				Engine,
+				Fullscreen,
+				Has,
+				L10n,
+				Macro,
+				Passage,
+				Save,
+				Scripting,
+				Setting,
+				SimpleAudio,
+				State,
+				Story,
+				UI,
+				UIBar,
+				DebugBar,
+				Util,
+				Visibility,
+				Wikifier,
+				session,
+				settings,
+				setup,
+				storage,
+				version
+			}))
+		});
 
 		if (DEBUG) { console.log('[SugarCube/main()] Startup complete; story ready.'); }
 	}

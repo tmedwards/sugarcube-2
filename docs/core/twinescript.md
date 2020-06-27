@@ -1,20 +1,19 @@
 <!-- ***********************************************************************************************
 	TwineScript
 ************************************************************************************************ -->
-<h1 id="twinescript">TwineScript</h1>
+# TwineScript {#twinescript}
 
 TwineScript in SugarCube is, essentially, JavaScript with an extra spoonful of sugar on top to make it a bit nicer for the uninitiated.
-
-See the [Variables](https://twinery.org/wiki/variable) and [About Expressions](https://twinery.org/wiki/expression) sections of the [Twine&nbsp;1/Twee reference documentation](https://twinery.org/wiki/twine1:reference) for additional information.
 
 
 <!-- ***************************************************************************
 	Variables
 **************************************************************************** -->
-<span id="twinescript-variables"></span>
-## Variables
+## Variables {#twinescript-variables}
 
-**NOTE:** Temporary variables were added in `v2.3.0`.
+<p role="note"><b>Note:</b>
+Temporary variables were added in <code>v2.3.0</code>.
+</p>
 
 A variable is a bit of storage where you may stash a value for later use.  In SugarCube, they come in two types: story variables and temporary variables.  Story variables are a part of the story history and exist for the lifetime of a playthrough session.  Temporary variables do not become part of the story history and only exist for the lifetime of the moment/turn that they're created in.  You'll likely use story variables most often throughout your project—though, temporary variables are perfect candidates for things like loop variables, if you're using the [`<<for>>`](#macros-macro-for) macro.
 
@@ -28,9 +27,9 @@ The names of both story and temporary variables have a certain format that they 
 
 The very first, and mandatory, character is their sigil, which denotes whether they are a story or temporary variable.  The sigil must be a dollar sign (`$`) for story variables or an underscore (`_`) for temporary variables.
 
-The second, and also mandatory, character of the variable name may be one of the following: the letters A though Z (in upper or lower case), the dollar sign, and the underscore (i.e. `A-Za-z$_`)—after their initial use as the sigil, the dollar sign and underscore become regular variable characters.
+The second, and also mandatory, character of the variable name may be one of the following: the letters A though Z (in upper or lower case), the dollar sign, and the underscore (i.e., `A-Za-z$_`)—after their initial use as the sigil, the dollar sign and underscore become regular variable characters.
 
-Subsequent, optional, characters have the same set as the second with the addition of numerals (i.e. `0-9`, so the full set is `A-Za-z0-9$_`).  No other characters are allowed.
+Subsequent, optional, characters have the same set as the second with the addition of numerals (i.e., `0-9`, so the full set is `A-Za-z0-9$_`).  No other characters are allowed.
 
 A few examples of valid names:
 
@@ -50,7 +49,9 @@ _COUNT
 
 ### Using Variables
 
-**NOTE:** This is not an exhaustive list.  There are many ways to use and interact with variables.
+<p role="note"><b>Note:</b>
+This is not an exhaustive list.  There are many ways to use and interact with variables.
+</p>
 
 To modify the values contained within variables, see the [`<<set>>`](#macros-macro-set) macro and [setter links](#markup-link).
 
@@ -62,8 +63,7 @@ To control aspects of your project based on the values contained within variable
 <!-- ***************************************************************************
 	Supported Types
 **************************************************************************** -->
-<span id="twinescript-supported-types"></span>
-## Supported Types
+## Supported Types {#twinescript-supported-types}
 
 The following types of values are natively supported by SugarCube and may be safely used within story and temporary variables.
 
@@ -91,8 +91,11 @@ Unsupported object types, either native or custom, can be made compatible by imp
 <!-- ***************************************************************************
 	Expressions
 **************************************************************************** -->
-<span id="twinescript-expressions"></span>
-## Expressions
+## Expressions {#twinescript-expressions}
+
+<p role="note" class="see"><b>See Also:</b>
+While not specifically about SugarCube, the <a href="https://twinery.org/wiki/expression">About Expressions</a> section of the <a href="https://twinery.org/wiki/twine1:reference">Twine&nbsp;1 reference documentation</a> may also be helpful.
+</p>
 
 Expressions are simply units of code that yield values when evaluated.  For example:
 

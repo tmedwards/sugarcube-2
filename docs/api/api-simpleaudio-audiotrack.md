@@ -1,16 +1,17 @@
 <!-- ***************************************************************************
 	AudioTrack API
 **************************************************************************** -->
-<h1 id="audiotrack-api"><code>AudioTrack</code> API</h1>
+# `AudioTrack` API {#audiotrack-api}
 
 Audio tracks encapsulate and provide a consistent interface to an audio resource.
 
-See the other audio APIs for additional information: [`SimpleAudio` API](#simpleaudio-api), [`AudioRunner` API](#audiorunner-api), [`AudioList` API](#audiolist-api).
+<p role="note" class="see"><b>See Also:</b>
+<a href="#simpleaudio-api"><code>SimpleAudio</code> API</a>, <a href="#audiorunner-api"><code>AudioRunner</code> API</a>, and <a href="#audiolist-api"><code>AudioList</code> API</a>.
+</p>
 
 <!-- *********************************************************************** -->
 
-<span id="audiotrack-api-prototype-method-clone"></span>
-### `<AudioTrack>.clone()` → *`AudioTrack` object*
+### `<AudioTrack>.clone()` → *`AudioTrack` object* {#audiotrack-api-prototype-method-clone}
 
 Returns a new independent copy of the track.
 
@@ -20,7 +21,7 @@ Returns a new independent copy of the track.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 var trackCopy = aTrack.clone();
@@ -28,8 +29,7 @@ var trackCopy = aTrack.clone();
 
 <!-- *********************************************************************** -->
 
-<span id="audiotrack-api-prototype-method-duration"></span>
-### `<AudioTrack>.duration()` → *number*
+### `<AudioTrack>.duration()` → *number* {#audiotrack-api-prototype-method-duration}
 
 Returns the track's total playtime in seconds, `Infinity` for a stream, or `NaN` if no metadata exists.
 
@@ -39,7 +39,7 @@ Returns the track's total playtime in seconds, `Infinity` for a stream, or `NaN`
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 var trackLength = aTrack.duration();
@@ -47,8 +47,7 @@ var trackLength = aTrack.duration();
 
 <!-- *********************************************************************** -->
 
-<span id="audiotrack-api-prototype-method-fade"></span>
-### `<AudioTrack>.fade(duration , toVol [, fromVol])` → *`Promise` object*
+### `<AudioTrack>.fade(duration , toVol [, fromVol])` → *`Promise` object* {#audiotrack-api-prototype-method-fade}
 
 Starts playback of the track and fades it between the specified starting and destination volume levels over the specified number of seconds.
 
@@ -62,7 +61,7 @@ Starts playback of the track and fades it between the specified starting and des
 * **`toVol`:** (*number*) The destination volume level.
 * **`fromVol`:** (optional, *number*) The starting volume level.  If omitted, defaults to the track's current volume level.
 
-#### Example:
+#### Examples:
 
 ```
 // Fade the track from volume 0 to 1 over 6 seconds.
@@ -71,8 +70,7 @@ aTrack.fade(6, 1, 0);
 
 <!-- *********************************************************************** -->
 
-<span id="audiotrack-api-prototype-method-fadein"></span>
-### `<AudioTrack>.fadeIn(duration [, fromVol])` → *`Promise` object*
+### `<AudioTrack>.fadeIn(duration [, fromVol])` → *`Promise` object* {#audiotrack-api-prototype-method-fadein}
 
 Starts playback of the track and fades it from the specified volume level to `1` (loudest) over the specified number of seconds.
 
@@ -86,7 +84,7 @@ Starts playback of the track and fades it from the specified volume level to `1`
 * **`duration`:** (*number*) The number of seconds over which the track should be faded.
 * **`fromVol`:** (optional, *number*) The starting volume level.  If omitted, defaults to the track's current volume level.
 
-#### Example:
+#### Examples:
 
 ```
 // Fade the track in from volume 0 over 5 seconds.
@@ -95,8 +93,7 @@ aTrack.fadeIn(5, 0);
 
 <!-- *********************************************************************** -->
 
-<span id="audiotrack-api-prototype-method-fadeout"></span>
-### `<AudioTrack>.fadeOut(duration [, fromVol])` → *`Promise` object*
+### `<AudioTrack>.fadeOut(duration [, fromVol])` → *`Promise` object* {#audiotrack-api-prototype-method-fadeout}
 
 Starts playback of the track and fades it from the specified volume level to `0` (silent) over the specified number of seconds.
 
@@ -110,7 +107,7 @@ Starts playback of the track and fades it from the specified volume level to `0`
 * **`duration`:** (*number*) The number of seconds over which the track should be faded.
 * **`fromVol`:** (optional, *number*) The starting volume level.  If omitted, defaults to the track's current volume level.
 
-#### Example:
+#### Examples:
 
 ```
 // Fade the track out from volume 1 over 8 seconds.
@@ -119,12 +116,13 @@ aTrack.fadeOut(8, 1);
 
 <!-- *********************************************************************** -->
 
-<span id="audiotrack-api-prototype-method-fadestop"></span>
-### `<AudioTrack>.fadeStop()`
+### `<AudioTrack>.fadeStop()` {#audiotrack-api-prototype-method-fadestop}
 
 Interrupts an in-progress fade of the track, or does nothing if no fade is progressing.
 
-**NOTE:** This does not alter the volume level.
+<p role="note"><b>Note:</b>
+This does not alter the volume level.
+</p>
 
 #### Since:
 
@@ -132,7 +130,7 @@ Interrupts an in-progress fade of the track, or does nothing if no fade is progr
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 aTrack.fadeStop();
@@ -140,12 +138,13 @@ aTrack.fadeStop();
 
 <!-- *********************************************************************** -->
 
-<span id="audiotrack-api-prototype-method-hasdata"></span>
-### `<AudioTrack>.hasData()` → *boolean*
+### `<AudioTrack>.hasData()` → *boolean* {#audiotrack-api-prototype-method-hasdata}
 
 Returns whether enough data has been loaded to play the track through to the end without interruption.
 
-**NOTE:** This is an estimate calculated by the browser based upon the currently downloaded data and the download rate.
+<p role="note"><b>Note:</b>
+This is an estimate calculated by the browser based upon the currently downloaded data and the download rate.
+</p>
 
 #### Since:
 
@@ -153,7 +152,7 @@ Returns whether enough data has been loaded to play the track through to the end
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 if (aTrack.hasData()) {
@@ -163,8 +162,7 @@ if (aTrack.hasData()) {
 
 <!-- *********************************************************************** -->
 
-<span id="audiotrack-api-prototype-method-hasmetadata"></span>
-### `<AudioTrack>.hasMetadata()` → *boolean*
+### `<AudioTrack>.hasMetadata()` → *boolean* {#audiotrack-api-prototype-method-hasmetadata}
 
 Returns whether, at least, the track's metadata has been loaded.
 
@@ -174,7 +172,7 @@ Returns whether, at least, the track's metadata has been loaded.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 if (aTrack.hasMetadata()) {
@@ -184,8 +182,7 @@ if (aTrack.hasMetadata()) {
 
 <!-- *********************************************************************** -->
 
-<span id="audiotrack-api-prototype-method-hasnodata"></span>
-### `<AudioTrack>.hasNoData()` → *boolean*
+### `<AudioTrack>.hasNoData()` → *boolean* {#audiotrack-api-prototype-method-hasnodata}
 
 Returns whether none of the track's data has been loaded.
 
@@ -195,7 +192,7 @@ Returns whether none of the track's data has been loaded.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 if (aTrack.hasNoData()) {
@@ -205,12 +202,13 @@ if (aTrack.hasNoData()) {
 
 <!-- *********************************************************************** -->
 
-<span id="audiotrack-api-prototype-method-hassomedata"></span>
-### `<AudioTrack>.hasSomeData()` → *boolean*
+### `<AudioTrack>.hasSomeData()` → *boolean* {#audiotrack-api-prototype-method-hassomedata}
 
 Returns whether, at least, some of the track's data has been loaded.
 
-**NOTE:** The [`<AudioTrack>.hasData()` method](#audiotrack-api-prototype-method-hasdata) is generally more useful.
+<p role="note" class="tip"><b>Tip:</b>
+The <a href="#audiotrack-api-prototype-method-hasdata"><code>&lt;AudioTrack&gt;.hasData()</code> method</a> is generally more useful.
+</p>
 
 #### Since:
 
@@ -218,7 +216,7 @@ Returns whether, at least, some of the track's data has been loaded.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 if (aTrack.hasSomeData()) {
@@ -228,8 +226,7 @@ if (aTrack.hasSomeData()) {
 
 <!-- *********************************************************************** -->
 
-<span id="audiotrack-api-prototype-method-hassource"></span>
-### `<AudioTrack>.hasSource()` → *boolean*
+### `<AudioTrack>.hasSource()` → *boolean* {#audiotrack-api-prototype-method-hassource}
 
 Returns whether any valid sources were registered.
 
@@ -239,7 +236,7 @@ Returns whether any valid sources were registered.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 if (aTrack.hasSource()) {
@@ -249,8 +246,7 @@ if (aTrack.hasSource()) {
 
 <!-- *********************************************************************** -->
 
-<span id="audiotrack-api-prototype-method-isended"></span>
-### `<AudioTrack>.isEnded()` → *boolean*
+### `<AudioTrack>.isEnded()` → *boolean* {#audiotrack-api-prototype-method-isended}
 
 Returns whether playback of the track has ended.
 
@@ -260,7 +256,7 @@ Returns whether playback of the track has ended.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 if (aTrack.isEnded()) {
@@ -270,8 +266,7 @@ if (aTrack.isEnded()) {
 
 <!-- *********************************************************************** -->
 
-<span id="audiotrack-api-prototype-method-isfading"></span>
-### `<AudioTrack>.isFading()` → *boolean*
+### `<AudioTrack>.isFading()` → *boolean* {#audiotrack-api-prototype-method-isfading}
 
 Returns whether a fade is in-progress on the track.
 
@@ -281,7 +276,7 @@ Returns whether a fade is in-progress on the track.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 if (aTrack.isFading()) {
@@ -291,8 +286,7 @@ if (aTrack.isFading()) {
 
 <!-- *********************************************************************** -->
 
-<span id="audiotrack-api-prototype-method-isfailed"></span>
-### `<AudioTrack>.isFailed()` → *boolean*
+### `<AudioTrack>.isFailed()` → *boolean* {#audiotrack-api-prototype-method-isfailed}
 
 Returns whether an error has occurred.
 
@@ -302,7 +296,7 @@ Returns whether an error has occurred.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 if (aTrack.isFailed()) {
@@ -312,8 +306,7 @@ if (aTrack.isFailed()) {
 
 <!-- *********************************************************************** -->
 
-<span id="audiotrack-api-prototype-method-isloading"></span>
-### `<AudioTrack>.isLoading()` → *boolean*
+### `<AudioTrack>.isLoading()` → *boolean* {#audiotrack-api-prototype-method-isloading}
 
 Returns whether the track is loading data.
 
@@ -323,7 +316,7 @@ Returns whether the track is loading data.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 if (aTrack.isLoading()) {
@@ -333,8 +326,7 @@ if (aTrack.isLoading()) {
 
 <!-- *********************************************************************** -->
 
-<span id="audiotrack-api-prototype-method-ispaused"></span>
-### `<AudioTrack>.isPaused()` → *boolean*
+### `<AudioTrack>.isPaused()` → *boolean* {#audiotrack-api-prototype-method-ispaused}
 
 Returns whether playback of the track has been paused.
 
@@ -346,7 +338,7 @@ Returns whether playback of the track has been paused.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 if (aTrack.isPaused()) {
@@ -356,8 +348,7 @@ if (aTrack.isPaused()) {
 
 <!-- *********************************************************************** -->
 
-<span id="audiotrack-api-prototype-method-isplaying"></span>
-### `<AudioTrack>.isPlaying()` → *boolean*
+### `<AudioTrack>.isPlaying()` → *boolean* {#audiotrack-api-prototype-method-isplaying}
 
 Returns whether the track is playing.
 
@@ -367,7 +358,7 @@ Returns whether the track is playing.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 if (aTrack.isPlaying()) {
@@ -377,8 +368,7 @@ if (aTrack.isPlaying()) {
 
 <!-- *********************************************************************** -->
 
-<span id="audiotrack-api-prototype-method-isseeking"></span>
-### `<AudioTrack>.isSeeking()` → *boolean*
+### `<AudioTrack>.isSeeking()` → *boolean* {#audiotrack-api-prototype-method-isseeking}
 
 Returns whether the track is seeking.
 
@@ -388,7 +378,7 @@ Returns whether the track is seeking.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 if (aTrack.isSeeking()) {
@@ -398,8 +388,7 @@ if (aTrack.isSeeking()) {
 
 <!-- *********************************************************************** -->
 
-<span id="audiotrack-api-prototype-method-isstopped"></span>
-### `<AudioTrack>.isStopped()` → *boolean*
+### `<AudioTrack>.isStopped()` → *boolean* {#audiotrack-api-prototype-method-isstopped}
 
 Returns whether playback of the track has been stopped.
 
@@ -409,7 +398,7 @@ Returns whether playback of the track has been stopped.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 if (aTrack.isStopped()) {
@@ -419,8 +408,7 @@ if (aTrack.isStopped()) {
 
 <!-- *********************************************************************** -->
 
-<span id="audiotrack-api-prototype-method-isunavailable"></span>
-### `<AudioTrack>.isUnavailable()` → *boolean*
+### `<AudioTrack>.isUnavailable()` → *boolean* {#audiotrack-api-prototype-method-isunavailable}
 
 Returns whether the track is currently unavailable for playback.  Possible reasons include: no valid sources are registered, no sources are currently loaded, an error has occurred.
 
@@ -430,7 +418,7 @@ Returns whether the track is currently unavailable for playback.  Possible reaso
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 if (aTrack.isUnavailable()) {
@@ -440,8 +428,7 @@ if (aTrack.isUnavailable()) {
 
 <!-- *********************************************************************** -->
 
-<span id="audiotrack-api-prototype-method-isunloaded"></span>
-### `<AudioTrack>.isUnloaded()` → *boolean*
+### `<AudioTrack>.isUnloaded()` → *boolean* {#audiotrack-api-prototype-method-isunloaded}
 
 Returns whether the track's sources are currently unloaded.
 
@@ -451,7 +438,7 @@ Returns whether the track's sources are currently unloaded.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 if (aTrack.isUnloaded()) {
@@ -461,12 +448,13 @@ if (aTrack.isUnloaded()) {
 
 <!-- *********************************************************************** -->
 
-<span id="audiotrack-api-prototype-method-load"></span>
-### `<AudioTrack>.load()`
+### `<AudioTrack>.load()` {#audiotrack-api-prototype-method-load}
 
 Pauses playback of the track and, if it's not already in the process of loading, forces it to drop any existing data and begin loading.
 
-**NOTE:** This *should not* be done lightly if your audio sources are on the network, as it forces the player to begin downloading them.
+<p role="note" class="warning"><b>Warning:</b>
+This <em>should not</em> be done lightly if your audio sources are on the network, as it forces players to begin downloading them.
+</p>
 
 #### Since:
 
@@ -474,7 +462,7 @@ Pauses playback of the track and, if it's not already in the process of loading,
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 aTrack.load();
@@ -482,8 +470,7 @@ aTrack.load();
 
 <!-- *********************************************************************** -->
 
-<span id="audiotrack-api-prototype-method-loop"></span>
-### `<AudioTrack>.loop([state])` → **get:** *boolean* | **set:** *`AudioTrack` object*
+### `<AudioTrack>.loop([state])` → **get:** *boolean* | **set:** *`AudioTrack` object* {#audiotrack-api-prototype-method-loop}
 
 Gets or sets the track's repeating playback state (default: `false`).  When used to set the loop state, returns a reference to the current `AudioTrack` instance for chaining.
 
@@ -495,7 +482,7 @@ Gets or sets the track's repeating playback state (default: `false`).  When used
 
 * **`state`:** (optional, *boolean*) The loop state.
 
-#### Example:
+#### Examples:
 
 ```
 // Get the track's current loop state.
@@ -510,8 +497,7 @@ aTrack.loop(false);
 
 <!-- *********************************************************************** -->
 
-<span id="audiotrack-api-prototype-method-mute"></span>
-### `<AudioTrack>.mute([state])` → **get:** *boolean* | **set:** *`AudioTrack` object*
+### `<AudioTrack>.mute([state])` → **get:** *boolean* | **set:** *`AudioTrack` object* {#audiotrack-api-prototype-method-mute}
 
 Gets or sets the track's volume mute state (default: `false`).  When used to set the mute state, returns a reference to the current `AudioTrack` instance for chaining.
 
@@ -523,7 +509,7 @@ Gets or sets the track's volume mute state (default: `false`).  When used to set
 
 * **`state`:** (optional, *boolean*) The mute state.
 
-#### Example:
+#### Examples:
 
 ```
 // Get the track's current volume mute state.
@@ -538,12 +524,13 @@ aTrack.mute(false);
 
 <!-- *********************************************************************** -->
 
-<span id="audiotrack-api-prototype-method-off"></span>
-### `<AudioTrack>.off(...args)` → *`AudioTrack` object*
+### `<AudioTrack>.off(...args)` → *`AudioTrack` object* {#audiotrack-api-prototype-method-off}
 
 Removes event handlers from the track.  Returns a reference to the current `AudioTrack` instance for chaining.
 
-**NOTE:** Shorthand for [jQuery's `.off()` method](http://api.jquery.com/off/) applied to the audio element.
+<p role="note"><b>Note:</b>
+Shorthand for <a href="http://api.jquery.com/off/">jQuery's <code>.off()</code> method</a> applied to the audio element.
+</p>
 
 <p role="note" class="warning"><b>Warning:</b>
 The <code>SimpleAudio</code> APIs use events internally for various pieces of functionality.  To prevent conflicts, it is <strong><em>strongly</em></strong> suggested that you specify a custom user namespace—e.g., <code>.myEvents</code>—when attaching your own handlers.  It is further <strong><em>strongly</em></strong> suggested that you provide that same custom user namespace when removing them.
@@ -555,9 +542,11 @@ The <code>SimpleAudio</code> APIs use events internally for various pieces of fu
 
 #### Parameters:
 
-**SEE:** [`<jQuery>.off()`](http://api.jquery.com/off/) in the jQuery API docs for more information.
+<p role="note" class="see"><b>See:</b>
+<a href="http://api.jquery.com/off/"><code>&lt;jQuery&gt;.off()</code></a> in the jQuery API docs for more information.
+</p>
 
-#### Example:
+#### Examples:
 
 ```
 // Remove any handlers for the ended event.
@@ -566,12 +555,13 @@ aTrack.off('ended.myEvents');
 
 <!-- *********************************************************************** -->
 
-<span id="audiotrack-api-prototype-method-on"></span>
-### `<AudioTrack>.on(...args)` → *`AudioTrack` object*
+### `<AudioTrack>.on(...args)` → *`AudioTrack` object* {#audiotrack-api-prototype-method-on}
 
 Attaches event handlers to the track.  Returns a reference to the current `AudioTrack` instance for chaining.
 
-**NOTE:** Shorthand for [jQuery's `.on()` method](http://api.jquery.com/on/) applied to the audio element.
+<p role="note"><b>Note:</b>
+Shorthand for <a href="http://api.jquery.com/on/">jQuery's <code>.on()</code> method</a> applied to the audio element.
+</p>
 
 <p role="note" class="warning"><b>Warning:</b>
 The <code>SimpleAudio</code> APIs use events internally for various pieces of functionality.  To prevent conflicts, it is <strong><em>strongly</em></strong> suggested that you specify a custom user namespace—e.g., <code>.myEvents</code>—when attaching your own handlers.  It is further <strong><em>strongly</em></strong> suggested that you provide that same custom user namespace when removing them.
@@ -583,9 +573,11 @@ The <code>SimpleAudio</code> APIs use events internally for various pieces of fu
 
 #### Parameters:
 
-**SEE:** [`<jQuery>.on()`](http://api.jquery.com/on/) in the jQuery API docs for more information.
+<p role="note" class="see"><b>See:</b>
+<a href="http://api.jquery.com/on/"><code>&lt;jQuery&gt;.on()</code></a> in the jQuery API docs for more information.
+</p>
 
-#### Example:
+#### Examples:
 
 ```
 // Add a handler for the ended event.
@@ -596,12 +588,13 @@ aTrack.on('ended.myEvents', function () {
 
 <!-- *********************************************************************** -->
 
-<span id="audiotrack-api-prototype-method-one"></span>
-### `<AudioTrack>.one(...args)` → *`AudioTrack` object*
+### `<AudioTrack>.one(...args)` → *`AudioTrack` object* {#audiotrack-api-prototype-method-one}
 
 Attaches single-use event handlers to the track.  Returns a reference to the current `AudioTrack` instance for chaining.
 
-**NOTE:** Shorthand for [jQuery's `.one()` method](http://api.jquery.com/one/) applied to the audio element.
+<p role="note"><b>Note:</b>
+Shorthand for <a href="http://api.jquery.com/one/">jQuery's <code>.one()</code> method</a> applied to the audio element.
+</p>
 
 <p role="note" class="warning"><b>Warning:</b>
 The <code>SimpleAudio</code> APIs use events internally for various pieces of functionality.  To prevent conflicts, it is <strong><em>strongly</em></strong> suggested that you specify a custom user namespace—e.g., <code>.myEvents</code>—when attaching your own handlers.  It is further <strong><em>strongly</em></strong> suggested that you provide that same custom user namespace when removing them.
@@ -613,9 +606,11 @@ The <code>SimpleAudio</code> APIs use events internally for various pieces of fu
 
 #### Parameters:
 
-**SEE:** [`<jQuery>.one()`](http://api.jquery.com/one/) in the jQuery API docs for more information.
+<p role="note" class="see"><b>See:</b>
+<a href="http://api.jquery.com/one/"><code>&lt;jQuery&gt;.one()</code></a> in the jQuery API docs for more information.
+</p>
 
-#### Example:
+#### Examples:
 
 ```
 // Add a single-use handler for the ended event.
@@ -626,8 +621,7 @@ aTrack.one('ended.myEvents', function () {
 
 <!-- *********************************************************************** -->
 
-<span id="audiotrack-api-prototype-method-pause"></span>
-### `<AudioTrack>.pause()`
+### `<AudioTrack>.pause()` {#audiotrack-api-prototype-method-pause}
 
 Pauses playback of the track.
 
@@ -637,7 +631,7 @@ Pauses playback of the track.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 aTrack.pause();
@@ -645,8 +639,7 @@ aTrack.pause();
 
 <!-- *********************************************************************** -->
 
-<span id="audiotrack-api-prototype-method-play"></span>
-### `<AudioTrack>.play()` → *`Promise` object*
+### `<AudioTrack>.play()` → *`Promise` object* {#audiotrack-api-prototype-method-play}
 
 Begins playback of the track.
 
@@ -656,7 +649,7 @@ Begins playback of the track.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ##### Basic usage
 
@@ -678,8 +671,7 @@ aTrack.play()
 
 <!-- *********************************************************************** -->
 
-<span id="audiotrack-api-prototype-method-playwhenallowed"></span>
-### `<AudioTrack>.playWhenAllowed()`
+### `<AudioTrack>.playWhenAllowed()` {#audiotrack-api-prototype-method-playwhenallowed}
 
 Begins playback of the track or, failing that, sets the track to begin playback as soon as the player has interacted with the document.
 
@@ -689,7 +681,7 @@ Begins playback of the track or, failing that, sets the track to begin playback 
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 aTrack.playWhenAllowed();
@@ -697,8 +689,7 @@ aTrack.playWhenAllowed();
 
 <!-- *********************************************************************** -->
 
-<span id="audiotrack-api-prototype-method-remaining"></span>
-### `<AudioTrack>.remaining()` → *number*
+### `<AudioTrack>.remaining()` → *number* {#audiotrack-api-prototype-method-remaining}
 
 Returns how much remains of the track's total playtime in seconds, `Infinity` for a stream, or `NaN` if no metadata exists.
 
@@ -708,7 +699,7 @@ Returns how much remains of the track's total playtime in seconds, `Infinity` fo
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 var trackRemains = aTrack.remaining();
@@ -716,8 +707,7 @@ var trackRemains = aTrack.remaining();
 
 <!-- *********************************************************************** -->
 
-<span id="audiotrack-api-prototype-method-stop"></span>
-### `<AudioTrack>.stop()`
+### `<AudioTrack>.stop()` {#audiotrack-api-prototype-method-stop}
 
 Stops playback of the track.
 
@@ -727,7 +717,7 @@ Stops playback of the track.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 someTrack.stop();
@@ -735,12 +725,9 @@ someTrack.stop();
 
 <!-- *********************************************************************** -->
 
-<span id="audiotrack-api-prototype-method-time"></span>
-### `<AudioTrack>.time([seconds])` → **get:** *number* | **set:** *`AudioTrack` object*
+### `<AudioTrack>.time([seconds])` → **get:** *number* | **set:** *`AudioTrack` object* {#audiotrack-api-prototype-method-time}
 
 Gets or sets the track's current time in seconds.  When used to set a value, returns a reference to the current `AudioTrack` instance for chaining.
-
-<!-- **NOTE:** Changing the track's current time is colloquially, though incorrectly, also known as *seeking*. -->
 
 #### Since:
 
@@ -750,7 +737,7 @@ Gets or sets the track's current time in seconds.  When used to set a value, ret
 
 * **`seconds`:** (optional, *number*) The time to set.  Valid values are floating-point numbers in the range `0` (start) to the maximum duration—e.g., `60` is `60` is sixty seconds in, `90.5` is ninety-point-five seconds in.
 
-#### Example:
+#### Examples:
 
 ```
 // Get the track's current time.
@@ -765,12 +752,13 @@ aTrack.time(aTrack.duration() - 30);
 
 <!-- *********************************************************************** -->
 
-<span id="audiotrack-api-prototype-method-unload"></span>
-### `<AudioTrack>.unload()`
+### `<AudioTrack>.unload()` {#audiotrack-api-prototype-method-unload}
 
 Stops playback of the track and forces it to drop any existing data.
 
-**NOTE:** Once unloaded, playback cannot occur until the track's data is loaded again.
+<p role="note"><b>Note:</b>
+Once unloaded, playback cannot occur until the track's data is loaded again.
+</p>
 
 #### Since:
 
@@ -778,7 +766,7 @@ Stops playback of the track and forces it to drop any existing data.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 aTrack.unload();
@@ -786,8 +774,7 @@ aTrack.unload();
 
 <!-- *********************************************************************** -->
 
-<span id="audiotrack-api-prototype-method-volume"></span>
-### `<AudioTrack>.volume([level])` → **get:** *number* | **set:** *`AudioTrack` object*
+### `<AudioTrack>.volume([level])` → **get:** *number* | **set:** *`AudioTrack` object* {#audiotrack-api-prototype-method-volume}
 
 Gets or sets the track's volume level (default: `1`).  When used to set the volume, returns a reference to the current `AudioTrack` instance for chaining.
 
@@ -799,7 +786,7 @@ Gets or sets the track's volume level (default: `1`).  When used to set the volu
 
 * **`level`:** (optional, *number*) The volume level to set.  Valid values are floating-point numbers in the range `0` (silent) to `1` (loudest)—e.g., `0` is 0%, `0.5` is 50%, `1` is 100%.
 
-#### Example:
+#### Examples:
 
 ```
 // Get the track's current volume level.
@@ -807,72 +794,4 @@ var trackVolume = aTrack.volume();
 
 // Set the track's volume level to 75%.
 aTrack.volume(0.75);
-```
-
-<!-- *********************************************************************** -->
-
-<span id="audiotrack-api-event-faded"></span>
-### `:faded` event
-
-Synthetic event triggered on the track when a fade completes normally.
-
-#### Since:
-
-* `v2.29.0`
-
-#### Event object properties: *none*
-
-#### Example:
-
-```
-/* Execute the handler function when the event triggers. */
-aTrack.on(':faded', function (ev) {
-	/* JavaScript code */
-});
-```
-
-<!-- *********************************************************************** -->
-
-<span id="audiotrack-api-event-fading"></span>
-### `:fading` event
-
-Synthetic event triggered on the track when a fade starts.
-
-#### Since:
-
-* `v2.29.0`
-
-#### Event object properties: *none*
-
-#### Example:
-
-```
-/* Execute the handler function when the event triggers. */
-aTrack.on(':fading', function (ev) {
-	/* JavaScript code */
-});
-```
-
-<!-- *********************************************************************** -->
-
-<span id="audiotrack-api-event-stopped"></span>
-### `:stopped` event
-
-Synthetic event triggered on the track when playback is stopped after [`<AudioTrack>.stop()`](#audiotrack-api-prototype-method-stop) is called—either manually or as part of another process.
-
-**SEE:** [`ended`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/ended_event) and [`pause`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/pause_event) for information on somewhat similar native events.
-
-#### Since:
-
-* `v2.29.0`
-
-#### Event object properties: *none*
-
-#### Example:
-
-```
-/* Execute the handler function when the event triggers. */
-aTrack.on(':stopped', function (ev) {
-	/* JavaScript code */
-});
 ```

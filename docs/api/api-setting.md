@@ -1,14 +1,13 @@
 <!-- ***********************************************************************************************
 	Setting API
 ************************************************************************************************ -->
-<h1 id="setting-api"><code>Setting</code> API</h1>
+# `Setting` API {#setting-api}
 
 Manages the Settings dialog and [`settings` object](#setting-api-object-settings).
 
 <!-- *********************************************************************** -->
 
-<span id="setting-api-method-addheader"></span>
-### `Setting.addHeader(name [, desc])`
+### `Setting.addHeader(name [, desc])` {#setting-api-method-addheader}
 
 Adds a header to the Settings dialog.
 
@@ -21,7 +20,7 @@ Adds a header to the Settings dialog.
 * **`name`:** (*string*) Name of the header.
 * **`desc`:** (optional, *string*) Description explaining the header in greater detail.
 
-#### Example:
+#### Examples:
 
 ```
 // Setting up a basic header
@@ -33,8 +32,7 @@ Setting.addHeader("Content Settings", "Settings controlling what content is made
 
 <!-- *********************************************************************** -->
 
-<span id="setting-api-method-addtoggle"></span>
-### `Setting.addToggle(name, definition)`
+### `Setting.addToggle(name, definition)` {#setting-api-method-addtoggle}
 
 Adds the named property to the `settings` object and a toggle control for it to the Settings dialog.
 
@@ -58,7 +56,7 @@ A toggle definition object should have some of the following properties:
 * **`onInit`:** (optional, *function*) The function to call during initialization.
 * **`onChange`:** (optional, *function*) The function to call when the control's state is changed.
 
-#### Example:
+#### Examples:
 
 ##### Basic toggle setting
 
@@ -99,8 +97,7 @@ html.widescreen #passages {
 
 <!-- *********************************************************************** -->
 
-<span id="setting-api-method-addlist"></span>
-### `Setting.addList(name, definition)`
+### `Setting.addList(name, definition)` {#setting-api-method-addlist}
 
 Adds the named property to the `settings` object and a list control for it to the Settings dialog.
 
@@ -125,7 +122,7 @@ A list definition object should have some of the following properties:
 * **`onInit`:** (optional, *function*) The function to call during initialization.
 * **`onChange`:** (optional, *function*) The function to call when the control's state is changed.
 
-#### Example:
+#### Examples:
 
 ```
 // Setting up a basic list control for the settings property 'difficulty'
@@ -179,8 +176,7 @@ $("html")
 
 <!-- *********************************************************************** -->
 
-<span id="setting-api-method-addrange"></span>
-### `Setting.addRange(name, definition)`
+### `Setting.addRange(name, definition)` {#setting-api-method-addrange}
 
 Adds the named property to the `settings` object and a range control for it to the Settings dialog.
 
@@ -200,13 +196,13 @@ A range definition object should have some of the following properties:
 * **`label`:** (*string*) Label to use for the control.
 * **`min`:** (*number*) The minimum value.
 * **`max`:** (*number*) The maximum value.
-* **`step`:** (*number*) Limits the increments to which the value may be set.  It must be evenly divisible into the full range—i.e. `max - min`.
+* **`step`:** (*number*) Limits the increments to which the value may be set.  It must be evenly divisible into the full range—i.e., `max - min`.
 * **`desc`:** (optional, *string*) Description explaining the control in greater detail.
 * **`default`:** (optional, *number*) The default value for the setting and default state of the control.  Leaving it undefined means to use the value of `max` as the default.
 * **`onInit`:** (optional, *function*) The function to call during initialization.
 * **`onChange`:** (optional, *function*) The function to call when the control's state is changed.
 
-#### Example:
+#### Examples:
 
 ```
 // Setting up a volume control for the settings property 'masterVolume' w/ callback
@@ -216,7 +212,7 @@ Setting.addRange("masterVolume", {
 	max      : 10,
 	step     : 1,
 	onChange : function () {
-		$.wiki("<<masteraudio volume " + (settings["masterVolume"] / 10) + ">>");
+		SimpleAudio.volume(settings.masterVolume / 10);
 	}
 }); // default value not defined, so max value (10) is used
 ```
@@ -224,17 +220,18 @@ Setting.addRange("masterVolume", {
 // NOTE: Whole numbers (range: 0–10) are used within the control itself for
 // the sake of Internet Explorer, whose range input value tooltip only does
 // something useful if the value is an integer.  The value is divided by 10
-// when passed to <<masteraudio>>, since volume levels range from 0 to 1.
+// when passed to SimpleAudio.volume(), since volume levels range 0–1.
 -->
 
 <!-- *********************************************************************** -->
 
-<span id="setting-api-method-load"></span>
-### `Setting.load()`
+### `Setting.load()` {#setting-api-method-load}
 
 Loads the settings from storage.
 
-**NOTE:** The API automatically calls this method at startup, so you should never need to call this method manually.
+<p role="note"><b>Note:</b>
+The API automatically calls this method at startup, so you should never need to call this method manually.
+</p>
 
 #### Since:
 
@@ -242,7 +239,7 @@ Loads the settings from storage.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 Setting.load();
@@ -250,8 +247,7 @@ Setting.load();
 
 <!-- *********************************************************************** -->
 
-<span id="setting-api-method-reset"></span>
-### `Setting.reset([name])`
+### `Setting.reset([name])` {#setting-api-method-reset}
 
 Resets the setting with the given name to its default value.  If no name is given, resets all settings.
 
@@ -263,7 +259,7 @@ Resets the setting with the given name to its default value.  If no name is give
 
 * **`name`:** (optional, *string*) Name of the `settings` object property to reset.
 
-#### Example:
+#### Examples:
 
 ```
 // Reset the setting 'difficulty'
@@ -275,12 +271,13 @@ Setting.reset();
 
 <!-- *********************************************************************** -->
 
-<span id="setting-api-method-save"></span>
-### `Setting.save()`
+### `Setting.save()` {#setting-api-method-save}
 
 Saves the settings to storage.
 
-**NOTE:** The controls of the Settings dialog automatically call this method when settings are changed, so you should normally never need to call this method manually.  Only when manually modifying the values of `settings` object properties, outside of the controls, would you need to call this method.
+<p role="note"><b>Note:</b>
+The controls of the Settings dialog automatically call this method when settings are changed, so you should normally never need to call this method manually.  Only when manually modifying the values of <code>settings</code> object properties, outside of the controls, would you need to call this method.
+</p>
 
 #### Since:
 
@@ -288,7 +285,7 @@ Saves the settings to storage.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 Setting.save();
@@ -296,8 +293,7 @@ Setting.save();
 
 <!-- *********************************************************************** -->
 
-<span id="setting-api-object-settings"></span>
-### `settings` object
+### `settings` object {#setting-api-object-settings}
 
 A prototype-less generic object whose properties and values are defined by the [`Setting.addToggle()`](#setting-api-method-addtoggle), [`Setting.addList()`](#setting-api-method-addlist), and [`Setting.addRange()`](#setting-api-method-addrange) methods.
 

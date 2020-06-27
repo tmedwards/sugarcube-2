@@ -1,6 +1,6 @@
 {
   "name": "SugarCube",
-  "version": "2.30.0",
+  "version": "2.31.1",
   "author": "Thomas Michael Edwards <thomasmedwards@gmail.com>",
   "description": "Dependency install configuration for SugarCube's Node.js-hosted build script, build.js.",
   "license": "BSD-2-Clause",
@@ -9,17 +9,18 @@
     "url": "https://github.com/tmedwards/sugarcube-2.git"
   },
   "devDependencies": {
-    "autoprefixer": "^6.7.7",
+    "autoprefixer": "^9.7.5",
     "babel-cli": "^6.26.0",
     "babel-preset-es2015": "^6.24.1",
-    "clean-css": "^4.2.1",
+    "clean-css": "^4.2.3",
     "eslint": "^6.8.0",
-    "node-getopt": "^0.2.3",
-    "semver": "^5.5.0",
+    "node-getopt": "^0.2.4",
+    "postcss": "^7.0.27",
+    "semver": "^5.7.1",
     "uglify-js": "^2.8.29"
   },
   "engine": {
-    "node": ">=8.9.4"
+    "node": ">=12.16.1"
   },
   "private": true
 }

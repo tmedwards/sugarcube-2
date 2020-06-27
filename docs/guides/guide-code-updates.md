@@ -1,18 +1,19 @@
 <!-- ***********************************************************************************************
 	Guide: Code Updates
 ************************************************************************************************ -->
-<h1 id="guide-code-updates">Guide: Code Updates</h1><span id="guide-upgrading"></span>
+# Guide: Code Updates<!-- legacy --><span id="guide-upgrading"></span><!-- /legacy --> {#guide-code-updates}
 
 This is a reference on how to update existing SugarCube code to work with newer versions of SugarCube.
 
-**NOTE:** The majority of newer SugarCube versions do not have any changes that would require an update.  For those versions that do, the updates are normally completely elective and may be addressed at your leisure, or not at all.  Sometimes there are breaking changes, however, and these must be addressed immediately.
+<p role="note"><b>Note:</b>
+The majority of newer SugarCube versions do not have any changes that would require an update.  For those versions that do, the updates are normally completely elective and may be addressed at your leisure, or not at all.  Sometimes there are breaking changes, however, and these must be addressed immediately.
+</p>
 
 
 <!-- ***************************************************************************
 	Updating to any version ≥2.30.0 from a lesser version
 **************************************************************************** -->
-<span id="guide-code-updates-2.30.0"></span>
-## Updating to any version ≥2.30.0 from a lesser version
+## Updating to any version ≥2.30.0 from a lesser version {#guide-code-updates-2.30.0}
 
 All changes within this version are elective changes that you may address at your leisure.
 
@@ -37,8 +38,7 @@ All changes within this version are elective changes that you may address at you
 <!-- ***************************************************************************
 	Updating to any version ≥2.29.0 from a lesser version
 **************************************************************************** -->
-<span id="guide-code-updates-2.29.0"></span>
-## Updating to any version ≥2.29.0 from a lesser version
+## Updating to any version ≥2.29.0 from a lesser version {#guide-code-updates-2.29.0}
 
 All changes within this version are elective changes that you may address at your leisure.
 
@@ -122,8 +122,7 @@ All changes within this version are elective changes that you may address at you
 <!-- ***************************************************************************
 	Updating to any version ≥2.28.0 from a lesser version
 **************************************************************************** -->
-<span id="guide-code-updates-2.28.0"></span>
-## Updating to any version ≥2.28.0 from a lesser version
+## Updating to any version ≥2.28.0 from a lesser version {#guide-code-updates-2.28.0}
 
 All changes within this version are elective changes that you may address at your leisure.
 
@@ -148,8 +147,7 @@ All changes within this version are elective changes that you may address at you
 <!-- ***************************************************************************
 	Updating to any version ≥2.20.0 from a lesser version
 **************************************************************************** -->
-<span id="guide-code-updates-2.20.0"></span>
-## Updating to any version ≥2.20.0 from a lesser version
+## Updating to any version ≥2.20.0 from a lesser version {#guide-code-updates-2.20.0}
 
 All changes within this version are elective changes that you may address at your leisure.
 
@@ -174,8 +172,7 @@ All changes within this version are elective changes that you may address at you
 <!-- ***************************************************************************
 	Updating to any version ≥2.15.0 from a lesser version
 **************************************************************************** -->
-<span id="guide-code-updates-2.15.0"></span><span id="guide-upgrading-2.15.0"></span>
-## Updating to any version ≥2.15.0 from a lesser version
+## Updating to any version ≥2.15.0 from a lesser version<!-- legacy --><span id="guide-upgrading-2.15.0"></span><!-- /legacy --> {#guide-code-updates-2.15.0}
 
 All changes within this version are elective changes that you may address at your leisure.
 
@@ -200,8 +197,7 @@ All changes within this version are elective changes that you may address at you
 <!-- ***************************************************************************
 	Updating to any version ≥2.10.0 from a lesser version
 **************************************************************************** -->
-<span id="guide-code-updates-2.10.0"></span><span id="guide-upgrading-2.10.0"></span>
-## Updating to any version ≥2.10.0 from a lesser version
+## Updating to any version ≥2.10.0 from a lesser version<!-- legacy --><span id="guide-upgrading-2.10.0"></span><!-- /legacy --> {#guide-code-updates-2.10.0}
 
 All changes within this version are elective changes that you may address at your leisure.
 
@@ -241,8 +237,7 @@ The `strings` API object has been replaced by the `l10nStrings` object.  See the
 <!-- ***************************************************************************
 	Updating to any version ≥2.8.0 from a lesser version
 **************************************************************************** -->
-<span id="guide-code-updates-2.8.0"></span><span id="guide-upgrading-2.8.0"></span>
-## Updating to any version ≥2.8.0 from a lesser version
+## Updating to any version ≥2.8.0 from a lesser version<!-- legacy --><span id="guide-upgrading-2.8.0"></span><!-- /legacy --> {#guide-code-updates-2.8.0}
 
 All changes within this version are elective changes that you may address at your leisure.
 
@@ -279,8 +274,7 @@ All changes within this version are elective changes that you may address at you
 <!-- ***************************************************************************
 	Updating to any version ≥2.5.0 from a lesser version
 **************************************************************************** -->
-<span id="guide-code-updates-2.5.0"></span><span id="guide-upgrading-2.5.0"></span>
-## Updating to any version ≥2.5.0 from a lesser version
+## Updating to any version ≥2.5.0 from a lesser version<!-- legacy --><span id="guide-upgrading-2.5.0"></span><!-- /legacy --> {#guide-code-updates-2.5.0}
 
 All changes within this version are elective changes that you may address at your leisure.
 
@@ -374,8 +368,7 @@ Several `UI` API methods have moved to the new `Dialog` API.  See the [`Dialog` 
 <!-- ***************************************************************************
 	Updating to any version ≥2.0.0 from a lesser version
 **************************************************************************** -->
-<span id="guide-code-updates-2.0.0"></span><span id="guide-upgrading-2.0.0"></span>
-## Updating to any version ≥2.0.0 from a lesser version
+## Updating to any version ≥2.0.0 from a lesser version<!-- legacy --><span id="guide-upgrading-2.0.0"></span><!-- /legacy --> {#guide-code-updates-2.0.0}
 
 <p role="note" class="warning"><b>Warning:</b>
 All changes within this version are <strong>breaking changes</strong> that you <strong><em>must</em></strong> address immediately.
@@ -502,8 +495,7 @@ The `Macros` API object has been renamed to `Macro` and several of its methods h
 	</tbody>
 </table>
 
-<span id="guide-code-updates-2.0.0-options"></span>
-### Options system
+### <span id="guide-code-updates-2.0.0-options">Options system</span>
 
 The entire Options system—`MenuOptions` special passage, `options` special variable, and associated macros—has been scrapped for numerous reasons—it was always a hack, required copious amounts of boilerplate code to be useful, etc.  It is replaced by the `Setting` API and `settings` special variable.  See the [`Setting` API](#setting-api) docs for more information.
 

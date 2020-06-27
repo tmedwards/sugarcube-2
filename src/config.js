@@ -2,7 +2,7 @@
 
 	config.js
 
-	Copyright © 2013–2019 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
+	Copyright © 2013–2020 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
@@ -56,16 +56,11 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 
 
 	/*******************************************************************************
-		Utility Functions.
+		Error Constants.
 	*******************************************************************************/
 
-	function _throwHistoryModeError() {
-		throw new Error('Config.history.mode has been deprecated and is no longer used by SugarCube, please remove it from your code');
-	}
-
-	function _throwHistoryTrackingError() {
-		throw new Error('Config.history.tracking has been deprecated, use Config.history.maxStates instead');
-	}
+	const _errHistoryModeDeprecated     = 'Config.history.mode has been deprecated and is no longer used by SugarCube, please remove it from your code';
+	const _errHistoryTrackingDeprecated = 'Config.history.tracking has been deprecated, use Config.history.maxStates instead';
 
 
 	/*******************************************************************************
@@ -109,16 +104,16 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 			State history settings.
 		*/
 		history : Object.freeze({
+			// TODO: (v3) This should be under UI settings → `Config.ui.historyControls`.
 			get controls() { return _historyControls; },
 			set controls(value) {
-				_historyControls = Boolean(value);
+				const controls = Boolean(value);
 
-				// Force `Config.history.controls` to `false`, when limited to `1` moment.
-				if (_historyControls && _historyMaxStates === 1) {
-					_historyControls = false;
+				if (_historyMaxStates === 1 && controls) {
 					throw new Error('Config.history.controls must be false when Config.history.maxStates is 1');
-					// console.warn('Config.history.controls must be false when Config.history.maxStates is 1');
 				}
+
+				_historyControls = controls;
 			},
 
 			get maxStates() { return _historyMaxStates; },
@@ -137,10 +132,10 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 
 			// legacy
 			// Die if deprecated state history settings are accessed.
-			get mode()  { _throwHistoryModeError(); },
-			set mode(_) { _throwHistoryModeError(); },
-			get tracking()  { _throwHistoryTrackingError(); },
-			set tracking(_) { _throwHistoryTrackingError(); }
+			get mode()  { throw new Error(_errHistoryModeDeprecated); },
+			set mode(_) { throw new Error(_errHistoryModeDeprecated); },
+			get tracking()  { throw new Error(_errHistoryTrackingDeprecated); },
+			set tracking(_) { throw new Error(_errHistoryTrackingDeprecated); }
 			// /legacy
 		}),
 
@@ -192,6 +187,7 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 				_passagesDescriptions = value;
 			},
 
+			// TODO: (v3) This should be under Navigation settings → `Config.navigation.updateTitle`.
 			get displayTitles() { return _passagesDisplayTitles; },
 			set displayTitles(value) { _passagesDisplayTitles = Boolean(value); },
 
@@ -211,6 +207,7 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 				_passagesOnProcess = value;
 			},
 
+			// TODO: (v3) This should be under Navigation settings → `Config.navigation.(start|startingPassage)`.
 			get start() { return _passagesStart; },
 			set start(value) {
 				if (value != null) { // lazy equality for null
@@ -224,6 +221,7 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 				_passagesStart = value;
 			},
 
+			// TODO: (v3) This should be under Navigation settings → `Config.navigation.transitionOut`.
 			get transitionOut() { return _passagesTransitionOut; },
 			set transitionOut(value) {
 				if (value != null) { // lazy equality for null
@@ -322,7 +320,7 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 			get slots() { return _savesSlots; },
 			set slots(value) {
 				if (!Number.isSafeInteger(value) || value < 0) {
-					throw new RangeError('Config.saves.slots must be a non-negative integer');
+					throw new TypeError(`Config.saves.slots must be a non-negative integer (received: ${Util.getType(value)})`);
 				}
 
 				_savesSlots = value;
@@ -344,7 +342,7 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 					   valueType !== 'boolean'
 					&& (valueType !== 'number' || !Number.isSafeInteger(value) || value < 0)
 				) {
-					throw new TypeError(`Config.passages.transitionOut must be a boolean or non-negative integer (received: ${valueType})`);
+					throw new TypeError(`Config.ui.stowBarInitially must be a boolean or non-negative integer (received: ${valueType})`);
 				}
 
 				_uiStowBarInitially = value;

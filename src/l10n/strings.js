@@ -2,7 +2,7 @@
 
 	l10n/strings.js
 
-	Copyright © 2013–2019 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
+	Copyright © 2013–2020 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
@@ -11,26 +11,10 @@
 /*
 	ATTENTION TRANSLATORS
 
-	The capitalization and punctuation used within the default replacement strings is
-	deliberate, especially within the error and warning strings.  You would do well
-	to keep your translations similar when possible.
+	Please use the `locale/l10n-template.js` file, from the root of the repository,
+	as the template for your translation rather than this file.
 
-	Replacement patterns have the format `{NAME}` (e.g. {identity}), where NAME is the
-	name of a property within either the `l10nStrings` object or, in a few cases, an
-	object supplied locally where the string is used—these instances will be commented.
-
-	By convention, properties starting with an underscore (e.g. _warningIntroLacking)
-	are used as templates, only being included within other localized strings.  Feel
-	free to add your own if that makes localization easier—e.g. for gender, plurals,
-	and whatnot.  As an example, the default replacement strings make use of this to
-	handle various warning intros and outros.
-
-	In use, replacement patterns are replaced recursively, so replacement strings may
-	contain patterns whose replacements contain other patterns.  Because replacement is
-	recursive, care must be taken to ensure infinite loops are not created—the system
-	will detect an infinite loop and throw an error.
-
-	FOR MORE INFO, SEE: http://www.motoslave.net/sugarcube/2/docs/localization.html
+	SEE: https://github.com/tmedwards/sugarcube-2/tree/develop/locale
 */
 var l10nStrings = { // eslint-disable-line no-unused-vars, no-var
 	/*
@@ -70,7 +54,7 @@ var l10nStrings = { // eslint-disable-line no-unused-vars, no-var
 	debugBarWatchNone   : 'Delete all',
 	debugBarLabelAdd    : 'Add',
 	debugBarLabelWatch  : 'Watch',
-	debugBarLabelTurn   : 'Turn', // as-in: (noun) chance to act (in a game), moment, period
+	debugBarLabelTurn   : 'Turn', // (noun) chance to act (in a game), moment, period
 	debugBarLabelViews  : 'Views',
 	debugBarViewsToggle : 'Toggle the debug views',
 	debugBarWatchToggle : 'Toggle the watch panel',
@@ -87,7 +71,7 @@ var l10nStrings = { // eslint-disable-line no-unused-vars, no-var
 		Jump To.
 	*/
 	jumptoTitle       : 'Jump To',
-	jumptoTurn        : 'Turn', // as-in: (noun) chance to act (in a game), moment, period
+	jumptoTurn        : 'Turn', // (noun) chance to act (in a game), moment, period
 	jumptoUnavailable : 'No jump points currently available\u2026',
 
 	/*
@@ -142,6 +126,6 @@ var l10nStrings = { // eslint-disable-line no-unused-vars, no-var
 	/*
 		Macros.
 	*/
-	macroBackText   : 'Back',  // as-in: (verb) rewind, revert
-	macroReturnText : 'Return' // as-in: (verb) go/send back
+	macroBackText   : 'Back',  // (verb) rewind, revert
+	macroReturnText : 'Return' // (verb) go/send back
 };

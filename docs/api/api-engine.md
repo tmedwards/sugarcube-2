@@ -1,12 +1,11 @@
 <!-- ***********************************************************************************************
 	Engine API
 ************************************************************************************************ -->
-<h1 id="engine-api"><code>Engine</code> API</h1>
+# `Engine` API {#engine-api}
 
 <!-- *********************************************************************** -->
 
-<span id="engine-api-getter-lastplay"></span>
-### `Engine.lastPlay` → *number*
+### `Engine.lastPlay` → *number* {#engine-api-getter-lastplay}
 
 Returns a timestamp representing the last time `Engine.play()` was called.
 
@@ -14,7 +13,7 @@ Returns a timestamp representing the last time `Engine.play()` was called.
 
 * `v2.0.0`
 
-#### Example:
+#### Examples:
 
 ```
 Engine.lastPlay  → The timestamp at which Engine.play() was last called
@@ -22,8 +21,7 @@ Engine.lastPlay  → The timestamp at which Engine.play() was last called
 
 <!-- *********************************************************************** -->
 
-<span id="engine-api-getter-state"></span>
-### `Engine.state` → *string*
+### `Engine.state` → *string* {#engine-api-getter-state}
 
 Returns the current state of the engine (`"idle"`, `"playing"`, `"rendering"`).
 
@@ -37,7 +35,7 @@ Returns the current state of the engine (`"idle"`, `"playing"`, `"rendering"`).
 * **`"playing"`:** Passage navigation has been triggered and a turn is being processed.
 * **`"rendering"`:** The incoming passage is being rendered and added to the page—takes place during turn processing, so implies `"playing"`.
 
-#### Example:
+#### Examples:
 
 ```
 Engine.state  → Returns the current state of the engine
@@ -45,8 +43,7 @@ Engine.state  → Returns the current state of the engine
 
 <!-- *********************************************************************** -->
 
-<span id="engine-api-method-backward"></span>
-### `Engine.backward()` → *boolean*
+### `Engine.backward()` → *boolean* {#engine-api-method-backward}
 
 Moves backward one moment within the full history (past + future), if possible, activating and showing the moment moved to.  Returns whether the history navigation was successful (should only fail if already at the beginning of the full history).
 
@@ -56,16 +53,15 @@ Moves backward one moment within the full history (past + future), if possible, 
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
-Engine.backward()  → Rewinds the full history by one moment—i.e. undoes the moment
+Engine.backward()  → Rewinds the full history by one moment—i.e., undoes the moment
 ```
 
 <!-- *********************************************************************** -->
 
-<span id="engine-api-method-forward"></span>
-### `Engine.forward()` → *boolean*
+### `Engine.forward()` → *boolean* {#engine-api-method-forward}
 
 Moves forward one moment within the full history (past + future), if possible, activating and showing the moment moved to.  Returns whether the history navigation was successful (should only fail if already at the end of the full history).
 
@@ -75,16 +71,15 @@ Moves forward one moment within the full history (past + future), if possible, a
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
-Engine.forward()  → Fast forwards the full history by one moment—i.e. redoes the moment
+Engine.forward()  → Fast forwards the full history by one moment—i.e., redoes the moment
 ```
 
 <!-- *********************************************************************** -->
 
-<span id="engine-api-method-go"></span>
-### `Engine.go(offset)` → *boolean*
+### `Engine.go(offset)` → *boolean* {#engine-api-method-go}
 
 Activates the moment at the given offset from the active (present) moment within the full state history and show it.  Returns whether the history navigation was successful (should only fail if the offset from the active (present) moment is not within the bounds of the full history).
 
@@ -96,17 +91,16 @@ Activates the moment at the given offset from the active (present) moment within
 
 * **`offset`:** (*integer*) The offset from the active (present) moment of the moment to go to.
 
-#### Example:
+#### Examples:
 
 ```
-Engine.go(2)   → Fast forwards the full history by two moments—i.e. redoes the moments
-Engine.go(-4)  → Rewinds the full history by four moments—i.e. undoes the moments
+Engine.go(2)   → Fast forwards the full history by two moments—i.e., redoes the moments
+Engine.go(-4)  → Rewinds the full history by four moments—i.e., undoes the moments
 ```
 
 <!-- *********************************************************************** -->
 
-<span id="engine-api-method-goto"></span>
-### `Engine.goTo(index)` → *boolean*
+### `Engine.goTo(index)` → *boolean* {#engine-api-method-goto}
 
 Activates the moment at the given index within the full state history and show it.  Returns whether the history navigation was successful (should only fail if the index is not within the bounds of the full history).
 
@@ -118,7 +112,7 @@ Activates the moment at the given index within the full state history and show i
 
 * **`index`:** (*integer*) The index of the moment to go to.
 
-#### Example:
+#### Examples:
 
 ```
 Engine.goTo(0)  → Goes to the first moment
@@ -127,8 +121,7 @@ Engine.goTo(9)  → Goes to the tenth moment
 
 <!-- *********************************************************************** -->
 
-<span id="engine-api-method-isidle"></span>
-### `Engine.isIdle()` → *boolean*
+### `Engine.isIdle()` → *boolean* {#engine-api-method-isidle}
 
 Returns whether the engine is idle.
 
@@ -138,7 +131,7 @@ Returns whether the engine is idle.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 Engine.isIdle()  → Returns whether the engine is idle
@@ -146,10 +139,9 @@ Engine.isIdle()  → Returns whether the engine is idle
 
 <!-- *********************************************************************** -->
 
-<span id="engine-api-method-isplaying"></span>
-### `Engine.isPlaying()` → *boolean*
+### `Engine.isPlaying()` → *boolean* {#engine-api-method-isplaying}
 
-Returns whether the engine is processing a turn—i.e. passage navigation has been triggered.
+Returns whether the engine is processing a turn—i.e., passage navigation has been triggered.
 
 #### Since:
 
@@ -157,7 +149,7 @@ Returns whether the engine is processing a turn—i.e. passage navigation has be
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 Engine.isPlaying()  → Returns whether the engine is playing
@@ -165,8 +157,7 @@ Engine.isPlaying()  → Returns whether the engine is playing
 
 <!-- *********************************************************************** -->
 
-<span id="engine-api-method-isrendering"></span>
-### `Engine.isRendering()` → *boolean*
+### `Engine.isRendering()` → *boolean* {#engine-api-method-isrendering}
 
 Returns whether the engine is rendering the incoming passage.
 
@@ -176,7 +167,7 @@ Returns whether the engine is rendering the incoming passage.
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 Engine.isRendering()  → Returns whether the engine is rendering
@@ -184,8 +175,7 @@ Engine.isRendering()  → Returns whether the engine is rendering
 
 <!-- *********************************************************************** -->
 
-<span id="engine-api-method-play"></span>
-### `Engine.play(passageTitle [, noHistory])` → *`HTMLElement` object*
+### `Engine.play(passageTitle [, noHistory])` → *`HTMLElement` object* {#engine-api-method-play}
 
 Renders and displays the passage referenced by the given title, optionally without adding a new moment to the history.
 
@@ -196,9 +186,9 @@ Renders and displays the passage referenced by the given title, optionally witho
 #### Parameters:
 
 * **`passageTitle`:** (*string*) The title of the passage to play.
-* **`noHistory`:** (optional, *boolean*) Disables the update of the history—i.e. no moment is added to the history.
+* **`noHistory`:** (optional, *boolean*) Disables the update of the history—i.e., no moment is added to the history.
 
-#### Example:
+#### Examples:
 
 ```
 Engine.play("Foo")        → Renders, displays, and adds a moment for the passage "Foo" to the history
@@ -207,8 +197,7 @@ Engine.play("Foo", true)  → Renders and displays the passage "Foo", but does n
 
 <!-- *********************************************************************** -->
 
-<span id="engine-api-method-restart"></span>
-### `Engine.restart()`
+### `Engine.restart()` {#engine-api-method-restart}
 
 Restarts the story.
 
@@ -226,7 +215,7 @@ In general, you should not call this method directly.  Instead, call the <a href
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 Engine.restart()  → Restarts the story
@@ -234,8 +223,7 @@ Engine.restart()  → Restarts the story
 
 <!-- *********************************************************************** -->
 
-<span id="engine-api-method-show"></span>
-### `Engine.show()` → *`HTMLElement` object*
+### `Engine.show()` → *`HTMLElement` object* {#engine-api-method-show}
 
 Renders and displays the active (present) moment's associated passage without adding a new moment to the history.
 
@@ -245,30 +233,8 @@ Renders and displays the active (present) moment's associated passage without ad
 
 #### Parameters: *none*
 
-#### Example:
+#### Examples:
 
 ```
 Engine.show()  → Renders and displays the present passage without adding new history
-```
-
-<!-- *********************************************************************** -->
-
-<span id="engine-api-event-enginerestart"></span>
-### `:enginerestart` event
-
-Global synthetic event triggered just before the page is reloaded when [`Engine.restart()`](#engine-api-method-restart) is called.  Allows last second bookkeeping tasks.
-
-#### Since:
-
-* `v2.23.0`
-
-#### Event object properties: *none*
-
-#### Example:
-
-```
-/* Execute the handler function when the event triggers. */
-$(document).on(':enginerestart', function (ev) {
-	/* JavaScript code */
-});
 ```

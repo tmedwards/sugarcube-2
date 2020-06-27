@@ -1,14 +1,15 @@
 <!-- ***********************************************************************************************
 	Macro API
 ************************************************************************************************ -->
-<h1 id="macro-api"><code>Macro</code> API</h1>
+# `Macro` API {#macro-api}
 
-Sibling to the [`MacroContext` API](#macrocontext-api).
+<p role="note" class="see"><b>See Also:</b>
+<a href="#macrocontext-api"><code>MacroContext</code> API</a>.
+</p>
 
 <!-- *********************************************************************** -->
 
-<span id="macro-api-method-add"></span>
-### `Macro.add(name , definition [, deep])`
+### `Macro.add(name , definition [, deep])` {#macro-api-method-add}
 
 Add new macro(s).
 
@@ -27,12 +28,12 @@ Add new macro(s).
 A macro definition object should have some of the following properties (only `handler` is absolutely required):
 
 * **`skipArgs`:** (optional, *boolean*) Disables parsing argument strings into discrete arguments.  Used by macros that only use the raw/full argument strings.
-* **`tags`:** (optional, *null* | *string array*) Signifies that the macro is a container macro—i.e. not self-closing.  An array of the names of the child tags, or `null` if there are no child tags.
+* **`tags`:** (optional, *null* | *string array*) Signifies that the macro is a container macro—i.e., not self-closing.  An array of the names of the child tags, or `null` if there are no child tags.
 * **`handler`:** (*function*) The macro's main function.  It will be called without arguments, but with its `this` set to a [macro context object](#macrocontext-api).
 
 Additional properties may be added for internal use.
 
-#### Example:
+#### Examples:
 
 ```
 /*
@@ -62,8 +63,7 @@ Macro.add('if', {
 
 <!-- *********************************************************************** -->
 
-<span id="macro-api-method-delete"></span>
-### `Macro.delete(name)`
+### `Macro.delete(name)` {#macro-api-method-delete}
 
 Remove existing macro(s).
 
@@ -75,7 +75,7 @@ Remove existing macro(s).
 
 * **`name`:** (*string* | *string array*) Name, or array of names, of the macro(s) to remove.
 
-#### Example:
+#### Examples:
 
 ```
 Macro.delete("amacro")
@@ -84,8 +84,7 @@ Macro.delete(["amacro", "bmacro"])
 
 <!-- *********************************************************************** -->
 
-<span id="macro-api-method-get"></span>
-### `Macro.get(name)` → *object*
+### `Macro.get(name)` → *object* {#macro-api-method-get}
 
 Return the named macro definition, or `null` on failure.
 
@@ -97,7 +96,7 @@ Return the named macro definition, or `null` on failure.
 
 * **`name`:** (*string*) Name of the macro whose definition should be returned.
 
-#### Example:
+#### Examples:
 
 ```
 Macro.get("print")
@@ -105,8 +104,7 @@ Macro.get("print")
 
 <!-- *********************************************************************** -->
 
-<span id="macro-api-method-has"></span>
-### `Macro.has(name)` → *boolean*
+### `Macro.has(name)` → *boolean* {#macro-api-method-has}
 
 Returns whether the named macro exists.
 
@@ -118,7 +116,7 @@ Returns whether the named macro exists.
 
 * **`name`:** (*string*) Name of the macro to search for.
 
-#### Example:
+#### Examples:
 
 ```
 Macro.has("print")
@@ -126,8 +124,7 @@ Macro.has("print")
 
 <!-- *********************************************************************** -->
 
-<span id="macro-api-method-tags-get"></span>
-### `Macro.tags.get(name)` → *string array*
+### `Macro.tags.get(name)` → *string array* {#macro-api-method-tags-get}
 
 Return the named macro tag's parents array (includes the names of all macros who have registered the tag as a child), or `null` on failure.
 
@@ -139,7 +136,7 @@ Return the named macro tag's parents array (includes the names of all macros who
 
 * **`name`:** (*string*) Name of the macro tag whose parents array should be returned.
 
-#### Example:
+#### Examples:
 
 ```
 Macro.tags.get("else")  → For the standard library, returns: ["if"]
@@ -147,8 +144,7 @@ Macro.tags.get("else")  → For the standard library, returns: ["if"]
 
 <!-- *********************************************************************** -->
 
-<span id="macro-api-method-tags-has"></span>
-### `Macro.tags.has(name)` → *boolean*
+### `Macro.tags.has(name)` → *boolean* {#macro-api-method-tags-has}
 
 Returns whether the named macro tag exists.
 
@@ -160,7 +156,7 @@ Returns whether the named macro tag exists.
 
 * **`name`:** (*string*) Name of the macro tag to search for.
 
-#### Example:
+#### Examples:
 
 ```
 Macro.tags.has("else")

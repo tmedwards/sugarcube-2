@@ -2,7 +2,7 @@
 
 	lib/util.js
 
-	Copyright © 2013–2019 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
+	Copyright © 2013–2020 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
@@ -14,32 +14,6 @@ var Util = (() => { // eslint-disable-line no-unused-vars, no-var
 	/*******************************************************************************************************************
 		Type Functions.
 	*******************************************************************************************************************/
-	/*
-		Returns a pseudo-enumeration created from the given array or generic object.
-	*/
-	function utilToEnum(obj) {
-		if (obj instanceof Array) {
-			return Object.freeze(obj.reduce((pe, key, i) => {
-				pe[key] = i; // eslint-disable-line no-param-reassign
-				return pe;
-			}, Object.create(null)));
-		}
-		else if (obj instanceof Object) {
-			return Object.freeze(Object.assign(Object.create(null), obj));
-		}
-
-		throw new TypeError('Util.toEnum obj parameter must be an array or generic object');
-	}
-
-	/*
-		Returns the value of the `@@toStringTag` property of the given object.
-
-		NOTE: In ≤ES5, returns the value of the `[[Class]]` internal slot.
-	*/
-	function utilToStringTag(obj) {
-		return Object.prototype.toString.call(obj).slice(8, -1);
-	}
-
 	/*
 		Returns the value yielded by `typeof` (for primitives), the `@@toStringTag`
 		internal property (for objects), and `'null'` for `null`.
@@ -53,6 +27,21 @@ var Util = (() => { // eslint-disable-line no-unused-vars, no-var
 		return baseType === 'object'
 			? Object.prototype.toString.call(obj).slice(8, -1)
 			: baseType;
+	}
+
+	/*
+		Returns whether the passed value is a boolean or one of the strings "true"
+		or "false".
+	*/
+	function utilIsBoolean(obj) {
+		return typeof obj === 'boolean' || typeof obj === 'string' && (obj === 'true' || obj === 'false');
+	}
+
+	/*
+		Returns whether the passed value is iterable.
+	*/
+	function utilIsIterable(obj) {
+		return obj != null && typeof obj[Symbol.iterator] === 'function'; // lazy equality for null
 	}
 
 	/*
@@ -79,32 +68,64 @@ var Util = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 	/*
-		Returns whether the passed value is a boolean or one of the strings "true"
-		or "false".
-	*/
-	function utilIsBoolean(obj) {
-		return typeof obj === 'boolean' || typeof obj === 'string' && (obj === 'true' || obj === 'false');
-	}
-
-	/*
 		Returns whether the passed values pass a SameValueZero comparison.
 
 		SEE: http://ecma-international.org/ecma-262/8.0/#sec-samevaluezero
 	*/
-	function utilSameValueZero(valA, valB) {
+	function utilSameValueZero(a, b) {
 		/*
 			NOTE: This comparison could also be implemented thus:
 
 				```
-				valA === valB ||
-				typeof valA === 'number' && typeof valB === 'number' &&
-				Number.isNaN(valA) && Number.isNaN(valB)
+				a === b ||
+				typeof a === 'number' && typeof b === 'number' &&
+				Number.isNaN(a) && Number.isNaN(b)
 				```
 
 			That's needlessly verbose, however, as `NaN` is the only value in
 			the language which is not reflexive.
 		*/
-		return valA === valB || valA !== valA && valB !== valB;
+		return a === b || a !== a && b !== b;
+	}
+
+	/*
+		Returns a pseudo-enumeration created from the given Array, Map, Set, or generic object.
+	*/
+	function utilToEnum(obj) {
+		const pEnum = Object.create(null);
+
+		if (obj instanceof Array) {
+			obj.forEach((val, i) => pEnum[String(val)] = i);
+		}
+		else if (obj instanceof Set) {
+			// NOTE: Use `<Array>.forEach()` here rather than `<Set>.forEach()`
+			// as the latter does not provide the indices we require.
+			Array.from(obj).forEach((val, i) => pEnum[String(val)] = i);
+		}
+		else if (obj instanceof Map) {
+			obj.forEach((val, key) => pEnum[String(key)] = val);
+		}
+		else if (
+			   typeof obj === 'object'
+			&& obj !== null
+			&& Object.getPrototypeOf(obj) === Object.prototype
+		) {
+			Object.assign(pEnum, obj);
+		}
+		else {
+			throw new TypeError('Util.toEnum obj parameter must be an Array, Map, Set, or generic object');
+		}
+
+		return Object.freeze(pEnum);
+	}
+
+	/*
+		Returns the value of the `@@toStringTag` property of the given object.
+
+		NOTE: In ≤ES5, returns the value of the `[[Class]]` internal slot.
+	*/
+	function utilToStringTag(obj) {
+		return Object.prototype.toString.call(obj).slice(8, -1);
 	}
 
 
@@ -113,17 +134,20 @@ var Util = (() => { // eslint-disable-line no-unused-vars, no-var
 	*******************************************************************************************************************/
 	/*
 		Returns a trimmed and encoded slug of the passed string that should be safe
-		for use as a filename, DOM ID, and DOM class name.
+		for use as a DOM ID or class name.
 
-		NOTE: The range of illegal characters consists of: C0 controls, double quote,
-		number, dollar, percent, ampersand, single quote, asterisk, plus, comma,
-		forward slash, colon, semi-colon, less-than, equals, greater-than, question
-		mark, backslash, caret, backquote/grave, pipe/vertical-bar, delete, C1 controls.
+		NOTE: The range of illegal characters consists of: C0 controls, space, exclamation,
+		double quote, number, dollar, percent, ampersand, single quote, left paren, right
+		paren, asterisk, plus, comma, hyphen, period, forward slash, colon, semi-colon,
+		less-than, equals, greater-than, question, at, left bracket, backslash, right
+		bracket, caret, backquote/grave, left brace, pipe/vertical-bar, right brace, tilde,
+		delete, C1 controls.
 	*/
-	const _illegalSlugCharsRe = /[\x00-\x1f"#$%&'*+,/:;<=>?\\^`|\x7f-\x9f]+/g; // eslint-disable-line no-control-regex
+	const _illegalSlugCharsRe = /[\x00-\x20!-/:-@[-^`{-\x9f]+/g; // eslint-disable-line no-control-regex
 	/* legacy */
 	const _isInvalidSlugRe = /^-*$/; // Matches the empty string or one comprised solely of hyphens.
 	/* /legacy */
+
 	function utilSlugify(str) {
 		const base = String(str).trim();
 
@@ -141,6 +165,9 @@ var Util = (() => { // eslint-disable-line no-unused-vars, no-var
 		return base
 			.replace(_illegalSlugCharsRe, '')
 			.replace(/[_\s\u2013\u2014-]+/g, '-');
+
+		// For v3.
+		// return base.replace(_illegalSlugCharsRe, '-');
 	}
 
 	/*
@@ -531,12 +558,13 @@ var Util = (() => { // eslint-disable-line no-unused-vars, no-var
 		/*
 			Type Functions.
 		*/
+		getType       : { value : utilGetType },
+		isBoolean     : { value : utilIsBoolean },
+		isIterable    : { value : utilIsIterable },
+		isNumeric     : { value : utilIsNumeric },
+		sameValueZero : { value : utilSameValueZero },
 		toEnum        : { value : utilToEnum },
 		toStringTag   : { value : utilToStringTag },
-		getType       : { value : utilGetType },
-		isNumeric     : { value : utilIsNumeric },
-		isBoolean     : { value : utilIsBoolean },
-		sameValueZero : { value : utilSameValueZero },
 
 		/*
 			String Encoding Functions.

@@ -2,7 +2,7 @@
 
 	macros/macrolib.js
 
-	Copyright © 2013–2019 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
+	Copyright © 2013–2020 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
@@ -248,10 +248,7 @@
 				Scripting.evalJavaScript(this.payload[0].contents, output);
 			}
 			catch (ex) {
-				return this.error(
-					`bad evaluation: ${typeof ex === 'object' ? ex.message : ex}`,
-					`${this.source + this.payload[0].contents}<</${this.name}>>`
-				);
+				return this.error(`bad evaluation: ${typeof ex === 'object' ? ex.message : ex}`);
 			}
 
 			// Custom debug view setup.
@@ -368,7 +365,7 @@
 
 			if (Config.debug) {
 				// Custom debug view setup.
-				this.debugView.modes({ hidden : true });
+				this.debugView.modes({ block : true, hidden : true });
 				this.output.appendChild(frag);
 			}
 			else {
@@ -376,10 +373,7 @@
 				const errList = [...frag.querySelectorAll('.error')].map(errEl => errEl.textContent);
 
 				if (errList.length > 0) {
-					return this.error(
-						`error${errList.length === 1 ? '' : 's'} within contents (${errList.join('; ')})`,
-						`${this.source + this.payload[0].contents}<</${this.name}>>`
-					);
+					return this.error(`error${errList.length === 1 ? '' : 's'} within contents (${errList.join('; ')})`);
 				}
 			}
 		}
@@ -431,7 +425,7 @@
 						}
 						else if (
 							   Config.macros.ifAssignmentError
-							&& /[^!=&^|<>*/%+-]=[^=]/.test(this.payload[i].args.full)
+							&& /[^!=&^|<>*/%+-]=[^=>]/.test(this.payload[i].args.full)
 						) {
 							return this.error(`assignment operator found within <<${this.payload[i].name}>> clause${i > 0 ? ' (#' + i + ')' : ''} (perhaps you meant to use an equality operator: ==, ===, eq, is), invalid: ${this.payload[i].args.raw}`);
 						}
@@ -924,10 +918,6 @@
 						$image.attr('align', this.args[0].align);
 					}
 
-					if (this.args[0].hasOwnProperty('link')) {
-						passage = this.args[0].link;
-					}
-
 					passage = this.args[0].link;
 				}
 				else {
@@ -1172,6 +1162,7 @@
 				let cycleIdx = selectedIdx;
 				jQuery(document.createElement('a'))
 					.wikiWithOptions({ profile : 'core' }, options[selectedIdx].label)
+					.attr('id', `${this.name}-${varId}`)
 					.addClass(`macro-${this.name}`)
 					.ariaClick({ namespace : '.macros' }, this.createShadowWrapper(function () {
 						cycleIdx = (cycleIdx + 1) % options.length;
@@ -2225,7 +2216,7 @@
 						break;
 
 					case 'play':
-						selected.play();
+						selected.playWhenAllowed();
 						break;
 
 					case 'stop':
@@ -2789,7 +2780,7 @@
 						break;
 
 					case 'play':
-						list.play();
+						list.playWhenAllowed();
 						break;
 
 					case 'skip':

@@ -2,7 +2,7 @@
 
 	setting.js
 
-	Copyright © 2013–2019 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
+	Copyright © 2013–2020 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
@@ -11,9 +11,6 @@
 var Setting = (() => { // eslint-disable-line no-unused-vars, no-var
 	'use strict';
 
-	// Setting definition array.
-	const _definitions = [];
-
 	// Setting control types object (pseudo-enumeration).
 	const Types = Util.toEnum({
 		Header : 0,
@@ -21,6 +18,9 @@ var Setting = (() => { // eslint-disable-line no-unused-vars, no-var
 		List   : 2,
 		Range  : 3
 	});
+
+	// Setting definition array.
+	const _definitions = [];
 
 
 	/*******************************************************************************************************************
