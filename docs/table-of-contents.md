@@ -604,6 +604,14 @@
 
 ----
 
+## [Guide: State, Sessions, and Saving](#guide-state-sessions-and-saving)
+
+* [Story History](#guide-state-sessions-and-saving-story-history)
+* [Playthrough Session](#guide-state-sessions-and-saving-playthrough-session)
+* [Autosave](#guide-state-sessions-and-saving-autosave)
+* [What Happens When a Save is Loaded?](#guide-state-sessions-and-saving-what-happens-when-a-save-is-loaded)
+* [Refreshing and Restarting](#guide-state-sessions-and-saving-refreshing-and-restarting)
+
 ## [Guide: Tips](#guide-tips)
 
 * [Arbitrarily long return](#guide-tips-arbitrarily-long-return)
@@ -612,14 +620,6 @@
 ## [Guide: Media Passages](#guide-media-passages)
 
 * [Creation](#guide-media-passages-creation)
-
-## [Guide: State, Sessions, and Saving](#guide-state-sessions-and-saving)
-
-* [Moments](#guide-state-sessions-and-saving-moments)
-* [Session Preservation](#guide-state-sessions-and-session-preservation)
-* [The Autosave](#guide-state-sessions-and-saving-the-autosave)
-* [What Happens When a Save is Loaded?](#guide-state-sessions-and-saving-what-happens-when-a-save-is-loaded)
-* [Refreshing and Restarting](#guide-state-sessions-and-saving-refreshing-and-restarting)
 
 ## [Guide: Harlowe to SugarCube](#guide-harlowe-to-sugarcube)
 
