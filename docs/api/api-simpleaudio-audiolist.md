@@ -33,6 +33,10 @@ var listLength = aList.duration();
 
 Starts playback of the playlist and fades the currently playing track between the specified starting and destination volume levels over the specified number of seconds.
 
+<p role="note"><b>Note:</b>
+The <a href="#config-api-property-audio-pauseonfadetozero"><code>Config.audio.pauseOnFadeToZero</code> setting</a> (default: <code>true</code>) determines whether the audio subsystem automatically pauses tracks that have been faded to <code>0</code> volume (silent).
+</p>
+
 #### Since:
 
 * `v2.28.0`: Basic syntax.
@@ -79,6 +83,10 @@ aList.fadeIn(5, 0);
 ### `<AudioList>.fadeOut(duration [, fromVol])` → *`Promise` object* {#audiolist-api-prototype-method-fadeout}
 
 Starts playback of the playlist and fades the currently playing track from the specified volume level to `0` (silent) over the specified number of seconds.
+
+<p role="note"><b>Note:</b>
+The <a href="#config-api-property-audio-pauseonfadetozero"><code>Config.audio.pauseOnFadeToZero</code> setting</a> (default: <code>true</code>) determines whether the audio subsystem automatically pauses tracks that have been faded to <code>0</code> volume (silent).
+</p>
 
 #### Since:
 

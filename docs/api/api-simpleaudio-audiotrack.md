@@ -51,6 +51,10 @@ var trackLength = aTrack.duration();
 
 Starts playback of the track and fades it between the specified starting and destination volume levels over the specified number of seconds.
 
+<p role="note"><b>Note:</b>
+The <a href="#config-api-property-audio-pauseonfadetozero"><code>Config.audio.pauseOnFadeToZero</code> setting</a> (default: <code>true</code>) determines whether the audio subsystem automatically pauses tracks that have been faded to <code>0</code> volume (silent).
+</p>
+
 #### Since:
 
 * `v2.28.0`
@@ -96,6 +100,10 @@ aTrack.fadeIn(5, 0);
 ### `<AudioTrack>.fadeOut(duration [, fromVol])` → *`Promise` object* {#audiotrack-api-prototype-method-fadeout}
 
 Starts playback of the track and fades it from the specified volume level to `0` (silent) over the specified number of seconds.
+
+<p role="note"><b>Note:</b>
+The <a href="#config-api-property-audio-pauseonfadetozero"><code>Config.audio.pauseOnFadeToZero</code> setting</a> (default: <code>true</code>) determines whether the audio subsystem automatically pauses tracks that have been faded to <code>0</code> volume (silent).
+</p>
 
 #### Since:
 

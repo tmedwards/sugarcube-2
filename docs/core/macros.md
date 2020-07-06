@@ -2100,6 +2100,10 @@ Controls the playback of audio tracks, which must be set up via [`<<cacheaudio>>
 The <code>&lt;&lt;audio&gt;&gt;</code> macro cannot affect playlist tracks that have been copied into their respective playlist—meaning those set up via <a href="#macros-macro-createplaylist"><code>&lt;&lt;createplaylist&gt;&gt;</code></a> with its <code>copy</code> action or all tracks set up via, the deprecated, <a href="#macros-macro-setplaylist"><code>&lt;&lt;setplaylist&gt;&gt;</code></a>—as playlist copies are solely under the control of their playlist.
 </p>
 
+<p role="note"><b>Note:</b>
+The <a href="#config-api-property-audio-pauseonfadetozero"><code>Config.audio.pauseOnFadeToZero</code> setting</a> (default: <code>true</code>) controls whether tracks that have been faded to <code>0</code> volume (silent) are automatically paused.
+</p>
+
 #### Since:
 
 * `v2.0.0`: Basic syntax.
@@ -2420,6 +2424,10 @@ Controls the playback of the playlist, which must be set up via [`<<createplayli
 
 <p role="note" class="see"><b>See:</b>
 <a href="#macros-audio-limitations">Audio macro limitations</a>.
+</p>
+
+<p role="note"><b>Note:</b>
+The <a href="#config-api-property-audio-pauseonfadetozero"><code>Config.audio.pauseOnFadeToZero</code> setting</a> (default: <code>true</code>) controls whether tracks that have been faded to <code>0</code> volume (silent) are automatically paused.
 </p>
 
 #### Since:
