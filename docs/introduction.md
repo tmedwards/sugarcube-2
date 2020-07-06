@@ -12,3 +12,9 @@ This document is a single page, so you may use your browser's find-in-page funct
 <p role="note"><b>Note:</b>
 If you believe that you've found a bug in SugarCube, or simply wish to make a suggestion, you may do so by <a href="https://github.com/tmedwards/sugarcube-2/issues">creating a new issue</a> at its <a href="https://github.com/tmedwards/sugarcube-2">source code repository</a>.
 </p>
+
+----
+
+Contributions to this documentation have been graciously made by:
+
+* **Chapel** ([TwineLab](https://twinelab.net/), [GitHub](https://github.com/ChapelR/))
