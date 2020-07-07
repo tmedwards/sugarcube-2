@@ -32,29 +32,35 @@ In the above example, if you save the story after reaching the passage called *`
 
 ## Playthrough Session {#guide-state-sessions-and-saving-playthrough-session}
 
-SugarCube automatically stores the current playthrough state to the [browser's session storage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage) whenever a new moment is created.  This can be thought of as a special, temporary saved story, which is automatically deleted after the player's current browsing session ends.  This is **not** the [autosave](#guide-state-sessions-and-saving-autosave)—we'll cover that in a moment.  This temporary playthrough session is intended to prevent players from losing data.  Some browsers, particularly mobile ones, will free up memory by unloading web pages that are running in the background.  This functionally refreshes the webpage, and can cause users to lose their progress.  When SugarCube is reloaded by the browser, it checks if a playthrough session exists and loads it to prevent any inadvertent loss of progress.
+<p role="note"><b>Note:</b>
+The <a href="#guide-state-sessions-and-saving-autosave">autosave feature</a> is occasionally confused with the playthrough session feature, but they are in fact distinct systems.
+</p>
+
+SugarCube automatically stores the current playthrough state to the [browser's session storage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage) whenever a new moment is created.  This can be thought of as a special, temporary saved story, which is automatically deleted after the player's current browsing session ends.  This temporary playthrough session is intended to prevent players from losing data.  Some browsers, particularly mobile ones, will free up memory by unloading web pages that are running in the background.  This functionally refreshes the webpage, and can cause users to lose their progress.  When SugarCube is reloaded by the browser, it checks if a playthrough session exists and loads it to prevent any inadvertent loss of progress.
 
 This feature also prevents players from losing progress if they try to use the browser back and forward buttons to navigate, or if they refresh their browser for any reason.  The built-in *`Restart`* button, along with the methods [`UI.restart()`](#ui-api-method-restart) and [`Engine.restart()`](#engine-api-method-restart) are provided so that the story can be restarted without restoring a session.
 
 To recap:
 
 * When a new moment is created, SugarCube stores the playthrough state to session storage.
-* If SugarCube is reloaded by the browser for whatever reason—e.g., due to a refresh, back/forward navigation, being unloaded in the background, etc.—then the session is restored.  **Again, this is not the autosave.**
+* If SugarCube is reloaded by the browser for whatever reason—e.g., due to a refresh, back/forward navigation, being unloaded in the background, etc.—then the session is restored.
 * If SugarCube is reloaded by one of its own built-in restart methods, then the session is *not* restored.
 
 ## Autosave {#guide-state-sessions-and-saving-autosave}
+
+<p role="note"><b>Note:</b>
+The <a href="#guide-state-sessions-and-saving-playthrough-session">playthrough session feature</a> is occasionally confused with the autosave feature, but they are in fact distinct systems.
+</p>
+
+SugarCube features a configurable autosave system.  The autosave is, for the most part, a normal save slot, but with a few special features built in.  You can set the autosave to save either on every passage or only on certain passages.  It can be loaded manually by the player or automatically by the autoload feature, which can be configured to, upon start up, either load the autosave automatically or prompt the player about loading it.
 
 <p role="note" class="see"><b>See:</b>
 <a href="#config-api-property-saves-autosave"><code>Config.saves.autosave</code> setting</a>, <a href="#config-api-property-saves-autoload"><code>Config.saves.autoload</code> setting</a>, and <a href="#save-api-autosave"><code>Save</code> API: Autosave</a>.
 </p>
 
-SugarCube features a configurable autosave system.  The autosave is, for the most part, a normal save slot, but with a few special features built in.  You can set the autosave to save either on every passage or only on certain passages.  It can be loaded manually by the player or automatically by the autoload feature, which can be configured to, upon start up, either load the autosave automatically or prompt the player to load it.
-
-The [playthrough session feature](#guide-state-sessions-and-saving-playthrough-session) is occasionally confused as some effect of the autosave system, but they are in fact distinct systems.
-
 ## What Happens When a Save is Loaded? {#guide-state-sessions-and-saving-what-happens-when-a-save-is-loaded}
 
-When a saved story is loaded, the state loaded from the save *replaces* the current state.  This process is the same regardless of where the loaded state is coming from: it could be a normal save, the autosave, or the playthrough session.  The previous state is completely lost—the new state is not added to or combined with the current state, instead it **replaces it in its entirety**.  The easiest way to understand this is to look at what happens when you make some changes to [`StoryInit`](#special-passage-storyinit) and then load a saved story from before those changes were made.
+When a saved story is loaded, the state loaded from the save *replaces* the current state.  This process is the same regardless of where the loaded state is coming from: it could be a normal save, the autosave, or the playthrough session.  The previous state is completely lost—the new state is not added to or combined with the current state, instead it **replaces it in its entirety**.  The easiest way to understand this is to look at what happens when you make some changes to [`StoryInit`](#special-passage-storyinit) and then load a saved story from before those changes were made.  For example:
 
 ```
 :: StoryInit
@@ -80,7 +86,9 @@ Running that, you'll see `$x is 0` and `$y is 1`.  Now, load the saved story fro
 
 ## Refreshing and Restarting {#guide-state-sessions-and-saving-refreshing-and-restarting}
 
-When the browser is refreshed, your story is restarted and the playthrough state from session storage is loaded, if it exists.  Since the story is restarted, `StoryInit` runs, but the state is thrown out when the state from session storage is loaded.  **`StoryInit` is run anytime the story is started or restarted**, regardless of how it happens or whether a saved story is to be loaded.  Some users have the false impression that `StoryInit` is not run when the story is refreshed or restarted due to the behavior described in the previous section.  Code like `<<set $y to 1>>` *seems* to have no effect because of the incoming state, **but they are still executed** by the engine.  You can see this effect by changing data *outside* the state.  For example, let's return to the example above and change it again.
+Whenever your story is first started or, *for any reason*, restarted—e.g., the browser window/tab was refreshed/reloaded—it undergoes its startup sequence.  Several things occur **each and every time startup happens**, regardless of whether or not a playthrough session will be restored, an autosave loaded, a regular save loaded, or the starting passage run.  First, the CSS, JavaScript, and Widget sections are processed.  Next, the `StoryInit` special passage is processed.  Finally, one of three things happen (in order): the existing playthrough session is restored, if it exists, else the autosave is loaded, if it exists and is configured to do so, else the starting passage is run.
+
+Some users have the false impression that `StoryInit` is not run when the story is restarted when the playthrough session is restored or autosave is loaded.  Code like `<<set $y to 1>>` *seems* to have no effect because the startup state is replaced by the of the incoming state, **but they are still executed by the engine**.  You can see this effect by changing data *outside* the state.  For example, let's return to the example above and change it again:
 
 ```
 :: StoryInit
@@ -94,4 +102,4 @@ setup.y is <<if def setup.y>> <<= setup.y>> <<else>> undefined <</if>>
 
 You'll see that `setup.y` is being set to `1` and displayed properly regardless of whether you load a saved story or not, because it is not part of the state.
 
-When the story is restarted by SugarCube rather than refreshed via the browser, the playthrough session, if any, is not loaded.  `StoryInit` is run, as always.  If the autosave exists and the story is [configured to automatically load it](#config-api-property-saves-autoload), then the autosave is loaded and the state is replaced by the autosave's state and the active passage is rendered, just as if the user had loaded any other save.  If no autosave exists, the starting passage is rendered.
+When the story is restarted by SugarCube rather than refreshed via the browser, the playthrough session, if any, is not loaded.  `StoryInit` is run, as always.  If the autosave exists and the story is [configured to automatically load it](#config-api-property-saves-autoload), then the autosave is loaded and the state is replaced by the autosave's state and the active passage is rendered, just as if the user had loaded any other save.  If no autosave exists, then the starting passage is rendered.
