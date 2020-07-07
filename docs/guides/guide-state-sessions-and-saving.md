@@ -48,7 +48,7 @@ To recap:
 <a href="#config-api-property-saves-autosave"><code>Config.saves.autosave</code> setting</a>, <a href="#config-api-property-saves-autoload"><code>Config.saves.autoload</code> setting</a>, and <a href="#save-api-autosave"><code>Save</code> API: Autosave</a>.
 </p>
 
-SugarCube features a configurable autosave system.  The autosave is, for the most part, a normal save slot, but with a few special features built in.  You can set the autosave to save either on every passage or only on certain passages.  It can loaded manually by the player or automatically by the autoload feature, which can be configured to, upon start up, either load the autosave automatically or prompt the player to load it.
+SugarCube features a configurable autosave system.  The autosave is, for the most part, a normal save slot, but with a few special features built in.  You can set the autosave to save either on every passage or only on certain passages.  It can be loaded manually by the player or automatically by the autoload feature, which can be configured to, upon start up, either load the autosave automatically or prompt the player to load it.
 
 The [playthrough session feature](#guide-state-sessions-and-saving-playthrough-session) is occasionally confused as some effect of the autosave system, but they are in fact distinct systems.
 
