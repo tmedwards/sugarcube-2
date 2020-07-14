@@ -1643,9 +1643,9 @@
 	});
 
 	/*
-		<<textbox>>
+		<<numberbox>> & <<textbox>>
 	*/
-	Macro.add('textbox', {
+	Macro.add(['numberbox', 'textbox'], {
 		isAsync : true,
 
 		handler() {
@@ -1673,9 +1673,15 @@
 				this.debugView.modes({ block : true });
 			}
 
-			const varId        = Util.slugify(varName);
-			const defaultValue = this.args[1];
-			const el           = document.createElement('input');
+			const asNumber     = this.name === 'numberbox';
+			const defaultValue = asNumber ? Number(this.args[1]) : this.args[1];
+
+			if (asNumber && Number.isNaN(defaultValue)) {
+				return this.error(`default value "${this.args[1]}" is neither a number nor can it be parsed into a number`);
+			}
+
+			const varId = Util.slugify(varName);
+			const el    = document.createElement('input');
 			let autofocus = false;
 			let passage;
 
@@ -1697,9 +1703,7 @@
 				passage = passage.link;
 			}
 
-			/*
-				Set up and append the input element to the output buffer.
-			*/
+			// Set up and append the input element to the output buffer.
 			jQuery(el)
 				.attr({
 					id       : `${this.name}-${varId}`,
@@ -1709,13 +1713,13 @@
 				})
 				.addClass(`macro-${this.name}`)
 				.on('change.macros', this.createShadowWrapper(function () {
-					State.setVar(varName, this.value);
+					State.setVar(varName, asNumber ? Number(this.value) : this.value);
 				}))
 				.on('keypress.macros', this.createShadowWrapper(function (ev) {
 					// If Return/Enter is pressed, set the variable and, optionally, forward to another passage.
 					if (ev.which === 13) { // 13 is Return/Enter
 						ev.preventDefault();
-						State.setVar(varName, this.value);
+						State.setVar(varName, asNumber ? Number(this.value) : this.value);
 
 						if (passage != null) { // lazy equality for null
 							Engine.play(passage);
@@ -1724,15 +1728,11 @@
 				}))
 				.appendTo(this.output);
 
-			/*
-				Set the variable and input element to the default value.
-			*/
+			// Set the variable and input element to the default value.
 			State.setVar(varName, defaultValue);
 			el.value = defaultValue;
 
-			/*
-				Autofocus the input element, if requested.
-			*/
+			// Autofocus the input element, if requested.
 			if (autofocus) {
 				// Set the element's "autofocus" attribute.
 				el.setAttribute('autofocus', 'autofocus');
