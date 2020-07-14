@@ -69,6 +69,7 @@
 	* [`<<linkprepend>>`](#macros-macro-linkprepend)
 	* [`<<linkreplace>>`](#macros-macro-linkreplace)
 	* [`<<listbox>>`](#macros-macro-listbox)
+	* [`<<numberbox>>`](#macros-macro-numberbox)
 	* [`<<radiobutton>>`](#macros-macro-radiobutton)
 	* [`<<textarea>>`](#macros-macro-textarea)
 	* [`<<textbox>>`](#macros-macro-textbox)

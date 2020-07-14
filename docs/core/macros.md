@@ -1378,6 +1378,43 @@ What's your favorite pie?
 
 <!-- *********************************************************************** -->
 
+### `<<numberbox receiverName defaultValue [passage] [autofocus]>>` {#macros-macro-numberbox}
+
+Creates a number input box, used to modify the value of the variable with the given name, optionally forwarding the player to another passage.
+
+<p role="note" class="see"><b>See:</b>
+<a href="#macros-interactive-warning">Interactive macro warning</a>.
+</p>
+
+#### Since:
+
+* `v2.32.0`
+
+#### Arguments:
+
+* **`receiverName`:** The name of the variable to modify, which *must* be quoted—e.g., `"$foo"`.  Object and array property references are also supported—e.g., `"$foo.bar"`, `"$foo['bar']"`, &amp; `"$foo[0]"`.
+* **`defaultValue`:** The default value of the number box.
+* **`passage`:** (optional) The name of the passage to go to if the return/enter key is pressed.  May be called either with the passage name or with a link markup.
+* **`autofocus`:** (optional) Keyword, used to signify that the number box should automatically receive focus.  Only use the keyword *once* per page; attempting to focus more than one element is undefined behavior.
+
+#### Examples:
+
+```
+→ Creates a number box that modifies $wager
+Wager how much on Buttstallion in the race? <<numberbox "$wager" 100>>
+
+→ Creates an automatically focused number box that modifies $wager
+Wager how much on Buttstallion in the race? <<numberbox "$wager" 100 autofocus>>
+
+→ Creates a number box that modifies $wager and forwards to the "Result" passage
+Wager how much on Buttstallion in the race? <<numberbox "$wager" 100 "Result">>
+
+→ Creates an automatically focused number box that modifies $wager and forwards to the "Result" passage
+Wager how much on Buttstallion in the race? <<numberbox "$wager" 100 "Result" autofocus>>
+```
+
+<!-- *********************************************************************** -->
+
 ### `<<radiobutton receiverName checkedValue [autocheck|checked]>>` {#macros-macro-radiobutton}
 
 Creates a radio button, used to modify the value of the variable with the given name.  Multiple `<<radiobutton>>` macros may be set up to modify the same variable, which makes them part of a radio button group.
