@@ -229,6 +229,8 @@ var Passage = (() => { // eslint-disable-line no-unused-vars, no-var
 		}
 
 		static getExcerptFromNode(node, count) {
+			if (DEBUG) { console.log(`[Passage.getExcerptFromNode(node=…, count=${count})]`, node); }
+
 			if (!node.hasChildNodes()) {
 				return '';
 			}
@@ -248,6 +250,8 @@ var Passage = (() => { // eslint-disable-line no-unused-vars, no-var
 		}
 
 		static getExcerptFromText(text, count) {
+			if (DEBUG) { console.log(`[Passage.getExcerptFromText(text=…, count=${count})]`, text); }
+
 			if (text === '') {
 				return '';
 			}
