@@ -782,12 +782,12 @@
 
 			const splice     = Array.prototype.splice;
 			const cpyIndices = [
-				...(new Set(
+				...new Set(
 					Array.prototype.concat.apply([], arguments)
 						// Map negative indices to their positive counterparts,
 						// so the Set can properly filter out duplicates.
 						.map(x => x < 0 ? Math.max(0, length + x) : x)
-				)).values()
+				).values()
 			];
 			const delIndices = [...cpyIndices].sort((a, b) => b - a);
 			const result     = [];

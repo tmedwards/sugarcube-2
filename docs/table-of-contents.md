@@ -53,6 +53,7 @@
 	* [`<<nobr>>`](#macros-macro-nobr)
 	* [`<<print>>`](#macros-macro-print)
 	* [`<<silently>>`](#macros-macro-silently)
+	* [`<<type>>`](#macros-macro-type)
 * [Control Macros](#macros-control)
 	* [`<<if>>`](#macros-macro-if)
 	* [`<<for>>`](#macros-macro-for)
@@ -68,6 +69,7 @@
 	* [`<<linkprepend>>`](#macros-macro-linkprepend)
 	* [`<<linkreplace>>`](#macros-macro-linkreplace)
 	* [`<<listbox>>`](#macros-macro-listbox)
+	* [`<<numberbox>>`](#macros-macro-numberbox)
 	* [`<<radiobutton>>`](#macros-macro-radiobutton)
 	* [`<<textarea>>`](#macros-macro-textarea)
 	* [`<<textbox>>`](#macros-macro-textbox)
@@ -217,11 +219,6 @@
 	* [`LoadScreen`](#special-variable-loadscreen)
 	* [`Macro`](#special-variable-macro)
 	* [`Passage`](#special-variable-passage)
-	* [`postdisplay`](#special-variable-postdisplay)
-	* [`postrender`](#special-variable-postrender)
-	* [`predisplay`](#special-variable-predisplay)
-	* [`prehistory`](#special-variable-prehistory)
-	* [`prerender`](#special-variable-prerender)
 	* [`Save`](#special-variable-save)
 	* [`Setting`](#special-variable-setting)
 	* [`settings`](#special-variable-settings)
@@ -242,24 +239,19 @@
 
 ## [HTML](#html)
 
-## [Events &amp; Tasks](#events)
+## [Events](#events)
 
 * [`Dialog` Events](#events-dialog)
 	* [`:dialogclosed`](#events-dialog-event-dialogclosed)
 	* [`:dialogclosing`](#events-dialog-event-dialogclosing)
 	* [`:dialogopened`](#events-dialog-event-dialogopened)
 	* [`:dialogopening`](#events-dialog-event-dialogopening)
-* [Navigation Events &amp; Tasks](#events-navigation)
+* [Navigation Events](#events-navigation)
 	* [`:passageinit`](#events-navigation-event-passageinit)
 	* [`:passagestart`](#events-navigation-event-passagestart)
 	* [`:passagerender`](#events-navigation-event-passagerender)
 	* [`:passagedisplay`](#events-navigation-event-passagedisplay)
 	* [`:passageend`](#events-navigation-event-passageend)
-	* [`prehistory`](#events-navigation-task-prehistory)
-	* [`predisplay`](#events-navigation-task-predisplay)
-	* [`prerender`](#events-navigation-task-prerender)
-	* [`postrender`](#events-navigation-task-postrender)
-	* [`postdisplay`](#events-navigation-task-postdisplay)
 * [`SimpleAudio` Events](#events-simpleaudio)
 	* [`:faded`](#events-simpleaudio-event-faded)
 	* [`:fading`](#events-simpleaudio-event-fading)
@@ -267,6 +259,10 @@
 * [System Events](#events-system)
 	* [`:storyready`](#events-system-event-storyready)
 	* [`:enginerestart`](#events-startup-teardown-event-enginerestart)
+* [`<<type>>` Events](#events-type-macro)
+	* [`:typingcomplete`](#events-type-macro-event-typingcomplete)
+	* [`:typingstart`](#events-type-macro-event-typingstart)
+	* [`:typingstop`](#events-type-macro-event-typingstop)
 
 ----
 
@@ -281,6 +277,7 @@
 * [Macros Settings](#config-api-macros)
 	* [`Config.macros.ifAssignmentError`](#config-api-property-macros-ifassignmenterror)
 	* [`Config.macros.maxLoopIterations`](#config-api-property-macros-maxloopiterations)
+	* [`Config.macros.typeVisitedPassages`](#config-api-property-macros-typevisitedpassages)
 * [Navigation Settings](#config-api-navigation)
 	* [`Config.navigation.override`](#config-api-property-navigation-override)
 * [Passages Settings](#config-api-passages)
@@ -612,6 +609,14 @@
 
 ----
 
+## [Guide: State, Sessions, and Saving](#guide-state-sessions-and-saving)
+
+* [Story History](#guide-state-sessions-and-saving-story-history)
+* [Playthrough Session](#guide-state-sessions-and-saving-playthrough-session)
+* [Autosave](#guide-state-sessions-and-saving-autosave)
+* [What Happens When a Save is Loaded?](#guide-state-sessions-and-saving-what-happens-when-a-save-is-loaded)
+* [Refreshing and Restarting](#guide-state-sessions-and-saving-refreshing-and-restarting)
+
 ## [Guide: Tips](#guide-tips)
 
 * [Arbitrarily long return](#guide-tips-arbitrarily-long-return)
@@ -661,3 +666,5 @@
 
 <div aria-hidden="true">&nbsp;</div>
 </nav>
+<!-- NAV ENHANCEMENT -->
+<script type="text/javascript">{{.SCRIPT_NAV}}</script>

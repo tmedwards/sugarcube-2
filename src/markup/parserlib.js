@@ -304,6 +304,7 @@
 				const tagArgs   = this.working.arguments;
 				const tagBegin  = this.working.index;
 				const tagEnd    = w.nextMatch;
+				const hasArgs   = tagArgs.trim() !== '';
 
 				switch (tagName) {
 				case openTag:
@@ -312,10 +313,20 @@
 
 				case closeAlt:
 				case closeTag:
+					if (hasArgs) {
+						// Skip over malformed closing tags and throw.
+						w.nextMatch = tagBegin + 2 + tagName.length;
+						throw new Error(`malformed closing tag: "${tagSource}"`);
+					}
 					--opened;
 					break;
 
 				default:
+					if (hasArgs && (tagName.startsWith('/') || tagName.startsWith('end'))) {
+						// Skip over malformed alien closing tags.
+						this.lookahead.lastIndex = w.nextMatch = tagBegin + 2 + tagName.length;
+						continue;
+					}
 					if (opened === 1 && bodyTags) {
 						for (let i = 0, iend = bodyTags.length; i < iend; ++i) {
 							if (tagName === bodyTags[i]) {

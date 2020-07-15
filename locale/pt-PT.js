@@ -32,7 +32,7 @@
 	l10nStrings.warningNoWebStorage   = '{_warningIntroLacking} o Web Storage API{_warningOutroDegraded}';
 	l10nStrings.warningDegraded       = '{_warningIntroLacking} algum componente requerido por este {identity}{_warningOutroDegraded}';
 
-	/* Debug View. */
+	/* Debug bar. */
 	l10nStrings.debugBarToggle      = 'Alternar a barra de depuração';
 	l10nStrings.debugBarNoWatches   = '\u2014 sem vigias \u2014';
 	l10nStrings.debugBarAddWatch    = 'Adicionar vigia';

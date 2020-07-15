@@ -113,7 +113,7 @@ var l10nStrings = { // eslint-disable-line no-unused-vars, no-var
 	/*
 		Alert.
 	*/
-	/* none */
+	alertTitle : 'Alert',
 
 	/*
 		Autoload.

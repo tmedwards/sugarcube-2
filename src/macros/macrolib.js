@@ -7,8 +7,8 @@
 
 ***********************************************************************************************************************/
 /*
-	global Config, DebugView, Engine, Has, L10n, Macro, Patterns, Scripting, SimpleAudio, State, Story,
-	       TempState, Util, Wikifier, postdisplay, prehistory, storage, toStringOrDefault
+	global Config, DebugView, Engine, Has, L10n, Macro, NodeTyper, Patterns, Scripting, SimpleAudio, State,
+	       Story, TempState, Util, Wikifier, postdisplay, prehistory, storage, toStringOrDefault
 */
 
 (() => {
@@ -23,6 +23,7 @@
 	Macro.add('capture', {
 		skipArgs : true,
 		tags     : null,
+		tsVarRe  : new RegExp(`(${Patterns.variable})`,'g'),
 
 		handler() {
 			if (this.args.raw.length === 0) {
@@ -37,13 +38,13 @@
 				`Wikifier` call.
 			*/
 			try {
-				const varRe = new RegExp(`(${Patterns.variable})`,'g');
+				const tsVarRe = this.self.tsVarRe;
 				let match;
 
 				/*
 					Cache the existing values of the variables and add a shadow.
 				*/
-				while ((match = varRe.exec(this.args.raw)) !== null) {
+				while ((match = tsVarRe.exec(this.args.raw)) !== null) {
 					const varName = match[1];
 					const varKey  = varName.slice(1);
 					const store   = varName[0] === '$' ? State.variables : State.temporary;
@@ -104,19 +105,20 @@
 	*/
 	Macro.add('unset', {
 		skipArgs : true,
+		jsVarRe  : new RegExp(
+			`State\\.(variables|temporary)\\.(${Patterns.identifier})`,
+			'g'
+		),
 
 		handler() {
 			if (this.args.full.length === 0) {
 				return this.error('no story/temporary variable list specified');
 			}
 
-			const re = new RegExp(
-				`State\\.(variables|temporary)\\.(${Patterns.identifier})`,
-				'g'
-			);
+			const jsVarRe = this.self.jsVarRe;
 			let match;
 
-			while ((match = re.exec(this.args.full)) !== null) {
+			while ((match = jsVarRe.exec(this.args.full)) !== null) {
 				const store = State[match[1]];
 				const name  = match[2];
 
@@ -137,6 +139,7 @@
 	*/
 	Macro.add('remember', {
 		skipArgs : true,
+		jsVarRe  : new RegExp(`State\\.variables\\.(${Patterns.identifier})`, 'g'),
 
 		handler() {
 			if (this.args.full.length === 0) {
@@ -151,10 +154,10 @@
 			}
 
 			const remember = storage.get('remember') || {};
-			const re       = new RegExp(`State\\.variables\\.(${Patterns.identifier})`, 'g');
+			const jsVarRe  = this.self.jsVarRe;
 			let match;
 
-			while ((match = re.exec(this.args.full)) !== null) {
+			while ((match = jsVarRe.exec(this.args.full)) !== null) {
 				const name = match[1];
 				remember[name] = State.variables[name];
 			}
@@ -183,6 +186,7 @@
 	*/
 	Macro.add('forget', {
 		skipArgs : true,
+		jsVarRe  : new RegExp(`State\\.variables\\.(${Patterns.identifier})`, 'g'),
 
 		handler() {
 			if (this.args.full.length === 0) {
@@ -190,11 +194,11 @@
 			}
 
 			const remember = storage.get('remember');
-			const re       = new RegExp(`State\\.variables\\.(${Patterns.identifier})`, 'g');
+			const jsVarRe  = this.self.jsVarRe;
 			let match;
 			let needStore = false;
 
-			while ((match = re.exec(this.args.full)) !== null) {
+			while ((match = jsVarRe.exec(this.args.full)) !== null) {
 				const name = match[1];
 
 				if (State.variables.hasOwnProperty(name)) {
@@ -380,6 +384,212 @@
 	});
 
 	/*
+		<<type speed [start delay] [keep|none]>>
+	*/
+	Macro.add('type', {
+		isAsync : true,
+		tags    : null,
+
+		handler() {
+			if (this.args.length === 0) {
+				return this.error('no speed specified');
+			}
+
+			const speed = Util.fromCssTime(this.args[0]); // in milliseconds
+
+			if (speed < 0) {
+				return this.error(`speed time value must be non-negative (received: ${this.args[0]})`);
+			}
+
+			let start  = 400; // in milliseconds
+			let cursor;
+
+			// Process optional arguments.
+			const args = this.args.slice(1);
+
+			while (args.length > 0) {
+				const arg = args.shift();
+
+				switch (arg) {
+				case 'keep':
+					cursor = 'keep';
+					break;
+
+				case 'none':
+					cursor = 'none';
+					break;
+
+				case 'start': {
+					if (args.length === 0) {
+						return this.error('start missing required time value');
+					}
+
+					const value = args.shift();
+					start = Util.fromCssTime(value);
+
+					if (start < 0) {
+						throw new Error(`start time value must be non-negative (received: ${value})`);
+					}
+
+					break;
+				}
+
+				default:
+					return this.error(`unknown argument: ${arg}`);
+				}
+			}
+
+			const contents = this.payload[0].contents;
+
+			// Do nothing if there's no content to type out.
+			if (contents.trim() === '') {
+				return;
+			}
+
+			// Custom debug view setup.
+			if (Config.debug) {
+				this.debugView.modes({ block : true });
+			}
+
+			// Set up our base class name and event namespace.
+			const className = `macro-${this.name}`;
+			const namespace = `.${className}`;
+
+			// Create a target to be later replaced by the typing wrapper.
+			const $target = jQuery(document.createElement('div'))
+				.addClass(`${className} ${className}-target`)
+				.appendTo(this.output);
+
+			// If this is our first time being run this moment, set up the typing handler
+			// queue for all invocations and event handlers to initiate typing and clean up
+			// after navigation.
+			if (!TempState.macroType) {
+				TempState.macroType = {
+					idle  : false,
+					queue : []
+				};
+
+				$(document)
+					.off(namespace)
+					.one(`:passageend${namespace}`, () => TempState.macroType.queue.shift()())
+					.one(`:passageinit${namespace}`, () => $(document).off(namespace));
+			}
+
+			// Push our typing handler onto the queue.
+			TempState.macroType.queue.push(() => {
+				TempState.macroType.idle = false;
+
+				const $wrapper = jQuery(document.createElement('div'))
+					.addClass(className);
+
+				new Wikifier($wrapper, contents);
+
+				const passage = State.passage;
+
+				// Skip typing if….
+				if (
+					// …we've visited the passage before.
+					!Config.macros.typeVisitedPassages
+					&& State.passages.slice(0, -1).some(title => title === passage)
+
+					// …there were any content errors.
+					|| $wrapper.find('.error').length > 0
+				) {
+					$target.replaceWith($wrapper);
+
+					if (TempState.macroType.queue.length === 0) {
+						TempState.macroType.idle = true;
+					}
+					else {
+						TempState.macroType.queue.shift()();
+					}
+
+					return;
+				}
+
+				// Create a new `NodeTyper` instance for the wrapper's contents and
+				// replace the target with the typing wrapper.
+				const typer = new NodeTyper({
+					targetNode : $wrapper.get(0),
+					classNames : cursor === 'none' ? null : `${className}-cursor`
+				});
+				$target.replaceWith($wrapper);
+
+				// Set up event IDs.
+				const typingCompleteId = ':typingcomplete';
+				const typingStartId    = ':typingstart';
+				const typingStopId     = ':typingstop';
+				const keypressAndNS    = `keypress${namespace}`;
+				const typingStopAndNS  = `${typingStopId}${namespace}`;
+
+				// Set up handlers for spacebar aborting and continuations.
+				$(document)
+					.off(keypressAndNS)
+					.on(keypressAndNS, ev => {
+						// Finish typing if the player aborts via the spacebar.
+						if (
+							ev.which === 32 /* Space */
+							&& (ev.target === document.body || ev.target === document.documentElement)
+						) {
+							ev.preventDefault();
+							$(document).off(keypressAndNS);
+							typer.finish();
+						}
+					})
+					.one(typingStopAndNS, () => {
+						// Return if the queue is empty.
+						if (TempState.macroType.queue.length === 0) {
+							TempState.macroType.idle = true;
+							jQuery.event.trigger(typingCompleteId);
+							return;
+						}
+
+						// Run the next typing handler in the queue.
+						TempState.macroType.queue.shift()();
+					});
+
+				// Set up the typing interval and start/stop event firing.
+				const typeNode = function typeNode() {
+					jQuery.event.trigger(typingStartId);
+
+					const typeNodeId = setInterval(() => {
+						// Stop typing if….
+						if (
+							// …we've navigated away.
+							State.passage !== passage
+
+							// …we're done typing.
+							|| !typer.type()
+						) {
+							clearInterval(typeNodeId);
+
+							if (cursor === 'keep') {
+								$wrapper.addClass(`${className}-cursor`);
+							}
+
+							jQuery.event.trigger(typingStopId);
+						}
+					}, speed);
+				};
+
+				// Kick off typing.
+				if (start) {
+					setTimeout(typeNode, start);
+				}
+				else {
+					typeNode();
+				}
+			});
+
+			// If we get to this point and the typing handler queue is idle, then we been
+			// run late, so just run the next typing handler in the queue.
+			if (TempState.macroType.queue.length > 0 && TempState.macroType.idle) {
+				TempState.macroType.queue.shift()();
+			}
+		}
+	});
+
+	/*
 		[DEPRECATED] <<display>>
 	*/
 	Macro.add('display', 'include'); // add <<display>> as an alias of <<include>>
@@ -392,8 +602,10 @@
 		<<if>>, <<elseif>>, & <<else>>
 	*/
 	Macro.add('if', {
-		skipArgs : true,
-		tags     : ['elseif', 'else'],
+		skipArgs   : true,
+		tags       : ['elseif', 'else'],
+		elseifWsRe : /^\s*if\b/i,
+		ifAssignRe : /[^!=&^|<>*/%+-]=[^=>]/,
 
 		handler() {
 			let i;
@@ -402,12 +614,15 @@
 				const len = this.payload.length;
 
 				// Sanity checks.
+				const elseifWsRe = this.self.elseifWsRe;
+				const ifAssignRe = this.self.ifAssignRe;
+
 				for (/* declared previously */ i = 0; i < len; ++i) {
 					/* eslint-disable prefer-template */
 					switch (this.payload[i].name) {
 					case 'else':
 						if (this.payload[i].args.raw.length > 0) {
-							if (/^\s*if\b/i.test(this.payload[i].args.raw)) {
+							if (elseifWsRe.test(this.payload[i].args.raw)) {
 								return this.error(`whitespace is not allowed between the "else" and "if" in <<elseif>> clause${i > 0 ? ' (#' + i + ')' : ''}`);
 							}
 
@@ -425,7 +640,7 @@
 						}
 						else if (
 							   Config.macros.ifAssignmentError
-							&& /[^!=&^|<>*/%+-]=[^=>]/.test(this.payload[i].args.full)
+							&& ifAssignRe.test(this.payload[i].args.full)
 						) {
 							return this.error(`assignment operator found within <<${this.payload[i].name}>> clause${i > 0 ? ' (#' + i + ')' : ''} (perhaps you meant to use an equality operator: ==, ===, eq, is), invalid: ${this.payload[i].args.raw}`);
 						}
@@ -620,9 +835,11 @@
 		/* eslint-disable max-len */
 		skipArgs    : true,
 		tags        : null,
-		_hasRangeRe : new RegExp(`^\\S${Patterns.anyChar}*?\\s+range\\s+\\S${Patterns.anyChar}*?$`),
-		_rangeRe    : new RegExp(`^(?:State\\.(variables|temporary)\\.(${Patterns.identifier})\\s*,\\s*)?State\\.(variables|temporary)\\.(${Patterns.identifier})\\s+range\\s+(\\S${Patterns.anyChar}*?)$`),
-		_3PartRe    : /^([^;]*?)\s*;\s*([^;]*?)\s*;\s*([^;]*?)$/,
+		hasRangeRe  : new RegExp(`^\\S${Patterns.anyChar}*?\\s+range\\s+\\S${Patterns.anyChar}*?$`),
+		rangeRe     : new RegExp(`^(?:State\\.(variables|temporary)\\.(${Patterns.identifier})\\s*,\\s*)?State\\.(variables|temporary)\\.(${Patterns.identifier})\\s+range\\s+(\\S${Patterns.anyChar}*?)$`),
+		threePartRe : /^([^;]*?)\s*;\s*([^;]*?)\s*;\s*([^;]*?)$/,
+		forInRe     : /^\S+\s+in\s+\S+/i,
+		forOfRe     : /^\S+\s+of\s+\S+/i,
 		/* eslint-enable max-len */
 
 		handler() {
@@ -631,18 +848,18 @@
 
 			// Empty form.
 			if (argsStr.length === 0) {
-				this.self._handleFor.call(this, payload, null, true, null);
+				this.self.handleFor.call(this, payload, null, true, null);
 			}
 
 			// Range form.
-			else if (this.self._hasRangeRe.test(argsStr)) {
-				const parts = argsStr.match(this.self._rangeRe);
+			else if (this.self.hasRangeRe.test(argsStr)) {
+				const parts = argsStr.match(this.self.rangeRe);
 
 				if (parts === null) {
 					return this.error('invalid range form syntax, format: [index ,] value range collection');
 				}
 
-				this.self._handleForRange.call(
+				this.self.handleForRange.call(
 					this,
 					payload,
 					{ type : parts[1], name : parts[2] },
@@ -660,10 +877,10 @@
 				// Conditional-only form.
 				if (argsStr.indexOf(';') === -1) {
 					// Sanity checks.
-					if (/^\S+\s+in\s+\S+/i.test(argsStr)) {
+					if (this.self.forInRe.test(argsStr)) {
 						return this.error('invalid syntax, for…in is not supported; see: for…range');
 					}
-					else if (/^\S+\s+of\s+\S+/i.test(argsStr)) {
+					else if (this.self.forOfRe.test(argsStr)) {
 						return this.error('invalid syntax, for…of is not supported; see: for…range');
 					}
 
@@ -672,7 +889,7 @@
 
 				// 3-part conditional form.
 				else {
-					const parts = argsStr.match(this.self._3PartRe);
+					const parts = argsStr.match(this.self.threePartRe);
 
 					if (parts === null) {
 						return this.error('invalid 3-part conditional form syntax, format: [init] ; [condition] ; [post]');
@@ -687,11 +904,11 @@
 					}
 				}
 
-				this.self._handleFor.call(this, payload, init, condition, post);
+				this.self.handleFor.call(this, payload, init, condition, post);
 			}
 		},
 
-		_handleFor(payload, init, condition, post) {
+		handleFor(payload, init, condition, post) {
 			const evalJavaScript = Scripting.evalJavaScript;
 			let first  = true;
 			let safety = Config.macros.maxLoopIterations;
@@ -752,12 +969,12 @@
 			}
 		},
 
-		_handleForRange(payload, indexVar, valueVar, rangeExp) {
+		handleForRange(payload, indexVar, valueVar, rangeExp) {
 			let first     = true;
 			let rangeList;
 
 			try {
-				rangeList = this.self._toRangeList(rangeExp);
+				rangeList = this.self.toRangeList(rangeExp);
 			}
 			catch (ex) {
 				return this.error(ex.message);
@@ -803,7 +1020,7 @@
 			}
 		},
 
-		_toRangeList(rangeExp) {
+		toRangeList(rangeExp) {
 			const evalJavaScript = Scripting.evalJavaScript;
 			let value;
 
@@ -1018,12 +1235,22 @@
 			/*
 				Set the variable and input element to the appropriate value and state, as requested.
 			*/
-			if (this.args.length > 3 && this.args[3] === 'checked') {
+			switch (this.args[3]) {
+			case 'autocheck':
+				if (State.getVar(varName) === checkValue) {
+					el.checked = true;
+				}
+				else {
+					State.setVar(varName, uncheckValue);
+				}
+				break;
+			case 'checked':
 				el.checked = true;
 				State.setVar(varName, checkValue);
-			}
-			else {
+				break;
+			default:
 				State.setVar(varName, uncheckValue);
+				break;
 			}
 		}
 	});
@@ -1206,6 +1433,7 @@
 	Macro.add(['linkappend', 'linkprepend', 'linkreplace'], {
 		isAsync : true,
 		tags    : null,
+		t8nRe   : /^(?:transition|t8n)$/,
 
 		handler() {
 			if (this.args.length === 0) {
@@ -1214,7 +1442,7 @@
 
 			const $link      = jQuery(document.createElement('a'));
 			const $insert    = jQuery(document.createElement('span'));
-			const transition = this.args.length > 1 && /^(?:transition|t8n)$/.test(this.args[1]);
+			const transition = this.args.length > 1 && this.self.t8nRe.test(this.args[1]);
 
 			$link
 				.wikiWithOptions({ profile : 'core' }, this.args[0])
@@ -1323,9 +1551,16 @@
 			/*
 				Set the variable to the checked value and the input element to checked, if requested.
 			*/
-			if (this.args.length > 2 && this.args[2] === 'checked') {
+			switch (this.args[2]) {
+			case 'autocheck':
+				if (State.getVar(varName) === checkValue) {
+					el.checked = true;
+				}
+				break;
+			case 'checked':
 				el.checked = true;
 				State.setVar(varName, checkValue);
+				break;
 			}
 		}
 	});
@@ -1408,9 +1643,9 @@
 	});
 
 	/*
-		<<textbox>>
+		<<numberbox>> & <<textbox>>
 	*/
-	Macro.add('textbox', {
+	Macro.add(['numberbox', 'textbox'], {
 		isAsync : true,
 
 		handler() {
@@ -1438,9 +1673,15 @@
 				this.debugView.modes({ block : true });
 			}
 
-			const varId        = Util.slugify(varName);
-			const defaultValue = this.args[1];
-			const el           = document.createElement('input');
+			const asNumber     = this.name === 'numberbox';
+			const defaultValue = asNumber ? Number(this.args[1]) : this.args[1];
+
+			if (asNumber && Number.isNaN(defaultValue)) {
+				return this.error(`default value "${this.args[1]}" is neither a number nor can it be parsed into a number`);
+			}
+
+			const varId = Util.slugify(varName);
+			const el    = document.createElement('input');
 			let autofocus = false;
 			let passage;
 
@@ -1462,9 +1703,7 @@
 				passage = passage.link;
 			}
 
-			/*
-				Set up and append the input element to the output buffer.
-			*/
+			// Set up and append the input element to the output buffer.
 			jQuery(el)
 				.attr({
 					id       : `${this.name}-${varId}`,
@@ -1474,13 +1713,13 @@
 				})
 				.addClass(`macro-${this.name}`)
 				.on('change.macros', this.createShadowWrapper(function () {
-					State.setVar(varName, this.value);
+					State.setVar(varName, asNumber ? Number(this.value) : this.value);
 				}))
 				.on('keypress.macros', this.createShadowWrapper(function (ev) {
 					// If Return/Enter is pressed, set the variable and, optionally, forward to another passage.
 					if (ev.which === 13) { // 13 is Return/Enter
 						ev.preventDefault();
-						State.setVar(varName, this.value);
+						State.setVar(varName, asNumber ? Number(this.value) : this.value);
 
 						if (passage != null) { // lazy equality for null
 							Engine.play(passage);
@@ -1489,15 +1728,11 @@
 				}))
 				.appendTo(this.output);
 
-			/*
-				Set the variable and input element to the default value.
-			*/
+			// Set the variable and input element to the default value.
 			State.setVar(varName, defaultValue);
 			el.value = defaultValue;
 
-			/*
-				Autofocus the input element, if requested.
-			*/
+			// Autofocus the input element, if requested.
 			if (autofocus) {
 				// Set the element's "autofocus" attribute.
 				el.setAttribute('autofocus', 'autofocus');
@@ -1915,7 +2150,8 @@
 		<<append>>, <<prepend>>, & <<replace>>
 	*/
 	Macro.add(['append', 'prepend', 'replace'], {
-		tags : null,
+		tags  : null,
+		t8nRe : /^(?:transition|t8n)$/,
 
 		handler() {
 			if (this.args.length === 0) {
@@ -1929,7 +2165,7 @@
 			}
 
 			if (this.payload[0].contents !== '') {
-				const transition = this.args.length > 1 && /^(?:transition|t8n)$/.test(this.args[1]);
+				const transition = this.args.length > 1 && this.self.t8nRe.test(this.args[1]);
 				let $insert;
 
 				if (transition) {
@@ -2995,6 +3231,7 @@
 		isAsync : true,
 		tags    : null,
 		timers  : new Set(),
+		t8nRe   : /^(?:transition|t8n)$/,
 
 		handler() {
 			if (this.args.length === 0) {
@@ -3015,7 +3252,7 @@
 				this.debugView.modes({ block : true });
 			}
 
-			const transition = this.args.length > 1 && /^(?:transition|t8n)$/.test(this.args[1]);
+			const transition = this.args.length > 1 && this.self.t8nRe.test(this.args[1]);
 			const $wrapper   = jQuery(document.createElement('span'))
 				.addClass(`macro-${this.name}`)
 				.appendTo(this.output);
@@ -3130,6 +3367,7 @@
 		isAsync : true,
 		tags    : ['next'],
 		timers  : new Set(),
+		t8nRe   : /^(?:transition|t8n)$/,
 
 		handler() {
 			if (this.args.length === 0) {
@@ -3177,7 +3415,7 @@
 				this.debugView.modes({ block : true });
 			}
 
-			const transition = this.args.length > 1 && /^(?:transition|t8n)$/.test(this.args[1]);
+			const transition = this.args.length > 1 && this.self.t8nRe.test(this.args[1]);
 			const $wrapper   = jQuery(document.createElement('span'))
 				.addClass(`macro-${this.name}`)
 				.appendTo(this.output);
@@ -3192,12 +3430,12 @@
 
 				// Custom debug view setup for `<<next>>`.
 				if (Config.debug && item.name === 'next') {
-					$output = jQuery((new DebugView( // eslint-disable-line no-param-reassign
+					$output = jQuery(new DebugView( // eslint-disable-line no-param-reassign
 						$output[0],
 						'macro',
 						item.name,
 						item.source
-					)).output);
+					).output);
 				}
 
 				if (transition) {

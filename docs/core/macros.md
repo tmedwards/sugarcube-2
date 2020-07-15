@@ -13,15 +13,15 @@ Macros fall into two broad categories based on the kind of arguments they accept
 
 Those that want an expression are fairly straightforward, as you simply supply an [expression](#twinescript-expressions).
 
-The discrete argument type of macros are also fairly straightforward, most of the time, as you simply supply the requisite arguments separated by whitespace.  There are cases, however, where things get a bit more complicated, namely: instances where you need to pass the name of a variable as an argument and those where you want to pass the result of an expression as argument.
+The discrete argument type of macros are also fairly straightforward, most of the time, as you simply supply the requisite arguments separated by whitespace, which may include variables—as SugarCube automatically yields their values to the macro.  There are cases, however, where things get a bit more complicated, namely: instances where you need to pass the name of a variable as an argument, rather than its value, and those where you want to pass the result of an expression as argument.
 
-#### Passing a variable's name as an argument
+#### Argument type macros: passing a variable's name as an argument
 
 Passing the name of a variable as an argument is problematic because variable substitution occurs automatically in SugarCube macros.  Meaning that when you pass a variable as an argument, its value is passed to the macro rather than its name.
 
 Normally, this is exactly what you want to happen.  Occasionally, however, macros will need the name of a variable rather than its value—e.g., data input macros like `<<textbox>>`—so that they may modify the variable.  To resolve these instances, you will need to quote the name of the variable—i.e., instead of passing `$pie` as normal, you'd pass `"$pie"`.  These, rare, instances are noted in the macros' documentation and shown in their examples.
 
-#### Passing an expression as an argument
+#### Argument type macros: passing an expression as an argument
 
 Passing the result of an expression as an argument is problematic for a couple of reasons: because the macro argument parser doesn't treat arguments as expressions by default and because it separates arguments with whitespace.
 
@@ -464,6 +464,68 @@ Countdown: <span id="countdown">$seconds seconds remaining</span>!\
 		<</if>>
 	<</repeat>>
 <</silently>>
+```
+
+<!-- *********************************************************************** -->
+
+### `<<type speed [start delay] [keep|none]>> … <</type>>` {#macros-macro-type}
+
+Outputs its contents a character—technically, a code point—at a time, mimicking a teletype/typewriter.  Can type most content: links, markup, macros, etc.
+
+<p role="note" class="warning"><b>Warning:</b>
+Interactions with macros or other code that inject content only after some external action or period—e.g., <code>&lt;&lt;linkreplace&gt;&gt;</code>, <code>&lt;&lt;timed&gt;&gt;</code>, etc.—may or may not behave as you'd expect.  Caution is advised.
+</p>
+
+<p role="note" class="see"><b>See Also:</b>
+<a href="#events-type-macro"><code>&lt;&lt;type&gt;&gt;</code> Events</a>.
+</p>
+
+#### Since:
+
+* `v2.32.0`
+
+#### Arguments:
+
+* **`speed`:** The rate at which characters are typed, as a valid [CSS time value](https://developer.mozilla.org/en-US/docs/Web/CSS/time)—e.g., `1s` and `40ms`.  Values in the range `20–60ms` are a good starting point.
+* **`start` *`delay`*:** (optional) The amount of time to delay the start of typing, as a valid [CSS time value](https://developer.mozilla.org/en-US/docs/Web/CSS/time)—e.g., `5s` and `500ms`.  If omitted, defaults to `400ms`.
+* **`keep`:** (optional) Keyword, used to signify that the cursor should be kept after typing is complete.
+* **`none`:** (optional) Keyword, used to signify that the cursor should not be used at all.
+
+#### Examples:
+
+```
+<<type 40ms>>
+	Type characters from this content every 40 milliseconds.  Including [[links]] and ''other markup''!
+<</type>>
+
+<<type 40ms start 2s>>
+	Type characters from this content every 40 milliseconds, starting after a 2 second delay.
+<</type>>
+
+<<type 40ms keep>>
+	Type characters from this content every 40 milliseconds, keeping the cursor after typing is complete.
+<</type>>
+```
+
+#### CSS styles:
+
+The typed text has no default styling.  If you want to change the font or color, then you'll need to change the styling of the `macro-type` class.  For example:
+
+```css
+.macro-type {
+	color: limegreen;
+	font-family: monospace, monospace;
+}
+```
+
+The default cursor is the block element character **Right Half Block (U+2590)** and it has no default font or color styling.  If you want to change the font, color, or character, then you'll need to change the styling of the `:after` pseudo-element of the `macro-type-cursor` class.  For example:
+
+```css
+.macro-type-cursor:after {
+	color: limegreen;
+	content: "\269C\FE0F"; /* Fleur-de-lis emoji */
+	font-family: monospace, monospace;
+}
 ```
 
 <!-- *********************************************************************** -->
@@ -946,7 +1008,7 @@ Strength: <<set $pcStr to 10>><span id="stats-str"><<print $pcStr>></span> \
 
 <!-- *********************************************************************** -->
 
-### `<<checkbox receiverName uncheckedValue checkedValue [checked]>>` {#macros-macro-checkbox}
+### `<<checkbox receiverName uncheckedValue checkedValue [autocheck|checked]>>` {#macros-macro-checkbox}
 
 Creates a checkbox, used to modify the value of the variable with the given name.
 
@@ -956,18 +1018,27 @@ Creates a checkbox, used to modify the value of the variable with the given name
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Basic syntax.
+* `v2.32.0`: Added `autocheck` keyword.
 
 #### Arguments:
 
 * **`receiverName`:** The name of the variable to modify, which *must* be quoted—e.g., `"$foo"`.  Object and array property references are also supported—e.g., `"$foo.bar"`, `"$foo['bar']"`, &amp; `"$foo[0]"`.
 * **`uncheckedValue`:** The value set by the checkbox when unchecked.
 * **`checkedValue`:** The value set by the checkbox when checked.
+* **`autocheck`:** (optional) Keyword, used to signify that the checkbox should be automatically set to the checked state based on the current value of the receiver variable.  **NOTE:** Automatic checking may fail on non-primitive values—i.e., on arrays and objects.
 * **`checked`:** (optional) Keyword, used to signify that the checkbox should be in the checked state.
 
 #### Examples:
 
 ##### Basic usage
+
+```
+What pies do you enjoy?
+* <<checkbox "$pieBlueberry" false true autocheck>> Blueberry?
+* <<checkbox "$pieCherry" false true autocheck>> Cherry?
+* <<checkbox "$pieCoconutCream" false true autocheck>> Coconut cream?
+```
 
 ```
 What pies do you enjoy?
@@ -981,6 +1052,13 @@ What pies do you enjoy?
 <p role="note" class="tip"><b>Tip:</b>
 For accessibility reasons, it's recommended that you wrap each <code>&lt;&lt;checkbox&gt;&gt;</code> and its accompanying text within a <code>&lt;label&gt;</code> element.  Doing so allows interactions with the text to also trigger its <code>&lt;&lt;checkbox&gt;&gt;</code>.
 </p>
+
+```
+What pies do you enjoy?
+* <label><<checkbox "$pieBlueberry" false true autocheck>> Blueberry?</label>
+* <label><<checkbox "$pieCherry" false true autocheck>> Cherry?</label>
+* <label><<checkbox "$pieCoconutCream" false true autocheck>> Coconut cream?</label>
+```
 
 ```
 What pies do you enjoy?
@@ -1008,7 +1086,7 @@ Creates a cycling link, used to modify the value of the variable with the given 
 ##### `<<cycle>>`
 
 * **`receiverName`:** The name of the variable to modify, which *must* be quoted—e.g., `"$foo"`.  Object and array property references are also supported—e.g., `"$foo.bar"`, `"$foo['bar']"`, & `"$foo[0]"`.
-* **`autoselect`:** (optional) Keyword, used to signify that an option should be automatically selected as the cycle default based on the current value of the target variable.  **NOTE:** Automatic option selection will fail on non-primitive values—i.e., on arrays and objects.
+* **`autoselect`:** (optional) Keyword, used to signify that an option should be automatically selected as the cycle default based on the current value of the receiver variable.  **NOTE:** Automatic option selection will fail on non-primitive values—i.e., on arrays and objects.
 
 ##### `<<option>>`
 
@@ -1018,7 +1096,7 @@ Creates a cycling link, used to modify the value of the variable with the given 
 
 ##### `<<optionsfrom>>`
 
-* **`collection`:** An expression that yields a valid collection type.  
+* **`collection`:** An expression that yields a valid collection type.
 	<table class="list-table">
 	<tbody>
 		<tr>
@@ -1235,7 +1313,7 @@ Creates a listbox, used to modify the value of the variable with the given name.
 ##### `<<listbox>>`
 
 * **`receiverName`:** The name of the variable to modify, which *must* be quoted—e.g., `"$foo"`.  Object and array property references are also supported—e.g., `"$foo.bar"`, `"$foo['bar']"`, & `"$foo[0]"`.
-* **`autoselect`:** (optional) Keyword, used to signify that an option should be automatically selected as the listbox default based on the current value of the target variable.  **NOTE:** Automatic option selection will fail on non-primitive values—i.e., on arrays and objects.
+* **`autoselect`:** (optional) Keyword, used to signify that an option should be automatically selected as the listbox default based on the current value of the receiver variable.  **NOTE:** Automatic option selection will fail on non-primitive values—i.e., on arrays and objects.
 
 ##### `<<option>>`
 
@@ -1245,7 +1323,7 @@ Creates a listbox, used to modify the value of the variable with the given name.
 
 ##### `<<optionsfrom>>`
 
-* **`collection`:** An expression that yields a valid collection type.  
+* **`collection`:** An expression that yields a valid collection type.
 	<table class="list-table">
 	<tbody>
 		<tr>
@@ -1304,7 +1382,44 @@ What's your favorite pie?
 
 <!-- *********************************************************************** -->
 
-### `<<radiobutton receiverName checkedValue [checked]>>` {#macros-macro-radiobutton}
+### `<<numberbox receiverName defaultValue [passage] [autofocus]>>` {#macros-macro-numberbox}
+
+Creates a number input box, used to modify the value of the variable with the given name, optionally forwarding the player to another passage.
+
+<p role="note" class="see"><b>See:</b>
+<a href="#macros-interactive-warning">Interactive macro warning</a>.
+</p>
+
+#### Since:
+
+* `v2.32.0`
+
+#### Arguments:
+
+* **`receiverName`:** The name of the variable to modify, which *must* be quoted—e.g., `"$foo"`.  Object and array property references are also supported—e.g., `"$foo.bar"`, `"$foo['bar']"`, &amp; `"$foo[0]"`.
+* **`defaultValue`:** The default value of the number box.
+* **`passage`:** (optional) The name of the passage to go to if the return/enter key is pressed.  May be called either with the passage name or with a link markup.
+* **`autofocus`:** (optional) Keyword, used to signify that the number box should automatically receive focus.  Only use the keyword *once* per page; attempting to focus more than one element is undefined behavior.
+
+#### Examples:
+
+```
+→ Creates a number box that modifies $wager
+Wager how much on Buttstallion in the race? <<numberbox "$wager" 100>>
+
+→ Creates an automatically focused number box that modifies $wager
+Wager how much on Buttstallion in the race? <<numberbox "$wager" 100 autofocus>>
+
+→ Creates a number box that modifies $wager and forwards to the "Result" passage
+Wager how much on Buttstallion in the race? <<numberbox "$wager" 100 "Result">>
+
+→ Creates an automatically focused number box that modifies $wager and forwards to the "Result" passage
+Wager how much on Buttstallion in the race? <<numberbox "$wager" 100 "Result" autofocus>>
+```
+
+<!-- *********************************************************************** -->
+
+### `<<radiobutton receiverName checkedValue [autocheck|checked]>>` {#macros-macro-radiobutton}
 
 Creates a radio button, used to modify the value of the variable with the given name.  Multiple `<<radiobutton>>` macros may be set up to modify the same variable, which makes them part of a radio button group.
 
@@ -1314,17 +1429,26 @@ Creates a radio button, used to modify the value of the variable with the given 
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Basic syntax.
+* `v2.32.0`: Added `autocheck` keyword.
 
 #### Arguments:
 
 * **`receiverName`:** The name of the variable to modify, which *must* be quoted—e.g., `"$foo"`.  Object and array property references are also supported—e.g., `"$foo.bar"`, `"$foo['bar']"`, &amp; `"$foo[0]"`.
 * **`checkedValue`:** The value set by the radio button when checked.
-* **`checked`:** (optional) Keyword, used to signify that the radio button should be in the checked state.
+* **`autocheck`:** (optional) Keyword, used to signify that the radio button should be automatically set to the checked state based on the current value of the receiver variable.  **NOTE:** Automatic checking may fail on non-primitive values—i.e., on arrays and objects.
+* **`checked`:** (optional) Keyword, used to signify that the radio button should be in the checked state.  **NOTE:** Only one radio button in a group—i.e., those using the same receiver variable—should be so checked.
 
 #### Examples:
 
 ##### Basic usage
+
+```
+What's your favorite pie?
+* <<radiobutton "$pie" "blueberry" autocheck>> Blueberry?
+* <<radiobutton "$pie" "cherry" autocheck>> Cherry?
+* <<radiobutton "$pie" "coconut cream" autocheck>> Coconut cream?
+```
 
 ```
 What's your favorite pie?
@@ -1338,6 +1462,13 @@ What's your favorite pie?
 <p role="note" class="tip"><b>Tip:</b>
 For accessibility reasons, it's recommended that you wrap each <code>&lt;&lt;radiobutton&gt;&gt;</code> and its accompanying text within a <code>&lt;label&gt;</code> element.  Doing so allows interactions with the text to also trigger its <code>&lt;&lt;radiobutton&gt;&gt;</code>.
 </p>
+
+```
+What's your favorite pie?
+* <label><<radiobutton "$pie" "blueberry" autocheck>> Blueberry?</label>
+* <label><<radiobutton "$pie" "cherry" autocheck>> Cherry?</label>
+* <label><<radiobutton "$pie" "coconut cream" autocheck>> Coconut cream?</label>
+```
 
 ```
 What's your favorite pie?
@@ -2010,6 +2141,10 @@ Controls the playback of audio tracks, which must be set up via [`<<cacheaudio>>
 The <code>&lt;&lt;audio&gt;&gt;</code> macro cannot affect playlist tracks that have been copied into their respective playlist—meaning those set up via <a href="#macros-macro-createplaylist"><code>&lt;&lt;createplaylist&gt;&gt;</code></a> with its <code>copy</code> action or all tracks set up via, the deprecated, <a href="#macros-macro-setplaylist"><code>&lt;&lt;setplaylist&gt;&gt;</code></a>—as playlist copies are solely under the control of their playlist.
 </p>
 
+<p role="note"><b>Note:</b>
+The <a href="#config-api-property-audio-pauseonfadetozero"><code>Config.audio.pauseOnFadeToZero</code> setting</a> (default: <code>true</code>) controls whether tracks that have been faded to <code>0</code> volume (silent) are automatically paused.
+</p>
+
 #### Since:
 
 * `v2.0.0`: Basic syntax.
@@ -2330,6 +2465,10 @@ Controls the playback of the playlist, which must be set up via [`<<createplayli
 
 <p role="note" class="see"><b>See:</b>
 <a href="#macros-audio-limitations">Audio macro limitations</a>.
+</p>
+
+<p role="note"><b>Note:</b>
+The <a href="#config-api-property-audio-pauseonfadetozero"><code>Config.audio.pauseOnFadeToZero</code> setting</a> (default: <code>true</code>) controls whether tracks that have been faded to <code>0</code> volume (silent) are automatically paused.
 </p>
 
 #### Since:
@@ -2700,16 +2839,6 @@ I like green <span id="eggs">eggs</span> and ham!\
 <<next>>It's off to work we go!
 <</timed>>
 
-→ Replace some text in 1 second intervals
-I'll have <span id="drink">some water</span>, please.\
-<<timed 1s>><<replace "#drink">>a glass of milk<</replace>>\
-<<next>><<replace "#drink">>a can of soda<</replace>>\
-<<next>><<replace "#drink">>a cup of coffee<</replace>>\
-<<next>><<replace "#drink">>tea, southern style, sweet<</replace>>\
-<<next>><<replace "#drink">>a scotch, neat<</replace>>\
-<<next>><<replace "#drink">>a bottle of your finest absinthe<</replace>>\
-<</timed>>
-
 → Set a $variable after 4 seconds, 3 seconds, 2 seconds, and 1 second
 <<silently>>
 <<set $choice to 0>>
@@ -2723,6 +2852,17 @@ I'll have <span id="drink">some water</span>, please.\
 	<<set $choice to 4>>
 <</timed>>
 <<silently>>
+
+→ Replace some text with a variable interval
+→ Given: _delay is "2s" the interval will be 2 seconds
+I'll have <span id="drink">some water</span>, please.\
+<<timed _delay>><<replace "#drink">>a glass of milk<</replace>>\
+<<next>><<replace "#drink">>a can of soda<</replace>>\
+<<next>><<replace "#drink">>a cup of coffee<</replace>>\
+<<next>><<replace "#drink">>tea, southern style, sweet<</replace>>\
+<<next>><<replace "#drink">>a scotch, neat<</replace>>\
+<<next>><<replace "#drink">>a bottle of your finest absinthe<</replace>>\
+<</timed>>
 ```
 
 <!-- *********************************************************************** -->

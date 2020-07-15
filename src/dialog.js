@@ -296,8 +296,14 @@ var Dialog = (() => { // eslint-disable-line no-unused-vars, no-var
 
 		// Set up the delegated UI close handler.
 		jQuery(document)
-			.on('click.dialog-close', '.ui-close', { closeFn }, dialogClose)
-			.on('keypress.dialog-close', '.ui-close', function (ev) {
+			.one('click.dialog-close', '.ui-close', { closeFn }, ev => {
+				// NOTE: Do not allow this event handler to return the `Dialog` static object,
+				// as doing so causes Edge (ca. 18) to throw a "Number expected" exception due
+				// to `Dialog` not having a prototype.
+				dialogClose(ev);
+				/* implicit `return undefined;` */
+			})
+			.one('keypress.dialog-close', '.ui-close', function (ev) {
 				// 13 is Enter/Return, 32 is Space.
 				if (ev.which === 13 || ev.which === 32) {
 					jQuery(this).trigger('click');

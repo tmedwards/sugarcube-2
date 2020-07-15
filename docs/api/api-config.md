@@ -100,7 +100,7 @@ Config.history.maxStates = 150;
 <!-- ***************************************************************************
 	Macros
 **************************************************************************** -->
-## Macros Settings ## {#config-api-macros}
+## Macros Settings {#config-api-macros}
 
 <!-- *********************************************************************** -->
 
@@ -144,11 +144,28 @@ This setting exists to prevent a misconfigured loop from making the browser unre
 Config.macros.maxLoopIterations = 5000;
 ```
 
+<!-- *********************************************************************** -->
+
+### `Config.macros.typeVisitedPassages` ↔ *boolean* (default: `true`) {#config-api-property-macros-typevisitedpassages}
+
+Determines whether the [`<<type>>` macro](#macros-macro-type) types out content on previously visited passages or simply outputs it immediately.
+
+#### Since:
+
+* `v2.32.0`
+
+#### Examples:
+
+```
+// Do not type on previously visited passages
+Config.macros.typeVisitedPassages = false;
+```
+
 
 <!-- ***************************************************************************
 	Navigation
 **************************************************************************** -->
-## Navigation Settings ## {#config-api-navigation}
+## Navigation Settings {#config-api-navigation}
 
 <!-- *********************************************************************** -->
 
@@ -186,13 +203,13 @@ Config.navigation.override = function (dest) {
 <!-- ***************************************************************************
 	Passages
 **************************************************************************** -->
-## Passages Settings ## {#config-api-passages}
+## Passages Settings {#config-api-passages}
 
 <!-- *********************************************************************** -->
 
 ### `Config.passages.descriptions` ↔ *boolean* | *object* | *function* (default: *none*) {#config-api-property-passages-descriptions}
 
-Determines whether alternate passage descriptions are used by the Saves and Rewind menus (by default an excerpt from the passage is used).  Valid values are boolean `true`, which simply causes the passages' titles to be used, an object, which maps passages' titles to their descriptions, or a function, which should return the passages' description.
+Determines whether alternate passage descriptions are used by the *Saves* and *Jump To* menus—by default an excerpt from the passage is used.  Valid values are boolean `true`, which simply causes the passages' titles to be used, an object, which maps passages' titles to their descriptions, or a function, which should return the passages' description.
 
 <div role="note"><b>Note:</b>
 <ul class="asnote">
@@ -341,7 +358,7 @@ At the very least you will need to specify a `.passage-out` style that defines t
 That probably won't be very pleasing to the eye, however, so you will likely need several styles to make something that looks half-decent.  For example, the following will give you a basic crossfade:
 
 ```
-#story {
+#passages {
 	position: relative;
 }
 .passage {
@@ -359,7 +376,7 @@ That probably won't be very pleasing to the eye, however, so you will likely nee
 <!-- ***************************************************************************
 	Saves
 **************************************************************************** -->
-## Saves Settings ## {#config-api-saves}
+## Saves Settings {#config-api-saves}
 
 <!-- *********************************************************************** -->
 

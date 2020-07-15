@@ -10,6 +10,12 @@
 /*
 	Default appearance styles.
 */
+@keyframes cursor-blink {
+	0% { opacity: 1; }
+	50% { opacity: 0; }
+	100% { opacity: 1; }
+}
+
 .macro-linkappend-insert,
 .macro-linkprepend-insert,
 .macro-linkreplace-insert,
@@ -29,4 +35,10 @@
 .macro-repeat-in,
 .macro-timed-in {
 	opacity: 0;
+}
+
+.macro-type-cursor:after {
+	animation: cursor-blink 1s infinite;
+	content: "\2590"; /* "\2588" */
+	opacity: 1;
 }

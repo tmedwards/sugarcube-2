@@ -442,11 +442,7 @@ var DebugBar = (() => { // eslint-disable-line no-unused-vars, no-var
 		case 'string':
 			return JSON.stringify(value);
 
-		// case 'symbol':
-		// 	return `Symbol\u202F"${String(value).slice(7, -1)}"`;
-
 		case 'function':
-			// return JSON.stringify(value.toString());
 			return 'Function';
 		}
 

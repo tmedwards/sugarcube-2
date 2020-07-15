@@ -262,7 +262,7 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 		(() => {
 			const storyStyle = document.createElement('style');
 
-			(new StyleWrapper(storyStyle))
+			new StyleWrapper(storyStyle)
 				.add(_styles.map(style => style.text.trim()).join('\n'));
 
 			jQuery(storyStyle)

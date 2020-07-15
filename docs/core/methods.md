@@ -10,7 +10,7 @@ For more information see:
 * [MDN's JavaScript reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference) for native JavaScript object methods—and more.
 * [jQuery API reference](https://api.jquery.com/) for native jQuery methods.
 
-Additionally.  SugarCube includes polyfills for virtually all JavaScript (ECMAScript) 5 &amp; 6 native object methods, so they may be safely used even if your project will be used in older browsers that do not natively support them.
+Additionally.  SugarCube includes polyfills for virtually all JavaScript (ECMAScript) 5 &amp; 6 native object methods—via the [es5-shim](https://github.com/es-shims/es5-shim/) and [es6-shim](https://github.com/paulmillr/es6-shim/) polyfill libraries (shims only, no shams)—so they may be safely used even if your project will be played in ancient browsers that do not natively support them.
 
 
 <!-- ***************************************************************************

@@ -689,7 +689,7 @@ var Scripting = (() => { // eslint-disable-line no-unused-vars, no-var
 		their native JavaScript counterparts.
 	*/
 	const parse = (() => {
-		const parseMap = Object.freeze({
+		const tokenTable = Util.toEnum({
 			/* eslint-disable quote-props */
 			// Story $variable sigil-prefix.
 			'$'     : 'State.variables.',
@@ -723,7 +723,10 @@ var Scripting = (() => { // eslint-disable-line no-unused-vars, no-var
 			'([=+\\-*\\/%<>&\\|\\^~!?:,;\\(\\)\\[\\]{}]+)',       // 4=Operator delimiters
 			'([^"\'=+\\-*\\/%<>&\\|\\^~!?:,;\\(\\)\\[\\]{}\\s]+)' // 5=Barewords
 		].join('|'), 'g');
-		const varTest = new RegExp(`^${Patterns.variable}`);
+		const notSpaceRe      = /\S/;
+		const varTest         = new RegExp(`^${Patterns.variable}`);
+		const withColonTestRe = /^\s*:/;
+		const withNotTestRe   = /^\s+not\b/;
 
 		function parse(rawCodeString) {
 			if (parseRe.lastIndex !== 0) {
@@ -736,60 +739,56 @@ var Scripting = (() => { // eslint-disable-line no-unused-vars, no-var
 			while ((match = parseRe.exec(code)) !== null) {
 				// no-op: Empty quotes | Double quoted | Single quoted | Operator delimiters
 
-				/*
-					Barewords.
-				*/
+				// Barewords.
 				if (match[5]) {
 					let token = match[5];
 
-					/*
-						If the token is simply a dollar-sign or underscore, then it's either
-						just the raw character or, probably, a function alias, so skip it.
-					*/
+					// If the token is simply a dollar-sign or underscore, then it's either
+					// just the raw character or, probably, a function alias, so skip it.
 					if (token === '$' || token === '_') {
 						continue;
 					}
 
-					/*
-						If the token is a story $variable or temporary _variable, reset it
-						to just its sigil—for later mapping.
-					*/
+					// If the token is a story $variable or temporary _variable, reset it
+					// to just its sigil—for later mapping.
 					else if (varTest.test(token)) {
 						token = token[0];
 					}
 
-					/*
-						If the token is `is`, check to see if it's followed by `not`, if so,
-						convert them into the `isnot` operator.
-
-						NOTE: This is a safety feature, since `$a is not $b` probably sounds
-						reasonable to most users.
-					*/
+					// If the token is `is`, check to see if it's followed by `not`, if so,
+					// convert them into the `isnot` operator.
+					//
+					// NOTE: This is a safety feature, since `$a is not $b` probably sounds
+					// reasonable to most users.
 					else if (token === 'is') {
 						const start = parseRe.lastIndex;
-						const part  = code.slice(start);
+						const ahead = code.slice(start);
 
-						if (/^\s+not\b/.test(part)) {
-							code = code.splice(start, part.search(/\S/));
+						if (withNotTestRe.test(ahead)) {
+							code = code.splice(start, ahead.search(notSpaceRe));
 							token = 'isnot';
 						}
 					}
 
-					/*
-						If the finalized token has a mapping, replace it within the code string
-						with its counterpart.
+					// If the token is followed by a colon, then it's likely to be an object
+					// property, so skip it.
+					else {
+						const ahead = code.slice(parseRe.lastIndex);
 
-						NOTE: We must use `parseMap.hasOwnProperty(token)` here, rather than
-						simply using something like `parseMap[token]`, otherwise tokens which
-						match properties from the prototype chain will cause shenanigans.
-					*/
-					if (parseMap.hasOwnProperty(token)) {
+						if (withColonTestRe.test(ahead)) {
+							continue;
+						}
+					}
+
+					// If the finalized token has a mapping, replace it within the code string
+					// with its counterpart.
+					if (tokenTable[token]) {
 						code = code.splice(
-							match.index,    // starting index
-							token.length,   // replace how many
-							parseMap[token] // replacement string
+							match.index,      // starting index
+							token.length,     // replace how many
+							tokenTable[token] // replacement string
 						);
-						parseRe.lastIndex += parseMap[token].length - token.length;
+						parseRe.lastIndex += tokenTable[token].length - token.length;
 					}
 				}
 			}
@@ -808,19 +807,21 @@ var Scripting = (() => { // eslint-disable-line no-unused-vars, no-var
 	/*
 		Evaluates the given JavaScript code and returns the result, throwing if there were errors.
 	*/
-	function evalJavaScript(code, output) {
-		return (function (code, output) {
+	function evalJavaScript(code, output, data) {
+		return (function (code, output, evalJavaScript$Data$) {
 			return eval(code);
-		}).call(output ? { output } : null, String(code), output);
+		}).call(output ? { output } : null, String(code), output, data);
 	}
 
 	/*
 		Evaluates the given TwineScript code and returns the result, throwing if there were errors.
 	*/
-	function evalTwineScript(code, output) {
-		return (function (code, output) {
+	function evalTwineScript(code, output, data) {
+		// NOTE: Do not move the dollar sign to the front of `evalTwineScript$Data$`,
+		// as `parse()` will break references to it within the code string.
+		return (function (code, output, evalTwineScript$Data$) {
 			return eval(code);
-		}).call(output ? { output } : null, parse(String(code)), output);
+		}).call(output ? { output } : null, parse(String(code)), output, data);
 	}
 	/* eslint-enable no-eval, no-extra-parens, no-unused-vars */
 

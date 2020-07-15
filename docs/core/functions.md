@@ -73,6 +73,10 @@ either($letters, $numerals)  → Returns a random value from the whole list—i.
 
 Removes the specified key, and its associated value, from the story metadata store.
 
+<p role="note" class="see"><b>See Also:</b>
+<a href="#functions-function-memorize"><code>memorize()</code></a>, <a href="#functions-function-recall"><code>recall()</code></a>.
+</p>
+
 #### Since:
 
 * `v2.29.0`
@@ -314,6 +318,10 @@ The story metadata store <strong><em>is not</em></strong>, and should not be use
 This feature is largely incompatible with private browsing modes, which cause all in-browser storage mechanisms to either persist only for the lifetime of the browsing session or fail outright.
 </p>
 
+<p role="note" class="see"><b>See Also:</b>
+<a href="#functions-function-forget"><code>forget()</code></a>, <a href="#functions-function-recall"><code>recall()</code></a>.
+</p>
+
 #### Since:
 
 * `v2.29.0`
@@ -348,7 +356,7 @@ Returns the title of the active (present) passage.
 #### Examples:
 
 ```
-<<if passage() is "Café">>…the current passage is the Café passage…<</if>>
+<<if passage() is "Café">>…the active passage is the Café passage…<</if>>
 ```
 
 <!-- *********************************************************************** -->
@@ -430,6 +438,10 @@ randomFloat(1.0, 6.0)  → Returns a number in the range 1.0–5.9999999…
 
 Returns the value associated with the specified key from the story metadata store or, if no such key exists, the specified default value, if any.
 
+<p role="note" class="see"><b>See Also:</b>
+<a href="#functions-function-forget"><code>forget()</code></a>, <a href="#functions-function-memorize"><code>memorize()</code></a>.
+</p>
+
 #### Since:
 
 * `v2.29.0`
@@ -491,12 +503,12 @@ Returns a new array consisting of all of the tags of the given passages.
 
 #### Parameters:
 
-* **`passages`:** (optional, *string* | *string array*) The passages from which to collect tags.  May be a list or an array of passages.  If omitted, will default to the current passage.
+* **`passages`:** (optional, *string* | *string array*) The passages from which to collect tags.  May be a list or an array of passages.  If omitted, will default to the active (present) passage—included passages do not count for this purpose; e.g., passages pulled in via `<<include>>`, `PassageHeader`, etc.
 
 #### Examples:
 
 ```
-<<if tags().includes("forest")>>…the current passage is part of the forest…<</if>>
+<<if tags().includes("forest")>>…the active passage is part of the forest…<</if>>
 <<if tags("Lonely Glade").includes("forest")>>…the Lonely Glade passage is part of the forest…<</if>>
 ```
 

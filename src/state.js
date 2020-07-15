@@ -6,7 +6,7 @@
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* global Config, Diff, Engine, PRNGWrapper, Patterns, clone, session, storage */
+/* global Config, Diff, Engine, PRNGWrapper, Scripting, clone, session, storage */
 
 var State = (() => { // eslint-disable-line no-unused-vars, no-var
 	'use strict';
@@ -613,102 +613,24 @@ var State = (() => { // eslint-disable-line no-unused-vars, no-var
 	/*
 		Returns the value of the given story/temporary variable.
 	*/
-	function variableGet(name) {
-		const varData = _parseVariableChain(name);
-
-		if (varData === null) {
-			return;
+	function variableGet(varExpression) {
+		try {
+			return Scripting.evalTwineScript(varExpression);
 		}
-
-		const pNames = varData.names;
-		let retVal = varData.store;
-
-		for (let i = 0, iend = pNames.length; i < iend; ++i) {
-			if (typeof retVal[pNames[i]] === 'undefined') {
-				return;
-			}
-
-			retVal = retVal[pNames[i]];
-		}
-
-		return retVal;
+		catch (ex) { /* no-op */ }
 	}
 
 	/*
 		Sets the value of the given story/temporary variable.
 	*/
-	function variableSet(name, value) {
-		const varData = _parseVariableChain(name);
-
-		if (varData === null) {
-			return false;
+	function variableSet(varExpression, value) {
+		try {
+			Scripting.evalTwineScript(`${varExpression} = evalTwineScript$Data$`, null, value);
+			return true;
 		}
+		catch (ex) { /* no-op */ }
 
-		const pNames  = varData.names;
-		const varName = pNames.pop();
-		let baseObj = varData.store;
-
-		for (let i = 0, iend = pNames.length; i < iend; ++i) {
-			if (typeof baseObj[pNames[i]] === 'undefined') {
-				return false;
-			}
-
-			baseObj = baseObj[pNames[i]];
-		}
-
-		baseObj[varName] = value;
-		return true;
-	}
-
-	/*
-		Returns the property name chain of the given story/temporary variable,
-		which may be of arbitrary complexity.
-	*/
-	const _parseVarRegExp = new RegExp(`^(?:${Patterns.variableSigil}(${Patterns.identifier})|\\.(${Patterns.identifier})|\\[(?:(?:"((?:\\\\.|[^"\\\\])+)")|(?:'((?:\\\\.|[^'\\\\])+)')|(${Patterns.variableSigil}${Patterns.identifierFirstChar}.*)|(\\d+))\\])`);
-	function _parseVariableChain(varText) {
-		const retVal = {
-			store : varText[0] === '$' ? State.variables : State.temporary,
-			names : []
-		};
-		let text  = varText;
-		let match;
-
-		while ((match = _parseVarRegExp.exec(text)) !== null) {
-			// Remove full match from text.
-			text = text.slice(match[0].length);
-
-			// Base variable.
-			if (match[1]) {
-				retVal.names.push(match[1]);
-			}
-
-			// Dot property.
-			else if (match[2]) {
-				retVal.names.push(match[2]);
-			}
-
-			// Square-bracketed property (double quoted).
-			else if (match[3]) {
-				retVal.names.push(match[3]);
-			}
-
-			// Square-bracketed property (single quoted).
-			else if (match[4]) {
-				retVal.names.push(match[4]);
-			}
-
-			// Square-bracketed property (embedded variable).
-			else if (match[5]) {
-				retVal.names.push(variableGet(match[5]));
-			}
-
-			// Square-bracketed property (numeric index).
-			else if (match[6]) {
-				retVal.names.push(Number(match[6]));
-			}
-		}
-
-		return text === '' ? retVal : null;
+		return false;
 	}
 
 
