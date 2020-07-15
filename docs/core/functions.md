@@ -73,6 +73,10 @@ either($letters, $numerals)  → Returns a random value from the whole list—i.
 
 Removes the specified key, and its associated value, from the story metadata store.
 
+<p role="note" class="see"><b>See Also:</b>
+<a href="#functions-function-memorize"><code>memorize()</code></a>, <a href="#functions-function-recall"><code>recall()</code></a>.
+</p>
+
 #### Since:
 
 * `v2.29.0`
@@ -314,6 +318,10 @@ The story metadata store <strong><em>is not</em></strong>, and should not be use
 This feature is largely incompatible with private browsing modes, which cause all in-browser storage mechanisms to either persist only for the lifetime of the browsing session or fail outright.
 </p>
 
+<p role="note" class="see"><b>See Also:</b>
+<a href="#functions-function-forget"><code>forget()</code></a>, <a href="#functions-function-recall"><code>recall()</code></a>.
+</p>
+
 #### Since:
 
 * `v2.29.0`
@@ -429,6 +437,10 @@ randomFloat(1.0, 6.0)  → Returns a number in the range 1.0–5.9999999…
 ### `recall(key [, defaultValue])` → *any* {#functions-function-recall}
 
 Returns the value associated with the specified key from the story metadata store or, if no such key exists, the specified default value, if any.
+
+<p role="note" class="see"><b>See Also:</b>
+<a href="#functions-function-forget"><code>forget()</code></a>, <a href="#functions-function-memorize"><code>memorize()</code></a>.
+</p>
 
 #### Since:
 
