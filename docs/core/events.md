@@ -622,7 +622,7 @@ Global event triggered when all `<<type>>` macros within a passage have complete
 #### Examples:
 
 ```
-/* Execute the handler function exactly once, since it's only fired once. */
+/* Execute the handler function when the event triggers. */
 $(document).on(':typingcomplete', function (ev) {
 	/* JavaScript code */
 });

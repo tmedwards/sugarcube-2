@@ -470,10 +470,14 @@ Countdown: <span id="countdown">$seconds seconds remaining</span>!\
 
 ### `<<type speed [start delay] [keep|none]>> … <</type>>` {#macros-macro-type}
 
-Outputs its contents a character—technically, a code point—at a time, mimicking a teletype/typewriter.  Can type most content, including links, markup, macros, etc.
+Outputs its contents a character—technically, a code point—at a time, mimicking a teletype/typewriter.  Can type most content: links, markup, macros, etc.
 
 <p role="note" class="warning"><b>Warning:</b>
 Interactions with macros or other code that inject content only after some external action or period—e.g., <code>&lt;&lt;linkreplace&gt;&gt;</code>, <code>&lt;&lt;timed&gt;&gt;</code>, etc.—may or may not behave as you'd expect.  Caution is advised.
+</p>
+
+<p role="note" class="see"><b>See Also:</b>
+<a href="#events-type-macro"><code>&lt;&lt;type&gt;&gt;</code> Events</a>.
 </p>
 
 #### Since:
