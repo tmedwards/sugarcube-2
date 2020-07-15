@@ -477,7 +477,7 @@ Interactions with macros or other code that inject content only after some exter
 </p>
 
 <p role="note" class="see"><b>See Also:</b>
-<a href="#events-type-macro"><code>&lt;&lt;type&gt;&gt;</code> Events</a>.
+<a href="#config-api-property-macros-typevisitedpassages"><code>Config.macros.typeVisitedPassages</code></a>, <a href="#events-type-macro"><code>&lt;&lt;type&gt;&gt;</code> Events</a>.
 </p>
 
 #### Since:
