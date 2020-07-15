@@ -259,6 +259,10 @@
 * [System Events](#events-system)
 	* [`:storyready`](#events-system-event-storyready)
 	* [`:enginerestart`](#events-startup-teardown-event-enginerestart)
+* [`<<type>>` Events](#events-type-macro)
+	* [`:typingcomplete`](#events-type-macro-event-typingcomplete)
+	* [`:typingstart`](#events-type-macro-event-typingstart)
+	* [`:typingstop`](#events-type-macro-event-typingstop)
 
 ----
 

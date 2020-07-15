@@ -598,3 +598,74 @@ $(document).one(':enginerestart', function (ev) {
 	/* JavaScript code */
 });
 ```
+
+
+<!-- ***************************************************************************
+	`<<type>>` Events
+**************************************************************************** -->
+## `<<type>>` Events {#events-type-macro}
+
+`<<type>>` macro events allow the execution of JavaScript code at specific points during typing.
+
+<!-- *********************************************************************** -->
+
+### `:typingcomplete` event {#events-type-macro-event-typingcomplete}
+
+Global event triggered when all `<<type>>` macros within a passage have completed.
+
+#### Since:
+
+* `v2.32.0`
+
+#### Event object properties: *none*
+
+#### Examples:
+
+```
+/* Execute the handler function exactly once, since it's only fired once. */
+$(document).on(':typingcomplete', function (ev) {
+	/* JavaScript code */
+});
+```
+
+<!-- *********************************************************************** -->
+
+### `:typingstart` event {#events-type-macro-event-typingstart}
+
+Global event triggered when the typing of a section starts.
+
+#### Since:
+
+* `v2.32.0`
+
+#### Event object properties: *none*
+
+#### Examples:
+
+```
+/* Execute the handler function when the event triggers. */
+$(document).on(':typingstart', function (ev) {
+	/* JavaScript code */
+});
+```
+
+<!-- *********************************************************************** -->
+
+### `:typingstop` event {#events-type-macro-event-typingstop}
+
+Global event triggered when the typing of a section stops.
+
+#### Since:
+
+* `v2.32.0`
+
+#### Event object properties: *none*
+
+#### Examples:
+
+```
+/* Execute the handler function when the event triggers. */
+$(document).on(':typingstop', function (ev) {
+	/* JavaScript code */
+});
+```
