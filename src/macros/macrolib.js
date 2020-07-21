@@ -463,18 +463,20 @@
 			// Set up our first run function variable.
 			let firstRunFn = null;
 
-			// If this is our first time being run this moment, set up the typing handler
-			// queue for all invocations, a `:passageinit` event handler to clean up after
-			// navigation, and a first run function to initiate typing—either by setting up
-			// a `:passageend` event handler to do so or by starting immediately, depending
-			// on whether the engine is 'playing' or not.
+			// First run initialization.
 			if (!TempState.macroTypeQueue) {
+				// Set up the typing handler queue for all invocations.
 				TempState.macroTypeQueue = [];
 
+				// Immediately clear any existing handlers from our namespace and set up a
+				// `:passageinit` event handler to clean up after navigation.
 				$(document)
 					.off(namespace)
 					.one(`:passageinit${namespace}`, () => $(document).off(namespace));
 
+				// Set up a function to initiate typing—either by setting up a `:passageend`
+				// event handler to do so or by starting immediately, depending on whether the
+				// engine is 'playing' or not.
 				firstRunFn = Engine.isPlaying()
 					? () => $(document).one(`:passageend${namespace}`, () => TempState.macroTypeQueue.shift()())
 					: () => TempState.macroTypeQueue.shift()();
