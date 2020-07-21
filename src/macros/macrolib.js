@@ -460,25 +460,28 @@
 				.addClass(`${className} ${className}-target`)
 				.appendTo(this.output);
 
+			// Set up our first run function variable.
+			let firstRunFn = null;
+
 			// If this is our first time being run this moment, set up the typing handler
-			// queue for all invocations and event handlers to initiate typing and clean up
-			// after navigation.
-			if (!TempState.macroType) {
-				TempState.macroType = {
-					idle  : false,
-					queue : []
-				};
+			// queue for all invocations, a `:passageinit` event handler to clean up after
+			// navigation, and a first run function to initiate typing—either by setting up
+			// a `:passageend` event handler to do so or by starting immediately, depending
+			// on whether the engine is 'playing' or not.
+			if (!TempState.macroTypeQueue) {
+				TempState.macroTypeQueue = [];
 
 				$(document)
 					.off(namespace)
-					.one(`:passageend${namespace}`, () => TempState.macroType.queue.shift()())
 					.one(`:passageinit${namespace}`, () => $(document).off(namespace));
+
+				firstRunFn = Engine.isPlaying()
+					? () => $(document).one(`:passageend${namespace}`, () => TempState.macroTypeQueue.shift()())
+					: () => TempState.macroTypeQueue.shift()();
 			}
 
 			// Push our typing handler onto the queue.
-			TempState.macroType.queue.push(() => {
-				TempState.macroType.idle = false;
-
+			TempState.macroTypeQueue.push(() => {
 				const $wrapper = jQuery(document.createElement('div'))
 					.addClass(className);
 
@@ -497,11 +500,8 @@
 				) {
 					$target.replaceWith($wrapper);
 
-					if (TempState.macroType.queue.length === 0) {
-						TempState.macroType.idle = true;
-					}
-					else {
-						TempState.macroType.queue.shift()();
+					if (TempState.macroTypeQueue.length > 0) {
+						TempState.macroTypeQueue.shift()();
 					}
 
 					return;
@@ -538,14 +538,13 @@
 					})
 					.one(typingStopAndNS, () => {
 						// Return if the queue is empty.
-						if (TempState.macroType.queue.length === 0) {
-							TempState.macroType.idle = true;
+						if (TempState.macroTypeQueue.length === 0) {
 							jQuery.event.trigger(typingCompleteId);
 							return;
 						}
 
 						// Run the next typing handler in the queue.
-						TempState.macroType.queue.shift()();
+						TempState.macroTypeQueue.shift()();
 					});
 
 				// Set up the typing interval and start/stop event firing.
@@ -581,10 +580,9 @@
 				}
 			});
 
-			// If we get to this point and the typing handler queue is idle, then we been
-			// run late, so just run the next typing handler in the queue.
-			if (TempState.macroType.queue.length > 0 && TempState.macroType.idle) {
-				TempState.macroType.queue.shift()();
+			// If this is he first run, schedule typing start.
+			if (firstRunFn) {
+				firstRunFn();
 			}
 		}
 	});
