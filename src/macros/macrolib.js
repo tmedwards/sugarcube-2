@@ -1505,6 +1505,110 @@
 	});
 
 	/*
+		<<numberbox>> & <<textbox>>
+	*/
+	Macro.add(['numberbox', 'textbox'], {
+		isAsync : true,
+
+		handler() {
+			if (this.args.length < 2) {
+				const errors = [];
+				if (this.args.length < 1) { errors.push('variable name'); }
+				if (this.args.length < 2) { errors.push('default value'); }
+				return this.error(`no ${errors.join(' or ')} specified`);
+			}
+
+			// Ensure that the variable name argument is a string.
+			if (typeof this.args[0] !== 'string') {
+				return this.error('variable name argument is not a string');
+			}
+
+			const varName = this.args[0].trim();
+
+			// Try to ensure that we receive the variable's name (incl. sigil), not its value.
+			if (varName[0] !== '$' && varName[0] !== '_') {
+				return this.error(`variable name "${this.args[0]}" is missing its sigil ($ or _)`);
+			}
+
+			// Custom debug view setup.
+			if (Config.debug) {
+				this.debugView.modes({ block : true });
+			}
+
+			const asNumber     = this.name === 'numberbox';
+			const defaultValue = asNumber ? Number(this.args[1]) : this.args[1];
+
+			if (asNumber && Number.isNaN(defaultValue)) {
+				return this.error(`default value "${this.args[1]}" is neither a number nor can it be parsed into a number`);
+			}
+
+			const varId = Util.slugify(varName);
+			const el    = document.createElement('input');
+			let autofocus = false;
+			let passage;
+
+			if (this.args.length > 3) {
+				passage   = this.args[2];
+				autofocus = this.args[3] === 'autofocus';
+			}
+			else if (this.args.length > 2) {
+				if (this.args[2] === 'autofocus') {
+					autofocus = true;
+				}
+				else {
+					passage = this.args[2];
+				}
+			}
+
+			if (typeof passage === 'object') {
+				// Argument was in wiki link syntax.
+				passage = passage.link;
+			}
+
+			// Set up and append the input element to the output buffer.
+			jQuery(el)
+				.attr({
+					id       : `${this.name}-${varId}`,
+					name     : `${this.name}-${varId}`,
+					type     : asNumber ? 'number' : 'text',
+					tabindex : 0 // for accessiblity
+				})
+				.addClass(`macro-${this.name}`)
+				.on('change.macros', this.createShadowWrapper(function () {
+					State.setVar(varName, asNumber ? Number(this.value) : this.value);
+				}))
+				.on('keypress.macros', this.createShadowWrapper(function (ev) {
+					// If Return/Enter is pressed, set the variable and, optionally, forward to another passage.
+					if (ev.which === 13) { // 13 is Return/Enter
+						ev.preventDefault();
+						State.setVar(varName, asNumber ? Number(this.value) : this.value);
+
+						if (passage != null) { // lazy equality for null
+							Engine.play(passage);
+						}
+					}
+				}))
+				.appendTo(this.output);
+
+			// Set the variable and input element to the default value.
+			State.setVar(varName, defaultValue);
+			el.value = defaultValue;
+
+			// Autofocus the input element, if requested.
+			if (autofocus) {
+				// Set the element's "autofocus" attribute.
+				el.setAttribute('autofocus', 'autofocus');
+
+				// Set up a single-use post-display task to autofocus the element.
+				postdisplay[`#autofocus:${el.id}`] = task => {
+					delete postdisplay[task]; // single-use task
+					setTimeout(() => el.focus(), Engine.minDomActionDelay);
+				};
+			}
+		}
+	});
+
+	/*
 		<<radiobutton>>
 	*/
 	Macro.add('radiobutton', {
@@ -1644,110 +1748,6 @@
 			/*
 				Autofocus the textarea element, if requested.
 			*/
-			if (autofocus) {
-				// Set the element's "autofocus" attribute.
-				el.setAttribute('autofocus', 'autofocus');
-
-				// Set up a single-use post-display task to autofocus the element.
-				postdisplay[`#autofocus:${el.id}`] = task => {
-					delete postdisplay[task]; // single-use task
-					setTimeout(() => el.focus(), Engine.minDomActionDelay);
-				};
-			}
-		}
-	});
-
-	/*
-		<<numberbox>> & <<textbox>>
-	*/
-	Macro.add(['numberbox', 'textbox'], {
-		isAsync : true,
-
-		handler() {
-			if (this.args.length < 2) {
-				const errors = [];
-				if (this.args.length < 1) { errors.push('variable name'); }
-				if (this.args.length < 2) { errors.push('default value'); }
-				return this.error(`no ${errors.join(' or ')} specified`);
-			}
-
-			// Ensure that the variable name argument is a string.
-			if (typeof this.args[0] !== 'string') {
-				return this.error('variable name argument is not a string');
-			}
-
-			const varName = this.args[0].trim();
-
-			// Try to ensure that we receive the variable's name (incl. sigil), not its value.
-			if (varName[0] !== '$' && varName[0] !== '_') {
-				return this.error(`variable name "${this.args[0]}" is missing its sigil ($ or _)`);
-			}
-
-			// Custom debug view setup.
-			if (Config.debug) {
-				this.debugView.modes({ block : true });
-			}
-
-			const asNumber     = this.name === 'numberbox';
-			const defaultValue = asNumber ? Number(this.args[1]) : this.args[1];
-
-			if (asNumber && Number.isNaN(defaultValue)) {
-				return this.error(`default value "${this.args[1]}" is neither a number nor can it be parsed into a number`);
-			}
-
-			const varId = Util.slugify(varName);
-			const el    = document.createElement('input');
-			let autofocus = false;
-			let passage;
-
-			if (this.args.length > 3) {
-				passage   = this.args[2];
-				autofocus = this.args[3] === 'autofocus';
-			}
-			else if (this.args.length > 2) {
-				if (this.args[2] === 'autofocus') {
-					autofocus = true;
-				}
-				else {
-					passage = this.args[2];
-				}
-			}
-
-			if (typeof passage === 'object') {
-				// Argument was in wiki link syntax.
-				passage = passage.link;
-			}
-
-			// Set up and append the input element to the output buffer.
-			jQuery(el)
-				.attr({
-					id       : `${this.name}-${varId}`,
-					name     : `${this.name}-${varId}`,
-					type     : 'text',
-					tabindex : 0 // for accessiblity
-				})
-				.addClass(`macro-${this.name}`)
-				.on('change.macros', this.createShadowWrapper(function () {
-					State.setVar(varName, asNumber ? Number(this.value) : this.value);
-				}))
-				.on('keypress.macros', this.createShadowWrapper(function (ev) {
-					// If Return/Enter is pressed, set the variable and, optionally, forward to another passage.
-					if (ev.which === 13) { // 13 is Return/Enter
-						ev.preventDefault();
-						State.setVar(varName, asNumber ? Number(this.value) : this.value);
-
-						if (passage != null) { // lazy equality for null
-							Engine.play(passage);
-						}
-					}
-				}))
-				.appendTo(this.output);
-
-			// Set the variable and input element to the default value.
-			State.setVar(varName, defaultValue);
-			el.value = defaultValue;
-
-			// Autofocus the input element, if requested.
 			if (autofocus) {
 				// Set the element's "autofocus" attribute.
 				el.setAttribute('autofocus', 'autofocus');
