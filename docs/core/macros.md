@@ -468,12 +468,12 @@ Countdown: <span id="countdown">$seconds seconds remaining</span>!\
 
 <!-- *********************************************************************** -->
 
-### `<<type speed [start delay] [keep|none]>> … <</type>>` {#macros-macro-type}
+### `<<type speed [start delay] [element tagName] [keep|none]>> … <</type>>` {#macros-macro-type}
 
 Outputs its contents a character—technically, a code point—at a time, mimicking a teletype/typewriter.  Can type most content: links, markup, macros, etc.
 
 <p role="note" class="warning"><b>Warning:</b>
-Interactions with macros or other code that inject content only after some external action or period—e.g., <code>&lt;&lt;linkreplace&gt;&gt;</code>, <code>&lt;&lt;timed&gt;&gt;</code>, etc.—may or may not behave as you'd expect.  Caution is advised.
+Interactions with macros or other code that inject content only after some external action or period—e.g., <code>&lt;&lt;linkreplace&gt;&gt;</code>, <code>&lt;&lt;timed&gt;&gt;</code>, etc.—may or may not behave as you'd expect.  Testing is <strong><em>strongly</em></strong> advised.
 </p>
 
 <p role="note" class="see"><b>See Also:</b>
@@ -482,12 +482,14 @@ Interactions with macros or other code that inject content only after some exter
 
 #### Since:
 
-* `v2.32.0`
+* `v2.32.0`: Basic syntax.
+* `v2.33.0`: Added `element` option.
 
 #### Arguments:
 
 * **`speed`:** The rate at which characters are typed, as a valid [CSS time value](https://developer.mozilla.org/en-US/docs/Web/CSS/time)—e.g., `1s` and `40ms`.  Values in the range `20–60ms` are a good starting point.
 * **`start` *`delay`*:** (optional) The amount of time to delay the start of typing, as a valid [CSS time value](https://developer.mozilla.org/en-US/docs/Web/CSS/time)—e.g., `5s` and `500ms`.  If omitted, defaults to `400ms`.
+* **`element` *`tagName`*:** (optional) The element to use as the typing container—e.g., `div` and `span`.  If omitted, defaults to `div`.
 * **`keep`:** (optional) Keyword, used to signify that the cursor should be kept after typing is complete.
 * **`none`:** (optional) Keyword, used to signify that the cursor should not be used at all.
 
@@ -500,6 +502,10 @@ Interactions with macros or other code that inject content only after some exter
 
 <<type 40ms start 2s>>
 	Type characters from this content every 40 milliseconds, starting after a 2 second delay.
+<</type>>
+
+<<type 40ms element "span">>
+	Type characters from this content every 40 milliseconds, using a <span> as the typing container.
 <</type>>
 
 <<type 40ms keep>>
