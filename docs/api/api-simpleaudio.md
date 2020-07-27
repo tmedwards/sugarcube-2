@@ -124,7 +124,7 @@ SimpleAudio.muteOnHidden(false);
 
 <!-- *********************************************************************** -->
 
-### `SimpleAudio.select(selector)` → *`AudioRunner` object* | *null* {#simpleaudio-api-method-select}
+### `SimpleAudio.select(selector)` → *`AudioRunner` object* {#simpleaudio-api-method-select}
 
 Returns an [`AudioRunner` instance](#audiorunner-api) for the tracks matching the given selector.
 
