@@ -384,7 +384,7 @@
 	});
 
 	/*
-		<<type speed [start delay] [keep|none]>>
+		<<type speed [start delay] [element tagName] [keep|none]>>
 	*/
 	Macro.add('type', {
 		isAsync : true,
@@ -401,16 +401,31 @@
 				return this.error(`speed time value must be non-negative (received: ${this.args[0]})`);
 			}
 
-			let start  = 400; // in milliseconds
 			let cursor;
+			let tagName = 'div';
+			let start   = 400; // in milliseconds
 
 			// Process optional arguments.
-			const args = this.args.slice(1);
+			const options = this.args.slice(1);
 
-			while (args.length > 0) {
-				const arg = args.shift();
+			while (options.length > 0) {
+				const option = options.shift();
 
-				switch (arg) {
+				switch (option) {
+				case 'element': {
+					if (options.length === 0) {
+						return this.error('element option missing required element tag name');
+					}
+
+					tagName = options.shift();
+
+					if (tagName === '') {
+						throw new Error('element option tag name must be non-empty (received: "")');
+					}
+
+					break;
+				}
+
 				case 'keep':
 					cursor = 'keep';
 					break;
@@ -420,22 +435,22 @@
 					break;
 
 				case 'start': {
-					if (args.length === 0) {
-						return this.error('start missing required time value');
+					if (options.length === 0) {
+						return this.error('start option missing required time value');
 					}
 
-					const value = args.shift();
+					const value = options.shift();
 					start = Util.fromCssTime(value);
 
 					if (start < 0) {
-						throw new Error(`start time value must be non-negative (received: ${value})`);
+						throw new Error(`start option time value must be non-negative (received: ${value})`);
 					}
 
 					break;
 				}
 
 				default:
-					return this.error(`unknown argument: ${arg}`);
+					return this.error(`unknown option: ${option}`);
 				}
 			}
 
@@ -456,7 +471,7 @@
 			const namespace = `.${className}`;
 
 			// Create a target to be later replaced by the typing wrapper.
-			const $target = jQuery(document.createElement('div'))
+			const $target = jQuery(document.createElement(tagName))
 				.addClass(`${className} ${className}-target`)
 				.appendTo(this.output);
 
@@ -484,7 +499,7 @@
 
 			// Push our typing handler onto the queue.
 			TempState.macroTypeQueue.push(() => {
-				const $wrapper = jQuery(document.createElement('div'))
+				const $wrapper = jQuery(document.createElement(tagName))
 					.addClass(className);
 
 				new Wikifier($wrapper, contents);
