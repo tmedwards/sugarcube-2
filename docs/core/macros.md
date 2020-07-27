@@ -969,14 +969,14 @@ Interactive macros are both asynchronous and require interaction from the player
 
 ### `<<button linkText [passageName]>> … <</button>>`<br>`<<button linkMarkup>> … <</button>>`<br>`<<button imageMarkup>> … <</button>>` {#macros-macro-button}
 
-Creates a button that silently executes its contents when clicked, optionally forwarding the player to another passage.  May be called either with the link text and passage name as separate arguments, with a link markup, or with an image markup.  This macro is functionally identical to [`<<link>>`](#macros-macro-link), save that it uses a button element (`<button>`) rather than an anchor element (`<a>`).
+Creates a button that silently executes its contents when clicked, optionally forwarding the player to another passage.  May be called either with the link text and passage name as separate arguments, with a link markup, or with an image markup.
 
 <p role="note" class="see"><b>See:</b>
 <a href="#macros-interactive-warning">Interactive macro warning</a>.
 </p>
 
 <p role="note"><b>Note:</b>
-If you simply need a passage link that modifies variables, both the <a href="#markup-link">link markup</a> and <a href="#markup-image">image markup</a> offer setter variants.
+This macro is functionally identical to <a href="#macros-macro-link">&lt;&lt;link&gt;&gt;</a>, save that it uses a button element (<code>&lt;button&gt;</code>) rather than an anchor element (<code>&lt;a&gt;</code>).
 </p>
 
 #### Since:
