@@ -477,19 +477,21 @@ Config.saves.isAllowed = function () {
 
 Performs any required pre-processing before the save data is loaded—e.g., upgrading out-of-date save data.  The callback is passed one parameter, the save object to be processed.  If it encounters an unrecoverable problem during its processing, it may throw an exception containing an error message; the message will be displayed to the player and loading of the save will be terminated.
 
-<p role="note"><b>Note:</b>
-See the <a href="#save-api-save-objects">save objects</a> section of the <a href="#save-api">Save API</a> for information on the format of a save.
-</p>
-
 #### Since:
 
 * `v2.0.0`
+
+#### Save object:
+
+<p role="note"><b>Note:</b>
+See the <a href="#save-api-save-objects">save objects</a> section of the <a href="#save-api">Save API</a> for information on the format of a save.
+</p>
 
 #### Examples:
 
 ```
 Config.saves.onLoad = function (save) {
-	/* code */
+	/* code to pre-process the save object */
 };
 ```
 
