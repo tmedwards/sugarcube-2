@@ -6,10 +6,18 @@
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* global Config, Dialog, Engine, L10n, State, Story, UI, storage */
+/* global Config, Dialog, Engine, L10n, State, Story, UI, Util, storage */
 
 var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 	'use strict';
+
+	// Save operation type pseudo-enumeration.
+	const Type = Util.toEnum({
+		Autosave  : 'autosave',
+		Disk      : 'disk',
+		Serialize : 'serialize',
+		Slot      : 'slot'
+	});
 
 	// The upper bound of the saves slots.
 	let _slotsUBound = -1;
@@ -168,7 +176,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			supplemental.metadata = metadata;
 		}
 
-		saves.autosave = _marshal(supplemental);
+		saves.autosave = _marshal(supplemental, { type : Type.Autosave });
 
 		return _savesObjSave(saves);
 	}
@@ -284,7 +292,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			supplemental.metadata = metadata;
 		}
 
-		saves.slots[slot] = _marshal(supplemental);
+		saves.slots[slot] = _marshal(supplemental, { type : Type.Slot });
 
 		return _savesObjSave(saves);
 	}
@@ -352,7 +360,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 		const baseName     = filename == null ? Story.domId : legalizeName(filename); // lazy equality for null
 		const saveName     = `${baseName}-${datestamp()}.save`;
 		const supplemental = metadata == null ? {} : { metadata }; // lazy equality for null
-		const saveObj      = LZString.compressToBase64(JSON.stringify(_marshal(supplemental)));
+		const saveObj      = LZString.compressToBase64(JSON.stringify(_marshal(supplemental, { type : Type.Disk })));
 		saveAs(new Blob([saveObj], { type : 'text/plain;charset=UTF-8' }), saveName);
 	}
 
@@ -403,7 +411,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 		}
 
 		const supplemental = metadata == null ? {} : { metadata }; // lazy equality for null
-		return LZString.compressToBase64(JSON.stringify(_marshal(supplemental)));
+		return LZString.compressToBase64(JSON.stringify(_marshal(supplemental, { type : Type.Serialize })));
 	}
 
 	function deserialize(base64Str) {
@@ -538,8 +546,8 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 		return updated;
 	}
 
-	function _marshal(supplemental) {
-		if (DEBUG) { console.log('[Save/_marshal()]'); }
+	function _marshal(supplemental, details) {
+		if (DEBUG) { console.log(`[Save/_marshal(…, { type : '${details.type}' })]`); }
 
 		if (supplemental != null && typeof supplemental !== 'object') { // lazy equality for null
 			throw new Error('supplemental parameter must be an object');
@@ -555,7 +563,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 		}
 
 		if (typeof Config.saves.onSave === 'function') {
-			Config.saves.onSave(saveObj);
+			Config.saves.onSave(saveObj, details);
 		}
 
 		// Delta encode the state history and delete the non-encoded property.
