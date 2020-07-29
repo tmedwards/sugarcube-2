@@ -481,6 +481,10 @@ Performs any required pre-processing before the save data is loaded—e.g., upgr
 
 * `v2.0.0`
 
+#### Callback parameters:
+
+* **`save`:** (*object*) The save object to be pre-processed.
+
 #### Save object:
 
 <p role="note"><b>Note:</b>
