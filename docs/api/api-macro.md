@@ -9,26 +9,26 @@
 
 <!-- *********************************************************************** -->
 
-### `Macro.add(name , definition [, deep])` {#macro-api-method-add}
+### `Macro.add(name , definition)` {#macro-api-method-add}
 
 Add new macro(s).
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Added.
+* `v2.33.0`: Obsoleted the `deep` parameter.
 
 #### Parameters:
 
 * **`name`:** (*string* | *string array*) Name, or array of names, of the macro(s) to add.  **NOTE:** Names must consist of characters from the basic Latin alphabet and start with a letter, which may be optionally followed by any number of letters, numbers, the underscore, or the hyphen.
 * **`definition`:** (*object* | *string*) Definition of the macro(s) or the name of an existing macro whose definition to copy.
-* **`deep`:** (optional, *boolean*) Enables deep cloning of the definition.  Used to give macros separate instances of the same definition.
 
 #### Definition object:
 
 A macro definition object should have some of the following properties (only `handler` is absolutely required):
 
-* **`skipArgs`:** (optional, *boolean*) Disables parsing argument strings into discrete arguments.  Used by macros that only use the raw/full argument strings.
-* **`tags`:** (optional, *null* | *string array*) Signifies that the macro is a container macro—i.e., not self-closing.  An array of the names of the child tags, or `null` if there are no child tags.
+* **`skipArgs`:** (optional, *boolean* | *string array*) Disables parsing argument strings into discrete arguments.  Used by macros that only use the raw/full argument strings.  Boolean `true` to affect all tags or an array of tag names to affect.
+* **`tags`:** (optional, *null* | *string array*) Signifies that the macro is a container macro—i.e., not self-closing.  An array child tag names or `null`, if there are no child tags.
 * **`handler`:** (*function*) The macro's main function.  It will be called without arguments, but with its `this` set to a [macro context object](#macrocontext-api).
 
 Additional properties may be added for internal use.
