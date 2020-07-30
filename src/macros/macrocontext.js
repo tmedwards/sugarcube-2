@@ -17,13 +17,14 @@ var MacroContext = (() => { // eslint-disable-line no-unused-vars, no-var
 	class MacroContext {
 		constructor(contextData) {
 			const context = Object.assign({
-				parent  : null,
-				macro   : null,
-				name    : '',
-				args    : null,
-				payload : null,
-				parser  : null,
-				source  : ''
+				parent      : null,
+				macro       : null,
+				name        : '',
+				displayName : '',
+				args        : null,
+				payload     : null,
+				parser      : null,
+				source      : ''
 			}, contextData);
 
 			if (context.macro === null || context.name === '' || context.parser === null) {
@@ -36,6 +37,10 @@ var MacroContext = (() => { // eslint-disable-line no-unused-vars, no-var
 				},
 
 				name : {
+					value : typeof context.macro._ALIAS_OF === 'undefined' ? context.name : context.macro._ALIAS_OF
+				},
+
+				displayName : {
 					value : context.name
 				},
 
@@ -251,7 +256,7 @@ var MacroContext = (() => { // eslint-disable-line no-unused-vars, no-var
 			this._debugView = new DebugView(
 				this._output,
 				'macro',
-				name ? name : this.name,
+				name ? name : this.displayName,
 				title ? title : this.source
 			);
 
@@ -273,7 +278,7 @@ var MacroContext = (() => { // eslint-disable-line no-unused-vars, no-var
 		}
 
 		error(message, source) {
-			return throwError(this._output, `<<${this.name}>>: ${message}`, source ? source : this.source);
+			return throwError(this._output, `<<${this.displayName}>>: ${message}`, source ? source : this.source);
 		}
 	}
 

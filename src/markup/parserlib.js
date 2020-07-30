@@ -137,7 +137,7 @@
 					if (macro) {
 						let payload = null;
 
-						if (macro.hasOwnProperty('tags')) {
+						if (typeof macro.tags !== 'undefined') {
 							payload = this.parseBody(w, macro);
 
 							if (!payload) {
@@ -158,7 +158,7 @@
 							/*
 								New-style macros.
 							*/
-							if (macro.hasOwnProperty('_MACRO_API')) {
+							if (typeof macro._MACRO_API !== 'undefined') {
 								/*
 									Add the macro's execution context to the context chain.
 								*/
@@ -223,7 +223,7 @@
 						else {
 							return throwError(
 								w.output,
-								`macro <<${name}>> handler function ${macro.hasOwnProperty('handler') ? 'is not a function' : 'does not exist'}`,
+								`macro <<${name}>> handler function ${typeof macro.handler === 'undefined' ? 'does not exist' : 'is not a function'}`,
 								w.source.slice(matchStart, w.nextMatch)
 							);
 						}
@@ -385,13 +385,13 @@
 		},
 
 		skipArgs(macro, tagName) {
-			if (macro.hasOwnProperty('skipArgs')) {
+			if (typeof macro.skipArgs !== 'undefined') {
 				const sa = macro.skipArgs;
 
 				return typeof sa === 'boolean' && sa || Array.isArray(sa) && sa.includes(tagName);
 			}
 			/* legacy */
-			else if (macro.hasOwnProperty('skipArg0')) {
+			else if (typeof macro.skipArg0 !== 'undefined') {
 				return macro.skipArg0 && macro.name === tagName;
 			}
 			/* /legacy */
