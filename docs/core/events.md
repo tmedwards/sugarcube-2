@@ -613,6 +613,10 @@ $(document).one(':enginerestart', function (ev) {
 
 Global event triggered when all `<<type>>` macros within a passage have completed.
 
+<p role="note"><b>Note:</b>
+Injecting additional <code>&lt;&lt;type&gt;&gt;</code> macro invocations <em>after</em> a <code>:typingcomplete</code> event has been fired will cause another event to eventually be generated, since you're creating a new sequence of typing.
+</p>
+
 #### Since:
 
 * `v2.32.0`
@@ -632,11 +636,12 @@ $(document).on(':typingcomplete', function (ev) {
 
 ### `:typingstart` event {#events-type-macro-event-typingstart}
 
-Global event triggered when the typing of a section starts.
+Local event triggered on the typing wrapper when the typing of a section starts.
 
 #### Since:
 
-* `v2.32.0`
+* `v2.32.0`: Added.
+* `v2.33.0`: Changed to a local event that bubbles up the DOM tree.
 
 #### Event object properties: *none*
 
@@ -653,11 +658,12 @@ $(document).on(':typingstart', function (ev) {
 
 ### `:typingstop` event {#events-type-macro-event-typingstop}
 
-Global event triggered when the typing of a section stops.
+Local event triggered on the typing wrapper when the typing of a section stops.
 
 #### Since:
 
-* `v2.32.0`
+* `v2.32.0`: Added.
+* `v2.33.0`: Changed to a local event that bubbles up the DOM tree.
 
 #### Event object properties: *none*
 

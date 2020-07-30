@@ -6,7 +6,7 @@
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* global Patterns, Scripting, clone, macros */
+/* global Patterns, Scripting, macros */
 
 var Macro = (() => { // eslint-disable-line no-unused-vars, no-var
 	'use strict';
@@ -24,9 +24,9 @@ var Macro = (() => { // eslint-disable-line no-unused-vars, no-var
 	/*******************************************************************************************************************
 		Macros Functions.
 	*******************************************************************************************************************/
-	function macrosAdd(name, def, deep) {
+	function macrosAdd(name, def) {
 		if (Array.isArray(name)) {
-			name.forEach(name => macrosAdd(name, def, deep));
+			name.forEach(name => macrosAdd(name, def));
 			return;
 		}
 
@@ -44,12 +44,21 @@ var Macro = (() => { // eslint-disable-line no-unused-vars, no-var
 		try {
 			if (typeof def === 'object') {
 				// Add the macro definition.
-				_macros[name] = deep ? clone(def) : def;
+				//
+				// NOTE: Since `macrosGet()` may return legacy macros, we add the `_MACRO_API`
+				// flag to (modern) API macros, so that the macro formatter will know how to
+				// call the macro.  This should be removed in v3.
+				_macros[name] = Object.assign(Object.create(null), def, { _MACRO_API : true });
 			}
 			else {
 				// Add the macro alias.
 				if (macrosHas(def)) {
-					_macros[name] = deep ? clone(_macros[def]) : _macros[def];
+					_macros[name] = Object.create(_macros[def], {
+						_ALIAS_OF : {
+							enumerable : true,
+							value      : def
+						}
+					});
 				}
 				else {
 					throw new Error(`cannot create alias of nonexistent macro <<${def}>>`);
@@ -57,14 +66,6 @@ var Macro = (() => { // eslint-disable-line no-unused-vars, no-var
 			}
 
 			Object.defineProperty(_macros, name, { writable : false });
-
-			/* legacy */
-			/*
-				Since `macrosGet()` may return legacy macros, we have to add a flag to (modern)
-				API macros, so that the macro formatter will know how to call the macro.
-			*/
-			_macros[name]._MACRO_API = true;
-			/* /legacy */
 		}
 		catch (ex) {
 			if (ex.name === 'TypeError') {
@@ -76,7 +77,7 @@ var Macro = (() => { // eslint-disable-line no-unused-vars, no-var
 		}
 
 		// Tags post-processing.
-		if (_macros[name].hasOwnProperty('tags')) {
+		if (typeof _macros[name].tags !== 'undefined') {
 			if (_macros[name].tags == null) { // lazy equality for null
 				tagsRegister(name);
 			}
@@ -97,7 +98,7 @@ var Macro = (() => { // eslint-disable-line no-unused-vars, no-var
 
 		if (macrosHas(name)) {
 			// Tags pre-processing.
-			if (_macros[name].hasOwnProperty('tags')) {
+			if (typeof _macros[name].tags !== 'undefined') {
 				tagsUnregister(name);
 			}
 

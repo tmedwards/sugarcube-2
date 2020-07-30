@@ -16,5 +16,5 @@ For the template that should be used as the basis of localizations, see the `l10
 * Polski (`pl.js`) – ciupac.
 * Português (Brazil) (`pt-BR.js`) – Janos Biro.
 * Português (Portugal) (`pt-PT.js`) – Magma.
-* Ру́сский (`ru.js`) – Konstantin Kitmanov, with assistance by: cheshiren.
+* Ру́сский (`ru.js`) – Konstantin Kitmanov.
 * Türkçe (`tr.js`) – Guena Varia.

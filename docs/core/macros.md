@@ -468,26 +468,30 @@ Countdown: <span id="countdown">$seconds seconds remaining</span>!\
 
 <!-- *********************************************************************** -->
 
-### `<<type speed [start delay] [keep|none]>> … <</type>>` {#macros-macro-type}
+### `<<type speed [start delay] [class classes] [element tag] [id ID] [keep|none]>> … <</type>>` {#macros-macro-type}
 
 Outputs its contents a character—technically, a code point—at a time, mimicking a teletype/typewriter.  Can type most content: links, markup, macros, etc.
 
 <p role="note" class="warning"><b>Warning:</b>
-Interactions with macros or other code that inject content only after some external action or period—e.g., <code>&lt;&lt;linkreplace&gt;&gt;</code>, <code>&lt;&lt;timed&gt;&gt;</code>, etc.—may or may not behave as you'd expect.  Caution is advised.
+Interactions with macros or other code that inject content only after some external action or period—e.g., <code>&lt;&lt;linkreplace&gt;&gt;</code>, <code>&lt;&lt;timed&gt;&gt;</code>, etc.—may or may not behave as you'd expect.  Testing is <strong><em>strongly</em></strong> advised.
 </p>
 
 <p role="note" class="see"><b>See Also:</b>
-<a href="#events-type-macro"><code>&lt;&lt;type&gt;&gt;</code> Events</a>.
+<a href="#config-api-property-macros-typevisitedpassages"><code>Config.macros.typeVisitedPassages</code></a>, <a href="#events-type-macro"><code>&lt;&lt;type&gt;&gt;</code> Events</a>.
 </p>
 
 #### Since:
 
-* `v2.32.0`
+* `v2.32.0`: Basic syntax.
+* `v2.33.0`: Added `class`, `element`, and `id` options and `macro-type-done` class.
 
 #### Arguments:
 
 * **`speed`:** The rate at which characters are typed, as a valid [CSS time value](https://developer.mozilla.org/en-US/docs/Web/CSS/time)—e.g., `1s` and `40ms`.  Values in the range `20–60ms` are a good starting point.
 * **`start` *`delay`*:** (optional) The amount of time to delay the start of typing, as a valid [CSS time value](https://developer.mozilla.org/en-US/docs/Web/CSS/time)—e.g., `5s` and `500ms`.  If omitted, defaults to `400ms`.
+* **`class` *`classes`*:** (optional) The space separated list of classes to be added to the typing container.
+* **`element` *`tag`*:** (optional) The element to use as the typing container—e.g., `div` and `span`.  If omitted, defaults to `div`.
+* **`id` *`ID`*:** (optional) The unique ID to be assigned to the typing container.
 * **`keep`:** (optional) Keyword, used to signify that the cursor should be kept after typing is complete.
 * **`none`:** (optional) Keyword, used to signify that the cursor should not be used at all.
 
@@ -500,6 +504,18 @@ Interactions with macros or other code that inject content only after some exter
 
 <<type 40ms start 2s>>
 	Type characters from this content every 40 milliseconds, starting after a 2 second delay.
+<</type>>
+
+<<type 40ms class "foo bar">>
+	Type characters from this content every 40 milliseconds, adding classes to the typing container.
+<</type>>
+
+<<type 40ms element "span">>
+	Type characters from this content every 40 milliseconds, using a <span> as the typing container.
+<</type>>
+
+<<type 40ms id "type01">>
+	Type characters from this content every 40 milliseconds, assigning an ID to the typing container.
 <</type>>
 
 <<type 40ms keep>>
@@ -517,6 +533,8 @@ The typed text has no default styling.  If you want to change the font or color,
 	font-family: monospace, monospace;
 }
 ```
+
+There's also a `macro-type-done` class that is added to text that has finished typing, which may be used to style it differently from actively typing text.
 
 The default cursor is the block element character **Right Half Block (U+2590)** and it has no default font or color styling.  If you want to change the font, color, or character, then you'll need to change the styling of the `:after` pseudo-element of the `macro-type-cursor` class.  For example:
 
@@ -963,14 +981,14 @@ Interactive macros are both asynchronous and require interaction from the player
 
 ### `<<button linkText [passageName]>> … <</button>>`<br>`<<button linkMarkup>> … <</button>>`<br>`<<button imageMarkup>> … <</button>>` {#macros-macro-button}
 
-Creates a button that silently executes its contents when clicked, optionally forwarding the player to another passage.  May be called either with the link text and passage name as separate arguments, with a link markup, or with an image markup.  This macro is functionally identical to [`<<link>>`](#macros-macro-link), save that it uses a button element (`<button>`) rather than an anchor element (`<a>`).
+Creates a button that silently executes its contents when clicked, optionally forwarding the player to another passage.  May be called either with the link text and passage name as separate arguments, with a link markup, or with an image markup.
 
 <p role="note" class="see"><b>See:</b>
 <a href="#macros-interactive-warning">Interactive macro warning</a>.
 </p>
 
 <p role="note"><b>Note:</b>
-If you simply need a passage link that modifies variables, both the <a href="#markup-link">link markup</a> and <a href="#markup-image">image markup</a> offer setter variants.
+This macro is functionally identical to <a href="#macros-macro-link">&lt;&lt;link&gt;&gt;</a>, save that it uses a button element (<code>&lt;button&gt;</code>) rather than an anchor element (<code>&lt;a&gt;</code>).
 </p>
 
 #### Since:

@@ -384,7 +384,7 @@
 	});
 
 	/*
-		<<type speed [start delay] [keep|none]>>
+		<<type speed [start delay] [element tagName] [keep|none]>>
 	*/
 	Macro.add('type', {
 		isAsync : true,
@@ -401,16 +401,61 @@
 				return this.error(`speed time value must be non-negative (received: ${this.args[0]})`);
 			}
 
-			let start  = 400; // in milliseconds
 			let cursor;
+			let elClass = '';
+			let elId    = '';
+			let elTag   = 'div';
+			let start   = 400; // in milliseconds
 
 			// Process optional arguments.
-			const args = this.args.slice(1);
+			const options = this.args.slice(1);
 
-			while (args.length > 0) {
-				const arg = args.shift();
+			while (options.length > 0) {
+				const option = options.shift();
 
-				switch (arg) {
+				switch (option) {
+				case 'class': {
+					if (options.length === 0) {
+						return this.error('class option missing required class name(s)');
+					}
+
+					elClass = options.shift();
+
+					if (elClass === '') {
+						throw new Error('class option class name(s) must be non-empty (received: "")');
+					}
+
+					break;
+				}
+
+				case 'element': {
+					if (options.length === 0) {
+						return this.error('element option missing required element tag name');
+					}
+
+					elTag = options.shift();
+
+					if (elTag === '') {
+						throw new Error('element option tag name must be non-empty (received: "")');
+					}
+
+					break;
+				}
+
+				case 'id': {
+					if (options.length === 0) {
+						return this.error('id option missing required ID');
+					}
+
+					elId = options.shift();
+
+					if (elId === '') {
+						throw new Error('id option ID must be non-empty (received: "")');
+					}
+
+					break;
+				}
+
 				case 'keep':
 					cursor = 'keep';
 					break;
@@ -420,22 +465,22 @@
 					break;
 
 				case 'start': {
-					if (args.length === 0) {
-						return this.error('start missing required time value');
+					if (options.length === 0) {
+						return this.error('start option missing required time value');
 					}
 
-					const value = args.shift();
+					const value = options.shift();
 					start = Util.fromCssTime(value);
 
 					if (start < 0) {
-						throw new Error(`start time value must be non-negative (received: ${value})`);
+						throw new Error(`start option time value must be non-negative (received: ${value})`);
 					}
 
 					break;
 				}
 
 				default:
-					return this.error(`unknown argument: ${arg}`);
+					return this.error(`unknown option: ${option}`);
 				}
 			}
 
@@ -456,31 +501,39 @@
 			const namespace = `.${className}`;
 
 			// Create a target to be later replaced by the typing wrapper.
-			const $target = jQuery(document.createElement('div'))
+			const $target = jQuery(document.createElement(elTag))
 				.addClass(`${className} ${className}-target`)
 				.appendTo(this.output);
 
-			// If this is our first time being run this moment, set up the typing handler
-			// queue for all invocations and event handlers to initiate typing and clean up
-			// after navigation.
-			if (!TempState.macroType) {
-				TempState.macroType = {
-					idle  : false,
-					queue : []
-				};
+			// Initialize the queue and clean up handlers.
+			if (!TempState.macroTypeQueue) {
+				// Set up the typing handler queue for all invocations.
+				TempState.macroTypeQueue = [];
 
+				// Immediately clear any existing handlers from our namespace and set up a
+				// `:passageinit` event handler to clean up after navigation.
 				$(document)
 					.off(namespace)
-					.one(`:passageend${namespace}`, () => TempState.macroType.queue.shift()())
 					.one(`:passageinit${namespace}`, () => $(document).off(namespace));
 			}
 
-			// Push our typing handler onto the queue.
-			TempState.macroType.queue.push(() => {
-				TempState.macroType.idle = false;
+			// If the queue is empty at this point, set the start typing flag.
+			const startTyping = TempState.macroTypeQueue.length === 0;
 
-				const $wrapper = jQuery(document.createElement('div'))
+			// Push our typing handler onto the queue.
+			TempState.macroTypeQueue.push(() => {
+				const $wrapper = jQuery(document.createElement(elTag))
 					.addClass(className);
+
+				// Add the user ID, if any.
+				if (elId) {
+					$wrapper.attr('id', elId);
+				}
+
+				// Add the user class(es), if any.
+				if (elClass) {
+					$wrapper.addClass(elClass);
+				}
 
 				new Wikifier($wrapper, contents);
 
@@ -497,11 +550,12 @@
 				) {
 					$target.replaceWith($wrapper);
 
-					if (TempState.macroType.queue.length === 0) {
-						TempState.macroType.idle = true;
-					}
-					else {
-						TempState.macroType.queue.shift()();
+					// Remove this handler from the queue.
+					TempState.macroTypeQueue.shift();
+
+					// Run the next typing handler in the queue, if any.
+					if (TempState.macroTypeQueue.length > 0) {
+						TempState.macroTypeQueue.first()();
 					}
 
 					return;
@@ -537,20 +591,20 @@
 						}
 					})
 					.one(typingStopAndNS, () => {
-						// Return if the queue is empty.
-						if (TempState.macroType.queue.length === 0) {
-							TempState.macroType.idle = true;
+						// Fire the typing complete event and return, if the queue is empty.
+						if (TempState.macroTypeQueue.length === 0) {
 							jQuery.event.trigger(typingCompleteId);
 							return;
 						}
 
 						// Run the next typing handler in the queue.
-						TempState.macroType.queue.shift()();
+						TempState.macroTypeQueue.first()();
 					});
 
 				// Set up the typing interval and start/stop event firing.
 				const typeNode = function typeNode() {
-					jQuery.event.trigger(typingStartId);
+					// Fire the typing start event.
+					$wrapper.trigger(typingStartId);
 
 					const typeNodeId = setInterval(() => {
 						// Stop typing if….
@@ -563,16 +617,24 @@
 						) {
 							clearInterval(typeNodeId);
 
+							// Remove this handler from the queue.
+							TempState.macroTypeQueue.shift();
+
+							// Fire the typing stop event.
+							$wrapper.trigger(typingStopId);
+
+							// Add the done class to the wrapper.
+							$wrapper.addClass(`${className}-done`);
+
+							// Add the cursor class to the wrapper, if we're keeping it.
 							if (cursor === 'keep') {
 								$wrapper.addClass(`${className}-cursor`);
 							}
-
-							jQuery.event.trigger(typingStopId);
 						}
 					}, speed);
 				};
 
-				// Kick off typing.
+				// Kick off typing the node.
 				if (start) {
 					setTimeout(typeNode, start);
 				}
@@ -581,10 +643,15 @@
 				}
 			});
 
-			// If we get to this point and the typing handler queue is idle, then we been
-			// run late, so just run the next typing handler in the queue.
-			if (TempState.macroType.queue.length > 0 && TempState.macroType.idle) {
-				TempState.macroType.queue.shift()();
+			// If we're to start typing, then either set up a `:passageend` event handler
+			// to do so or start it immediately, depending on the engine state.
+			if (startTyping) {
+				if (Engine.isPlaying()) {
+					$(document).one(`:passageend${namespace}`, () => TempState.macroTypeQueue.first()());
+				}
+				else {
+					TempState.macroTypeQueue.first()();
+				}
 			}
 		}
 	});
@@ -1490,6 +1557,110 @@
 	});
 
 	/*
+		<<numberbox>> & <<textbox>>
+	*/
+	Macro.add(['numberbox', 'textbox'], {
+		isAsync : true,
+
+		handler() {
+			if (this.args.length < 2) {
+				const errors = [];
+				if (this.args.length < 1) { errors.push('variable name'); }
+				if (this.args.length < 2) { errors.push('default value'); }
+				return this.error(`no ${errors.join(' or ')} specified`);
+			}
+
+			// Ensure that the variable name argument is a string.
+			if (typeof this.args[0] !== 'string') {
+				return this.error('variable name argument is not a string');
+			}
+
+			const varName = this.args[0].trim();
+
+			// Try to ensure that we receive the variable's name (incl. sigil), not its value.
+			if (varName[0] !== '$' && varName[0] !== '_') {
+				return this.error(`variable name "${this.args[0]}" is missing its sigil ($ or _)`);
+			}
+
+			// Custom debug view setup.
+			if (Config.debug) {
+				this.debugView.modes({ block : true });
+			}
+
+			const asNumber     = this.name === 'numberbox';
+			const defaultValue = asNumber ? Number(this.args[1]) : this.args[1];
+
+			if (asNumber && Number.isNaN(defaultValue)) {
+				return this.error(`default value "${this.args[1]}" is neither a number nor can it be parsed into a number`);
+			}
+
+			const varId = Util.slugify(varName);
+			const el    = document.createElement('input');
+			let autofocus = false;
+			let passage;
+
+			if (this.args.length > 3) {
+				passage   = this.args[2];
+				autofocus = this.args[3] === 'autofocus';
+			}
+			else if (this.args.length > 2) {
+				if (this.args[2] === 'autofocus') {
+					autofocus = true;
+				}
+				else {
+					passage = this.args[2];
+				}
+			}
+
+			if (typeof passage === 'object') {
+				// Argument was in wiki link syntax.
+				passage = passage.link;
+			}
+
+			// Set up and append the input element to the output buffer.
+			jQuery(el)
+				.attr({
+					id       : `${this.name}-${varId}`,
+					name     : `${this.name}-${varId}`,
+					type     : asNumber ? 'number' : 'text',
+					tabindex : 0 // for accessiblity
+				})
+				.addClass(`macro-${this.name}`)
+				.on('change.macros', this.createShadowWrapper(function () {
+					State.setVar(varName, asNumber ? Number(this.value) : this.value);
+				}))
+				.on('keypress.macros', this.createShadowWrapper(function (ev) {
+					// If Return/Enter is pressed, set the variable and, optionally, forward to another passage.
+					if (ev.which === 13) { // 13 is Return/Enter
+						ev.preventDefault();
+						State.setVar(varName, asNumber ? Number(this.value) : this.value);
+
+						if (passage != null) { // lazy equality for null
+							Engine.play(passage);
+						}
+					}
+				}))
+				.appendTo(this.output);
+
+			// Set the variable and input element to the default value.
+			State.setVar(varName, defaultValue);
+			el.value = defaultValue;
+
+			// Autofocus the input element, if requested.
+			if (autofocus) {
+				// Set the element's "autofocus" attribute.
+				el.setAttribute('autofocus', 'autofocus');
+
+				// Set up a single-use post-display task to autofocus the element.
+				postdisplay[`#autofocus:${el.id}`] = task => {
+					delete postdisplay[task]; // single-use task
+					setTimeout(() => el.focus(), Engine.minDomActionDelay);
+				};
+			}
+		}
+	});
+
+	/*
 		<<radiobutton>>
 	*/
 	Macro.add('radiobutton', {
@@ -1629,110 +1800,6 @@
 			/*
 				Autofocus the textarea element, if requested.
 			*/
-			if (autofocus) {
-				// Set the element's "autofocus" attribute.
-				el.setAttribute('autofocus', 'autofocus');
-
-				// Set up a single-use post-display task to autofocus the element.
-				postdisplay[`#autofocus:${el.id}`] = task => {
-					delete postdisplay[task]; // single-use task
-					setTimeout(() => el.focus(), Engine.minDomActionDelay);
-				};
-			}
-		}
-	});
-
-	/*
-		<<numberbox>> & <<textbox>>
-	*/
-	Macro.add(['numberbox', 'textbox'], {
-		isAsync : true,
-
-		handler() {
-			if (this.args.length < 2) {
-				const errors = [];
-				if (this.args.length < 1) { errors.push('variable name'); }
-				if (this.args.length < 2) { errors.push('default value'); }
-				return this.error(`no ${errors.join(' or ')} specified`);
-			}
-
-			// Ensure that the variable name argument is a string.
-			if (typeof this.args[0] !== 'string') {
-				return this.error('variable name argument is not a string');
-			}
-
-			const varName = this.args[0].trim();
-
-			// Try to ensure that we receive the variable's name (incl. sigil), not its value.
-			if (varName[0] !== '$' && varName[0] !== '_') {
-				return this.error(`variable name "${this.args[0]}" is missing its sigil ($ or _)`);
-			}
-
-			// Custom debug view setup.
-			if (Config.debug) {
-				this.debugView.modes({ block : true });
-			}
-
-			const asNumber     = this.name === 'numberbox';
-			const defaultValue = asNumber ? Number(this.args[1]) : this.args[1];
-
-			if (asNumber && Number.isNaN(defaultValue)) {
-				return this.error(`default value "${this.args[1]}" is neither a number nor can it be parsed into a number`);
-			}
-
-			const varId = Util.slugify(varName);
-			const el    = document.createElement('input');
-			let autofocus = false;
-			let passage;
-
-			if (this.args.length > 3) {
-				passage   = this.args[2];
-				autofocus = this.args[3] === 'autofocus';
-			}
-			else if (this.args.length > 2) {
-				if (this.args[2] === 'autofocus') {
-					autofocus = true;
-				}
-				else {
-					passage = this.args[2];
-				}
-			}
-
-			if (typeof passage === 'object') {
-				// Argument was in wiki link syntax.
-				passage = passage.link;
-			}
-
-			// Set up and append the input element to the output buffer.
-			jQuery(el)
-				.attr({
-					id       : `${this.name}-${varId}`,
-					name     : `${this.name}-${varId}`,
-					type     : 'text',
-					tabindex : 0 // for accessiblity
-				})
-				.addClass(`macro-${this.name}`)
-				.on('change.macros', this.createShadowWrapper(function () {
-					State.setVar(varName, asNumber ? Number(this.value) : this.value);
-				}))
-				.on('keypress.macros', this.createShadowWrapper(function (ev) {
-					// If Return/Enter is pressed, set the variable and, optionally, forward to another passage.
-					if (ev.which === 13) { // 13 is Return/Enter
-						ev.preventDefault();
-						State.setVar(varName, asNumber ? Number(this.value) : this.value);
-
-						if (passage != null) { // lazy equality for null
-							Engine.play(passage);
-						}
-					}
-				}))
-				.appendTo(this.output);
-
-			// Set the variable and input element to the default value.
-			State.setVar(varName, defaultValue);
-			el.value = defaultValue;
-
-			// Autofocus the input element, if requested.
 			if (autofocus) {
 				// Set the element's "autofocus" attribute.
 				el.setAttribute('autofocus', 'autofocus');

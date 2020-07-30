@@ -477,19 +477,25 @@ Config.saves.isAllowed = function () {
 
 Performs any required pre-processing before the save data is loaded—e.g., upgrading out-of-date save data.  The callback is passed one parameter, the save object to be processed.  If it encounters an unrecoverable problem during its processing, it may throw an exception containing an error message; the message will be displayed to the player and loading of the save will be terminated.
 
-<p role="note"><b>Note:</b>
-See the <a href="#save-api-save-objects">save objects</a> section of the <a href="#save-api">Save API</a> for information on the format of a save.
-</p>
-
 #### Since:
 
 * `v2.0.0`
+
+#### Callback parameters:
+
+* **`save`:** (*object*) The save object to be pre-processed.
+
+#### Save object:
+
+<p role="note"><b>Note:</b>
+See the <a href="#save-api-save-objects">save objects</a> section of the <a href="#save-api">Save API</a> for information on the format of a save.
+</p>
 
 #### Examples:
 
 ```
 Config.saves.onLoad = function (save) {
-	/* code */
+	/* code to pre-process the save object */
 };
 ```
 
@@ -497,21 +503,58 @@ Config.saves.onLoad = function (save) {
 
 ### `Config.saves.onSave` ↔ *function* (default: *none*) {#config-api-property-saves-onsave}
 
-Performs any required post-processing before the save data is saved.  The callback is passed one parameter, the save object to be processed.
+Performs any required post-processing before the save data is saved.  The callback is passed two parameters, the save object to be processed and save operation details object.
+
+#### Since:
+
+* `v2.0.0`: Basic syntax.
+* `v2.33.0`: Added save operation details object parameter to the callback function.
+
+#### Callback parameters:
+
+* **`save`:** (*object*) The save object to be post-processed.
+* **`details`:** (*object*) The save operation details object.
+
+#### Save object:
 
 <p role="note"><b>Note:</b>
 See the <a href="#save-api-save-objects">save objects</a> section of the <a href="#save-api">Save API</a> for information on the format of a save.
 </p>
 
-#### Since:
+#### Save operation details object:
 
-* `v2.0.0`
+A save operation details object will have the following properties:
+
+* **`type`:** (*string*) A string representing how the save operation came about—i.e., what caused it.  Possible values are: `'autosave'`, `'disk'`, `'serialize'`, `'slot'`.
 
 #### Examples:
 
+##### Using only the save object parameter
+
 ```
 Config.saves.onSave = function (save) {
-	/* code */
+	/* code to post-process the save object */
+};
+```
+
+##### Using both the save object and operation details parameters
+
+```
+Config.saves.onSave = function (save, details) {
+	switch (details.type) {
+	case 'autosave':
+		/* code to post-process the save object from autosaves */
+		break;
+	case 'disk':
+		/* code to post-process the save object from disk saves */
+		break;
+	case 'serialize':
+		/* code to post-process the save object from serialize saves */
+		break;
+	default: /* slot */
+		/* code to post-process the save object from slot saves */
+		break;
+	}
 };
 ```
 
