@@ -598,6 +598,11 @@ var Util = (() => { // eslint-disable-line no-unused-vars, no-var
 		return ex;
 	}
 
+	/*
+		Returns a sanitized version of the passed `KeyboardEvent.key` value from
+		previous incarnations of the specification that should better reflect the
+		current incarnation.
+	*/
 	const utilScrubEventKey = (() => {
 		let separatorKey;
 		let decimalKey;
