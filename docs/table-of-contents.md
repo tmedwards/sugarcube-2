@@ -258,7 +258,7 @@
 	* [`:stopped`](#events-simpleaudio-event-stopped)
 * [System Events](#events-system)
 	* [`:storyready`](#events-system-event-storyready)
-	* [`:enginerestart`](#events-startup-teardown-event-enginerestart)
+	* [`:enginerestart`](#events-system-event-enginerestart)
 * [`<<type>>` Events](#events-type-macro)
 	* [`:typingcomplete`](#events-type-macro-event-typingcomplete)
 	* [`:typingstart`](#events-type-macro-event-typingstart)
