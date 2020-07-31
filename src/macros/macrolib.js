@@ -588,20 +588,20 @@
 				const typingCompleteId = ':typingcomplete';
 				const typingStartId    = ':typingstart';
 				const typingStopId     = ':typingstop';
-				const keypressAndNS    = `keypress${namespace}`;
+				const keydownAndNS     = `keydown${namespace}`;
 				const typingStopAndNS  = `${typingStopId}${namespace}`;
 
 				// Set up handlers for spacebar aborting and continuations.
 				$(document)
-					.off(keypressAndNS)
-					.on(keypressAndNS, ev => {
+					.off(keydownAndNS)
+					.on(keydownAndNS, ev => {
 						// Finish typing if the player aborts via the skip key.
 						if (
 							Util.scrubEventKey(ev.key) === skipKey
 							&& (ev.target === document.body || ev.target === document.documentElement)
 						) {
 							ev.preventDefault();
-							$(document).off(keypressAndNS);
+							$(document).off(keydownAndNS);
 							typer.finish();
 						}
 					})
