@@ -28,6 +28,7 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 	// Macros settings.
 	let _macrosIfAssignmentError   = true;
 	let _macrosMaxLoopIterations   = 1000;
+	let _macrosTypeSkipKey         = '\x20'; // Space
 	let _macrosTypeVisitedPassages = true;
 
 	// Navigation settings.
@@ -155,6 +156,9 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 
 				_macrosMaxLoopIterations = value;
 			},
+
+			get typeSkipKey() { return _macrosTypeSkipKey; },
+			set typeSkipKey(value) { _macrosTypeSkipKey = String(value); },
 
 			get typeVisitedPassages() { return _macrosTypeVisitedPassages; },
 			set typeVisitedPassages(value) { _macrosTypeVisitedPassages = Boolean(value); }
