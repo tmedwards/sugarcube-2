@@ -146,6 +146,23 @@ Config.macros.maxLoopIterations = 5000;
 
 <!-- *********************************************************************** -->
 
+### `Config.macros.typeSkipKey` ↔ *string* (default: `" "`, space) {#config-api-property-macros-typeskipkey}
+
+Sets the default [`KeyboardEvent.key`](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key) value that causes the currently running [`<<type>>` macro](#macros-macro-type) instance to finish typing its content immediately.
+
+#### Since:
+
+* `v2.33.1`: Introduced.
+
+#### Examples:
+
+```
+// Change the default skip key to Control (CTRL)
+Config.macros.typeSkipKey = "Control";
+```
+
+<!-- *********************************************************************** -->
+
 ### `Config.macros.typeVisitedPassages` ↔ *boolean* (default: `true`) {#config-api-property-macros-typevisitedpassages}
 
 Determines whether the [`<<type>>` macro](#macros-macro-type) types out content on previously visited passages or simply outputs it immediately.
