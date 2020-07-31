@@ -591,16 +591,13 @@
 				const keypressAndNS    = `keypress${namespace}`;
 				const typingStopAndNS  = `${typingStopId}${namespace}`;
 
-				// Cache `scrubEventKey`.
-				const scrubEventKey = this.self.scrubEventKey;
-
 				// Set up handlers for spacebar aborting and continuations.
 				$(document)
 					.off(keypressAndNS)
 					.on(keypressAndNS, ev => {
 						// Finish typing if the player aborts via the skip key.
 						if (
-							scrubEventKey(ev.key) === skipKey
+							Util.scrubEventKey(ev.key) === skipKey
 							&& (ev.target === document.body || ev.target === document.documentElement)
 						) {
 							ev.preventDefault();
@@ -671,66 +668,7 @@
 					TempState.macroTypeQueue.first()();
 				}
 			}
-		},
-
-		scrubEventKey : (function () {
-			let separatorKey;
-			let decimalKey;
-
-			// Attempt to determine the player's 'Separator' and 'Decimal' key values
-			// based on their current locale.
-			if (typeof Intl !== 'undefined' && typeof Intl.NumberFormat === 'function') {
-				const match = new Intl.NumberFormat().format(111111.5).match(/(\D*)\d+(\D*)/);
-
-				if (match) {
-					separatorKey = match[1];
-					decimalKey   = match[2];
-				}
-			}
-
-			// Failover to US-centric values, if using `Intl.NumberFormat` failed.
-			if (!separatorKey && !decimalKey) {
-				separatorKey = ',';
-				decimalKey   = '.';
-			}
-
-			// Maps older `KeyboardEvent.key` values to more current/correct ones.
-			function scrubEventKey(key) {
-				switch (key) {
-				// case 'OS':                 return 'Meta'; // Unreliable.
-				case 'Scroll':             return 'ScrollLock';
-				case 'Spacebar':           return '\x20';
-				case 'Left':               return 'ArrowLeft';
-				case 'Right':              return 'ArrowRight';
-				case 'Up':                 return 'ArrowUp';
-				case 'Down':               return 'ArrowDown';
-				case 'Del':                return 'Delete';
-				case 'Crsel':              return 'CrSel';
-				case 'Exsel':              return 'ExSel';
-				case 'Esc':                return 'Escape';
-				case 'Apps':               return 'ContextMenu';
-				case 'Nonconvert':         return 'NonConvert';
-				case 'MediaNextTrack':     return 'MediaTrackNext';
-				case 'MediaPreviousTrack': return 'MediaTrackPrevious';
-				case 'VolumeUp':           return 'AudioVolumeUp';
-				case 'VolumeDown':         return 'AudioVolumeDown';
-				case 'VolumeMute':         return 'AudioVolumeMute';
-				case 'Zoom':               return 'ZoomToggle';
-				case 'SelectMedia':        /* see below */
-				case 'MediaSelect':        return 'LaunchMediaPlayer';
-				case 'Add':                return '+';
-				case 'Divide':             return '/';
-				case 'Multiply':           return '*';
-				case 'Subtract':           return '-';
-				case 'Decimal':            return decimalKey;
-				case 'Separator':          return separatorKey;
-				}
-
-				return key;
-			}
-
-			return scrubEventKey;
-		})()
+		}
 	});
 
 	/*

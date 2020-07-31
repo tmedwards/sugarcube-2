@@ -598,6 +598,65 @@ var Util = (() => { // eslint-disable-line no-unused-vars, no-var
 		return ex;
 	}
 
+	const utilScrubEventKey = (() => {
+		let separatorKey;
+		let decimalKey;
+
+		// Attempt to determine the player's 'Separator' and 'Decimal' key values
+		// based on their current locale.
+		if (typeof Intl !== 'undefined' && typeof Intl.NumberFormat === 'function') {
+			const match = new Intl.NumberFormat().format(111111.5).match(/(\D*)\d+(\D*)/);
+
+			if (match) {
+				separatorKey = match[1];
+				decimalKey   = match[2];
+			}
+		}
+
+		// Failover to US-centric values, if using `Intl.NumberFormat` failed.
+		if (!separatorKey && !decimalKey) {
+			separatorKey = ',';
+			decimalKey   = '.';
+		}
+
+		// Maps older `KeyboardEvent.key` values to more current/correct ones.
+		function utilScrubEventKey(key) {
+			switch (key) {
+			// case 'OS':                 return 'Meta'; // Unreliable.
+			case 'Scroll':             return 'ScrollLock';
+			case 'Spacebar':           return '\x20';
+			case 'Left':               return 'ArrowLeft';
+			case 'Right':              return 'ArrowRight';
+			case 'Up':                 return 'ArrowUp';
+			case 'Down':               return 'ArrowDown';
+			case 'Del':                return 'Delete';
+			case 'Crsel':              return 'CrSel';
+			case 'Exsel':              return 'ExSel';
+			case 'Esc':                return 'Escape';
+			case 'Apps':               return 'ContextMenu';
+			case 'Nonconvert':         return 'NonConvert';
+			case 'MediaNextTrack':     return 'MediaTrackNext';
+			case 'MediaPreviousTrack': return 'MediaTrackPrevious';
+			case 'VolumeUp':           return 'AudioVolumeUp';
+			case 'VolumeDown':         return 'AudioVolumeDown';
+			case 'VolumeMute':         return 'AudioVolumeMute';
+			case 'Zoom':               return 'ZoomToggle';
+			case 'SelectMedia':        /* see below */
+			case 'MediaSelect':        return 'LaunchMediaPlayer';
+			case 'Add':                return '+';
+			case 'Divide':             return '/';
+			case 'Multiply':           return '*';
+			case 'Subtract':           return '-';
+			case 'Decimal':            return decimalKey;
+			case 'Separator':          return separatorKey;
+			}
+
+			return key;
+		}
+
+		return utilScrubEventKey;
+	})();
+
 
 	/*******************************************************************************************************************
 		Module Exports.
@@ -624,6 +683,11 @@ var Util = (() => { // eslint-disable-line no-unused-vars, no-var
 		charAndPosAt : { value : utilCharAndPosAt },
 
 		/*
+			Time Functions.
+		*/
+		now : { value : utilNow },
+
+		/*
 			Conversion Functions.
 		*/
 		fromCssTime      : { value : utilFromCssTime },
@@ -631,11 +695,7 @@ var Util = (() => { // eslint-disable-line no-unused-vars, no-var
 		fromCssProperty  : { value : utilFromCssProperty },
 		parseUrl         : { value : utilParseUrl },
 		newExceptionFrom : { value : utilNewExceptionFrom },
-
-		/*
-			Time Functions.
-		*/
-		now : { value : utilNow },
+		scrubEventKey    : { value : utilScrubEventKey },
 
 		/*
 			Legacy Aliases.
