@@ -590,7 +590,9 @@
 				const typingStopId     = ':typingstop';
 				const keypressAndNS    = `keypress${namespace}`;
 				const typingStopAndNS  = `${typingStopId}${namespace}`;
-				const scrubKey         = this.self.scrubKey;
+
+				// Cache `scrubEventKey`.
+				const scrubEventKey = this.self.scrubEventKey;
 
 				// Set up handlers for spacebar aborting and continuations.
 				$(document)
@@ -598,7 +600,7 @@
 					.on(keypressAndNS, ev => {
 						// Finish typing if the player aborts via the skip key.
 						if (
-							scrubKey(ev.key) === skipKey
+							scrubEventKey(ev.key) === skipKey
 							&& (ev.target === document.body || ev.target === document.documentElement)
 						) {
 							ev.preventDefault();
@@ -671,13 +673,14 @@
 			}
 		},
 
-		scrubKey : (function () {
+		scrubEventKey : (function () {
 			let separatorKey;
 			let decimalKey;
 
-			// Attempt to determine the player's separator and decimal key values.
+			// Attempt to determine the player's 'Separator' and 'Decimal' key values
+			// based on their current locale.
 			if (typeof Intl !== 'undefined' && typeof Intl.NumberFormat === 'function') {
-				const match = new Intl.NumberFormat().format(111111.5).match(/(\D)\d+(\D)/);
+				const match = new Intl.NumberFormat().format(111111.5).match(/(\D*)\d+(\D*)/);
 
 				if (match) {
 					separatorKey = match[1];
@@ -685,14 +688,14 @@
 				}
 			}
 
-			// Failover to US centric values.
-			if (!separatorKey || !decimalKey) {
+			// Failover to US-centric values, if using `Intl.NumberFormat` failed.
+			if (!separatorKey && !decimalKey) {
 				separatorKey = ',';
 				decimalKey   = '.';
 			}
 
-			// Maps older browser key values to more current/correct ones.
-			function scrubKey(key) {
+			// Maps older `KeyboardEvent.key` values to more current/correct ones.
+			function scrubEventKey(key) {
 				switch (key) {
 				// case 'OS':                 return 'Meta'; // Unreliable.
 				case 'Scroll':             return 'ScrollLock';
@@ -713,7 +716,7 @@
 				case 'VolumeDown':         return 'AudioVolumeDown';
 				case 'VolumeMute':         return 'AudioVolumeMute';
 				case 'Zoom':               return 'ZoomToggle';
-				case 'SelectMedia':
+				case 'SelectMedia':        /* see below */
 				case 'MediaSelect':        return 'LaunchMediaPlayer';
 				case 'Add':                return '+';
 				case 'Divide':             return '/';
@@ -726,7 +729,7 @@
 				return key;
 			}
 
-			return scrubKey;
+			return scrubEventKey;
 		})()
 	});
 
