@@ -384,7 +384,7 @@
 	});
 
 	/*
-		<<type speed [start delay] [element tagName] [keep|none]>>
+		<<type speed [start delay] [class classes] [element tag] [id ID] [keep|none] [skipkey key]>>
 	*/
 	Macro.add('type', {
 		isAsync : true,
@@ -405,6 +405,7 @@
 			let elClass = '';
 			let elId    = '';
 			let elTag   = 'div';
+			let skipKey = Config.macros.typeSkipKey;
 			let start   = 400; // in milliseconds
 
 			// Process optional arguments.
@@ -463,6 +464,20 @@
 				case 'none':
 					cursor = 'none';
 					break;
+
+				case 'skipkey': {
+					if (options.length === 0) {
+						return this.error('skipkey option missing required key value');
+					}
+
+					skipKey = options.shift();
+
+					if (skipKey === '') {
+						throw new Error('skipkey option key value must be non-empty (received: "")');
+					}
+
+					break;
+				}
 
 				case 'start': {
 					if (options.length === 0) {
@@ -575,14 +590,15 @@
 				const typingStopId     = ':typingstop';
 				const keypressAndNS    = `keypress${namespace}`;
 				const typingStopAndNS  = `${typingStopId}${namespace}`;
+				const scrubKey         = this.self.scrubKey;
 
 				// Set up handlers for spacebar aborting and continuations.
 				$(document)
 					.off(keypressAndNS)
 					.on(keypressAndNS, ev => {
-						// Finish typing if the player aborts via the spacebar.
+						// Finish typing if the player aborts via the skip key.
 						if (
-							ev.which === 32 /* Space */
+							scrubKey(ev.key) === skipKey
 							&& (ev.target === document.body || ev.target === document.documentElement)
 						) {
 							ev.preventDefault();
@@ -653,7 +669,65 @@
 					TempState.macroTypeQueue.first()();
 				}
 			}
-		}
+		},
+
+		scrubKey : (function () {
+			let separatorKey;
+			let decimalKey;
+
+			// Attempt to determine the player's separator and decimal key values.
+			if (typeof Intl !== 'undefined' && typeof Intl.NumberFormat === 'function') {
+				const match = new Intl.NumberFormat().format(111111.5).match(/(\D)\d+(\D)/);
+
+				if (match) {
+					separatorKey = match[1];
+					decimalKey   = match[2];
+				}
+			}
+
+			// Failover to US centric values.
+			if (!separatorKey || !decimalKey) {
+				separatorKey = ',';
+				decimalKey   = '.';
+			}
+
+			// Maps older browser key values to more current/correct ones.
+			function scrubKey(key) {
+				switch (key) {
+				// case 'OS':                 return 'Meta'; // Unreliable.
+				case 'Scroll':             return 'ScrollLock';
+				case 'Spacebar':           return '\x20';
+				case 'Left':               return 'ArrowLeft';
+				case 'Right':              return 'ArrowRight';
+				case 'Up':                 return 'ArrowUp';
+				case 'Down':               return 'ArrowDown';
+				case 'Del':                return 'Delete';
+				case 'Crsel':              return 'CrSel';
+				case 'Exsel':              return 'ExSel';
+				case 'Esc':                return 'Escape';
+				case 'Apps':               return 'ContextMenu';
+				case 'Nonconvert':         return 'NonConvert';
+				case 'MediaNextTrack':     return 'MediaTrackNext';
+				case 'MediaPreviousTrack': return 'MediaTrackPrevious';
+				case 'VolumeUp':           return 'AudioVolumeUp';
+				case 'VolumeDown':         return 'AudioVolumeDown';
+				case 'VolumeMute':         return 'AudioVolumeMute';
+				case 'Zoom':               return 'ZoomToggle';
+				case 'SelectMedia':
+				case 'MediaSelect':        return 'LaunchMediaPlayer';
+				case 'Add':                return '+';
+				case 'Divide':             return '/';
+				case 'Multiply':           return '*';
+				case 'Subtract':           return '-';
+				case 'Decimal':            return decimalKey;
+				case 'Separator':          return separatorKey;
+				}
+
+				return key;
+			}
+
+			return scrubKey;
+		})()
 	});
 
 	/*
