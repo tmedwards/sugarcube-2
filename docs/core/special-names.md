@@ -24,7 +24,7 @@ Used for post-passage-display tasks, like redoing dynamic changes (happens after
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 <!-- *********************************************************************** -->
 
@@ -34,7 +34,7 @@ Appended to each rendered passage.  Roughly equivalent to the [`:passagerender` 
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 <!-- *********************************************************************** -->
 
@@ -44,7 +44,7 @@ Prepended to each rendered passage.  Roughly equivalent to the [`:passagestart` 
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 <!-- *********************************************************************** -->
 
@@ -54,7 +54,7 @@ Used for pre-passage-display tasks, like redoing dynamic changes (happens before
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 <!-- *********************************************************************** -->
 
@@ -66,7 +66,7 @@ Used for pre-passage-display tasks, like redoing dynamic changes (happens before
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 <!-- *********************************************************************** -->
 
@@ -76,7 +76,7 @@ Used to populate the authorial byline area in the UI bar (element ID: `story-aut
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 <!-- *********************************************************************** -->
 
@@ -86,7 +86,7 @@ Used to populate the story's banner area in the UI bar (element ID: `story-banne
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 <!-- *********************************************************************** -->
 
@@ -96,7 +96,7 @@ Used to populate the story's caption area in the UI bar (element ID: `story-capt
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 <!-- *********************************************************************** -->
 
@@ -106,7 +106,7 @@ Sets the story's display title in the browser's titlebar and the UI bar (element
 
 #### Since:
 
-* `v2.31.0`
+* `v2.31.0`: Introduced.
 
 <!-- *********************************************************************** -->
 
@@ -116,7 +116,7 @@ Used for pre-story-start initialization tasks, like variable initialization (hap
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 <!-- *********************************************************************** -->
 
@@ -130,7 +130,7 @@ Elements that include a <code>data-passage</code> content attribute <em>should n
 
 #### Since:
 
-* `v2.18.0`: Basic syntax.
+* `v2.18.0`: Introduced.
 * `v2.28.0`: Added processing of the `data-passage` content attribute.
 
 #### Examples:
@@ -163,7 +163,7 @@ The story menu only displays links—specifically, anything that creates an anch
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Examples:
 
@@ -192,7 +192,7 @@ The Share dialog only displays links—specifically, anything that creates an an
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 <!-- *********************************************************************** -->
 
@@ -202,7 +202,7 @@ Sets the story's subtitle in the UI bar (element ID: `story-subtitle`).
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 <!-- *********************************************************************** -->
 
@@ -222,7 +222,7 @@ If you want to set a title for display that contains code, markup, or macros, se
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 
 <!-- ***************************************************************************
@@ -238,7 +238,7 @@ Registers the passage into the *Jump To* menu.
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 <!-- *********************************************************************** -->
 
@@ -252,7 +252,7 @@ Does not affect <code>script</code> or <code>stylesheet</code> tagged passages, 
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 <!-- *********************************************************************** -->
 
@@ -264,7 +264,7 @@ Does not affect <code>script</code> or <code>stylesheet</code> tagged passages, 
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 <!-- *********************************************************************** -->
 
@@ -276,7 +276,7 @@ Does not affect <code>script</code> or <code>stylesheet</code> tagged passages, 
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 <!-- *********************************************************************** -->
 
@@ -286,7 +286,7 @@ Registers the passage as an audio passage.  See [Guide: Media Passages](#guide-m
 
 #### Since:
 
-* `v2.24.0`
+* `v2.24.0`: Introduced.
 
 <!-- *********************************************************************** -->
 
@@ -296,7 +296,7 @@ Registers the passage as an image passage.  See [Guide: Media Passages](#guide-m
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 <!-- *********************************************************************** -->
 
@@ -306,7 +306,7 @@ Registers the passage as a video passage.  See [Guide: Media Passages](#guide-me
 
 #### Since:
 
-* `v2.24.0`
+* `v2.24.0`: Introduced.
 
 <!-- *********************************************************************** -->
 
@@ -316,7 +316,7 @@ Registers the passage as a <abbr title="Video Text Track">VTT</abbr> passage.  S
 
 #### Since:
 
-* `v2.24.0`
+* `v2.24.0`: Introduced.
 
 <!-- *********************************************************************** -->
 
@@ -326,7 +326,7 @@ Registers the passage as [`<<widget>>` macro](#macros-macro-widget) definitions,
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 
 <!-- ***************************************************************************
@@ -342,7 +342,7 @@ Alias for `jQuery`, by default.  **NOTE:** This should not be confused with [sto
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 <!-- *********************************************************************** -->
 
@@ -352,7 +352,7 @@ Widget arguments array (only inside widgets).  See [`<<widget>>`](#macros-macro-
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 <!-- *********************************************************************** -->
 
@@ -362,7 +362,7 @@ Configuration API.  See [`Config` API](#config-api) for more information.
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 <!-- *********************************************************************** -->
 
@@ -372,7 +372,7 @@ Dialog API.  See [`Dialog` API](#dialog-api) for more information.
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 <!-- *********************************************************************** -->
 
@@ -382,7 +382,7 @@ Engine API.  See [`Engine` API](#engine-api) for more information.
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 <!-- *********************************************************************** -->
 
@@ -392,7 +392,7 @@ Fullscreen API.  See [`Fullscreen` API](#fullscreen-api) for more information.
 
 #### Since:
 
-* `v2.31.0`
+* `v2.31.0`: Introduced.
 
 <!-- *********************************************************************** -->
 
@@ -402,7 +402,7 @@ jQuery library function.
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 <!-- *********************************************************************** -->
 
@@ -412,7 +412,7 @@ Strings localization object.  See [Localization](#guide-localization) for more i
 
 #### Since:
 
-* `v2.10.0`
+* `v2.10.0`: Introduced.
 
 <!-- *********************************************************************** -->
 
@@ -422,7 +422,7 @@ LoadScreen API.  See [`LoadScreen` API](#loadscreen-api) for more information.
 
 #### Since:
 
-* `v2.15.0`
+* `v2.15.0`: Introduced.
 
 <!-- *********************************************************************** -->
 
@@ -432,7 +432,7 @@ Macro API.  See [`Macro` API](#macro-api) for more information.
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 <!-- *********************************************************************** -->
 
@@ -442,7 +442,7 @@ Passage API.  See [`Passage` API](#passage-api) for more information.
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 <!-- *********************************************************************** -->
 
@@ -452,7 +452,7 @@ Save API.  See [`Save` API](#save-api) for more information.
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 <!-- *********************************************************************** -->
 
@@ -462,7 +462,7 @@ Setting API.  See [`Setting` API](#setting-api) for more information.
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 <!-- *********************************************************************** -->
 
@@ -472,7 +472,7 @@ Player settings object, set up by the author/developer.  See [`Setting` API](#se
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 <!-- *********************************************************************** -->
 
 ### `setup` {#special-variable-setup}
@@ -481,7 +481,7 @@ Object that authors/developers may use to set up various bits of static data.  G
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 <!-- *********************************************************************** -->
 
@@ -491,7 +491,7 @@ SimpleAudio API.  See [`SimpleAudio` API](#simpleaudio-api) for more information
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 <!-- *********************************************************************** -->
 
@@ -501,7 +501,7 @@ State API.  See [`State` API](#state-api) for more information.
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 <!-- *********************************************************************** -->
 
@@ -511,7 +511,7 @@ Story API.  See [`Story` API](#story-api) for more information.
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 <!-- *********************************************************************** -->
 
@@ -521,7 +521,7 @@ Template API.  See [`Template` API](#template-api) for more information.
 
 #### Since:
 
-* `v2.29.0`
+* `v2.29.0`: Introduced.
 
 <!-- *********************************************************************** -->
 
@@ -531,7 +531,7 @@ UI API.  See [`UI` API](#ui-api) for more information.
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 <!-- *********************************************************************** -->
 
@@ -541,7 +541,7 @@ UIBar API.  See [`UIBar` API](#uibar-api) for more information.
 
 #### Since:
 
-* `v2.17.0`
+* `v2.17.0`: Introduced.
 
 <!-- *********************************************************************** -->
 

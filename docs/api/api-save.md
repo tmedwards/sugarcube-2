@@ -57,7 +57,7 @@ Deletes all slot saves and the autosave, if it's enabled.
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -79,7 +79,7 @@ Returns the saves object.
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -97,7 +97,7 @@ Returns whether both the slot saves and autosave are available and ready.
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -123,7 +123,7 @@ Returns the total number of available slots.
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Examples:
 
@@ -139,7 +139,7 @@ Returns the total number of filled slots.
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -157,7 +157,7 @@ Deletes a save from the given slot.
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters:
 
@@ -177,7 +177,7 @@ Returns a save object from the given slot or `null`, if there was no save in the
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters:
 
@@ -197,7 +197,7 @@ Returns whether the given slot is filled.
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters:
 
@@ -219,7 +219,7 @@ Returns whether there are any filled slots.
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -237,7 +237,7 @@ Loads a save from the given slot.
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters:
 
@@ -257,7 +257,7 @@ Returns whether the slot saves are available and ready.
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -277,7 +277,7 @@ Saves to the given slot.
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters:
 
@@ -315,7 +315,7 @@ Deletes the autosave.
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -333,7 +333,7 @@ Returns the save object from the autosave or `null`, if there was no autosave.
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -351,7 +351,7 @@ Returns whether the autosave is filled.
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -371,7 +371,7 @@ Loads the autosave.
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -389,7 +389,7 @@ Returns whether the autosave is available and ready.
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -409,7 +409,7 @@ Saves to the autosave.
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters:
 
@@ -446,7 +446,7 @@ Saves to disk.
 
 #### Since:
 
-* `v2.0.0`: Basic syntax.
+* `v2.0.0`: Introduced.
 * `v2.8.0`: Added `metadata` parameter.
 
 #### Parameters:
@@ -480,7 +480,7 @@ Loads a save from disk.
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters:
 
@@ -546,7 +546,7 @@ Returns a save as a serialized string, or `null` if saving is not allowed within
 
 #### Since:
 
-* `v2.21.0`
+* `v2.21.0`: Introduced.
 
 #### Parameters:
 
@@ -576,7 +576,7 @@ Deserializes the given save string, created via [`Save.serialize()`](#save-api-m
 
 #### Since:
 
-* `v2.21.0`
+* `v2.21.0`: Introduced.
 
 #### Parameters:
 

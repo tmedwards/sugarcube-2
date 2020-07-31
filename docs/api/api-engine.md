@@ -11,7 +11,7 @@ Returns a timestamp representing the last time `Engine.play()` was called.
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Examples:
 
@@ -27,7 +27,7 @@ Returns the current state of the engine (`"idle"`, `"playing"`, `"rendering"`).
 
 #### Since:
 
-* `v2.7.0`
+* `v2.7.0`: Introduced.
 
 #### States:
 
@@ -49,7 +49,7 @@ Moves backward one moment within the full history (past + future), if possible, 
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -67,7 +67,7 @@ Moves forward one moment within the full history (past + future), if possible, a
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -85,7 +85,7 @@ Activates the moment at the given offset from the active (present) moment within
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters:
 
@@ -106,7 +106,7 @@ Activates the moment at the given index within the full state history and show i
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters:
 
@@ -127,7 +127,7 @@ Returns whether the engine is idle.
 
 #### Since:
 
-* `v2.16.0`
+* `v2.16.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -145,7 +145,7 @@ Returns whether the engine is processing a turn—i.e., passage navigation has b
 
 #### Since:
 
-* `v2.16.0`
+* `v2.16.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -163,7 +163,7 @@ Returns whether the engine is rendering the incoming passage.
 
 #### Since:
 
-* `v2.16.0`
+* `v2.16.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -181,7 +181,7 @@ Renders and displays the passage referenced by the given title, optionally witho
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters:
 
@@ -211,7 +211,7 @@ In general, you should not call this method directly.  Instead, call the <a href
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -229,7 +229,7 @@ Renders and displays the active (present) moment's associated passage without ad
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters: *none*
 

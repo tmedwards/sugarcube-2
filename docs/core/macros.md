@@ -68,7 +68,7 @@ Use of this macro is <em>only</em> necessary when you need to localize a variabl
 
 #### Since:
 
-* `v2.14.0`
+* `v2.14.0`: Introduced.
 
 #### Arguments:
 
@@ -102,7 +102,7 @@ Sets story $variables and temporary \_variables based on the given expression.
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Arguments:
 
@@ -195,7 +195,7 @@ Unsets story $variables and temporary \_variables.
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Arguments:
 
@@ -218,7 +218,7 @@ This macro has been deprecated and should no longer be used.  See the <a href="#
 
 #### Since:
 
-* `v2.0.0`: Basic syntax.
+* `v2.0.0`: Introduced.
 * `v2.29.0`: Deprecated in favor of `memorize()` and `recall()`.
 
 <!-- *********************************************************************** -->
@@ -231,7 +231,7 @@ This macro has been deprecated and should no longer be used.  See the <a href="#
 
 #### Since:
 
-* `v2.0.0`: Basic syntax.
+* `v2.0.0`: Introduced.
 * `v2.29.0`: Deprecated in favor of `forget()`.
 
 
@@ -258,7 +258,7 @@ The predefined variable <code>output</code>, which is a reference to a local con
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Arguments: *none*
 
@@ -295,7 +295,7 @@ If you only need to print the value of a TwineScript variable, then you may simp
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Arguments:
 
@@ -323,7 +323,7 @@ If you only need to print the value of a TwineScript variable, then you may simp
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Arguments:
 
@@ -347,7 +347,7 @@ Outputs the contents of the passage with the given name, optionally wrapping it 
 
 #### Since:
 
-* `v2.15.0`
+* `v2.15.0`: Introduced.
 
 #### Arguments:
 
@@ -382,7 +382,7 @@ The <a href="#special-tag-nobr"><code>nobr</code> special tag</a> and <a href="#
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Arguments: *none*
 
@@ -411,7 +411,7 @@ If you only need to print the value of a TwineScript variable, then you may simp
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Arguments:
 
@@ -435,7 +435,7 @@ Causes any output generated within its body to be discarded, except for errors (
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Arguments: *none*
 
@@ -482,7 +482,7 @@ Interactions with macros or other code that inject content only after some exter
 
 #### Since:
 
-* `v2.32.0`: Basic syntax.
+* `v2.32.0`: Introduced.
 * `v2.33.0`: Added `class`, `element`, and `id` options and `macro-type-done` class.
 
 #### Arguments:
@@ -556,7 +556,7 @@ This macro has been deprecated and should no longer be used.  See the <a href="#
 
 #### Since:
 
-* `v2.0.0`: Basic syntax.
+* `v2.0.0`: Introduced.
 * `v2.15.0`: Deprecated in favor of `<<include>>`.
 
 
@@ -577,7 +577,7 @@ SugarCube does not trim whitespace from the contents of <code>&lt;&lt;if&gt;&gt;
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Arguments:
 
@@ -780,7 +780,7 @@ Repeatedly executes its contents. There are three forms: a conditional-only form
 
 ##### Since:
 
-* `v2.0.0`: Basic syntax.
+* `v2.0.0`: Introduced.
 * `v2.20.0`: Added range form.
 
 #### Notes
@@ -894,7 +894,7 @@ Used within [`<<for>>`](#macros-macro-for) macros.  Terminates the execution of 
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Arguments: *none*
 
@@ -910,7 +910,7 @@ May eat line-breaks in certain situations.
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Arguments: *none*
 
@@ -926,7 +926,7 @@ SugarCube does not trim whitespace from the contents of <code>&lt;&lt;case&gt;&g
 
 #### Since:
 
-* `v2.7.2`
+* `v2.7.2`: Introduced.
 
 #### Arguments:
 
@@ -993,7 +993,7 @@ This macro is functionally identical to <a href="#macros-macro-link">&lt;&lt;lin
 
 #### Since:
 
-* `v2.8.0`
+* `v2.8.0`: Introduced.
 
 #### Arguments:
 
@@ -1036,7 +1036,7 @@ Creates a checkbox, used to modify the value of the variable with the given name
 
 #### Since:
 
-* `v2.0.0`: Basic syntax.
+* `v2.0.0`: Introduced.
 * `v2.32.0`: Added `autocheck` keyword.
 
 #### Arguments:
@@ -1097,7 +1097,7 @@ Creates a cycling link, used to modify the value of the variable with the given 
 
 #### Since:
 
-* `v2.29.0`
+* `v2.29.0`: Introduced.
 
 #### Arguments:
 
@@ -1187,7 +1187,7 @@ If you simply need a passage link that modifies variables, both the <a href="#ma
 
 #### Since:
 
-* `v2.8.0`
+* `v2.8.0`: Introduced.
 
 #### Arguments:
 
@@ -1230,7 +1230,7 @@ Creates a single-use link that deactivates itself and appends its contents to it
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Arguments:
 
@@ -1260,7 +1260,7 @@ Creates a single-use link that deactivates itself and prepends its contents to i
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Arguments:
 
@@ -1290,7 +1290,7 @@ Creates a single-use link that deactivates itself and replaces its link text wit
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Arguments:
 
@@ -1320,7 +1320,7 @@ Creates a listbox, used to modify the value of the variable with the given name.
 
 #### Since:
 
-* `v2.26.0`: Basic syntax.
+* `v2.26.0`: Introduced.
 * `v2.27.0`: Added `autoselect` keyword.
 * `v2.28.0`: <s>Added `<<optionsFrom>>` child tag.</s>
 * `v2.28.1`: Fixed name of `<<optionsfrom>>` child tag, which was erroneously added as `<<optionsFrom>>` in `v2.28.0`.
@@ -1410,7 +1410,7 @@ Creates a number input box, used to modify the value of the variable with the gi
 
 #### Since:
 
-* `v2.32.0`
+* `v2.32.0`: Introduced.
 
 #### Arguments:
 
@@ -1447,7 +1447,7 @@ Creates a radio button, used to modify the value of the variable with the given 
 
 #### Since:
 
-* `v2.0.0`: Basic syntax.
+* `v2.0.0`: Introduced.
 * `v2.32.0`: Added `autocheck` keyword.
 
 #### Arguments:
@@ -1507,7 +1507,7 @@ Creates a multiline text input block, used to modify the value of the variable w
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Arguments:
 
@@ -1539,7 +1539,7 @@ Creates a text input box, used to modify the value of the variable with the give
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Arguments:
 
@@ -1574,7 +1574,7 @@ This macro has been deprecated and should no longer be used.  See the <a href="#
 
 #### Since:
 
-* `v2.0.0`: Basic syntax.
+* `v2.0.0`: Introduced.
 * `v2.8.0`: Deprecated in favor of `<<link>>`.
 
 
@@ -1591,7 +1591,7 @@ Creates a list of single-use passage links.  Each link removes itself and all ot
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Arguments:
 
@@ -1633,7 +1633,7 @@ If you want to return to a previously visited passage, rather than undo a moment
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Arguments:
 
@@ -1697,7 +1697,7 @@ Normally, when both link and text arguments are accepted, the order is text then
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Arguments:
 
@@ -1748,7 +1748,7 @@ If you want to undo previous moments within the history, rather than return to a
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Arguments:
 
@@ -1827,7 +1827,7 @@ Adds classes to the selected element(s).
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Arguments:
 
@@ -1854,7 +1854,7 @@ Executes its contents and appends the output to the contents of the selected ele
 
 #### Since:
 
-* `v2.0.0`: Basic syntax.
+* `v2.0.0`: Introduced.
 * `v2.25.0`: Added `transition` and `t8n` keywords.
 
 #### Arguments:
@@ -1911,7 +1911,7 @@ Most interactive elements—e.g., passage links, <a href="#macros-interactive">i
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Arguments:
 
@@ -1948,7 +1948,7 @@ Executes its contents and prepends the output to the contents of the selected el
 
 #### Since:
 
-* `v2.0.0`: Basic syntax.
+* `v2.0.0`: Introduced.
 * `v2.25.0`: Added `transition` and `t8n` keywords.
 
 #### Arguments:
@@ -2005,7 +2005,7 @@ If you simply want to empty the selected element(s), not remove them outright, y
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Arguments:
 
@@ -2038,7 +2038,7 @@ Removes classes from the selected element(s).
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Arguments:
 
@@ -2066,7 +2066,7 @@ Executes its contents and replaces the contents of the selected element(s) with 
 
 #### Since:
 
-* `v2.0.0`: Basic syntax.
+* `v2.0.0`: Introduced.
 * `v2.25.0`: Added `transition` and `t8n` keywords.
 
 #### Arguments:
@@ -2119,7 +2119,7 @@ Toggles classes on the selected element(s)—i.e., adding them if they don't exi
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Arguments:
 
@@ -2165,7 +2165,7 @@ The <a href="#config-api-property-audio-pauseonfadetozero"><code>Config.audio.pa
 
 #### Since:
 
-* `v2.0.0`: Basic syntax.
+* `v2.0.0`: Introduced.
 * `v2.1.0`: Added `fadeoverto` action.
 * `v2.8.0`: Added group ID(s).
 * `v2.28.0`: Added `load` and `unload` actions.
@@ -2299,7 +2299,7 @@ The <a href="#special-passage-storyinit"><code>StoryInit</code> special passage<
 
 #### Since:
 
-* `v2.0.0`: Basic syntax.
+* `v2.0.0`: Introduced.
 * `v2.28.0`: Deprecated the old optional format specifier syntax in favor of a new syntax (`formatId|`).
 
 #### Arguments:
@@ -2335,7 +2335,7 @@ The <a href="#special-passage-storyinit"><code>StoryInit</code> special passage<
 
 #### Since:
 
-* `v2.19.0`
+* `v2.19.0`: Introduced.
 
 #### Arguments:
 
@@ -2375,7 +2375,7 @@ The <a href="#special-passage-storyinit"><code>StoryInit</code> special passage<
 
 #### Since:
 
-* `v2.8.0`: Basic syntax.
+* `v2.8.0`: Introduced.
 * `v2.29.0`: Deprecated `<<track>>` `copy` keyword in favor of `own`.
 
 #### Arguments:
@@ -2421,7 +2421,7 @@ Controls the master audio settings.
 
 #### Since:
 
-* `v2.8.0`: Basic syntax.
+* `v2.8.0`: Introduced.
 * `v2.28.0`: Added `load`, `muteonhide`, `nomuteonhide`, and `unload` actions.
 
 #### Arguments:
@@ -2491,7 +2491,7 @@ The <a href="#config-api-property-audio-pauseonfadetozero"><code>Config.audio.pa
 
 #### Since:
 
-* `v2.0.0`: Basic syntax, compatible with `<<setplaylist>>`.
+* `v2.0.0`: Introduced, compatible with `<<setplaylist>>`.
 * `v2.1.0`: Added `fadeoverto` action.
 * `v2.8.0`: Added `listId` argument, compatible with `<<createplaylist>>`.  Deprecated `<<setplaylist>>` compatible form.
 * `v2.28.0`: Added `load` and `unload` actions.
@@ -2611,7 +2611,7 @@ You may not remove the predefined group IDs (<code>:all</code>, <code>:looped</c
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Arguments:
 
@@ -2632,7 +2632,7 @@ Removes the playlist with the given ID.
 
 #### Since:
 
-* `v2.8.0`
+* `v2.8.0`: Introduced.
 
 #### Arguments:
 
@@ -2657,7 +2657,7 @@ This macro should be invoked <strong><em>once</em></strong> following any invoca
 
 #### Since:
 
-* `v2.8.0`
+* `v2.8.0`: Introduced.
 
 #### Arguments: *none*
 
@@ -2698,7 +2698,7 @@ This macro has been deprecated and should no longer be used.  See the <a href="#
 
 #### Since:
 
-* `v2.0.0`: Basic syntax.
+* `v2.0.0`: Introduced.
 * `v2.8.0`: Deprecated in favor of `<<createplaylist>>`.
 
 <!-- *********************************************************************** -->
@@ -2711,7 +2711,7 @@ This macro has been deprecated and should no longer be used.  See the <a href="#
 
 #### Since:
 
-* `v2.0.0`: Basic syntax.
+* `v2.0.0`: Introduced.
 * `v2.8.0`: Deprecated in favor of `<<audio ":all" stop>>`.
 
 
@@ -2736,7 +2736,7 @@ In most cases, you will not need to use <code>&lt;&lt;goto&gt;&gt;</code> as the
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Arguments:
 
@@ -2772,7 +2772,7 @@ Passage navigation terminates all pending timed executions.
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Arguments:
 
@@ -2808,7 +2808,7 @@ Used within [`<<repeat>>`](#macros-macro-repeat) macros.  Terminates the executi
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Arguments: *none*
 
@@ -2824,7 +2824,7 @@ Passage navigation terminates all pending timed executions.
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Arguments:
 
@@ -2899,7 +2899,7 @@ The <code>$args</code> array-like object should be treated as though it were imm
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Arguments:
 

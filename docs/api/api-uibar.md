@@ -11,7 +11,7 @@ Completely removes the UI bar and all of its associated styles and event handler
 
 #### Since:
 
-* `v2.17.0`
+* `v2.17.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -33,7 +33,7 @@ This does not reclaim the space reserved for the UI bar.  Thus, a call to <a hre
 
 #### Since:
 
-* `v2.29.0`
+* `v2.29.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -59,7 +59,7 @@ Returns whether the UI bar is currently hidden.
 
 #### Since:
 
-* `v2.29.0`
+* `v2.29.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -83,7 +83,7 @@ Returns whether the UI bar is currently stowed.
 
 #### Since:
 
-* `v2.29.0`
+* `v2.29.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -107,7 +107,7 @@ Shows the UI bar.  Returns a reference to the `UIBar` object for chaining.
 
 #### Since:
 
-* `v2.29.0`
+* `v2.29.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -133,7 +133,7 @@ Stows the UI bar, so that it takes up less space.  Returns a reference to the `U
 
 #### Since:
 
-* `v2.17.0`: Basic syntax.
+* `v2.17.0`: Introduced.
 * `v2.29.0`: Added returned `UIBar` chaining reference.
 
 #### Parameters:
@@ -162,7 +162,7 @@ Unstows the UI bar, so that it is fully accessible again.  Returns a reference t
 
 #### Since:
 
-* `v2.17.0`: Basic syntax.
+* `v2.17.0`: Introduced.
 * `v2.29.0`: Added returned `UIBar` chaining reference.
 
 #### Parameters:

@@ -15,7 +15,7 @@ Acquires a loading screen lock and returns its ID.  Displays the loading screen,
 
 #### Since:
 
-* `v2.15.0`
+* `v2.15.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -33,7 +33,7 @@ Releases the loading screen lock with the given ID.  Hides the loading screen, i
 
 #### Since:
 
-* `v2.15.0`
+* `v2.15.0`: Introduced.
 
 #### Parameters:
 

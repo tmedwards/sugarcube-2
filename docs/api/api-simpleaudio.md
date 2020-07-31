@@ -36,7 +36,7 @@ This <em>should not</em> be done lightly if your audio sources are on the networ
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -58,7 +58,7 @@ This <em>should not</em> be done lightly if your audio sources are on the networ
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -76,7 +76,7 @@ Gets or sets the mute state for the master volume (default: `false`).
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters:
 
@@ -103,7 +103,7 @@ Gets or sets the mute-on-hidden state for the master volume (default: `false`). 
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters:
 
@@ -130,7 +130,7 @@ Returns an [`AudioRunner` instance](#audiorunner-api) for the tracks matching th
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters:
 
@@ -178,7 +178,7 @@ Stops playback of *all* currently registered tracks.
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -200,7 +200,7 @@ Once a track has been unloaded, playback cannot occur until it is reloaded.
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -218,7 +218,7 @@ Gets or sets the master volume level (default: `1`).
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters:
 
@@ -248,7 +248,7 @@ Adds an audio track with the given track ID.
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters:
 
@@ -283,7 +283,7 @@ Cannot delete tracks solely under the control of a playlist.
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -309,7 +309,7 @@ Does not currently remove the track from either groups or playlists.  Thus, any 
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters:
 
@@ -333,7 +333,7 @@ To affect multiple tracks and/or groups at once, see the <a href="#simpleaudio-a
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters:
 
@@ -362,7 +362,7 @@ Returns whether an audio track with the given track ID exists.
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters:
 
@@ -394,7 +394,7 @@ If you want to play tracks in a sequence, then you want a <a href="#simpleaudio-
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters:
 
@@ -420,7 +420,7 @@ Only deletes the groups themselves, does not affect their component tracks.
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -442,7 +442,7 @@ Only deletes the group itself, does not affect its component tracks.
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters:
 
@@ -466,7 +466,7 @@ To actually affect multiple tracks and/or groups, see the <a href="#simpleaudio-
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters:
 
@@ -486,7 +486,7 @@ Returns whether an audio group with the given group ID exists.
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters:
 
@@ -518,7 +518,7 @@ If you simply want to apply actions to multiple tracks simultaneously, then you 
 
 #### Since:
 
-* `v2.28.0`: Basic syntax.
+* `v2.28.0`: Introduced.
 * `v2.29.0`: Changed descriptor object `copy` property to `own`.
 
 #### Parameters:
@@ -611,7 +611,7 @@ Deletes all playlists.
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -629,7 +629,7 @@ Deletes the playlist with the given list ID.
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters:
 
@@ -649,7 +649,7 @@ Returns the [`AudioList` instance](#audiolist-api) with the given list ID, or `n
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters:
 
@@ -678,7 +678,7 @@ Returns whether a playlist with the given list ID exists.
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters:
 

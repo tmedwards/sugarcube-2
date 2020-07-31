@@ -23,7 +23,7 @@ Determines whether the audio subsystem automatically pauses tracks that have bee
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Examples:
 
@@ -43,7 +43,7 @@ It is unlikely that you will ever want to disable this setting.
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Examples:
 
@@ -65,7 +65,7 @@ Determines whether the story's history controls (Backward, Jump To, & Forward bu
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Examples:
 
@@ -81,7 +81,7 @@ Sets the maximum number of states (moments) to which the history is allowed to g
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Examples:
 
@@ -114,7 +114,7 @@ This setting exists because it's unlikely that you'll ever want to actually perf
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Examples:
 
@@ -135,7 +135,7 @@ This setting exists to prevent a misconfigured loop from making the browser unre
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Examples:
 
@@ -152,7 +152,7 @@ Determines whether the [`<<type>>` macro](#macros-macro-type) types out content 
 
 #### Since:
 
-* `v2.32.0`
+* `v2.32.0`: Introduced.
 
 #### Examples:
 
@@ -175,7 +175,7 @@ Allows the destination of passage navigation to be overridden.  The callback is 
 
 #### Since:
 
-* `v2.13.0`
+* `v2.13.0`: Introduced.
 
 #### Examples:
 
@@ -221,7 +221,7 @@ Determines whether alternate passage descriptions are used by the *Saves* and *J
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Examples:
 
@@ -250,7 +250,7 @@ Determines whether passage titles are combined with the story title, within the 
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Examples:
 
@@ -270,7 +270,7 @@ Does not affect <code>script</code> or <code>stylesheet</code> tagged passages, 
 
 #### Since:
 
-* `v2.19.0`
+* `v2.19.0`: Introduced.
 
 #### Examples:
 
@@ -294,7 +294,7 @@ The function will be called just before the built-in no-break passage processing
 
 #### Since:
 
-* `v2.30.0`
+* `v2.30.0`: Introduced.
 
 #### Examples:
 
@@ -313,7 +313,7 @@ Sets the starting passage, the very first passage that will be displayed.
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Examples:
 
@@ -333,7 +333,7 @@ If using an integer delay, ideally, it should probably be slightly longer than t
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Examples:
 
@@ -390,7 +390,7 @@ If the autosave cannot be loaded, for any reason, then the start passage is load
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Examples:
 
@@ -419,7 +419,7 @@ When setting the value to boolean <code>true</code>, you will likely also need t
 
 #### Since:
 
-* `v2.0.0`: Basic syntax.
+* `v2.0.0`: Introduced.
 * `v2.30.0`: Added function values and deprecated string values.
 
 #### Examples:
@@ -445,7 +445,7 @@ Sets the story ID associated with saves.
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Examples:
 
@@ -461,7 +461,7 @@ Determines whether saving is allowed within the current context.  The callback i
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Examples:
 
@@ -479,7 +479,7 @@ Performs any required pre-processing before the save data is loaded—e.g., upgr
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Callback parameters:
 
@@ -507,7 +507,7 @@ Performs any required post-processing before the save data is saved.  The callba
 
 #### Since:
 
-* `v2.0.0`: Basic syntax.
+* `v2.0.0`: Introduced.
 * `v2.33.0`: Added save operation details object parameter to the callback function.
 
 #### Callback parameters:
@@ -566,7 +566,7 @@ Sets the maximum number of available save slots.
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Examples:
 
@@ -586,7 +586,7 @@ This setting is only used to set the <code>version</code> property of saves.  Th
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Examples:
 
@@ -612,7 +612,7 @@ Determines whether the UI bar (sidebar) starts in the stowed (shut) state initia
 
 #### Since:
 
-* `v2.11.0`
+* `v2.11.0`: Introduced.
 
 #### Examples:
 
@@ -639,7 +639,7 @@ The story title is not included in updates because SugarCube uses it as the basi
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Examples:
 
@@ -666,7 +666,7 @@ You <em>must</em> provide your own styling for the <code>link-visited</code> cla
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Examples:
 
@@ -692,7 +692,7 @@ Determines whether the output of the Wikifier is post-processed into more sane m
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Examples:
 
@@ -712,7 +712,7 @@ This property is automatically set based on whether you're using a testing mode 
 
 #### Since:
 
-* `v2.2.0`
+* `v2.2.0`: Introduced.
 
 #### Examples:
 
@@ -739,7 +739,7 @@ Sets the integer delay (in milliseconds) before the loading screen is dismissed,
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Examples:
 

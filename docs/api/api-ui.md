@@ -11,7 +11,7 @@ Opens the built-in alert dialog, displaying the given message to the player.
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters:
 
@@ -33,7 +33,7 @@ Opens the built-in jump to dialog, which is populated via the [`bookmark` tag](#
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters:
 
@@ -54,7 +54,7 @@ Opens the built-in restart dialog, prompting the player to restart the story.
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters:
 
@@ -74,7 +74,7 @@ Opens the built-in saves dialog.
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters:
 
@@ -95,7 +95,7 @@ Opens the built-in settings dialog, which is populated from the [`Setting` API](
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters:
 
@@ -116,7 +116,7 @@ Opens the built-in share dialog, which is populated from the [`StoryShare` passa
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters:
 

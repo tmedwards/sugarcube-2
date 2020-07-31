@@ -17,7 +17,7 @@ The argument string parsed into an array of discrete arguments.
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Examples:
 
@@ -37,7 +37,7 @@ The argument string after converting all TwineScript syntax elements into their 
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Examples:
 
@@ -54,7 +54,7 @@ The unprocessed argument string.
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Examples:
 
@@ -71,7 +71,7 @@ The name of the macro.
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Examples:
 
@@ -88,7 +88,7 @@ The current output element.
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 <!-- *********************************************************************** -->
 
@@ -98,7 +98,7 @@ The (execution) context object of the macro's parent, or `null` if the macro has
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 <!-- *********************************************************************** -->
 
@@ -108,7 +108,7 @@ The parser instance that generated the macro call.
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 <!-- *********************************************************************** -->
 
@@ -124,7 +124,7 @@ The text of a container macro parsed into discrete payload objects by tag.  Payl
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 <!-- *********************************************************************** -->
 
@@ -134,7 +134,7 @@ The macro's definition—created via [`Macro.add()`](#macro-api-method-add).
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 <!-- *********************************************************************** -->
 
@@ -144,7 +144,7 @@ Returns whether any of the macro's ancestors passed the test implemented by the 
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters:
 
@@ -165,7 +165,7 @@ Returns the first of the macro's ancestors that passed the test implemented by t
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters:
 
@@ -186,7 +186,7 @@ Returns a new array containing all of the macro's ancestors that passed the test
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters:
 
@@ -215,7 +215,7 @@ Only useful when you have an asynchronous callback that invokes code/content tha
 
 #### Since:
 
-* `v2.14.0`: Basic syntax.
+* `v2.14.0`: Introduced.
 * `v2.23.3`: Fixed an issue where shadows would fail for multiple layers of nested asynchronous code due to loss of context.
 
 #### Parameters:
@@ -271,7 +271,7 @@ Renders the message prefixed with the name of the macro and returns `false`.
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters:
 

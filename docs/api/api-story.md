@@ -11,7 +11,7 @@ The DOM ID of the story, created from the slugified story title.
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 <!-- *********************************************************************** -->
 
@@ -21,7 +21,7 @@ The IFID (Interactive Fiction IDentifier) of the story, if any.
 
 #### Since:
 
-* `v2.5.0`
+* `v2.5.0`: Introduced.
 
 <!-- *********************************************************************** -->
 
@@ -31,7 +31,7 @@ The title of the story.
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 <!-- *********************************************************************** -->
 
@@ -45,7 +45,7 @@ This method will not return &quot;code&quot; passages—i.e., script, stylesheet
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters:
 
@@ -69,7 +69,7 @@ This method will not detect &quot;code&quot; passages—i.e., script, stylesheet
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters:
 
@@ -93,7 +93,7 @@ This method will not return &quot;code&quot; passages—i.e., script, stylesheet
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters:
 
@@ -120,7 +120,7 @@ This method will not return &quot;code&quot; passages—i.e., script, stylesheet
 
 #### Since:
 
-* `v2.11.0`
+* `v2.11.0`: Introduced.
 
 #### Parameters:
 

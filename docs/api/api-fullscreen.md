@@ -37,7 +37,7 @@ Returns the current fullscreen element or, if fullscreen mode is not active, `nu
 
 #### Since:
 
-* `v2.31.0`
+* `v2.31.0`: Introduced.
 
 #### Examples:
 
@@ -53,7 +53,7 @@ Returns whether fullscreen is both supported and enabled.
 
 #### Since:
 
-* `v2.31.0`
+* `v2.31.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -71,7 +71,7 @@ Returns whether fullscreen mode is currently active.
 
 #### Since:
 
-* `v2.31.0`
+* `v2.31.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -93,7 +93,7 @@ Request that the browser enter fullscreen mode.
 
 #### Since:
 
-* `v2.31.0`
+* `v2.31.0`: Introduced.
 
 #### Parameters:
 
@@ -137,7 +137,7 @@ Request that the browser exit fullscreen mode.
 
 #### Since:
 
-* `v2.31.0`
+* `v2.31.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -156,7 +156,7 @@ Request that the browser toggle fullscreen mode—i.e., enter or exit as appropr
 
 #### Since:
 
-* `v2.31.0`
+* `v2.31.0`: Introduced.
 
 #### Parameters:
 
@@ -187,7 +187,7 @@ Attaches fullscreen change event handlers.
 
 #### Since:
 
-* `v2.31.0`
+* `v2.31.0`: Introduced.
 
 #### Parameters:
 
@@ -222,7 +222,7 @@ Removes fullscreen change event handlers.
 
 #### Since:
 
-* `v2.31.0`
+* `v2.31.0`: Introduced.
 
 #### Parameters:
 
@@ -265,7 +265,7 @@ Attaches fullscreen error event handlers.
 
 #### Since:
 
-* `v2.31.0`
+* `v2.31.0`: Introduced.
 
 #### Parameters:
 
@@ -300,7 +300,7 @@ Removes fullscreen error event handlers.
 
 #### Since:
 
-* `v2.31.0`
+* `v2.31.0`: Introduced.
 
 #### Parameters:
 

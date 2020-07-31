@@ -15,7 +15,7 @@ Add new macro(s).
 
 #### Since:
 
-* `v2.0.0`: Added.
+* `v2.0.0`: Introduced
 * `v2.33.0`: Obsoleted the `deep` parameter.
 
 #### Parameters:
@@ -69,7 +69,7 @@ Remove existing macro(s).
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters:
 
@@ -90,7 +90,7 @@ Return the named macro definition, or `null` on failure.
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters:
 
@@ -110,7 +110,7 @@ Returns whether the named macro exists.
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters:
 
@@ -130,7 +130,7 @@ Return the named macro tag's parents array (includes the names of all macros who
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters:
 
@@ -150,7 +150,7 @@ Returns whether the named macro tag exists.
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters:
 

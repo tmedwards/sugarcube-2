@@ -13,7 +13,7 @@ Adds a header to the Settings dialog.
 
 #### Since:
 
-* `v2.7.1`
+* `v2.7.1`: Introduced.
 
 #### Parameters:
 
@@ -38,7 +38,7 @@ Adds the named property to the `settings` object and a toggle control for it to 
 
 #### Since:
 
-* `v2.0.0`: Basic syntax.
+* `v2.0.0`: Introduced.
 * `v2.26.0`: Added `desc` property to definition object.
 
 #### Parameters:
@@ -103,7 +103,7 @@ Adds the named property to the `settings` object and a list control for it to th
 
 #### Since:
 
-* `v2.0.0`: Basic syntax.
+* `v2.0.0`: Introduced.
 * `v2.26.0`: Added `desc` property to definition object.
 
 #### Parameters:
@@ -182,7 +182,7 @@ Adds the named property to the `settings` object and a range control for it to t
 
 #### Since:
 
-* `v2.26.0`
+* `v2.26.0`: Introduced.
 
 #### Parameters:
 
@@ -235,7 +235,7 @@ The API automatically calls this method at startup, so you should never need to 
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -253,7 +253,7 @@ Resets the setting with the given name to its default value.  If no name is give
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters:
 
@@ -281,7 +281,7 @@ The controls of the Settings dialog automatically call this method when settings
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -301,4 +301,4 @@ Normally, the values of its properties are automatically managed by their associ
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.

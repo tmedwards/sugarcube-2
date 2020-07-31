@@ -298,7 +298,7 @@ SugarCube provides a few special HTML attributes, which you may add to HTML tags
 
 #### Since:
 
-* `v2.0.0`: Basic syntax.
+* `v2.0.0`: Introduced.
 * `v2.24.0`: Added `data-passage` attribute support to `<audio>`, `<source>`, and `<video>` tags.
 
 <!-- *********************************************************************** -->
@@ -341,7 +341,7 @@ HTML attributes may be prefixed with directives, special text, which trigger spe
 
 #### Since:
 
-* `v2.21.0`: Basic syntax.
+* `v2.21.0`: Introduced.
 * `v2.23.5`: Fixed an issue with the evaluation directive where using multiple directives on a single HTML tag would result in some being unprocessed.
 
 
@@ -504,7 +504,7 @@ Because the style markups use the same tokens to begin and end each markup, the 
 **************************************************************************** -->
 ## List {#markup-list}
 
-An asterisk (`*`) or number sign (`#`) that begins a line defines a member of the unordered or ordered list markup, respectively.  
+An asterisk (`*`) or number sign (`#`) that begins a line defines a member of the unordered or ordered list markup, respectively.
 
 <table>
 <thead>
@@ -736,7 +736,7 @@ She was always willing to lend her ear to anyone.
 
 #### Since:
 
-* `v2.29.0`
+* `v2.29.0`: Introduced.
 
 
 <!-- ***************************************************************************

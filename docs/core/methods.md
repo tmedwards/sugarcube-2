@@ -49,7 +49,7 @@ Concatenates one or more unique members to the end of the base array and returns
 
 #### Since:
 
-* `v2.21.0`
+* `v2.21.0`: Introduced.
 
 #### Parameters:
 
@@ -74,7 +74,7 @@ Returns the number of times that the given member was found within the array, st
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters:
 
@@ -97,7 +97,7 @@ Removes all instances of the given members from the array and returns a new arra
 
 #### Since:
 
-* `v2.5.0`
+* `v2.5.0`: Introduced.
 
 #### Parameters:
 
@@ -119,7 +119,7 @@ Removes all of the members at the given indices from the array and returns a new
 
 #### Since:
 
-* `v2.5.0`
+* `v2.5.0`: Introduced.
 
 #### Parameters:
 
@@ -142,7 +142,7 @@ Removes all of the members that pass the test implemented by the given predicate
 
 #### Since:
 
-* `v2.25.0`
+* `v2.25.0`: Introduced.
 
 #### Parameters:
 
@@ -188,7 +188,7 @@ Returns the first member from the array.  Does not modify the original.
 
 #### Since:
 
-* `v2.27.0`
+* `v2.27.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -281,7 +281,7 @@ Returns whether all of the given members were found within the array.
 
 #### Since:
 
-* `v2.10.0`
+* `v2.10.0`: Introduced.
 
 #### Parameters:
 
@@ -305,7 +305,7 @@ Returns whether any of the given members were found within the array.
 
 #### Since:
 
-* `v2.10.0`
+* `v2.10.0`: Introduced.
 
 #### Parameters:
 
@@ -329,7 +329,7 @@ Returns the last member from the array.  Does not modify the original.
 
 #### Since:
 
-* `v2.27.0`
+* `v2.27.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -348,7 +348,7 @@ Removes and returns a random member from the array.
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -367,7 +367,7 @@ Randomly removes the given number of members from the base array and returns the
 
 #### Since:
 
-* `v2.20.0`
+* `v2.20.0`: Introduced.
 
 #### Parameters:
 
@@ -427,7 +427,7 @@ Appends one or more unique members to the end of the base array and returns its 
 
 #### Since:
 
-* `v2.21.0`
+* `v2.21.0`: Introduced.
 
 #### Parameters:
 
@@ -451,7 +451,7 @@ Returns a random member from the array.  Does not modify the original.
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -470,7 +470,7 @@ Randomly selects the given number of unique members from the array and returns t
 
 #### Since:
 
-* `v2.20.0`
+* `v2.20.0`: Introduced.
 
 #### Parameters:
 
@@ -508,7 +508,7 @@ Randomly shuffles the array.
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -549,7 +549,7 @@ Prepends one or more unique members to the beginning of the base array and retur
 
 #### Since:
 
-* `v2.21.0`
+* `v2.21.0`: Introduced.
 
 #### Parameters:
 
@@ -575,7 +575,7 @@ This method has been deprecated and should no longer be used.  See the <a href="
 
 #### Since:
 
-* `v2.0.0`: Basic syntax.
+* `v2.0.0`: Introduced.
 * `v2.10.0`: Deprecated in favor of `<Array>.includes()`.
 
 <!-- *********************************************************************** -->
@@ -588,7 +588,7 @@ This method has been deprecated and should no longer be used.  See the <a href="
 
 #### Since:
 
-* `v2.0.0`: Basic syntax.
+* `v2.0.0`: Introduced.
 * `v2.10.0`: Deprecated in favor of `<Array>.includesAll()`.
 
 <!-- *********************************************************************** -->
@@ -601,7 +601,7 @@ This method has been deprecated and should no longer be used.  See the <a href="
 
 #### Since:
 
-* `v2.0.0`: Basic syntax.
+* `v2.0.0`: Introduced.
 * `v2.10.0`: Deprecated in favor of `<Array>.includesAny()`.
 
 <!-- *********************************************************************** -->
@@ -616,7 +616,7 @@ Returns a new array consisting of the flattened source array.  Does not modify t
 
 #### Since:
 
-* `v2.0.0`: Basic syntax.
+* `v2.0.0`: Introduced.
 * `v2.29.0`: Deprecated in favor of `<Array>.flat()`.
 
 
@@ -632,7 +632,7 @@ Returns a random member from the array or array-like object.  Does not modify th
 
 #### Since:
 
-* `v2.0.0`: Basic syntax.
+* `v2.0.0`: Introduced.
 * `v2.20.0`: Deprecated.
 
 
@@ -653,7 +653,7 @@ The <a href="#guide-tips-non-generic-object-types"><em>Non-generic object types 
 
 #### Since:
 
-* `v2.0.0`: Basic syntax.
+* `v2.0.0`: Introduced.
 * `v2.9.0`: Added `reviveData` parameter.
 
 #### Parameters:
@@ -689,7 +689,7 @@ Makes the target element(s) WAI-ARIA-compatible clickables—meaning that variou
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters:
 
@@ -753,7 +753,7 @@ This method is meant to work with clickables created via <a href="#methods-jquer
 
 #### Since:
 
-* `v2.26.0`
+* `v2.26.0`: Introduced.
 
 #### Parameters:
 
@@ -778,7 +778,7 @@ This method is meant to work with clickables created via <a href="#methods-jquer
 
 #### Since:
 
-* `v2.26.0`
+* `v2.26.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -802,7 +802,7 @@ Wikifies the given content source(s) and discards the result.  If there were err
 
 #### Since:
 
-* `v2.17.0`
+* `v2.17.0`: Introduced.
 
 #### Parameters:
 
@@ -822,7 +822,7 @@ Wikifies the given content source(s) and appends the result to the target elemen
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters:
 
@@ -849,7 +849,7 @@ Returns the given number clamped to the specified bounds.  Does not modify the o
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters:
 
@@ -897,7 +897,7 @@ Returns the number clamped to the specified bounds.  Does not modify the origina
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters:
 
@@ -925,7 +925,7 @@ Returns the given string with all regular expression metacharacters escaped.  Do
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters:
 
@@ -956,7 +956,7 @@ Returns the number of times that the given substring was found within the string
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters:
 
@@ -983,7 +983,7 @@ Returns the first Unicode code point within the string.  Does not modify the ori
 
 #### Since:
 
-* `v2.27.0`
+* `v2.27.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -1005,7 +1005,7 @@ Returns a formatted string, after replacing each format item in the given format
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters:
 
@@ -1063,7 +1063,7 @@ Returns the last Unicode code point within the string.  Does not modify the orig
 
 #### Since:
 
-* `v2.27.0`
+* `v2.27.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -1089,7 +1089,7 @@ Returns the string with its first Unicode code point converted to upper case, ac
 
 #### Since:
 
-* `v2.9.0`
+* `v2.9.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -1115,7 +1115,7 @@ Returns the string with its first Unicode code point converted to upper case.  D
 
 #### Since:
 
-* `v2.9.0`
+* `v2.9.0`: Introduced.
 
 #### Parameters: *none*
 

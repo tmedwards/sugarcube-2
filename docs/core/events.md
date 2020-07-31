@@ -35,7 +35,7 @@ You cannot obtain data about the closing dialog from the dialog itself—e.g., t
 
 #### Since:
 
-* `v2.29.0`
+* `v2.29.0`: Introduced.
 
 #### Event object properties: *none*
 
@@ -65,7 +65,7 @@ Global event triggered as the first step in closing the dialog when [`Dialog.clo
 
 #### Since:
 
-* `v2.29.0`
+* `v2.29.0`: Introduced.
 
 #### Event object properties: *none*
 
@@ -95,7 +95,7 @@ Global event triggered as the last step in opening the dialog when [`Dialog.open
 
 #### Since:
 
-* `v2.29.0`
+* `v2.29.0`: Introduced.
 
 #### Event object properties: *none*
 
@@ -125,7 +125,7 @@ Global event triggered as the first step in opening the dialog when [`Dialog.ope
 
 #### Since:
 
-* `v2.29.0`
+* `v2.29.0`: Introduced.
 
 #### Event object properties: *none*
 
@@ -192,7 +192,7 @@ Triggered before the modification of the state history.
 
 #### Since:
 
-* `v2.20.0`
+* `v2.20.0`: Introduced.
 
 #### Event object properties:
 
@@ -220,7 +220,7 @@ Triggered before the rendering of the incoming passage.
 
 #### Since:
 
-* `v2.20.0`
+* `v2.20.0`: Introduced.
 
 #### Event object properties:
 
@@ -263,7 +263,7 @@ Triggered after the rendering of the incoming passage.
 
 #### Since:
 
-* `v2.20.0`
+* `v2.20.0`: Introduced.
 
 #### Event object properties:
 
@@ -306,7 +306,7 @@ Triggered after the display—i.e., output—of the incoming passage.
 
 #### Since:
 
-* `v2.20.0`: Basic syntax.
+* `v2.20.0`: Introduced.
 * `v2.31.0`: Added `content` property to event object.
 
 #### Event object properties:
@@ -350,7 +350,7 @@ Triggered at the end of passage navigation.
 
 #### Since:
 
-* `v2.20.0`: Basic syntax.
+* `v2.20.0`: Introduced.
 * `v2.31.0`: Added `content` property to event object.
 
 #### Event object properties:
@@ -396,7 +396,7 @@ $(document).on(':passageend', function (ev) {
 
 #### Since:
 
-* `v2.0.0`: Basic syntax.
+* `v2.0.0`: Introduced.
 * `v2.31.0`: Deprecated.
 
 <!-- *********************************************************************** -->
@@ -409,7 +409,7 @@ $(document).on(':passageend', function (ev) {
 
 #### Since:
 
-* `v2.0.0`: Basic syntax.
+* `v2.0.0`: Introduced.
 * `v2.31.0`: Deprecated.
 
 <!-- *********************************************************************** -->
@@ -422,7 +422,7 @@ $(document).on(':passageend', function (ev) {
 
 #### Since:
 
-* `v2.0.0`: Basic syntax.
+* `v2.0.0`: Introduced.
 * `v2.31.0`: Deprecated.
 
 <!-- *********************************************************************** -->
@@ -435,7 +435,7 @@ $(document).on(':passageend', function (ev) {
 
 #### Since:
 
-* `v2.0.0`: Basic syntax.
+* `v2.0.0`: Introduced.
 * `v2.31.0`: Deprecated.
 
 <!-- *********************************************************************** -->
@@ -448,7 +448,7 @@ $(document).on(':passageend', function (ev) {
 
 #### Since:
 
-* `v2.0.0`: Basic syntax.
+* `v2.0.0`: Introduced.
 * `v2.31.0`: Deprecated.
 
 
@@ -475,7 +475,7 @@ Track event triggered when a fade completes normally.
 
 #### Since:
 
-* `v2.29.0`
+* `v2.29.0`: Introduced.
 
 #### Event object properties: *none*
 
@@ -501,7 +501,7 @@ Track event triggered when a fade starts.
 
 #### Since:
 
-* `v2.29.0`
+* `v2.29.0`: Introduced.
 
 #### Event object properties: *none*
 
@@ -531,7 +531,7 @@ Track event triggered when playback is stopped after [`<AudioTrack>.stop()`](#au
 
 #### Since:
 
-* `v2.29.0`
+* `v2.29.0`: Introduced.
 
 #### Event object properties: *none*
 
@@ -565,7 +565,7 @@ Global event triggered once just before the dismissal of the loading screen at s
 
 #### Since:
 
-* `v2.31.0`
+* `v2.31.0`: Introduced.
 
 #### Event object properties: *none*
 
@@ -586,7 +586,7 @@ Global event triggered once just before the page is reloaded when [`Engine.resta
 
 #### Since:
 
-* `v2.23.0`
+* `v2.23.0`: Introduced.
 
 #### Event object properties: *none*
 
@@ -619,7 +619,7 @@ Injecting additional <code>&lt;&lt;type&gt;&gt;</code> macro invocations <em>aft
 
 #### Since:
 
-* `v2.32.0`
+* `v2.32.0`: Introduced.
 
 #### Event object properties: *none*
 
@@ -640,7 +640,7 @@ Local event triggered on the typing wrapper when the typing of a section starts.
 
 #### Since:
 
-* `v2.32.0`: Added.
+* `v2.32.0`: Introduced
 * `v2.33.0`: Changed to a local event that bubbles up the DOM tree.
 
 #### Event object properties: *none*
@@ -662,7 +662,7 @@ Local event triggered on the typing wrapper when the typing of a section stops.
 
 #### Since:
 
-* `v2.32.0`: Added.
+* `v2.32.0`: Introduced
 * `v2.33.0`: Changed to a local event that bubbles up the DOM tree.
 
 #### Event object properties: *none*

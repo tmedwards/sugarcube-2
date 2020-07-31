@@ -277,6 +277,7 @@
 * [Macros Settings](#config-api-macros)
 	* [`Config.macros.ifAssignmentError`](#config-api-property-macros-ifassignmenterror)
 	* [`Config.macros.maxLoopIterations`](#config-api-property-macros-maxloopiterations)
+	* [`Config.macros.typeSkipKey`](#config-api-property-macros-typeskipkey)
 	* [`Config.macros.typeVisitedPassages`](#config-api-property-macros-typevisitedpassages)
 * [Navigation Settings](#config-api-navigation)
 	* [`Config.navigation.override`](#config-api-property-navigation-override)
