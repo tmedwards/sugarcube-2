@@ -21,7 +21,7 @@ Using <code>State.active</code> directly is generally unnecessary as there exist
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Examples:
 
@@ -38,7 +38,7 @@ Returns the bottommost (least recent) moment from the full in-play history (past
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Examples:
 
@@ -59,7 +59,7 @@ Returns the current moment from the full in-play history (past + future), which 
 
 #### Since:
 
-* `v2.8.0`
+* `v2.8.0`: Introduced.
 
 #### Examples:
 
@@ -76,7 +76,7 @@ Returns the number of moments within the past in-play history (past only).
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Examples:
 
@@ -94,7 +94,7 @@ Returns the title of the passage associated with the active (present) moment.
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Examples:
 
@@ -110,7 +110,7 @@ Returns the number of moments within the full in-play history (past + future).
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -130,7 +130,7 @@ Returns the current temporary variables.
 
 #### Since:
 
-* `v2.13.0`
+* `v2.13.0`: Introduced.
 
 #### Examples:
 
@@ -150,7 +150,7 @@ Returns the topmost (most recent) moment from the full in-play history (past + f
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Examples:
 
@@ -167,7 +167,7 @@ Returns the total number (count) of played moments within the extended past hist
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Examples:
 
@@ -185,7 +185,7 @@ Returns the variables from the active (present) moment.
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Examples:
 
@@ -201,7 +201,7 @@ Returns the value of the story or temporary variable by the given name.
 
 #### Since:
 
-* `v2.22.0`
+* `v2.22.0`: Introduced.
 
 #### Parameters:
 
@@ -225,7 +225,7 @@ Returns whether any moments with the given title exist within the past in-play h
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters:
 
@@ -249,7 +249,7 @@ If you need to check for multiple passages, the <a href="#functions-function-has
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters:
 
@@ -269,7 +269,7 @@ Returns the moment, relative to the bottom of the past in-play history (past onl
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters:
 
@@ -291,7 +291,7 @@ Returns whether the full in-play history (past + future) is empty.
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -311,7 +311,7 @@ Returns the moment, relative to the top of the past in-play history (past only),
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters:
 
@@ -334,7 +334,7 @@ Returns the size of the story metadata store—i.e., the number of stored pairs.
 
 #### Since:
 
-* `v2.30.0`
+* `v2.30.0`: Introduced.
 
 #### Examples:
 
@@ -353,7 +353,7 @@ Empties the story metadata store.
 
 #### Since:
 
-* `v2.29.0`
+* `v2.29.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -372,7 +372,7 @@ Removes the specified key, and its associated value, from the story metadata sto
 
 #### Since:
 
-* `v2.29.0`
+* `v2.29.0`: Introduced.
 
 #### Parameters:
 
@@ -393,7 +393,7 @@ Returns the value associated with the specified key from the story metadata stor
 
 #### Since:
 
-* `v2.29.0`
+* `v2.29.0`: Introduced.
 
 #### Parameters:
 
@@ -414,7 +414,7 @@ Returns whether the specified key exists within the story metadata store.
 
 #### Since:
 
-* `v2.29.0`
+* `v2.29.0`: Introduced.
 
 #### Parameters:
 
@@ -449,7 +449,7 @@ This feature is largely incompatible with private browsing modes, which cause al
 
 #### Since:
 
-* `v2.29.0`
+* `v2.29.0`: Introduced.
 
 #### Parameters:
 
@@ -478,7 +478,7 @@ Initializes the seedable pseudo-random number generator (PRNG) and integrates it
 
 #### Since:
 
-* `v2.29.0`
+* `v2.29.0`: Introduced.
 
 #### Parameters:
 
@@ -501,7 +501,7 @@ Returns whether the [seedable PRNG](#state-api-method-prng-init) has been enable
 
 #### Since:
 
-* `v2.29.0`
+* `v2.29.0`: Introduced.
 
 #### Examples:
 
@@ -521,7 +521,7 @@ The pull count is automatically included within saves and sessions, so this is n
 
 #### Since:
 
-* `v2.29.0`
+* `v2.29.0`: Introduced.
 
 #### Examples:
 
@@ -541,7 +541,7 @@ The seed is automatically included within saves and sessions, so this is not esp
 
 #### Since:
 
-* `v2.29.0`
+* `v2.29.0`: Introduced.
 
 #### Examples:
 
@@ -561,7 +561,7 @@ By default, it simply returns non-deterministic results from <a href="https://de
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -579,7 +579,7 @@ Sets the value of the story or temporary variable by the given name.  Returns wh
 
 #### Since:
 
-* `v2.22.0`
+* `v2.22.0`: Introduced.
 
 #### Parameters:
 
@@ -602,5 +602,5 @@ This method has been deprecated and should no longer be used.  See the <a href="
 
 #### Since:
 
-* `v2.0.0`: Basic syntax.
+* `v2.0.0`: Introduced.
 * `v2.29.0`: Deprecated in favor of `State.prng.init()`.

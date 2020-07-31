@@ -17,7 +17,7 @@ Returns the playlist's total playtime in seconds, `Infinity` if it contains any 
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -39,7 +39,7 @@ The <a href="#config-api-property-audio-pauseonfadetozero"><code>Config.audio.pa
 
 #### Since:
 
-* `v2.28.0`: Basic syntax.
+* `v2.28.0`: Introduced.
 * `v2.29.0`: Updated to return a `Promise`.
 
 #### Parameters:
@@ -63,7 +63,7 @@ Starts playback of the playlist and fades the currently playing track from the s
 
 #### Since:
 
-* `v2.28.0`: Basic syntax.
+* `v2.28.0`: Introduced.
 * `v2.29.0`: Updated to return a `Promise`.
 
 #### Parameters:
@@ -90,7 +90,7 @@ The <a href="#config-api-property-audio-pauseonfadetozero"><code>Config.audio.pa
 
 #### Since:
 
-* `v2.28.0`: Basic syntax.
+* `v2.28.0`: Introduced.
 * `v2.29.0`: Updated to return a `Promise`.
 
 #### Parameters:
@@ -117,7 +117,7 @@ This does not alter the volume level.
 
 #### Since:
 
-* `v2.29.0`
+* `v2.29.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -135,7 +135,7 @@ Returns whether playback of the playlist has ended.
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -155,7 +155,7 @@ Returns whether a fade is in-progress on the currently playing track.
 
 #### Since:
 
-* `v2.29.0`
+* `v2.29.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -175,7 +175,7 @@ Returns whether playback of the playlist has been paused.
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -195,7 +195,7 @@ Returns whether the playlist is playing.
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -215,7 +215,7 @@ Returns whether playback of the playlist has been stopped.
 
 #### Since:
 
-* `v2.29.0`
+* `v2.29.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -239,7 +239,7 @@ This <em>should not</em> be done lightly if your audio sources are on the networ
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -257,7 +257,7 @@ Gets or sets the playlist's repeating playback state (default: `false`).  When u
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters:
 
@@ -284,7 +284,7 @@ Gets or sets the playlist's volume mute state (default: `false`).  When used to 
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters:
 
@@ -311,7 +311,7 @@ Pauses playback of the playlist.
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -329,7 +329,7 @@ Begins playback of the playlist.
 
 #### Since:
 
-* `v2.28.0`: Basic syntax.
+* `v2.28.0`: Introduced.
 * `v2.29.0`: Updated to return a `Promise`.
 
 #### Parameters: *none*
@@ -362,7 +362,7 @@ Begins playback of the playlist or, failing that, sets the playlist to begin pla
 
 #### Since:
 
-* `v2.29.0`
+* `v2.29.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -380,7 +380,7 @@ Returns how much remains of the playlist's total playtime in seconds, `Infinity`
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -398,7 +398,7 @@ Gets or sets the playlist's randomly shuffled playback state (default: `false`).
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters:
 
@@ -425,7 +425,7 @@ Skips ahead to the next track in the playlist, if any.
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -443,7 +443,7 @@ Stops playback of the playlist.
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -461,7 +461,7 @@ Returns the playlist's current time in seconds, or `NaN` if no metadata exists.
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -483,7 +483,7 @@ Once unloaded, playback cannot occur until the track's data is loaded again.
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -501,7 +501,7 @@ Gets or sets the playlist's volume level (default: `1`).  When used to set the v
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters:
 

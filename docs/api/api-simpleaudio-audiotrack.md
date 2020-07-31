@@ -17,7 +17,7 @@ Returns a new independent copy of the track.
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -35,7 +35,7 @@ Returns the track's total playtime in seconds, `Infinity` for a stream, or `NaN`
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -57,7 +57,7 @@ The <a href="#config-api-property-audio-pauseonfadetozero"><code>Config.audio.pa
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters:
 
@@ -80,7 +80,7 @@ Starts playback of the track and fades it from the specified volume level to `1`
 
 #### Since:
 
-* `v2.28.0`: Basic syntax.
+* `v2.28.0`: Introduced.
 * `v2.29.0`: Updated to return a `Promise`.
 
 #### Parameters:
@@ -107,7 +107,7 @@ The <a href="#config-api-property-audio-pauseonfadetozero"><code>Config.audio.pa
 
 #### Since:
 
-* `v2.28.0`: Basic syntax.
+* `v2.28.0`: Introduced.
 * `v2.29.0`: Updated to return a `Promise`.
 
 #### Parameters:
@@ -134,7 +134,7 @@ This does not alter the volume level.
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -156,7 +156,7 @@ This is an estimate calculated by the browser based upon the currently downloade
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -176,7 +176,7 @@ Returns whether, at least, the track's metadata has been loaded.
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -196,7 +196,7 @@ Returns whether none of the track's data has been loaded.
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -220,7 +220,7 @@ The <a href="#audiotrack-api-prototype-method-hasdata"><code>&lt;AudioTrack&gt;.
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -240,7 +240,7 @@ Returns whether any valid sources were registered.
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -260,7 +260,7 @@ Returns whether playback of the track has ended.
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -280,7 +280,7 @@ Returns whether a fade is in-progress on the track.
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -300,7 +300,7 @@ Returns whether an error has occurred.
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -320,7 +320,7 @@ Returns whether the track is loading data.
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -342,7 +342,7 @@ Returns whether playback of the track has been paused.
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -362,7 +362,7 @@ Returns whether the track is playing.
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -382,7 +382,7 @@ Returns whether the track is seeking.
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -402,7 +402,7 @@ Returns whether playback of the track has been stopped.
 
 #### Since:
 
-* `v2.29.0`
+* `v2.29.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -422,7 +422,7 @@ Returns whether the track is currently unavailable for playback.  Possible reaso
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -442,7 +442,7 @@ Returns whether the track's sources are currently unloaded.
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -466,7 +466,7 @@ This <em>should not</em> be done lightly if your audio sources are on the networ
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -484,7 +484,7 @@ Gets or sets the track's repeating playback state (default: `false`).  When used
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters:
 
@@ -511,7 +511,7 @@ Gets or sets the track's volume mute state (default: `false`).  When used to set
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters:
 
@@ -546,7 +546,7 @@ The <code>SimpleAudio</code> APIs use events internally for various pieces of fu
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters:
 
@@ -577,7 +577,7 @@ The <code>SimpleAudio</code> APIs use events internally for various pieces of fu
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters:
 
@@ -610,7 +610,7 @@ The <code>SimpleAudio</code> APIs use events internally for various pieces of fu
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters:
 
@@ -635,7 +635,7 @@ Pauses playback of the track.
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -653,7 +653,7 @@ Begins playback of the track.
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -685,7 +685,7 @@ Begins playback of the track or, failing that, sets the track to begin playback 
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -703,7 +703,7 @@ Returns how much remains of the track's total playtime in seconds, `Infinity` fo
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -721,7 +721,7 @@ Stops playback of the track.
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -739,7 +739,7 @@ Gets or sets the track's current time in seconds.  When used to set a value, ret
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters:
 
@@ -770,7 +770,7 @@ Once unloaded, playback cannot occur until the track's data is loaded again.
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -788,7 +788,7 @@ Gets or sets the track's volume level (default: `1`).  When used to set the volu
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters:
 

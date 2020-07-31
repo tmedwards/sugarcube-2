@@ -15,7 +15,7 @@ If your content contains any SugarCube markup, you'll need to use the <a href="#
 
 #### Since:
 
-* `v2.9.0`
+* `v2.9.0`: Introduced.
 
 #### Parameters:
 
@@ -37,7 +37,7 @@ Returns a reference to the dialog's content area.
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -57,7 +57,7 @@ Closes the dialog.  Returns a reference to the `Dialog` object for chaining.
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -75,7 +75,7 @@ Returns whether the dialog is currently open.
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters:
 
@@ -105,7 +105,7 @@ Call this only after populating the dialog with content.
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters:
 
@@ -133,7 +133,7 @@ Prepares the dialog for use and returns a reference to its content area.
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters:
 
@@ -171,7 +171,7 @@ If your content consists of DOM nodes, you'll need to use the <a href="#dialog-a
 
 #### Since:
 
-* `v2.9.0`
+* `v2.9.0`: Introduced.
 
 #### Parameters:
 
@@ -193,5 +193,5 @@ This method has been deprecated and should no longer be used.  The core of what 
 
 #### Since:
 
-* `v2.0.0`: Basic syntax.
+* `v2.0.0`: Introduced.
 * `v2.29.0`: Deprecated.

@@ -15,7 +15,7 @@ The DOM ID of the passage, created from the slugified passage title.
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 <!-- *********************************************************************** -->
 
@@ -25,7 +25,7 @@ The tags of the passage.
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 <!-- *********************************************************************** -->
 
@@ -35,7 +35,7 @@ The raw text of the passage.
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 <!-- *********************************************************************** -->
 
@@ -45,7 +45,7 @@ The title of the passage.
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 <!-- *********************************************************************** -->
 
@@ -55,7 +55,7 @@ Returns the description of the passage, created from either an excerpt of the pa
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -75,7 +75,7 @@ Returns the processed text of the passage, created from applying `nobr` tag and 
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters: *none*
 

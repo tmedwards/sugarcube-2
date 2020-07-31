@@ -11,7 +11,7 @@ Returns the number of existing templates.
 
 #### Since:
 
-* `v2.29.0`
+* `v2.29.0`: Introduced.
 
 #### Examples:
 
@@ -29,7 +29,7 @@ Add new template(s).
 
 #### Since:
 
-* `v2.29.0`
+* `v2.29.0`: Introduced.
 
 #### Parameters:
 
@@ -90,7 +90,7 @@ Remove existing template(s).
 
 #### Since:
 
-* `v2.29.0`
+* `v2.29.0`: Introduced.
 
 #### Parameters:
 
@@ -114,7 +114,7 @@ Return the named template definition, or `null` on failure.
 
 #### Since:
 
-* `v2.29.0`
+* `v2.29.0`: Introduced.
 
 #### Parameters:
 
@@ -135,7 +135,7 @@ Returns whether the named template exists.
 
 #### Since:
 
-* `v2.29.0`
+* `v2.29.0`: Introduced.
 
 #### Parameters:
 

@@ -21,7 +21,7 @@ The <a href="#config-api-property-audio-pauseonfadetozero"><code>Config.audio.pa
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters:
 
@@ -44,7 +44,7 @@ Starts playback of the selected tracks and fades them from the specified volume 
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters:
 
@@ -70,7 +70,7 @@ The <a href="#config-api-property-audio-pauseonfadetozero"><code>Config.audio.pa
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters:
 
@@ -96,7 +96,7 @@ This does not alter the volume level.
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -118,7 +118,7 @@ This <em>should not</em> be done lightly if your audio sources are on the networ
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -136,7 +136,7 @@ Sets the selected tracks' repeating playback state (default: `false`).  Returns 
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters:
 
@@ -160,7 +160,7 @@ Sets the selected tracks' volume mute state (default: `false`).  Returns a refer
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters:
 
@@ -192,7 +192,7 @@ The <code>SimpleAudio</code> APIs use events internally for various pieces of fu
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters:
 
@@ -223,7 +223,7 @@ The <code>SimpleAudio</code> APIs use events internally for various pieces of fu
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters:
 
@@ -256,7 +256,7 @@ The <code>SimpleAudio</code> APIs use events internally for various pieces of fu
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters:
 
@@ -281,7 +281,7 @@ Pauses playback of the selected tracks.
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -299,7 +299,7 @@ Begins playback of the selected tracks.
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -317,7 +317,7 @@ Begins playback of the selected tracks or, failing that, sets the tracks to begi
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -335,7 +335,7 @@ Stops playback of the selected tracks.
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -353,7 +353,7 @@ Sets the selected tracks' current time in seconds.  Returns a reference to the c
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters:
 
@@ -378,7 +378,7 @@ Once unloaded, playback cannot occur until the selected tracks' data is loaded a
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -396,7 +396,7 @@ Sets the selected tracks' volume level (default: `1`).  Returns a reference to t
 
 #### Since:
 
-* `v2.28.0`
+* `v2.28.0`: Introduced.
 
 #### Parameters:
 

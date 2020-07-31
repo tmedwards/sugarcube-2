@@ -11,7 +11,7 @@ If you're simply looking to download ready-to-use localizations, see <a href="ht
 
 #### Since:
 
-* `v2.0.0`: Basic syntax.
+* `v2.0.0`: Introduced.
 * `v2.10.0`: Added `l10nStrings` object.  Deprecated `strings` object.
 
 #### A note about `strings` vs. `l10nStrings`

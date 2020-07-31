@@ -384,7 +384,7 @@
 	});
 
 	/*
-		<<type speed [start delay] [element tagName] [keep|none]>>
+		<<type speed [start delay] [class classes] [element tag] [id ID] [keep|none] [skipkey key]>>
 	*/
 	Macro.add('type', {
 		isAsync : true,
@@ -405,6 +405,7 @@
 			let elClass = '';
 			let elId    = '';
 			let elTag   = 'div';
+			let skipKey = Config.macros.typeSkipKey;
 			let start   = 400; // in milliseconds
 
 			// Process optional arguments.
@@ -463,6 +464,20 @@
 				case 'none':
 					cursor = 'none';
 					break;
+
+				case 'skipkey': {
+					if (options.length === 0) {
+						return this.error('skipkey option missing required key value');
+					}
+
+					skipKey = options.shift();
+
+					if (skipKey === '') {
+						throw new Error('skipkey option key value must be non-empty (received: "")');
+					}
+
+					break;
+				}
 
 				case 'start': {
 					if (options.length === 0) {
@@ -573,20 +588,20 @@
 				const typingCompleteId = ':typingcomplete';
 				const typingStartId    = ':typingstart';
 				const typingStopId     = ':typingstop';
-				const keypressAndNS    = `keypress${namespace}`;
+				const keydownAndNS     = `keydown${namespace}`;
 				const typingStopAndNS  = `${typingStopId}${namespace}`;
 
 				// Set up handlers for spacebar aborting and continuations.
 				$(document)
-					.off(keypressAndNS)
-					.on(keypressAndNS, ev => {
-						// Finish typing if the player aborts via the spacebar.
+					.off(keydownAndNS)
+					.on(keydownAndNS, ev => {
+						// Finish typing if the player aborts via the skip key.
 						if (
-							ev.which === 32 /* Space */
+							Util.scrubEventKey(ev.key) === skipKey
 							&& (ev.target === document.body || ev.target === document.documentElement)
 						) {
 							ev.preventDefault();
-							$(document).off(keypressAndNS);
+							$(document).off(keydownAndNS);
 							typer.finish();
 						}
 					})

@@ -235,6 +235,12 @@ var Passage = (() => { // eslint-disable-line no-unused-vars, no-var
 				return '';
 			}
 
+			// WARNING: es5-shim's `<String>.trim()` can cause "too much recursion" errors
+			// here on very large strings (e.g., ≥40 KiB), at least in Firefox, for unknown
+			// reasons.
+			//
+			// To fix the issue, we're removed `\u180E` from es5-shim's whitespace pattern
+			// to prevent it from erroneously shimming `<String>.trim()` in the first place.
 			let excerpt = node.textContent.trim();
 
 			if (excerpt !== '') {

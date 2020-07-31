@@ -15,7 +15,7 @@ Only the primitives, generic objects, some JavaScript natives (specifically: <co
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters:
 
@@ -45,7 +45,7 @@ Returns a random value from its given arguments.
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters:
 
@@ -79,7 +79,7 @@ Removes the specified key, and its associated value, from the story metadata sto
 
 #### Since:
 
-* `v2.29.0`
+* `v2.29.0`: Introduced.
 
 #### Parameters:
 
@@ -99,7 +99,7 @@ Returns whether the passage with the given title occurred within the story histo
 
 #### Since:
 
-* `v2.7.0`
+* `v2.7.0`: Introduced.
 
 #### Parameters:
 
@@ -122,7 +122,7 @@ Returns the number of turns that have passed since the last instance of the pass
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters:
 
@@ -154,7 +154,7 @@ A script section (Twine&nbsp;2: the Story JavaScript; Twine&nbsp;1/Twee: a <code
 
 #### Since:
 
-* `v2.16.0`
+* `v2.16.0`: Introduced.
 
 #### Parameters:
 
@@ -242,7 +242,7 @@ A script section (Twine&nbsp;2: the Story JavaScript; Twine&nbsp;1/Twee: a <code
 
 #### Since:
 
-* `v2.16.0`
+* `v2.16.0`: Introduced.
 
 #### Parameters:
 
@@ -324,7 +324,7 @@ This feature is largely incompatible with private browsing modes, which cause al
 
 #### Since:
 
-* `v2.29.0`
+* `v2.29.0`: Introduced.
 
 #### Parameters:
 
@@ -349,7 +349,7 @@ Returns the title of the active (present) passage.
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -367,7 +367,7 @@ Returns the title of the most recent previous passage whose title does not match
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -392,7 +392,7 @@ By default, it uses <a href="https://developer.mozilla.org/en-US/docs/Web/JavaSc
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters:
 
@@ -418,7 +418,7 @@ By default, it simply returns non-deterministic results from <a href="https://de
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters:
 
@@ -444,7 +444,7 @@ Returns the value associated with the specified key from the story metadata stor
 
 #### Since:
 
-* `v2.29.0`
+* `v2.29.0`: Introduced.
 
 #### Parameters:
 
@@ -469,7 +469,7 @@ Renders the selected passage into the target element, replacing any existing con
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters:
 
@@ -499,7 +499,7 @@ Returns a new array consisting of all of the tags of the given passages.
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters:
 
@@ -520,7 +520,7 @@ Returns a reference to the current temporary variables store (equivalent to: [`S
 
 #### Since:
 
-* `v2.19.0`
+* `v2.19.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -541,7 +541,7 @@ Returns the number of milliseconds that have passed since the current passage wa
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -570,7 +570,7 @@ Returns the total number (count) of played turns currently in effect—i.e., the
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -588,7 +588,7 @@ Returns a reference to the active (present) story variables store (equivalent to
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters: *none*
 
@@ -609,7 +609,7 @@ Returns the number of times that the passage with the given title occurred withi
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters:
 
@@ -632,7 +632,7 @@ Returns the number of passages within the story history that are tagged with all
 
 #### Since:
 
-* `v2.0.0`
+* `v2.0.0`: Introduced.
 
 #### Parameters:
 
