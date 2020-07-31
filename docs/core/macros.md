@@ -468,7 +468,7 @@ Countdown: <span id="countdown">$seconds seconds remaining</span>!\
 
 <!-- *********************************************************************** -->
 
-### `<<type speed [start delay] [class classes] [element tag] [id ID] [keep|none]>> … <</type>>` {#macros-macro-type}
+### `<<type speed [start delay] [class classes] [element tag] [id ID] [keep|none] [skipkey key]>>`<br><span class="child">`…`</span><br>`<</type>>` {#macros-macro-type}
 
 Outputs its contents a character—technically, a code point—at a time, mimicking a teletype/typewriter.  Can type most content: links, markup, macros, etc.
 
@@ -477,13 +477,14 @@ Interactions with macros or other code that inject content only after some exter
 </p>
 
 <p role="note" class="see"><b>See Also:</b>
-<a href="#config-api-property-macros-typevisitedpassages"><code>Config.macros.typeVisitedPassages</code></a>, <a href="#events-type-macro"><code>&lt;&lt;type&gt;&gt;</code> Events</a>.
+<a href="#config-api-property-macros-typeskipkey"><code>Config.macros.typeSkipKey</code></a>, <a href="#config-api-property-macros-typevisitedpassages"><code>Config.macros.typeVisitedPassages</code></a>, <a href="#events-type-macro"><code>&lt;&lt;type&gt;&gt;</code> Events</a>.
 </p>
 
 #### Since:
 
 * `v2.32.0`: Introduced.
 * `v2.33.0`: Added `class`, `element`, and `id` options and `macro-type-done` class.
+* `v2.33.1`: Added `skipkey` option.
 
 #### Arguments:
 
@@ -494,6 +495,7 @@ Interactions with macros or other code that inject content only after some exter
 * **`id` *`ID`*:** (optional) The unique ID to be assigned to the typing container.
 * **`keep`:** (optional) Keyword, used to signify that the cursor should be kept after typing is complete.
 * **`none`:** (optional) Keyword, used to signify that the cursor should not be used at all.
+* **`skipkey`:** (optional) The key used to cause typing to finish immediately.  If omitted, defaults to the value of [`Config.macros.typeSkipKey`](#config-api-property-macros-typeskipkey).
 
 #### Examples:
 
@@ -520,6 +522,10 @@ Interactions with macros or other code that inject content only after some exter
 
 <<type 40ms keep>>
 	Type characters from this content every 40 milliseconds, keeping the cursor after typing is complete.
+<</type>>
+
+<<type 40ms skipkey "Control">>
+	Type characters from this content every 40 milliseconds, using the Control (CTRL) key as the skip key.
 <</type>>
 ```
 
