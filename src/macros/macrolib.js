@@ -389,6 +389,7 @@
 	Macro.add('type', {
 		isAsync : true,
 		tags    : null,
+		typeId  : 0,
 
 		handler() {
 			if (this.args.length === 0) {
@@ -535,126 +536,151 @@
 			// If the queue is empty at this point, set the start typing flag.
 			const startTyping = TempState.macroTypeQueue.length === 0;
 
+			// Generate our unique ID.
+			const selfId = ++this.self.typeId;
+
 			// Push our typing handler onto the queue.
-			TempState.macroTypeQueue.push(() => {
-				const $wrapper = jQuery(document.createElement(elTag))
-					.addClass(className);
+			TempState.macroTypeQueue.push({
+				id : selfId,
 
-				// Add the user ID, if any.
-				if (elId) {
-					$wrapper.attr('id', elId);
-				}
+				handler() {
+					const $wrapper = jQuery(document.createElement(elTag))
+						.addClass(className);
 
-				// Add the user class(es), if any.
-				if (elClass) {
-					$wrapper.addClass(elClass);
-				}
-
-				new Wikifier($wrapper, contents);
-
-				const passage = State.passage;
-
-				// Skip typing if….
-				if (
-					// …we've visited the passage before.
-					!Config.macros.typeVisitedPassages
-					&& State.passages.slice(0, -1).some(title => title === passage)
-
-					// …there were any content errors.
-					|| $wrapper.find('.error').length > 0
-				) {
-					$target.replaceWith($wrapper);
-
-					// Remove this handler from the queue.
-					TempState.macroTypeQueue.shift();
-
-					// Run the next typing handler in the queue, if any.
-					if (TempState.macroTypeQueue.length > 0) {
-						TempState.macroTypeQueue.first()();
+					// Add the user ID, if any.
+					if (elId) {
+						$wrapper.attr('id', elId);
 					}
 
-					return;
-				}
+					// Add the user class(es), if any.
+					if (elClass) {
+						$wrapper.addClass(elClass);
+					}
 
-				// Create a new `NodeTyper` instance for the wrapper's contents and
-				// replace the target with the typing wrapper.
-				const typer = new NodeTyper({
-					targetNode : $wrapper.get(0),
-					classNames : cursor === 'none' ? null : `${className}-cursor`
-				});
-				$target.replaceWith($wrapper);
+					new Wikifier($wrapper, contents);
 
-				// Set up event IDs.
-				const typingCompleteId = ':typingcomplete';
-				const typingStartId    = ':typingstart';
-				const typingStopId     = ':typingstop';
-				const keydownAndNS     = `keydown${namespace}`;
-				const typingStopAndNS  = `${typingStopId}${namespace}`;
+					const passage = State.passage;
+					const turn    = State.length;
 
-				// Set up handlers for spacebar aborting and continuations.
-				$(document)
-					.off(keydownAndNS)
-					.on(keydownAndNS, ev => {
-						// Finish typing if the player aborts via the skip key.
-						if (
-							Util.scrubEventKey(ev.key) === skipKey
-							&& (ev.target === document.body || ev.target === document.documentElement)
-						) {
-							ev.preventDefault();
-							$(document).off(keydownAndNS);
-							typer.finish();
-						}
-					})
-					.one(typingStopAndNS, () => {
-						// Fire the typing complete event and return, if the queue is empty.
-						if (TempState.macroTypeQueue.length === 0) {
-							jQuery.event.trigger(typingCompleteId);
-							return;
+					// Skip typing if….
+					if (
+						// …we've visited the passage before.
+						!Config.macros.typeVisitedPassages
+						&& State.passages.slice(0, -1).some(title => title === passage)
+
+						// …there were any content errors.
+						|| $wrapper.find('.error').length > 0
+					) {
+						$target.replaceWith($wrapper);
+
+						// Remove this handler from the queue.
+						TempState.macroTypeQueue.shift();
+
+						// Run the next typing handler in the queue, if any.
+						if (TempState.macroTypeQueue.length > 0) {
+							TempState.macroTypeQueue.first().handler();
 						}
 
-						// Run the next typing handler in the queue.
-						TempState.macroTypeQueue.first()();
+						return;
+					}
+
+					// Create a new `NodeTyper` instance for the wrapper's contents and
+					// replace the target with the typing wrapper.
+					const typer = new NodeTyper({
+						targetNode : $wrapper.get(0),
+						classNames : cursor === 'none' ? null : `${className}-cursor`
 					});
+					$target.replaceWith($wrapper);
 
-				// Set up the typing interval and start/stop event firing.
-				const typeNode = function typeNode() {
-					// Fire the typing start event.
-					$wrapper.trigger(typingStartId);
+					// Set up event IDs.
+					const typingCompleteId = ':typingcomplete';
+					const typingStartId    = ':typingstart';
+					const typingStopId     = ':typingstop';
+					const keydownAndNS     = `keydown${namespace}`;
+					const typingStopAndNS  = `${typingStopId}${namespace}`;
 
-					const typeNodeId = setInterval(() => {
-						// Stop typing if….
-						if (
-							// …we've navigated away.
-							State.passage !== passage
-
-							// …we're done typing.
-							|| !typer.type()
-						) {
-							clearInterval(typeNodeId);
-
-							// Remove this handler from the queue.
-							TempState.macroTypeQueue.shift();
-
-							// Fire the typing stop event.
-							$wrapper.trigger(typingStopId);
-
-							// Add the done class to the wrapper.
-							$wrapper.addClass(`${className}-done`);
-
-							// Add the cursor class to the wrapper, if we're keeping it.
-							if (cursor === 'keep') {
-								$wrapper.addClass(`${className}-cursor`);
+					// Set up handlers for spacebar aborting and continuations.
+					$(document)
+						.off(keydownAndNS)
+						.on(keydownAndNS, ev => {
+							// Finish typing if the player aborts via the skip key.
+							if (
+								Util.scrubEventKey(ev.key) === skipKey
+								&& (ev.target === document.body || ev.target === document.documentElement)
+							) {
+								ev.preventDefault();
+								$(document).off(keydownAndNS);
+								typer.finish();
 							}
-						}
-					}, speed);
-				};
+						})
+						.one(typingStopAndNS, () => {
+							if (TempState.macroTypeQueue) {
+								// If the queue is empty, fire the typing complete event.
+								if (TempState.macroTypeQueue.length === 0) {
+									jQuery.event.trigger(typingCompleteId);
+								}
+								// Elsewise, run the next typing handler in the queue.
+								else {
+									TempState.macroTypeQueue.first().handler();
+								}
+							}
+						});
 
-				// Kick off typing the node.
-				if (start) {
-					setTimeout(typeNode, start);
-				}
-				else {
-					typeNode();
+					// Set up the typing interval and start/stop event firing.
+					const typeNode = function typeNode() {
+						// Fire the typing start event.
+						$wrapper.trigger(typingStartId);
+
+						const typeNodeId = setInterval(() => {
+							// Stop typing if….
+							if (
+								// …we've navigated away.
+								State.passage !== passage
+								|| State.length !== turn
+
+								// …we're done typing.
+								|| !typer.type()
+							) {
+								if (TempState.macroTypeQueue) {
+									console.log(`[type interval (${selfId})] clearing interval, queue length=${TempState.macroTypeQueue.length}`);
+								}
+								else {
+									console.log(`[type interval (${selfId})] clearing interval, no queue`);
+								}
+
+								clearInterval(typeNodeId);
+
+								// Remove this handler from the queue, if the queue still exists and the
+								// handler IDs match.
+								if (
+									TempState.macroTypeQueue
+									&& TempState.macroTypeQueue.length > 0
+									&& TempState.macroTypeQueue.first().id === selfId
+								) {
+									TempState.macroTypeQueue.shift();
+								}
+
+								// Fire the typing stop event.
+								$wrapper.trigger(typingStopId);
+
+								// Add the done class to the wrapper.
+								$wrapper.addClass(`${className}-done`);
+
+								// Add the cursor class to the wrapper, if we're keeping it.
+								if (cursor === 'keep') {
+									$wrapper.addClass(`${className}-cursor`);
+								}
+							}
+						}, speed);
+					};
+
+					// Kick off typing the node.
+					if (start) {
+						setTimeout(typeNode, start);
+					}
+					else {
+						typeNode();
+					}
 				}
 			});
 
@@ -662,10 +688,10 @@
 			// to do so or start it immediately, depending on the engine state.
 			if (startTyping) {
 				if (Engine.isPlaying()) {
-					$(document).one(`:passageend${namespace}`, () => TempState.macroTypeQueue.first()());
+					$(document).one(`:passageend${namespace}`, () => TempState.macroTypeQueue.first().handler());
 				}
 				else {
-					TempState.macroTypeQueue.first()();
+					TempState.macroTypeQueue.first().handler();
 				}
 			}
 		}
