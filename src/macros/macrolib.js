@@ -3388,14 +3388,18 @@
 				throw new TypeError('callback parameter must be a function');
 			}
 
-			const turnId = State.turns;
+			// Cache info about the current turn.
+			const passage = State.passage;
+			const turn    = State.turns;
+
+			// Timer info.
 			const timers = this.timers;
 			let timerId = null;
 
 			// Set up the interval.
 			timerId = setInterval(() => {
-				// Terminate the timer if the turn IDs do not match.
-				if (turnId !== State.turns) {
+				// Terminate if we've navigated away.
+				if (State.passage !== passage || State.turns !== turn) {
 					clearInterval(timerId);
 					timers.delete(timerId);
 					return;
@@ -3562,7 +3566,11 @@
 				throw new TypeError('callback parameter must be a function');
 			}
 
-			const turnId = State.turns;
+			// Cache info about the current turn.
+			const passage = State.passage;
+			const turn    = State.turns;
+
+			// Timer info.
 			const timers = this.timers;
 			let timerId  = null;
 			let nextItem = items.shift();
@@ -3571,7 +3579,8 @@
 				// Bookkeeping.
 				timers.delete(timerId);
 
-				if (turnId !== State.turns) {
+				// Terminate if we've navigated away.
+				if (State.passage !== passage || State.turns !== turn) {
 					return;
 				}
 
