@@ -557,10 +557,12 @@
 						$wrapper.addClass(elClass);
 					}
 
+					// Wikify the contents into `$wrapper`.
 					new Wikifier($wrapper, contents);
 
+					// Cache info about the current turn.
 					const passage = State.passage;
-					const turn    = State.length;
+					const turn    = State.turns;
 
 					// Skip typing if….
 					if (
@@ -581,6 +583,7 @@
 							TempState.macroTypeQueue.first().handler();
 						}
 
+						// Exit.
 						return;
 					}
 
@@ -636,18 +639,12 @@
 							if (
 								// …we've navigated away.
 								State.passage !== passage
-								|| State.length !== turn
+								|| State.turns !== turn
 
 								// …we're done typing.
 								|| !typer.type()
 							) {
-								if (TempState.macroTypeQueue) {
-									console.log(`[type interval (${selfId})] clearing interval, queue length=${TempState.macroTypeQueue.length}`);
-								}
-								else {
-									console.log(`[type interval (${selfId})] clearing interval, no queue`);
-								}
-
+								// Terminate the timer.
 								clearInterval(typeNodeId);
 
 								// Remove this handler from the queue, if the queue still exists and the
