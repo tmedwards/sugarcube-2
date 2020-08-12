@@ -124,6 +124,7 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 				.appendTo(document.head)
 				.get(0) // return the <style> element itself
 		)());
+		_hideOutlines(); // initially hide outlines
 		let _lastOutlineEvent;
 		jQuery(document).on(
 			'mousedown.aria-outlines keydown.aria-outlines',
@@ -636,7 +637,6 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 		}
 
 		// Last second post-processing for accessibility and other things.
-		_hideOutlines(); // initially hide outlines
 		jQuery('#story')
 			// Add `link-external` to all `href` bearing `<a>` elements which don't have it.
 			.find('a[href]:not(.link-external)')
