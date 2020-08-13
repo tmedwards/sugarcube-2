@@ -117,7 +117,6 @@ Call this only after populating the dialog with content.
 An options object should have some of the following properties:
 
 * **`top`:** Top y-coordinate of the dialog (default: `50`; in pixels, but without the unit).
-* **`opacity`:** Opacity of the overlay (default: `0.8`).
 
 #### Examples:
 
