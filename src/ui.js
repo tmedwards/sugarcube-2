@@ -202,6 +202,8 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 	function uiBuildSaves() {
+		const savesAllowed = typeof Config.saves.isAllowed !== 'function' || Config.saves.isAllowed();
+
 		function createActionItem(bId, bClass, bText, bAction) {
 			const $btn = jQuery(document.createElement('button'))
 				.attr('id', `saves-${bId}`)
@@ -363,7 +365,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 				else {
 					// Add the save button.
 					$tdLoad.append(
-						createButton('save', 'ui-close', L10n.get('savesLabelSave'), i, Save.slots.save)
+						createButton('save', 'ui-close', L10n.get('savesLabelSave'), i, savesAllowed ? Save.slots.save : null)
 					);
 
 					// Add the description.
@@ -409,7 +411,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 					'export',
 					'ui-close',
 					L10n.get('savesLabelExport'),
-					() => Save.export()
+					savesAllowed ? () => Save.export() : null
 				));
 				$btnBar.append(createActionItem(
 					'import',
