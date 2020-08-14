@@ -25,7 +25,7 @@ var Diff = (() => { // eslint-disable-line no-unused-vars, no-var
 	});
 
 	/*
-		Returns a difference object generated from comparing the the orig and dest objects.
+		Returns a difference object generated from comparing the orig and dest objects.
 	*/
 	function diff(orig, dest) /* diff object */ {
 		const objToString = Object.prototype.toString;
