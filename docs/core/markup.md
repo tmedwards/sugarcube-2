@@ -107,6 +107,10 @@ The `Link` component value may be the title of a passage or any valid URL to a r
 
 In addition to the standard pipe separator (`|`) used to separate the `Link` and `Text` components (as seen below), SugarCube also supports the arrow separators (`->` &amp; `<-`).  Particular to the arrow separators, the arrows' direction determines the order of the components, with the arrow always pointing at the `Link` component—i.e., the right arrow works like the pipe separator, `Text->Link`, while the left arrow is reversed, `Link<-Text`.
 
+<p role="note" class="warning"><b>Warning (Twine&nbsp;2):</b>
+Due to how the Twine&nbsp;2 automatic passage creation feature currently works, using any TwineScript expression for the <code>Link</code> component will cause a passage named after the expression to be created that will need to be deleted.  To avoid this problem, it's suggested that you use the separate argument form of the <a href="#macros-macro-link"><code>&lt;&lt;link&gt;&gt;</code> macro</a> in Twine&nbsp;2 when you need to use an expression.
+</p>
+
 <table>
 <caption>For the following examples assume: <code>$go</code> is <code>&quot;Grocery&quot;</code> and <code>$show</code> is <code>&quot;Go buy milk&quot;</code></caption>
 <thead>
@@ -158,6 +162,10 @@ SugarCube's image markup consists of a required `Image` component and optional `
 The `Image` component value may be any valid URL to an image resource (local or remote) or the title of an [embedded image passage (Twine&nbsp;1 &amp; Tweego only)](http://twinery.org/wiki/image).  The `Link` component value may be the title of a passage or any valid URL to a resource (local or remote).
 
 In addition to the standard pipe separator (`|`) used to separate the `Image` and `Title` components (as seen below), SugarCube also supports the arrow separators (`->` &amp; `<-`).  Particular to the arrow separators, the arrows' direction determines the order of the components, with the arrow always pointing at the `Image` component—i.e., the right arrow works like the pipe separator, `Title->Image`, while the left arrow is reversed, `Image<-Title`.
+
+<p role="note" class="warning"><b>Warning (Twine&nbsp;2):</b>
+Due to how the Twine&nbsp;2 automatic passage creation feature currently works, using any TwineScript expression for the <code>Link</code> component will cause a passage named after the expression to be created that will need to be deleted.  To avoid this problem, it's suggested that you use the separate argument form of the <a href="#macros-macro-link"><code>&lt;&lt;link&gt;&gt;</code> macro</a> in Twine&nbsp;2 when you need to use an expression.
+</p>
 
 <table>
 <caption>For the following examples assume: <code>$src</code> is <code>home.png</code>, <code>$go</code> is <code>&quot;Home&quot;</code>, and <code>$show</code> is <code>&quot;Go home&quot;</code></caption>
