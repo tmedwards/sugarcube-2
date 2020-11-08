@@ -834,7 +834,7 @@ var SimpleAudio = (() => { // eslint-disable-line no-unused-vars, no-var
 					aac : canPlay('audio/aac'),
 
 					// CAF — Codecs vary.
-					caf : canPlay('audio/x-caf'),
+					caf : canPlay('audio/x-caf') || canPlay('audio/caf'),
 
 					// FLAC.
 					flac : canPlay('audio/x-flac') || canPlay('audio/flac'),
