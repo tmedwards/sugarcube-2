@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /***********************************************************************************************************************
 
-	build.js (v1.4.17, 2020-11-05)
+	build.js (v1.4.18, 2020-11-08)
 		A Node.js-hosted build script for SugarCube.
 
 	Copyright © 2013–2020 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
@@ -378,7 +378,7 @@ function compileJavaScript(filenameObj, options) {
 	const babelOpts = {
 		code     : true,
 		compact  : false,
-		presets  : ['es2015'],
+		presets  : ['env'],
 		filename : 'sugarcube.js'
 	};
 
