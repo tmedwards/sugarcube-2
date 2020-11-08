@@ -607,6 +607,7 @@
 * [`UIBar.show()`](#uibar-api-method-show)
 * [`UIBar.stow()`](#uibar-api-method-stow)
 * [`UIBar.unstow()`](#uibar-api-method-unstow)
+* [`UIBar.update()`](#uibar-api-method-update)
 
 ----
 
