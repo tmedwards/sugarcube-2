@@ -642,6 +642,8 @@
 * [Debug Bar](#guide-test-mode-debug-bar) (≥v2.23.0)
 * [Debug Views](#guide-test-mode-debug-views) (≤v2.22.0)
 
+## [Guide: TypeScript](#guide-typescript)
+
 ## [Guide: Installation](#guide-installation)
 
 * [Local Install For Tweego](#guide-installation-tweego)
