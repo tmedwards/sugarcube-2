@@ -263,7 +263,7 @@ Using a datamap in Harlowe:
 In SugarCube:
 
 ```
-<<set $map to new Map(["key", "value"])>>
+<<set $map to new Map([["key", "value"]])>>
 <<run $map.set("key", "another value")>>
 <<if $map.has("key")>>…<</if>>
 ```

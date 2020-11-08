@@ -6,7 +6,7 @@
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* global Browser, Config, Has, LoadScreen, Story, Util, Visibility, clone */
+/* global Config, Has, LoadScreen, Story, Util, Visibility, clone */
 
 var SimpleAudio = (() => { // eslint-disable-line no-unused-vars, no-var
 	'use strict';
@@ -135,9 +135,9 @@ var SimpleAudio = (() => { // eslint-disable-line no-unused-vars, no-var
 		}
 
 		_create(sourceList) {
-			const dataUriRe   = /^data:\s*audio\/([^;,]+)\s*[;,]/i;
+			const dataUriRe   = /^data:\s*audio\/(?:x-)?([^;,]+)\s*[;,]/i;
 			const extRe       = /\.([^./\\]+)$/;
-			const getType     = AudioTrack.getType;
+			const formats     = AudioTrack.formats;
 			const usedSources = [];
 			/*
 				HTMLAudioElement: DOM factory method vs. constructor
@@ -161,7 +161,7 @@ var SimpleAudio = (() => { // eslint-disable-line no-unused-vars, no-var
 			// Process the array of sources, adding any valid sources to the `usedSources`
 			// array and to the audio element as source elements.
 			sourceList.forEach(src => {
-				let srcObj = null;
+				let srcUri = null;
 
 				switch (typeof src) {
 				case 'string':
@@ -183,10 +183,8 @@ var SimpleAudio = (() => { // eslint-disable-line no-unused-vars, no-var
 							}
 						}
 
-						const type = getType(match[1]);
-
-						if (type !== null) {
-							srcObj = { src, type };
+						if (formats[match[1]]) {
+							srcUri = src;
 						}
 					}
 					break;
@@ -203,10 +201,8 @@ var SimpleAudio = (() => { // eslint-disable-line no-unused-vars, no-var
 							throw new Error('source object missing required "format" property');
 						}
 
-						const type = getType(src.format);
-
-						if (type !== null) {
-							srcObj = { src : src.src, type };
+						if (formats[src.format]) {
+							srcUri = src.src;
 						}
 					}
 					break;
@@ -215,30 +211,11 @@ var SimpleAudio = (() => { // eslint-disable-line no-unused-vars, no-var
 					throw new Error(`invalid source value (type: ${typeof src})`);
 				}
 
-				if (srcObj !== null) {
-					/*
-						Opera (Blink; ca. Jul 2017) fails to play audio from some sources
-						with MIME-types containing a `codecs` parameter, despite the fact
-						that `canPlayType()` blessed the full MIME-type including `codecs`.
-
-						Bizarrely, this only affects some MIME-types—e.g. MP3s are affected,
-						while WAVEs are not.
-							Fails: 'audio/mpeg; codecs="mp3"'
-							Plays: 'audio/mpeg'
-							Plays: 'audio/wav; codecs="1"'
-
-						To workaround this we remove all parameters from the MIME-type in
-						Opera.
-					*/
-					if (Browser.isOpera) {
-						srcObj.type =  srcObj.type.replace(/;.*$/, '');
-					}
-
+				if (srcUri !== null) {
 					const source = document.createElement('source');
-					source.src  = srcObj.src;
-					source.type = srcObj.type;
+					source.src = srcUri;
 					audio.appendChild(source);
-					usedSources.push(srcObj);
+					usedSources.push(srcUri);
 				}
 			});
 
@@ -409,10 +386,9 @@ var SimpleAudio = (() => { // eslint-disable-line no-unused-vars, no-var
 					return;
 				}
 
-				this.sources.forEach(srcObj => {
+				this.sources.forEach(srcUri => {
 					const source = document.createElement('source');
-					source.src  = srcObj.src;
-					source.type = srcObj.type;
+					source.src = srcUri;
 					this.audio.appendChild(source);
 				});
 			}
@@ -824,118 +800,69 @@ var SimpleAudio = (() => { // eslint-disable-line no-unused-vars, no-var
 			jQuery.fn.off.apply(jQuery(this.audio), args);
 			return this;
 		}
-
-		/*
-			Verifies that the browser supports the given MIME-type and then retuns either
-			the MIME-type, if it is supported, or `null`, if it is not.
-		*/
-		static _verifyType(type) {
-			if (!type || !Has.audio) {
-				return null;
-			}
-
-			const cache = AudioTrack._types;
-
-			if (!cache.hasOwnProperty(type)) {
-				const audio = document.createElement('audio');
-
-				// Some early implementations return 'no' instead of the empty string.
-				cache[type] = audio.canPlayType(type).replace(/^no$/i, '') !== '';
-			}
-
-			return cache[type] ? type : null;
-		}
-
-		/*
-			Retuns the MIME-type associated with the given format-ID, if it is supported,
-			elsewise `null`.
-		*/
-		static getType(format) {
-			if (!format || !Has.audio) {
-				return null;
-			}
-
-			const known = AudioTrack.formats;
-			const id    = format.toLowerCase();
-			const type  = known.hasOwnProperty(id) ? known[id] : `audio/${id}`;
-
-			return AudioTrack._verifyType(type);
-		}
-
-		/*
-			Returns whether the browser potentially supports a format.
-		*/
-		static canPlayFormat(format) {
-			return AudioTrack.getType(format) !== null;
-		}
-
-		/*
-			Returns whether the browser potentially supports a MIME-type.
-		*/
-		static canPlayType(type) {
-			return AudioTrack._verifyType(type) !== null;
-		}
 	}
 
 	// Attach the static data members.
 	Object.defineProperties(AudioTrack, {
 		/*
-			Format-ID to MIME-type mappings for common audio types.
-
-			In most cases, the codecs property should not be included with the MIME-type,
-			as we have no way of knowing which codec was used—and the browser will figure
-			it out.  Conversely, in cases where the relationship relationship between a
-			format-ID and a specific codec is strong, we should include the codecs property.
+			Cache of supported (common) audio formats.
 
 			NOTE: Caveats by browser/engine:
 				Opera ≤12 (Presto) will return a false-negative if the codecs value is quoted
 				with single quotes, requiring the use of either double quotes or no quotes.
 
-				Blink-based browsers (e.g. Chrome, Opera ≥15) will return a false-negative
-				for WAVE audio if the preferred MIME-type of 'audio/wave' is specified,
-				requiring the use of 'audio/wav' instead.
+				Some versions of Blink-based browsers (e.g. Chrome, Opera ≥15) will return a
+				false-negative for WAVE audio if the preferred MIME-type of 'audio/wave' is
+				specified, requiring the addition of 'audio/wav' for them.
 		*/
 		formats : {
-			value : { // Leave this object extensible for users.
-				// AAC — MPEG-2 AAC audio; specific profiles vary, but commonly "AAC-LC".
-				aac : 'audio/aac',
+			value : (() => {
+				const audio = document.createElement('audio');
+				const types = new Map();
 
-				// CAF — Codecs vary.
-				caf     : 'audio/x-caf',
-				'x-caf' : 'audio/x-caf',
+				function canPlay(mimeType) {
+					if (!types.has(mimeType)) {
+						// Some early implementations return 'no' instead of the empty string.
+						types.set(mimeType, audio.canPlayType(mimeType).replace(/^no$/i, '') !== '');
+					}
 
-				// MP3 — MPEG-1/-2 Layer-III audio.
-				mp3  : 'audio/mpeg; codecs="mp3"',
-				mpeg : 'audio/mpeg; codecs="mp3"',
+					return types.get(mimeType);
+				}
 
-				// MP4 — Codecs vary, but commonly "mp4a.40.2" (a.k.a. "AAC-LC").
-				m4a     : 'audio/mp4',
-				mp4     : 'audio/mp4',
-				'x-m4a' : 'audio/mp4',
-				'x-mp4' : 'audio/mp4',
+				return Object.assign(Object.create(null), {
+					// AAC — MPEG-2 AAC audio; specific profiles vary, but commonly "AAC-LC".
+					aac : canPlay('audio/aac'),
 
-				// OGG — Codecs vary, but commonly "vorbis" and, recently, "opus".
-				oga : 'audio/ogg',
-				ogg : 'audio/ogg',
+					// CAF — Codecs vary.
+					caf : canPlay('audio/x-caf') || canPlay('audio/caf'),
 
-				// OPUS — Opus audio in an Ogg container.
-				opus : 'audio/ogg; codecs="opus"',
+					// FLAC.
+					flac : canPlay('audio/x-flac') || canPlay('audio/flac'),
 
-				// WAVE — Codecs vary, but commonly "1" (1 is the FourCC for PCM/LPCM).
-				wav  : 'audio/wav',
-				wave : 'audio/wav',
+					// MP3 — MPEG-1/-2 Layer-III audio.
+					mp3  : canPlay('audio/mpeg; codecs="mp3"') || canPlay('audio/mpeg') || canPlay('audio/mp3') || canPlay('audio/mpa'),
+					mpeg : canPlay('audio/mpeg'),
 
-				// WEBM — Codecs vary, but commonly "vorbis" and, recently, "opus".
-				weba : 'audio/webm',
-				webm : 'audio/webm'
-			}
-		},
+					// MP4 — Codecs vary, but commonly "mp4a.40.2" (a.k.a. "AAC-LC").
+					m4a : canPlay('audio/x-m4a') || canPlay('audio/m4a') || canPlay('audio/aac'),
+					mp4 : canPlay('audio/x-mp4') || canPlay('audio/mp4') || canPlay('audio/aac'),
 
-		/*
-			Cache of supported MIME-types.
-		*/
-		_types : {
-			value : {}
+					// OGG — Codecs vary, but commonly "vorbis" and, more recently, "opus".
+					ogg : canPlay('audio/ogg'),
+					oga : canPlay('audio/ogg'),
+
+					// OPUS — Opus audio in an Ogg container.
+					opus : canPlay('audio/ogg; codecs="opus"') || canPlay('audio/opus'),
+
+					// WAVE — Codecs vary, but commonly "1" (1 is the FourCC for PCM/LPCM).
+					wav  : canPlay('audio/wave; codecs="1"') || canPlay('audio/wav; codecs="1"') || canPlay('audio/wave') || canPlay('audio/wav'),
+					wave : canPlay('audio/wave; codecs="1"') || canPlay('audio/wav; codecs="1"') || canPlay('audio/wave') || canPlay('audio/wav'),
+
+					// WEBM — Codecs vary, but commonly "vorbis" and, more recently, "opus".
+					weba : canPlay('audio/webm'),
+					webm : canPlay('audio/webm')
+				});
+			})()
 		}
 	});
 

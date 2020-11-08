@@ -1680,6 +1680,11 @@
 				}))
 				.appendTo(this.output);
 
+			// Set the step value for `<input type="number">`.
+			if (asNumber) {
+				el.step = 'any';
+			}
+
 			// Set the variable and input element to the default value.
 			State.setVar(varName, defaultValue);
 			el.value = defaultValue;

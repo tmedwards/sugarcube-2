@@ -182,3 +182,25 @@ UIBar.unstow();
 ```
 UIBar.unstow(true);
 ```
+
+<!-- *********************************************************************** -->
+
+### `UIBar.update()` {#uibar-api-method-update}
+
+Updates all sections of the UI bar that are populated by special passages—e.g., `StoryBanner`, `StoryCaption`, `StoryMenu`, etc.
+
+<p role="note" class="warning"><b>Warning:</b>
+As <em>all</em> special passage populated sections are updated it is recommended that <code>UIBar.update()</code> be used sparingly.  Ideally, if you need to update UI bar content outside of the normal passage navigation update, then you should update only the specific areas you need to rather than the entire UI bar.
+</p>
+
+#### Since:
+
+* `v2.29.0`: Introduced.
+
+#### Parameters: *none*
+
+#### Examples:
+
+```
+UIBar.update();
+```

@@ -607,6 +607,7 @@
 * [`UIBar.show()`](#uibar-api-method-show)
 * [`UIBar.stow()`](#uibar-api-method-stow)
 * [`UIBar.unstow()`](#uibar-api-method-unstow)
+* [`UIBar.update()`](#uibar-api-method-update)
 
 ----
 
@@ -640,6 +641,8 @@
 * [Enabling Test Mode](#guide-test-mode-enabling)
 * [Debug Bar](#guide-test-mode-debug-bar) (≥v2.23.0)
 * [Debug Views](#guide-test-mode-debug-views) (≤v2.22.0)
+
+## [Guide: TypeScript](#guide-typescript)
 
 ## [Guide: Installation](#guide-installation)
 
