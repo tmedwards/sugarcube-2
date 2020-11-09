@@ -10,6 +10,7 @@
 	TODO: Move all markup patterns into here.
 */
 
+/* eslint-disable max-len */
 var Patterns = (() => { // eslint-disable-line no-unused-vars, no-var
 	'use strict';
 
@@ -119,6 +120,16 @@ var Patterns = (() => { // eslint-disable-line no-unused-vars, no-var
 	// Template name pattern.
 	const templateName = '[A-Za-z][\\w-]*';
 
+	/*
+		HTML tag name pattern.
+
+		Non-custom:
+			[A-Za-z][0-9A-Za-z]+
+		Custom:
+			[A-Za-z](?:[\x2D.0-9A-Z_a-z\xB7\xC0-\xD6\xD8-\xF6\xF8-\u037D\u037F-\u1FFF\u200C\u200D\u203F\u2040\u2070-\u218F\u2C00-\u2FEF\u3001-\uD7FF\uF900-\uFDCF\uFDF0-\uFFFD]|[\uD800-\uDB7F][\uDC00-\uDFFF])*-(?:[\x2D.0-9A-Z_a-z\xB7\xC0-\xD6\xD8-\xF6\xF8-\u037D\u037F-\u1FFF\u200C\u200D\u203F\u2040\u2070-\u218F\u2C00-\u2FEF\u3001-\uD7FF\uF900-\uFDCF\uFDF0-\uFFFD]|[\uD800-\uDB7F][\uDC00-\uDFFF])*
+	*/
+	const htmlTagName = '[A-Za-z](?:[\\x2D.0-9A-Z_a-z\\xB7\\xC0-\\xD6\\xD8-\\xF6\\xF8-\\u037D\\u037F-\\u1FFF\\u200C\\u200D\\u203F\\u2040\\u2070-\\u218F\\u2C00-\\u2FEF\\u3001-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFFD]|[\\uD800-\\uDB7F][\\uDC00-\\uDFFF])*-(?:[\\x2D.0-9A-Z_a-z\\xB7\\xC0-\\xD6\\xD8-\\xF6\\xF8-\\u037D\\u037F-\\u1FFF\\u200C\\u200D\\u203F\\u2040\\u2070-\\u218F\\u2C00-\\u2FEF\\u3001-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFFD]|[\\uD800-\\uDB7F][\\uDC00-\\uDFFF])*';
+
 	// CSS ID or class sigil pattern.
 	const cssIdOrClassSigil = '[#.]';
 
@@ -164,9 +175,11 @@ var Patterns = (() => { // eslint-disable-line no-unused-vars, no-var
 		variable,
 		macroName,
 		templateName,
+		htmlTagName,
 		cssIdOrClassSigil,
 		cssImage,
 		inlineCss,
 		url
 	});
 })();
+/* eslint-enable max-len */
