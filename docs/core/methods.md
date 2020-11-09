@@ -344,7 +344,7 @@ $pies.last()  → Returns "Pumpkin"
 
 ### `<Array>.pluck()` → *any* {#methods-array-prototype-method-pluck}
 
-Removes and returns a random member from the array.
+Removes and returns a random member from the base array.
 
 #### Since:
 
@@ -371,7 +371,7 @@ Randomly removes the given number of members from the base array and returns the
 
 #### Parameters:
 
-* **`want`:** (optional, *integer*) The number of members to pluck.
+* **`want`:** (optional, *integer*) The number of members to pluck.  Cannot pluck more members than the base array contains.
 
 #### Examples:
 
@@ -447,7 +447,7 @@ $fruits.pushUnique("Plums", "Plums")  → Returns 3; $fruits ["Apples", "Oranges
 
 ### `<Array>.random()` → *any* {#methods-array-prototype-method-random}
 
-Returns a random member from the array.  Does not modify the original.
+Returns a random member from the base array.  Does not modify the original.
 
 #### Since:
 
@@ -466,7 +466,7 @@ $pies.random()  → Returns a random pie from the array
 
 ### `<Array>.randomMany(want)` → *array* {#methods-array-prototype-method-randommany}
 
-Randomly selects the given number of unique members from the array and returns the selected members as a new array.  Does not modify the original.
+Randomly selects the given number of unique members from the base array and returns the selected members as a new array.  Does not modify the original.
 
 #### Since:
 
@@ -474,7 +474,7 @@ Randomly selects the given number of unique members from the array and returns t
 
 #### Parameters:
 
-* **`want`:** (optional, *integer*) The number of members to select.
+* **`want`:** (optional, *integer*) The number of members to select.  Cannot select more members than the base array contains.
 
 #### Examples:
 
