@@ -9,7 +9,7 @@
 
 Completely removes the UI bar and all of its associated styles and event handlers.
 
-#### Since:
+#### History:
 
 * `v2.17.0`: Introduced.
 
@@ -31,7 +31,7 @@ Hides the UI bar.  Returns a reference to the `UIBar` object for chaining.
 This does not reclaim the space reserved for the UI bar.  Thus, a call to <a href="#uibar-api-method-stow"><code>UIBar.stow()</code></a> may also be necessary.  Alternatively, if you simply want the UI bar gone completely and permanently, either using <a href="#uibar-api-method-destroy"><code>UIBar.destroy()</code></a> or the <a href="#special-passage-storyinterface"><code>StoryInterface</code> special passage</a> may be a better choice.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.29.0`: Introduced.
 
@@ -57,7 +57,7 @@ UIBar.hide().stow();
 
 Returns whether the UI bar is currently hidden.
 
-#### Since:
+#### History:
 
 * `v2.29.0`: Introduced.
 
@@ -81,7 +81,7 @@ if (!UIBar.isHidden()) {
 
 Returns whether the UI bar is currently stowed.
 
-#### Since:
+#### History:
 
 * `v2.29.0`: Introduced.
 
@@ -105,7 +105,7 @@ if (!UIBar.isStowed()) {
 
 Shows the UI bar.  Returns a reference to the `UIBar` object for chaining.
 
-#### Since:
+#### History:
 
 * `v2.29.0`: Introduced.
 
@@ -131,7 +131,7 @@ UIBar.unstow().show();
 
 Stows the UI bar, so that it takes up less space.  Returns a reference to the `UIBar` object for chaining.
 
-#### Since:
+#### History:
 
 * `v2.17.0`: Introduced.
 * `v2.29.0`: Added returned `UIBar` chaining reference.
@@ -160,7 +160,7 @@ UIBar.stow(true);
 
 Unstows the UI bar, so that it is fully accessible again.  Returns a reference to the `UIBar` object for chaining.
 
-#### Since:
+#### History:
 
 * `v2.17.0`: Introduced.
 * `v2.29.0`: Added returned `UIBar` chaining reference.
@@ -193,7 +193,7 @@ Updates all sections of the UI bar that are populated by special passages—e.g.
 As <em>all</em> special passage populated sections are updated it is recommended that <code>UIBar.update()</code> be used sparingly.  Ideally, if you need to update UI bar content outside of the normal passage navigation update, then you should update only the specific areas you need to rather than the entire UI bar.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.29.0`: Introduced.
 

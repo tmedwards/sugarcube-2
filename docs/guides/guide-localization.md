@@ -9,7 +9,7 @@ This is a reference for localizing SugarCube's default UI text, in general, and 
 If you're simply looking to download ready-to-use localizations, see <a href="http://www.motoslave.net/sugarcube/2/#downloads">SugarCube's website</a> (under <em>Downloads &gt; Localizations</em>).
 </p>
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 * `v2.10.0`: Added `l10nStrings` object.  Deprecated `strings` object.

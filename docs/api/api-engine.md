@@ -9,7 +9,7 @@
 
 Returns a timestamp representing the last time `Engine.play()` was called.
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -25,7 +25,7 @@ Engine.lastPlay  → The timestamp at which Engine.play() was last called
 
 Returns the current state of the engine (`"idle"`, `"playing"`, `"rendering"`).
 
-#### Since:
+#### History:
 
 * `v2.7.0`: Introduced.
 
@@ -47,7 +47,7 @@ Engine.state  → Returns the current state of the engine
 
 Moves backward one moment within the full history (past + future), if possible, activating and showing the moment moved to.  Returns whether the history navigation was successful (should only fail if already at the beginning of the full history).
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -65,7 +65,7 @@ Engine.backward()  → Rewinds the full history by one moment—i.e., undoes the
 
 Moves forward one moment within the full history (past + future), if possible, activating and showing the moment moved to.  Returns whether the history navigation was successful (should only fail if already at the end of the full history).
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -83,7 +83,7 @@ Engine.forward()  → Fast forwards the full history by one moment—i.e., redoe
 
 Activates the moment at the given offset from the active (present) moment within the full state history and show it.  Returns whether the history navigation was successful (should only fail if the offset from the active (present) moment is not within the bounds of the full history).
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -104,7 +104,7 @@ Engine.go(-4)  → Rewinds the full history by four moments—i.e., undoes the m
 
 Activates the moment at the given index within the full state history and show it.  Returns whether the history navigation was successful (should only fail if the index is not within the bounds of the full history).
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -125,7 +125,7 @@ Engine.goTo(9)  → Goes to the tenth moment
 
 Returns whether the engine is idle.
 
-#### Since:
+#### History:
 
 * `v2.16.0`: Introduced.
 
@@ -143,7 +143,7 @@ Engine.isIdle()  → Returns whether the engine is idle
 
 Returns whether the engine is processing a turn—i.e., passage navigation has been triggered.
 
-#### Since:
+#### History:
 
 * `v2.16.0`: Introduced.
 
@@ -161,7 +161,7 @@ Engine.isPlaying()  → Returns whether the engine is playing
 
 Returns whether the engine is rendering the incoming passage.
 
-#### Since:
+#### History:
 
 * `v2.16.0`: Introduced.
 
@@ -179,7 +179,7 @@ Engine.isRendering()  → Returns whether the engine is rendering
 
 Renders and displays the passage referenced by the given title, optionally without adding a new moment to the history.
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -209,7 +209,7 @@ The player will <em>not</em> be prompted and all unsaved state will be lost.
 In general, you should not call this method directly.  Instead, call the <a href="#ui-api-method-restart"><code>UI.restart()</code></a> static method, which prompts the player with an OK/Cancel dialog before itself calling <code>Engine.restart()</code>, if they accept.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -227,7 +227,7 @@ Engine.restart()  → Restarts the story
 
 Renders and displays the active (present) moment's associated passage without adding a new moment to the history.
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 

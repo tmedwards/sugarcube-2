@@ -55,7 +55,7 @@ Each **`moment`** object has the following properties:
 
 Deletes all slot saves and the autosave, if it's enabled.
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -77,7 +77,7 @@ Returns the saves object.
 **NOTE:** Using `storage.get("saves")` to retrieve the saves object could return `null`, since an empty saves object does not get stored.  This method, which guarantees the return of a saves object, should be used instead.
 -->
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -95,7 +95,7 @@ Save.get()
 
 Returns whether both the slot saves and autosave are available and ready.
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -121,7 +121,7 @@ if (Save.ok()) {
 
 Returns the total number of available slots.
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -137,7 +137,7 @@ Save.slots.length
 
 Returns the total number of filled slots.
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -155,7 +155,7 @@ Save.slots.count()
 
 Deletes a save from the given slot.
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -175,7 +175,7 @@ Save.slots.delete(5)  → Deletes the sixth slot save
 
 Returns a save object from the given slot or `null`, if there was no save in the given slot.
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -195,7 +195,7 @@ Save.slots.get(5)  → Returns the sixth slot save
 
 Returns whether the given slot is filled.
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -217,7 +217,7 @@ if (Save.slots.has(5)) {
 
 Returns whether there are any filled slots.
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -235,7 +235,7 @@ Save.slots.isEmpty()  → Effectively returns: Save.slots.count() === 0
 
 Loads a save from the given slot.
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -255,7 +255,7 @@ Save.slots.load(5)  → Load the sixth slot save
 
 Returns whether the slot saves are available and ready.
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -275,7 +275,7 @@ if (Save.slots.ok()) {
 
 Saves to the given slot.
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -313,7 +313,7 @@ Save.slots.save(5, "Midgar", someMetadata)
 
 Deletes the autosave.
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -331,7 +331,7 @@ Save.autosave.delete()  → Deletes the autosave
 
 Returns the save object from the autosave or `null`, if there was no autosave.
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -349,7 +349,7 @@ Save.autosave.get()  → Returns the autosave
 
 Returns whether the autosave is filled.
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -369,7 +369,7 @@ if (Save.autosave.has()) {
 
 Loads the autosave.
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -387,7 +387,7 @@ Save.autosave.load()  → Load the autosave
 
 Returns whether the autosave is available and ready.
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -407,7 +407,7 @@ if (Save.autosave.ok()) {
 
 Saves to the autosave.
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -444,7 +444,7 @@ Save.autosave.save("Midgar", someMetadata)
 
 Saves to disk.
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 * `v2.8.0`: Added `metadata` parameter.
@@ -478,7 +478,7 @@ Loads a save from disk.
 
 **NOTE:** You do not call this manually, it *must* be called by the `change` event handler of an `<input type="file">` element.
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -544,7 +544,7 @@ jQuery(input).on('change', function (ev) {
 
 Returns a save as a serialized string, or `null` if saving is not allowed within the current context.
 
-#### Since:
+#### History:
 
 * `v2.21.0`: Introduced.
 
@@ -574,7 +574,7 @@ if (myGameState === null) {
 
 Deserializes the given save string, created via [`Save.serialize()`](#save-api-method-serialize), and loads the save.  Returns the bundled metadata, if any, or `null` if the given save could not be deserialized and loaded.
 
-#### Since:
+#### History:
 
 * `v2.21.0`: Introduced.
 

@@ -21,7 +21,7 @@ The `Config` object controls various aspects of SugarCube's behavior.
 
 Determines whether the audio subsystem automatically pauses tracks that have been faded to `0` volume (silent).
 
-#### Since:
+#### History:
 
 * `v2.28.0`: Introduced.
 
@@ -41,7 +41,7 @@ Determines whether the audio subsystem attempts to preload track metadata—mean
 It is unlikely that you will ever want to disable this setting.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.28.0`: Introduced.
 
@@ -63,7 +63,7 @@ Config.audio.preloadMetadata = false;
 
 Determines whether the story's history controls (Backward, Jump To, & Forward buttons) are enabled within the UI bar.
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -79,7 +79,7 @@ Config.history.controls = false;
 
 Sets the maximum number of states (moments) to which the history is allowed to grow.  Should the history exceed the limit, states will be dropped from the past (oldest first).  A setting of `0` means that there is no limit to how large the history may grow, though doing so is not recommended.
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -112,7 +112,7 @@ Determines whether the [`<<if>>` macro](#macros-macro-if) returns an error when 
 This setting exists because it's unlikely that you'll ever want to actually perform an assignment within a conditional expression and typing <code>=</code> when you meant <code>===</code> (or <code>==</code>) is a fairly easy to mistake make—either from a finger slip or because you just don't know the difference between the operators.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -133,7 +133,7 @@ Sets the maximum number of iterations allowed before the [`<<for>>` macro](#macr
 This setting exists to prevent a misconfigured loop from making the browser unresponsive.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -150,7 +150,7 @@ Config.macros.maxLoopIterations = 5000;
 
 Sets the default [`KeyboardEvent.key`](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key) value that causes the currently running [`<<type>>` macro](#macros-macro-type) instance to finish typing its content immediately.
 
-#### Since:
+#### History:
 
 * `v2.33.1`: Introduced.
 
@@ -167,7 +167,7 @@ Config.macros.typeSkipKey = "Control";
 
 Determines whether the [`<<type>>` macro](#macros-macro-type) types out content on previously visited passages or simply outputs it immediately.
 
-#### Since:
+#### History:
 
 * `v2.32.0`: Introduced.
 
@@ -190,7 +190,7 @@ Config.macros.typeVisitedPassages = false;
 
 Allows the destination of passage navigation to be overridden.  The callback is passed one parameter, the original destination passage title.  If its return value is falsy, the override is cancelled and navigation to the original destination continues unperturbed.  If its return value is truthy, the override succeeds and that value is used as the new destination of the navigation.
 
-#### Since:
+#### History:
 
 * `v2.13.0`: Introduced.
 
@@ -236,7 +236,7 @@ Determines whether alternate passage descriptions are used by the *Saves* and *J
 </ul>
 </div>
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -265,7 +265,7 @@ Config.passages.descriptions = function () {
 
 Determines whether passage titles are combined with the story title, within the browser's/tab's titlebar, when passages are displayed.
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -285,7 +285,7 @@ Determines whether rendering passages have their leading/trailing newlines remov
 Does not affect <code>script</code> or <code>stylesheet</code> tagged passages, for Twine&nbsp;1/Twee, or the Story JavaScript or Story Stylesheet sections, for Twine&nbsp;2.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.19.0`: Introduced.
 
@@ -309,7 +309,7 @@ Does not affect <code>script</code> or <code>stylesheet</code> tagged passages, 
 The function will be called just before the built-in no-break passage processing if you're also using that—see the <a href="#config-api-property-passages-nobr"><code>Config.passages.nobr</code> setting</a> and <a href="#special-tag-nobr"><code>nobr</code> special tag</a>.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.30.0`: Introduced.
 
@@ -328,7 +328,7 @@ Config.passages.onProcess = function (p) {
 
 Sets the starting passage, the very first passage that will be displayed.
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -348,7 +348,7 @@ Determines whether outgoing passage transitions are enabled.  Valid values are t
 If using an integer delay, ideally, it should probably be slightly longer than the outgoing transition delay that you intend to use—e.g., an additional 10ms or so should be sufficient.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -405,7 +405,7 @@ Determines whether the autosave, if it exists, is automatically loaded upon stor
 If the autosave cannot be loaded, for any reason, then the start passage is loaded instead.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -434,7 +434,7 @@ Determines whether the autosave is created/updated when passages are displayed. 
 When setting the value to boolean <code>true</code>, you will likely also need to use the <a href="#config-api-property-saves-isallowed"><code>Config.saves.isAllowed</code> property</a> to disallow saving on the start passage.  Or, if you use the start passage as real part of your story and allow the player to reenter it, rather than just as the initial landing/cover page, then you may wish to only disallow saving on the start passage the very first time it's displayed—i.e., at story startup.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 * `v2.30.0`: Added function values and deprecated string values.
@@ -460,7 +460,7 @@ Config.saves.autosave = function () {
 
 Sets the story ID associated with saves.
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -476,7 +476,7 @@ Config.saves.id = "a-big-huge-story-part-1";
 
 Determines whether saving is allowed within the current context.  The callback is invoked each time a save is requested.  If its return value is falsy, the save is disallowed.  If its return value is truthy, the save is allowed to continue unperturbed.
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -494,7 +494,7 @@ Config.saves.isAllowed = function () {
 
 Performs any required pre-processing before the save data is loaded—e.g., upgrading out-of-date save data.  The callback is passed one parameter, the save object to be processed.  If it encounters an unrecoverable problem during its processing, it may throw an exception containing an error message; the message will be displayed to the player and loading of the save will be terminated.
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -522,7 +522,7 @@ Config.saves.onLoad = function (save) {
 
 Performs any required post-processing before the save data is saved.  The callback is passed two parameters, the save object to be processed and save operation details object.
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 * `v2.33.0`: Added save operation details object parameter to the callback function.
@@ -581,7 +581,7 @@ Config.saves.onSave = function (save, details) {
 
 Sets the maximum number of available save slots.
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -601,7 +601,7 @@ Sets the `version` property of saves.
 This setting is only used to set the <code>version</code> property of saves.  Thus, it is only truly useful if you plan to upgrade out-of-date saves via a <a href="#config-api-property-saves-onload"><code>Config.saves.onLoad</code></a> callback.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -627,7 +627,7 @@ Config.saves.version = "v3";
 
 Determines whether the UI bar (sidebar) starts in the stowed (shut) state initially.  Valid values are boolean `true`/`false`, which causes the UI bar to always/never start in the stowed state, or an integer, which causes the UI bar to start in the stowed state if the viewport width is less-than-or-equal-to the specified number of pixels.
 
-#### Since:
+#### History:
 
 * `v2.11.0`: Introduced.
 
@@ -654,7 +654,7 @@ Determines whether certain elements within the UI bar are updated when passages 
 The story title is not included in updates because SugarCube uses it as the basis for the key used to store and load data used when playing the story and for saves.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -681,7 +681,7 @@ Determines whether the `link-visited` class is added to internal passage links t
 You <em>must</em> provide your own styling for the <code>link-visited</code> class as none is provided by default.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -707,7 +707,7 @@ You will also need to specify a `.link-visited` style that defines the propertie
 
 Determines whether the output of the Wikifier is post-processed into more sane markup—i.e., where appropriate, it tries to transition the plethora of `<br>` elements into `<p>` elements.
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -727,7 +727,7 @@ Indicates whether SugarCube is running in test mode, which enables debug views. 
 This property is automatically set based on whether you're using a testing mode in a Twine compiler—i.e., <em>Test</em> mode in Twine&nbsp;2, <em>Test Play From Here</em> in Twine&nbsp;1, or the test mode option (<code>-t</code>, <code>--test</code>) in Tweego.  You may, however, forcibly enable it if you need to for some reason—e.g., if you're using another compiler, which doesn't offer a way to enable test mode.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.2.0`: Introduced.
 
@@ -754,7 +754,7 @@ if (Config.debug) {
 
 Sets the integer delay (in milliseconds) before the loading screen is dismissed, once the document has signaled its readiness.  Not generally necessary, however, some browsers render slower than others and may need a little extra time to get a media-heavy page done.  This allows you to fine tune for those cases.
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 

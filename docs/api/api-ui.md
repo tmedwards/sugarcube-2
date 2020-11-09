@@ -9,7 +9,7 @@
 
 Opens the built-in alert dialog, displaying the given message to the player.
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -31,7 +31,7 @@ UI.alert("You smell of elderberries!");
 
 Opens the built-in jump to dialog, which is populated via the [`bookmark` tag](#special-tag-bookmark).
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -52,7 +52,7 @@ UI.jumpto();
 
 Opens the built-in restart dialog, prompting the player to restart the story.
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -72,7 +72,7 @@ UI.restart();
 
 Opens the built-in saves dialog.
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -93,7 +93,7 @@ UI.saves();
 
 Opens the built-in settings dialog, which is populated from the [`Setting` API](#setting-api).
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -114,7 +114,7 @@ UI.settings();
 
 Opens the built-in share dialog, which is populated from the [`StoryShare` passage](#special-passage-storyshare).
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 

@@ -11,7 +11,7 @@ Manages the Settings dialog and [`settings` object](#setting-api-object-settings
 
 Adds a header to the Settings dialog.
 
-#### Since:
+#### History:
 
 * `v2.7.1`: Introduced.
 
@@ -36,7 +36,7 @@ Setting.addHeader("Content Settings", "Settings controlling what content is made
 
 Adds the named property to the `settings` object and a toggle control for it to the Settings dialog.
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 * `v2.26.0`: Added `desc` property to definition object.
@@ -101,7 +101,7 @@ html.widescreen #passages {
 
 Adds the named property to the `settings` object and a list control for it to the Settings dialog.
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 * `v2.26.0`: Added `desc` property to definition object.
@@ -180,7 +180,7 @@ $("html")
 
 Adds the named property to the `settings` object and a range control for it to the Settings dialog.
 
-#### Since:
+#### History:
 
 * `v2.26.0`: Introduced.
 
@@ -233,7 +233,7 @@ Loads the settings from storage.
 The API automatically calls this method at startup, so you should never need to call this method manually.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -251,7 +251,7 @@ Setting.load();
 
 Resets the setting with the given name to its default value.  If no name is given, resets all settings.
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -279,7 +279,7 @@ Saves the settings to storage.
 The controls of the Settings dialog automatically call this method when settings are changed, so you should normally never need to call this method manually.  Only when manually modifying the values of <code>settings</code> object properties, outside of the controls, would you need to call this method.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -299,6 +299,6 @@ A prototype-less generic object whose properties and values are defined by the [
 
 Normally, the values of its properties are automatically managed by their associated Settings dialog control.  If necessary, however, you may manually change their values—n.b. you'll need to call the [`Setting.save()`](#setting-api-method-save) after having done so.
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.

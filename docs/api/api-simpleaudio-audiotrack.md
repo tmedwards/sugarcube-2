@@ -15,7 +15,7 @@ Audio tracks encapsulate and provide a consistent interface to an audio resource
 
 Returns a new independent copy of the track.
 
-#### Since:
+#### History:
 
 * `v2.28.0`: Introduced.
 
@@ -33,7 +33,7 @@ var trackCopy = aTrack.clone();
 
 Returns the track's total playtime in seconds, `Infinity` for a stream, or `NaN` if no metadata exists.
 
-#### Since:
+#### History:
 
 * `v2.28.0`: Introduced.
 
@@ -55,7 +55,7 @@ Starts playback of the track and fades it between the specified starting and des
 The <a href="#config-api-property-audio-pauseonfadetozero"><code>Config.audio.pauseOnFadeToZero</code> setting</a> (default: <code>true</code>) determines whether the audio subsystem automatically pauses tracks that have been faded to <code>0</code> volume (silent).
 </p>
 
-#### Since:
+#### History:
 
 * `v2.28.0`: Introduced.
 
@@ -78,7 +78,7 @@ aTrack.fade(6, 1, 0);
 
 Starts playback of the track and fades it from the specified volume level to `1` (loudest) over the specified number of seconds.
 
-#### Since:
+#### History:
 
 * `v2.28.0`: Introduced.
 * `v2.29.0`: Updated to return a `Promise`.
@@ -105,7 +105,7 @@ Starts playback of the track and fades it from the specified volume level to `0`
 The <a href="#config-api-property-audio-pauseonfadetozero"><code>Config.audio.pauseOnFadeToZero</code> setting</a> (default: <code>true</code>) determines whether the audio subsystem automatically pauses tracks that have been faded to <code>0</code> volume (silent).
 </p>
 
-#### Since:
+#### History:
 
 * `v2.28.0`: Introduced.
 * `v2.29.0`: Updated to return a `Promise`.
@@ -132,7 +132,7 @@ Interrupts an in-progress fade of the track, or does nothing if no fade is progr
 This does not alter the volume level.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.28.0`: Introduced.
 
@@ -154,7 +154,7 @@ Returns whether enough data has been loaded to play the track through to the end
 This is an estimate calculated by the browser based upon the currently downloaded data and the download rate.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.28.0`: Introduced.
 
@@ -174,7 +174,7 @@ if (aTrack.hasData()) {
 
 Returns whether, at least, the track's metadata has been loaded.
 
-#### Since:
+#### History:
 
 * `v2.28.0`: Introduced.
 
@@ -194,7 +194,7 @@ if (aTrack.hasMetadata()) {
 
 Returns whether none of the track's data has been loaded.
 
-#### Since:
+#### History:
 
 * `v2.28.0`: Introduced.
 
@@ -218,7 +218,7 @@ Returns whether, at least, some of the track's data has been loaded.
 The <a href="#audiotrack-api-prototype-method-hasdata"><code>&lt;AudioTrack&gt;.hasData()</code> method</a> is generally more useful.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.28.0`: Introduced.
 
@@ -238,7 +238,7 @@ if (aTrack.hasSomeData()) {
 
 Returns whether any valid sources were registered.
 
-#### Since:
+#### History:
 
 * `v2.28.0`: Introduced.
 
@@ -258,7 +258,7 @@ if (aTrack.hasSource()) {
 
 Returns whether playback of the track has ended.
 
-#### Since:
+#### History:
 
 * `v2.28.0`: Introduced.
 
@@ -278,7 +278,7 @@ if (aTrack.isEnded()) {
 
 Returns whether a fade is in-progress on the track.
 
-#### Since:
+#### History:
 
 * `v2.28.0`: Introduced.
 
@@ -298,7 +298,7 @@ if (aTrack.isFading()) {
 
 Returns whether an error has occurred.
 
-#### Since:
+#### History:
 
 * `v2.28.0`: Introduced.
 
@@ -318,7 +318,7 @@ if (aTrack.isFailed()) {
 
 Returns whether the track is loading data.
 
-#### Since:
+#### History:
 
 * `v2.28.0`: Introduced.
 
@@ -340,7 +340,7 @@ Returns whether playback of the track has been paused.
 
 <!-- **NOTE:** This does not have a 1-to-1 correspondence with the track's `paused` state, which is set whenever playback is not progressing—e.g., the `paused` state is also set when a track is in the `ended` state. -->
 
-#### Since:
+#### History:
 
 * `v2.28.0`: Introduced.
 
@@ -360,7 +360,7 @@ if (aTrack.isPaused()) {
 
 Returns whether the track is playing.
 
-#### Since:
+#### History:
 
 * `v2.28.0`: Introduced.
 
@@ -380,7 +380,7 @@ if (aTrack.isPlaying()) {
 
 Returns whether the track is seeking.
 
-#### Since:
+#### History:
 
 * `v2.28.0`: Introduced.
 
@@ -400,7 +400,7 @@ if (aTrack.isSeeking()) {
 
 Returns whether playback of the track has been stopped.
 
-#### Since:
+#### History:
 
 * `v2.29.0`: Introduced.
 
@@ -420,7 +420,7 @@ if (aTrack.isStopped()) {
 
 Returns whether the track is currently unavailable for playback.  Possible reasons include: no valid sources are registered, no sources are currently loaded, an error has occurred.
 
-#### Since:
+#### History:
 
 * `v2.28.0`: Introduced.
 
@@ -440,7 +440,7 @@ if (aTrack.isUnavailable()) {
 
 Returns whether the track's sources are currently unloaded.
 
-#### Since:
+#### History:
 
 * `v2.28.0`: Introduced.
 
@@ -464,7 +464,7 @@ Pauses playback of the track and, if it's not already in the process of loading,
 This <em>should not</em> be done lightly if your audio sources are on the network, as it forces players to begin downloading them.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.28.0`: Introduced.
 
@@ -482,7 +482,7 @@ aTrack.load();
 
 Gets or sets the track's repeating playback state (default: `false`).  When used to set the loop state, returns a reference to the current `AudioTrack` instance for chaining.
 
-#### Since:
+#### History:
 
 * `v2.28.0`: Introduced.
 
@@ -509,7 +509,7 @@ aTrack.loop(false);
 
 Gets or sets the track's volume mute state (default: `false`).  When used to set the mute state, returns a reference to the current `AudioTrack` instance for chaining.
 
-#### Since:
+#### History:
 
 * `v2.28.0`: Introduced.
 
@@ -544,7 +544,7 @@ Shorthand for <a href="http://api.jquery.com/off/">jQuery's <code>.off()</code> 
 The <code>SimpleAudio</code> APIs use events internally for various pieces of functionality.  To prevent conflicts, it is <strong><em>strongly</em></strong> suggested that you specify a custom user namespace—e.g., <code>.myEvents</code>—when attaching your own handlers.  It is further <strong><em>strongly</em></strong> suggested that you provide that same custom user namespace when removing them.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.28.0`: Introduced.
 
@@ -575,7 +575,7 @@ Shorthand for <a href="http://api.jquery.com/on/">jQuery's <code>.on()</code> me
 The <code>SimpleAudio</code> APIs use events internally for various pieces of functionality.  To prevent conflicts, it is <strong><em>strongly</em></strong> suggested that you specify a custom user namespace—e.g., <code>.myEvents</code>—when attaching your own handlers.  It is further <strong><em>strongly</em></strong> suggested that you provide that same custom user namespace when removing them.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.28.0`: Introduced.
 
@@ -608,7 +608,7 @@ Shorthand for <a href="http://api.jquery.com/one/">jQuery's <code>.one()</code> 
 The <code>SimpleAudio</code> APIs use events internally for various pieces of functionality.  To prevent conflicts, it is <strong><em>strongly</em></strong> suggested that you specify a custom user namespace—e.g., <code>.myEvents</code>—when attaching your own handlers.  It is further <strong><em>strongly</em></strong> suggested that you provide that same custom user namespace when removing them.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.28.0`: Introduced.
 
@@ -633,7 +633,7 @@ aTrack.one('ended.myEvents', function () {
 
 Pauses playback of the track.
 
-#### Since:
+#### History:
 
 * `v2.28.0`: Introduced.
 
@@ -651,7 +651,7 @@ aTrack.pause();
 
 Begins playback of the track.
 
-#### Since:
+#### History:
 
 * `v2.28.0`: Introduced.
 
@@ -683,7 +683,7 @@ aTrack.play()
 
 Begins playback of the track or, failing that, sets the track to begin playback as soon as the player has interacted with the document.
 
-#### Since:
+#### History:
 
 * `v2.28.0`: Introduced.
 
@@ -701,7 +701,7 @@ aTrack.playWhenAllowed();
 
 Returns how much remains of the track's total playtime in seconds, `Infinity` for a stream, or `NaN` if no metadata exists.
 
-#### Since:
+#### History:
 
 * `v2.28.0`: Introduced.
 
@@ -719,7 +719,7 @@ var trackRemains = aTrack.remaining();
 
 Stops playback of the track.
 
-#### Since:
+#### History:
 
 * `v2.28.0`: Introduced.
 
@@ -737,7 +737,7 @@ someTrack.stop();
 
 Gets or sets the track's current time in seconds.  When used to set a value, returns a reference to the current `AudioTrack` instance for chaining.
 
-#### Since:
+#### History:
 
 * `v2.28.0`: Introduced.
 
@@ -768,7 +768,7 @@ Stops playback of the track and forces it to drop any existing data.
 Once unloaded, playback cannot occur until the track's data is loaded again.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.28.0`: Introduced.
 
@@ -786,7 +786,7 @@ aTrack.unload();
 
 Gets or sets the track's volume level (default: `1`).  When used to set the volume, returns a reference to the current `AudioTrack` instance for chaining.
 
-#### Since:
+#### History:
 
 * `v2.28.0`: Introduced.
 
