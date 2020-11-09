@@ -854,8 +854,8 @@ Returns the given number clamped to the specified bounds.  Does not modify the o
 #### Parameters:
 
 * **`num`:** (*number*) The number to clamp.  May be an actual number or a numerical string.
-* **`min`:** (*integer*) The lower bound of the number.
-* **`max`:** (*integer*) The upper bound of the number.
+* **`min`:** (*number*) The lower bound of the number.
+* **`max`:** (*number*) The upper bound of the number.
 
 #### Examples:
 
@@ -901,8 +901,8 @@ Returns the number clamped to the specified bounds.  Does not modify the origina
 
 #### Parameters:
 
-* **`min`:** (*integer*) The lower bound of the number.
-* **`max`:** (*integer*) The upper bound of the number.
+* **`min`:** (*number*) The lower bound of the number.
+* **`max`:** (*number*) The upper bound of the number.
 
 #### Examples:
 
