@@ -33,7 +33,7 @@ Global event triggered as the last step in closing the dialog when [`Dialog.clos
 You cannot obtain data about the closing dialog from the dialog itself—e.g., title or classes—when using the <code>:dialogclosed</code> event, as the dialog has already closed and been reset by the time the event is fired.  If you need that kind of information from the dialog itself, then you may use the <a href="#events-dialog-event-dialogclosing"><code>:dialogclosing</code> event</a> instead.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.29.0`: Introduced.
 
@@ -63,7 +63,7 @@ $(document).one(':dialogclosed', function (ev) {
 
 Global event triggered as the first step in closing the dialog when [`Dialog.close()`](#dialog-api-method-close) is called.
 
-#### Since:
+#### History:
 
 * `v2.29.0`: Introduced.
 
@@ -93,7 +93,7 @@ $(document).one(':dialogclosing', function (ev) {
 
 Global event triggered as the last step in opening the dialog when [`Dialog.open()`](#dialog-api-method-open) is called.
 
-#### Since:
+#### History:
 
 * `v2.29.0`: Introduced.
 
@@ -123,7 +123,7 @@ $(document).one(':dialogopened', function (ev) {
 
 Global event triggered as the first step in opening the dialog when [`Dialog.open()`](#dialog-api-method-open) is called.
 
-#### Since:
+#### History:
 
 * `v2.29.0`: Introduced.
 
@@ -190,7 +190,7 @@ In order of processing: *(for reference, this also shows tasks and various speci
 
 Triggered before the modification of the state history.
 
-#### Since:
+#### History:
 
 * `v2.20.0`: Introduced.
 
@@ -218,7 +218,7 @@ $(document).one(':passageinit', function (ev) {
 
 Triggered before the rendering of the incoming passage.
 
-#### Since:
+#### History:
 
 * `v2.20.0`: Introduced.
 
@@ -261,7 +261,7 @@ $(document).on(':passagestart', function (ev) {
 
 Triggered after the rendering of the incoming passage.
 
-#### Since:
+#### History:
 
 * `v2.20.0`: Introduced.
 
@@ -304,7 +304,7 @@ $(document).on(':passagerender', function (ev) {
 
 Triggered after the display—i.e., output—of the incoming passage.
 
-#### Since:
+#### History:
 
 * `v2.20.0`: Introduced.
 * `v2.31.0`: Added `content` property to event object.
@@ -348,7 +348,7 @@ $(document).on(':passagedisplay', function (ev) {
 
 Triggered at the end of passage navigation.
 
-#### Since:
+#### History:
 
 * `v2.20.0`: Introduced.
 * `v2.31.0`: Added `content` property to event object.
@@ -394,7 +394,7 @@ $(document).on(':passageend', function (ev) {
 <code>prehistory</code> tasks have been deprecated and should no longer be used.  See the <a href="#events-navigation-event-passageinit"><code>:passageinit</code> event</a> for its replacement.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 * `v2.31.0`: Deprecated.
@@ -407,7 +407,7 @@ $(document).on(':passageend', function (ev) {
 <code>predisplay</code> tasks have been deprecated and should no longer be used.  See the <a href="#events-navigation-event-passagestart"><code>:passagestart</code> event</a> for its replacement.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 * `v2.31.0`: Deprecated.
@@ -420,7 +420,7 @@ $(document).on(':passageend', function (ev) {
 <code>prerender</code> tasks have been deprecated and should no longer be used.  See the <a href="#events-navigation-event-passagestart"><code>:passagestart</code> event</a> for its replacement.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 * `v2.31.0`: Deprecated.
@@ -433,7 +433,7 @@ $(document).on(':passageend', function (ev) {
 <code>postrender</code> tasks have been deprecated and should no longer be used.  See the <a href="#events-navigation-event-passagerender"><code>:passagerender</code> event</a> for its replacement.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 * `v2.31.0`: Deprecated.
@@ -446,7 +446,7 @@ $(document).on(':passageend', function (ev) {
 <code>postdisplay</code> tasks have been deprecated and should no longer be used.  See the <a href="#events-navigation-event-passagedisplay"><code>:passagedisplay</code> event</a> for its replacement.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 * `v2.31.0`: Deprecated.
@@ -473,7 +473,7 @@ To add or remove event listeners to audio tracks managed by the <a href="#simple
 
 Track event triggered when a fade completes normally.
 
-#### Since:
+#### History:
 
 * `v2.29.0`: Introduced.
 
@@ -499,7 +499,7 @@ someTracks.on(':faded', function (ev) {
 
 Track event triggered when a fade starts.
 
-#### Since:
+#### History:
 
 * `v2.29.0`: Introduced.
 
@@ -529,7 +529,7 @@ Track event triggered when playback is stopped after [`<AudioTrack>.stop()`](#au
 <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/ended_event"><code>ended</code></a> and <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/pause_event"><code>pause</code></a> for information on somewhat similar native events.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.29.0`: Introduced.
 
@@ -563,7 +563,7 @@ System events allow the execution of JavaScript code at specific points during s
 
 Global event triggered once just before the dismissal of the loading screen at startup.
 
-#### Since:
+#### History:
 
 * `v2.31.0`: Introduced.
 
@@ -584,7 +584,7 @@ $(document).one(':storyready', function (ev) {
 
 Global event triggered once just before the page is reloaded when [`Engine.restart()`](#engine-api-method-restart) is called.
 
-#### Since:
+#### History:
 
 * `v2.23.0`: Introduced.
 
@@ -617,7 +617,7 @@ Global event triggered when all `<<type>>` macros within a passage have complete
 Injecting additional <code>&lt;&lt;type&gt;&gt;</code> macro invocations <em>after</em> a <code>:typingcomplete</code> event has been fired will cause another event to eventually be generated, since you're creating a new sequence of typing.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.32.0`: Introduced.
 
@@ -638,7 +638,7 @@ $(document).on(':typingcomplete', function (ev) {
 
 Local event triggered on the typing wrapper when the typing of a section starts.
 
-#### Since:
+#### History:
 
 * `v2.32.0`: Introduced
 * `v2.33.0`: Changed to a local event that bubbles up the DOM tree.
@@ -660,7 +660,7 @@ $(document).on(':typingstart', function (ev) {
 
 Local event triggered on the typing wrapper when the typing of a section stops.
 
-#### Since:
+#### History:
 
 * `v2.32.0`: Introduced
 * `v2.33.0`: Changed to a local event that bubbles up the DOM tree.

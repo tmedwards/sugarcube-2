@@ -9,7 +9,7 @@
 
 Returns the number of existing templates.
 
-#### Since:
+#### History:
 
 * `v2.29.0`: Introduced.
 
@@ -27,7 +27,7 @@ if (Template.size === 0) {
 
 Add new template(s).
 
-#### Since:
+#### History:
 
 * `v2.29.0`: Introduced.
 
@@ -88,7 +88,7 @@ Template.add(['color', 'Color'], function () {
 
 Remove existing template(s).
 
-#### Since:
+#### History:
 
 * `v2.29.0`: Introduced.
 
@@ -112,7 +112,7 @@ Template.delete(['yolo', 'nolf']);
 
 Return the named template definition, or `null` on failure.
 
-#### Since:
+#### History:
 
 * `v2.29.0`: Introduced.
 
@@ -133,7 +133,7 @@ var yolo = Template.get('yolo');
 
 Returns whether the named template exists.
 
-#### Since:
+#### History:
 
 * `v2.29.0`: Introduced.
 

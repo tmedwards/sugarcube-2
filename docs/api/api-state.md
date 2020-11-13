@@ -19,7 +19,7 @@ Returns the active (present) moment.
 Using <code>State.active</code> directly is generally unnecessary as there exist a number of shortcut properties, <a href="#state-api-getter-passage"><code>State.passage</code></a> and <a href="#state-api-getter-variables"><code>State.variables</code></a>, and story functions, <a href="#functions-function-passage"><code>passage()</code></a> and <a href="#functions-function-variables"><code>variables()</code></a>, which grant access to its normal properties.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -36,7 +36,7 @@ State.active.variables  → The variables of the present moment
 
 Returns the bottommost (least recent) moment from the full in-play history (past + future).
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -57,7 +57,7 @@ Returns the current moment from the full in-play history (past + future), which 
 <code>State.current</code> <em>is not</em> a synonym for <a href="#state-api-getter-active"><code>State.active</code></a>.  You will, very likely, never need to use <code>State.current</code> directly within your code.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.8.0`: Introduced.
 
@@ -74,7 +74,7 @@ State.current.variables  → The variables of the current moment within the full
 
 Returns the number of moments within the past in-play history (past only).
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -92,7 +92,7 @@ if (State.length === 0) {
 
 Returns the title of the passage associated with the active (present) moment.
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -108,7 +108,7 @@ State.passage  → The passage title of the present moment
 
 Returns the number of moments within the full in-play history (past + future).
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -128,7 +128,7 @@ if (State.size === 0) {
 
 Returns the current temporary variables.
 
-#### Since:
+#### History:
 
 * `v2.13.0`: Introduced.
 
@@ -148,7 +148,7 @@ Returns the topmost (most recent) moment from the full in-play history (past + f
 <code>State.top</code> <em>is not</em> a synonym for <a href="#state-api-getter-active"><code>State.active</code></a>.  You will, very likely, never need to use <code>State.top</code> directly within your code.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -165,7 +165,7 @@ State.top.variables  → The variables of the most recent moment within the full
 
 Returns the total number (count) of played moments within the extended past history (expired + past).
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -183,7 +183,7 @@ if (State.turns === 1) {
 
 Returns the variables from the active (present) moment.
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -199,7 +199,7 @@ State.variables  → The variables of the present moment
 
 Returns the value of the story or temporary variable by the given name.
 
-#### Since:
+#### History:
 
 * `v2.22.0`: Introduced.
 
@@ -223,7 +223,7 @@ Returns whether any moments with the given title exist within the past in-play h
 <code>State.has()</code> <em>does not</em> check expired moments.  If you need to know if the player has ever been to a particular passage, then you <em>must</em> use the <a href="#state-api-method-hasplayed"><code>State.hasPlayed()</code></a> method or the <a href="#functions-function-hasvisited"><code>hasVisited()</code></a> story function.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -247,7 +247,7 @@ Returns whether any moments with the given title exist within the extended past 
 If you need to check for multiple passages, the <a href="#functions-function-hasvisited"><code>hasVisited()</code></a> story function will likely be more convenient to use.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -267,7 +267,7 @@ State.hasPlayed("The Ducky")  → Returns whether a moment matching "The Ducky" 
 
 Returns the moment, relative to the bottom of the past in-play history (past only), at the given index.
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -289,7 +289,7 @@ State.index(State.length - 1)  → Returns the most recent moment within the pas
 
 Returns whether the full in-play history (past + future) is empty.
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -309,7 +309,7 @@ if (State.isEmpty()) {
 
 Returns the moment, relative to the top of the past in-play history (past only), at the, optional, offset.
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -332,7 +332,7 @@ State.peek(State.length - 1)  → Returns the least recent moment within the pas
 
 Returns the size of the story metadata store—i.e., the number of stored pairs.
 
-#### Since:
+#### History:
 
 * `v2.30.0`: Introduced.
 
@@ -351,7 +351,7 @@ if (State.metadata.size > 0) {
 
 Empties the story metadata store.
 
-#### Since:
+#### History:
 
 * `v2.29.0`: Introduced.
 
@@ -370,7 +370,7 @@ State.metadata.clear();
 
 Removes the specified key, and its associated value, from the story metadata store.
 
-#### Since:
+#### History:
 
 * `v2.29.0`: Introduced.
 
@@ -391,7 +391,7 @@ State.metadata.delete('achievements');
 
 Returns the value associated with the specified key from the story metadata store.
 
-#### Since:
+#### History:
 
 * `v2.29.0`: Introduced.
 
@@ -412,7 +412,7 @@ var playerAchievements = State.metadata.get('achievements');
 
 Returns whether the specified key exists within the story metadata store.
 
-#### Since:
+#### History:
 
 * `v2.29.0`: Introduced.
 
@@ -447,7 +447,7 @@ The story metadata store <strong><em>is not</em></strong>, and should not be use
 This feature is largely incompatible with private browsing modes, which cause all in-browser storage mechanisms to either persist only for the lifetime of the browsing session or fail outright.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.29.0`: Introduced.
 
@@ -476,7 +476,7 @@ Initializes the seedable pseudo-random number generator (PRNG) and integrates it
 <code>State.prng.init()</code> <em>must be</em> called during story initialization, within either a script section (Twine&nbsp;2: the Story JavaScript, Twine&nbsp;1/Twee: a <code>script</code>-tagged passage) or the <code>StoryInit</code> special passage.  Additionally, it is <strong><em>strongly</em></strong> recommended that you do not specify any arguments to <code>State.prng.init()</code> and allow it to automatically seed itself.  If you should chose to use an explicit seed, however, it is <strong><em>strongly</em></strong> recommended that you also enable additional entropy, otherwise all playthroughs for all players will be exactly the same.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.29.0`: Introduced.
 
@@ -499,7 +499,7 @@ State.prng.init("aVeryLongSeed", true)  → Seed the PRNG with "aVeryLongSeed" a
 
 Returns whether the [seedable PRNG](#state-api-method-prng-init) has been enabled.
 
-#### Since:
+#### History:
 
 * `v2.29.0`: Introduced.
 
@@ -519,7 +519,7 @@ Returns the current pull count—i.e., how many requests have been made—from t
 The pull count is automatically included within saves and sessions, so this is not especially useful outside of debugging purposes.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.29.0`: Introduced.
 
@@ -539,7 +539,7 @@ Returns the seed from the [seedable PRNG](#state-api-method-prng-init) or, if th
 The seed is automatically included within saves and sessions, so this is not especially useful outside of debugging purposes.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.29.0`: Introduced.
 
@@ -559,7 +559,7 @@ Returns a pseudo-random decimal number (floating-point) in the range `0` (inclus
 By default, it simply returns non-deterministic results from <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random"><code>Math.random()</code></a>, however, when the seedable PRNG has been enabled, via <a href="#state-api-method-prng-init"><code>State.prng.init()</code></a>, it returns deterministic results from the seeded PRNG instead.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -577,7 +577,7 @@ State.random()  → Returns a pseudo-random floating-point number in the range [
 
 Sets the value of the story or temporary variable by the given name.  Returns whether the operation was successful.
 
-#### Since:
+#### History:
 
 * `v2.22.0`: Introduced.
 
@@ -600,7 +600,7 @@ State.setVar("$charName", "Jane Doe")  → Assigns the string "Jane Doe" to $cha
 This method has been deprecated and should no longer be used.  See the <a href="#state-api-method-prng-init"><code>State.prng.init()</code></a> method for its replacement.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 * `v2.29.0`: Deprecated in favor of `State.prng.init()`.

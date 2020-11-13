@@ -13,7 +13,7 @@
 
 Add new macro(s).
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced
 * `v2.33.0`: Obsoleted the `deep` parameter.
@@ -67,7 +67,7 @@ Macro.add('if', {
 
 Remove existing macro(s).
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -88,7 +88,7 @@ Macro.delete(["amacro", "bmacro"])
 
 Return the named macro definition, or `null` on failure.
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -108,7 +108,7 @@ Macro.get("print")
 
 Returns whether the named macro exists.
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -128,7 +128,7 @@ Macro.has("print")
 
 Return the named macro tag's parents array (includes the names of all macros who have registered the tag as a child), or `null` on failure.
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -148,7 +148,7 @@ Macro.tags.get("else")  → For the standard library, returns: ["if"]
 
 Returns whether the named macro tag exists.
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 

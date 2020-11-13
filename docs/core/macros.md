@@ -66,7 +66,7 @@ Captures story $variables and temporary \_variables, creating localized versions
 Use of this macro is <em>only</em> necessary when you need to localize a variable's value for use with an asynchronous macro—i.e., a macro whose contents are executed at some later time, rather than when it's invoked; e.g., <a href="#macros-interactive">interactive macros</a>, <a href="#macros-macro-repeat"><code>&lt;&lt;repeat&gt;&gt;</code></a>, <a href="#macros-macro-timed"><code>&lt;&lt;timed&gt;&gt;</code></a>.  Generally, this means only when the variable's value will change between the time the asynchronous macro is invoked and when it's activated—e.g., a loop variable.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.14.0`: Introduced.
 
@@ -100,7 +100,7 @@ Use of this macro is <em>only</em> necessary when you need to localize a variabl
 
 Sets story $variables and temporary \_variables based on the given expression.
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -193,7 +193,7 @@ Sets story $variables and temporary \_variables based on the given expression.
 
 Unsets story $variables and temporary \_variables.
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -216,7 +216,7 @@ Unsets story $variables and temporary \_variables.
 This macro has been deprecated and should no longer be used.  See the <a href="#functions-function-memorize"><code>memorize()</code></a> and <a href="#functions-function-recall"><code>recall()</code></a> functions for its replacement.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 * `v2.29.0`: Deprecated in favor of `memorize()` and `recall()`.
@@ -229,7 +229,7 @@ This macro has been deprecated and should no longer be used.  See the <a href="#
 This macro has been deprecated and should no longer be used.  See the <a href="#functions-function-forget"><code>forget()</code></a> function for its replacement.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 * `v2.29.0`: Deprecated in favor of `forget()`.
@@ -256,7 +256,7 @@ Silently executes its contents as *pure* JavaScript code—i.e., it performs no 
 The predefined variable <code>output</code>, which is a reference to a local content buffer, is available for use within the macro's code contents.  Once the code has been fully executed, the contents of the buffer, if any, will be output.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -293,7 +293,7 @@ Outputs the result of the given expression.  This macro is an alias for [`<<prin
 If you only need to print the value of a TwineScript variable, then you may simply include it in your normal passage text and it will be printed automatically via the <a href="#markup-naked-variable">naked variable markup</a>.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -321,7 +321,7 @@ Outputs the result of the given expression.  This macro is functionally identica
 If you only need to print the value of a TwineScript variable, then you may simply include it in your normal passage text and it will be printed automatically via the <a href="#markup-naked-variable">naked variable markup</a>.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -345,7 +345,7 @@ You weigh <<- $weight.toFixed(2)>> kg.  → Outputs: You weigh 74.65 kg.
 
 Outputs the contents of the passage with the given name, optionally wrapping it within an HTML element.  May be called either with the passage name or with a link markup.
 
-#### Since:
+#### History:
 
 * `v2.15.0`: Introduced.
 
@@ -380,7 +380,7 @@ Executes its contents and outputs the result, after removing leading/trailing ne
 The <a href="#special-tag-nobr"><code>nobr</code> special tag</a> and <a href="#config-api-property-passages-nobr"><code>Config.passages.nobr</code> setting</a> applies the same processing to an entire passage or all passages, respectively.  The <a href="#markup-line-continuation">line continuation markup</a> performs a similar function, though in a slightly different way.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -409,7 +409,7 @@ Outputs the result of the given expression.
 If you only need to print the value of a TwineScript variable, then you may simply include it in your normal passage text and it will be printed automatically via the <a href="#markup-naked-variable">naked variable markup</a>.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -433,7 +433,7 @@ You weigh <<print $weight.toFixed(2)>> kg.  → Outputs: You weigh 74.65 kg.
 
 Causes any output generated within its body to be discarded, except for errors (which will be displayed).  Generally, only really useful for formatting blocks of macros for ease of use/readability, while ensuring that no output is generated, from spacing or whatnot.
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -480,7 +480,7 @@ Interactions with macros or other code that inject content only after some exter
 <a href="#config-api-property-macros-typeskipkey"><code>Config.macros.typeSkipKey</code></a>, <a href="#config-api-property-macros-typevisitedpassages"><code>Config.macros.typeVisitedPassages</code></a>, <a href="#events-type-macro"><code>&lt;&lt;type&gt;&gt;</code> Events</a>.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.32.0`: Introduced.
 * `v2.33.0`: Added `class`, `element`, and `id` options and `macro-type-done` class.
@@ -560,7 +560,7 @@ The default cursor is the block element character **Right Half Block (U+2590)** 
 This macro has been deprecated and should no longer be used.  See the <a href="#macros-macro-include"><code>&lt;&lt;include&gt;&gt;</code></a> macro for its replacement.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 * `v2.15.0`: Deprecated in favor of `<<include>>`.
@@ -581,7 +581,7 @@ Executes its contents if the given conditional expression evaluates to `true`.  
 SugarCube does not trim whitespace from the contents of <code>&lt;&lt;if&gt;&gt;</code> macros, so that authors don't have to resort to various kludges to get whitespace where they want it.  This means, however, that extra care must be taken when writing them to ensure that unwanted whitespace is not created within the final output.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -784,7 +784,7 @@ Repeatedly executes its contents. There are three forms: a conditional-only form
 <a href="#macros-macro-break"><code>&lt;&lt;break&gt;&gt;</code></a> and <a href="#macros-macro-continue"><code>&lt;&lt;continue&gt;&gt;</code></a>.
 </p>
 
-##### Since:
+##### History:
 
 * `v2.0.0`: Introduced.
 * `v2.20.0`: Added range form.
@@ -898,7 +898,7 @@ Strings are iterated by Unicode code point, however, due to historic reasons the
 
 Used within [`<<for>>`](#macros-macro-for) macros.  Terminates the execution of the current `<<for>>`.
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -914,7 +914,7 @@ Used within [`<<for>>`](#macros-macro-for) macros.  Terminates the execution of 
 May eat line-breaks in certain situations.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -930,7 +930,7 @@ Evaluates the given expression and compares it to the value(s) within its `<<cas
 SugarCube does not trim whitespace from the contents of <code>&lt;&lt;case&gt;&gt;</code>/<code>&lt;&lt;default&gt;&gt;</code> macros, so that authors don't have to resort to various kludges to get whitespace where they want it.  However, this means that extra care must be taken when writing them to ensure that unwanted whitespace is not created within the final output.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.7.2`: Introduced.
 
@@ -997,7 +997,7 @@ Creates a button that silently executes its contents when clicked, optionally fo
 This macro is functionally identical to <a href="#macros-macro-link">&lt;&lt;link&gt;&gt;</a>, save that it uses a button element (<code>&lt;button&gt;</code>) rather than an anchor element (<code>&lt;a&gt;</code>).
 </p>
 
-#### Since:
+#### History:
 
 * `v2.8.0`: Introduced.
 
@@ -1040,7 +1040,7 @@ Creates a checkbox, used to modify the value of the variable with the given name
 <a href="#macros-interactive-warning">Interactive macro warning</a>.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 * `v2.32.0`: Added `autocheck` keyword.
@@ -1101,7 +1101,7 @@ Creates a cycling link, used to modify the value of the variable with the given 
 <a href="#macros-interactive-warning">Interactive macro warning</a>.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.29.0`: Introduced.
 
@@ -1191,7 +1191,7 @@ Creates a link that silently executes its contents when clicked, optionally forw
 If you simply need a passage link that modifies variables, both the <a href="#markup-link">link markup</a> and <a href="#markup-image">image markup</a> offer setter variants.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.8.0`: Introduced.
 
@@ -1234,7 +1234,7 @@ Creates a single-use link that deactivates itself and appends its contents to it
 <a href="#macros-interactive-warning">Interactive macro warning</a>.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -1264,7 +1264,7 @@ Creates a single-use link that deactivates itself and prepends its contents to i
 <a href="#macros-interactive-warning">Interactive macro warning</a>.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -1294,7 +1294,7 @@ Creates a single-use link that deactivates itself and replaces its link text wit
 <a href="#macros-interactive-warning">Interactive macro warning</a>.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -1324,7 +1324,7 @@ Creates a listbox, used to modify the value of the variable with the given name.
 <a href="#macros-interactive-warning">Interactive macro warning</a>.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.26.0`: Introduced.
 * `v2.27.0`: Added `autoselect` keyword.
@@ -1414,7 +1414,7 @@ Creates a number input box, used to modify the value of the variable with the gi
 <a href="#macros-interactive-warning">Interactive macro warning</a>.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.32.0`: Introduced.
 
@@ -1451,7 +1451,7 @@ Creates a radio button, used to modify the value of the variable with the given 
 <a href="#macros-interactive-warning">Interactive macro warning</a>.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 * `v2.32.0`: Added `autocheck` keyword.
@@ -1511,7 +1511,7 @@ Creates a multiline text input block, used to modify the value of the variable w
 <a href="#macros-interactive-warning">Interactive macro warning</a>.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -1543,7 +1543,7 @@ Creates a text input box, used to modify the value of the variable with the give
 <a href="#macros-interactive-warning">Interactive macro warning</a>.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -1578,7 +1578,7 @@ What's your favorite pie? <<textbox "$pie" "Blueberry" "Cakes" autofocus>>
 This macro has been deprecated and should no longer be used.  See the <a href="#macros-macro-link"><code>&lt;&lt;link&gt;&gt;</code></a> macro for its replacement.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 * `v2.8.0`: Deprecated in favor of `<<link>>`.
@@ -1595,7 +1595,7 @@ This macro has been deprecated and should no longer be used.  See the <a href="#
 
 Creates a list of single-use passage links.  Each link removes itself and all other `<<actions>>` links to the same passage after being activated.  May be called either with a list of passages, with a list of link markup, or with a list of image markup.  Probably most useful when paired with [`<<include>>`](#macros-macro-include).  See the [`<<actions>>`](https://twinery.org/wiki/actions) section of the [Twine&nbsp;1 reference documentation](https://twinery.org/wiki/twine1:reference) for more information.
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -1637,7 +1637,7 @@ Creates a link that undoes past moments within the story history.  May be called
 If you want to return to a previously visited passage, rather than undo a moment within the history, see the <a href="#macros-macro-return"><code>&lt;&lt;return&gt;&gt;</code> macro</a> or the <a href="#functions-function-previous"><code>previous()</code> function</a>.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -1701,7 +1701,7 @@ Creates a single-use passage link that deactivates itself and all other `<<choic
 Normally, when both link and text arguments are accepted, the order is text then link.  However, due to a historical artifact, the arguments for the separate argument form of <code>&lt;&lt;choice&gt;&gt;</code> are in the reverse order (link then text).
 </p>
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -1752,7 +1752,7 @@ Creates a link that navigates forward to a previously visited passage.  May be c
 If you want to undo previous moments within the history, rather than return to a passage, see the <a href="#macros-macro-back"><code>&lt;&lt;back&gt;&gt;</code> macro</a>.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -1831,7 +1831,7 @@ Adds classes to the selected element(s).
 <a href="#macros-dom-warning">DOM macro warning</a>.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -1858,7 +1858,7 @@ Executes its contents and appends the output to the contents of the selected ele
 <a href="#macros-dom-warning">DOM macro warning</a>.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 * `v2.25.0`: Added `transition` and `t8n` keywords.
@@ -1915,7 +1915,7 @@ Most interactive elements—e.g., passage links, <a href="#macros-interactive">i
 <a href="#macros-dom-warning">DOM macro warning</a>.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -1952,7 +1952,7 @@ Executes its contents and prepends the output to the contents of the selected el
 <a href="#macros-dom-warning">DOM macro warning</a>.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 * `v2.25.0`: Added `transition` and `t8n` keywords.
@@ -2009,7 +2009,7 @@ Removes the selected element(s).
 If you simply want to empty the selected element(s), not remove them outright, you should use an empty <a href="#macros-macro-replace"><code>&lt;&lt;replace&gt;&gt;</code> macro</a> instead.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -2042,7 +2042,7 @@ Removes classes from the selected element(s).
 <a href="#macros-dom-warning">DOM macro warning</a>.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -2070,7 +2070,7 @@ Executes its contents and replaces the contents of the selected element(s) with 
 <a href="#macros-dom-warning">DOM macro warning</a>.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 * `v2.25.0`: Added `transition` and `t8n` keywords.
@@ -2123,7 +2123,7 @@ Toggles classes on the selected element(s)—i.e., adding them if they don't exi
 <a href="#macros-dom-warning">DOM macro warning</a>.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -2169,7 +2169,7 @@ The <code>&lt;&lt;audio&gt;&gt;</code> macro cannot affect playlist tracks that 
 The <a href="#config-api-property-audio-pauseonfadetozero"><code>Config.audio.pauseOnFadeToZero</code> setting</a> (default: <code>true</code>) controls whether tracks that have been faded to <code>0</code> volume (silent) are automatically paused.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 * `v2.1.0`: Added `fadeoverto` action.
@@ -2303,7 +2303,7 @@ Caches an audio track for use by the other audio macros.
 The <a href="#special-passage-storyinit"><code>StoryInit</code> special passage</a> is normally the best place to set up tracks.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 * `v2.28.0`: Deprecated the old optional format specifier syntax in favor of a new syntax (`formatId|`).
@@ -2339,7 +2339,7 @@ Collects tracks, which must be set up via [`<<cacheaudio>>`](#macros-macro-cache
 The <a href="#special-passage-storyinit"><code>StoryInit</code> special passage</a> is normally the best place to set up groups.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.19.0`: Introduced.
 
@@ -2379,7 +2379,7 @@ Collects tracks, which must be set up via [`<<cacheaudio>>`](#macros-macro-cache
 The <a href="#special-passage-storyinit"><code>StoryInit</code> special passage</a> is normally the best place to set up playlists.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.8.0`: Introduced.
 * `v2.29.0`: Deprecated `<<track>>` `copy` keyword in favor of `own`.
@@ -2425,7 +2425,7 @@ Controls the master audio settings.
 <a href="#macros-audio-limitations">Audio macro limitations</a>.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.8.0`: Introduced.
 * `v2.28.0`: Added `load`, `muteonhide`, `nomuteonhide`, and `unload` actions.
@@ -2495,7 +2495,7 @@ Controls the playback of the playlist, which must be set up via [`<<createplayli
 The <a href="#config-api-property-audio-pauseonfadetozero"><code>Config.audio.pauseOnFadeToZero</code> setting</a> (default: <code>true</code>) controls whether tracks that have been faded to <code>0</code> volume (silent) are automatically paused.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced, compatible with `<<setplaylist>>`.
 * `v2.1.0`: Added `fadeoverto` action.
@@ -2615,7 +2615,7 @@ Removes the audio group with the given ID.
 You may not remove the predefined group IDs (<code>:all</code>, <code>:looped</code>, <code>:muted</code>, <code>:paused</code>, <code>:playing</code>) or the <code>:not</code> group modifier.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.28.0`: Introduced.
 
@@ -2636,7 +2636,7 @@ You may not remove the predefined group IDs (<code>:all</code>, <code>:looped</c
 
 Removes the playlist with the given ID.
 
-#### Since:
+#### History:
 
 * `v2.8.0`: Introduced.
 
@@ -2661,7 +2661,7 @@ Displays the loading screen until *all* currently registered audio has either lo
 This macro should be invoked <strong><em>once</em></strong> following any invocations of <code>&lt;&lt;cacheaudio&gt;&gt;</code> and <code>&lt;&lt;createplaylist&gt;&gt;</code>, if any <code>&lt;&lt;track&gt;&gt;</code> definitions used the <code>copy</code> keyword, for which you want the loading screen displayed.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.8.0`: Introduced.
 
@@ -2702,7 +2702,7 @@ This macro should be invoked <strong><em>once</em></strong> following any invoca
 This macro has been deprecated and should no longer be used.  See the <a href="#macros-macro-createplaylist"><code>&lt;&lt;createplaylist&gt;&gt;</code></a> macro for its replacement.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 * `v2.8.0`: Deprecated in favor of `<<createplaylist>>`.
@@ -2715,7 +2715,7 @@ This macro has been deprecated and should no longer be used.  See the <a href="#
 This macro has been deprecated and should no longer be used.  See the <a href="#macros-macro-audio"><code>&lt;&lt;audio&gt;&gt;</code></a> macro for its replacement.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 * `v2.8.0`: Deprecated in favor of `<<audio ":all" stop>>`.
@@ -2740,7 +2740,7 @@ In most cases, you will not need to use <code>&lt;&lt;goto&gt;&gt;</code> as the
 <code>&lt;&lt;goto&gt;&gt;</code> <strong><em>does not</em></strong> terminate passage rendering in the passage where it was encountered, so care must be taken to ensure that no unwanted state modifications occur after its call.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -2776,7 +2776,7 @@ Repeatedly executes its contents after the given delay, inserting any output int
 Passage navigation terminates all pending timed executions.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -2812,7 +2812,7 @@ Countdown: <span id="countdown">$seconds seconds remaining</span>!\
 
 Used within [`<<repeat>>`](#macros-macro-repeat) macros.  Terminates the execution of the current `<<repeat>>`.
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -2828,7 +2828,7 @@ Executes its contents after the given delay, inserting any output into the passa
 Passage navigation terminates all pending timed executions.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 
@@ -2903,7 +2903,7 @@ Widgets should <em>always</em> be defined within a <code>widget</code>-tagged pa
 The <code>$args</code> array-like object should be treated as though it were immutable—i.e., unable to be modified—because in the future it will be made thus, so any attempt to modify it will cause an error.
 </p>
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 

@@ -12,7 +12,7 @@ data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHE
 lEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==
 ```
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Image passages.
 * `v2.24.0`: Added audio, video, and <abbr title="Video Text Track">VTT</abbr> passages.

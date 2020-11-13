@@ -304,7 +304,7 @@ SugarCube provides a few special HTML attributes, which you may add to HTML tags
 </tbody>
 </table>
 
-#### Since:
+#### History:
 
 * `v2.0.0`: Introduced.
 * `v2.24.0`: Added `data-passage` attribute support to `<audio>`, `<source>`, and `<video>` tags.
@@ -347,7 +347,7 @@ HTML attributes may be prefixed with directives, special text, which trigger spe
 </dd>
 </dl>
 
-#### Since:
+#### History:
 
 * `v2.21.0`: Introduced.
 * `v2.23.5`: Fixed an issue with the evaluation directive where using multiple directives on a single HTML tag would result in some being unprocessed.
@@ -742,7 +742,7 @@ Assuming that `?He` resolves to `She` and `?his` to `her`, then that will produc
 She was always willing to lend her ear to anyone.
 ```
 
-#### Since:
+#### History:
 
 * `v2.29.0`: Introduced.
 
