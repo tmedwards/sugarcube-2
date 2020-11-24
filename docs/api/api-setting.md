@@ -5,6 +5,10 @@
 
 Manages the Settings dialog and [`settings` object](#setting-api-object-settings).
 
+<p role="note" class="warning"><b>Warning:</b>
+<code>Setting</code> API method calls <strong><em>must</em></strong> be placed within your project's JavaScript section (Twine&nbsp;2: the Story JavaScript; Twine&nbsp;1/Twee: a <code>script</code>-tagged passage) or settings will not function correctly.
+</p>
+
 <!-- *********************************************************************** -->
 
 ### `Setting.addHeader(name [, desc])` {#setting-api-method-addheader}

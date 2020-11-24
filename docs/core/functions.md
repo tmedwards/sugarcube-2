@@ -149,7 +149,7 @@ Loading is done asynchronously at run time, so if the script must be available w
 </p>
 
 <p role="note"><b>Note:</b>
-A script section (Twine&nbsp;2: the Story JavaScript; Twine&nbsp;1/Twee: a <code>script</code>-tagged passage) is normally the best place to call <code>importScripts()</code>.
+Your project's JavaScript section (Twine&nbsp;2: the Story JavaScript; Twine&nbsp;1/Twee: a <code>script</code>-tagged passage) is normally the best place to call <code>importScripts()</code>.
 </p>
 
 #### History:
@@ -237,7 +237,7 @@ Loading is done asynchronously at run time, so if the stylesheet must be availab
 </p>
 
 <p role="note"><b>Note:</b>
-A script section (Twine&nbsp;2: the Story JavaScript; Twine&nbsp;1/Twee: a <code>script</code>-tagged passage) is normally the best place to call <code>importStyles()</code>.
+Your project's JavaScript section (Twine&nbsp;2: the Story JavaScript; Twine&nbsp;1/Twee: a <code>script</code>-tagged passage) is normally the best place to call <code>importStyles()</code>.
 </p>
 
 #### History:

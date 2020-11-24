@@ -6,7 +6,7 @@
 The `Config` object controls various aspects of SugarCube's behavior.
 
 <p role="note"><b>Note:</b>
-<code>Config</code> object settings should be placed within a script section (Twine&nbsp;2: the Story JavaScript; Twine&nbsp;1/Twee: a <code>script</code>-tagged passage).
+<code>Config</code> object settings should be placed within your project's JavaScript section (Twine&nbsp;2: the Story JavaScript; Twine&nbsp;1/Twee: a <code>script</code>-tagged passage).
 </p>
 
 
