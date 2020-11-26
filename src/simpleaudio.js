@@ -1367,7 +1367,7 @@ var SimpleAudio = (() => { // eslint-disable-line no-unused-vars, no-var
 				throw new Error('fadeIn requires a parameter');
 			}
 
-			AudioRunner._run(this.trackIds, AudioTrack.prototype.fadeIn, duration, 1, fromVol);
+			AudioRunner._run(this.trackIds, AudioTrack.prototype.fadeIn, duration, fromVol);
 		}
 
 		fadeOut(duration, fromVol) {
@@ -1375,7 +1375,7 @@ var SimpleAudio = (() => { // eslint-disable-line no-unused-vars, no-var
 				throw new Error('fadeOut requires a parameter');
 			}
 
-			AudioRunner._run(this.trackIds, AudioTrack.prototype.fadeOut, duration, 0, fromVol);
+			AudioRunner._run(this.trackIds, AudioTrack.prototype.fadeOut, duration, fromVol);
 		}
 
 		fadeStop() {
