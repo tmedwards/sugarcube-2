@@ -145,36 +145,28 @@ var Passage = (() => { // eslint-disable-line no-unused-vars, no-var
 		description() {
 			const descriptions = Config.passages.descriptions;
 
-			if (descriptions != null) { // lazy equality for null
-				switch (typeof descriptions) {
-				case 'boolean':
-					if (descriptions) {
-						return this.title;
-					}
-					break;
-
-				case 'object':
-					if (descriptions instanceof Map && descriptions.has(this.title)) {
-						return descriptions.get(this.title);
-					}
-					else if (descriptions.hasOwnProperty(this.title)) {
-						return descriptions[this.title];
-					}
-					break;
-
-				case 'function':
-					{
-						const result = descriptions.call(this);
-
-						if (result) {
-							return result;
-						}
-					}
-					break;
-
-				default:
-					throw new TypeError('Config.passages.descriptions must be a boolean, object, or function');
+			switch (typeof descriptions) {
+			case 'boolean':
+				if (descriptions) {
+					return this.title;
 				}
+				break;
+
+			case 'object':
+				if (descriptions.hasOwnProperty(this.title)) {
+					return descriptions[this.title];
+				}
+				break;
+
+			case 'function':
+				{
+					const result = descriptions.call(this);
+
+					if (result) {
+						return result;
+					}
+				}
+				break;
 			}
 
 			// Initialize the excerpt cache from the raw passage text, if necessary.
