@@ -1678,6 +1678,42 @@
 	});
 
 	/*
+		Backup the original `JSON.stringify()` and replace it with a revive wrapper aware version.
+	*/
+	Object.defineProperty(JSON, '_real_stringify', {
+		value : JSON.stringify
+	});
+	Object.defineProperty(JSON, 'stringify', {
+		configurable : true,
+		writable     : true,
+
+		value(text, replacer, space) {
+			return JSON._real_stringify(text, (key, val) => {
+				let value = val;
+
+				/*
+					Call the custom replacer, if specified.
+				*/
+				if (typeof replacer === 'function') {
+					try {
+						value = replacer(key, value);
+					}
+					catch (ex) { /* no-op; although, perhaps, it would be better to throw an error here */ }
+				}
+
+				/*
+					Attempt to replace values.
+				*/
+				if (typeof value === 'undefined') {
+					value = ['(revive:eval)', 'undefined'];
+				}
+
+				return value;
+			}, space);
+		}
+	});
+
+	/*
 		Backup the original `JSON.parse()` and replace it with a revive wrapper aware version.
 	*/
 	Object.defineProperty(JSON, '_real_parse', {
