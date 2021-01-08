@@ -94,6 +94,7 @@
 	* [`<<createplaylist>>`](#macros-macro-createplaylist)
 	* [`<<playlist>>`](#macros-macro-playlist)
 	* [`<<masteraudio>>`](#macros-macro-masteraudio)
+	* [`<<removeaudiogroup>>`](#macros-macro-removeaudiogroup)
 	* [`<<removeplaylist>>`](#macros-macro-removeplaylist)
 	* [`<<waitforaudio>>`](#macros-macro-waitforaudio)
 * [Miscellaneous Macros](#macros-miscellaneous)
