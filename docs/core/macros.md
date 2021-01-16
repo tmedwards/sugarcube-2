@@ -287,7 +287,7 @@ The predefined variable <code>output</code>, which is a reference to a local con
 
 ### `<<= expression>>` {#macros-macro-equal}
 
-Outputs the result of the given expression.  This macro is an alias for [`<<print>>`](#macros-macro-print).
+Outputs a string representation of the result of the given expression.  This macro is an alias for [`<<print>>`](#macros-macro-print).
 
 <p role="note" class="tip"><b>Tip:</b>
 If you only need to print the value of a TwineScript variable, then you may simply include it in your normal passage text and it will be printed automatically via the <a href="#markup-naked-variable">naked variable markup</a>.
@@ -315,7 +315,7 @@ You weigh <<= $weight.toFixed(2)>> kg.  → Outputs: You weigh 74.65 kg.
 
 ### `<<- expression>>` {#macros-macro-hyphen}
 
-Outputs the result of the given expression.  This macro is functionally identical to [`<<print>>`](#macros-macro-print), save that it also encodes HTML special characters in the output.
+Outputs a string representation of the result of the given expression.  This macro is functionally identical to [`<<print>>`](#macros-macro-print), save that it also encodes HTML special characters in the output.
 
 <p role="note" class="tip"><b>Tip:</b>
 If you only need to print the value of a TwineScript variable, then you may simply include it in your normal passage text and it will be printed automatically via the <a href="#markup-naked-variable">naked variable markup</a>.
@@ -403,7 +403,7 @@ cherry
 
 ### `<<print expression>>` {#macros-macro-print}
 
-Outputs the result of the given expression.
+Outputs a string representation of the result of the given expression.
 
 <p role="note" class="tip"><b>Tip:</b>
 If you only need to print the value of a TwineScript variable, then you may simply include it in your normal passage text and it will be printed automatically via the <a href="#markup-naked-variable">naked variable markup</a>.

@@ -13,7 +13,7 @@ Except where noted, all markup has been available since <code>v2.0.0</code>.
 **************************************************************************** -->
 ## Naked Variable {#markup-naked-variable}
 
-In addition to using one of the print macros ([`<<print>>`](#macros-macro-print), [`<<=>>`](#macros-macro-equal), [`<<->>`](#macros-macro-hyphen)) to print the values of TwineScript variables, SugarCube's naked variable markup allows printing them simply by including them within your normal passage text—i.e., variables in passage text are interpolated into their values.
+In addition to using one of the print macros ([`<<print>>`](#macros-macro-print), [`<<=>>`](#macros-macro-equal), [`<<->>`](#macros-macro-hyphen)) to print the values of TwineScript variables, SugarCube's naked variable markup allows printing them simply by including them within your normal passage text—i.e., variables in passage text are interpolated into a string representation of their values.
 
 The following forms are supported by the naked variable markup:
 
