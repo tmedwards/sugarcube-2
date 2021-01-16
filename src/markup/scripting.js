@@ -6,7 +6,7 @@
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* global Engine, Patterns, State, Story, Util */
+/* global Engine, Patterns, State, Story, Util, stringFrom */
 
 var Scripting = (() => { // eslint-disable-line no-unused-vars, no-var
 	'use strict';
@@ -223,6 +223,16 @@ var Scripting = (() => { // eslint-disable-line no-unused-vars, no-var
 
 		intervalId = window.setInterval(tick, 25);
 		/* eslint-enable no-param-reassign */
+	}
+
+	/*
+		[DEPRECATED] Returns the simple string representation of the passed value or,
+		if there is none, the passed default value.
+
+		NOTE: Unused, included only for compatibility.
+	*/
+	function toStringOrDefault(value /* , defValue */) {
+		return stringFrom(value);
 	}
 
 

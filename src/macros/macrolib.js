@@ -8,7 +8,7 @@
 ***********************************************************************************************************************/
 /*
 	global Config, DebugView, Engine, Has, L10n, Macro, NodeTyper, Patterns, Scripting, SimpleAudio, State,
-	       Story, TempState, Util, Wikifier, postdisplay, prehistory, storage, toStringOrDefault
+	       Story, TempState, Util, Wikifier, postdisplay, prehistory, storage, stringFrom
 */
 
 (() => {
@@ -344,7 +344,7 @@
 			}
 
 			try {
-				const result = toStringOrDefault(Scripting.evalJavaScript(this.args.full), null);
+				const result = stringFrom(Scripting.evalJavaScript(this.args.full));
 
 				if (result !== null) {
 					new Wikifier(this.output, this.name === '-' ? Util.escape(result) : result);
