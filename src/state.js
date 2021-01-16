@@ -592,7 +592,7 @@ var State = (() => { // eslint-disable-line no-unused-vars, no-var
 		Clear the temporary variables.
 	*/
 	function tempVariablesClear() {
-		if (DEBUG) { console.log('[State/tempVariablesReset()]'); }
+		if (DEBUG) { console.log('[State/tempVariablesClear()]'); }
 
 		_tempVariables = {};
 
