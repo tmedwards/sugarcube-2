@@ -45,11 +45,12 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 	// Saves settings.
 	let _savesAutoload;
 	let _savesAutosave;
-	let _savesId        = 'untitled-story';
+	let _savesId              = 'untitled-story';
 	let _savesIsAllowed;
 	let _savesOnLoad;
 	let _savesOnSave;
-	let _savesSlots     = 8;
+	let _savesSlots           = 8;
+	let _savesTryDiskOnMobile = true;
 	let _savesVersion;
 
 	// UI settings.
@@ -333,6 +334,9 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 
 				_savesSlots = value;
 			},
+
+			get tryDiskOnMobile() { return _savesTryDiskOnMobile; },
+			set tryDiskOnMobile(value) { _savesTryDiskOnMobile = Boolean(value); },
 
 			get version() { return _savesVersion; },
 			set version(value) { _savesVersion = value; }

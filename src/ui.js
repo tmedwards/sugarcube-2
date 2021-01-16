@@ -7,8 +7,8 @@
 
 ***********************************************************************************************************************/
 /*
-	global Alert, Dialog, Engine, Has, L10n, Save, Setting, State, Story, Util, Wikifier, Config, errorPrologRegExp,
-	       settings
+	global Alert, Browser, Config, Dialog, Engine, Has, L10n, Save, Setting, State, Story, Util, Wikifier,
+	       errorPrologRegExp, settings
 */
 
 var UI = (() => { // eslint-disable-line no-unused-vars, no-var
@@ -394,6 +394,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 
 		const $dialogBody = jQuery(Dialog.setup(L10n.get('savesTitle'), 'saves'));
 		const savesOk     = Save.ok();
+		const fileOk      = Has.fileAPI && (Config.saves.tryDiskOnMobile || !Browser.isMobile.any());
 
 		// Add saves list.
 		if (savesOk) {
@@ -401,12 +402,12 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 		}
 
 		// Add button bar items (export, import, and clear).
-		if (savesOk || Has.fileAPI) {
+		if (savesOk || fileOk) {
 			const $btnBar = jQuery(document.createElement('ul'))
 				.addClass('buttons')
 				.appendTo($dialogBody);
 
-			if (Has.fileAPI) {
+			if (fileOk) {
 				$btnBar.append(createActionItem(
 					'export',
 					'ui-close',

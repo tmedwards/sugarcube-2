@@ -33,7 +33,6 @@ var Has = (() => { // eslint-disable-line no-unused-vars, no-var
 				'File' in window &&
 				'FileList' in window &&
 				'FileReader' in window &&
-				!Browser.isMobile.any() &&
 				(!Browser.isOpera || Browser.operaVersion >= 15);
 		}
 		catch (ex) { /* no-op */ }
