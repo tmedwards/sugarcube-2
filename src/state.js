@@ -510,7 +510,9 @@ var State = (() => { // eslint-disable-line no-unused-vars, no-var
 			return [];
 		}
 
-		const delta = [clone(historyArr[0])];
+		// NOTE: The `clone()` call here is likely unnecessary within the current codebase.
+		// const delta = [clone(historyArr[0])];
+		const delta = [historyArr[0]];
 
 		for (let i = 1, iend = historyArr.length; i < iend; ++i) {
 			delta.push(Diff.diff(historyArr[i - 1], historyArr[i]));
@@ -590,7 +592,7 @@ var State = (() => { // eslint-disable-line no-unused-vars, no-var
 		Clear the temporary variables.
 	*/
 	function tempVariablesClear() {
-		if (DEBUG) { console.log('[State/tempVariablesReset()]'); }
+		if (DEBUG) { console.log('[State/tempVariablesClear()]'); }
 
 		_tempVariables = {};
 

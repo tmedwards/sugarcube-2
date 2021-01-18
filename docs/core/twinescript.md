@@ -85,6 +85,10 @@ The following types of values are natively supported by SugarCube and may be saf
 
 Any supported object type may itself contain any supported primitive or object type.
 
+<p role="note" class="warning"><b>Warning:</b>
+Neither ES5 property attributes—which includes getters/setters—nor symbol properties are directly supported in generic objects stored within story variables.  If you need such features, then you'll need to use a non-generic object (a.k.a. a class).
+</p>
+
 Unsupported object types, either native or custom, can be made compatible by implementing `.clone()` and `.toJSON()` methods for them—see the [*Non-generic object types (a.k.a. classes)* guide](#guide-tips-non-generic-object-types) for more information.
 
 

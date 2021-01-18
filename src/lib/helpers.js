@@ -16,7 +16,7 @@ var { // eslint-disable-line no-var
 	setDisplayTitle,
 	setPageElement,
 	throwError,
-	toStringOrDefault
+	stringFrom
 	/* eslint-enable no-unused-vars */
 } = (() => {
 	'use strict';
@@ -356,45 +356,57 @@ var { // eslint-disable-line no-var
 	}
 
 	/*
-		Returns the simple string representation of the passed value or, if there is none,
-		the passed default value.
+		Returns the simple string representation of the given value or, if there is
+		none, a square bracketed representation.
 	*/
-	function toStringOrDefault(value, defValue) {
-		const tSOD = toStringOrDefault;
-
+	function stringFrom(value) {
 		switch (typeof value) {
+		case 'function':
+			return '[function]';
+
 		case 'number':
-			// TODO: Perhaps NaN should be printed instead?
 			if (Number.isNaN(value)) {
-				return defValue;
+				return '[number NaN]';
 			}
+
 			break;
 
 		case 'object':
 			if (value === null) {
-				return defValue;
+				return '[null]';
 			}
-			else if (Array.isArray(value)) {
-				return value.map(val => tSOD(val, defValue)).join(', ');
+			else if (value instanceof Array) {
+				return value.map(val => stringFrom(val)).join(', ');
 			}
 			else if (value instanceof Set) {
-				return [...value].map(val => tSOD(val, defValue)).join(', ');
+				return Array.from(value).map(val => stringFrom(val)).join(', ');
 			}
 			else if (value instanceof Map) {
-				const result = [...value].map(([key, val]) => `${tSOD(key, defValue)} \u2192 ${tSOD(val, defValue)}`);
+				const result = Array.from(value).map(([key, val]) => `${stringFrom(key)} \u2192 ${stringFrom(val)}`);
 				return `{\u202F${result.join(', ')}\u202F}`;
 			}
 			else if (value instanceof Date) {
 				return value.toLocaleString();
 			}
+			else if (value instanceof Element) {
+				return value.outerHTML;
+			}
+			else if (value instanceof Node) {
+				return value.textContent;
+			}
 			else if (typeof value.toString === 'function') {
 				return value.toString();
 			}
+
 			return Object.prototype.toString.call(value);
 
-		case 'function':
+		case 'symbol': {
+			const desc = typeof value.description !== 'undefined' ? ` "${value.description}"` : '';
+			return `[symbol${desc}]`;
+		}
+
 		case 'undefined':
-			return defValue;
+			return '[undefined]';
 		}
 
 		return String(value);
@@ -411,6 +423,6 @@ var { // eslint-disable-line no-var
 		setDisplayTitle   : { value : setDisplayTitle },
 		setPageElement    : { value : setPageElement },
 		throwError        : { value : throwError },
-		toStringOrDefault : { value : toStringOrDefault }
+		stringFrom        : { value : stringFrom }
 	}));
 })();

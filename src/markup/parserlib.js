@@ -8,7 +8,7 @@
 ***********************************************************************************************************************/
 /*
 	global Config, DebugView, EOF, Engine, Lexer, Macro, MacroContext, Patterns, Scripting, State, Story, Template,
-	       Wikifier, toStringOrDefault, throwError
+	       Wikifier, stringFrom, throwError
 */
 /* eslint "no-param-reassign": [ 2, { "props" : false } ] */
 
@@ -1041,7 +1041,7 @@
 		match    : `${Patterns.variable}(?:(?:\\.${Patterns.identifier})|(?:\\[\\d+\\])|(?:\\["(?:\\\\.|[^"\\\\])+"\\])|(?:\\['(?:\\\\.|[^'\\\\])+'\\])|(?:\\[${Patterns.variable}\\]))*`,
 
 		handler(w) {
-			const result = toStringOrDefault(State.getVar(w.matchText), null);
+			const result = stringFrom(State.getVar(w.matchText));
 
 			if (result === null) {
 				jQuery(document.createTextNode(w.matchText)).appendTo(w.output);
@@ -1076,7 +1076,7 @@
 			switch (typeof template) {
 			case 'function':
 				try {
-					result = toStringOrDefault(template.call({ name }), null);
+					result = stringFrom(template.call({ name }));
 				}
 				catch (ex) {
 					return throwError(

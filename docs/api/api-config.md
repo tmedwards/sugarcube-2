@@ -6,7 +6,7 @@
 The `Config` object controls various aspects of SugarCube's behavior.
 
 <p role="note"><b>Note:</b>
-<code>Config</code> object settings should be placed within a script section (Twine&nbsp;2: the Story JavaScript; Twine&nbsp;1/Twee: a <code>script</code>-tagged passage).
+<code>Config</code> object settings should be placed within your project's JavaScript section (Twine&nbsp;2: the Story JavaScript; Twine&nbsp;1/Twee: a <code>script</code>-tagged passage).
 </p>
 
 
@@ -589,6 +589,27 @@ Sets the maximum number of available save slots.
 
 ```
 Config.saves.slots = 4;
+```
+
+<!-- *********************************************************************** -->
+
+### `Config.saves.tryDiskOnMobile` ↔ *boolean* (default: `true`) {#config-api-property-saves-trydiskonmobile}
+
+Determines whether saving to disk is enabled on mobile devices—i.e., smartphones, tablets, etc.
+
+<p role="note" class="warning"><b>Warning:</b>
+Mobile browsers can be fickle, so saving to disk may not work as expected in all browsers.
+</p>
+
+#### History:
+
+* `v2.34.0`: Introduced.
+
+#### Examples:
+
+```
+/* To disable saving to disk on mobile devices. */
+Config.saves.tryDiskOnMobile = false;
 ```
 
 <!-- *********************************************************************** -->
