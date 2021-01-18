@@ -593,6 +593,27 @@ Config.saves.slots = 4;
 
 <!-- *********************************************************************** -->
 
+### `Config.saves.tryDiskOnMobile` ↔ *boolean* (default: `true`) {#config-api-property-saves-trydiskonmobile}
+
+Determines whether saving to disk is enabled on mobile devices—i.e., smartphones, tablets, etc.
+
+<p role="note" class="warning"><b>Warning:</b>
+Mobile browsers can be fickle, so saving to disk may not work as expected in all browsers.
+</p>
+
+#### History:
+
+* `v2.34.0`: Introduced.
+
+#### Examples:
+
+```
+/* To disable saving to disk on mobile devices. */
+Config.saves.tryDiskOnMobile = false;
+```
+
+<!-- *********************************************************************** -->
+
 ### `Config.saves.version` ↔ *any* (default: *none*) {#config-api-property-saves-version}
 
 Sets the `version` property of saves.
