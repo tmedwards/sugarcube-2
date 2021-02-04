@@ -1504,18 +1504,24 @@
 		name      : 'svgTag',
 		profiles  : ['core'],
 		match     : '<[Ss][Vv][Gg][^>]*>',
-		lookahead : /(<[Ss][Vv][Gg][^>]*>(?:.|\n)*?<\/[Ss][Vv][Gg]>)/gm,
+		lookahead : /<(\/?)[Ss][Vv][Gg][^>]*>/gm,
 		namespace : 'http://www.w3.org/2000/svg',
 
 		handler(w) {
-			this.lookahead.lastIndex = w.matchStart;
+			this.lookahead.lastIndex = w.nextMatch;
 
-			const match = this.lookahead.exec(w.source);
+			let depth = 1;
+			let match;
 
-			if (match && match.index === w.matchStart) {
+			while (depth > 0 && (match = this.lookahead.exec(w.source)) !== null) {
+				depth += match[1] === '/' ? -1 : 1;
+			}
+
+			if (depth === 0) {
 				w.nextMatch = this.lookahead.lastIndex;
 
-				const $frag = jQuery(document.createDocumentFragment()).append(match[1]);
+				const svgTag = w.source.slice(w.matchStart, this.lookahead.lastIndex);
+				const $frag  = jQuery(document.createDocumentFragment()).append(svgTag);
 
 				// Postprocess the relevant SVG element nodes.
 				$frag.find('a[data-passage],image[data-passage]').each((_, el) => {
