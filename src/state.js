@@ -559,7 +559,7 @@ var State = (() => { // eslint-disable-line no-unused-vars, no-var
 				scriptSection = 'the Story JavaScript';
 			}
 
-			throw new Error(`State.initPRNG must be called during initialization, within either ${scriptSection} or the StoryInit special passage`);
+			throw new Error(`State.prng.init must be called during initialization, within either ${scriptSection} or the StoryInit special passage`);
 		}
 
 		_prng = new PRNGWrapper(seed, useEntropy);

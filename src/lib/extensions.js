@@ -1687,8 +1687,8 @@
 		configurable : true,
 		writable     : true,
 
-		value(text, replacer, space) {
-			return JSON._real_stringify(text, (key, val) => {
+		value(value, replacer, space) {
+			return JSON._real_stringify(value, (key, val) => {
 				let value = val;
 
 				/*
