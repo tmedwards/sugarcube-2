@@ -389,6 +389,14 @@ var { // eslint-disable-line no-var
 				return value.toLocaleString();
 			}
 			else if (value instanceof Element) {
+				if (
+					value === document.documentElement
+					|| value === document.head
+					|| value === document.body
+				) {
+					throw new Error('illegal operation; attempting to convert the <html>, <head>, or <body> tags to string is not allowed');
+				}
+
 				return value.outerHTML;
 			}
 			else if (value instanceof Node) {
