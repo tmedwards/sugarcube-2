@@ -1,6 +1,6 @@
 ---
 name: 📝 Feature request
-about: Request a new feature for SugarCube
+about: Request a new feature for SugarCube v2
 title: ''
 labels: enhancement
 assignees: ''
