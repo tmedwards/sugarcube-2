@@ -56,7 +56,7 @@ To enable test mode from the story editor/map screen while starting at a specifi
 To enable test mode while starting at a specific passage, right-click on a passage and select the *Test Play From Here* context menu item.
 
 <p role="note"><b>Note:</b>
-Unfortunately, due to limitations in the current release of Twine&nbsp;1, the <em>Build</em> menu's <em>Test Play</em> menu item is not able to trigger test mode.  You may, however, simply use the <em>Test Play From Here</em> context menu item on the `Start` passage to achieve the same result.
+Unfortunately, due to limitations in the current release of Twine&nbsp;1, the <em>Build</em> menu's <em>Test Play</em> menu item is not able to trigger test mode.  You may, however, simply use the <em>Test Play From Here</em> context menu item on the <code>Start</code> passage to achieve the same result.
 </p>
 
 ### Manually
