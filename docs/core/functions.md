@@ -10,7 +10,7 @@
 Returns a deep copy of the given value.
 
 <p role="note"><b>Note:</b>
-Only the primitives, generic objects, some JavaScript natives (specifically: <code>Array</code>, <code>Date</code>, <code>Map</code>, <code>RegExp</code>, and <code>Set</code>), and DOM node objects are supported by default.  Unsupported object types, either native or custom, will need to implement <code>.clone()</code> method to be properly supported by the <code>cone()</code> function—when called on such an object, it will simply defer to the local method; see the <a href="#guide-tips-non-generic-object-types"><em>Non-generic object types (a.k.a. classes)</em> guide</a> for more information.
+Only the primitives, generic objects, some JavaScript natives (specifically: <code>Array</code>, <code>Date</code>, <code>Map</code>, <code>RegExp</code>, and <code>Set</code>), and DOM node objects are supported by default.  Unsupported object types, either native or custom, will need to implement <code>.clone()</code> method to be properly supported by the <code>clone()</code> function—when called on such an object, it will simply defer to the local method; see the <a href="#guide-tips-non-generic-object-types"><em>Non-generic object types (a.k.a. classes)</em> guide</a> for more information.
 </p>
 
 #### History:
