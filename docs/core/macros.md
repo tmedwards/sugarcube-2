@@ -2737,6 +2737,10 @@ In most cases, you will not need to use <code>&lt;&lt;goto&gt;&gt;</code> as the
 </p>
 
 <p role="note" class="warning"><b>Warning:</b>
+Using <code>&lt;&lt;goto&gt;&gt;</code> to automatically forward players from one passage to another with no input from them will both create junk moments within the story history and make it extremely difficult for players to navigate the history.  It is <strong><em>strongly</em></strong> recommended that you look into other methods to achieve your goals instead—e.g., <a href="#config-api-property-navigation-override"><code>Config.navigation.override</code></a>.
+</p>
+
+<p role="note" class="warning"><b>Warning:</b>
 <code>&lt;&lt;goto&gt;&gt;</code> <strong><em>does not</em></strong> terminate passage rendering in the passage where it was encountered, so care must be taken to ensure that no unwanted state modifications occur after its call.
 </p>
 
