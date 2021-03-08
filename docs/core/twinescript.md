@@ -89,6 +89,15 @@ Any supported object type may itself contain any supported primitive or object t
 Neither ES5 property attributes—which includes getters/setters—nor symbol properties are directly supported in generic objects stored within story variables.  If you need such features, then you'll need to use a non-generic object (a.k.a. a class).
 </p>
 
+<div role="note" class="warning"><b>Warning:</b>
+<p>Functions, including non-instance methods, are not directly supported within story variables because of a few issues.</p>
+<ol>
+	<li>A function's scope <strong><em>cannot</em></strong> be restored.  Thus, if your function depends upon its scope, then it will not work properly when revived from sessions or saves.</li>
+	<li>Function behavior is immutable.  Thus, storing them within story variables is generally wasteful.</li>
+</ol>
+<p>Methods of class instances are not affected by either issue, as they're never actually stored within story variables, being on their classes' prototypes.</p>
+</div>
+
 Unsupported object types, either native or custom, can be made compatible by implementing `.clone()` and `.toJSON()` methods for them—see the [*Non-generic object types (a.k.a. classes)* guide](#guide-tips-non-generic-object-types) for more information.
 
 
