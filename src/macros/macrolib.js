@@ -1666,10 +1666,11 @@
 			// Set up and append the input element to the output buffer.
 			jQuery(el)
 				.attr({
-					id       : `${this.name}-${varId}`,
-					name     : `${this.name}-${varId}`,
-					type     : asNumber ? 'number' : 'text',
-					tabindex : 0 // for accessiblity
+					id        : `${this.name}-${varId}`,
+					name      : `${this.name}-${varId}`,
+					type      : asNumber ? 'number' : 'text',
+					inputmode : asNumber ? 'decimal' : 'text',
+					tabindex  : 0 // for accessiblity
 				})
 				.addClass(`macro-${this.name}`)
 				.on('change.macros', this.createShadowWrapper(function () {
