@@ -114,7 +114,7 @@
 		name      : 'macro',
 		profiles  : ['core'],
 		match     : '<<',
-		lookahead : new RegExp(`<<(/?${Patterns.macroName})(?:\\s*)((?:(?:\`(?:\\\\.|[^\`\\\\])*\`)|(?:"(?:\\\\.|[^"\\\\])*")|(?:'(?:\\\\.|[^'\\\\])*')|(?:\\[(?:[<>]?[Ii][Mm][Gg])?\\[[^\\r\\n]*?\\]\\]+)|[^>]|(?:>(?!>)))*)>>`, 'gm'),
+		lookahead : new RegExp(`<<(/?${Patterns.macroName})(?:\\s*)((?:(?:/\\*[^*]*\\*+(?:[^/*][^*]*\\*+)*/)|(?://.*\\n)|(?:\`(?:\\\\.|[^\`\\\\])*\`)|(?:"(?:\\\\.|[^"\\\\])*")|(?:'(?:\\\\.|[^'\\\\])*')|(?:\\[(?:[<>]?[Ii][Mm][Gg])?\\[[^\\r\\n]*?\\]\\]+)|[^>]|(?:>(?!>)))*)>>`, 'gm'),
 		working   : { source : '', name : '', arguments : '', index : 0 }, // the working parse object
 		context   : null, // last execution context object (top-level macros, hierarchically, have a null context)
 
