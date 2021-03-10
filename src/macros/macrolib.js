@@ -3654,18 +3654,18 @@
 						return function () {
 							let argsCache;
 
+							// Cache the existing value of the `$args` variable, if necessary.
+							if (State.variables.hasOwnProperty('args')) {
+								argsCache = State.variables.args;
+							}
+
+							// Set up the widget `$args` variable and add a shadow.
+							State.variables.args = [...this.args];
+							State.variables.args.raw = this.args.raw;
+							State.variables.args.full = this.args.full;
+							this.addShadow('$args');
+
 							try {
-								// Cache the existing value of the `$args` variable, if necessary.
-								if (State.variables.hasOwnProperty('args')) {
-									argsCache = State.variables.args;
-								}
-
-								// Set up the widget `$args` variable and add a shadow.
-								State.variables.args = [...this.args];
-								State.variables.args.raw = this.args.raw;
-								State.variables.args.full = this.args.full;
-								this.addShadow('$args');
-
 								// Set up the error trapping variables.
 								const resFrag = document.createDocumentFragment();
 								const errList = [];
