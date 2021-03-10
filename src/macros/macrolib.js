@@ -3307,6 +3307,27 @@
 		Miscellaneous Macros.
 	*******************************************************************************************************************/
 	/*
+		<<done>>
+	*/
+	Macro.add('done', {
+		skipArgs : true,
+		tags     : null,
+
+		handler() {
+			const contents = this.payload[0].contents.trim();
+
+			// Do nothing if there's no content to process.
+			if (contents === '') {
+				return;
+			}
+
+			$(document).one(':passagedisplay', this.createShadowWrapper(
+				() => $.wiki(contents)
+			));
+		}
+	});
+
+	/*
 		<<goto>>
 	*/
 	Macro.add('goto', {

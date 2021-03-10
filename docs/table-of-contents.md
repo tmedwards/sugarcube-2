@@ -98,6 +98,7 @@
 	* [`<<removeplaylist>>`](#macros-macro-removeplaylist)
 	* [`<<waitforaudio>>`](#macros-macro-waitforaudio)
 * [Miscellaneous Macros](#macros-miscellaneous)
+	* [`<<done>>`](#macros-macro-done)
 	* [`<<goto>>`](#macros-macro-goto)
 	* [`<<repeat>>`](#macros-macro-repeat)
 		* [`<<stop>>`](#macros-macro-stop)
