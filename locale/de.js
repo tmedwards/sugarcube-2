@@ -86,10 +86,10 @@
 	l10nStrings.shareTitle = 'Teilen';
 
 	/* Autoload. */
-	l10nStrings.autoloadTitle  = 'Autmatisches Laden';
+	l10nStrings.autoloadTitle  = 'Automatisches Laden';
 	l10nStrings.autoloadCancel = 'Gehe zum Start';
 	l10nStrings.autoloadOk     = 'Auto-Speicherstand laden';
-	l10nStrings.autoloadPrompt = 'Ein Auto-Spiecherstand existiert bereits. Laden oder zurück an den Start?';
+	l10nStrings.autoloadPrompt = 'Ein Auto-Speicherstand existiert bereits. Laden oder zurück an den Start?';
 
 	/* Macros. */
 	l10nStrings.macroBackText   = 'Zurück';
