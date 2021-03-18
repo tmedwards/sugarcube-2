@@ -2,15 +2,16 @@
 
 	it-IT.js – Italiano
 
-    Localization by: Karime Chehbouni.
+	Localization by: Karime Chehbouni.
 
-	Copyright © 2019–2020 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
+	Copyright © 2021 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 	For more information about the guidelines used to create this localization, see:
 		http://www.motoslave.net/sugarcube/2/docs/#guide-localization
 
 ***********************************************************************************************************************/
+
 (function () {
 	/* General. */
 	l10nStrings.identity = 'gioco';

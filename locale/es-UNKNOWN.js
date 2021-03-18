@@ -11,6 +11,7 @@
 		http://www.motoslave.net/sugarcube/2/docs/#guide-localization
 
 ***********************************************************************************************************************/
+
 (function () {
 	/* General. */
 	l10nStrings.identity = 'juego';

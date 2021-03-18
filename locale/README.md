@@ -8,13 +8,15 @@ For the template that should be used as the basis of localizations, see the `l10
 
 ## Contributors
 
-* 简体中文 (`chs.js`) – Liyro Pen.
-* Deutsch (`de.js`) – Phil Strahl.
-* Español (Castellano) (`es-ES.js`) – Gerardo Galán.
-* Español (*UNKNOWN*) (`es-UNKNOWN.js`) – Raúl Castellano.
-* Français (`fr.js`) – Marc Cornette, Pierre Kessler.
-* Polski (`pl.js`) – ciupac.
-* Português (Brazil) (`pt-BR.js`) – Janos Biro.
-* Português (Portugal) (`pt-PT.js`) – Magma.
-* Ру́сский (`ru.js`) – Konstantin Kitmanov.
-* Türkçe (`tr.js`) – Guena Varia.
+* `ar-EG.js` – العربية (مصر), by: Mustafa Rawi.
+* `chs.js` – 简体中文, by: Liyro Pen.
+* `de.js` – Deutsch, by: Phil Strahl, Grausicht.
+* `es-ES.js` – Español (Castellano), by: Gerardo Galán.
+* `es-UNKNOWN.js` – Español (*UNKNOWN*), by: Raúl Castellano.
+* `fr.js` – Français, by: Marc Cornette, Pierre Kessler.
+* `it-IT.js` – Italiano (Italy), by: Karime Chehbouni.
+* `pl.js` – Polski, by: ciupac.
+* `pt-BR.js` – Português (Brazil), by: Janos Biro.
+* `pt-PT.js` – Português (Portugal), by: Magma.
+* `ru.js` – Ру́сский, by: Konstantin Kitmanov.
+* `tr.js` – Türkçe, by: Guena Varia.

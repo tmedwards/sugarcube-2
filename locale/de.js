@@ -2,15 +2,16 @@
 
 	de.js – Deutsch
 
-	Localization by: Phil Strahl <phil@pixelprophecy.com>.
+	Localization by: Phil Strahl <phil@pixelprophecy.com>, Grausicht.
 
-	Copyright © 2017–2018 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
+	Copyright © 2017–2021 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 	For more information about the guidelines used to create this localization, see:
 		http://www.motoslave.net/sugarcube/2/docs/#guide-localization
 
 ***********************************************************************************************************************/
+
 (function () {
 	/* General. */
 	l10nStrings.identity = 'spiel';

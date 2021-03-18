@@ -3,7 +3,7 @@
 	ar-EG.js – العربية (مصر)
 	Localization by: Mustafa Rawi
 
-	Copyright © 2019–2020 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
+	Copyright © 2021 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 	For more information about the guidelines used to create this localization, see:
