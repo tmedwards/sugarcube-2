@@ -1818,7 +1818,7 @@ The versions that forward to a specific passage are largely unnecessary, as you 
 
 <span id="macros-dom-warning"></span>
 <p role="note" class="warning"><b>Warning:</b>
-All DOM macros require the elements to be manipulated to be on the page.  As a consequence, you cannot use them directly within a passage to modify elements within said passage, since the elements they are targeting are still rendering, thus not yet on the page.  You must, generally, use them with a interactive macro—e.g., <a href="#macros-macro-link"><code>&lt;&lt;link&gt;&gt;</code> macro</a>—or within the <a href="#special-passage-passagedone"><code>PassageDone</code> special passage</a>.  Elements that are already part of the page, on the other hand, present no issues.
+All DOM macros require the elements to be manipulated to be on the page.  As a consequence, you cannot use them directly within a passage to modify elements within said passage, since the elements they are targeting are still rendering, thus not yet on the page.  You must, generally, use them with an interactive macro—e.g., <a href="#macros-macro-link"><code>&lt;&lt;link&gt;&gt;</code> macro</a>—the <a href="#macros-macro-done"><code>&lt;&lt;done&gt;&gt;</code> macro</a>, or within the <a href="#special-passage-passagedone"><code>PassageDone</code> special passage</a>.  Elements that are already part of the page, on the other hand, present no issues.
 </p>
 
 <!-- *********************************************************************** -->
@@ -2728,12 +2728,42 @@ This macro has been deprecated and should no longer be used.  See the <a href="#
 
 <!-- *********************************************************************** -->
 
+### `<<done>> … <</done>>` {#macros-macro-done}
+
+Silently executes its contents when the incoming passage is done rendering and has been added to the page.  Generally, only really useful for running code that needs to manipulate elements from the incoming passage, since you must wait until they've been added to the page.
+
+<p role="note" class="tip"><b>Tip:</b>
+If you need to run the same code on multiple passages, consider using the <a href="#special-passage-passagedone"><code>PassageDone</code> special passage</a> or, for a JavaScript/TwineScript solution, a <a href="#events-navigation-event-passagedisplay"><code>:passagedisplay</code> event</a> instead.  They serve the same basic purpose as the <code>&lt;&lt;done&gt;&gt;</code> macro, but are run each time passage navigation occurs.
+</p>
+
+#### History:
+
+* `v2.35.0`: Introduced.
+
+#### Arguments: *none*
+
+#### Examples:
+
+```
+@@#spy;@@
+
+<<done>>
+	<<replace "#spy">>I spy with my little eye, a crab rangoon.<</replace>>
+<</done>>
+```
+
+<!-- *********************************************************************** -->
+
 ### `<<goto passageName>>`<br>`<<goto linkMarkup>>` {#macros-macro-goto}
 
 Immediately forwards the player to the passage with the given name.  May be called either with the passage name or with a link markup.
 
 <p role="note"><b>Note:</b>
 In most cases, you will not need to use <code>&lt;&lt;goto&gt;&gt;</code> as there are often better and easier ways to forward the player.  For example, a common use of <a href="#macros-macro-link"><code>&lt;&lt;link&gt;&gt;</code></a> is to perform various actions before forwarding the player to another passage.  In that case, unless you need to dynamically determine the destination passage within the <code>&lt;&lt;link&gt;&gt;</code> body, <code>&lt;&lt;goto&gt;&gt;</code> is unnecessary as <code>&lt;&lt;link&gt;&gt;</code> already includes the ability to forward the player.
+</p>
+
+<p role="note" class="warning"><b>Warning:</b>
+Using <code>&lt;&lt;goto&gt;&gt;</code> to automatically forward players from one passage to another with no input from them will both create junk moments within the story history and make it extremely difficult for players to navigate the history.  It is <strong><em>strongly</em></strong> recommended that you look into other methods to achieve your goals instead—e.g., <a href="#config-api-property-navigation-override"><code>Config.navigation.override</code></a>.
 </p>
 
 <p role="note" class="warning"><b>Warning:</b>

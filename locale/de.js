@@ -2,15 +2,16 @@
 
 	de.js – Deutsch
 
-	Localization by: Phil Strahl <phil@pixelprophecy.com>.
+	Localization by: Phil Strahl <phil@pixelprophecy.com>, Grausicht.
 
-	Copyright © 2017–2018 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
+	Copyright © 2017–2021 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 	For more information about the guidelines used to create this localization, see:
 		http://www.motoslave.net/sugarcube/2/docs/#guide-localization
 
 ***********************************************************************************************************************/
+
 (function () {
 	/* General. */
 	l10nStrings.identity = 'spiel';
@@ -86,10 +87,10 @@
 	l10nStrings.shareTitle = 'Teilen';
 
 	/* Autoload. */
-	l10nStrings.autoloadTitle  = 'Autmatisches Laden';
+	l10nStrings.autoloadTitle  = 'Automatisches Laden';
 	l10nStrings.autoloadCancel = 'Gehe zum Start';
 	l10nStrings.autoloadOk     = 'Auto-Speicherstand laden';
-	l10nStrings.autoloadPrompt = 'Ein Auto-Spiecherstand existiert bereits. Laden oder zurück an den Start?';
+	l10nStrings.autoloadPrompt = 'Ein Auto-Speicherstand existiert bereits. Laden oder zurück an den Start?';
 
 	/* Macros. */
 	l10nStrings.macroBackText   = 'Zurück';

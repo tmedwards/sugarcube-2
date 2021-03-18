@@ -2,7 +2,7 @@
 
 	macros/macrolib.js
 
-	Copyright © 2013–2020 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
+	Copyright © 2013–2021 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
@@ -1666,10 +1666,11 @@
 			// Set up and append the input element to the output buffer.
 			jQuery(el)
 				.attr({
-					id       : `${this.name}-${varId}`,
-					name     : `${this.name}-${varId}`,
-					type     : asNumber ? 'number' : 'text',
-					tabindex : 0 // for accessiblity
+					id        : `${this.name}-${varId}`,
+					name      : `${this.name}-${varId}`,
+					type      : asNumber ? 'number' : 'text',
+					inputmode : asNumber ? 'decimal' : 'text',
+					tabindex  : 0 // for accessiblity
 				})
 				.addClass(`macro-${this.name}`)
 				.on('change.macros', this.createShadowWrapper(function () {
@@ -3306,6 +3307,27 @@
 		Miscellaneous Macros.
 	*******************************************************************************************************************/
 	/*
+		<<done>>
+	*/
+	Macro.add('done', {
+		skipArgs : true,
+		tags     : null,
+
+		handler() {
+			const contents = this.payload[0].contents.trim();
+
+			// Do nothing if there's no content to process.
+			if (contents === '') {
+				return;
+			}
+
+			$(document).one(':passagedisplay', this.createShadowWrapper(
+				() => $.wiki(contents)
+			));
+		}
+	});
+
+	/*
 		<<goto>>
 	*/
 	Macro.add('goto', {
@@ -3653,18 +3675,18 @@
 						return function () {
 							let argsCache;
 
+							// Cache the existing value of the `$args` variable, if necessary.
+							if (State.variables.hasOwnProperty('args')) {
+								argsCache = State.variables.args;
+							}
+
+							// Set up the widget `$args` variable and add a shadow.
+							State.variables.args = [...this.args];
+							State.variables.args.raw = this.args.raw;
+							State.variables.args.full = this.args.full;
+							this.addShadow('$args');
+
 							try {
-								// Cache the existing value of the `$args` variable, if necessary.
-								if (State.variables.hasOwnProperty('args')) {
-									argsCache = State.variables.args;
-								}
-
-								// Set up the widget `$args` variable and add a shadow.
-								State.variables.args = [...this.args];
-								State.variables.args.raw = this.args.raw;
-								State.variables.args.full = this.args.full;
-								this.addShadow('$args');
-
 								// Set up the error trapping variables.
 								const resFrag = document.createDocumentFragment();
 								const errList = [];

@@ -2,7 +2,7 @@
 
 	markup/parserlib.js
 
-	Copyright © 2013–2020 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
+	Copyright © 2013–2021 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
@@ -114,7 +114,7 @@
 		name      : 'macro',
 		profiles  : ['core'],
 		match     : '<<',
-		lookahead : new RegExp(`<<(/?${Patterns.macroName})(?:\\s*)((?:(?:\`(?:\\\\.|[^\`\\\\])*\`)|(?:"(?:\\\\.|[^"\\\\])*")|(?:'(?:\\\\.|[^'\\\\])*')|(?:\\[(?:[<>]?[Ii][Mm][Gg])?\\[[^\\r\\n]*?\\]\\]+)|[^>]|(?:>(?!>)))*)>>`, 'gm'),
+		lookahead : new RegExp(`<<(/?${Patterns.macroName})(?:\\s*)((?:(?:/\\*[^*]*\\*+(?:[^/*][^*]*\\*+)*/)|(?://.*\\n)|(?:\`(?:\\\\.|[^\`\\\\])*\`)|(?:"(?:\\\\.|[^"\\\\])*")|(?:'(?:\\\\.|[^'\\\\])*')|(?:\\[(?:[<>]?[Ii][Mm][Gg])?\\[[^\\r\\n]*?\\]\\]+)|[^>]|(?:>(?!>)))*)>>`, 'gm'),
 		working   : { source : '', name : '', arguments : '', index : 0 }, // the working parse object
 		context   : null, // last execution context object (top-level macros, hierarchically, have a null context)
 
@@ -1504,18 +1504,24 @@
 		name      : 'svgTag',
 		profiles  : ['core'],
 		match     : '<[Ss][Vv][Gg][^>]*>',
-		lookahead : /(<[Ss][Vv][Gg][^>]*>(?:.|\n)*?<\/[Ss][Vv][Gg]>)/gm,
+		lookahead : /<(\/?)[Ss][Vv][Gg][^>]*>/gm,
 		namespace : 'http://www.w3.org/2000/svg',
 
 		handler(w) {
-			this.lookahead.lastIndex = w.matchStart;
+			this.lookahead.lastIndex = w.nextMatch;
 
-			const match = this.lookahead.exec(w.source);
+			let depth = 1;
+			let match;
 
-			if (match && match.index === w.matchStart) {
+			while (depth > 0 && (match = this.lookahead.exec(w.source)) !== null) {
+				depth += match[1] === '/' ? -1 : 1;
+			}
+
+			if (depth === 0) {
 				w.nextMatch = this.lookahead.lastIndex;
 
-				const $frag = jQuery(document.createDocumentFragment()).append(match[1]);
+				const svgTag = w.source.slice(w.matchStart, this.lookahead.lastIndex);
+				const $frag  = jQuery(document.createDocumentFragment()).append(svgTag);
 
 				// Postprocess the relevant SVG element nodes.
 				$frag.find('a[data-passage],image[data-passage]').each((_, el) => {
