@@ -1818,7 +1818,7 @@ The versions that forward to a specific passage are largely unnecessary, as you 
 
 <span id="macros-dom-warning"></span>
 <p role="note" class="warning"><b>Warning:</b>
-All DOM macros require the elements to be manipulated to be on the page.  As a consequence, you cannot use them directly within a passage to modify elements within said passage, since the elements they are targeting are still rendering, thus not yet on the page.  You must, generally, use them with a interactive macro—e.g., <a href="#macros-macro-link"><code>&lt;&lt;link&gt;&gt;</code> macro</a>—or within the <a href="#special-passage-passagedone"><code>PassageDone</code> special passage</a>.  Elements that are already part of the page, on the other hand, present no issues.
+All DOM macros require the elements to be manipulated to be on the page.  As a consequence, you cannot use them directly within a passage to modify elements within said passage, since the elements they are targeting are still rendering, thus not yet on the page.  You must, generally, use them with an interactive macro—e.g., <a href="#macros-macro-link"><code>&lt;&lt;link&gt;&gt;</code> macro</a>—the <a href="#macros-macro-done"><code>&lt;&lt;done&gt;&gt;</code> macro</a>, or within the <a href="#special-passage-passagedone"><code>PassageDone</code> special passage</a>.  Elements that are already part of the page, on the other hand, present no issues.
 </p>
 
 <!-- *********************************************************************** -->
