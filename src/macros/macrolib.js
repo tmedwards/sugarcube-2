@@ -1400,7 +1400,22 @@
 				return this.error('no options specified');
 			}
 
-			const autoselect = this.args.length > 1 && this.args[1] === 'autoselect';
+			const config = {
+				autoselect : false,
+				once       : false
+			};
+
+			// Process arguments.
+			for (let i = 1; i < this.args.length; ++i) {
+				const arg = this.args[i];
+
+				switch (arg) {
+				case 'once':       config.once = true; break;
+				case 'autoselect': config.autoselect = true; break;
+				default:           return this.error(`unknown argument: ${arg}`);
+				}
+			}
+
 			const options    = [];
 			const tagCount   = { option : 0, optionsfrom : 0 };
 			let selectedIdx = -1;
@@ -1417,13 +1432,37 @@
 						return this.error(`no arguments specified for <<${payload.name}>> (#${tagCount.option})`);
 					}
 
-					options.push({
-						label : String(payload.args[0]),
-						value : payload.args.length === 1 ? payload.args[0] : payload.args[1]
-					});
+					const option = { label : String(payload.args[0]) };
+					let isSelected = false;
 
-					if (payload.args.length > 2 && payload.args[2] === 'selected') {
-						if (autoselect) {
+					switch (payload.args.length) {
+					case 1:
+						option.value = payload.args[0];
+						break;
+
+					case 2:
+						if (payload.args[1] === 'selected') {
+							option.value = payload.args[0];
+							isSelected = true;
+						}
+						else {
+							option.value = payload.args[1];
+						}
+						break;
+
+					default:
+						option.value = payload.args[1];
+
+						if (payload.args[2] === 'selected') {
+							isSelected = true;
+						}
+						break;
+					}
+
+					options.push(option);
+
+					if (isSelected) {
+						if (config.autoselect) {
 							return this.error('cannot specify both the autoselect and selected keywords');
 						}
 						else if (selectedIdx !== -1) {
@@ -1483,7 +1522,7 @@
 			// No options were selected by the user, so we must select one.
 			if (selectedIdx === -1) {
 				// Attempt to automatically select an option by matching the variable's current value.
-				if (autoselect) {
+				if (config.autoselect) {
 					// NOTE: This will usually fail for objects due to a variety of reasons.
 					const sameValueZero = Util.sameValueZero;
 					const curValue      = State.getVar(varName);
@@ -1505,9 +1544,14 @@
 					.attr('id', `${this.name}-${varId}`)
 					.addClass(`macro-${this.name}`)
 					.ariaClick({ namespace : '.macros' }, this.createShadowWrapper(function () {
+						const $this = $(this);
 						cycleIdx = (cycleIdx + 1) % options.length;
-						$(this).empty().wikiWithOptions({ profile : 'core' }, options[cycleIdx].label);
 						State.setVar(varName, options[cycleIdx].value);
+						$this.empty().wikiWithOptions({ profile : 'core' }, options[cycleIdx].label);
+
+						if (config.once && (cycleIdx + 1) % options.length === selectedIdx) {
+							$this.off().contents().unwrap();
+						}
 					}))
 					.appendTo(this.output);
 			}
