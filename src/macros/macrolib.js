@@ -1538,22 +1538,30 @@
 
 			// Set up and append the appropriate element to the output buffer.
 			if (this.name === 'cycle') {
-				let cycleIdx = selectedIdx;
-				jQuery(document.createElement('a'))
-					.wikiWithOptions({ profile : 'core' }, options[selectedIdx].label)
-					.attr('id', `${this.name}-${varId}`)
-					.addClass(`macro-${this.name}`)
-					.ariaClick({ namespace : '.macros' }, this.createShadowWrapper(function () {
-						const $this = $(this);
-						cycleIdx = (cycleIdx + 1) % options.length;
-						State.setVar(varName, options[cycleIdx].value);
-						$this.empty().wikiWithOptions({ profile : 'core' }, options[cycleIdx].label);
+				const lastIdx = options.length - 1;
 
-						if (config.once && (cycleIdx + 1) % options.length === selectedIdx) {
-							$this.off().contents().unwrap();
-						}
-					}))
-					.appendTo(this.output);
+				if (config.once && selectedIdx === lastIdx) {
+					jQuery(this.output)
+						.wikiWithOptions({ profile : 'core' }, options[selectedIdx].label);
+				}
+				else {
+					let cycleIdx = selectedIdx;
+					jQuery(document.createElement('a'))
+						.wikiWithOptions({ profile : 'core' }, options[selectedIdx].label)
+						.attr('id', `${this.name}-${varId}`)
+						.addClass(`macro-${this.name}`)
+						.ariaClick({ namespace : '.macros' }, this.createShadowWrapper(function () {
+							const $this = $(this);
+							cycleIdx = (cycleIdx + 1) % options.length;
+							State.setVar(varName, options[cycleIdx].value);
+							$this.empty().wikiWithOptions({ profile : 'core' }, options[cycleIdx].label);
+
+							if (config.once && cycleIdx === lastIdx) {
+								$this.off().contents().unwrap();
+							}
+						}))
+						.appendTo(this.output);
+				}
 			}
 			else { // this.name === 'listbox'
 				const $select = jQuery(document.createElement('select'));
