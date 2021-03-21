@@ -1345,6 +1345,7 @@ Creates a listbox, used to modify the value of the variable with the given name.
 * `v2.28.0`: <s>Added `<<optionsFrom>>` child tag.</s>
 * `v2.28.1`: Fixed name of `<<optionsfrom>>` child tag, which was erroneously added as `<<optionsFrom>>` in `v2.28.0`.
 * `v2.29.0`: Made the `<<option>>` child tag's `value` argument optional.
+* `v2.36.0`: Fixed the `selected` keyword.
 
 #### Arguments:
 
