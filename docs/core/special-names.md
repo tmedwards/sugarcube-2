@@ -346,13 +346,23 @@ Alias for `jQuery`, by default.  **NOTE:** This should not be confused with [sto
 
 <!-- *********************************************************************** -->
 
-### `$args` {#special-variable-dollar-args}
+### `_args` {#special-variable-underscore-args}
 
 Widget arguments array (only inside widgets).  See [`<<widget>>`](#macros-macro-widget) for more information.
 
 #### History:
 
-* `v2.0.0`: Introduced.
+* `v2.36.0`: Introduced.
+
+<!-- *********************************************************************** -->
+
+### `_contents` {#special-variable-underscore-contents}
+
+Widget contents string (only inside block widgets).  See [`<<widget>>`](#macros-macro-widget) for more information.
+
+#### History:
+
+* `v2.36.0`: Introduced.
 
 <!-- *********************************************************************** -->
 
@@ -545,6 +555,19 @@ UIBar API.  See [`UIBar` API](#uibar-api) for more information.
 
 <!-- *********************************************************************** -->
 
+### `$args` {#special-variable-dollar-args}
+
+<p role="note" class="warning"><b>Deprecated:</b>
+The <code>$args</code> special variable has been deprecated and should no longer be used.  See the <a href="#special-variable-underscore-args"><code>_args</code> special variable</a> for its replacement.
+</p>
+
+#### History:
+
+* `v2.0.0`: Introduced.
+* `v2.36.0`: Deprecated.
+
+<!-- *********************************************************************** -->
+
 ### <span class="deprecated">`postdisplay`</span> {#special-variable-postdisplay}
 
 <p role="note" class="warning"><b>Deprecated:</b>
@@ -553,7 +576,7 @@ UIBar API.  See [`UIBar` API](#uibar-api) for more information.
 
 #### History:
 
-* `v2.0.0`: Basic support.
+* `v2.0.0`: Introduced.
 * `v2.31.0`: Deprecated.
 
 <!-- *********************************************************************** -->
@@ -566,7 +589,7 @@ UIBar API.  See [`UIBar` API](#uibar-api) for more information.
 
 #### History:
 
-* `v2.0.0`: Basic support.
+* `v2.0.0`: Introduced.
 * `v2.31.0`: Deprecated.
 
 <!-- *********************************************************************** -->
@@ -579,7 +602,7 @@ UIBar API.  See [`UIBar` API](#uibar-api) for more information.
 
 #### History:
 
-* `v2.0.0`: Basic support.
+* `v2.0.0`: Introduced.
 * `v2.31.0`: Deprecated.
 
 <!-- *********************************************************************** -->
@@ -592,7 +615,7 @@ UIBar API.  See [`UIBar` API](#uibar-api) for more information.
 
 #### History:
 
-* `v2.0.0`: Basic support.
+* `v2.0.0`: Introduced.
 * `v2.31.0`: Deprecated.
 
 <!-- *********************************************************************** -->
@@ -605,5 +628,5 @@ UIBar API.  See [`UIBar` API](#uibar-api) for more information.
 
 #### History:
 
-* `v2.0.0`: Basic support.
+* `v2.0.0`: Introduced.
 * `v2.31.0`: Deprecated.

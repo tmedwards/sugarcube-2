@@ -2936,45 +2936,90 @@ I'll have <span id="drink">some water</span>, please.\
 
 <!-- *********************************************************************** -->
 
-### `<<widget widgetName>> … <</widget>>` {#macros-macro-widget}
+### `<<widget widgetName [block]>> … <</widget>>` {#macros-macro-widget}
 
-Creates a new widget macro (henceforth, widget) with the given name.  Widgets allow you to create macros by using the standard macros and markup that you use normally within your story.  Widgets may access arguments passed to them via the `$args` array-like object—see below for details.
+Creates a new widget macro (henceforth, widget) with the given name.  Widgets allow you to create macros by using the standard macros and markup that you use normally within your story.  All widgets may access arguments passed to them via the `_args` special variable.  Block widgets may access the contents they enclose via the `_contents` special variable.
 
 <p role="note" class="warning"><b>Warning:</b>
 Widgets should <em>always</em> be defined within a <code>widget</code>-tagged passage—any widgets that are not may be lost on page reload—and you may use as few or as many such passages as you desire.  <em>Do not</em> add a <code>widget</code> tag to any of the <a href="#special-passages">specially named passages</a> and attempt to define your widgets there.
 </p>
 
 <p role="note" class="warning"><b>Warning:</b>
-The <code>$args</code> array-like object should be treated as though it were immutable—i.e., unable to be modified—because in the future it will be made thus, so any attempt to modify it will cause an error.
+The array-like object stored in the <code>_args</code> variable should be treated as though it were immutable—i.e., unable to be modified—because in the future it will be made thus, so any attempt to modify it will cause an error.
 </p>
 
 #### History:
 
 * `v2.0.0`: Introduced.
+* `v2.36.0`: Added the `block` keyword, `_args` variable, and `_contents` variable.  Deprecated the `$args` variable in favor of `_args`.
 
 #### Arguments:
 
 * **`widgetName`:** The name of the created widget, which should not contain whitespace or angle brackets (`<`, `>`).  If the name of an existing widget is chosen, the new widget will overwrite the older version.  **NOTE:** The names of existing macros are invalid widget names and any attempts to use such a name will cause an error.
+* **`block`:** (optional) Keyword, used to signify that the widget should be created as a block/container widget—i.e., non-void, requiring a closing tag; e.g., `<<foo>>…<</foo>>`.
 
-#### `$args` array-like object:
+#### Special variables, `_args` &amp; `_contents`:
 
-The `$args` variable is used internally to store arguments passed to the widget—as zero-based indices; i.e., `$args[0]` is the first parsed argument, `$args[1]` is the second, etc—and the full argument string in raw and parsed forms—accessed via the `$args.raw` and `$args.full` properties.
+The `_args` special variable is used internally to store arguments passed to the widget—as zero-based indices; i.e., `_args[0]` is the first parsed argument, `_args[1]` is the second, etc—and the full argument string in raw and parsed forms—accessed via the `_args.raw` and `_args.full` properties.
 
-When a widget is called, any existing `$args` variable is stored for the duration of the call and restored after.  This means that non-widget use of an `$args` variable is completely safe, though this does have the effect that an `$args` variable external to a widget is inaccessible to it unless passed in as an argument.
+The `_contents` special variable is used internally, by block widgets, to store the contents they enclose.
 
-Unless localized by use of the [`<<capture>>` macro](#macros-macro-capture), any story or temporary variables used within widgets are part of a story's normal variable store, so care *must be* taken not to accidentally either overwrite or pick up an existing value.
+When a widget is called, any existing `_args` variable, and for block widgets `_contents`, is stored for the duration of the call and restored after.  This means that non-widget uses of these special variable are completely safe, though this does have the effect that uses external to widgets are inaccessible within them unless passed in as arguments.
+
+<p role="note" class="warning"><b>Warning:</b>
+Unless localized by use of the <a href="#macros-macro-capture"><code>&lt;&lt;capture&gt;&gt;</code> macro</a>, any story or other temporary variables used within widgets are part of a story's normal variable store, so care <em>must be</em> taken not to accidentally either overwrite or pick up an existing value.
+</p>
 
 #### Examples:
 
+<p role="note"><b>Note:</b>
+No line-break control mechanisms are used in the following examples for readability.  In practice, you'll probably want to use either <a href="#markup-line-continuation">line continuations</a> or one of the no-break methods: <a href="#config-api-property-passages-nobr"><code>Config.passages.nobr</code> setting</a>, <a href="#special-tag-nobr"><code>nobr</code> special tag</a>, <a href="#macros-macro-nobr"><code>&lt;&lt;nobr&gt;&gt;</code> macro</a>.
+</p>
+
+##### Basic usage (non-block)
+
 ```
 → Creating a gender pronoun widget
-<<widget "he">><<if $pcSex eq "male">>he<<elseif $pcSex eq "female">>she<<else>>it<</if>><</widget>>
+<<widget "he">>
+	<<if $pcSex eq "male">>
+		he
+	<<elseif $pcSex eq "female">>
+		she
+	<<else>>
+		it
+	<</if>>
+<</widget>>
+
 → Using it
 "Are you sure that <<he>> can be trusted?"
+```
 
+```
 → Creating a silly print widget
-<<widget "pm">><<if $args[0]>><<print $args[0]>><<else>>Mum's the word!<</if>><</widget>>
+<<widget "pm">>
+	<<if _args[0]>>
+		<<print _args[0]>>
+	<<else>>
+		Mum's the word!
+	<</if>>
+<</widget>>
+
 → Using it
 <<pm>>        → Outputs: Mum's the word!
 <<pm "Hi!">>  → Outputs: Hi!
+```
+
+##### Basic usage (block)
+
+```
+→ Creating a simple dialog box widget
+<<widget "say" block>>
+	<div class="say-box">
+		<img class="say-image" @src="'images/' + _args[0].toLowerCase() + '.png'">
+		<p class="say-text">_contents</p>
+	</div>
+<</widget>>
+
+→ Using it
+<<say "Chapel">>Tweego is a pathway to many abilities some consider to be… unnatural.<</say>>
 ```
