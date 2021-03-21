@@ -1093,7 +1093,7 @@ What pies do you enjoy?
 
 <!-- *********************************************************************** -->
 
-### `<<cycle receiverName [autoselect]>>`<br><span class="child">`[<<option label [value [selected]]>> …]`<br>`[<<optionsfrom collection>> …]`</span><br>`<</cycle>>` {#macros-macro-cycle}
+### `<<cycle receiverName [once] [autoselect]>>`<br><span class="child">`[<<option label [value [selected]]>> …]`<br>`[<<optionsfrom collection>> …]`</span><br>`<</cycle>>` {#macros-macro-cycle}
 
 Creates a cycling link, used to modify the value of the variable with the given name.  The cycling options are populated via `<<option>>` and/or `<<optionsfrom>>`.
 
@@ -1104,12 +1104,14 @@ Creates a cycling link, used to modify the value of the variable with the given 
 #### History:
 
 * `v2.29.0`: Introduced.
+* `v2.36.0`: Fixed the `selected` keyword and added the `once` keyword.
 
 #### Arguments:
 
 ##### `<<cycle>>`
 
 * **`receiverName`:** The name of the variable to modify, which *must* be quoted—e.g., `"$foo"`.  Object and array property references are also supported—e.g., `"$foo.bar"`, `"$foo['bar']"`, & `"$foo[0]"`.
+* **`once`:** (optional) Keyword, used to signify that the cycle should stop upon reaching the last option and deactivate itself.  **NOTE:** Since you likely want to start at the first option when using this keyword, you should either not select an option, so it defaults to the first, or, if you do, select the first option only.
 * **`autoselect`:** (optional) Keyword, used to signify that an option should be automatically selected as the cycle default based on the current value of the receiver variable.  **NOTE:** Automatic option selection will fail on non-primitive values—i.e., on arrays and objects.
 
 ##### `<<option>>`
@@ -1174,6 +1176,18 @@ What's your favorite pie?
 What's your favorite pie?
 <<cycle "$pie" autoselect>>
 	<<optionsfrom _pieOptions>>
+<</cycle>>
+```
+
+##### Using the `once` keyword
+
+```
+You see a large red, candy-like button.
+<<cycle "$presses" once>>
+	<<option "Should you press it?" 0>>
+	<<option "Nothing happened.  Press it again?" 1>>
+	<<option "Again?" 2>>
+	<<option "That time it locked into place with a loud click and began to glow ominously." 3>>
 <</cycle>>
 ```
 
