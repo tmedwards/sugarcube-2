@@ -312,15 +312,17 @@ var UIBar = (() => { // eslint-disable-line no-unused-vars, no-var
 	function uiBarUpdate() {
 		if (DEBUG) { console.log('[UIBar/uiBarUpdate()]'); }
 
+		// Set up the display title, both the document title and page element.
+		if (Story.has('StoryDisplayTitle')) {
+			setDisplayTitle(Story.get('StoryDisplayTitle').processText());
+		}
+
 		if (!_$uiBar) {
 			return;
 		}
 
 		// Set up the (non-navigation) dynamic page elements.
 		setPageElement('story-banner', 'StoryBanner');
-		if (Story.has('StoryDisplayTitle')) {
-			setDisplayTitle(Story.get('StoryDisplayTitle').processText());
-		}
 		setPageElement('story-subtitle', 'StorySubtitle');
 		setPageElement('story-author', 'StoryAuthor');
 		setPageElement('story-caption', 'StoryCaption');
