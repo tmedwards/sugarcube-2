@@ -15,7 +15,7 @@
     "clean-css": "^4.2.3",
     "eslint": "^7.13.0",
     "node-getopt": "^0.3.2",
-    "postcss": "^8.1.6",
+    "postcss": "^8.2.10",
     "semver": "^7.3.2",
     "uglify-js": "^2.8.29"
   },
