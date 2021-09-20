@@ -3373,9 +3373,9 @@
 				return;
 			}
 
-			$(document).one(':passagedisplay', this.createShadowWrapper(
+			setTimeout(this.createShadowWrapper(
 				() => $.wiki(contents)
-			));
+			), Engine.minDomActionDelay);
 		}
 	});
 
