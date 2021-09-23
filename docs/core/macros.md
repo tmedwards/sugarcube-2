@@ -2754,6 +2754,7 @@ If you need to run the same code on multiple passages, consider using the <a hre
 #### History:
 
 * `v2.35.0`: Introduced.
+* `v2.36.0`: Changed delay mechanism to improve waiting on the DOM.
 
 #### Arguments: *none*
 
