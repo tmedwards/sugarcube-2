@@ -127,14 +127,22 @@
 			// Elsewise, set `role` to default values based on elements.
 			else {
 				this
-					.filter('a')
+					// Elements without an existing `role`.
+					.not('[role]')
+
+					// Elements that are `<a>` OR with `data-passage`.
+					.filter('a,[data-passage]')
 					.attr('role', 'link')
 					.end()
-					.filter('button')
+
+					// Elements that are not `<a>` AND without `data-passage`.
+					// WARNING: Do not merge the separate `.not()` instances below.  It is correct as-is.
+					.not('a')
+					.not('[data-passage]')
 					.attr('role', 'button')
 					.end()
-					.not('a,button')
-					.attr('role', 'button')
+					.end()
+
 					.end();
 			}
 
