@@ -218,7 +218,9 @@ var UIBar = (() => { // eslint-disable-line no-unused-vars, no-var
 
 		// Set up the Saves menu item.
 		jQuery('#menu-item-saves a')
-			.ariaClick(ev => {
+			.ariaClick({
+				role : 'button'
+			}, ev => {
 				ev.preventDefault();
 				UI.buildSaves();
 				Dialog.open();
@@ -228,7 +230,9 @@ var UIBar = (() => { // eslint-disable-line no-unused-vars, no-var
 		// Set up the Settings menu item.
 		if (!Setting.isEmpty()) {
 			jQuery('#menu-item-settings a')
-				.ariaClick(ev => {
+				.ariaClick({
+					role : 'button'
+				}, ev => {
 					ev.preventDefault();
 					UI.buildSettings();
 					Dialog.open();
@@ -241,7 +245,9 @@ var UIBar = (() => { // eslint-disable-line no-unused-vars, no-var
 
 		// Set up the Restart menu item.
 		jQuery('#menu-item-restart a')
-			.ariaClick(ev => {
+			.ariaClick({
+				role : 'button'
+			}, ev => {
 				ev.preventDefault();
 				UI.buildRestart();
 				Dialog.open();
@@ -251,7 +257,9 @@ var UIBar = (() => { // eslint-disable-line no-unused-vars, no-var
 		// Set up the Share menu item.
 		if (Story.has('StoryShare')) {
 			jQuery('#menu-item-share a')
-				.ariaClick(ev => {
+				.ariaClick({
+					role : 'button'
+				}, ev => {
 					ev.preventDefault();
 					UI.buildShare();
 					Dialog.open();
