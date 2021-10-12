@@ -1284,6 +1284,7 @@
 				.addClass(`macro-${this.name}`)
 				.ariaClick({
 					namespace : '.macros',
+					role      : passage != null ? 'link' : 'button', // lazy equality for null
 					one       : passage != null // lazy equality for null
 				}, this.createShadowWrapper(
 					this.payload[0].contents !== ''
@@ -1550,7 +1551,10 @@
 						.wikiWithOptions({ profile : 'core' }, options[selectedIdx].label)
 						.attr('id', `${this.name}-${varId}`)
 						.addClass(`macro-${this.name}`)
-						.ariaClick({ namespace : '.macros' }, this.createShadowWrapper(function () {
+						.ariaClick({
+							namespace : '.macros',
+							role      : 'button'
+						}, this.createShadowWrapper(function () {
 							const $this = $(this);
 							cycleIdx = (cycleIdx + 1) % options.length;
 							State.setVar(varName, options[cycleIdx].value);
