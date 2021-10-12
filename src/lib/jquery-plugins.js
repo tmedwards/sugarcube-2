@@ -67,10 +67,7 @@
 			// Remove both event handlers (keypress & click) and the other components.
 			jQuery(this)
 				.off('.aria-clickable')
-				.removeAttr('tabindex aria-controls aria-pressed')
-				.not('a,button')
-				.removeAttr('role')
-				.end()
+				.removeAttr('role tabindex aria-controls aria-pressed')
 				.filter('button')
 				.prop('disabled', true);
 
@@ -102,6 +99,7 @@
 				one       : false,
 				selector  : undefined,
 				data      : undefined,
+				role      : undefined,
 				controls  : undefined,
 				pressed   : undefined,
 				label     : undefined
@@ -121,8 +119,24 @@
 			// Set `type` to `button` to suppress "submit" semantics, for <button> elements.
 			this.filter('button').prop('type', 'button');
 
-			// Set `role` to `button`, for non-<a>/-<button> elements.
-			this.not('a,button').attr('role', 'button');
+			// Set `role`.
+			if (opts.role != null) { // lazy equality for null
+				this.attr('role', opts.role);
+			}
+
+			// Elsewise, set `role` to default values based on elements.
+			else {
+				this
+					.filter('a')
+					.attr('role', 'link')
+					.end()
+					.filter('button')
+					.attr('role', 'button')
+					.end()
+					.not('a,button')
+					.attr('role', 'button')
+					.end();
+			}
 
 			// Set `tabindex` to `0` to make them focusable (unnecessary on <button> elements, but it doesn't hurt).
 			this.attr('tabindex', 0);
