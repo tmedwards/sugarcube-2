@@ -74,8 +74,25 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 					throw new Error('no element with ID "passages" found within "StoryInterface" special passage');
 				}
 
-				const updating = [];
+				// Data passage elements updated once during initialization.
+				$elems.find('[data-init-passage]').each((i, el) => {
+					if (el.id === 'passages') {
+						throw new Error(`"StoryInterface" element <${el.nodeName.toLowerCase()} id="passages"> must not contain a "data-init-passage" content attribute`);
+					}
 
+					const passage = el.getAttribute('data-init-passage').trim();
+
+					if (el.firstElementChild !== null) {
+						throw new Error(`"StoryInterface" element <${el.nodeName.toLowerCase()} data-init-passage="${passage}"> contains child elements`);
+					}
+
+					if (Story.has(passage)) {
+						jQuery(el).empty().wiki(Story.get(passage).processText().trim());
+					}
+				});
+
+				// Data passage elements updated upon navigation.
+				const updating = [];
 				$elems.find('[data-passage]').each((i, el) => {
 					if (el.id === 'passages') {
 						throw new Error(`"StoryInterface" element <${el.nodeName.toLowerCase()} id="passages"> must not contain a "data-passage" content attribute`);
