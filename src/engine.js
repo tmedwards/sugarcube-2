@@ -82,6 +82,10 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 
 					const passage = el.getAttribute('data-init-passage').trim();
 
+					if (el.hasAttribute('data-passage')) {
+						throw new Error(`"StoryInterface" element <${el.nodeName.toLowerCase()} data-init-passage="${passage}"> must not contain a "data-passage" content attribute`);
+					}
+
 					if (el.firstElementChild !== null) {
 						throw new Error(`"StoryInterface" element <${el.nodeName.toLowerCase()} data-init-passage="${passage}"> contains child elements`);
 					}
