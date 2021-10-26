@@ -20,7 +20,9 @@ Passage, tag, and variable names that have special meaning to SugarCube.
 
 ### `PassageDone` {#special-passage-passagedone}
 
-Used for post-passage-display tasks, like redoing dynamic changes (happens after the rendering and display of each passage).  Roughly equivalent to the [`:passagedisplay` event](#events-navigation-event-passagedisplay).
+Used for post-passage-display tasks, like redoing dynamic changes (happens after the rendering and display of each passage).  Generates no output.
+
+Roughly equivalent to the [`:passagedisplay` event](#events-navigation-event-passagedisplay).
 
 #### History:
 
@@ -30,7 +32,9 @@ Used for post-passage-display tasks, like redoing dynamic changes (happens after
 
 ### `PassageFooter` {#special-passage-passagefooter}
 
-Appended to each rendered passage.  Roughly equivalent to the [`:passagerender` event](#events-navigation-event-passagerender).
+Appended to each rendered passage.
+
+Roughly equivalent to the [`:passagerender` event](#events-navigation-event-passagerender).
 
 #### History:
 
@@ -40,7 +44,9 @@ Appended to each rendered passage.  Roughly equivalent to the [`:passagerender` 
 
 ### `PassageHeader` {#special-passage-passageheader}
 
-Prepended to each rendered passage.  Roughly equivalent to the [`:passagestart` event](#events-navigation-event-passagestart).
+Prepended to each rendered passage.
+
+Roughly equivalent to the [`:passagestart` event](#events-navigation-event-passagestart).
 
 #### History:
 
@@ -50,7 +56,9 @@ Prepended to each rendered passage.  Roughly equivalent to the [`:passagestart` 
 
 ### `PassageReady` {#special-passage-passageready}
 
-Used for pre-passage-display tasks, like redoing dynamic changes (happens before the rendering of each passage).  Roughly equivalent to the [`:passagestart` event](#events-navigation-event-passagestart).
+Used for pre-passage-display tasks, like redoing dynamic changes (happens before the rendering of each passage).  Generates no output.
+
+Roughly equivalent to the [`:passagestart` event](#events-navigation-event-passagestart).
 
 #### History:
 
@@ -112,7 +120,7 @@ Sets the story's display title in the browser's titlebar and the UI bar (element
 
 ### `StoryInit` {#special-passage-storyinit}
 
-Used for pre-story-start initialization tasks, like variable initialization (happens at the beginning of story initialization).
+Used for pre-story-start initialization tasks, like variable initialization (happens at the beginning of story initialization).  Generates no output.
 
 #### History:
 
