@@ -542,7 +542,7 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 
 						if (typeof Config.passages.transitionOut === 'string') {
 							$outgoing.on(Has.transitionEndEvent, ev => {
-								if (ev.originalEvent.propertyName === Config.passages.transitionOut) {
+								if (ev.propertyName === Config.passages.transitionOut) {
 									$outgoing.remove();
 								}
 							});
