@@ -75,25 +75,27 @@ Config.history.controls = false;
 
 <!-- *********************************************************************** -->
 
-### `Config.history.maxStates` ↔ *integer* (default: `100`) {#config-api-property-history-maxstates}
+### `Config.history.maxStates` ↔ *integer* (default: `40`) {#config-api-property-history-maxstates}
 
-Sets the maximum number of states (moments) to which the history is allowed to grow.  Should the history exceed the limit, states will be dropped from the past (oldest first).  A setting of `0` means that there is no limit to how large the history may grow, though doing so is not recommended.
+Sets the maximum number of states (moments) to which the history is allowed to grow.  Should the history exceed the limit, states will be dropped from the past (oldest first).
+
+<p role="note" class="tip"><b>Tip:</b>
+For game-oriented projects, as opposed to more story-oriented interactive fiction, a setting of <code>1</code> is <strong><em>strongly recommended</em></strong>.
+</p>
 
 #### History:
 
 * `v2.0.0`: Introduced.
+* `v2.36.0`: Reduced the default to `40`.
 
 #### Examples:
 
 ```
-// No history limit (you should never do this!)
-Config.history.maxStates = 0;
-
-// Limit the history to a single state
+// Limit the history to a single state (recommended for games)
 Config.history.maxStates = 1;
 
-// Limit the history to 150 states
-Config.history.maxStates = 150;
+// Limit the history to 80 states
+Config.history.maxStates = 80;
 ```
 
 
