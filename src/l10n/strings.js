@@ -32,6 +32,7 @@ var l10nStrings = { // eslint-disable-line no-unused-vars, no-var
 	errorTitle              : 'Error',
 	errorToggle             : 'Toggle the error view',
 	errorNonexistentPassage : 'the passage "{passage}" does not exist', // NOTE: `passage` is supplied locally
+	errorSaveDiskLoadFailed : 'save load from disk failed',
 	errorSaveMissingData    : 'save is missing required data. Either the loaded file is not a save or the save has become corrupted',
 	errorSaveIdMismatch     : 'save is from the wrong {identity}',
 
