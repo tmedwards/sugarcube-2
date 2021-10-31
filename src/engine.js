@@ -70,9 +70,25 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 
 				$elems.append(markup);
 
-				if ($elems.find('#passages').length === 0) {
+				const $passages = $elems.find('#passages');
+
+				if ($passages.length === 0) {
 					throw new Error('no element with ID "passages" found within "StoryInterface" special passage');
 				}
+
+				// Empty `#passages` and set `aria-live` related content attributes to default values.
+				$passages
+					.empty()
+
+					// Without an existing `aria-live`.
+					.not('[aria-live]')
+					.attr('aria-live', 'polite')
+					.end()
+
+					// Without an existing `aria-relevant`.
+					.not('[aria-relevant]')
+					.attr('aria-relevant', 'all')
+					.end();
 
 				// Data passage elements updated once during initialization.
 				$elems.find('[data-init-passage]').each((i, el) => {
@@ -123,7 +139,7 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 				Config.ui.updateStoryElements = false;
 			}
 			else {
-				$elems.append('<div id="story" role="main"><div id="passages"></div></div>');
+				$elems.append('<div id="story" role="main"><div id="passages" aria-live="polite" aria-relevant="all"></div></div>');
 			}
 
 			// Insert the core UI elements into the page before the main script.
