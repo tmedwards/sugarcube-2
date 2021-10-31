@@ -369,10 +369,10 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 		const reader = new FileReader();
 
 		// Add the handler that will capture the file information once the load is finished.
-		jQuery(reader).on('load', ev => {
-			const target = ev.currentTarget;
-
-			if (!target.result) {
+		jQuery(reader).one('loadend', () => {
+			if (reader.error) {
+				const ex = reader.error;
+				UI.alert(`${L10n.get('errorSaveDiskLoadFailed').toUpperFirst()} (${ex.name}: ${ex.message}).</p><p>${L10n.get('aborting')}.`);
 				return;
 			}
 
@@ -380,9 +380,9 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 
 			try {
 				saveObj = JSON.parse(
-					/* legacy */ /\.json$/i.test(file.name) || /^\{/.test(target.result)
-						? target.result
-						: /* /legacy */ LZString.decompressFromBase64(target.result)
+					/* legacy */ /\.json$/i.test(file.name) || /^\{/.test(reader.result)
+						? reader.result
+						: /* /legacy */ LZString.decompressFromBase64(reader.result)
 				);
 			}
 			catch (ex) { /* no-op; `_unmarshal()` will handle the error */ }
