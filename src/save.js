@@ -370,8 +370,9 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 
 		// Add the handler that will capture the file information once the load is finished.
 		jQuery(reader).one('loadend', () => {
-			if (reader.error != null) { // lazy equality for null
-				UI.alert(`${L10n.get('errorSaveDiskLoadFailed').toUpperFirst()}.</p><p>${L10n.get('aborting')}.`);
+			if (reader.error) {
+				const ex = reader.error;
+				UI.alert(`${L10n.get('errorSaveDiskLoadFailed').toUpperFirst()} (${ex.name}: ${ex.message}).</p><p>${L10n.get('aborting')}.`);
 				return;
 			}
 
