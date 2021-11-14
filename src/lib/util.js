@@ -688,6 +688,28 @@ var Util = (() => { // eslint-disable-line no-unused-vars, no-var
 
 
 	/*******************************************************************************************************************
+		Browser API Functions.
+	*******************************************************************************************************************/
+	/*
+		Returns whether the given media query matches.
+	*/
+	const utilHasMediaQuery = (() => {
+		// If the browser does not support `matchMedia()`, then return
+		// a version of `utilHasMediaQuery()` that simply returns `false`.
+		if (typeof window.matchMedia !== 'function') {
+			return function utilHasMediaQuery() {
+				return false;
+			};
+		}
+
+		// Elsewise, return the regular `utilHasMediaQuery()` function.
+		return function utilHasMediaQuery(mediaQuery) {
+			return window.matchMedia(mediaQuery).matches;
+		};
+	})();
+
+
+	/*******************************************************************************************************************
 		Module Exports.
 	*******************************************************************************************************************/
 	return Object.freeze(Object.defineProperties({}, {
@@ -725,6 +747,11 @@ var Util = (() => { // eslint-disable-line no-unused-vars, no-var
 		parseUrl         : { value : utilParseUrl },
 		newExceptionFrom : { value : utilNewExceptionFrom },
 		scrubEventKey    : { value : utilScrubEventKey },
+
+		/*
+			Browser API Functions.
+		*/
+		hasMediaQuery : { value : utilHasMediaQuery },
 
 		/*
 			Legacy Aliases.
