@@ -30,3 +30,13 @@
 .passage tr, .passage th, .passage td, .passage caption {
 	padding: 3px;
 }
+
+
+/*
+	Accessibility styles.
+*/
+@media (prefers-reduced-motion: reduce) {
+	.passage {
+		transition: opacity 0s;
+	}
+}
