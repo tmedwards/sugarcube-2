@@ -88,6 +88,22 @@ html[data-dialog] body {
 
 
 /*
+	Accessibility styles.
+*/
+@media (prefers-reduced-motion: reduce) {
+	#ui-overlay.open {
+		transition: opacity 0s;
+	}
+	#ui-overlay:not(.open) {
+		transition: opacity 0s;
+	}
+	#ui-dialog.open {
+		transition: opacity 0s;
+	}
+}
+
+
+/*
 	Default appearance styles.
 */
 #ui-overlay {
