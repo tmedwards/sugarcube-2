@@ -987,7 +987,7 @@ Interactive macros are both asynchronous and require interaction from the player
 
 ### `<<button linkText [passageName]>> … <</button>>`<br>`<<button linkMarkup>> … <</button>>`<br>`<<button imageMarkup>> … <</button>>` {#macros-macro-button}
 
-Creates a button that silently executes its contents when clicked, optionally forwarding the player to another passage.  May be called either with the link text and passage name as separate arguments, with a link markup, or with an image markup.
+Creates a button that silently executes its contents when clicked, optionally forwarding the player to another passage.  May be called with either the link text and passage name as separate arguments, a link markup, or an image markup.
 
 <p role="note" class="see"><b>See:</b>
 <a href="#macros-interactive-warning">Interactive macro warning</a>.
@@ -1195,7 +1195,7 @@ You see a large red, candy-like button.
 
 ### `<<link linkText [passageName]>> … <</link>>`<br>`<<link linkMarkup>> … <</link>>`<br>`<<link imageMarkup>> … <</link>>` {#macros-macro-link}
 
-Creates a link that silently executes its contents when clicked, optionally forwarding the player to another passage.  May be called either with the link text and passage name as separate arguments, with a link markup, or with an image markup.
+Creates a link that silently executes its contents when clicked, optionally forwarding the player to another passage.  May be called with either the link text and passage name as separate arguments, a link markup, or an image markup.
 
 <p role="note" class="see"><b>See:</b>
 <a href="#macros-interactive-warning">Interactive macro warning</a>.
