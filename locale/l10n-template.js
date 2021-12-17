@@ -9,6 +9,8 @@
 		http://www.motoslave.net/sugarcube/2/docs/#guide-localization
 
 ***********************************************************************************************************************/
+/* global l10nStrings */
+/* eslint-disable strict */
 
 /*
 	ATTENTION TRANSLATORS
@@ -56,6 +58,7 @@
 	l10nStrings.errorTitle              = 'Error';
 	l10nStrings.errorToggle             = 'Toggle the error view';
 	l10nStrings.errorNonexistentPassage = 'the passage "{passage}" does not exist'; // NOTE: `passage` is supplied locally
+	l10nStrings.errorSaveDiskLoadFailed = 'failed to load save file from disk';
 	l10nStrings.errorSaveMissingData    = 'save is missing required data. Either the loaded file is not a save or the save has become corrupted';
 	l10nStrings.errorSaveIdMismatch     = 'save is from the wrong {identity}';
 
