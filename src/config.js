@@ -122,7 +122,7 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 			get maxStates() { return _historyMaxStates; },
 			set maxStates(value) {
 				if (!Number.isSafeInteger(value) || value < 1) {
-					throw new RangeError('Config.history.maxStates must be an integer greater-than 1');
+					throw new RangeError('Config.history.maxStates must be a positive integer');
 				}
 
 				_historyMaxStates = value;
@@ -152,7 +152,7 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 			get maxLoopIterations() { return _macrosMaxLoopIterations; },
 			set maxLoopIterations(value) {
 				if (!Number.isSafeInteger(value) || value < 1) {
-					throw new RangeError('Config.macros.maxLoopIterations must be an integer greater-than 1');
+					throw new RangeError('Config.macros.maxLoopIterations must be a positive integer');
 				}
 
 				_macrosMaxLoopIterations = value;
