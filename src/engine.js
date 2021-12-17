@@ -76,18 +76,13 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 					throw new Error('no element with ID "passages" found within "StoryInterface" special passage');
 				}
 
-				// Empty `#passages` and set `aria-live` related content attributes to default values.
+				// Empty `#passages` and set the `aria-live` content attribute to `'polite'` if necessary.
 				$passages
 					.empty()
 
 					// Without an existing `aria-live`.
 					.not('[aria-live]')
 					.attr('aria-live', 'polite')
-					.end()
-
-					// Without an existing `aria-relevant`.
-					.not('[aria-relevant]')
-					.attr('aria-relevant', 'all')
 					.end();
 
 				// Data passage elements updated once during initialization.
@@ -139,7 +134,7 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 				Config.ui.updateStoryElements = false;
 			}
 			else {
-				$elems.append('<div id="story" role="main"><div id="passages" aria-live="polite" aria-relevant="all"></div></div>');
+				$elems.append('<div id="story" role="main"><div id="passages" aria-live="polite"></div></div>');
 			}
 
 			// Insert the core UI elements into the page before the main script.
@@ -553,7 +548,10 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 						}
 
 						$outgoing
-							.attr('id', `out-${$outgoing.attr('id')}`)
+							.attr({
+								id          : `out-${$outgoing.attr('id')}`,
+								'aria-live' : 'off'
+							})
 							.addClass('passage-out');
 
 						if (typeof Config.passages.transitionOut === 'string') {

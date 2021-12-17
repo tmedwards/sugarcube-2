@@ -69,7 +69,7 @@ var UIBar = (() => { // eslint-disable-line no-unused-vars, no-var
 			return jQuery(document.createDocumentFragment())
 				.append(
 					/* eslint-disable max-len */
-					  '<div id="ui-bar" aria-live="polite" aria-relevant="all">'
+					  '<div id="ui-bar" aria-live="polite">'
 					+     '<div id="ui-bar-tray">'
 					+         `<button id="ui-bar-toggle" tabindex="0" title="${toggleLabel}" aria-label="${toggleLabel}"></button>`
 					+         '<div id="ui-bar-history">'
