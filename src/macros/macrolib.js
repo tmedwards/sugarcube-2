@@ -1236,6 +1236,8 @@
 						.attr('src', this.args[0].source)
 						.appendTo($link);
 
+					$link.addClass('link-image');
+
 					if (this.args[0].hasOwnProperty('passage')) {
 						$image.attr('data-passage', this.args[0].passage);
 					}
@@ -1986,7 +1988,7 @@
 					continue;
 				}
 
-				jQuery(Wikifier.createInternalLink(
+				const $link = jQuery(Wikifier.createInternalLink(
 					jQuery(document.createElement('li')).appendTo($list),
 					passage,
 					null,
@@ -2004,6 +2006,10 @@
 				))
 					.addClass(`macro-${this.name}`)
 					.append($image || document.createTextNode(text));
+
+				if ($image) {
+					$link.addClass('link-image');
+				}
 			}
 		}
 	});
@@ -2121,10 +2127,10 @@
 			// 	return;
 			// }
 
-			let $el;
+			let $link;
 
 			if (this.name !== 'back' || momentIndex !== -1) {
-				$el = jQuery(document.createElement('a'))
+				$link = jQuery(document.createElement('a'))
 					.addClass('link-internal')
 					.ariaClick(
 						{ one : true },
@@ -2132,13 +2138,17 @@
 							? () => Engine.play(passage)
 							: () => Engine.goTo(momentIndex)
 					);
+
+				if ($image) {
+					$link.addClass('link-image');
+				}
 			}
 			else {
-				$el = jQuery(document.createElement('span'))
+				$link = jQuery(document.createElement('span'))
 					.addClass('link-disabled');
 			}
 
-			$el
+			$link
 				.addClass(`macro-${this.name}`)
 				.append($image || document.createTextNode(text || L10n.get(`macro${this.name.toUpperFirst()}Text`)))
 				.appendTo(this.output);
@@ -2200,20 +2210,27 @@
 				text    = this.args[1];
 			}
 
+			let $link;
+
 			if (
 				   State.variables.hasOwnProperty('#choice')
 				&& State.variables['#choice'].hasOwnProperty(choiceId)
 				&& State.variables['#choice'][choiceId]
 			) {
-				jQuery(document.createElement('span'))
+				$link = jQuery(document.createElement('span'))
 					.addClass(`link-disabled macro-${this.name}`)
 					.attr('tabindex', -1)
 					.append($image || document.createTextNode(text))
 					.appendTo(this.output);
+
+				if ($image) {
+					$link.addClass('link-image');
+				}
+
 				return;
 			}
 
-			jQuery(Wikifier.createInternalLink(this.output, passage, null, () => {
+			$link = jQuery(Wikifier.createInternalLink(this.output, passage, null, () => {
 				if (!State.variables.hasOwnProperty('#choice')) {
 					State.variables['#choice'] = {};
 				}
@@ -2226,6 +2243,10 @@
 			}))
 				.addClass(`macro-${this.name}`)
 				.append($image || document.createTextNode(text));
+
+			if ($image) {
+				$link.addClass('link-image');
+			}
 		}
 	});
 
