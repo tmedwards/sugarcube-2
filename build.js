@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 /***********************************************************************************************************************
 
-	build.js (v1.4.18, 2020-11-08)
+	build.js (v1.5.0, 2021-12-17)
 		A Node.js-hosted build script for SugarCube.
 
-	Copyright © 2013–2020 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
+	Copyright © 2013–2021 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
@@ -203,7 +203,7 @@ if (_opt.options.build) {
 			patch      : semver.patch(version),
 			prerelease : prerelease && prerelease.length > 0 ? prerelease.join('.') : null,
 			build      : Number(readFileContents('.build')) + 1,
-			date       : (new Date()).toISOString(),
+			date       : new Date().toISOString(),
 
 			toString() {
 				const prerelease = this.prerelease ? `-${this.prerelease}` : '';
@@ -397,37 +397,24 @@ function compileJavaScript(filenameObj, options) {
 		].join(';\n') + ';\n' + jsSource;
 	}
 
-	try {
-		const uglifyjs = require('uglify-js');
-		const uglified = uglifyjs.minify(jsSource, {
-			fromString : true,
-			compress   : {
-				global_defs : {
-					TWINE1 : !!options.twine1,
-					DEBUG  : _opt.options.debug || false
-				},
-				screw_ie8 : true
+	const uglifyjs = require('uglify-js');
+	const minified = uglifyjs.minify(jsSource, {
+		compress : {
+			global_defs : {
+				TWINE1 : !!options.twine1,
+				DEBUG  : _opt.options.debug || false
 			},
-			mangle : {
-				screw_ie8 : true
-			},
-			output : {
-				screw_ie8 : true
-			}
-		});
-		return uglified.code;
-	}
-	catch (ex) {
-		let mesg = 'uglification error';
+			keep_infinity : true
+		},
+		mangle : false
+	});
 
-		if (ex.line > 0) {
-			const begin = ex.line > 4 ? ex.line - 4 : 0;
-			const end   = ex.line + 3 < jsSource.length ? ex.line + 3 : jsSource.length;
-			mesg += ':\n >> ' + jsSource.split(/\n/).slice(begin, end).join('\n >> ');
-		}
-
-		die(mesg, ex);
+	if (minified.error) {
+		const { message, line, col, pos } = minified.error;
+		die(`JavaScript minification error: ${message}\n[@: ${line}/${col}/${pos}]`);
 	}
+
+	return minified.code;
 	/* eslint-enable camelcase, prefer-template */
 }
 
