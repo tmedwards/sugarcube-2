@@ -103,7 +103,7 @@ Returns whether the passage with the given title occurred within the story histo
 
 #### Parameters:
 
-* **`passages`:** (*string* | *string array*) The title(s) of the passage(s) to search for.  May be a list or an array of passages.
+* **`passages`:** (*string* | *Array&lt;string&gt;*) The title(s) of the passage(s) to search for.  May be a list or an array of passages.
 
 #### Examples:
 
@@ -126,7 +126,7 @@ Returns the number of turns that have passed since the last instance of the pass
 
 #### Parameters:
 
-* **`passages`:** (*string* | *string array*) The title(s) of the passage(s) to search for.  May be a list or an array of passages.
+* **`passages`:** (*string* | *Array&lt;string&gt;*) The title(s) of the passage(s) to search for.  May be a list or an array of passages.
 
 #### Examples:
 
@@ -158,7 +158,7 @@ Your project's JavaScript section (Twine&nbsp;2: the Story JavaScript; Twine&nbs
 
 #### Parameters:
 
-* **`urls`:** (*string* | *string array*) The URLs of the external scripts to import.  Loose URLs are imported concurrently, arrays of URLs are imported sequentially.
+* **`urls`:** (*string* | *Array&lt;string&gt;*) The URLs of the external scripts to import.  Loose URLs are imported concurrently, arrays of URLs are imported sequentially.
 
 #### Examples:
 
@@ -246,7 +246,7 @@ Your project's JavaScript section (Twine&nbsp;2: the Story JavaScript; Twine&nbs
 
 #### Parameters:
 
-* **`urls`:** (*string* | *string array*) The URLs of the external stylesheets to import.  Loose URLs are imported concurrently, arrays of URLs are imported sequentially.
+* **`urls`:** (*string* | *Array&lt;string&gt;*) The URLs of the external stylesheets to import.  Loose URLs are imported concurrently, arrays of URLs are imported sequentially.
 
 #### Examples:
 
@@ -474,7 +474,7 @@ Renders the selected passage into the target element, replacing any existing con
 #### Parameters:
 
 * **`idOrElement`:** (*string* | *`HTMLElement` object*) The ID of the element or the element itself.
-* **`passages`:** (*string* | *string array*) The name(s) of the passage(s) to search for.  May be a single passage or an array of passages.  If an array of passage names is specified, the first passage to be found is used.
+* **`passages`:** (*string* | *Array&lt;string&gt;*) The name(s) of the passage(s) to search for.  May be a single passage or an array of passages.  If an array of passage names is specified, the first passage to be found is used.
 * **`defaultText`:** (optional, *string*) The default text to use if no passages are found.
 
 #### Examples:
@@ -493,7 +493,7 @@ setPageElement(myElement, "MyPassage");
 
 <!-- *********************************************************************** -->
 
-### `tags([passages…])` → *string array* {#functions-function-tags}
+### `tags([passages…])` → *Array&lt;string&gt;* {#functions-function-tags}
 
 Returns a new array consisting of all of the tags of the given passages.
 
@@ -503,7 +503,7 @@ Returns a new array consisting of all of the tags of the given passages.
 
 #### Parameters:
 
-* **`passages`:** (optional, *string* | *string array*) The passages from which to collect tags.  May be a list or an array of passages.  If omitted, will default to the active (present) passage—included passages do not count for this purpose; e.g., passages pulled in via `<<include>>`, `PassageHeader`, etc.
+* **`passages`:** (optional, *string* | *Array&lt;string&gt;*) The passages from which to collect tags.  May be a list or an array of passages.  If omitted, will default to the active (present) passage—included passages do not count for this purpose; e.g., passages pulled in via `<<include>>`, `PassageHeader`, etc.
 
 #### Examples:
 
@@ -613,7 +613,7 @@ Returns the number of times that the passage with the given title occurred withi
 
 #### Parameters:
 
-* **`passages`:** (optional, *string* | *string array*) The title(s) of the passage(s) to search for.  May be a list or an array of passages.  If omitted, will default to the current passage.
+* **`passages`:** (optional, *string* | *Array&lt;string&gt;*) The title(s) of the passage(s) to search for.  May be a list or an array of passages.  If omitted, will default to the current passage.
 
 #### Examples:
 
@@ -636,7 +636,7 @@ Returns the number of passages within the story history that are tagged with all
 
 #### Parameters:
 
-* **`tags`:** (*string* | *string array*) The tags to search for.  May be a list or an array of tags.
+* **`tags`:** (*string* | *Array&lt;string&gt;*) The tags to search for.  May be a list or an array of tags.
 
 #### Examples:
 

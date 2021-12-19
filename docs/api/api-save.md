@@ -32,9 +32,9 @@ Save objects have some of the following properties:
 
 The **`state`** object has the following properties:
 
-* **`history`:** (*array*) The array of moment objects (see below for details).
+* **`history`:** (*Array&lt;object&gt;*) The array of moment objects (see below for details).
 * **`index`:** (*integer*) The index of the active moment.
-* **`expired`:** (optional, *array*) The array of expired moment passage titles, exists only if any moments have expired.
+* **`expired`:** (optional, *Array&lt;string&gt;*) The array of expired moment passage titles, exists only if any moments have expired.
 * **`seed`:** (optional, *string*) The seed of SugarCube's seedable PRNG, exists only if enabled.
 
 Each **`moment`** object has the following properties:

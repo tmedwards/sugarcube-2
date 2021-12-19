@@ -19,7 +19,7 @@ The DOM ID of the passage, created from the slugified passage title.
 
 <!-- *********************************************************************** -->
 
-### `<Passage>.tags` → *string array* {#passage-api-prototype-getter-tags}
+### `<Passage>.tags` → *Array&lt;string&gt;* {#passage-api-prototype-getter-tags}
 
 The tags of the passage.
 

@@ -120,7 +120,7 @@ Adds the named property to the `settings` object and a list control for it to th
 A list definition object should have some of the following properties:
 
 * **`label`:** (*string*) Label to use for the control.
-* **`list`:** (*array*) The array of items.
+* **`list`:** (*Array&lt;string&gt;*) The array of items.
 * **`desc`:** (optional, *string*) Description explaining the control in greater detail.
 * **`default`:** (optional, *[as **`list`** array]*) The default value for the setting and default state of the control.  It should have the same value as one of the members of the **`list`** array.  Leaving it undefined means to use the first array member as the default.
 * **`onInit`:** (optional, *function*) The function to call during initialization.

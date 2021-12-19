@@ -428,7 +428,7 @@ Config.saves.autoload = function () {
 
 <!-- *********************************************************************** -->
 
-### `Config.saves.autosave` ↔ *boolean* | *string array* | *function* (default: *none*) {#config-api-property-saves-autosave}
+### `Config.saves.autosave` ↔ *boolean* | *Array&lt;string&gt;* | *function* (default: *none*) {#config-api-property-saves-autosave}
 
 Determines whether the autosave is created/updated when passages are displayed.
 

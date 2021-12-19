@@ -33,8 +33,8 @@ Add new template(s).
 
 #### Parameters:
 
-* **`name`:** (*string* | *string array*) Name, or array of names, of the template(s) to add.  **NOTE:** Names must consist of characters from the basic Latin alphabet and start with a letter, which may be optionally followed by any number of letters, numbers, the underscore, or the hyphen.
-* **`definition`:** (*function* | *string* | *array*) Definition of the template(s), which may be a: function, string, or an array of either.  **NOTE:** Each time array definitions are referenced, one of their member templates is randomly selected to be the output source.
+* **`name`:** (*string* | *Array&lt;string&gt;*) Name, or array of names, of the template(s) to add.  **NOTE:** Names must consist of characters from the basic Latin alphabet and start with a letter, which may be optionally followed by any number of letters, numbers, the underscore, or the hyphen.
+* **`definition`:** (*function* | *string* | *Array&lt;function | string&gt;*) Definition of the template(s), which may be a: function, string, or an array of either.  **NOTE:** Each time array definitions are referenced, one of their member templates is randomly selected to be the output source.
 
 #### Function templates:
 
@@ -94,7 +94,7 @@ Remove existing template(s).
 
 #### Parameters:
 
-* **`name`:** (*string* | *string array*) Name, or array of names, of the template(s) to remove.
+* **`name`:** (*string* | *Array&lt;string&gt;*) Name, or array of names, of the template(s) to remove.
 
 #### Examples:
 
@@ -108,7 +108,7 @@ Template.delete(['yolo', 'nolf']);
 
 <!-- *********************************************************************** -->
 
-### `Template.get(name)` → *function* | *string* | *array* {#template-api-method-get}
+### `Template.get(name)` → *function* | *string* | *Array&lt;function | string&gt;* {#template-api-method-get}
 
 Return the named template definition, or `null` on failure.
 
