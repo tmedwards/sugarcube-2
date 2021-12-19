@@ -195,6 +195,22 @@ var Util = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 	/*
+		Returns a sanitized version of the given string that should be safe for use
+		as a filename under both Windows and Unix-based/-like operating systems.
+
+		NOTE: The range of illegal characters consists of: C0 controls, double quote,
+		number, dollar, percent, ampersand, single quote, asterisk, plus, comma,
+		forward slash, colon, semi-colon, less-than, equals, greater-than, question,
+		backslash, caret, backquote/grave, pipe/vertical line, delete, C1 controls.
+	*/
+	const _illegalFilenameCharsRE = /[\x00-\x1f"#$%&'*+,/:;<=>?\\^`|\x7f-\x9f]+/g; // eslint-disable-line no-control-regex
+
+	function utilSanitizeFilename(str) {
+		return String(str).trim()
+			.replace(_illegalFilenameCharsRE, '');
+	}
+
+	/*
 		Returns an entity encoded version of the passed string.
 
 		NOTE: Escapes the five primary HTML special characters, the backquote,
@@ -727,11 +743,12 @@ var Util = (() => { // eslint-disable-line no-unused-vars, no-var
 		/*
 			String Encoding Functions.
 		*/
-		slugify      : { value : utilSlugify },
-		escapeMarkup : { value : utilEscapeMarkup },
-		escape       : { value : utilEscape },
-		unescape     : { value : utilUnescape },
-		charAndPosAt : { value : utilCharAndPosAt },
+		slugify          : { value : utilSlugify },
+		sanitizeFilename : { value : utilSanitizeFilename },
+		escapeMarkup     : { value : utilEscapeMarkup },
+		escape           : { value : utilEscape },
+		unescape         : { value : utilUnescape },
+		charAndPosAt     : { value : utilCharAndPosAt },
 
 		/*
 			Time Functions.
