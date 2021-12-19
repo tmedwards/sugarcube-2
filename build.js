@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /***********************************************************************************************************************
 
-	build.js (v1.5.0, 2021-12-17)
+	build.js (v1.6.0, 2021-12-19)
 		A Node.js-hosted build script for SugarCube.
 
 	Copyright © 2013–2021 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
@@ -9,7 +9,6 @@
 
 ***********************************************************************************************************************/
 /* eslint-env node, es6 */
-/* eslint-disable strict */
 'use strict';
 
 /*******************************************************************************
@@ -142,11 +141,18 @@ const CONFIG = {
 	the replacement strings (e.g. '$&' within the application source).
 */
 
-const _fs   = require('fs');
+const {
+	log,
+	die,
+	fileExists,
+	makePath,
+	copyFile,
+	readFileContents,
+	writeFileContents,
+	concatFiles
+} = require('./scripts/build-utils');
 const _path = require('path');
-
-const _indent = ' -> ';
-const _opt    = require('node-getopt').create([
+const _opt  = require('node-getopt').create([
 	['b', 'build=VERSION', 'Build only for Twine major version: 1 or 2; default: build for all.'],
 	['d', 'debug',         'Keep debugging code; gated by DEBUG symbol.'],
 	['u', 'unminified',    'Suppress minification stages.'],
@@ -186,7 +192,7 @@ if (_opt.options.build) {
 	console.log('Starting builds...');
 
 	// Create the build ID file, if nonexistent.
-	if (!_fs.existsSync('.build')) {
+	if (!fileExists('.build')) {
 		writeFileContents('.build', '0');
 	}
 
@@ -277,93 +283,6 @@ console.log('\nBuilds complete!  (check the "build" directory)');
 /*******************************************************************************
 	Utility Functions
 *******************************************************************************/
-function log(message, indent) {
-	console.log('%s%s', indent ? indent : _indent, message);
-}
-
-// function warn(message) {
-// 	console.warn('%swarning: %s', _indent, message);
-// }
-
-function die(message, error) {
-	if (error) {
-		console.error('error: %s\n[@: %d/%d] Trace:\n', message, error.line, error.col, error.stack);
-	}
-	else {
-		console.error('error: %s', message);
-	}
-
-	process.exit(1);
-}
-
-function makePath(pathname) {
-	const pathBits = _path.normalize(pathname).split(_path.sep);
-
-	for (let i = 0; i < pathBits.length; ++i) {
-		const dirPath = i === 0 ? pathBits[i] : pathBits.slice(0, i + 1).join(_path.sep);
-
-		if (!_fs.existsSync(dirPath)) {
-			_fs.mkdirSync(dirPath);
-		}
-	}
-}
-
-function copyFile(srcFilename, destFilename) {
-	const srcPath  = _path.normalize(srcFilename);
-	const destPath = _path.normalize(destFilename);
-	let buf;
-
-	try {
-		buf = _fs.readFileSync(srcPath);
-	}
-	catch (ex) {
-		die(`cannot open file "${srcPath}" for reading (reason: ${ex.message})`);
-	}
-
-	try {
-		_fs.writeFileSync(destPath, buf);
-	}
-	catch (ex) {
-		die(`cannot open file "${destPath}" for writing (reason: ${ex.message})`);
-	}
-
-	return true;
-}
-
-function readFileContents(filename) {
-	const filepath = _path.normalize(filename);
-
-	try {
-		// the replace() is necessary because Node.js only offers binary mode file
-		// access, regardless of platform, so we convert DOS-style line terminators
-		// to UNIX-style, just in case someone adds/edits a file and gets DOS-style
-		// line termination all over it
-		return _fs.readFileSync(filepath, { encoding : 'utf8' }).replace(/\r\n/g, '\n');
-	}
-	catch (ex) {
-		die(`cannot open file "${filepath}" for reading (reason: ${ex.message})`);
-	}
-}
-
-function writeFileContents(filename, data) {
-	const filepath = _path.normalize(filename);
-
-	try {
-		_fs.writeFileSync(filepath, data, { encoding : 'utf8' });
-	}
-	catch (ex) {
-		die(`cannot open file "${filepath}" for writing (reason: ${ex.message})`);
-	}
-}
-
-function concatFiles(filenames, callback) {
-	const output = filenames.map(filename => {
-		const contents = readFileContents(filename);
-		return typeof callback === 'function' ? callback(contents, filename) : contents;
-	});
-	return output.join('\n');
-}
-
 function assembleLibraries(filenames) {
 	log('assembling libraries...');
 
