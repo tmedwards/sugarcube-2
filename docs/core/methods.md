@@ -91,7 +91,37 @@ $fruits.count("Oranges", 2)  → Returns 1
 
 <!-- *********************************************************************** -->
 
-### `<Array>.delete(needles…)` → *array* {#methods-array-prototype-method-delete}
+### `<Array>.countWith(needle [, thisArg])` → *integer* {#methods-array-prototype-method-countwith}
+
+Returns the number of times that members within the array pass the test implemented by the given predicate function.
+
+#### History:
+
+* `v2.36.0`: Introduced.
+
+#### Parameters:
+
+* **`predicate`:** (*function*) The function used to test each member.  It is called with three arguments:
+	* **`value`:** (*any*) The member being processed.
+	* **`index`:** (optional, *integer*) The index of member being processed.
+	* **`array`:** (optional, *array*) The array being processed.
+* **`thisArg`:** (optional, *any*) The value to use as `this` when executing `predicate`.
+
+#### Examples:
+
+```
+// Given: $fruits = ["Apples", "Oranges", "Plums", "Oranges"]
+$fruits.countWith(function (fruit) {
+	return fruit === "Oranges";
+})  → Returns 2
+$fruits.countWith(function (fruit, i, a) { return fruit === "Oranges";
+	return fruit === "Oranges" && (i + 1) < a.length;
+})  → Returns 1
+```
+
+<!-- *********************************************************************** -->
+
+### `<Array>.delete(needles…)` → *Array&lt;any&gt;* {#methods-array-prototype-method-delete}
 
 Removes all instances of the given members from the array and returns a new array containing the removed members.
 
