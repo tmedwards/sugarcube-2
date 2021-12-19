@@ -430,7 +430,14 @@ Config.saves.autoload = function () {
 
 ### `Config.saves.autosave` ↔ *boolean* | *string array* | *function* (default: *none*) {#config-api-property-saves-autosave}
 
-Determines whether the autosave is created/updated when passages are displayed.  Valid values are boolean `true`, which causes the autosave to be updated with every passage, an array of strings, which causes the autosave to be updated for each passage with at least one matching tag, or a function, which causes the autosave to be updated for each passage where its return value is truthy.
+Determines whether the autosave is created/updated when passages are displayed.
+
+Valid values are:
+
+* Boolean `true`, which causes the autosave to be updated with every passage.
+* Boolean `false`, which causes the autosave to never update automatically—i.e., you must do it manually via the <a href="#save-api-method-autosave-save"><code>Save.autosave.save()</code> static method</a>.
+* An array of strings, which causes the autosave to be updated for each passage with at least one matching tag.
+* A function, which causes the autosave to be updated for each passage where its return value is truthy.
 
 <p role="note" class="warning"><b>Warning:</b>
 When setting the value to boolean <code>true</code>, you will likely also need to use the <a href="#config-api-property-saves-isallowed"><code>Config.saves.isAllowed</code> property</a> to disallow saving on the start passage.  Or, if you use the start passage as real part of your story and allow the player to reenter it, rather than just as the initial landing/cover page, then you may wish to only disallow saving on the start passage the very first time it's displayed—i.e., at story startup.
@@ -446,6 +453,9 @@ When setting the value to boolean <code>true</code>, you will likely also need t
 ```
 // Autosaves every passage
 Config.saves.autosave = true;
+
+// Allows manual autosaving
+Config.saves.autosave = false;
 
 // Autosaves on passages tagged with any of "bookmark" or "autosave"
 Config.saves.autosave = ["bookmark", "autosave"];
