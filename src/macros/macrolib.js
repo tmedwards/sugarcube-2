@@ -3735,7 +3735,7 @@
 			}
 
 			const widgetName = this.args[0];
-			const isNonVoid  = this.args.length > 1 && this.args[1] === 'block';
+			const isNonVoid  = this.args.length > 1 && this.args[1] === 'container';
 
 			if (Macro.has(widgetName)) {
 				if (!Macro.get(widgetName).isWidget) {

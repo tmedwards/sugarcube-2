@@ -2937,7 +2937,7 @@ I'll have <span id="drink">some water</span>, please.\
 
 <!-- *********************************************************************** -->
 
-### `<<widget widgetName [block]>> … <</widget>>` {#macros-macro-widget}
+### `<<widget widgetName [container]>> … <</widget>>` {#macros-macro-widget}
 
 Creates a new widget macro (henceforth, widget) with the given name.  Widgets allow you to create macros by using the standard macros and markup that you use normally within your story.  All widgets may access arguments passed to them via the `_args` special variable.  Block widgets may access the contents they enclose via the `_contents` special variable.
 
@@ -2952,20 +2952,20 @@ The array-like object stored in the <code>_args</code> variable should be treate
 #### History:
 
 * `v2.0.0`: Introduced.
-* `v2.36.0`: Added the `block` keyword, `_args` variable, and `_contents` variable.  Deprecated the `$args` variable in favor of `_args`.
+* `v2.36.0`: Added the `container` keyword, `_args` variable, and `_contents` variable.  Deprecated the `$args` variable in favor of `_args`.
 
 #### Arguments:
 
 * **`widgetName`:** The name of the created widget, which should not contain whitespace or angle brackets (`<`, `>`).  If the name of an existing widget is chosen, the new widget will overwrite the older version.  **NOTE:** The names of existing macros are invalid widget names and any attempts to use such a name will cause an error.
-* **`block`:** (optional) Keyword, used to signify that the widget should be created as a block/container widget—i.e., non-void, requiring a closing tag; e.g., `<<foo>>…<</foo>>`.
+* **`container`:** (optional) Keyword, used to signify that the widget should be created as a container widget—i.e., non-void, requiring a closing tag; e.g., `<<foo>>…<</foo>>`.
 
 #### Special variables, `_args` &amp; `_contents`:
 
 The `_args` special variable is used internally to store arguments passed to the widget—as zero-based indices; i.e., `_args[0]` is the first parsed argument, `_args[1]` is the second, etc—and the full argument string in raw and parsed forms—accessed via the `_args.raw` and `_args.full` properties.
 
-The `_contents` special variable is used internally, by block widgets, to store the contents they enclose.
+The `_contents` special variable is used internally, by container widgets, to store the contents they enclose.
 
-When a widget is called, any existing `_args` variable, and for block widgets `_contents`, is stored for the duration of the call and restored after.  This means that non-widget uses of these special variable are completely safe, though this does have the effect that uses external to widgets are inaccessible within them unless passed in as arguments.
+When a widget is called, any existing `_args` variable, and for container widgets `_contents`, is stored for the duration of the call and restored after.  This means that non-widget uses of these special variable are completely safe, though this does have the effect that uses external to widgets are inaccessible within them unless passed in as arguments.
 
 <p role="note" class="warning"><b>Warning:</b>
 Unless localized by use of the <a href="#macros-macro-capture"><code>&lt;&lt;capture&gt;&gt;</code> macro</a>, any story or other temporary variables used within widgets are part of a story's normal variable store, so care <em>must be</em> taken not to accidentally either overwrite or pick up an existing value.
@@ -2977,7 +2977,7 @@ Unless localized by use of the <a href="#macros-macro-capture"><code>&lt;&lt;cap
 No line-break control mechanisms are used in the following examples for readability.  In practice, you'll probably want to use either <a href="#markup-line-continuation">line continuations</a> or one of the no-break methods: <a href="#config-api-property-passages-nobr"><code>Config.passages.nobr</code> setting</a>, <a href="#special-tag-nobr"><code>nobr</code> special tag</a>, <a href="#macros-macro-nobr"><code>&lt;&lt;nobr&gt;&gt;</code> macro</a>.
 </p>
 
-##### Basic usage (non-block)
+##### Basic usage (non-container)
 
 ```
 → Creating a gender pronoun widget
@@ -3010,11 +3010,11 @@ No line-break control mechanisms are used in the following examples for readabil
 <<pm "Hi!">>  → Outputs: Hi!
 ```
 
-##### Basic usage (block)
+##### Basic usage (container)
 
 ```
 → Creating a simple dialog box widget
-<<widget "say" block>>
+<<widget "say" container>>
 	<div class="say-box">
 		<img class="say-image" @src="'images/' + _args[0].toLowerCase() + '.png'">
 		<p class="say-text">_contents</p>
