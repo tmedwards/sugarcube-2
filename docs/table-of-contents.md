@@ -135,7 +135,7 @@
 	* [`<Array>.concat()`](#methods-array-prototype-method-concat)
 	* [`<Array>.concatUnique()`](#methods-array-prototype-method-concatunique)
 	* [`<Array>.count()`](#methods-array-prototype-method-count)
-	* [`<Array>.count()`](#methods-array-prototype-method-countwith)
+	* [`<Array>.countWith()`](#methods-array-prototype-method-countwith)
 	* [`<Array>.delete()`](#methods-array-prototype-method-delete)
 	* [`<Array>.deleteAt()`](#methods-array-prototype-method-deleteat)
 	* [`<Array>.deleteWith()`](#methods-array-prototype-method-deletewith)

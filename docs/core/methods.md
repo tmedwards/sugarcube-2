@@ -91,7 +91,7 @@ $fruits.count("Oranges", 2)  → Returns 1
 
 <!-- *********************************************************************** -->
 
-### `<Array>.countWith(needle [, thisArg])` → *integer* {#methods-array-prototype-method-countwith}
+### `<Array>.countWith(predicate [, thisArg])` → *integer* {#methods-array-prototype-method-countwith}
 
 Returns the number of times that members within the array pass the test implemented by the given predicate function.
 
