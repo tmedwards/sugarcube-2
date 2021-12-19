@@ -111,12 +111,24 @@ Returns the number of times that members within the array pass the test implemen
 
 ```
 // Given: $fruits = ["Apples", "Oranges", "Plums", "Oranges"]
-$fruits.countWith(function (fruit) {
-	return fruit === "Oranges";
-})  → Returns 2
-$fruits.countWith(function (fruit, i, a) { return fruit === "Oranges";
-	return fruit === "Oranges" && (i + 1) < a.length;
-})  → Returns 1
+$fruits.countWith(function (fruit) { return fruit === "Oranges"; })  → Returns 2
+```
+
+```
+// Given: $numbers = [1, 2.3, 4, 76, 3.1]
+$numbers.countWith(Number.isInteger)  → Returns 3
+```
+
+```
+// Given: $items = [
+// 	{ name : 'Healing potion', kind : 'potion' },
+// 	{ name : 'Longsword', kind : 'weapon' },
+// 	{ name : 'Mana potion', kind : 'potion' },
+// 	{ name : 'Dead rat', kind : 'junk' },
+// 	{ name : 'Endurance potion', kind : 'potion' },
+// 	{ name : 'Shortbow', kind : 'weapon' }
+// ]
+$items.countWith(function (item) { return item.kind === 'junk'; })  → Returns 1
 ```
 
 <!-- *********************************************************************** -->
