@@ -328,7 +328,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			return;
 		}
 
-		function datestamp() {
+		function getDatestamp() {
 			const now = new Date();
 			let MM = now.getMonth() + 1;
 			let DD = now.getDate();
@@ -345,20 +345,13 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			return `${now.getFullYear()}${MM}${DD}-${hh}${mm}${ss}`;
 		}
 
-		function legalizeName(str) {
-			/*
-				NOTE: The range of illegal characters consists of: C0 controls, double quote,
-				number, dollar, percent, ampersand, single quote, asterisk, plus, comma,
-				forward slash, colon, semi-colon, less-than, equals, greater-than, question,
-				backslash, caret, backquote/grave, pipe/vertical-bar, delete, C1 controls.
-			*/
-			return String(str).trim()
-				.replace(/[\x00-\x1f"#$%&'*+,/:;<=>?\\^`|\x7f-\x9f]+/g, '') // eslint-disable-line no-control-regex
+		function getFilename(str) {
+			return Util.sanitizeFilename(str)
 				.replace(/[_\s\u2013\u2014-]+/g, '-'); // legacy
 		}
 
-		const baseName     = filename == null ? Story.domId : legalizeName(filename); // lazy equality for null
-		const saveName     = `${baseName}-${datestamp()}.save`;
+		const baseName     = filename == null ? Story.domId : getFilename(filename); // lazy equality for null
+		const saveName     = `${baseName}-${getDatestamp()}.save`;
 		const supplemental = metadata == null ? {} : { metadata }; // lazy equality for null
 		const saveObj      = LZString.compressToBase64(JSON.stringify(_marshal(supplemental, { type : Type.Disk })));
 		saveAs(new Blob([saveObj], { type : 'text/plain;charset=UTF-8' }), saveName);
