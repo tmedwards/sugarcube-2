@@ -6,7 +6,7 @@
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* global Util */
+/* global Save, Util */
 
 var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 	'use strict';
@@ -47,8 +47,6 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 	let _savesAutosave;
 	let _savesId              = 'untitled-story';
 	let _savesIsAllowed;
-	let _savesOnLoad;
-	let _savesOnSave;
 	let _savesSlots           = 8;
 	let _savesTryDiskOnMobile = true;
 	let _savesVersion;
@@ -64,6 +62,8 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 
 	const _errHistoryModeDeprecated     = 'Config.history.mode has been deprecated and is no longer used by SugarCube, please remove it from your code';
 	const _errHistoryTrackingDeprecated = 'Config.history.tracking has been deprecated, use Config.history.maxStates instead';
+	const _errSavesOnLoadDeprecated     = 'Config.saves.onLoad has been deprecated, use the Save.onLoad API instead';
+	const _errSavesOnSaveDeprecated     = 'Config.saves.onSave has been deprecated, use the Save.onSave API instead';
 
 
 	/*******************************************************************************
@@ -283,7 +283,7 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 						&& (valueType !== 'Array' || !value.every(item => typeof item === 'string'))
 						&& valueType !== 'function'
 					) {
-						throw new TypeError(`Config.saves.autosave must be a boolean, Array of strings, function, or null/undefined (received: ${valueType}${valueType === 'Array' ? ' of mixed' : ''})`);
+						throw new TypeError(`Config.saves.autosave must be a boolean, Array<string>, function, or null/undefined (received: ${valueType}${valueType === 'Array' ? '<any>' : ''})`);
 					}
 				}
 
@@ -308,24 +308,6 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 				_savesIsAllowed = value;
 			},
 
-			get onLoad() { return _savesOnLoad; },
-			set onLoad(value) {
-				if (!(value == null || value instanceof Function)) { // lazy equality for null
-					throw new TypeError(`Config.saves.onLoad must be a function or null/undefined (received: ${Util.getType(value)})`);
-				}
-
-				_savesOnLoad = value;
-			},
-
-			get onSave() { return _savesOnSave; },
-			set onSave(value) {
-				if (!(value == null || value instanceof Function)) { // lazy equality for null
-					throw new TypeError(`Config.saves.onSave must be a function or null/undefined (received: ${Util.getType(value)})`);
-				}
-
-				_savesOnSave = value;
-			},
-
 			get slots() { return _savesSlots; },
 			set slots(value) {
 				if (!Number.isSafeInteger(value) || value < 0) {
@@ -339,7 +321,27 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 			set tryDiskOnMobile(value) { _savesTryDiskOnMobile = Boolean(value); },
 
 			get version() { return _savesVersion; },
-			set version(value) { _savesVersion = value; }
+			set version(value) { _savesVersion = value; },
+
+			// legacy
+			// Die if deprecated saves onLoad handler getter is accessed.
+			get onLoad() { throw new Error(_errSavesOnLoadDeprecated); },
+			// Warn if deprecated saves onLoad handler setter is assigned to, then
+			// pass the handler to the `Save.onLoad` API for compatibilities sake.
+			set onLoad(value) {
+				console.warn(_errSavesOnLoadDeprecated);
+				Save.onLoad.add(value);
+			},
+
+			// Die if deprecated saves onSave handler getter is accessed.
+			get onSave() { throw new Error(_errSavesOnSaveDeprecated); },
+			// Warn if deprecated saves onSave handler setter is assigned to, then
+			// pass the handler to the `Save.onSave` API for compatibilities sake.
+			set onSave(value) {
+				console.warn(_errSavesOnSaveDeprecated);
+				Save.onSave.add(value);
+			}
+			// /legacy
 		}),
 
 		/*

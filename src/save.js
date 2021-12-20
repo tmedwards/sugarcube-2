@@ -22,6 +22,12 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 	// The upper bound of the saves slots.
 	let _slotsUBound = -1;
 
+	// Set of onLoad handlers.
+	const _onLoadHandlers = new Set();
+
+	// Set of onSave handlers.
+	const _onSaveHandlers = new Set();
+
 
 	/*******************************************************************************************************************
 		Saves Functions.
@@ -429,6 +435,54 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 
 
 	/*******************************************************************************************************************
+		Event Functions.
+	*******************************************************************************************************************/
+	function onLoadAdd(handler) {
+		const valueType = Util.getType(handler);
+
+		if (valueType !== 'function') {
+			throw new TypeError(`Save.onLoad.add handler parameter must be a function (received: ${valueType})`);
+		}
+
+		_onLoadHandlers.add(handler);
+	}
+
+	function onLoadClear() {
+		_onLoadHandlers.clear();
+	}
+
+	function onLoadDelete(handler) {
+		return _onLoadHandlers.delete(handler);
+	}
+
+	function onLoadSize() {
+		return _onLoadHandlers.size;
+	}
+
+	function onSaveAdd(handler) {
+		const valueType = Util.getType(handler);
+
+		if (valueType !== 'function') {
+			throw new TypeError(`Save.onSave.add handler parameter must be a function (received: ${valueType})`);
+		}
+
+		_onSaveHandlers.add(handler);
+	}
+
+	function onSaveClear() {
+		_onSaveHandlers.clear();
+	}
+
+	function onSaveDelete(handler) {
+		return _onSaveHandlers.delete(handler);
+	}
+
+	function onSaveSize() {
+		return _onSaveHandlers.size;
+	}
+
+
+	/*******************************************************************************************************************
 		Utility Functions.
 	*******************************************************************************************************************/
 	function _appendSlots(array, num) {
@@ -555,9 +609,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			saveObj.version = Config.saves.version;
 		}
 
-		if (typeof Config.saves.onSave === 'function') {
-			Config.saves.onSave(saveObj, details);
-		}
+		_onSaveHandlers.forEach(fn => fn(saveObj, details));
 
 		// Delta encode the state history and delete the non-encoded property.
 		saveObj.state.delta = State.deltaEncode(saveObj.state.history);
@@ -584,9 +636,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			saveObj.state.history = State.deltaDecode(saveObj.state.delta);
 			delete saveObj.state.delta;
 
-			if (typeof Config.saves.onLoad === 'function') {
-				Config.saves.onLoad(saveObj);
-			}
+			_onLoadHandlers.forEach(fn => fn(saveObj));
 
 			if (saveObj.id !== Config.saves.id) {
 				throw new Error(L10n.get('errorSaveIdMismatch'));
@@ -661,6 +711,26 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			Serialization Functions.
 		*/
 		serialize   : { value : serialize },
-		deserialize : { value : deserialize }
+		deserialize : { value : deserialize },
+
+		/*
+			Event Functions.
+		*/
+		onLoad : {
+			value : Object.freeze(Object.defineProperties({}, {
+				add    : { value : onLoadAdd },
+				clear  : { value : onLoadClear },
+				delete : { value : onLoadDelete },
+				size   : { get : onLoadSize }
+			}))
+		},
+		onSave : {
+			value : Object.freeze(Object.defineProperties({}, {
+				add    : { value : onSaveAdd },
+				clear  : { value : onSaveClear },
+				delete : { value : onSaveDelete },
+				size   : { get : onSaveSize }
+			}))
+		}
 	}));
 })();
