@@ -399,20 +399,20 @@ Returns an array of the story metadata store's key/value pairs as `[key, value]`
 
 #### Examples:
 
-```
-// Get the metadata store's key/value pairs.
-var metadata = State.metadata.entries();
-
+```js
 // Iterate over the pairs with a `for` loop.
+var metadata = State.metadata.entries();
 for (var i = 0; i < metadata.length; ++i) {
 	var key   = metadata[i][0];
 	var value = metadata[i][1];
 
 	/* do something */
 }
+```
 
+```js
 // Iterate over the pairs with `<Array>.forEach()`.
-metadata.forEach(function (pair) {
+State.metadata.entries().forEach(function (pair) {
 	var key   = pair[0];
 	var value = pair[1];
 
@@ -478,19 +478,19 @@ Returns an array of the story metadata store's keys.
 
 #### Examples:
 
-```
-// Get the metadata store's keys.
-var metadataKeys = State.metadata.keys();
-
+```js
 // Iterate over the keys with a `for` loop.
+var metadataKeys = State.metadata.keys();
 for (var i = 0; i < metadataKeys.length; ++i) {
 	var key = metadataKeys[i];
 
 	/* do something */
 }
+```
 
+```js
 // Iterate over the keys with `<Array>.forEach()`.
-metadataKeys.forEach(function (key) {
+State.metadata.keys().forEach(function (key) {
 	/* do something */
 });
 ```

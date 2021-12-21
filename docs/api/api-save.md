@@ -655,7 +655,7 @@ Save.onLoad.clear();
 
 ### `Save.onLoad.delete(handler)` → *boolean* {#save-api-method-onload-delete}
 
-Deletes the specified on-load handler.
+Deletes the specified on-load handler, returning `true` if the handler existed or `false` if not.
 
 #### History:
 
@@ -780,7 +780,7 @@ Save.onSave.clear();
 
 ### `Save.onSave.delete(handler)` → *boolean* {#save-api-method-onsave-delete}
 
-Deletes the specified on-save handler.
+Deletes the specified on-save handler, returning `true` if the handler existed or `false` if not.
 
 #### History:
 
