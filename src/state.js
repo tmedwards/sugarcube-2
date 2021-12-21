@@ -449,10 +449,8 @@ var State = (() => { // eslint-disable-line no-unused-vars, no-var
 		/*
 			Truncate the history, if necessary, by discarding moments from the bottom.
 		*/
-		if (Config.history.maxStates > 0) {
-			while (historySize() > Config.history.maxStates) {
-				_expired.push(_history.shift().title);
-			}
+		while (historySize() > Config.history.maxStates) {
+			_expired.push(_history.shift().title);
 		}
 
 		/*
@@ -663,6 +661,11 @@ var State = (() => { // eslint-disable-line no-unused-vars, no-var
 		}
 	}
 
+	function metadataEntries() {
+		const store = storage.get(_METADATA_STORE);
+		return store && Object.entries(store);
+	}
+
 	function metadataGet(key) {
 		if (typeof key !== 'string') {
 			throw new TypeError(`State.metadata.get key parameter must be a string (received: ${typeof key})`);
@@ -679,6 +682,11 @@ var State = (() => { // eslint-disable-line no-unused-vars, no-var
 
 		const store = storage.get(_METADATA_STORE);
 		return store && store.hasOwnProperty(key);
+	}
+
+	function metadataKeys() {
+		const store = storage.get(_METADATA_STORE);
+		return store && Object.keys(store);
 	}
 
 	function metadataSet(key, value) {
@@ -775,12 +783,14 @@ var State = (() => { // eslint-disable-line no-unused-vars, no-var
 		*/
 		metadata : {
 			value : Object.freeze(Object.defineProperties({}, {
-				clear  : { value : metadataClear },
-				delete : { value : metadataDelete },
-				get    : { value : metadataGet },
-				has    : { value : metadataHas },
-				set    : { value : metadataSet },
-				size   : { get : metadataSize }
+				clear   : { value : metadataClear },
+				delete  : { value : metadataDelete },
+				entries : { value : metadataEntries },
+				get     : { value : metadataGet },
+				has     : { value : metadataHas },
+				keys    : { value : metadataKeys },
+				set     : { value : metadataSet },
+				size    : { get : metadataSize }
 			}))
 		},
 

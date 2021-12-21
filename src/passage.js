@@ -77,15 +77,13 @@ var Passage = (() => { // eslint-disable-line no-unused-vars, no-var
 					value : el || null
 				},
 
-				// Passage tags array (sorted and unique).
+				// Passage tags array (unique).
 				tags : {
-					value : Object.freeze(el && el.hasAttribute('tags')
-						? el.getAttribute('tags')
-							.trim()
-							.splitOrEmpty(/\s+/)
-							.sort()
-							.filter((tag, i, aref) => i === 0 || aref[i - 1] !== tag)
-						: [])
+					value : Object.freeze(
+						el && el.hasAttribute('tags')
+							? Array.from(new Set(el.getAttribute('tags').trim().splitOrEmpty(/\s+/)))
+							: []
+					)
 				},
 
 				// Passage excerpt.  Used by the `description()` method.

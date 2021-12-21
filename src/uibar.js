@@ -69,7 +69,7 @@ var UIBar = (() => { // eslint-disable-line no-unused-vars, no-var
 			return jQuery(document.createDocumentFragment())
 				.append(
 					/* eslint-disable max-len */
-					  '<div id="ui-bar">'
+					  '<div id="ui-bar" aria-live="polite">'
 					+     '<div id="ui-bar-tray">'
 					+         `<button id="ui-bar-toggle" tabindex="0" title="${toggleLabel}" aria-label="${toggleLabel}"></button>`
 					+         '<div id="ui-bar-history">'
@@ -218,7 +218,9 @@ var UIBar = (() => { // eslint-disable-line no-unused-vars, no-var
 
 		// Set up the Saves menu item.
 		jQuery('#menu-item-saves a')
-			.ariaClick(ev => {
+			.ariaClick({
+				role : 'button'
+			}, ev => {
 				ev.preventDefault();
 				UI.buildSaves();
 				Dialog.open();
@@ -228,7 +230,9 @@ var UIBar = (() => { // eslint-disable-line no-unused-vars, no-var
 		// Set up the Settings menu item.
 		if (!Setting.isEmpty()) {
 			jQuery('#menu-item-settings a')
-				.ariaClick(ev => {
+				.ariaClick({
+					role : 'button'
+				}, ev => {
 					ev.preventDefault();
 					UI.buildSettings();
 					Dialog.open();
@@ -241,7 +245,9 @@ var UIBar = (() => { // eslint-disable-line no-unused-vars, no-var
 
 		// Set up the Restart menu item.
 		jQuery('#menu-item-restart a')
-			.ariaClick(ev => {
+			.ariaClick({
+				role : 'button'
+			}, ev => {
 				ev.preventDefault();
 				UI.buildRestart();
 				Dialog.open();
@@ -251,7 +257,9 @@ var UIBar = (() => { // eslint-disable-line no-unused-vars, no-var
 		// Set up the Share menu item.
 		if (Story.has('StoryShare')) {
 			jQuery('#menu-item-share a')
-				.ariaClick(ev => {
+				.ariaClick({
+					role : 'button'
+				}, ev => {
 					ev.preventDefault();
 					UI.buildShare();
 					Dialog.open();
@@ -312,15 +320,17 @@ var UIBar = (() => { // eslint-disable-line no-unused-vars, no-var
 	function uiBarUpdate() {
 		if (DEBUG) { console.log('[UIBar/uiBarUpdate()]'); }
 
+		// Set up the display title, both the document title and page element.
+		if (Story.has('StoryDisplayTitle')) {
+			setDisplayTitle(Story.get('StoryDisplayTitle').processText());
+		}
+
 		if (!_$uiBar) {
 			return;
 		}
 
 		// Set up the (non-navigation) dynamic page elements.
 		setPageElement('story-banner', 'StoryBanner');
-		if (Story.has('StoryDisplayTitle')) {
-			setDisplayTitle(Story.get('StoryDisplayTitle').processText());
-		}
 		setPageElement('story-subtitle', 'StorySubtitle');
 		setPageElement('story-author', 'StoryAuthor');
 		setPageElement('story-caption', 'StoryCaption');

@@ -22,6 +22,12 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 	// The upper bound of the saves slots.
 	let _slotsUBound = -1;
 
+	// Set of onLoad handlers.
+	const _onLoadHandlers = new Set();
+
+	// Set of onSave handlers.
+	const _onSaveHandlers = new Set();
+
 
 	/*******************************************************************************************************************
 		Saves Functions.
@@ -328,7 +334,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			return;
 		}
 
-		function datestamp() {
+		function getDatestamp() {
 			const now = new Date();
 			let MM = now.getMonth() + 1;
 			let DD = now.getDate();
@@ -345,20 +351,13 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			return `${now.getFullYear()}${MM}${DD}-${hh}${mm}${ss}`;
 		}
 
-		function legalizeName(str) {
-			/*
-				NOTE: The range of illegal characters consists of: C0 controls, double quote,
-				number, dollar, percent, ampersand, single quote, asterisk, plus, comma,
-				forward slash, colon, semi-colon, less-than, equals, greater-than, question,
-				backslash, caret, backquote/grave, pipe/vertical-bar, delete, C1 controls.
-			*/
-			return String(str).trim()
-				.replace(/[\x00-\x1f"#$%&'*+,/:;<=>?\\^`|\x7f-\x9f]+/g, '') // eslint-disable-line no-control-regex
+		function getFilename(str) {
+			return Util.sanitizeFilename(str)
 				.replace(/[_\s\u2013\u2014-]+/g, '-'); // legacy
 		}
 
-		const baseName     = filename == null ? Story.domId : legalizeName(filename); // lazy equality for null
-		const saveName     = `${baseName}-${datestamp()}.save`;
+		const baseName     = filename == null ? Story.domId : getFilename(filename); // lazy equality for null
+		const saveName     = `${baseName}-${getDatestamp()}.save`;
 		const supplemental = metadata == null ? {} : { metadata }; // lazy equality for null
 		const saveObj      = LZString.compressToBase64(JSON.stringify(_marshal(supplemental, { type : Type.Disk })));
 		saveAs(new Blob([saveObj], { type : 'text/plain;charset=UTF-8' }), saveName);
@@ -369,10 +368,10 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 		const reader = new FileReader();
 
 		// Add the handler that will capture the file information once the load is finished.
-		jQuery(reader).on('load', ev => {
-			const target = ev.currentTarget;
-
-			if (!target.result) {
+		jQuery(reader).one('loadend', () => {
+			if (reader.error) {
+				const ex = reader.error;
+				UI.alert(`${L10n.get('errorSaveDiskLoadFailed').toUpperFirst()} (${ex.name}: ${ex.message}).</p><p>${L10n.get('aborting')}.`);
 				return;
 			}
 
@@ -380,9 +379,9 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 
 			try {
 				saveObj = JSON.parse(
-					/* legacy */ /\.json$/i.test(file.name) || /^\{/.test(target.result)
-						? target.result
-						: /* /legacy */ LZString.decompressFromBase64(target.result)
+					/* legacy */ /\.json$/i.test(file.name) || /^\{/.test(reader.result)
+						? reader.result
+						: /* /legacy */ LZString.decompressFromBase64(reader.result)
 				);
 			}
 			catch (ex) { /* no-op; `_unmarshal()` will handle the error */ }
@@ -432,6 +431,54 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 		}
 
 		return saveObj.metadata;
+	}
+
+
+	/*******************************************************************************************************************
+		Event Functions.
+	*******************************************************************************************************************/
+	function onLoadAdd(handler) {
+		const valueType = Util.getType(handler);
+
+		if (valueType !== 'function') {
+			throw new TypeError(`Save.onLoad.add handler parameter must be a function (received: ${valueType})`);
+		}
+
+		_onLoadHandlers.add(handler);
+	}
+
+	function onLoadClear() {
+		_onLoadHandlers.clear();
+	}
+
+	function onLoadDelete(handler) {
+		return _onLoadHandlers.delete(handler);
+	}
+
+	function onLoadSize() {
+		return _onLoadHandlers.size;
+	}
+
+	function onSaveAdd(handler) {
+		const valueType = Util.getType(handler);
+
+		if (valueType !== 'function') {
+			throw new TypeError(`Save.onSave.add handler parameter must be a function (received: ${valueType})`);
+		}
+
+		_onSaveHandlers.add(handler);
+	}
+
+	function onSaveClear() {
+		_onSaveHandlers.clear();
+	}
+
+	function onSaveDelete(handler) {
+		return _onSaveHandlers.delete(handler);
+	}
+
+	function onSaveSize() {
+		return _onSaveHandlers.size;
 	}
 
 
@@ -562,9 +609,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			saveObj.version = Config.saves.version;
 		}
 
-		if (typeof Config.saves.onSave === 'function') {
-			Config.saves.onSave(saveObj, details);
-		}
+		_onSaveHandlers.forEach(fn => fn(saveObj, details));
 
 		// Delta encode the state history and delete the non-encoded property.
 		saveObj.state.delta = State.deltaEncode(saveObj.state.history);
@@ -591,9 +636,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			saveObj.state.history = State.deltaDecode(saveObj.state.delta);
 			delete saveObj.state.delta;
 
-			if (typeof Config.saves.onLoad === 'function') {
-				Config.saves.onLoad(saveObj);
-			}
+			_onLoadHandlers.forEach(fn => fn(saveObj));
 
 			if (saveObj.id !== Config.saves.id) {
 				throw new Error(L10n.get('errorSaveIdMismatch'));
@@ -668,6 +711,26 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			Serialization Functions.
 		*/
 		serialize   : { value : serialize },
-		deserialize : { value : deserialize }
+		deserialize : { value : deserialize },
+
+		/*
+			Event Functions.
+		*/
+		onLoad : {
+			value : Object.freeze(Object.defineProperties({}, {
+				add    : { value : onLoadAdd },
+				clear  : { value : onLoadClear },
+				delete : { value : onLoadDelete },
+				size   : { get : onLoadSize }
+			}))
+		},
+		onSave : {
+			value : Object.freeze(Object.defineProperties({}, {
+				add    : { value : onSaveAdd },
+				clear  : { value : onSaveClear },
+				delete : { value : onSaveDelete },
+				size   : { get : onSaveSize }
+			}))
+		}
 	}));
 })();

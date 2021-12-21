@@ -15,6 +15,7 @@ For the template that should be used as the basis of localizations, see the `l10
 * `es-UNKNOWN.js` – Español (*UNKNOWN*), by: Raúl Castellano.
 * `fr.js` – Français, by: Marc Cornette, Pierre Kessler.
 * `it-IT.js` – Italiano (Italy), by: Karime Chehbouni.
+* `nl.js` – Dutch, by: Sjoerd Hekking.
 * `pl.js` – Polski, by: ciupac.
 * `pt-BR.js` – Português (Brazil), by: Janos Biro.
 * `pt-PT.js` – Português (Portugal), by: Magma.

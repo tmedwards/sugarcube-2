@@ -387,6 +387,41 @@ State.metadata.delete('achievements');
 
 <!-- *********************************************************************** -->
 
+### `State.metadata.entries()` → *Array&lt;Array&lt;string, any&gt;&gt;* {#state-api-method-metadata-entries}
+
+Returns an array of the story metadata store's key/value pairs as `[key, value]` arrays.
+
+#### History:
+
+* `v2.36.0`: Introduced.
+
+#### Parameters: *none*
+
+#### Examples:
+
+```
+// Get the metadata store's key/value pairs.
+var metadata = State.metadata.entries();
+
+// Iterate over the pairs with a `for` loop.
+for (var i = 0; i < metadata.length; ++i) {
+	var key   = metadata[i][0];
+	var value = metadata[i][1];
+
+	/* do something */
+}
+
+// Iterate over the pairs with `<Array>.forEach()`.
+metadata.forEach(function (pair) {
+	var key   = pair[0];
+	var value = pair[1];
+
+	/* do something */
+});
+```
+
+<!-- *********************************************************************** -->
+
 ### `State.metadata.get(key)` → *any* {#state-api-method-metadata-get}
 
 Returns the value associated with the specified key from the story metadata store.
@@ -427,6 +462,37 @@ Returns whether the specified key exists within the story metadata store.
 if (State.metadata.has('achievements')) {
 	/* do something */
 }
+```
+
+<!-- *********************************************************************** -->
+
+### `State.metadata.keys()` → *Array&lt;string&gt;* {#state-api-method-metadata-keys}
+
+Returns an array of the story metadata store's keys.
+
+#### History:
+
+* `v2.36.0`: Introduced.
+
+#### Parameters: *none*
+
+#### Examples:
+
+```
+// Get the metadata store's keys.
+var metadataKeys = State.metadata.keys();
+
+// Iterate over the keys with a `for` loop.
+for (var i = 0; i < metadataKeys.length; ++i) {
+	var key = metadataKeys[i];
+
+	/* do something */
+}
+
+// Iterate over the keys with `<Array>.forEach()`.
+metadataKeys.forEach(function (key) {
+	/* do something */
+});
 ```
 
 <!-- *********************************************************************** -->

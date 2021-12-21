@@ -727,11 +727,12 @@ var Scripting = (() => { // eslint-disable-line no-unused-vars, no-var
 			/* eslint-enable quote-props */
 		});
 		const parseRe = new RegExp([
-			'(""|\'\')',                                          // 1=Empty quotes
-			'("(?:\\\\.|[^"\\\\])+")',                            // 2=Double quoted, non-empty
-			"('(?:\\\\.|[^'\\\\])+')",                            // 3=Single quoted, non-empty
-			'([=+\\-*\\/%<>&\\|\\^~!?:,;\\(\\)\\[\\]{}]+)',       // 4=Operator delimiters
-			'([^"\'=+\\-*\\/%<>&\\|\\^~!?:,;\\(\\)\\[\\]{}\\s]+)' // 5=Barewords
+			'(?:""|\'\'|``)',                                     //   Empty quotes (incl. template literal)
+			'(?:"(?:\\\\.|[^"\\\\])+")',                          //   Double quoted, non-empty
+			"(?:'(?:\\\\.|[^'\\\\])+')",                          //   Single quoted, non-empty
+			'(`(?:\\\\.|[^`\\\\])+`)',                            // 1=Template literal, non-empty
+			'(?:[=+\\-*\\/%<>&\\|\\^~!?:,;\\(\\)\\[\\]{}]+)',     //   Operator delimiters
+			'([^"\'=+\\-*\\/%<>&\\|\\^~!?:,;\\(\\)\\[\\]{}\\s]+)' // 2=Barewords
 		].join('|'), 'g');
 		const notSpaceRe      = /\S/;
 		const varTest         = new RegExp(`^${Patterns.variable}`);
@@ -749,9 +750,24 @@ var Scripting = (() => { // eslint-disable-line no-unused-vars, no-var
 			while ((match = parseRe.exec(code)) !== null) {
 				// no-op: Empty quotes | Double quoted | Single quoted | Operator delimiters
 
+				// Template literal, non-empty.
+				if (match[1]) {
+					const rawTemplate = match[1];
+					const parsedTemplate = parseTemplate(rawTemplate);
+
+					if (parsedTemplate !== rawTemplate) {
+						code = code.splice(
+							match.index,        // starting index
+							rawTemplate.length, // replace how many
+							parsedTemplate      // replacement string
+						);
+						parseRe.lastIndex += parsedTemplate.length - rawTemplate.length;
+					}
+				}
+
 				// Barewords.
-				if (match[5]) {
-					let token = match[5];
+				else if (match[2]) {
+					let token = match[2];
 
 					// If the token is simply a dollar-sign or underscore, then it's either
 					// just the raw character or, probably, a function alias, so skip it.
@@ -804,6 +820,69 @@ var Scripting = (() => { // eslint-disable-line no-unused-vars, no-var
 			}
 
 			return code;
+		}
+
+		const templateGroupStartRe = /\$\{/g;
+		const templateGroupParseRe = new RegExp([
+			'(?:""|\'\')',               //   Empty quotes
+			'(?:"(?:\\\\.|[^"\\\\])+")', //   Double quoted, non-empty
+			"(?:'(?:\\\\.|[^'\\\\])+')", //   Single quoted, non-empty
+			'(\\{)',                     // 1=Opening curly brace
+			'(\\})'                      // 2=Closing curly brace
+		].join('|'), 'g');
+
+		function parseTemplate(rawTemplateLiteral) {
+			if (templateGroupStartRe.lastIndex !== 0) {
+				throw new RangeError('Scripting.parse last index is non-zero at start of template literal');
+			}
+
+			let template   = rawTemplateLiteral;
+			let startMatch;
+
+			while ((startMatch = templateGroupStartRe.exec(template)) !== null) {
+				const startIdx = startMatch.index + 2;
+				let endIdx   = startIdx;
+				let depth    = 1;
+				let endMatch;
+
+				templateGroupParseRe.lastIndex = startIdx;
+
+				while ((endMatch = templateGroupParseRe.exec(template)) !== null) {
+					// Opening curly brace.
+					if (endMatch[1]) {
+						++depth;
+					}
+					// Closing curly brace.
+					else if (endMatch[2]) {
+						--depth;
+					}
+
+					if (depth === 0) {
+						endIdx = endMatch.index;
+						break;
+					}
+				}
+
+				// If the group is not empty, replace it within the template
+				// with its parsed counterpart.
+				if (endIdx > startIdx) {
+					const parseIndex = parseRe.lastIndex;
+					const rawGroup   = template.slice(startIdx, endIdx);
+
+					parseRe.lastIndex = 0;
+					const parsedGroup = parse(rawGroup);
+					parseRe.lastIndex = parseIndex;
+
+					template = template.splice(
+						startIdx,        // starting index
+						rawGroup.length, // replace how many
+						parsedGroup      // replacement string
+					);
+					templateGroupStartRe.lastIndex += parsedGroup.length - rawGroup.length;
+				}
+			}
+
+			return template;
 		}
 
 		return parse;

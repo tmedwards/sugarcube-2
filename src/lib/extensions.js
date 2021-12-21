@@ -702,6 +702,40 @@
 	});
 
 	/*
+		Returns the number elements within the array that pass the test
+		implemented by the given predicate function.
+	*/
+	Object.defineProperty(Array.prototype, 'countWith', {
+		configurable : true,
+		writable     : true,
+
+		value(predicate, thisArg) {
+			if (this == null) { // lazy equality for null
+				throw new TypeError('Array.prototype.countWith called on null or undefined');
+			}
+			if (typeof predicate !== 'function') {
+				throw new Error('Array.prototype.countWith predicate parameter must be a function');
+			}
+
+			const length = this.length >>> 0;
+
+			if (length === 0) {
+				return 0;
+			}
+
+			let count = 0;
+
+			for (let i = 0; i < length; ++i) {
+				if (predicate.call(thisArg, this[i], i, this)) {
+					++count;
+				}
+			}
+
+			return count;
+		}
+	});
+
+	/*
 		Removes and returns all of the given elements from the array.
 	*/
 	Object.defineProperty(Array.prototype, 'delete', {

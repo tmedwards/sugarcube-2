@@ -32,9 +32,9 @@ Save objects have some of the following properties:
 
 The **`state`** object has the following properties:
 
-* **`history`:** (*array*) The array of moment objects (see below for details).
+* **`history`:** (*Array&lt;object&gt;*) The array of moment objects (see below for details).
 * **`index`:** (*integer*) The index of the active moment.
-* **`expired`:** (optional, *array*) The array of expired moment passage titles, exists only if any moments have expired.
+* **`expired`:** (optional, *Array&lt;string&gt;*) The array of expired moment passage titles, exists only if any moments have expired.
 * **`seed`:** (optional, *string*) The seed of SugarCube's seedable PRNG, exists only if enabled.
 
 Each **`moment`** object has the following properties:
@@ -599,4 +599,223 @@ if (loadResult !== null) {
 else {
 	/* Failure.  An error was displayed to the player. */
 }
+```
+
+
+<!-- ***************************************************************************
+	Save Events
+**************************************************************************** -->
+## Events {#save-api-events}
+
+<!-- *********************************************************************** -->
+
+### `Save.onLoad.add(handler)` {#save-api-method-onload-add}
+
+Performs any required processing before the save data is loaded—e.g., upgrading out-of-date save data.  The handler is passed one parameter, the save object to be processed.  If it encounters an unrecoverable problem during its processing, it may throw an exception containing an error message; the message will be displayed to the player and loading of the save will be terminated.
+
+#### History:
+
+* `v2.36.0`: Introduced.
+
+#### Parameters:
+
+* **`handler`:** (*function*) The handler function to be executed upon the loading of a save.
+
+#### Handler parameters:
+
+* **`save`:** (*object*) The [save object](#save-api-save-objects) to be processed.
+
+#### Examples:
+
+```js
+Save.onLoad.add(function (save) {
+	/* code to process the save object before it's loaded */
+});
+```
+
+<!-- *********************************************************************** -->
+
+### `Save.onLoad.clear()` {#save-api-method-onload-clear}
+
+Deletes all currently registered on-load handlers.
+
+#### History:
+
+* `v2.36.0`: Introduced.
+
+#### Parameters: *none*
+
+#### Examples:
+
+```js
+Save.onLoad.clear();
+```
+
+<!-- *********************************************************************** -->
+
+### `Save.onLoad.delete(handler)` → *boolean* {#save-api-method-onload-delete}
+
+Deletes the specified on-load handler.
+
+#### History:
+
+* `v2.36.0`: Introduced.
+
+#### Parameters:
+
+* **`handler`:** (*function*) The handler function to be deleted.
+
+#### Examples:
+
+```js
+// Given:
+// 	let myOnLoadHandler = function (save) {
+// 		/* code to process the save object before it's loaded */
+// 	};
+// 	Save.onLoad.add(myOnLoadHandler);
+
+Save.onLoad.delete(myOnLoadHandler);
+```
+
+<!-- *********************************************************************** -->
+
+### `Save.onLoad.size` → *integer* {#save-api-getter-onload-size}
+
+Returns the number of currently registered on-load handlers.
+
+#### History:
+
+* `v2.36.0`: Introduced.
+
+#### Parameters: *none*
+
+#### Examples:
+
+```js
+console.log('There are %d onLoad handlers registered.', Save.onLoad.size);
+```
+
+<!-- *********************************************************************** -->
+
+### `Save.onSave.add(handler)` {#save-api-method-onsave-add}
+
+Performs any required processing before the save data is saved.  The handlers is passed two parameters, the save object to be processed and save operation details object.
+
+#### History:
+
+* `v2.36.0`: Introduced.
+
+#### Parameters:
+
+* **`handler`:** (*function*) The handler function to be executed upon the saving of a save.
+
+#### Handler parameters:
+
+* **`save`:** (*object*) The [save object](#save-api-save-objects) to be processed.
+* **`details`:** (*object*) The save operation details object.
+
+#### Save operation details object:
+
+A save operation details object will have the following properties:
+
+* **`type`:** (*string*) A string representing what caused the save operation.  Possible values are: `'autosave'`, `'disk'`, `'serialize'`, `'slot'`.
+
+#### Examples:
+
+##### Using only the save object parameter
+
+```js
+Save.onSave.add(function (save) {
+	/* code to process the save object before it's saved */
+});
+```
+
+##### Using both the save object and operation details parameters
+
+```js
+Save.onSave.add(function (save, details) {
+	switch (details.type) {
+		case 'autosave': {
+			/* code to process the save object from autosaves before it's saved */
+			break;
+		}
+
+		case 'disk': {
+			/* code to process the save object from disk saves before it's saved */
+			break;
+		}
+
+		case 'serialize': {
+			/* code to process the save object from serialize saves before it's saved */
+			break;
+		}
+
+		default: { /* slot */
+			/* code to process the save object from slot saves before it's saved */
+			break;
+		}
+	}
+});
+```
+
+<!-- *********************************************************************** -->
+
+### `Save.onSave.clear()` {#save-api-method-onsave-clear}
+
+Deletes all currently registered on-save handlers.
+
+#### History:
+
+* `v2.36.0`: Introduced.
+
+#### Parameters: *none*
+
+#### Examples:
+
+```js
+Save.onSave.clear();
+```
+
+<!-- *********************************************************************** -->
+
+### `Save.onSave.delete(handler)` → *boolean* {#save-api-method-onsave-delete}
+
+Deletes the specified on-save handler.
+
+#### History:
+
+* `v2.36.0`: Introduced.
+
+#### Parameters:
+
+* **`handler`:** (*function*) The handler function to be deleted.
+
+#### Examples:
+
+```js
+// Given:
+// 	let myOnSaveHandler = function (save, details) {
+// 		/* code to process the save object before it's saved */
+// 	};
+// 	Save.onSave.add(myOnSaveHandler);
+
+Save.onSave.delete(myOnSaveHandler);
+```
+
+<!-- *********************************************************************** -->
+
+### `Save.onSave.size` → *integer* {#save-api-getter-onsave-size}
+
+Returns the number of currently registered on-save handlers.
+
+#### History:
+
+* `v2.36.0`: Introduced.
+
+#### Parameters: *none*
+
+#### Examples:
+
+```js
+console.log('There are %d onSave handlers registered.', Save.onSave.size);
 ```

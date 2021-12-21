@@ -75,25 +75,27 @@ Config.history.controls = false;
 
 <!-- *********************************************************************** -->
 
-### `Config.history.maxStates` ↔ *integer* (default: `100`) {#config-api-property-history-maxstates}
+### `Config.history.maxStates` ↔ *integer* (default: `40`) {#config-api-property-history-maxstates}
 
-Sets the maximum number of states (moments) to which the history is allowed to grow.  Should the history exceed the limit, states will be dropped from the past (oldest first).  A setting of `0` means that there is no limit to how large the history may grow, though doing so is not recommended.
+Sets the maximum number of states (moments) to which the history is allowed to grow.  Should the history exceed the limit, states will be dropped from the past (oldest first).
+
+<p role="note" class="tip"><b>Tip:</b>
+For game-oriented projects, as opposed to more story-oriented interactive fiction, a setting of <code>1</code> is <strong><em>strongly recommended</em></strong>.
+</p>
 
 #### History:
 
 * `v2.0.0`: Introduced.
+* `v2.36.0`: Reduced the default to `40`.
 
 #### Examples:
 
 ```
-// No history limit (you should never do this!)
-Config.history.maxStates = 0;
-
-// Limit the history to a single state
+// Limit the history to a single state (recommended for games)
 Config.history.maxStates = 1;
 
-// Limit the history to 150 states
-Config.history.maxStates = 150;
+// Limit the history to 80 states
+Config.history.maxStates = 80;
 ```
 
 
@@ -426,9 +428,16 @@ Config.saves.autoload = function () {
 
 <!-- *********************************************************************** -->
 
-### `Config.saves.autosave` ↔ *boolean* | *string array* | *function* (default: *none*) {#config-api-property-saves-autosave}
+### `Config.saves.autosave` ↔ *boolean* | *Array&lt;string&gt;* | *function* (default: *none*) {#config-api-property-saves-autosave}
 
-Determines whether the autosave is created/updated when passages are displayed.  Valid values are boolean `true`, which causes the autosave to be updated with every passage, an array of strings, which causes the autosave to be updated for each passage with at least one matching tag, or a function, which causes the autosave to be updated for each passage where its return value is truthy.
+Determines whether the autosave is created/updated when passages are displayed.
+
+Valid values are:
+
+* Boolean `true`, which causes the autosave to be updated with every passage.
+* Boolean `false`, which causes the autosave to never update automatically—i.e., you must do it manually via the <a href="#save-api-method-autosave-save"><code>Save.autosave.save()</code> static method</a>.
+* An array of strings, which causes the autosave to be updated for each passage with at least one matching tag.
+* A function, which causes the autosave to be updated for each passage where its return value is truthy.
 
 <p role="note" class="warning"><b>Warning:</b>
 When setting the value to boolean <code>true</code>, you will likely also need to use the <a href="#config-api-property-saves-isallowed"><code>Config.saves.isAllowed</code> property</a> to disallow saving on the start passage.  Or, if you use the start passage as real part of your story and allow the player to reenter it, rather than just as the initial landing/cover page, then you may wish to only disallow saving on the start passage the very first time it's displayed—i.e., at story startup.
@@ -444,6 +453,9 @@ When setting the value to boolean <code>true</code>, you will likely also need t
 ```
 // Autosaves every passage
 Config.saves.autosave = true;
+
+// Allows manual autosaving
+Config.saves.autosave = false;
 
 // Autosaves on passages tagged with any of "bookmark" or "autosave"
 Config.saves.autosave = ["bookmark", "autosave"];
@@ -485,93 +497,6 @@ Determines whether saving is allowed within the current context.  The callback i
 ```
 Config.saves.isAllowed = function () {
 	/* code */
-};
-```
-
-<!-- *********************************************************************** -->
-
-### `Config.saves.onLoad` ↔ *function* (default: *none*) {#config-api-property-saves-onload}
-
-Performs any required pre-processing before the save data is loaded—e.g., upgrading out-of-date save data.  The callback is passed one parameter, the save object to be processed.  If it encounters an unrecoverable problem during its processing, it may throw an exception containing an error message; the message will be displayed to the player and loading of the save will be terminated.
-
-#### History:
-
-* `v2.0.0`: Introduced.
-
-#### Callback parameters:
-
-* **`save`:** (*object*) The save object to be pre-processed.
-
-#### Save object:
-
-<p role="note"><b>Note:</b>
-See the <a href="#save-api-save-objects">save objects</a> section of the <a href="#save-api">Save API</a> for information on the format of a save.
-</p>
-
-#### Examples:
-
-```
-Config.saves.onLoad = function (save) {
-	/* code to pre-process the save object */
-};
-```
-
-<!-- *********************************************************************** -->
-
-### `Config.saves.onSave` ↔ *function* (default: *none*) {#config-api-property-saves-onsave}
-
-Performs any required post-processing before the save data is saved.  The callback is passed two parameters, the save object to be processed and save operation details object.
-
-#### History:
-
-* `v2.0.0`: Introduced.
-* `v2.33.0`: Added save operation details object parameter to the callback function.
-
-#### Callback parameters:
-
-* **`save`:** (*object*) The save object to be post-processed.
-* **`details`:** (*object*) The save operation details object.
-
-#### Save object:
-
-<p role="note"><b>Note:</b>
-See the <a href="#save-api-save-objects">save objects</a> section of the <a href="#save-api">Save API</a> for information on the format of a save.
-</p>
-
-#### Save operation details object:
-
-A save operation details object will have the following properties:
-
-* **`type`:** (*string*) A string representing how the save operation came about—i.e., what caused it.  Possible values are: `'autosave'`, `'disk'`, `'serialize'`, `'slot'`.
-
-#### Examples:
-
-##### Using only the save object parameter
-
-```
-Config.saves.onSave = function (save) {
-	/* code to post-process the save object */
-};
-```
-
-##### Using both the save object and operation details parameters
-
-```
-Config.saves.onSave = function (save, details) {
-	switch (details.type) {
-	case 'autosave':
-		/* code to post-process the save object from autosaves */
-		break;
-	case 'disk':
-		/* code to post-process the save object from disk saves */
-		break;
-	case 'serialize':
-		/* code to post-process the save object from serialize saves */
-		break;
-	default: /* slot */
-		/* code to post-process the save object from slot saves */
-		break;
-	}
 };
 ```
 
@@ -635,6 +560,33 @@ Config.saves.version = 3;
 // As a string (not recommended)
 Config.saves.version = "v3";
 ```
+
+<!-- *********************************************************************** -->
+
+### <span class="deprecated">`Config.saves.onLoad` ↔ *function* (default: *none*)</span> {#config-api-property-saves-onload}
+
+<p role="note" class="warning"><b>Deprecated:</b>
+This setting has been deprecated and should no longer be used.  See the <a href="#save-api-method-onload-add"><code>Save.onLoad.add()</code></a> method for its replacement.
+</p>
+
+#### History:
+
+* `v2.0.0`: Introduced.
+* `v2.36.0`: Deprecated in favor of the [`Save` Events API](#save-api-events).
+
+<!-- *********************************************************************** -->
+
+### <span class="deprecated">`Config.saves.onSave` ↔ *function* (default: *none*)</span> {#config-api-property-saves-onsave}
+
+<p role="note" class="warning"><b>Deprecated:</b>
+This setting has been deprecated and should no longer be used.  See the <a href="#save-api-method-onsave-add"><code>Save.onSave.add()</code></a> method for its replacement.
+</p>
+
+#### History:
+
+* `v2.0.0`: Introduced.
+* `v2.33.0`: Added save operation details object parameter to the callback function.
+* `v2.36.0`: Deprecated in favor of the [`Save` Events API](#save-api-events).
 
 
 <!-- ***************************************************************************

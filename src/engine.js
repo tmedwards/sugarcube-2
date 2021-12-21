@@ -24,14 +24,14 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 	// Minimum delay for DOM actions (in milliseconds).
 	const minDomActionDelay = 40;
 
+	// Cache of the debug view(s) for initialization special passage(s).
+	const _initDebugViews = [];
+
 	// Current state of the engine (default: `Engine.States.Idle`).
 	let _state = States.Idle;
 
 	// Last time `enginePlay()` was called (in milliseconds).
 	let _lastPlay = null;
-
-	// Cache of the debug view for the StoryInit special passage.
-	let _storyInitDebugView = null;
 
 	// Cache of the outline patching <style> element (`StyleWrapper`-wrapped).
 	let _outlinePatch = null;
@@ -70,12 +70,44 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 
 				$elems.append(markup);
 
-				if ($elems.find('#passages').length === 0) {
+				const $passages = $elems.find('#passages');
+
+				if ($passages.length === 0) {
 					throw new Error('no element with ID "passages" found within "StoryInterface" special passage');
 				}
 
-				const updating = [];
+				// Empty `#passages` and set the `aria-live` content attribute to `'polite'` if necessary.
+				$passages
+					.empty()
 
+					// Without an existing `aria-live`.
+					.not('[aria-live]')
+					.attr('aria-live', 'polite')
+					.end();
+
+				// Data passage elements updated once during initialization.
+				$elems.find('[data-init-passage]').each((i, el) => {
+					if (el.id === 'passages') {
+						throw new Error(`"StoryInterface" element <${el.nodeName.toLowerCase()} id="passages"> must not contain a "data-init-passage" content attribute`);
+					}
+
+					const passage = el.getAttribute('data-init-passage').trim();
+
+					if (el.hasAttribute('data-passage')) {
+						throw new Error(`"StoryInterface" element <${el.nodeName.toLowerCase()} data-init-passage="${passage}"> must not contain a "data-passage" content attribute`);
+					}
+
+					if (el.firstElementChild !== null) {
+						throw new Error(`"StoryInterface" element <${el.nodeName.toLowerCase()} data-init-passage="${passage}"> contains child elements`);
+					}
+
+					if (Story.has(passage)) {
+						jQuery(el).empty().wiki(Story.get(passage).processText().trim());
+					}
+				});
+
+				// Data passage elements updated upon navigation.
+				const updating = [];
 				$elems.find('[data-passage]').each((i, el) => {
 					if (el.id === 'passages') {
 						throw new Error(`"StoryInterface" element <${el.nodeName.toLowerCase()} id="passages"> must not contain a "data-passage" content attribute`);
@@ -102,7 +134,7 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 				Config.ui.updateStoryElements = false;
 			}
 			else {
-				$elems.append('<div id="story" role="main"><div id="passages"></div></div>');
+				$elems.append('<div id="story" role="main"><div id="passages" aria-live="polite"></div></div>');
 			}
 
 			// Insert the core UI elements into the page before the main script.
@@ -150,6 +182,31 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 		if (DEBUG) { console.log('[Engine/engineStart()]'); }
 
 		/*
+			Execute `init`-tagged special passages.
+		*/
+		Story.getAllInit().forEach(passage => {
+			try {
+				const debugBuffer = Wikifier.wikifyEval(passage.text);
+
+				if (Config.debug) {
+					const debugView = new DebugView(
+						document.createDocumentFragment(),
+						'special',
+						`${passage.title} [init-tagged]`,
+						`${passage.title} [init-tagged]`
+					);
+					debugView.modes({ hidden : true });
+					debugView.append(debugBuffer);
+					_initDebugViews.push(debugView.output);
+				}
+			}
+			catch (ex) {
+				console.error(ex);
+				Alert.error(`${passage.title} [init-tagged]`, typeof ex === 'object' ? ex.message : ex);
+			}
+		});
+
+		/*
 			Execute the StoryInit special passage.
 		*/
 		if (Story.has('StoryInit')) {
@@ -165,12 +222,12 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 					);
 					debugView.modes({ hidden : true });
 					debugView.append(debugBuffer);
-					_storyInitDebugView = debugView.output;
+					_initDebugViews.push(debugView.output);
 				}
 			}
 			catch (ex) {
 				console.error(ex);
-				Alert.error('StoryInit', ex.message);
+				Alert.error('StoryInit', typeof ex === 'object' ? ex.message : ex);
 			}
 		}
 
@@ -516,12 +573,15 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 						}
 
 						$outgoing
-							.attr('id', `out-${$outgoing.attr('id')}`)
+							.attr({
+								id          : `out-${$outgoing.attr('id')}`,
+								'aria-live' : 'off'
+							})
 							.addClass('passage-out');
 
 						if (typeof Config.passages.transitionOut === 'string') {
 							$outgoing.on(Has.transitionEndEvent, ev => {
-								if (ev.originalEvent.propertyName === Config.passages.transitionOut) {
+								if (ev.propertyName === Config.passages.transitionOut) {
 									$outgoing.remove();
 								}
 							});
@@ -630,9 +690,9 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 				jQuery(passageEl).append(debugView.output);
 			}
 
-			// Prepend the cached `StoryInit` debug view, if we're showing the first moment/turn.
-			if (State.turns === 1 && _storyInitDebugView != null) { // lazy equality for null
-				jQuery(passageEl).prepend(_storyInitDebugView);
+			// Prepend the cached initialization debug views, if we're showing the first moment/turn.
+			if (State.turns === 1 && _initDebugViews.length > 0) {
+				jQuery(passageEl).prepend(_initDebugViews);
 			}
 		}
 

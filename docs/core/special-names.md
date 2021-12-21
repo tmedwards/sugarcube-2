@@ -20,7 +20,9 @@ Passage, tag, and variable names that have special meaning to SugarCube.
 
 ### `PassageDone` {#special-passage-passagedone}
 
-Used for post-passage-display tasks, like redoing dynamic changes (happens after the rendering and display of each passage).  Roughly equivalent to the [`:passagedisplay` event](#events-navigation-event-passagedisplay).
+Used for post-passage-display tasks, like redoing dynamic changes (happens after the rendering and display of each passage).  Generates no output.
+
+Roughly equivalent to the [`:passagedisplay` event](#events-navigation-event-passagedisplay).
 
 #### History:
 
@@ -30,7 +32,9 @@ Used for post-passage-display tasks, like redoing dynamic changes (happens after
 
 ### `PassageFooter` {#special-passage-passagefooter}
 
-Appended to each rendered passage.  Roughly equivalent to the [`:passagerender` event](#events-navigation-event-passagerender).
+Appended to each rendered passage.
+
+Roughly equivalent to the [`:passagerender` event](#events-navigation-event-passagerender).
 
 #### History:
 
@@ -40,7 +44,9 @@ Appended to each rendered passage.  Roughly equivalent to the [`:passagerender` 
 
 ### `PassageHeader` {#special-passage-passageheader}
 
-Prepended to each rendered passage.  Roughly equivalent to the [`:passagestart` event](#events-navigation-event-passagestart).
+Prepended to each rendered passage.
+
+Roughly equivalent to the [`:passagestart` event](#events-navigation-event-passagestart).
 
 #### History:
 
@@ -50,7 +56,9 @@ Prepended to each rendered passage.  Roughly equivalent to the [`:passagestart` 
 
 ### `PassageReady` {#special-passage-passageready}
 
-Used for pre-passage-display tasks, like redoing dynamic changes (happens before the rendering of each passage).  Roughly equivalent to the [`:passagestart` event](#events-navigation-event-passagestart).
+Used for pre-passage-display tasks, like redoing dynamic changes (happens before the rendering of each passage).  Generates no output.
+
+Roughly equivalent to the [`:passagestart` event](#events-navigation-event-passagestart).
 
 #### History:
 
@@ -112,7 +120,7 @@ Sets the story's display title in the browser's titlebar and the UI bar (element
 
 ### `StoryInit` {#special-passage-storyinit}
 
-Used for pre-story-start initialization tasks, like variable initialization (happens at the beginning of story initialization).
+Used for pre-story-start initialization tasks, like variable initialization (happens at the beginning of story initialization).  Generates no output.
 
 #### History:
 
@@ -122,16 +130,19 @@ Used for pre-story-start initialization tasks, like variable initialization (hap
 
 ### `StoryInterface` {#special-passage-storyinterface}
 
-Used to replace SugarCube's default UI.  Its contents are treated as raw HTML markup—i.e., *none* of SugarCube's special HTML processing is performed.  It must contain, at least, an element with the ID `passages`, which will be the main passage display area.  Elements, aside from the `#passages` element, may include a `data-passage` content attribute, which denotes that the element should be updated via the specified passage—the passage will be processed as normal, meaning that markup and macros will work as expected.
+Used to replace SugarCube's default UI.  Its contents are treated as raw HTML markup—i.e., *none* of SugarCube's special HTML processing is performed.  It must contain, at least, an element with the ID `passages` that will be the main passage display area.
+
+Additional elements, aside from the `#passages` element, may include either the `data-init-passage` or `data-passage` content attribute, whose value is the name of the passage used to populate the element—the passage will be processed as normal, meaning that markup and macros will work as expected.  The `data-init-passage` attribute causes the element to be updated once at initialization, while the `data-passage` attribute causes the element to be updated upon each passage navigation.
 
 <p role="note" class="warning"><b>Warning:</b>
-Elements that include a <code>data-passage</code> content attribute <em>should not</em> themselves contain additional elements—since such elements' contents are replaced each turn via their associated passage, any child elements would be lost.
+Elements that include either a <code>data-init-passage</code> or <code>data-passage</code> content attribute <em>should not</em> themselves contain additional elements—since such elements' contents are replaced each turn via their associated passage, any child elements would be lost.
 </p>
 
 #### History:
 
 * `v2.18.0`: Introduced.
 * `v2.28.0`: Added processing of the `data-passage` content attribute.
+* `v2.36.0`: Added processing of the `data-init-passage` content attribute.
 
 #### Examples:
 
@@ -141,11 +152,11 @@ Elements that include a <code>data-passage</code> content attribute <em>should n
 <div id="passages"></div>
 ```
 
-##### With `data-passage` content attributes
+##### With `data-init-passage` and `data-passage` content attributes
 
 ```
 <div id="interface">
-	<div id="menu" data-passage="Menu"></div>
+	<div id="menu" data-init-passage="Menu"></div>
 	<div id="notifications" data-passage="Notifications"></div>
 	<div id="passages"></div>
 </div>
@@ -256,6 +267,20 @@ Does not affect <code>script</code> or <code>stylesheet</code> tagged passages, 
 
 <!-- *********************************************************************** -->
 
+### `init` {#special-tag-init}
+
+Registers the passage as an initialization passage.  Used for pre-story-start initialization tasks, like variable initialization (happens at the beginning of story initialization).  Generates no output.
+
+<p role="note"><b>Note:</b>
+This is chiefly intended for use by add-ons/libraries.  For normal projects, authors are encouraged to continue to use the <a href="#special-passage-storyinit"><code>StoryInit</code> special named passage</a>.
+</p>
+
+#### History:
+
+* `v2.36.0`: Introduced.
+
+<!-- *********************************************************************** -->
+
 ### `script` {#special-tag-script}
 
 **Twine&nbsp;2:**  *Not special.*  Use the *Edit Story JavaScript* story editor menu item for scripts.
@@ -346,13 +371,23 @@ Alias for `jQuery`, by default.  **NOTE:** This should not be confused with [sto
 
 <!-- *********************************************************************** -->
 
-### `$args` {#special-variable-dollar-args}
+### `_args` {#special-variable-underscore-args}
 
 Widget arguments array (only inside widgets).  See [`<<widget>>`](#macros-macro-widget) for more information.
 
 #### History:
 
-* `v2.0.0`: Introduced.
+* `v2.36.0`: Introduced.
+
+<!-- *********************************************************************** -->
+
+### `_contents` {#special-variable-underscore-contents}
+
+Widget contents string (only inside block widgets).  See [`<<widget>>`](#macros-macro-widget) for more information.
+
+#### History:
+
+* `v2.36.0`: Introduced.
 
 <!-- *********************************************************************** -->
 
@@ -545,6 +580,19 @@ UIBar API.  See [`UIBar` API](#uibar-api) for more information.
 
 <!-- *********************************************************************** -->
 
+### `$args` {#special-variable-dollar-args}
+
+<p role="note" class="warning"><b>Deprecated:</b>
+The <code>$args</code> special variable has been deprecated and should no longer be used.  See the <a href="#special-variable-underscore-args"><code>_args</code> special variable</a> for its replacement.
+</p>
+
+#### History:
+
+* `v2.0.0`: Introduced.
+* `v2.36.0`: Deprecated.
+
+<!-- *********************************************************************** -->
+
 ### <span class="deprecated">`postdisplay`</span> {#special-variable-postdisplay}
 
 <p role="note" class="warning"><b>Deprecated:</b>
@@ -553,7 +601,7 @@ UIBar API.  See [`UIBar` API](#uibar-api) for more information.
 
 #### History:
 
-* `v2.0.0`: Basic support.
+* `v2.0.0`: Introduced.
 * `v2.31.0`: Deprecated.
 
 <!-- *********************************************************************** -->
@@ -566,7 +614,7 @@ UIBar API.  See [`UIBar` API](#uibar-api) for more information.
 
 #### History:
 
-* `v2.0.0`: Basic support.
+* `v2.0.0`: Introduced.
 * `v2.31.0`: Deprecated.
 
 <!-- *********************************************************************** -->
@@ -579,7 +627,7 @@ UIBar API.  See [`UIBar` API](#uibar-api) for more information.
 
 #### History:
 
-* `v2.0.0`: Basic support.
+* `v2.0.0`: Introduced.
 * `v2.31.0`: Deprecated.
 
 <!-- *********************************************************************** -->
@@ -592,7 +640,7 @@ UIBar API.  See [`UIBar` API](#uibar-api) for more information.
 
 #### History:
 
-* `v2.0.0`: Basic support.
+* `v2.0.0`: Introduced.
 * `v2.31.0`: Deprecated.
 
 <!-- *********************************************************************** -->
@@ -605,5 +653,5 @@ UIBar API.  See [`UIBar` API](#uibar-api) for more information.
 
 #### History:
 
-* `v2.0.0`: Basic support.
+* `v2.0.0`: Introduced.
 * `v2.31.0`: Deprecated.

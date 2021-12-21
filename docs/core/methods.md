@@ -20,7 +20,7 @@ Additionally.  SugarCube includes polyfills for virtually all JavaScript (ECMASc
 
 <!-- *********************************************************************** -->
 
-### `<Array>.concat(members…)` → *array* {#methods-array-prototype-method-concat}
+### `<Array>.concat(members…)` → *Array&lt;any&gt;* {#methods-array-prototype-method-concat}
 
 Concatenates one or more members to the end of the base array and returns the result as a new array.  Does not modify the original.
 
@@ -28,7 +28,7 @@ Concatenates one or more members to the end of the base array and returns the re
 
 #### Parameters:
 
-* **`members`:** (*any*) The members to concatenate.  Members that are arrays will be merged—i.e., their members will be concatenated, rather than the array itself.
+* **`members`:** (*any*…) The members to concatenate.  Members that are arrays will be merged—i.e., their members will be concatenated, rather than the array itself.
 
 #### Examples:
 
@@ -43,7 +43,7 @@ $fruits1.concat($fruits2, "Pears")   → Returns ["Apples", "Oranges", "Pears", 
 
 <!-- *********************************************************************** -->
 
-### `<Array>.concatUnique(members…)` → *array* {#methods-array-prototype-method-concatunique}
+### `<Array>.concatUnique(members…)` → *Array&lt;any&gt;* {#methods-array-prototype-method-concatunique}
 
 Concatenates one or more unique members to the end of the base array and returns the result as a new array.  Does not modify the original.
 
@@ -53,7 +53,7 @@ Concatenates one or more unique members to the end of the base array and returns
 
 #### Parameters:
 
-* **`members`:** (*any*) The members to concatenate.  Members that are arrays will be merged—i.e., their members will be concatenated, rather than the array itself.
+* **`members`:** (*any*…) The members to concatenate.  Members that are arrays will be merged—i.e., their members will be concatenated, rather than the array itself.
 
 #### Examples:
 
@@ -91,7 +91,49 @@ $fruits.count("Oranges", 2)  → Returns 1
 
 <!-- *********************************************************************** -->
 
-### `<Array>.delete(needles…)` → *array* {#methods-array-prototype-method-delete}
+### `<Array>.countWith(predicate [, thisArg])` → *integer* {#methods-array-prototype-method-countwith}
+
+Returns the number of times that members within the array pass the test implemented by the given predicate function.
+
+#### History:
+
+* `v2.36.0`: Introduced.
+
+#### Parameters:
+
+* **`predicate`:** (*function*) The function used to test each member.  It is called with three arguments:
+	* **`value`:** (*any*) The member being processed.
+	* **`index`:** (optional, *integer*) The index of member being processed.
+	* **`array`:** (optional, *array*) The array being processed.
+* **`thisArg`:** (optional, *any*) The value to use as `this` when executing `predicate`.
+
+#### Examples:
+
+```
+// Given: $fruits = ["Apples", "Oranges", "Plums", "Oranges"]
+$fruits.countWith(function (fruit) { return fruit === "Oranges"; })  → Returns 2
+```
+
+```
+// Given: $numbers = [1, 2.3, 4, 76, 3.1]
+$numbers.countWith(Number.isInteger)  → Returns 3
+```
+
+```
+// Given: $items = [
+// 	{ name : 'Healing potion', kind : 'potion' },
+// 	{ name : 'Longsword', kind : 'weapon' },
+// 	{ name : 'Mana potion', kind : 'potion' },
+// 	{ name : 'Dead rat', kind : 'junk' },
+// 	{ name : 'Endurance potion', kind : 'potion' },
+// 	{ name : 'Shortbow', kind : 'weapon' }
+// ]
+$items.countWith(function (item) { return item.kind === 'junk'; })  → Returns 1
+```
+
+<!-- *********************************************************************** -->
+
+### `<Array>.delete(needles…)` → *Array&lt;any&gt;* {#methods-array-prototype-method-delete}
 
 Removes all instances of the given members from the array and returns a new array containing the removed members.
 
@@ -101,7 +143,7 @@ Removes all instances of the given members from the array and returns a new arra
 
 #### Parameters:
 
-* **`needles`:** (*any* | *array*) The members to remove.  May be a list of members or an array.
+* **`needles`:** (*any*… | *Array&lt;any&gt;*) The members to remove.  May be a list of members or an array.
 
 #### Examples:
 
@@ -113,7 +155,7 @@ $fruits.delete("Apples", "Plums")  → Returns ["Apples", "Plums"]; $fruits ["Or
 
 <!-- *********************************************************************** -->
 
-### `<Array>.deleteAt(indices…)` → *array* {#methods-array-prototype-method-deleteat}
+### `<Array>.deleteAt(indices…)` → *Array&lt;any&gt;* {#methods-array-prototype-method-deleteat}
 
 Removes all of the members at the given indices from the array and returns a new array containing the removed members.
 
@@ -123,7 +165,7 @@ Removes all of the members at the given indices from the array and returns a new
 
 #### Parameters:
 
-* **`indices`:** (*integer* | *array*) The indices of the members to remove.  May be a list of indices or an array.
+* **`indices`:** (*integer*… | *Array&lt;integer&gt;*) The indices of the members to remove.  May be a list or array of indices.
 
 #### Examples:
 
@@ -136,9 +178,9 @@ $fruits.deleteAt(0, 2)  → Returns ["Apples", "Plums"]; $fruits ["Oranges", "Or
 
 <!-- *********************************************************************** -->
 
-### `<Array>.deleteWith(predicate [, thisArg])` → *array* {#methods-array-prototype-method-deletewith}
+### `<Array>.deleteWith(predicate [, thisArg])` → *Array&lt;any&gt;* {#methods-array-prototype-method-deletewith}
 
-Removes all of the members that pass the test implemented by the given predicate function from the array and returns a new array containing the removed members.
+Removes all of the members from the array that pass the test implemented by the given predicate function and returns a new array containing the removed members.
 
 #### History:
 
@@ -201,7 +243,7 @@ $pies.first()  → Returns "Blueberry"
 
 <!-- *********************************************************************** -->
 
-### `<Array>.flat(depth)` → *array* {#methods-array-prototype-method-flat}
+### `<Array>.flat(depth)` → *Array&lt;any&gt;* {#methods-array-prototype-method-flat}
 
 Returns a new array consisting of the source array with all sub-array elements concatenated into it recursively up to the given depth.  Does not modify the original.
 
@@ -223,7 +265,7 @@ $npa.flat(2)  → Returns ["Alfa", "Bravo", "Charlie", "Delta", "Echo", "Foxtrot
 
 <!-- *********************************************************************** -->
 
-### `<Array>.flatMap(callback [, thisArg])` → *array* {#methods-array-prototype-method-flatmap}
+### `<Array>.flatMap(callback [, thisArg])` → *Array&lt;any&gt;* {#methods-array-prototype-method-flatmap}
 
 Returns a new array consisting of the result of calling the given mapping function on every element in the source array and then concatenating all sub-array elements into it recursively up to a depth of `1`.  Does not modify the original.
 
@@ -285,7 +327,7 @@ Returns whether all of the given members were found within the array.
 
 #### Parameters:
 
-* **`needles`:** (*any* | *array*) The members to find.  May be a list of members or an array.
+* **`needles`:** (*any*… | *Array&lt;any&gt;*) The members to find.  May be a list of members or an array.
 
 #### Examples:
 
@@ -309,7 +351,7 @@ Returns whether any of the given members were found within the array.
 
 #### Parameters:
 
-* **`needles`:** (*any* | *array*) The members to find.  May be a list of members or an array.
+* **`needles`:** (*any*… | *Array&lt;any&gt;*) The members to find.  May be a list of members or an array.
 
 #### Examples:
 
@@ -361,7 +403,7 @@ $pies.pluck()  → Removes and returns a random pie from the array
 
 <!-- *********************************************************************** -->
 
-### `<Array>.pluckMany(want)` → *array* {#methods-array-prototype-method-pluckmany}
+### `<Array>.pluckMany(want)` → *Array&lt;any&gt;* {#methods-array-prototype-method-pluckmany}
 
 Randomly removes the given number of members from the base array and returns the removed members as a new array.
 
@@ -407,7 +449,7 @@ Appends one or more members to the end of the base array and returns its new len
 
 #### Parameters:
 
-* **`members`:** (*any*) The members to append.
+* **`members`:** (*any*…) The members to append.
 
 #### Examples:
 
@@ -431,7 +473,7 @@ Appends one or more unique members to the end of the base array and returns its 
 
 #### Parameters:
 
-* **`members`:** (*any*) The members to append.
+* **`members`:** (*any*…) The members to append.
 
 #### Examples:
 
@@ -464,7 +506,7 @@ $pies.random()  → Returns a random pie from the array
 
 <!-- *********************************************************************** -->
 
-### `<Array>.randomMany(want)` → *array* {#methods-array-prototype-method-randommany}
+### `<Array>.randomMany(want)` → *Array&lt;any&gt;* {#methods-array-prototype-method-randommany}
 
 Randomly selects the given number of unique members from the base array and returns the selected members as a new array.  Does not modify the original.
 
@@ -502,7 +544,7 @@ $fruits.shift()  → Returns "Apples"; $fruits ["Oranges", "Pears"]
 
 <!-- *********************************************************************** -->
 
-### `<Array>.shuffle()` → *array* {#methods-array-prototype-method-shuffle}
+### `<Array>.shuffle()` → *Array&lt;any&gt;* {#methods-array-prototype-method-shuffle}
 
 Randomly shuffles the array.
 
@@ -529,7 +571,7 @@ Prepends one or more members to the beginning of the base array and returns its 
 
 #### Parameters:
 
-* **`members`:** (*any*) The members to append.
+* **`members`:** (*any*…) The members to append.
 
 #### Examples:
 
@@ -553,7 +595,7 @@ Prepends one or more unique members to the beginning of the base array and retur
 
 #### Parameters:
 
-* **`members`:** (*any*) The members to append.
+* **`members`:** (*any*…) The members to append.
 
 #### Examples:
 
@@ -606,7 +648,7 @@ This method has been deprecated and should no longer be used.  See the <a href="
 
 <!-- *********************************************************************** -->
 
-### <span class="deprecated">`<Array>.flatten()` → *array*</span> {#methods-array-prototype-method-flatten}
+### <span class="deprecated">`<Array>.flatten()` → *Array&lt;any&gt;*</span> {#methods-array-prototype-method-flatten}
 
 <p role="note" class="warning"><b>Deprecated:</b>
 This method has been deprecated and should no longer be used.  See the <a href="#methods-array-prototype-method-flat"><code>&lt;Array&gt;.flat()</code></a> method for its replacement.  The exactly equivalent call is: <code>&lt;Array&gt;.flat(Infinity)</code>.
@@ -806,7 +848,7 @@ Wikifies the given content source(s) and discards the result.  If there were err
 
 #### Parameters:
 
-* **`sources`:** (*string*) The list of content sources.
+* **`sources`:** (*string*…) The list of content sources.
 
 #### Examples:
 
@@ -826,7 +868,7 @@ Wikifies the given content source(s) and appends the result to the target elemen
 
 #### Parameters:
 
-* **`sources`:** (*string*) The list of content sources.
+* **`sources`:** (*string*…) The list of content sources.
 
 #### Examples:
 
@@ -1010,7 +1052,7 @@ Returns a formatted string, after replacing each format item in the given format
 #### Parameters:
 
 * **`format`:** (*string*) The format string, which consists of normal text and format items.
-* **`arguments`:** (*any* | *array*) Either a list of arguments, which correspond by-index to the format items within the format string, or an array, whose members correspond by-index.
+* **`arguments`:** (*any*… | *Array&lt;any&gt;*) Either a list of arguments, which correspond by-index to the format items within the format string, or an array, whose members correspond by-index.
 
 #### Format items:
 

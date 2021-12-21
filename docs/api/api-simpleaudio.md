@@ -253,7 +253,7 @@ Adds an audio track with the given track ID.
 #### Parameters:
 
 * **`trackId`:** (*string*) The ID of the track, which will be used to reference it.
-* **`sources`:** (*any* | *array*) The audio sources for the track, which may be a list of sources or an array.  Only one is required, though supplying additional sources in differing formats is recommended, as no single format is supported by all browsers.  A source must be either a URL (absolute or relative) to an audio resource, the name of an audio passage, or a data URI.  In rare cases where the audio format cannot be automatically detected from the source (URLs are parsed for a file extension, data URIs are parsed for the media type), a format specifier may be prepended to the front of each source to manually specify the format (syntax: `formatId|`, where `formatId` is the audio format—generally, whatever the file extension would normally be; e.g., `mp3`, `mp4`, `ogg`, `weba`, `wav`).
+* **`sources`:** (*string*… | *Array&lt;string&gt;*) The audio sources for the track, which may be a list of sources or an array.  Only one is required, though supplying additional sources in differing formats is recommended, as no single format is supported by all browsers.  A source must be either a URL (absolute or relative) to an audio resource, the name of an audio passage, or a data URI.  In rare cases where the audio format cannot be automatically detected from the source (URLs are parsed for a file extension, data URIs are parsed for the media type), a format specifier may be prepended to the front of each source to manually specify the format (syntax: `formatId|`, where `formatId` is the audio format—generally, whatever the file extension would normally be; e.g., `mp3`, `mp4`, `ogg`, `weba`, `wav`).
 
 #### Examples:
 
@@ -399,7 +399,7 @@ If you want to play tracks in a sequence, then you want a <a href="#simpleaudio-
 #### Parameters:
 
 * **`groupId`:** (*string*) The ID of the group, which will be used to reference it and *must* begin with a colon.  **NOTE:** There are several predefined group IDs (`:all`, `:looped`, `:muted`, `:paused`, `:playing`) and the `:not` group modifier that cannot be reused/overwritten.
-* **`trackIds`:** (*any* | *array*) The IDs of the tracks to make part of the group, which may be a list of track IDs or an array.
+* **`trackIds`:** (*string*… | *Array&lt;string&gt;*) The IDs of the tracks to make part of the group, which may be a list of track IDs or an array.
 
 #### Examples:
 
@@ -456,7 +456,7 @@ SimpleAudio.groups.delete(":ui");
 
 <!-- *********************************************************************** -->
 
-### `SimpleAudio.groups.get(groupId)` → *array* | *null* {#simpleaudio-api-method-groups-get}
+### `SimpleAudio.groups.get(groupId)` → *Array&lt;string&gt;* | *null* {#simpleaudio-api-method-groups-get}
 
 Returns the array of track IDs with the given group ID, or `null` on failure.
 
@@ -524,7 +524,7 @@ If you simply want to apply actions to multiple tracks simultaneously, then you 
 #### Parameters:
 
 * **`listId`:** (*string*) The ID of the list, which will be used to reference it.
-* **`sources`:** (*string* | *object* | *array*) The track IDs or descriptors of the tracks to make part of the list, which may be specified as a list or an array.
+* **`sources`:** (*string* | *object* | *Array&lt;string | object&gt;*) The track IDs or descriptors of the tracks to make part of the list, which may be specified as a list or an array.
 
 #### Descriptor objects:
 
@@ -535,7 +535,7 @@ Track descriptor objects come in two forms and should have some of the noted pro
   * **`own`:** (optional, *boolean*) When `true`, signifies that the playlist should create its own independent copy of the track, rather than simply referencing the existing instance.  Owned copies are solely under the control of their playlist and cannot be selected with either the [`SimpleAudio.tracks.get()` method](#simpleaudio-api-method-tracks-get) or the [`SimpleAudio.select()` method](#simpleaudio-api-method-select).
   * **`volume`:** (optional, *number*) The base volume level of the track within the playlist.  If omitted, defaults to the track's current volume.  Valid values are floating-point numbers in the range `0` (silent) to `1` (loudest)—e.g., `0` is 0%, `0.5` is 50%, `1` is 100%.
 * **New track form: `{ sources, [volume] }`**
-  * **`sources`:** (*string array*) The audio sources for the track.  Only one is required, though supplying additional sources in differing formats is recommended, as no single format is supported by all browsers.  A source must be either a URL (absolute or relative) to an audio resource, the name of an audio passage, or a data URI.  In rare cases where the audio format cannot be automatically detected from the source (URLs are parsed for a file extension, data URIs are parsed for the media type), a format specifier may be prepended to the front of each source to manually specify the format (syntax: `formatId|`, where `formatId` is the audio format—generally, whatever the file extension would normally be; e.g., `mp3`, `mp4`, `ogg`, `weba`, `wav`).
+  * **`sources`:** (*Array&lt;string&gt;*) The audio sources for the track.  Only one is required, though supplying additional sources in differing formats is recommended, as no single format is supported by all browsers.  A source must be either a URL (absolute or relative) to an audio resource, the name of an audio passage, or a data URI.  In rare cases where the audio format cannot be automatically detected from the source (URLs are parsed for a file extension, data URIs are parsed for the media type), a format specifier may be prepended to the front of each source to manually specify the format (syntax: `formatId|`, where `formatId` is the audio format—generally, whatever the file extension would normally be; e.g., `mp3`, `mp4`, `ogg`, `weba`, `wav`).
   * **`volume`:** (optional, *number*) The base volume level of the track within the playlist.  If omitted, defaults to `1` (loudest).  Valid values are floating-point numbers in the range `0` (silent) to `1` (loudest)—e.g., `0` is 0%, `0.5` is 50%, `1` is 100%.
 
 #### Examples:

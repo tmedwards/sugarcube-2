@@ -74,6 +74,19 @@
 
 
 /*
+	Accessibility styles.
+*/
+@media (prefers-reduced-motion: reduce) {
+	#story {
+		transition: margin-left 0s;
+	}
+	#ui-bar {
+		transition: left 0s;
+	}
+}
+
+
+/*
 	Default appearance styles.
 */
 #ui-bar {
