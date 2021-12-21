@@ -267,6 +267,20 @@ Does not affect <code>script</code> or <code>stylesheet</code> tagged passages, 
 
 <!-- *********************************************************************** -->
 
+### `init` {#special-tag-init}
+
+Registers the passage as an initialization passage.  Used for pre-story-start initialization tasks, like variable initialization (happens at the beginning of story initialization).  Generates no output.
+
+<p role="note"><b>Note:</b>
+This is chiefly intended for use by add-ons/libraries.  For normal projects, authors are encouraged to continue to use the <a href="#special-passage-storyinit"><code>StoryInit</code> special named passage</a>.
+</p>
+
+#### History:
+
+* `v2.36.0`: Introduced.
+
+<!-- *********************************************************************** -->
+
 ### `script` {#special-tag-script}
 
 **Twine&nbsp;2:**  *Not special.*  Use the *Edit Story JavaScript* story editor menu item for scripts.

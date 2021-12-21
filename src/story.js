@@ -14,6 +14,9 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 	// Map of normal passages.
 	const _passages = {};
 
+	// List of init passages.
+	const _inits = [];
+
 	// List of script passages.
 	const _scripts = [];
 
@@ -40,6 +43,7 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 		if (DEBUG) { console.log('[Story/storyLoad()]'); }
 
 		const validationCodeTags = [
+			'init',
 			'widget'
 		];
 		const validationNoCodeTagPassages = [
@@ -58,13 +62,26 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 
 		function validateStartingPassage(passage) {
 			if (passage.tags.includesAny(validationCodeTags)) {
-				throw new Error(`starting passage "${passage.title}" contains illegal tags; invalid: "${passage.tags.filter(tag => validationCodeTags.includes(tag)).sort().join('", "')}"`);
+				throw new Error(`starting passage "${passage.title}" contains special tags; invalid: "${passage.tags.filter(tag => validationCodeTags.includes(tag)).sort().join('", "')}"`);
 			}
 		}
 
-		function validateSpecialPassages(passage) {
-			if (validationNoCodeTagPassages.includes(passage.title) && passage.tags.includesAny(validationCodeTags)) {
-				throw new Error(`special passage "${passage.title}" contains illegal tags; invalid: "${passage.tags.filter(tag => validationCodeTags.includes(tag)).sort().join('", "')}"`);
+		function validateSpecialPassages(passage, ...tags) {
+			if (validationNoCodeTagPassages.includes(passage.title)) {
+				throw new Error(`special passage "${passage.title}" contains special tags; invalid: "${tags.sort().join('", "')}"`);
+			}
+
+			const codeTags  = [...validationCodeTags];
+			const foundTags = [];
+
+			passage.tags.forEach(tag => {
+				if (codeTags.includes(tag)) {
+					foundTags.push(...codeTags.delete(tag));
+				}
+			});
+
+			if (foundTags.length > 1) {
+				throw new Error(`passage "${passage.title}" contains multiple special tags; invalid: "${foundTags.sort().join('", "')}"`);
 			}
 		}
 
@@ -75,21 +92,6 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 			*/
 			validationCodeTags.unshift('script', 'stylesheet');
 			validationNoCodeTagPassages.push('StoryTitle');
-
-			function validateTwine1CodePassages(passage) {
-				const codeTags  = [...validationCodeTags];
-				const foundTags = [];
-
-				passage.tags.forEach(tag => {
-					if (codeTags.includes(tag)) {
-						foundTags.push(...codeTags.delete(tag));
-					}
-				});
-
-				if (foundTags.length > 1) {
-					throw new Error(`code passage "${passage.title}" contains multiple code tags; invalid: "${foundTags.sort().join('", "')}"`);
-				}
-			}
 
 			/*
 				Set the default starting passage.
@@ -132,22 +134,25 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 						validateStartingPassage(passage);
 						_passages[passage.title] = passage;
 					}
+					else if (passage.tags.includes('init')) {
+						validateSpecialPassages(passage, 'init');
+						_inits.push(passage);
+					}
 					else if (passage.tags.includes('stylesheet')) {
-						validateTwine1CodePassages(passage);
+						validateSpecialPassages(passage, 'stylesheet');
 						_styles.push(passage);
 					}
 					else if (passage.tags.includes('script')) {
-						validateTwine1CodePassages(passage);
+						validateSpecialPassages(passage, 'script');
 						_scripts.push(passage);
 					}
 					else if (passage.tags.includes('widget')) {
-						validateTwine1CodePassages(passage);
+						validateSpecialPassages(passage, 'widget');
 						_widgets.push(passage);
 					}
 
 					// All other passages.
 					else {
-						validateSpecialPassages(passage);
 						_passages[passage.title] = passage;
 					}
 				});
@@ -222,13 +227,17 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 						validateStartingPassage(passage);
 						_passages[passage.title] = passage;
 					}
+					else if (passage.tags.includes('init')) {
+						validateSpecialPassages(passage, 'init');
+						_inits.push(passage);
+					}
 					else if (passage.tags.includes('widget')) {
+						validateSpecialPassages(passage, 'widget');
 						_widgets.push(passage);
 					}
 
 					// All other passages.
 					else {
-						validateSpecialPassages(passage);
 						_passages[passage.title] = passage;
 					}
 				});
@@ -426,6 +435,11 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 		throw new TypeError(`Story.get title parameter cannot be ${type}`);
 	}
 
+	function passagesGetAllInit() {
+		// NOTE: Return an immutable copy, rather than the internal mutable original.
+		return Object.freeze(Array.from(_inits));
+	}
+
 	function passagesGetAllRegular() {
 		// NOTE: Return an immutable copy, rather than the internal mutable original.
 		return Object.freeze(Object.assign({}, _passages));
@@ -529,6 +543,7 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 		add              : { value : passagesAdd },
 		has              : { value : passagesHas },
 		get              : { value : passagesGet },
+		getAllInit       : { value : passagesGetAllInit },
 		getAllRegular    : { value : passagesGetAllRegular },
 		getAllScript     : { value : passagesGetAllScript },
 		getAllStylesheet : { value : passagesGetAllStylesheet },

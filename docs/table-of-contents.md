@@ -203,6 +203,7 @@
 * [Tag Names](#special-tags)
 	* [`bookmark`](#special-tag-bookmark)
 	* [`nobr`](#special-tag-nobr)
+	* [`init`](#special-tag-init)
 	* [`script`](#special-tag-script)
 	* [`stylesheet`](#special-tag-stylesheet)
 	* [`Twine.audio`](#special-tag-twine-audio)
