@@ -663,8 +663,7 @@ var State = (() => { // eslint-disable-line no-unused-vars, no-var
 
 	function metadataEntries() {
 		const store = storage.get(_METADATA_STORE);
-		return store && Object.keys(store).map(key => [key, store[key]]);
-		// return store && Object.entries(store);
+		return store && Object.entries(store);
 	}
 
 	function metadataGet(key) {
