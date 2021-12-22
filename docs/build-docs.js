@@ -1,14 +1,14 @@
 #!/usr/bin/env node
 /***********************************************************************************************************************
 
-	build-docs.js (v1.1.0, 2021-12-19)
+	build-docs.js (v1.1.1, 2021-12-21)
 		A Node.js-hosted build script for SugarCube's documentation.
 
 	Copyright © 2020–2021 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* eslint-env node, es6 */
+/* eslint-env node, es2021 */
 'use strict';
 
 /*******************************************************************************

@@ -1,0 +1,17 @@
+{
+    "extends" : [
+        "stylelint-config-standard"
+    ],
+    "reportNeedlessDisables" : true,
+    "rules"   : {
+        "at-rule-no-unknown"        : [true, { "ignoreAtRules": ["define-mixin", "mixin"] }],
+        "at-rule-empty-line-before" : null,
+        "comment-empty-line-before" : null,
+        "indentation"               : "tab",
+        "linebreaks"                : "unix",
+        "max-empty-lines"           : 2,
+        "no-descending-specificity" : null,
+        "rule-empty-line-before"    : null,
+        "selector-class-pattern"    : "^([a-z][a-z0-9]*)(-[a-z0-9]+)*$"
+    }
+}

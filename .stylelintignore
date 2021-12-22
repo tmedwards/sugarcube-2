@@ -1,0 +1,9 @@
+# JavaScript
+**/*.js
+
+# Vendored
+vendor/
+
+# Development
+build/
+node_modules/

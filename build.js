@@ -1,22 +1,24 @@
 #!/usr/bin/env node
 /***********************************************************************************************************************
 
-	build.js (v1.6.0, 2021-12-19)
+	build.js (v1.7.0, 2021-12-21)
 		A Node.js-hosted build script for SugarCube.
 
 	Copyright © 2013–2021 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* eslint-env node, es6 */
+/* eslint-env node, es2021 */
 'use strict';
+
 
 /*******************************************************************************
 	Configuration
 *******************************************************************************/
+
 const CONFIG = {
 	js : {
-		main : [
+		files : [
 			// The ordering herein is significant.
 			'src/lib/alert.js',
 			'src/lib/patterns.js',
@@ -67,20 +69,23 @@ const CONFIG = {
 			outro : 'src/templates/outro.js'
 		}
 	},
-	css : [
-		// The ordering herein is significant.
-		'src/vendor/normalize.css',
-		'src/css/init-screen.css',
-		'src/css/font.css',
-		'src/css/core.css',
-		'src/css/core-display.css',
-		'src/css/core-passage.css',
-		'src/css/core-macro.css',
-		'src/css/ui-dialog.css',
-		'src/css/ui.css',
-		'src/css/ui-bar.css',
-		'src/css/ui-debug.css'
-	],
+	css : {
+		mixins : 'src/css/_mixins.css',
+		files  : [
+			// The ordering herein is significant.
+			'src/vendor/normalize.css',
+			'src/css/init-screen.css',
+			'src/css/font.css',
+			'src/css/core.css',
+			'src/css/core-display.css',
+			'src/css/core-passage.css',
+			'src/css/core-macro.css',
+			'src/css/ui-dialog.css',
+			'src/css/ui.css',
+			'src/css/ui-bar.css',
+			'src/css/ui-debug.css'
+		]
+	},
 	libs : [
 		// The ordering herein is significant.
 		'src/vendor/classList.min.js',
@@ -133,13 +138,12 @@ const CONFIG = {
 /*******************************************************************************
 	Main Script
 *******************************************************************************/
-/*
-	NOTICE!
 
-	Where string replacements are done, we use the replacement function style here to
-	disable all special replacement patterns, since some of them likely exist within
-	the replacement strings (e.g. '$&' within the application source).
-*/
+// NOTICE!
+//
+// Where string replacements are done, we use the replacement function style to
+// disable all special replacement patterns, since some of them may exist within
+// the replacement strings—e.g., `$&` within the HTML or JavaScript sources.
 
 const {
 	log,
@@ -156,16 +160,11 @@ const _opt  = require('node-getopt').create([
 	['b', 'build=VERSION', 'Build only for Twine major version: 1 or 2; default: build for all.'],
 	['d', 'debug',         'Keep debugging code; gated by DEBUG symbol.'],
 	['u', 'unminified',    'Suppress minification stages.'],
-	['6', 'es6',           'Suppress JavaScript transpilation stages.'],
+	['n', 'no-transpile',  'Suppress JavaScript transpilation stages.'],
 	['h', 'help',          'Print this help, then exit.']
 ])
 	.bindHelp()     // bind option 'help' to default action
 	.parseSystem(); // parse command line
-
-// uglify-js (v2) does not currently support ES6, so force `unminified` when `es6` is enabled.
-if (_opt.options.es6 && !_opt.options.unminified) {
-	_opt.options.unminified = true;
-}
 
 let _buildForTwine1 = true;
 let _buildForTwine2 = true;
@@ -188,7 +187,7 @@ if (_opt.options.build) {
 }
 
 // build the project
-(() => {
+(async () => {
 	console.log('Starting builds...');
 
 	// Create the build ID file, if nonexistent.
@@ -226,9 +225,9 @@ if (_opt.options.build) {
 		projectBuild({
 			build     : CONFIG.twine1.build,
 			version   : version, // eslint-disable-line object-shorthand
-			libSource : assembleLibraries(CONFIG.libs),                  // combine the libraries
-			appSource : compileJavaScript(CONFIG.js, { twine1 : true }), // combine and minify the app JS
-			cssSource : compileStyles(CONFIG.css)                        // combine and minify the app CSS
+			libSource : assembleLibraries(CONFIG.libs),                        // combine the libraries
+			appSource : await compileJavaScript(CONFIG.js, { twine1 : true }), // combine and minify the app JS
+			cssSource : compileStyles(CONFIG.css)                              // combine and minify the app CSS
 		});
 
 		// Process the files that simply need copied into the build.
@@ -243,9 +242,9 @@ if (_opt.options.build) {
 		projectBuild({
 			build     : CONFIG.twine2.build,
 			version   : version, // eslint-disable-line object-shorthand
-			libSource : assembleLibraries(CONFIG.libs),                   // combine the libraries
-			appSource : compileJavaScript(CONFIG.js, { twine1 : false }), // combine and minify the app JS
-			cssSource : compileStyles(CONFIG.css),                        // combine and minify the app CSS
+			libSource : assembleLibraries(CONFIG.libs),                         // combine the libraries
+			appSource : await compileJavaScript(CONFIG.js, { twine1 : false }), // combine and minify the app JS
+			cssSource : compileStyles(CONFIG.css),                              // combine and minify the app CSS
 
 			postProcess(sourceString) {
 				// Load the output format.
@@ -274,10 +273,10 @@ if (_opt.options.build) {
 
 	// Update the build ID.
 	writeFileContents('.build', String(version.build));
-})();
-
-// That's all folks!
-console.log('\nBuilds complete!  (check the "build" directory)');
+})()
+	// That's all folks!
+	.then(() => console.log('\nBuilds complete!  (check the "build" directory)'))
+	.catch(reason => console.log('\nERROR:', reason));
 
 
 /*******************************************************************************
@@ -290,67 +289,72 @@ function assembleLibraries(filenames) {
 }
 
 function compileJavaScript(filenameObj, options) {
-	/* eslint-disable camelcase, prefer-template */
 	log('compiling JavaScript...');
 
-	const babelCore = require('babel-core');
-	const babelOpts = {
-		code     : true,
-		compact  : false,
-		presets  : ['env'],
-		filename : 'sugarcube.js'
-	};
+	// Join the files.
+	let bundle = concatFiles(filenameObj.files);
 
-	// Join the files and transpile (ES6 → ES5) with Babel.
-	let	jsSource = concatFiles(filenameObj.main);
-	jsSource = readFileContents(filenameObj.wrap.intro)
-		+ '\n'
-		+ (_opt.options.es6 ? jsSource : babelCore.transform(jsSource, babelOpts).code)
-		+ '\n'
-		+ readFileContents(filenameObj.wrap.outro);
-
-	if (_opt.options.unminified) {
-		return [
-			'window.TWINE1=' + String(!!options.twine1),
-			'window.DEBUG=' + String(_opt.options.debug || false)
-		].join(';\n') + ';\n' + jsSource;
+	// Transpile to ES5 with Babel.
+	if (!_opt.options.noTranspile) {
+		const { transform } = require('@babel/core');
+		bundle = transform(bundle, {
+			// babelHelpers : 'bundled',
+			code     : true,
+			compact  : false,
+			presets  : [['@babel/preset-env']],
+			filename : 'sugarcube.bundle.js'
+		}).code;
 	}
 
-	const uglifyjs = require('uglify-js');
-	const minified = uglifyjs.minify(jsSource, {
-		compress : {
-			global_defs : {
-				TWINE1 : !!options.twine1,
-				DEBUG  : _opt.options.debug || false
+	bundle = `${readFileContents(filenameObj.wrap.intro)}\n${bundle}\n${readFileContents(filenameObj.wrap.outro)}`;
+
+	// Minify the transpiled code with Terser.
+	return (async function compile(source) {
+		if (_opt.options.unminified) {
+			return [
+				`window.TWINE1=${Boolean(options.twine1)}`,
+				`window.DEBUG=${_opt.options.debug || false}`,
+				bundle
+			].join(';\n');
+		}
+
+		const { minify } = require('terser');
+		const minified   = await minify(source, {
+			compress : {
+				global_defs : { // eslint-disable-line camelcase
+					TWINE1 : !!options.twine1,
+					DEBUG  : _opt.options.debug || false
+				}
 			},
-			keep_infinity : true
-		},
-		mangle : false
-	});
+			mangle : false
+		});
 
-	if (minified.error) {
-		const { message, line, col, pos } = minified.error;
-		die(`JavaScript minification error: ${message}\n[@: ${line}/${col}/${pos}]`);
-	}
+		if (minified.error) {
+			const { message, line, col, pos } = minified.error;
+			die(`JavaScript minification error: ${message}\n[@: ${line}/${col}/${pos}]`);
+		}
 
-	return minified.code;
-	/* eslint-enable camelcase, prefer-template */
+		return minified.code;
+	})(bundle);
 }
 
-function compileStyles(filenames) {
-	/* eslint-disable prefer-template */
+function compileStyles(config) {
 	log('compiling CSS...');
+	const autoprefixer = require('autoprefixer');
+	const mixins       = require('postcss-mixins');
+	const postcss      = require('postcss');
+	const CleanCSS     = require('clean-css');
+	const excludeRE    = /(?:normalize)\.css$/;
+	const mixinContent = readFileContents(config.mixins);
 
-	const postcss         = require('postcss');
-	const CleanCss        = require('clean-css');
-	const normalizeRegExp = /normalize\.css$/;
-
-	return concatFiles(filenames, (contents, filename) => {
+	return concatFiles(config.files, (contents, filename) => {
 		let css = contents;
 
-		// Don't run autoprefixer on 'normalize.css'.
-		if (!normalizeRegExp.test(filename)) {
-			const processed = postcss([require('autoprefixer')]).process(css, { from : filename });
+		// Do not run the postcss plugins on files that match the exclusion regexp.
+		if (!excludeRE.test(filename)) {
+			css = `${mixinContent}\n${css}`;
+
+			const processed = postcss([mixins, autoprefixer]).process(css, { from : filename });
 
 			css = processed.css;
 
@@ -358,18 +362,18 @@ function compileStyles(filenames) {
 		}
 
 		if (!_opt.options.unminified) {
-			css = new CleanCss({
-				level         : 1,    // [clean-css v4] `1` is the default, but let's be specific
-				compatibility : 'ie9' // [clean-css v4] 'ie10' is the default, so restore IE9 support
+			css = new CleanCSS({
+				level         : 1,
+				compatibility : 'ie9'
 			})
 				.minify(css)
 				.styles;
 		}
 
-		return '<style id="style-' + _path.basename(filename, '.css').toLowerCase().replace(/[^0-9a-z]+/g, '-')
-			+ '" type="text/css">' + css + '</style>';
+		const fileSlug = _path.basename(filename, '.css').toLowerCase().replace(/[^0-9a-z]+/g, '-');
+
+		return `<style id="style-${fileSlug}" type="text/css">${css}</style>`;
 	});
-	/* eslint-enable prefer-template */
 }
 
 function projectBuild(project) {
@@ -378,7 +382,7 @@ function projectBuild(project) {
 
 	log(`building: "${outfile}"`);
 
-	let output  = readFileContents(infile); // load the story format template
+	let output = readFileContents(infile); // load the story format template
 
 	// Process the source replacement tokens. (First!)
 	output = output.replace(/(['"`])\{\{BUILD_LIB_SOURCE\}\}\1/, () => project.libSource);
