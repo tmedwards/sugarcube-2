@@ -1,0 +1,21 @@
+/***********************************************************************************************************************
+
+	css/_mixins.css
+
+	Copyright © 2020–2021 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
+	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
+
+***********************************************************************************************************************/
+
+@define-mixin tme-fa-icons-properties {
+	font-family: tme-fa-icons !important; /* stylelint-disable-line font-family-no-missing-generic-family-keyword */
+	font-style: normal;
+	font-weight: 900;
+	font-variant: normal;
+	line-height: 1;
+	speak: never;
+	text-rendering: auto;
+	text-transform: none;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
