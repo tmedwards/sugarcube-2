@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /***********************************************************************************************************************
 
-	build-docs.js (v1.1.1, 2021-12-21)
+	build-docs.js (v1.2.0, 2021-12-21)
 		A Node.js-hosted build script for SugarCube's documentation.
 
 	Copyright © 2020–2021 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
@@ -11,9 +11,11 @@
 /* eslint-env node, es2021 */
 'use strict';
 
+
 /*******************************************************************************
 	Configuration
 *******************************************************************************/
+
 const CONFIG = {
 	// WARNING: The ordering within the following arrays is significant.
 	md : {
@@ -103,16 +105,15 @@ const CONFIG = {
 /*******************************************************************************
 	Main Script
 *******************************************************************************/
-/*
-	NOTICE!
 
-	Where string replacements are done, we use the replacement function style to
-	disable all special replacement patterns, since some of them may exist within
-	the replacement strings—e.g., '$&' within the HTML or JavaScript sources.
-*/
+// NOTICE!
+//
+// Where string replacements are done, we use the replacement function style to
+// disable all special replacement patterns, since some of them may exist within
+// the replacement strings—e.g., `$&` within the HTML or JavaScript sources.
 
 const process = require('process');
-process.env.BROWSERSLIST_CONFIG = '../browserslist';
+process.env.BROWSERSLIST_CONFIG = '../.browserslistrc';
 
 const {
 	log,
@@ -127,11 +128,13 @@ const _opt  = require('node-getopt').create([
 	['h', 'help',       'Print this help, then exit.'],
 	['u', 'unminified', 'Suppress minification stages.']
 ])
-	.bindHelp()     // bind option 'help' to default action
-	.parseSystem(); // parse command line
+	.bindHelp()
+	.parseSystem();
 
 // Build the documentation.
-(() => {
+(async () => {
+	console.log('Starting build...\n');
+
 	// Set build constants.
 	const BUILD_VERSION  = require('../package.json').version;
 	const BUILD_DATETIME = new Date().toISOString().replace(/\.\d+Z$/, 'Z');
@@ -139,8 +142,8 @@ const _opt  = require('node-getopt').create([
 
  	// Compile the JavaScript.
 	log('compiling JavaScript...');
-	const jsIntro = compileJavaScript(CONFIG.js.intro);
-	const jsNav   = compileJavaScript(CONFIG.js.nav);
+	const jsIntro = await compileJavaScript(CONFIG.js.intro);
+	const jsNav   = await compileJavaScript(CONFIG.js.nav);
 
 	// Compile the CSS.
 	log('compiling CSS...');
@@ -179,14 +182,15 @@ const _opt  = require('node-getopt').create([
 	// Write the outfile.
 	makePath(_path.dirname(outfile));
 	writeFileContents(outfile, output);
-})();
+})()
+	.then(() => console.log('\nBuild complete!  (check the "build" directory)'))
+	.catch(reason => console.log('\nERROR:', reason));
 
 
 /*******************************************************************************
 	Utility Functions
 *******************************************************************************/
 function compileMarkdown(sourceConfig) {
-	/* eslint-disable prefer-template */
 	const { execFileSync } = require('child_process');
 	return concatFiles(sourceConfig.files, (contents /* , filename */) => {
 		try {
@@ -199,38 +203,37 @@ function compileMarkdown(sourceConfig) {
 			die(`markdown error: ${ex.message}`, ex);
 		}
 	});
-	/* eslint-enable prefer-template */
 }
 
 function compileJavaScript(sourceConfig) {
-	/* eslint-disable camelcase, prefer-template */
-	const jsSource = readFileContents(sourceConfig.intro)
+	return (async source => {
+		if (_opt.options.unminified) {
+			return source;
+		}
+
+		// Minify the code with Terser.
+		const { minify } = require('terser');
+		const minified   = await minify(source, {
+			compress : {
+				keep_infinity : true // eslint-disable-line camelcase
+			},
+			mangle : true
+		});
+
+		if (minified.error) {
+			const { message, line, col, pos } = minified.error;
+			die(`JavaScript minification error: ${message}\n[@: ${line}/${col}/${pos}]`);
+		}
+
+		return minified.code;
+	})(
+		  readFileContents(sourceConfig.intro)
 		+ concatFiles(sourceConfig.files)
-		+ readFileContents(sourceConfig.outro);
-
-	if (_opt.options.unminified) {
-		return jsSource;
-	}
-
-	const uglifyjs = require('uglify-js');
-	const minified = uglifyjs.minify(jsSource, {
-		compress : {
-			keep_infinity : true
-		},
-		mangle : true
-	});
-
-	if (minified.error) {
-		const { message, line, col, pos } = minified.error;
-		die(`JavaScript minification error: ${message}\n[@: ${line}/${col}/${pos}]`);
-	}
-
-	return minified.code;
-	/* eslint-enable camelcase, prefer-template */
+		+ readFileContents(sourceConfig.outro)
+	);
 }
 
 function compileStyles(sourceConfig) {
-	/* eslint-disable prefer-template */
 	const autoprefixer  = require('autoprefixer');
 	const postcss       = require('postcss');
 	const CleanCss      = require('clean-css');
@@ -242,15 +245,15 @@ function compileStyles(sourceConfig) {
 
 		if (!_opt.options.unminified) {
 			css = new CleanCss({
-				level         : 1,    // [clean-css v4] `1` is the default, but let's be specific
-				compatibility : 'ie9' // [clean-css v4] 'ie10' is the default, so restore IE9 support
+				level         : 1,
+				compatibility : 'ie9'
 			})
 				.minify(css)
 				.styles;
 		}
 
-		return '<style id="style-' + _path.basename(filename, '.css').toLowerCase().replace(/[^0-9a-z]+/g, '-')
-			+ '" type="text/css">' + css + '</style>';
+		const fileSlug = _path.basename(filename, '.css').toLowerCase().replace(/[^0-9a-z]+/g, '-');
+
+		return `<style id="style-${fileSlug}" type="text/css">${css}</style>`;
 	});
-	/* eslint-enable prefer-template */
 }

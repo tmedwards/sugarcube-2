@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /***********************************************************************************************************************
 
-	build.js (v1.7.0, 2021-12-21)
+	build.js (v1.7.1, 2021-12-21)
 		A Node.js-hosted build script for SugarCube.
 
 	Copyright © 2013–2021 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
@@ -163,13 +163,12 @@ const _opt  = require('node-getopt').create([
 	['n', 'no-transpile',  'Suppress JavaScript transpilation stages.'],
 	['h', 'help',          'Print this help, then exit.']
 ])
-	.bindHelp()     // bind option 'help' to default action
-	.parseSystem(); // parse command line
+	.bindHelp()
+	.parseSystem();
 
 let _buildForTwine1 = true;
 let _buildForTwine2 = true;
 
-// build selection
 if (_opt.options.build) {
 	switch (_opt.options.build) {
 	case '1':
@@ -186,7 +185,7 @@ if (_opt.options.build) {
 	}
 }
 
-// build the project
+// Build the project.
 (async () => {
 	console.log('Starting builds...');
 
@@ -274,7 +273,6 @@ if (_opt.options.build) {
 	// Update the build ID.
 	writeFileContents('.build', String(version.build));
 })()
-	// That's all folks!
 	.then(() => console.log('\nBuilds complete!  (check the "build" directory)'))
 	.catch(reason => console.log('\nERROR:', reason));
 
@@ -308,16 +306,16 @@ function compileJavaScript(filenameObj, options) {
 
 	bundle = `${readFileContents(filenameObj.wrap.intro)}\n${bundle}\n${readFileContents(filenameObj.wrap.outro)}`;
 
-	// Minify the transpiled code with Terser.
-	return (async function compile(source) {
+	return (async source => {
 		if (_opt.options.unminified) {
 			return [
 				`window.TWINE1=${Boolean(options.twine1)}`,
 				`window.DEBUG=${_opt.options.debug || false}`,
-				bundle
+				source
 			].join(';\n');
 		}
 
+		// Minify the code with Terser.
 		const { minify } = require('terser');
 		const minified   = await minify(source, {
 			compress : {
@@ -340,6 +338,7 @@ function compileJavaScript(filenameObj, options) {
 
 function compileStyles(config) {
 	log('compiling CSS...');
+
 	const autoprefixer = require('autoprefixer');
 	const mixins       = require('postcss-mixins');
 	const postcss      = require('postcss');
@@ -382,7 +381,8 @@ function projectBuild(project) {
 
 	log(`building: "${outfile}"`);
 
-	let output = readFileContents(infile); // load the story format template
+	// Load the story format template.
+	let output = readFileContents(infile);
 
 	// Process the source replacement tokens. (First!)
 	output = output.replace(/(['"`])\{\{BUILD_LIB_SOURCE\}\}\1/, () => project.libSource);
