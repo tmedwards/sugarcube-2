@@ -14,7 +14,7 @@ You may either download one of the precompiled packages from [SugarCube's websit
 
 If you want to build SugarCube from scratch, rather than grabbing one of the pre-built packages off of its website, then these instructions are for you.
 
-SugarCube uses Node.js as the core of its build system, so you'll need to install it if you don't already have it.  Additionally, to retrieve SugarCube's source code from this repository, you'll need to install Git.
+SugarCube uses Node.js (currently ≥v16) as the core of its build system, so you'll need to install it if you don't already have it.  Additionally, to retrieve SugarCube's source code from this repository, you'll need to install Git.
 
 1. [Download and install the Node.js JavaScript runtime (`https://nodejs.org/`)](https://nodejs.org/)
 2. [Download and install the Git source control management tool (`https://git-scm.com/`)](https://git-scm.com/)
@@ -52,7 +52,7 @@ node build.js
 
 Assuming that completed with no errors, the story format, in Twine 1 and Twine 2 flavors, should be output to the `dist` directory.  Congratulations!
 
-**NOTE:** SugarCube's development dependencies are occasionally updated.  If you receive errors when attempting to build, then you probably need to update your cached dependencies.  You may do this via the `npm update` command or, in extreme cases, by deleting the local `node_modules` directory and rerunning `npm install`.
+**NOTE:** SugarCube's development dependencies are occasionally updated.  If you receive errors when attempting to build, then you probably need to update your cached dependencies.  You may do this via the `npm update` command or, in extreme cases, by running `npm uninstall` and `npm install` in order.
 
 **TIP:** If you'd like additional options when building—e.g., debug builds, limiting the build to a particular version of Twine, etc.—then you may request help from `build.js` by specifying the help (`-h`, `--help`) option.  For example:
 

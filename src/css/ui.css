@@ -175,13 +175,7 @@
 #ui-dialog-body.saves button[id="saves-clear"]:before,
 #ui-dialog-body.settings button[id|="setting-control"]:after,
 #ui-dialog-body.settings button[id|="setting-control"].enabled:after {
-	font-family: "tme-fa-icons";
-	font-style: normal;
-	font-weight: normal;
-	font-variant: normal;
-	text-transform: none;
-	line-height: 1;
-	speak: none;
+	@mixin tme-fa-icons-properties;
 }
 #ui-dialog-body.saves button[id="saves-export"]:before {
 	content: "\e829\00a0";

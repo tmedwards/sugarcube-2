@@ -200,13 +200,7 @@
 #ui-bar-toggle:before,
 #ui-bar-history [id|="history"],
 #menu-core li[id|="menu-item"] a:before {
-	font-family: "tme-fa-icons";
-	font-style: normal;
-	font-weight: normal;
-	font-variant: normal;
-	text-transform: none;
-	line-height: 1;
-	speak: none;
+	@mixin tme-fa-icons-properties;
 }
 #ui-bar-toggle:before {
 	content: "\e81d";
