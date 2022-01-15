@@ -111,7 +111,7 @@ Config.history.maxStates = 80;
 Determines whether the [`<<if>>` macro](#macros-macro-if) returns an error when the `=` assignment operator is used within its conditional—e.g., `<<if $suspect = "Bob">>`.  Does not flag other assignment operators.
 
 <p role="note"><b>Note:</b>
-This setting exists because it's unlikely that you'll ever want to actually perform an assignment within a conditional expression and typing <code>=</code> when you meant <code>===</code> (or <code>==</code>) is a fairly easy to mistake make—either from a finger slip or because you just don't know the difference between the operators.
+This setting exists because it's unlikely that you'll ever want to actually perform an assignment within a conditional expression and typing <code>=</code> when you meant <code>===</code> (or <code>==</code>) is a fairly easy mistake to make—either from a finger slip or because you just don't know the difference between the operators.
 </p>
 
 #### History:
