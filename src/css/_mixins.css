@@ -10,7 +10,7 @@
 @define-mixin tme-fa-icons-properties {
 	font-family: tme-fa-icons !important; /* stylelint-disable-line font-family-no-missing-generic-family-keyword */
 	font-style: normal;
-	font-weight: 900;
+	font-weight: normal;
 	font-variant: normal;
 	line-height: 1;
 	speak: never;
