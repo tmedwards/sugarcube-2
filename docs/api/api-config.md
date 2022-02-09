@@ -544,7 +544,7 @@ Config.saves.tryDiskOnMobile = false;
 Sets the `version` property of saves.
 
 <p role="note"><b>Note:</b>
-This setting is only used to set the <code>version</code> property of saves.  Thus, it is only truly useful if you plan to upgrade out-of-date saves via a <a href="#config-api-property-saves-onload"><code>Config.saves.onLoad</code></a> callback.
+This setting is only used to set the <code>version</code> property of saves.  Thus, it is only truly useful if you plan to upgrade out-of-date saves via the <a href="#save-api-events"><code>Save</code> Events API</a>—specifically the <a href="#save-api-method-onload-add"><code>Save.onLoad.add()</code> static method</a>.
 </p>
 
 #### History:
