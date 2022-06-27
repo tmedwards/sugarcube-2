@@ -173,16 +173,22 @@ Sets story $variables and temporary \_variables based on the given expression.
 
 #### Examples:
 
+##### Using the TwineScript "to" operator
+
 ```
-→ Using the TwineScript "to" operator
 <<set $cheese to "a nice, sharp cheddar">>  → Assigns "a nice, sharp cheddar" to story variable $cheese
 <<set $chestEmpty to true>>                 → Assigns boolean true to story variable $chestEmpty
+<<set $sum to $a + $b>>                     → Assigns the summation of story variables $a and $b to $sum
 <<set $gold to $gold + 5>>                  → Adds 5 to the value of story variable $gold
 <<set _counter to _counter + 1>>            → Adds 1 to the value of temporary variable _counter
+```
 
-→ Using standard JavaScript operators
+##### Using the standard JavaScript operators
+
+```
 <<set $cheese = "a nice, sharp cheddar">>   → Assigns "a nice, sharp cheddar" to story variable $cheese
 <<set $chestEmpty = true>>                  → Assigns boolean true to story variable $chestEmpty
+<<set $sum = $a + $b>>                      → Assigns the summation of story variables $a and $b to $sum
 <<set $gold += 5>>                          → Adds 5 to the value of story variable $gold
 <<set _counter += 1>>                       → Adds 1 to the value of temporary variable _counter
 ```

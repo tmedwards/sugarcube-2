@@ -135,7 +135,7 @@ Used to replace SugarCube's default UI.  Its contents are treated as raw HTML ma
 Additional elements, aside from the `#passages` element, may include either the `data-init-passage` or `data-passage` content attribute, whose value is the name of the passage used to populate the element—the passage will be processed as normal, meaning that markup and macros will work as expected.  The `data-init-passage` attribute causes the element to be updated once at initialization, while the `data-passage` attribute causes the element to be updated upon each passage navigation.
 
 <p role="note" class="warning"><b>Warning:</b>
-Elements that include either a <code>data-init-passage</code> or <code>data-passage</code> content attribute <em>should not</em> themselves contain additional elements—since such elements' contents are replaced each turn via their associated passage, any child elements would be lost.
+Elements that include either a <code>data-init-passage</code> or <code>data-passage</code> content attribute <em>should not</em> themselves contain additional elements.  This is because such elements' contents are replaced via their associated passage, so any child elements will be lost.
 </p>
 
 #### History:
