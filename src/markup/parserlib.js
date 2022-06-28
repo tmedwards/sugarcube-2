@@ -999,7 +999,7 @@
 	Wikifier.Parser.add({
 		name     : 'horizontalRule',
 		profiles : ['core'],
-		match    : '^----+$\\n?|<[Hh][Rr]\\s*/?>\\n?',
+		match    : '^----+\\s*$',
 
 		handler(w) {
 			jQuery(document.createElement('hr')).appendTo(w.output);
@@ -1394,7 +1394,7 @@
 	Wikifier.Parser.add({
 		name     : 'lineBreak',
 		profiles : ['core'],
-		match    : '\\n|<[Bb][Rr]\\s*/?>',
+		match    : '\\n',
 
 		handler(w) {
 			if (!w.options.nobr) {
