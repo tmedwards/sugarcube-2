@@ -447,7 +447,7 @@ var SimpleAudio = (() => { // eslint-disable-line no-unused-vars, no-var
 						jQuery(this.audio)
 							.off(namespace)
 							.one(`error${namespace} playing${namespace} timeupdate${namespace}`, ev => {
-								jQuery(this).off(namespace);
+								jQuery(this.audio).off(namespace);
 
 								if (ev.type === 'error') {
 									reject(new Error('unknown audio play error'));
