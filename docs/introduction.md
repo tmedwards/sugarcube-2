@@ -6,7 +6,7 @@
 This documentation is a reference for [SugarCube](http://www.motoslave.net/sugarcube/), a free (gratis and libre) story format for [Twine/Twee](http://twinery.org/).
 
 <p role="note" class="tip"><b>Tip:</b>
-This document is a single page, so you may use your browser's find-in-page functionality—<kbd>CTRL</kbd>+<kbd>F</kbd> or <kbd>F3</kbd>—to search for specific terms.
+This document is a single page, so you may use your browser's find-in-page functionality—<kbd>CTRL</kbd>+<kbd>F</kbd>, <kbd>CMD</kbd>+<kbd>F</kbd>, <kbd>F3</kbd>—to search for specific terms.
 </p>
 
 <p role="note"><b>Note:</b>
