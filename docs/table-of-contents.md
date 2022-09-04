@@ -6,7 +6,7 @@
 <div id="header-logo"></div>
 <h1>SugarCube v2 Documentation</h1>
 <div><tt>{{.VERSION}}</tt> (<time datetime="{{.ISO_DATE}}">{{.DATE}}</time>)</div>
-<div>Find in page: <kbd>CTRL</kbd>+<kbd>F</kbd> or <kbd>F3</kbd></div>
+<div>Find in page: <kbd>CTRL</kbd>+<kbd>F</kbd>, <kbd>CMD</kbd>+<kbd>F</kbd>, <kbd>F3</kbd></div>
 </header>
 
 ## [Introduction](#introduction)
