@@ -44,7 +44,7 @@ var LoadScreen = (() => { // eslint-disable-line no-unused-vars, no-var
 							if (_locks.size === 0) {
 								loadScreenHide();
 							}
-						}, Math.max(Engine.minDomActionDelay, Config.loadDelay));
+						}, Math.max(Engine.DOM_DELAY, Config.loadDelay));
 					}
 					else {
 						loadScreenHide();
