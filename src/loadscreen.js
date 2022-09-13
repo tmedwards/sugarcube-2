@@ -128,6 +128,13 @@ var LoadScreen = (() => { // eslint-disable-line no-unused-vars, no-var
 		}
 	}
 
+	/*
+		Returns the current number of locks.
+	*/
+	function loadScreenLockSize() {
+		return _locks.size;
+	}
+
 
 	/*******************************************************************************************************************
 		Module Exports.
@@ -138,6 +145,7 @@ var LoadScreen = (() => { // eslint-disable-line no-unused-vars, no-var
 		hide   : { value : loadScreenHide },
 		show   : { value : loadScreenShow },
 		lock   : { value : loadScreenLock },
-		unlock : { value : loadScreenUnlock }
+		unlock : { value : loadScreenUnlock },
+		size   : { get : loadScreenLockSize }
 	}));
 })();
