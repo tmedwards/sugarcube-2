@@ -714,11 +714,7 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 
 		// Last second post-processing for accessibility and other things.
 		jQuery('#story')
-			// Add `link-external` to all `href` bearing `<a>` elements which don't have it.
-			.find('a[href]:not(.link-external)')
-			.addClass('link-external')
-			.end()
-			// Add `tabindex=0` to all interactive elements which don't have it.
+			// Add `tabindex=0` to all interactive elements that don't have it.
 			.find('a,link,button,input,select,textarea')
 			.not('[tabindex]')
 			.attr('tabindex', 0);

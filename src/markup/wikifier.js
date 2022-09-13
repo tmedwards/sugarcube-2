@@ -329,7 +329,7 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 			}
 
 			const urlRegExp = new RegExp(`^${Patterns.url}`, 'gim');
-			return urlRegExp.test(link) || /[/.?#]/.test(link);
+			return urlRegExp.test(link) || /[/\\?]/.test(link);
 		}
 	}
 

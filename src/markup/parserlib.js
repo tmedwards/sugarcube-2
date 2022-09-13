@@ -1717,6 +1717,14 @@
 					}
 
 					if (el.hasAttribute('data-passage')) {
+						if (el.hasAttribute('href')) {
+							return throwError(
+								w.output,
+								`<${tagName}>: elements may not include both "data-passage" and "href" atttributes`,
+								`${w.matchText}\u2026`
+							);
+						}
+
 						this.processDataAttributes(el, tagName);
 
 						// Debug view setup.
@@ -1732,6 +1740,12 @@
 								nonvoid : terminatorMatch
 							});
 							output = debugView.output;
+						}
+					}
+					else if (el.hasAttribute('href')) {
+						// WARNING: Do not replace `el.getAttribute('href')` with `el.href`.
+						if (Wikifier.isExternalLink(el.getAttribute('href'))) {
+							el.classList.add('link-external');
 						}
 					}
 
