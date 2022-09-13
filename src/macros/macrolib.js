@@ -1639,7 +1639,7 @@
 						}
 
 						if (transition) {
-							setTimeout(() => $insert.removeClass(`macro-${this.name}-in`), Engine.minDomActionDelay);
+							setTimeout(() => $insert.removeClass(`macro-${this.name}-in`), Engine.DOM_DELAY);
 						}
 					}
 				))
@@ -1764,7 +1764,7 @@
 				// Set up a single-use post-display task to autofocus the element.
 				postdisplay[`#autofocus:${el.id}`] = task => {
 					delete postdisplay[task]; // single-use task
-					setTimeout(() => el.focus(), Engine.minDomActionDelay);
+					setTimeout(() => el.focus(), Engine.DOM_DELAY);
 				};
 			}
 		}
@@ -1917,7 +1917,7 @@
 				// Set up a single-use post-display task to autofocus the element.
 				postdisplay[`#autofocus:${el.id}`] = task => {
 					delete postdisplay[task]; // single-use task
-					setTimeout(() => el.focus(), Engine.minDomActionDelay);
+					setTimeout(() => el.focus(), Engine.DOM_DELAY);
 				};
 			}
 		}
@@ -2367,7 +2367,7 @@
 				if (transition) {
 					$insert = jQuery(document.createElement('span'));
 					$insert.addClass(`macro-${this.name}-insert macro-${this.name}-in`);
-					setTimeout(() => $insert.removeClass(`macro-${this.name}-in`), Engine.minDomActionDelay);
+					setTimeout(() => $insert.removeClass(`macro-${this.name}-in`), Engine.DOM_DELAY);
 				}
 				else {
 					$insert = jQuery(document.createDocumentFragment());
@@ -3400,7 +3400,7 @@
 
 			setTimeout(this.createShadowWrapper(
 				() => $.wiki(contents)
-			), Engine.minDomActionDelay);
+			), Engine.DOM_DELAY);
 		}
 	});
 
@@ -3437,7 +3437,7 @@
 				unwanted by users, who are used to the current behavior from
 				similar macros and constructs.
 			*/
-			setTimeout(() => Engine.play(passage), Engine.minDomActionDelay);
+			setTimeout(() => Engine.play(passage), Engine.DOM_DELAY);
 		}
 	});
 
@@ -3458,7 +3458,7 @@
 			let delay;
 
 			try {
-				delay = Math.max(Engine.minDomActionDelay, Util.fromCssTime(this.args[0]));
+				delay = Math.max(Engine.DOM_DELAY, Util.fromCssTime(this.args[0]));
 			}
 			catch (ex) {
 				return this.error(ex.message);
@@ -3490,7 +3490,7 @@
 				$output.append(frag);
 
 				if (transition) {
-					setTimeout(() => $output.removeClass('macro-repeat-in'), Engine.minDomActionDelay);
+					setTimeout(() => $output.removeClass('macro-repeat-in'), Engine.DOM_DELAY);
 				}
 			}), delay);
 		},
@@ -3601,7 +3601,7 @@
 				items.push({
 					name    : this.name,
 					source  : this.source,
-					delay   : Math.max(Engine.minDomActionDelay, Util.fromCssTime(this.args[0])),
+					delay   : Math.max(Engine.DOM_DELAY, Util.fromCssTime(this.args[0])),
 					content : this.payload[0].contents
 				});
 			}
@@ -3621,7 +3621,7 @@
 							source : this.payload[i].source,
 							delay  : this.payload[i].args.length === 0
 								? items[items.length - 1].delay
-								: Math.max(Engine.minDomActionDelay, Util.fromCssTime(this.payload[i].args[0])),
+								: Math.max(Engine.DOM_DELAY, Util.fromCssTime(this.payload[i].args[0])),
 							content : this.payload[i].contents
 						});
 					}
@@ -3668,7 +3668,7 @@
 				$output.append(frag);
 
 				if (transition) {
-					setTimeout(() => $output.removeClass('macro-timed-in'), Engine.minDomActionDelay);
+					setTimeout(() => $output.removeClass('macro-timed-in'), Engine.DOM_DELAY);
 				}
 			}), items);
 		},

@@ -16,19 +16,20 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 
 	// Engine state types object (pseudo-enumeration).
 	const States = Util.toEnum({
+		Init      : 'init',
 		Idle      : 'idle',
 		Playing   : 'playing',
 		Rendering : 'rendering'
 	});
 
 	// Minimum delay for DOM actions (in milliseconds).
-	const minDomActionDelay = 40;
+	const DOM_DELAY = 40;
 
 	// Cache of the debug view(s) for initialization special passage(s).
 	const _initDebugViews = [];
 
-	// Current state of the engine (default: `Engine.States.Idle`).
-	let _state = States.Idle;
+	// Current state of the engine.
+	let _state = States.Init;
 
 	// Last time `enginePlay()` was called (in milliseconds).
 	let _lastPlay = null;
@@ -176,10 +177,12 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 	/*
-		Starts the story.
+		Pre-starts the story.
+
+		TODO: That is a stupid description.  Fix it.
 	*/
-	function engineStart() {
-		if (DEBUG) { console.log('[Engine/engineStart()]'); }
+	function enginePrestart() {
+		if (DEBUG) { console.log('[Engine/enginePrestart()]'); }
 
 		/*
 			Execute `init`-tagged special passages.
@@ -238,14 +241,23 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 		if (!Story.has(Config.passages.start)) {
 			throw new Error(`starting passage ("${Config.passages.start}") not found`);
 		}
+	}
+
+	/*
+		Starts the story.
+	*/
+	function engineStart() {
+		if (DEBUG) { console.log('[Engine/engineStart()]'); }
 
 		// Focus the document element initially.
 		jQuery(document.documentElement).focus();
 
-		/*
-			Attempt to restore an active session.  Failing that, attempt to autoload the autosave,
-			if requested.  Failing that, display the starting passage.
-		*/
+		// Update the engine state.
+		_state = States.Idle;
+
+		// Attempt to restore an active session.  Failing that, attempt to
+		// autoload the autosave, if requested.  Failing that, display the
+		// starting passage.
 		if (State.restore()) {
 			engineShow();
 		}
@@ -411,6 +423,10 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 		adding a new moment to the history.
 	*/
 	function enginePlay(title, noHistory) {
+		if (_state === States.Init) {
+			return false;
+		}
+
 		if (DEBUG) { console.log(`[Engine/enginePlay(title: "${title}", noHistory: ${noHistory})]`); }
 
 		let passageTitle = title;
@@ -589,7 +605,7 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 						else {
 							setTimeout(
 								() => $outgoing.remove(),
-								Math.max(minDomActionDelay, Config.passages.transitionOut)
+								Math.max(DOM_DELAY, Config.passages.transitionOut)
 							);
 						}
 					}
@@ -607,7 +623,7 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 		jQuery(passageEl)
 			.addClass('passage-in')
 			.appendTo(containerEl);
-		setTimeout(() => jQuery(passageEl).removeClass('passage-in'), minDomActionDelay);
+		setTimeout(() => jQuery(passageEl).removeClass('passage-in'), DOM_DELAY);
 
 		// Update the story display title, if necessary.
 		if (Story.has('StoryDisplayTitle')) {
@@ -792,13 +808,14 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 		/*
 			Constants.
 		*/
-		States            : { value : States },
-		minDomActionDelay : { value : minDomActionDelay },
+		States    : { value : States },
+		DOM_DELAY : { value : DOM_DELAY },
 
 		/*
 			Core Functions.
 		*/
 		init        : { value : engineInit },
+		prestart    : { value : enginePrestart },
 		start       : { value : engineStart },
 		restart     : { value : engineRestart },
 		state       : { get : engineState },
@@ -816,6 +833,7 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 		/*
 			Legacy Functions.
 		*/
-		display : { value : engineDisplay }
+		display           : { value : engineDisplay },
+		minDomActionDelay : { value : DOM_DELAY }
 	}));
 })();

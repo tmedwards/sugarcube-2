@@ -287,7 +287,7 @@ var UIBar = (() => { // eslint-disable-line no-unused-vars, no-var
 				setTimeout(() => {
 					$story.removeClass('no-transition');
 					_$uiBar.removeClass('no-transition');
-				}, Engine.minDomActionDelay);
+				}, Engine.DOM_DELAY);
 			}
 		}
 
@@ -310,7 +310,7 @@ var UIBar = (() => { // eslint-disable-line no-unused-vars, no-var
 				setTimeout(() => {
 					$story.removeClass('no-transition');
 					_$uiBar.removeClass('no-transition');
-				}, Engine.minDomActionDelay);
+				}, Engine.DOM_DELAY);
 			}
 		}
 
