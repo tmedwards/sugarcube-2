@@ -177,10 +177,11 @@ var Fullscreen = (() => { // eslint-disable-line no-unused-vars, no-var
 			const namespace = '.Fullscreen_requestFullscreen';
 
 			return new Promise((resolve, reject) => {
-				jQuery(element)
+				const $element = jQuery(element);
+				$element
 					.off(namespace)
 					.one(`${vendor.errorEvent}${namespace} ${vendor.changeEvent}${namespace}`, ev => {
-						jQuery(this).off(namespace);
+						$element.off(namespace);
 
 						if (ev.type === vendor.errorEvent) {
 							reject(new Error('unknown fullscreen request error'));
@@ -209,10 +210,11 @@ var Fullscreen = (() => { // eslint-disable-line no-unused-vars, no-var
 			const namespace = '.Fullscreen_exitFullscreen';
 
 			return new Promise((resolve, reject) => {
-				jQuery(document)
+				const $document = jQuery(document);
+				$document
 					.off(namespace)
 					.one(`${vendor.errorEvent}${namespace} ${vendor.changeEvent}${namespace}`, ev => {
-						jQuery(this).off(namespace);
+						$document.off(namespace);
 
 						if (ev.type === vendor.errorEvent) {
 							reject(new Error('unknown fullscreen exit error'));
@@ -237,7 +239,7 @@ var Fullscreen = (() => { // eslint-disable-line no-unused-vars, no-var
 
 		const element = _selectElement(requestedEl);
 
-		$(element).on(vendor.changeEvent, handlerFn);
+		jQuery(element).on(vendor.changeEvent, handlerFn);
 	}
 
 	function offChange(handlerFn, requestedEl) {
@@ -248,10 +250,10 @@ var Fullscreen = (() => { // eslint-disable-line no-unused-vars, no-var
 		const element = _selectElement(requestedEl);
 
 		if (handlerFn) {
-			$(element).off(vendor.changeEvent, handlerFn);
+			jQuery(element).off(vendor.changeEvent, handlerFn);
 		}
 		else {
-			$(element).off(vendor.changeEvent);
+			jQuery(element).off(vendor.changeEvent);
 		}
 	}
 
@@ -262,7 +264,7 @@ var Fullscreen = (() => { // eslint-disable-line no-unused-vars, no-var
 
 		const element = _selectElement(requestedEl);
 
-		$(element).on(vendor.errorEvent, handlerFn);
+		jQuery(element).on(vendor.errorEvent, handlerFn);
 	}
 
 	function offError(handlerFn, requestedEl) {
@@ -273,10 +275,10 @@ var Fullscreen = (() => { // eslint-disable-line no-unused-vars, no-var
 		const element = _selectElement(requestedEl);
 
 		if (handlerFn) {
-			$(element).off(vendor.errorEvent, handlerFn);
+			jQuery(element).off(vendor.errorEvent, handlerFn);
 		}
 		else {
-			$(element).off(vendor.errorEvent);
+			jQuery(element).off(vendor.errorEvent);
 		}
 	}
 
