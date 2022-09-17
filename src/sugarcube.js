@@ -215,8 +215,8 @@ jQuery(() => {
 		}, Engine.DOM_DELAY);
 	})
 		.then(() => {
-			// Pre-start the engine.
-			Engine.prestart();
+			// Run the init passages.
+			Engine.init2();
 
 			// Start the UI bar interface.
 			UIBar.start();

@@ -50,6 +50,10 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 	function engineInit() {
 		if (DEBUG) { console.log('[Engine/engineInit()]'); }
 
+		if (_state !== States.Init) {
+			return;
+		}
+
 		/*
 			Remove #init-no-js & #init-lacking from #init-screen.
 		*/
@@ -177,12 +181,14 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 	/*
-		Pre-starts the story.
-
-		TODO: That is a stupid description.  Fix it.
+		Run the init passages and perform some sanity checks.
 	*/
-	function enginePrestart() {
-		if (DEBUG) { console.log('[Engine/enginePrestart()]'); }
+	function engineInit2() {
+		if (DEBUG) { console.log('[Engine/engineInit2()]'); }
+
+		if (_state !== States.Init) {
+			return;
+		}
 
 		/*
 			Execute `init`-tagged special passages.
@@ -249,11 +255,15 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 	function engineStart() {
 		if (DEBUG) { console.log('[Engine/engineStart()]'); }
 
-		// Focus the document element initially.
-		jQuery(document.documentElement).focus();
+		if (_state !== States.Init) {
+			return;
+		}
 
 		// Update the engine state.
 		_state = States.Idle;
+
+		// Focus the document element initially.
+		jQuery(document.documentElement).focus();
 
 		// Attempt to restore an active session.  Failing that, attempt to
 		// autoload the autosave, if requested.  Failing that, display the
@@ -811,7 +821,7 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 			Core Functions.
 		*/
 		init        : { value : engineInit },
-		prestart    : { value : enginePrestart },
+		init2       : { value : engineInit2 },
 		start       : { value : engineStart },
 		restart     : { value : engineRestart },
 		state       : { get : engineState },
