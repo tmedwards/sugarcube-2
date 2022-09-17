@@ -198,9 +198,6 @@ jQuery(() => {
 		// Initialize the macros.
 		Macro.init();
 
-		// Pre-start the engine.
-		Engine.prestart();
-
 		// Initialize the debug bar interface.
 		if (Config.debug) {
 			DebugBar.init();
@@ -218,6 +215,9 @@ jQuery(() => {
 		}, Engine.DOM_DELAY);
 	})
 		.then(() => {
+			// Pre-start the engine.
+			Engine.prestart();
+
 			// Start the UI bar interface.
 			UIBar.start();
 
