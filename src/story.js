@@ -6,7 +6,7 @@
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* global Alert, Config, Passage, Scripting, StyleWrapper, Util, Wikifier */
+/* global Config, Passage, Util, Wikifier */
 
 var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 	'use strict';
@@ -262,53 +262,6 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 		}
 	}
 
-	function storyInit() {
-		if (DEBUG) { console.log('[Story/storyInit()]'); }
-
-		/*
-			Add the story styles.
-		*/
-		(() => {
-			const storyStyle = document.createElement('style');
-
-			new StyleWrapper(storyStyle)
-				.add(_styles.map(style => style.text.trim()).join('\n'));
-
-			jQuery(storyStyle)
-				.appendTo(document.head)
-				.attr({
-					id   : 'style-story',
-					type : 'text/css'
-				});
-		})();
-
-		/*
-			Evaluate the story scripts.
-		*/
-		for (let i = 0; i < _scripts.length; ++i) {
-			try {
-				Scripting.evalJavaScript(_scripts[i].text);
-			}
-			catch (ex) {
-				console.error(ex);
-				Alert.error(_scripts[i].title, typeof ex === 'object' ? ex.message : ex);
-			}
-		}
-
-		/*
-			Process the story widgets.
-		*/
-		for (let i = 0; i < _widgets.length; ++i) {
-			try {
-				Wikifier.wikifyEval(_widgets[i].processText());
-			}
-			catch (ex) {
-				console.error(ex);
-				Alert.error(_widgets[i].title, typeof ex === 'object' ? ex.message : ex);
-			}
-		}
-	}
-
 	function _storySetTitle(rawTitle) {
 		if (rawTitle == null) { // lazy equality for null
 			throw new Error('story title must not be null or undefined');
@@ -534,7 +487,6 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 	return Object.freeze(Object.defineProperties({}, {
 		// Story Functions.
 		load  : { value : storyLoad },
-		init  : { value : storyInit },
 		title : { get : storyTitle },
 		domId : { get : storyDomId },
 		ifId  : { get : storyIfId },

@@ -7,8 +7,9 @@
 
 ***********************************************************************************************************************/
 /*
-	global Alert, Browser, Config, Dialog, Engine, Fullscreen, Has, LoadScreen, SimpleStore, L10n, Macro, Passage,
-	       Save, Scripting, Setting, SimpleAudio, State, Story, UI, UIBar, DebugBar, Util, Visibility, Wikifier
+	global Alert, Browser, Config, Dialog, Engine, Fullscreen, Has, LoadScreen, SimpleStore, L10n, Macro,
+	       Outliner, Passage, Save, Scripting, Setting, SimpleAudio, State, Story, UI, UIBar, DebugBar,
+	       Util, Visibility, Wikifier
 */
 /* eslint-disable no-var */
 
@@ -174,11 +175,12 @@ jQuery(() => {
 		Dialog.init();
 		UIBar.init();
 		Engine.init();
+		Outliner.init();
 
-		// Initialize the story (largely load the user styles, scripts, and widgets).
-		Story.init();
+		// Run user scripts (user stylesheet, JavaScript, and widgets).
+		Engine.runUserScripts();
 
-		// Initialize the localization (must be done after story initialization).
+		// Initialize the localization (must be done after user scripts).
 		L10n.init();
 
 		// Alert when the browser is degrading required capabilities.
@@ -215,8 +217,8 @@ jQuery(() => {
 		}, Engine.DOM_DELAY);
 	})
 		.then(() => {
-			// Run the init passages.
-			Engine.init2();
+			// Run the user init passages.
+			Engine.runUserInit();
 
 			// Start the UI bar interface.
 			UIBar.start();

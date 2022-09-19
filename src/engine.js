@@ -7,8 +7,8 @@
 
 ***********************************************************************************************************************/
 /*
-	global Alert, Config, DebugView, Dialog, Has, LoadScreen, Save, State, Story, StyleWrapper, UI, UIBar, Util,
-	       Wikifier, postdisplay, postrender, predisplay, prehistory, prerender, setDisplayTitle
+	global Alert, Config, DebugView, Dialog, Has, LoadScreen, Save, Scripting, State, Story, StyleWrapper, UI,
+	       UIBar, Util, Wikifier, postdisplay, postrender, predisplay, prehistory, prerender, setDisplayTitle
 */
 
 var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
@@ -33,9 +33,6 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 
 	// Last time `enginePlay()` was called (in milliseconds).
 	let _lastPlay = null;
-
-	// Cache of the outline patching <style> element (`StyleWrapper`-wrapped).
-	let _outlinePatch = null;
 
 	// List of objects describing `StoryInterface` elements to update via passages during navigation.
 	let _updating = null;
@@ -145,46 +142,61 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 			// Insert the core UI elements into the page before the main script.
 			$elems.insertBefore('body>script#script-sugarcube');
 		})();
-
-		/*
-			Generate and cache the ARIA outlines <style> element (`StyleWrapper`-wrapped)
-			and set up the handler to manipulate the outlines.
-
-			IDEA: http://www.paciellogroup.com/blog/2012/04/how-to-remove-css-outlines-in-an-accessible-manner/
-		*/
-		_outlinePatch = new StyleWrapper((
-			() => jQuery(document.createElement('style'))
-				.attr({
-					id   : 'style-aria-outlines',
-					type : 'text/css'
-				})
-				.appendTo(document.head)
-				.get(0) // return the <style> element itself
-		)());
-		_hideOutlines(); // initially hide outlines
-		let _lastOutlineEvent;
-		jQuery(document).on(
-			'mousedown.aria-outlines keydown.aria-outlines',
-			ev => {
-				if (ev.type !== _lastOutlineEvent) {
-					_lastOutlineEvent = ev.type;
-
-					if (ev.type === 'keydown') {
-						_showOutlines();
-					}
-					else {
-						_hideOutlines();
-					}
-				}
-			}
-		);
 	}
 
 	/*
-		Run the init passages and perform some sanity checks.
+		Run user scripts (user stylesheet, JavaScript, and widgets).
 	*/
-	function engineInit2() {
-		if (DEBUG) { console.log('[Engine/engineInit2()]'); }
+	function engineRunUserScripts() {
+		if (DEBUG) { console.log('[Engine/engineRunUserScripts()]'); }
+
+		if (_state !== States.Init) {
+			return;
+		}
+
+		// Load the user styles.
+		(() => {
+			const storyStyle = document.createElement('style');
+
+			new StyleWrapper(storyStyle)
+				.add(Story.getAllStylesheet().map(style => style.text.trim()).join('\n'));
+
+			jQuery(storyStyle)
+				.appendTo(document.head)
+				.attr({
+					id   : 'style-story',
+					type : 'text/css'
+				});
+		})();
+
+		// Load the user scripts.
+		Story.getAllScript().forEach(script => {
+			try {
+				Scripting.evalJavaScript(script.text);
+			}
+			catch (ex) {
+				console.error(ex);
+				Alert.error(script.title, typeof ex === 'object' ? ex.message : ex);
+			}
+		});
+
+		// Load the user widgets.
+		Story.getAllWidget().forEach(widget => {
+			try {
+				Wikifier.wikifyEval(widget.processText());
+			}
+			catch (ex) {
+				console.error(ex);
+				Alert.error(widget.title, typeof ex === 'object' ? ex.message : ex);
+			}
+		});
+	}
+
+	/*
+		Run the user init passages.
+	*/
+	function engineRunUserInit() {
+		if (DEBUG) { console.log('[Engine/engineRunUserInit()]'); }
 
 		if (_state !== States.Init) {
 			return;
@@ -239,14 +251,6 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 				Alert.error('StoryInit', typeof ex === 'object' ? ex.message : ex);
 			}
 		}
-
-		// Sanity checks.
-		if (Config.passages.start == null) { // lazy equality for null
-			throw new Error('starting passage not selected');
-		}
-		if (!Story.has(Config.passages.start)) {
-			throw new Error(`starting passage ("${Config.passages.start}") not found`);
-		}
 	}
 
 	/*
@@ -257,6 +261,14 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 
 		if (_state !== States.Init) {
 			return;
+		}
+
+		// Sanity checks.
+		if (Config.passages.start == null) { // lazy equality for null
+			throw new Error('starting passage not selected');
+		}
+		if (!Story.has(Config.passages.start)) {
+			throw new Error(`starting passage ("${Config.passages.start}") not found`);
 		}
 
 		// Update the engine state.
@@ -796,18 +808,6 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 
 
 	/*******************************************************************************************************************
-		Utility Functions.
-	*******************************************************************************************************************/
-	function _hideOutlines() {
-		_outlinePatch.set('*:focus{outline:none;}');
-	}
-
-	function _showOutlines() {
-		_outlinePatch.clear();
-	}
-
-
-	/*******************************************************************************************************************
 		Module Exports.
 	*******************************************************************************************************************/
 	return Object.freeze(Object.defineProperties({}, {
@@ -820,21 +820,22 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 		/*
 			Core Functions.
 		*/
-		init        : { value : engineInit },
-		init2       : { value : engineInit2 },
-		start       : { value : engineStart },
-		restart     : { value : engineRestart },
-		state       : { get : engineState },
-		isIdle      : { value : engineIsIdle },
-		isPlaying   : { value : engineIsPlaying },
-		isRendering : { value : engineIsRendering },
-		lastPlay    : { get : engineLastPlay },
-		goTo        : { value : engineGoTo },
-		go          : { value : engineGo },
-		backward    : { value : engineBackward },
-		forward     : { value : engineForward },
-		show        : { value : engineShow },
-		play        : { value : enginePlay },
+		init           : { value : engineInit },
+		runUserScripts : { value : engineRunUserScripts },
+		runUserInit    : { value : engineRunUserInit },
+		start          : { value : engineStart },
+		restart        : { value : engineRestart },
+		state          : { get : engineState },
+		isIdle         : { value : engineIsIdle },
+		isPlaying      : { value : engineIsPlaying },
+		isRendering    : { value : engineIsRendering },
+		lastPlay       : { get : engineLastPlay },
+		goTo           : { value : engineGoTo },
+		go             : { value : engineGo },
+		backward       : { value : engineBackward },
+		forward        : { value : engineForward },
+		show           : { value : engineShow },
+		play           : { value : enginePlay },
 
 		/*
 			Legacy Functions.
