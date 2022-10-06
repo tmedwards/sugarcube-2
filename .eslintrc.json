@@ -1,6 +1,9 @@
 {
     "parserOptions" : {
-        "ecmaVersion": 2021
+        "ecmaVersion"  : 2021,
+        "ecmaFeatures" : {
+            "impliedStrict": true
+        }
     },
     "env" : {
         "browser" : true,
@@ -33,7 +36,7 @@
         "func-name-matching"               : ["error", "always"],
         "generator-star-spacing"           : ["error", "after"],
         "id-length"                        : ["error", { "exceptions": ["O", "P", "T", "_", "a", "b", "i", "j", "m", "w", "x", "y"] }],
-        "indent"                           : ["error", "tab", { "ArrayExpression" : "first", "CallExpression" : { "arguments" : "first" }, "FunctionDeclaration" : { "body" : 1, "parameters" : "first" }, "FunctionExpression" : { "body" : 1, "parameters" : "first" }, "ObjectExpression" : "first", "SwitchCase" : 0, "VariableDeclarator" : 1 }],
+        "indent"                           : ["error", "tab", { "ArrayExpression" : "first", "CallExpression" : { "arguments" : "first" }, "FunctionDeclaration" : { "body" : 1, "parameters" : "first" }, "FunctionExpression" : { "body" : 1, "parameters" : "first" }, "ObjectExpression" : "first", "SwitchCase" : 1, "VariableDeclarator" : 1 }],
         "key-spacing"                      : ["error", { "align" : "colon", "beforeColon" : true, "afterColon" : true }],
         "keyword-spacing"                  : "error",
         "linebreak-style"                  : ["error", "unix"],
@@ -149,6 +152,7 @@
         "symbol-description"               : "error",
         "template-curly-spacing"           : ["error", "never"],
         "template-tag-spacing"             : ["error", "never"],
+        "use-isnan"                        : ["error", { "enforceForIndexOf" : true, "enforceForSwitchCase" : true }],
         "valid-typeof"                     : ["error", { "requireStringLiterals" : true }],
         "wrap-iife"                        : ["error", "inside", { "functionPrototypeMethods" : true }],
         "wrap-regex"                       : "off",
