@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /***********************************************************************************************************************
 
-	build.js (v1.7.2, 2022-09-19)
+	build.js (v1.8.0, 2022-10-06)
 		A Node.js-hosted build script for SugarCube.
 
 	Copyright © 2013–2022 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
@@ -9,6 +9,7 @@
 
 ***********************************************************************************************************************/
 /* eslint-env node, es2021 */
+/* eslint-disable strict */
 'use strict';
 
 
@@ -28,9 +29,8 @@ const CONFIG = {
 			'src/lib/outliner.js',
 			'src/lib/visibility.js',
 			'src/lib/fullscreen.js',
-			'src/lib/helpers.js',
+			'src/utils/',
 			'src/lib/jquery-plugins.js',
-			'src/lib/util.js',
 			'src/lib/simplestore/simplestore.js',
 			'src/lib/simplestore/adapters/webstorage.js',
 			'src/lib/simplestore/adapters/cookie.js',
@@ -52,7 +52,8 @@ const CONFIG = {
 			'src/markup/template.js',
 			'src/macros/macro.js',
 			'src/macros/macrocontext.js',
-			'src/macros/macrolib.js',
+			'src/macros/lib/',
+			'src/macros/deprecated.js',
 			'src/dialog.js',
 			'src/engine.js',
 			'src/passage.js',
@@ -150,6 +151,7 @@ const {
 	log,
 	die,
 	fileExists,
+	walkPaths,
 	makePath,
 	copyFile,
 	readFileContents,
@@ -157,32 +159,32 @@ const {
 	concatFiles
 } = require('./scripts/build-utils');
 const _path = require('path');
-const _opt  = require('node-getopt').create([
-	['b', 'build=VERSION', 'Build only for Twine major version: 1 or 2; default: build for all.'],
-	['d', 'debug',         'Keep debugging code; gated by DEBUG symbol.'],
-	['u', 'unminified',    'Suppress minification stages.'],
-	['n', 'no-transpile',  'Suppress JavaScript transpilation stages.'],
-	['h', 'help',          'Print this help, then exit.']
-])
-	.bindHelp()
-	.parseSystem();
+const _opts = require('commander')
+	.program
+	.option('-b, --build <version>', 'Build only for Twine major version: 1 or 2; default: build for all.')
+	.option('-d, --debug', 'Keep debugging code; gated by DEBUG symbol.')
+	.option('-u, --unminified', 'Suppress minification stages.')
+	.option('-n, --notranspile', 'Suppress JavaScript transpilation stages.')
+	.helpOption('-h, --help', 'Print this help, then exit.')
+	.parse()
+	.opts();
 
 let _buildForTwine1 = true;
 let _buildForTwine2 = true;
 
-if (_opt.options.build) {
-	switch (_opt.options.build) {
-	case '1':
-		_buildForTwine2 = false;
-		break;
+if (_opts.build) {
+	switch (_opts.build) {
+		case '1':
+			_buildForTwine2 = false;
+			break;
 
-	case '2':
-		_buildForTwine1 = false;
-		break;
+		case '2':
+			_buildForTwine1 = false;
+			break;
 
-	default:
-		die(`unknown Twine major version: ${_opt.options.build}; valid values: 1 or 2`);
-		break;
+		default:
+			die(`unknown Twine major version: ${_opts.build}; valid values: 1 or 2`);
+			break;
 	}
 }
 
@@ -287,14 +289,14 @@ function assembleLibraries(filenames) {
 	return concatFiles(filenames, contents => contents.replace(/^\n+|\n+$/g, ''));
 }
 
-function compileJavaScript(filenameObj, options) {
+function compileJavaScript(config, options) {
 	log('compiling JavaScript...');
 
 	// Join the files.
-	let bundle = concatFiles(filenameObj.files);
+	let bundle = concatFiles(walkPaths(config.files));
 
 	// Transpile to ES5 with Babel.
-	if (!_opt.options.noTranspile) {
+	if (!_opts.notranspile) {
 		const { transform } = require('@babel/core');
 		bundle = transform(bundle, {
 			// babelHelpers : 'bundled',
@@ -305,13 +307,13 @@ function compileJavaScript(filenameObj, options) {
 		}).code;
 	}
 
-	bundle = `${readFileContents(filenameObj.wrap.intro)}\n${bundle}\n${readFileContents(filenameObj.wrap.outro)}`;
+	bundle = `${readFileContents(config.wrap.intro)}\n${bundle}\n${readFileContents(config.wrap.outro)}`;
 
 	return (async source => {
-		if (_opt.options.unminified) {
+		if (_opts.unminified) {
 			return [
 				`window.TWINE1=${Boolean(options.twine1)}`,
-				`window.DEBUG=${_opt.options.debug || false}`,
+				`window.DEBUG=${_opts.debug || false}`,
 				source
 			].join(';\n');
 		}
@@ -322,7 +324,7 @@ function compileJavaScript(filenameObj, options) {
 			compress : {
 				global_defs : { // eslint-disable-line camelcase
 					TWINE1 : !!options.twine1,
-					DEBUG  : _opt.options.debug || false
+					DEBUG  : _opts.debug || false
 				}
 			},
 			mangle : false
@@ -361,7 +363,7 @@ function compileStyles(config) {
 			processed.warnings().forEach(mesg => console.warn(mesg.text));
 		}
 
-		if (!_opt.options.unminified) {
+		if (!_opts.unminified) {
 			css = new CleanCSS({
 				level         : 1,
 				compatibility : 'ie9'

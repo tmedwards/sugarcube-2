@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /***********************************************************************************************************************
 
-	build-docs.js (v1.3.0, 2022-10-06)
+	build-docs.js (v1.3.1, 2022-10-06)
 		A Node.js-hosted build script for SugarCube's documentation.
 
 	Copyright © 2020–2021 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
@@ -125,12 +125,12 @@ const {
 	concatFiles
 } = require('../scripts/build-utils');
 const _path = require('path');
-const _opt  = require('node-getopt').create([
-	['h', 'help',       'Print this help, then exit.'],
-	['u', 'unminified', 'Suppress minification stages.']
-])
-	.bindHelp()
-	.parseSystem();
+const _opts = require('commander')
+	.program
+	.option('-u, --unminified', 'Suppress minification stages.')
+	.helpOption('-h, --help', 'Print this help, then exit.')
+	.parse()
+	.opts();
 
 // Build the documentation.
 (async () => {
@@ -205,7 +205,7 @@ function compileMarkdown(sourceConfig) {
 
 function compileJavaScript(sourceConfig) {
 	return (async source => {
-		if (_opt.options.unminified) {
+		if (_opts.unminified) {
 			return source;
 		}
 
@@ -241,7 +241,7 @@ function compileStyles(sourceConfig) {
 
 		let css = processed.css;
 
-		if (!_opt.options.unminified) {
+		if (!_opts.unminified) {
 			css = new CleanCss({
 				level         : 1,
 				compatibility : 'ie9'

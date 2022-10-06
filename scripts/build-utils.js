@@ -8,6 +8,7 @@
 
 ***********************************************************************************************************************/
 /* eslint-env node, es2021 */
+/* eslint-disable strict */
 'use strict';
 
 const _fs     = require('fs');
@@ -32,6 +33,22 @@ function die(message, error) {
 
 function fileExists(pathname) {
 	return _fs.existsSync(pathname);
+}
+
+function walkPaths(paths) {
+	return paths.reduce((acc, path) => {
+		if (_fs.statSync(path)?.isDirectory()) {
+			acc.push(...walkPaths(
+				_fs.readdirSync(path)
+					.map(fname => `${path}${path.endsWith('/') ? '' : '/'}${fname}`)
+			));
+		}
+		else {
+			acc.push(path);
+		}
+
+		return acc;
+	}, []);
 }
 
 function makePath(pathname) {
@@ -105,6 +122,7 @@ function concatFiles(filenames, callback) {
 exports.log               = log;
 exports.die               = die;
 exports.fileExists        = fileExists;
+exports.walkPaths         = walkPaths;
 exports.makePath          = makePath;
 exports.copyFile          = copyFile;
 exports.readFileContents  = readFileContents;
