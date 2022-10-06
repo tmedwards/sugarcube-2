@@ -6,7 +6,7 @@
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* global Save, Util */
+/* global Save, getTypeOf */
 
 var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 	'use strict';
@@ -172,7 +172,7 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 			get override() { return _navigationOverride; },
 			set override(value) {
 				if (!(value == null || value instanceof Function)) { // lazy equality for null
-					throw new TypeError(`Config.navigation.override must be a function or null/undefined (received: ${Util.getType(value)})`);
+					throw new TypeError(`Config.navigation.override must be a function or null/undefined (received: ${getTypeOf(value)})`);
 				}
 
 				_navigationOverride = value;
@@ -186,7 +186,7 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 			get descriptions() { return _passagesDescriptions; },
 			set descriptions(value) {
 				if (value != null) { // lazy equality for null
-					const valueType = Util.getType(value);
+					const valueType = getTypeOf(value);
 
 					if (valueType !== 'boolean' && valueType !== 'Object' && valueType !== 'function') {
 						throw new TypeError(`Config.passages.descriptions must be a boolean, object, function, or null/undefined (received: ${valueType})`);
@@ -206,7 +206,7 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 			get onProcess() { return _passagesOnProcess; },
 			set onProcess(value) {
 				if (value != null) { // lazy equality for null
-					const valueType = Util.getType(value);
+					const valueType = getTypeOf(value);
 
 					if (valueType !== 'function') {
 						throw new TypeError(`Config.passages.onProcess must be a function or null/undefined (received: ${valueType})`);
@@ -220,7 +220,7 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 			get start() { return _passagesStart; },
 			set start(value) {
 				if (value != null) { // lazy equality for null
-					const valueType = Util.getType(value);
+					const valueType = getTypeOf(value);
 
 					if (valueType !== 'string') {
 						throw new TypeError(`Config.passages.start must be a string or null/undefined (received: ${valueType})`);
@@ -234,7 +234,7 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 			get transitionOut() { return _passagesTransitionOut; },
 			set transitionOut(value) {
 				if (value != null) { // lazy equality for null
-					const valueType = Util.getType(value);
+					const valueType = getTypeOf(value);
 
 					if (
 						   valueType !== 'string'
@@ -255,7 +255,7 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 			get autoload() { return _savesAutoload; },
 			set autoload(value) {
 				if (value != null) { // lazy equality for null
-					const valueType = Util.getType(value);
+					const valueType = getTypeOf(value);
 
 					if (valueType !== 'boolean' && valueType !== 'string' && valueType !== 'function') {
 						throw new TypeError(`Config.saves.autoload must be a boolean, string, function, or null/undefined (received: ${valueType})`);
@@ -268,7 +268,7 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 			get autosave() { return _savesAutosave; },
 			set autosave(value) {
 				if (value != null) { // lazy equality for null
-					const valueType = Util.getType(value);
+					const valueType = getTypeOf(value);
 
 					// legacy
 					// Convert a string value to an Array of string.
@@ -293,7 +293,7 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 			get id() { return _savesId; },
 			set id(value) {
 				if (typeof value !== 'string' || value === '') {
-					throw new TypeError(`Config.saves.id must be a non-empty string (received: ${Util.getType(value)})`);
+					throw new TypeError(`Config.saves.id must be a non-empty string (received: ${getTypeOf(value)})`);
 				}
 
 				_savesId = value;
@@ -302,7 +302,7 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 			get isAllowed() { return _savesIsAllowed; },
 			set isAllowed(value) {
 				if (!(value == null || value instanceof Function)) { // lazy equality for null
-					throw new TypeError(`Config.saves.isAllowed must be a function or null/undefined (received: ${Util.getType(value)})`);
+					throw new TypeError(`Config.saves.isAllowed must be a function or null/undefined (received: ${getTypeOf(value)})`);
 				}
 
 				_savesIsAllowed = value;
@@ -311,7 +311,7 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 			get slots() { return _savesSlots; },
 			set slots(value) {
 				if (!Number.isSafeInteger(value) || value < 0) {
-					throw new TypeError(`Config.saves.slots must be a non-negative integer (received: ${Util.getType(value)})`);
+					throw new TypeError(`Config.saves.slots must be a non-negative integer (received: ${getTypeOf(value)})`);
 				}
 
 				_savesSlots = value;
@@ -350,7 +350,7 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 		ui : Object.freeze({
 			get stowBarInitially() { return _uiStowBarInitially; },
 			set stowBarInitially(value) {
-				const valueType = Util.getType(value);
+				const valueType = getTypeOf(value);
 
 				if (
 					   valueType !== 'boolean'

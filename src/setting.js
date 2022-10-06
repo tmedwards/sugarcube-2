@@ -6,13 +6,13 @@
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* global Util, settings:true, storage */
+/* global enumFrom, settings:true, storage */
 
 var Setting = (() => { // eslint-disable-line no-unused-vars, no-var
 	'use strict';
 
-	// Setting control types object (pseudo-enumeration).
-	const Types = Util.toEnum({
+	// Setting control types object.
+	const Types = enumFrom({
 		Header : 0,
 		Toggle : 1,
 		List   : 2,

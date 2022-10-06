@@ -6,7 +6,7 @@
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* global SimpleStore, Util */
+/* global SimpleStore, exceptionFrom */
 
 SimpleStore.adapters.push((() => {
 	'use strict';
@@ -147,7 +147,7 @@ SimpleStore.adapters.push((() => {
 					so much.
 				*/
 				if (/quota.?(?:exceeded|reached)/i.test(ex.name + ex.message)) {
-					throw Util.newExceptionFrom(ex, Error, `${this.name} quota exceeded`);
+					throw exceptionFrom(ex, Error, `${this.name} quota exceeded`);
 				}
 
 				throw ex;

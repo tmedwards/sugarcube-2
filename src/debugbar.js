@@ -7,7 +7,7 @@
 
 ***********************************************************************************************************************/
 /*
-	global DebugView, Engine, L10n, Patterns, State, Util, session
+	global DebugView, Engine, L10n, Patterns, State, encodeEntities, getToStringTag, session
 */
 
 var DebugBar = (() => { // eslint-disable-line no-unused-vars, no-var
@@ -403,7 +403,7 @@ var DebugBar = (() => { // eslint-disable-line no-unused-vars, no-var
 		for (let i = 0; i < histLen; ++i) {
 			jQuery(document.createElement('option'))
 				.val(i)
-				.text(`${expLen + i + 1}. ${Util.escape(State.history[i].title)}`)
+				.text(`${expLen + i + 1}. ${encodeEntities(State.history[i].title)}`)
 				.appendTo(options);
 		}
 
@@ -446,7 +446,7 @@ var DebugBar = (() => { // eslint-disable-line no-unused-vars, no-var
 			return 'Function';
 		}
 
-		const objType = Util.toStringTag(value);
+		const objType = getToStringTag(value);
 
 		// /*
 		// 	Handle instances of the primitive exemplar objects (`Boolean`, `Number`, `String`).

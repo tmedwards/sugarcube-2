@@ -6,7 +6,7 @@
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* global Has, L10n, safeActiveElement */
+/* global Has, L10n, getActiveElement */
 
 var Dialog = (() => { // eslint-disable-line no-unused-vars, no-var
 	'use strict';
@@ -224,7 +224,7 @@ var Dialog = (() => { // eslint-disable-line no-unused-vars, no-var
 
 		// Record the last active/focused non-dialog element.
 		if (!dialogIsOpen()) {
-			_lastActive = safeActiveElement();
+			_lastActive = getActiveElement();
 		}
 
 		// Add the `data-dialog` attribute to <html> (mostly used to style <body>).

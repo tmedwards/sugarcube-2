@@ -6,7 +6,7 @@
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* global Config, Has, LoadScreen, Story, Util, Visibility, clone */
+/* global Config, Has, LoadScreen, Story, Visibility, clone, parseURL */
 
 var SimpleAudio = (() => { // eslint-disable-line no-unused-vars, no-var
 	'use strict';
@@ -176,7 +176,7 @@ var SimpleAudio = (() => { // eslint-disable-line no-unused-vars, no-var
 							}
 						}
 						else {
-							match = extRe.exec(Util.parseUrl(src).pathname);
+							match = extRe.exec(parseURL(src).pathname);
 
 							if (match === null) {
 								throw new Error('source URL missing file extension');

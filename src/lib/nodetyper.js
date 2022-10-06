@@ -6,7 +6,7 @@
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* global Util */
+/* global characterAndPosAt, getTypeOf */
 
 var NodeTyper = (() => { // eslint-disable-line no-unused-vars, no-var
 	'use strict';
@@ -17,7 +17,7 @@ var NodeTyper = (() => { // eslint-disable-line no-unused-vars, no-var
 	class NodeTyper {
 		constructor(config) {
 			if (typeof config !== 'object' || config === null) {
-				throw new Error(`config parameter must be an object (received: ${Util.getType(config)})`);
+				throw new Error(`config parameter must be an object (received: ${getTypeOf(config)})`);
 			}
 			if (!config.hasOwnProperty('targetNode') || !(config.targetNode instanceof Node)) {
 				throw new Error('config parameter object "targetNode" property must be a node');
@@ -110,9 +110,9 @@ var NodeTyper = (() => { // eslint-disable-line no-unused-vars, no-var
 					this.nodeValue = '';
 				}
 				else {
-					// Use `Util.charAndPosAt()` here to properly handle Unicode code points
+					// Use `characterAndPosAt()` here to properly handle Unicode code points
 					// that are comprised of surrogate pairs.
-					const { char, start, end } = Util.charAndPosAt(this.nodeValue, 0);
+					const { char, start, end } = characterAndPosAt(this.nodeValue, 0);
 					this.node.nodeValue += char;
 					this.nodeValue = this.nodeValue.slice(1 + end - start);
 				}

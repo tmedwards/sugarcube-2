@@ -6,7 +6,7 @@
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* global Util, clone */
+/* global clone, enumFrom */
 
 var Diff = (() => { // eslint-disable-line no-unused-vars, no-var
 	'use strict';
@@ -15,14 +15,30 @@ var Diff = (() => { // eslint-disable-line no-unused-vars, no-var
 		Diff Functions.
 	*******************************************************************************************************************/
 	/*
-		Diff operations object (pseudo-enumeration).
+		Diff operations object.
 	*/
-	const Op = Util.toEnum({
+	const Op = enumFrom({
 		Delete      : 0,
 		SpliceArray : 1,
 		Copy        : 2,
 		CopyDate    : 3
 	});
+
+	/*
+		Returns whether the given value is a finite number or a numeric string that
+		yields a finite number when parsed.
+	*/
+	function isNumeric(O) {
+		let num;
+
+		switch (typeof O) {
+			case 'number': num = O; break;
+			case 'string': num = Number(O); break;
+			default:       return false;
+		}
+
+		return !Number.isNaN(num) && Number.isFinite(num);
+	}
 
 	/*
 		Returns a difference object generated from comparing the orig and dest objects.
@@ -123,7 +139,7 @@ var Diff = (() => { // eslint-disable-line no-unused-vars, no-var
 				}
 				// Key only exists in orig.
 				else {
-					if (origIsArray && Util.isNumeric(key)) {
+					if (origIsArray && isNumeric(key)) {
 						const nKey = Number(key);
 
 						if (!aOpRef) {

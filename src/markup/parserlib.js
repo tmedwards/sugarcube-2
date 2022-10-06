@@ -8,7 +8,7 @@
 ***********************************************************************************************************************/
 /*
 	global Config, DebugView, EOF, Engine, Lexer, Macro, MacroContext, Patterns, Scripting, State, Story, Template,
-	       Wikifier, stringFrom, throwError
+	       Wikifier, stringFrom, appendError
 */
 /* eslint "no-param-reassign": [ 2, { "props" : false } ] */
 
@@ -142,7 +142,7 @@
 
 							if (!payload) {
 								w.nextMatch = nextMatch; // we must reset `w.nextMatch` here, as `parseBody()` modifies it
-								return throwError(
+								return appendError(
 									w.output,
 									`cannot find a closing tag for macro <<${name}>>`,
 									`${w.source.slice(matchStart, w.nextMatch)}\u2026`
@@ -221,7 +221,7 @@
 							}
 						}
 						else {
-							return throwError(
+							return appendError(
 								w.output,
 								`macro <<${name}>> handler function ${typeof macro.handler === 'undefined' ? 'does not exist' : 'is not a function'}`,
 								w.source.slice(matchStart, w.nextMatch)
@@ -230,14 +230,14 @@
 					}
 					else if (Macro.tags.has(name)) {
 						const tags = Macro.tags.get(name);
-						return throwError(
+						return appendError(
 							w.output,
 							`child tag <<${name}>> was found outside of a call to its parent macro${tags.length === 1 ? '' : 's'} <<${tags.join('>>, <<')}>>`,
 							w.source.slice(matchStart, w.nextMatch)
 						);
 					}
 					else {
-						return throwError(
+						return appendError(
 							w.output,
 							`macro <<${name}>> does not exist`,
 							w.source.slice(matchStart, w.nextMatch)
@@ -245,7 +245,7 @@
 					}
 				}
 				catch (ex) {
-					return throwError(
+					return appendError(
 						w.output,
 						`cannot execute ${macro && macro.isWidget ? 'widget' : 'macro'} <<${name}>>: ${ex.message}`,
 						w.source.slice(matchStart, w.nextMatch)
@@ -400,7 +400,8 @@
 		},
 
 		parseArgs : (() => {
-			const Item = Lexer.enumFromNames([ // lex item types object (pseudo-enumeration)
+			// Lex item types object.
+			const Item = Lexer.enumFromNames([
 				'Error',        // error
 				'Bareword',     // bare identifier
 				'Expression',   // expression (backquoted)
@@ -1081,7 +1082,7 @@
 					result = stringFrom(template.call({ name }));
 				}
 				catch (ex) {
-					return throwError(
+					return appendError(
 						w.output,
 						`cannot execute function template ?${name}: ${ex.message}`,
 						w.source.slice(w.matchStart, w.nextMatch)
@@ -1531,7 +1532,7 @@
 						this.processAttributeDirectives(el);
 					}
 					catch (ex) {
-						return throwError(
+						return appendError(
 							w.output,
 							`svg|<${tagName}>: ${ex.message}`,
 							`${w.matchText}\u2026`
@@ -1709,7 +1710,7 @@
 						this.processAttributeDirectives(el);
 					}
 					catch (ex) {
-						return throwError(
+						return appendError(
 							w.output,
 							`<${tagName}>: ${ex.message}`,
 							`${w.matchText}\u2026`
@@ -1718,7 +1719,7 @@
 
 					if (el.hasAttribute('data-passage')) {
 						if (el.hasAttribute('href')) {
-							return throwError(
+							return appendError(
 								w.output,
 								`<${tagName}>: elements may not include both "data-passage" and "href" atttributes`,
 								`${w.matchText}\u2026`
@@ -1781,7 +1782,7 @@
 					output.appendChild(tagName === 'track' ? el.cloneNode(true) : el);
 				}
 				else {
-					return throwError(
+					return appendError(
 						w.output,
 						`cannot find a closing tag for HTML <${tag}>`,
 						`${w.matchText}\u2026`
