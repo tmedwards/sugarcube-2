@@ -686,4 +686,4 @@
 <div aria-hidden="true">&nbsp;</div>
 </nav>
 <!-- NAV ENHANCEMENT -->
-<script type="text/javascript">{{.SCRIPT_NAV}}</script>
+{{.SCRIPT_NAV}}
