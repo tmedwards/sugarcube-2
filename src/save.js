@@ -6,13 +6,13 @@
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* global Config, Dialog, Engine, L10n, State, Story, UI, Util, storage */
+/* global Config, Dialog, Engine, L10n, State, Story, UI, createFilename, enumFrom, getTypeOf, storage */
 
 var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 	'use strict';
 
-	// Save operation type pseudo-enumeration.
-	const Type = Util.toEnum({
+	// Save operation type object.
+	const Type = enumFrom({
 		Autosave  : 'autosave',
 		Disk      : 'disk',
 		Serialize : 'serialize',
@@ -352,7 +352,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 		}
 
 		function getFilename(str) {
-			return Util.sanitizeFilename(str)
+			return createFilename(str)
 				.replace(/[_\s\u2013\u2014-]+/g, '-'); // legacy
 		}
 
@@ -438,7 +438,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 		Event Functions.
 	*******************************************************************************************************************/
 	function onLoadAdd(handler) {
-		const valueType = Util.getType(handler);
+		const valueType = getTypeOf(handler);
 
 		if (valueType !== 'function') {
 			throw new TypeError(`Save.onLoad.add handler parameter must be a function (received: ${valueType})`);
@@ -460,7 +460,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 	function onSaveAdd(handler) {
-		const valueType = Util.getType(handler);
+		const valueType = getTypeOf(handler);
 
 		if (valueType !== 'function') {
 			throw new TypeError(`Save.onSave.add handler parameter must be a function (received: ${valueType})`);

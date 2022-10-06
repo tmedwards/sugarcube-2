@@ -6,7 +6,7 @@
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* global SimpleStore, Util */
+/* global SimpleStore, exceptionFrom */
 
 SimpleStore.adapters.push((() => {
 	'use strict';
@@ -138,7 +138,7 @@ SimpleStore.adapters.push((() => {
 			}
 			catch (ex) {
 				// Massage the cookie exception into something a bit nicer for the player.
-				throw Util.newExceptionFrom(ex, Error, `cookie error: ${ex.message}`);
+				throw exceptionFrom(ex, Error, `cookie error: ${ex.message}`);
 			}
 
 			return true;
@@ -172,7 +172,7 @@ SimpleStore.adapters.push((() => {
 			}
 			catch (ex) {
 				// Massage the cookie exception into something a bit nicer for the player.
-				throw Util.newExceptionFrom(ex, Error, `cookie error: ${ex.message}`);
+				throw exceptionFrom(ex, Error, `cookie error: ${ex.message}`);
 			}
 
 			return true;

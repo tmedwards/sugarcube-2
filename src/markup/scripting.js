@@ -6,7 +6,7 @@
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* global Engine, Patterns, State, Story, Util, stringFrom */
+/* global Engine, Patterns, State, Story, enumFrom, getTypeOf, now, parseURL, stringFrom */
 
 var Scripting = (() => { // eslint-disable-line no-unused-vars, no-var
 	'use strict';
@@ -255,7 +255,7 @@ var Scripting = (() => { // eslint-disable-line no-unused-vars, no-var
 	*/
 	function forget(key) {
 		if (typeof key !== 'string') {
-			throw new TypeError(`forget key parameter must be a string (received: ${Util.getType(key)})`);
+			throw new TypeError(`forget key parameter must be a string (received: ${getTypeOf(key)})`);
 		}
 
 		State.metadata.delete(key);
@@ -319,7 +319,7 @@ var Scripting = (() => { // eslint-disable-line no-unused-vars, no-var
 	*/
 	function memorize(key, value) {
 		if (typeof key !== 'string') {
-			throw new TypeError(`memorize key parameter must be a string (received: ${Util.getType(key)})`);
+			throw new TypeError(`memorize key parameter must be a string (received: ${getTypeOf(key)})`);
 		}
 
 		State.metadata.set(key, value);
@@ -439,7 +439,7 @@ var Scripting = (() => { // eslint-disable-line no-unused-vars, no-var
 	*/
 	function recall(key, defaultValue) {
 		if (typeof key !== 'string') {
-			throw new TypeError(`recall key parameter must be a string (received: ${Util.getType(key)})`);
+			throw new TypeError(`recall key parameter must be a string (received: ${getTypeOf(key)})`);
 		}
 
 		return State.metadata.has(key) ? State.metadata.get(key) : defaultValue;
@@ -474,7 +474,7 @@ var Scripting = (() => { // eslint-disable-line no-unused-vars, no-var
 		Returns the number of milliseconds which have passed since the current passage was rendered.
 	*/
 	function time() {
-		return Engine.lastPlay === null ? 0 : Util.now() - Engine.lastPlay;
+		return Engine.lastPlay === null ? 0 : now() - Engine.lastPlay;
 	}
 
 	/*
@@ -582,7 +582,7 @@ var Scripting = (() => { // eslint-disable-line no-unused-vars, no-var
 	} = (() => {
 		// Slugify the given URL.
 		function slugifyUrl(url) {
-			return Util.parseUrl(url).path
+			return parseURL(url).path
 				.replace(/^[^\w]+|[^\w]+$/g, '')
 				.replace(/[^\w]+/g, '-')
 				.toLocaleLowerCase();
@@ -699,7 +699,7 @@ var Scripting = (() => { // eslint-disable-line no-unused-vars, no-var
 		their native JavaScript counterparts.
 	*/
 	const parse = (() => {
-		const tokenTable = Util.toEnum({
+		const tokenTable = enumFrom({
 			/* eslint-disable quote-props */
 			// Story $variable sigil-prefix.
 			'$'     : 'State.variables.',

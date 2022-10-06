@@ -6,7 +6,7 @@
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* global Config, DebugView, Patterns, State, Wikifier, throwError */
+/* global Config, DebugView, Patterns, State, Wikifier, appendError */
 
 var MacroContext = (() => { // eslint-disable-line no-unused-vars, no-var
 	'use strict';
@@ -278,7 +278,7 @@ var MacroContext = (() => { // eslint-disable-line no-unused-vars, no-var
 		}
 
 		error(message, source) {
-			return throwError(this._output, `<<${this.displayName}>>: ${message}`, source ? source : this.source);
+			return appendError(this._output, `<<${this.displayName}>>: ${message}`, source ? source : this.source);
 		}
 	}
 

@@ -8,7 +8,8 @@
 ***********************************************************************************************************************/
 /*
 	global Config, DebugView, Engine, Has, L10n, Macro, NodeTyper, Patterns, Scripting, SimpleAudio, State,
-	       Story, TempState, Util, Wikifier, postdisplay, prehistory, storage, stringFrom
+	       Story, TempState, Wikifier, characterAndPosAt, createSlug, cssTimeToMS, encodeEntities, getToStringTag,
+	       postdisplay, prehistory, sameValueZero, scrubEventKey, storage, stringFrom
 */
 
 (() => {
@@ -347,7 +348,7 @@
 				const result = stringFrom(Scripting.evalJavaScript(this.args.full));
 
 				if (result !== null) {
-					new Wikifier(this.output, this.name === '-' ? Util.escape(result) : result);
+					new Wikifier(this.output, this.name === '-' ? encodeEntities(result) : result);
 				}
 			}
 			catch (ex) {
@@ -396,7 +397,7 @@
 				return this.error('no speed specified');
 			}
 
-			const speed = Util.fromCssTime(this.args[0]); // in milliseconds
+			const speed = cssTimeToMS(this.args[0]); // in milliseconds
 
 			if (speed < 0) {
 				return this.error(`speed time value must be non-negative (received: ${this.args[0]})`);
@@ -486,7 +487,7 @@
 					}
 
 					const value = options.shift();
-					start = Util.fromCssTime(value);
+					start = cssTimeToMS(value);
 
 					if (start < 0) {
 						throw new Error(`start option time value must be non-negative (received: ${value})`);
@@ -608,7 +609,7 @@
 						.on(keydownAndNS, ev => {
 							// Finish typing if the player aborts via the skip key.
 							if (
-								Util.scrubEventKey(ev.key) === skipKey
+								scrubEventKey(ev.key) === skipKey
 								&& (ev.target === document.body || ev.target === document.documentElement)
 							) {
 								ev.preventDefault();
@@ -1161,7 +1162,7 @@
 			case 'string':
 				list = [];
 				for (let i = 0; i < value.length; /* empty */) {
-					const obj = Util.charAndPosAt(value, i);
+					const obj = characterAndPosAt(value, i);
 					list.push([i, obj.char]);
 					i = 1 + obj.end;
 				}
@@ -1177,11 +1178,11 @@
 				else if (value instanceof Map) {
 					list = [...value.entries()];
 				}
-				else if (Util.toStringTag(value) === 'Object') {
+				else if (getToStringTag(value) === 'Object') {
 					list = Object.keys(value).map(key => [key, value[key]]);
 				}
 				else {
-					throw new Error(`unsupported range expression type: ${Util.toStringTag(value)}`);
+					throw new Error(`unsupported range expression type: ${getToStringTag(value)}`);
 				}
 				break;
 
@@ -1327,7 +1328,7 @@
 				return this.error(`variable name "${this.args[0]}" is missing its sigil ($ or _)`);
 			}
 
-			const varId        = Util.slugify(varName);
+			const varId        = createSlug(varName);
 			const uncheckValue = this.args[1];
 			const checkValue   = this.args[2];
 			const el           = document.createElement('input');
@@ -1396,7 +1397,7 @@
 				return this.error(`variable name "${this.args[0]}" is missing its sigil ($ or _)`);
 			}
 
-			const varId = Util.slugify(varName);
+			const varId = createSlug(varName);
 			const len   = this.payload.length;
 
 			if (len === 1) {
@@ -1511,7 +1512,7 @@
 						result.forEach((val, key) => options.push({ label : String(key), value : val }));
 					}
 					else {
-						const oType = Util.toStringTag(result);
+						const oType = getToStringTag(result);
 
 						if (oType !== 'Object') {
 							return this.error(`expression must yield a supported collection or generic object (object type: ${oType})`);
@@ -1527,9 +1528,8 @@
 				// Attempt to automatically select an option by matching the variable's current value.
 				if (config.autoselect) {
 					// NOTE: This will usually fail for objects due to a variety of reasons.
-					const sameValueZero = Util.sameValueZero;
-					const curValue      = State.getVar(varName);
-					const curValueIdx   = options.findIndex(opt => sameValueZero(opt.value, curValue));
+					const curValue    = State.getVar(varName);
+					const curValueIdx = options.findIndex(opt => sameValueZero(opt.value, curValue));
 					selectedIdx = curValueIdx === -1 ? 0 : curValueIdx;
 				}
 
@@ -1698,7 +1698,7 @@
 				return this.error(`default value "${this.args[1]}" is neither a number nor can it be parsed into a number`);
 			}
 
-			const varId = Util.slugify(varName);
+			const varId = createSlug(varName);
 			const el    = document.createElement('input');
 			let autofocus = false;
 			let passage;
@@ -1796,7 +1796,7 @@
 				return this.error(`variable name "${this.args[0]}" is missing its sigil ($ or _)`);
 			}
 
-			const varId      = Util.slugify(varName);
+			const varId      = createSlug(varName);
 			const checkValue = this.args[1];
 			const el         = document.createElement('input');
 
@@ -1877,7 +1877,7 @@
 				this.debugView.modes({ block : true });
 			}
 
-			const varId        = Util.slugify(varName);
+			const varId        = createSlug(varName);
 			const defaultValue = this.args[1];
 			const autofocus    = this.args[2] === 'autofocus';
 			const el           = document.createElement('textarea');
@@ -3458,7 +3458,7 @@
 			let delay;
 
 			try {
-				delay = Math.max(Engine.DOM_DELAY, Util.fromCssTime(this.args[0]));
+				delay = Math.max(Engine.DOM_DELAY, cssTimeToMS(this.args[0]));
 			}
 			catch (ex) {
 				return this.error(ex.message);
@@ -3601,7 +3601,7 @@
 				items.push({
 					name    : this.name,
 					source  : this.source,
-					delay   : Math.max(Engine.DOM_DELAY, Util.fromCssTime(this.args[0])),
+					delay   : Math.max(Engine.DOM_DELAY, cssTimeToMS(this.args[0])),
 					content : this.payload[0].contents
 				});
 			}
@@ -3621,7 +3621,7 @@
 							source : this.payload[i].source,
 							delay  : this.payload[i].args.length === 0
 								? items[items.length - 1].delay
-								: Math.max(Engine.DOM_DELAY, Util.fromCssTime(this.payload[i].args[0])),
+								: Math.max(Engine.DOM_DELAY, cssTimeToMS(this.payload[i].args[0])),
 							content : this.payload[i].contents
 						});
 					}

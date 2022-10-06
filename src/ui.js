@@ -7,8 +7,8 @@
 
 ***********************************************************************************************************************/
 /*
-	global Alert, Browser, Config, Dialog, Engine, Has, L10n, Save, Setting, State, Story, Util, Wikifier,
-	       errorPrologRegExp, settings
+	global Alert, Browser, Config, Dialog, Engine, Has, L10n, Save, Setting, State, Story, Wikifier,
+	       createSlug, errorPrologRegExp, settings
 */
 
 var UI = (() => { // eslint-disable-line no-unused-vars, no-var
@@ -474,7 +474,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 		Setting.forEach(control => {
 			if (control.type === Setting.Types.Header) {
 				const name     = control.name;
-				const id       = Util.slugify(name);
+				const id       = createSlug(name);
 				const $header  = jQuery(document.createElement('div'));
 				const $heading = jQuery(document.createElement('h2'));
 
@@ -498,7 +498,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 			}
 
 			const name        = control.name;
-			const id          = Util.slugify(name);
+			const id          = createSlug(name);
 			const $setting    = jQuery(document.createElement('div'));
 			const $label      = jQuery(document.createElement('label'));
 			const $controlBox = jQuery(document.createElement('div'));

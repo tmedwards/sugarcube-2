@@ -6,7 +6,7 @@
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* global Config, Passage, Util, Wikifier */
+/* global Config, Passage, Wikifier, characterAndPosAt, createSlug, decodeEntities, sameValueZero */
 
 var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 	'use strict';
@@ -267,7 +267,7 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 			throw new Error('story title must not be null or undefined');
 		}
 
-		const title = Util.unescape(String(rawTitle)).trim();
+		const title = decodeEntities(String(rawTitle)).trim();
 
 		if (title === '') { // lazy equality for null
 			throw new Error('story title must not be empty or consist solely of whitespace');
@@ -278,7 +278,7 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 		// TODO: In v3 the `_domId` should be created from a combination of the
 		// `_title` slug and the IFID, if available, to avoid collisions between
 		// stories whose titles generate identical slugs.
-		_domId = Util.slugify(_title);
+		_domId = createSlug(_title);
 
 		// [v2] Protect the `_domId` against being an empty string.
 		//
@@ -292,7 +292,7 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 			// Elsewise generate a string from the `_title`'s code points (in hexadecimal).
 			else {
 				for (let i = 0, len = _title.length; i < len; ++i) {
-					const { char, start, end } = Util.charAndPosAt(_title, i);
+					const { char, start, end } = characterAndPosAt(_title, i);
 					_domId += char.codePointAt(0).toString(16);
 					i += end - start;
 				}
@@ -424,13 +424,13 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 				// The only object type currently supported is `Array`, since the
 				// non-method `Passage` object properties currently yield only either
 				// primitives or arrays.
-				if (passage[key] instanceof Array && passage[key].some(m => Util.sameValueZero(m, value))) {
+				if (passage[key] instanceof Array && passage[key].some(m => sameValueZero(m, value))) {
 					results.push(passage);
 				}
 			}
 
 			// All other types (incl. `null`).
-			else if (Util.sameValueZero(passage[key], value)) {
+			else if (sameValueZero(passage[key], value)) {
 				results.push(passage);
 			}
 		});

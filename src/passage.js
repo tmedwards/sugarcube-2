@@ -6,7 +6,7 @@
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* global Config, L10n, Util, Wikifier */
+/* global Config, L10n, Wikifier, createSlug, decodeEntities, encodeMarkup */
 
 var Passage = (() => { // eslint-disable-line no-unused-vars, no-var
 	'use strict';
@@ -69,7 +69,7 @@ var Passage = (() => { // eslint-disable-line no-unused-vars, no-var
 			Object.defineProperties(this, {
 				// Passage title/ID.
 				title : {
-					value : Util.unescape(title)
+					value : decodeEntities(title)
 				},
 
 				// Passage data element (within the story data element; i.e. T1: '[tiddler]', T2: 'tw-passagedata').
@@ -97,7 +97,7 @@ var Passage = (() => { // eslint-disable-line no-unused-vars, no-var
 			Object.defineProperties(this, {
 				// Passage DOM-compatible ID.
 				domId : {
-					value : `passage-${Util.slugify(this.title)}`
+					value : `passage-${createSlug(this.title)}`
 				},
 
 				// Passage classes array (sorted and unique).
@@ -111,7 +111,7 @@ var Passage = (() => { // eslint-disable-line no-unused-vars, no-var
 						*/
 						this.tags
 							.filter(tag => !_tagsToSkip.test(tag))
-							.map(tag => Util.slugify(tag))
+							.map(tag => createSlug(tag))
 					)())
 				}
 			});
@@ -125,7 +125,7 @@ var Passage = (() => { // eslint-disable-line no-unused-vars, no-var
 		// TODO: (v3) This should be → `get source`.
 		get text() {
 			if (this.element == null) { // lazy equality for null
-				const passage = Util.escapeMarkup(this.title);
+				const passage = encodeMarkup(this.title);
 				const mesg    = `${L10n.get('errorTitle')}: ${L10n.get('errorNonexistentPassage', { passage })}`;
 				return `<div class="error-view"><span class="error">${mesg}</span></div>`;
 			}

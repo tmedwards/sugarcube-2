@@ -7,8 +7,8 @@
 
 ***********************************************************************************************************************/
 /*
-	global Config, EOF, Engine, Lexer, Patterns, Scripting, State, Story, TempState, Util, convertBreaks,
-	       errorPrologRegExp
+	global Config, EOF, Engine, Lexer, Patterns, Scripting, State, Story, TempState, convertBreaks,
+	       cssPropToDOMProp, errorPrologRegExp, getTypeOf, isExternalLink
 */
 
 /*
@@ -319,18 +319,6 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 			// For legacy-compatibility we must return the DOM node.
 			return $link[0];
 		}
-
-		/*
-			Returns whether the given link source is external (probably).
-		*/
-		static isExternalLink(link) {
-			if (Story.has(link)) {
-				return false;
-			}
-
-			const urlRegExp = new RegExp(`^${Patterns.url}`, 'gim');
-			return urlRegExp.test(link) || /[/\\?]/.test(link);
-		}
 	}
 
 
@@ -368,7 +356,7 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 
 			function optionPush(options) {
 				if (typeof options !== 'object' || options === null) {
-					throw new TypeError(`Wikifier.Option.push options parameter must be an object (received: ${Util.getType(options)})`);
+					throw new TypeError(`Wikifier.Option.push options parameter must be an object (received: ${getTypeOf(options)})`);
 				}
 
 				return _optionsStack.push(options);
@@ -565,6 +553,7 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 		/*
 			Legacy Aliases.
 		*/
+		isExternalLink : { value : isExternalLink },
 		getValue       : { value : State.getVar },              // SEE: `state.js`.
 		setValue       : { value : State.setVar },              // SEE: `state.js`.
 		parse          : { value : Scripting.parse },           // SEE: `markup/scripting.js`.
@@ -596,10 +585,10 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 
 						if (matched) {
 							if (match[1]) {
-								css.styles[Util.fromCssProperty(match[1])] = match[2].trim();
+								css.styles[cssPropToDOMProp(match[1])] = match[2].trim();
 							}
 							else if (match[3]) {
-								css.styles[Util.fromCssProperty(match[3])] = match[4].trim();
+								css.styles[cssPropToDOMProp(match[3])] = match[4].trim();
 							}
 							else if (match[5]) {
 								let subMatch;
@@ -848,7 +837,8 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 		parseSquareBracketedMarkup : {
 			value : (() => {
 				/* eslint-disable no-param-reassign */
-				const Item = Lexer.enumFromNames([ // lex item types object (pseudo-enumeration)
+				// Lex item types object.
+				const Item = Lexer.enumFromNames([
 					'Error',     // error
 					'DelimLTR',  // '|' or '->'
 					'DelimRTL',  // '<-'
@@ -861,7 +851,9 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 					'Source',    // image source
 					'Text'       // link text or image alt text
 				]);
-				const Delim = Lexer.enumFromNames([ // delimiter state object (pseudo-enumeration)
+
+				// Delimiter state object.
+				const Delim = Lexer.enumFromNames([
 					'None', // no delimiter encountered
 					'LTR',  // '|' or '->'
 					'RTL'   // '<-'

@@ -8,14 +8,14 @@
 ***********************************************************************************************************************/
 /*
 	global Alert, Config, DebugView, Dialog, Has, LoadScreen, Save, Scripting, State, Story, StyleWrapper, UI,
-	       UIBar, Util, Wikifier, postdisplay, postrender, predisplay, prehistory, prerender, setDisplayTitle
+	       UIBar, Wikifier, enumFrom, now, postdisplay, postrender, predisplay, prehistory, prerender, setDisplayTitle
 */
 
 var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 	'use strict';
 
-	// Engine state types object (pseudo-enumeration).
-	const States = Util.toEnum({
+	// Engine state types object.
+	const States = enumFrom({
 		Init      : 'init',
 		Idle      : 'idle',
 		Playing   : 'playing',
@@ -510,7 +510,7 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 		// NOTE: This is mostly for event, task, and special passage code,
 		// though the likelihood of it being needed this early is low.  This
 		// will be updated again later at the end.
-		_lastPlay = Util.now();
+		_lastPlay = now();
 
 		// Execute pre-display tasks and the `PassageReady` special passage.
 		Object.keys(predisplay).forEach(task => {
@@ -771,7 +771,7 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 		_state = States.Idle;
 
 		// Update the last play time.
-		_lastPlay = Util.now();
+		_lastPlay = now();
 
 		return passageEl;
 	}
