@@ -1,6 +1,6 @@
 /***********************************************************************************************************************
 
-	lib/util.js
+	lib/deprecated-util.js
 
 	Copyright © 2013–2022 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
@@ -8,9 +8,8 @@
 ***********************************************************************************************************************/
 /*
 	global Scripting, characterAndPosAt, encodeEntities, encodeMarkup, cssPropToDOMProp, cssTimeToMS, getTypeOf,
-	       hasMediaQuery, isIterable, isNumeric, exceptionFrom, now, parseURL, sameValueZero, createFilename,
-	       scrubEventKey, createSlug, msToCSSTime, enumFrom, getToStringTag, decodeEntities, decodeEntities,
-	       encodeEntities
+	       hasMediaQuery, isIterable, exceptionFrom, now, parseURL, sameValueZero, createFilename, scrubEventKey,
+	       createSlug, msToCSSTime, enumFrom, getToStringTag, decodeEntities, decodeEntities, encodeEntities
 */
 
 /*
@@ -25,7 +24,6 @@ var Util = Object.preventExtensions(Object.create(null, { // eslint-disable-line
 	getType          : { value : getTypeOf },
 	hasMediaQuery    : { value : hasMediaQuery },
 	isIterable       : { value : isIterable },
-	isNumeric        : { value : isNumeric },
 	newExceptionFrom : { value : exceptionFrom },
 	now              : { value : now },
 	parseUrl         : { value : parseURL },

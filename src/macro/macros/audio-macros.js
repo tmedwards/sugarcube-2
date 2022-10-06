@@ -878,57 +878,6 @@
 				SimpleAudio.loadWithScreen();
 			}
 		});
-
-		/*
-			[DEPRECATED] <<setplaylist track_id_list>>
-		*/
-		Macro.add('setplaylist', {
-			handler() {
-				if (this.args.length === 0) {
-					return this.error('no track ID(s) specified');
-				}
-
-				const playlist = Macro.get('playlist');
-
-				if (playlist.from !== null && playlist.from !== 'setplaylist') {
-					return this.error('playlists have already been defined with <<createplaylist>>');
-				}
-
-				// Create the new playlist.
-				try {
-					SimpleAudio.lists.add('setplaylist', this.args.slice(0));
-				}
-				catch (ex) {
-					return this.error(ex.message);
-				}
-
-				// Lock `<<playlist>>` into our syntax.
-				if (playlist.from === null) {
-					playlist.from = 'setplaylist';
-				}
-
-				// Custom debug view setup.
-				if (Config.debug) {
-					this.debugView.modes({ hidden : true });
-				}
-			}
-		});
-
-		/*
-			[DEPRECATED] <<stopallaudio>>
-		*/
-		Macro.add('stopallaudio', {
-			skipArgs : true,
-
-			handler() {
-				SimpleAudio.select(':all').stop();
-
-				// Custom debug view setup.
-				if (Config.debug) {
-					this.debugView.modes({ hidden : true });
-				}
-			}
-		});
 	}
 	else {
 		// The HTML5 <audio> API is unavailable, so add no-op versions.

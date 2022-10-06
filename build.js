@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /***********************************************************************************************************************
 
-	build.js (v1.8.0, 2022-10-06)
+	build.js (v1.8.1, 2022-10-06)
 		A Node.js-hosted build script for SugarCube.
 
 	Copyright © 2013–2022 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
@@ -53,7 +53,7 @@ const CONFIG = {
 			'src/macro/macro.js',
 			'src/macro/macrocontext.js',
 			'src/macro/macros/',
-			'src/macro/deprecated.js',
+			'src/macro/deprecated-macros.js',
 			'src/dialog.js',
 			'src/engine.js',
 			'src/passage.js',
@@ -64,6 +64,7 @@ const CONFIG = {
 			'src/uibar.js',
 			'src/debugbar.js',
 			'src/loadscreen.js',
+			'src/lib/deprecated-util.js',
 			'src/sugarcube.js'
 		],
 		wrap : {
