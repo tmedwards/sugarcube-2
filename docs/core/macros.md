@@ -347,6 +347,72 @@ You weigh <<- $weight.toFixed(2)>> kg.  → Outputs: You weigh 74.65 kg.
 
 <!-- *********************************************************************** -->
 
+### `<<do [tag tags] [element tag]>> … <</do>>` {#macros-macro-do}
+
+Displays its contents.  Listens for [`<<refresh>>` macro](#macros-macro-refresh) commands upon which it updates its contents.
+
+#### History:
+
+* `v2.37.0`: Introduced.
+
+#### Arguments:
+
+* **`tag` *`tags`*:** (optional) The space separated list of tags used to filter `<<refresh>>` commands.
+* **`element` *`tag`*:** (optional) The element to use as the content container—e.g., `div` and `span`.  If omitted, defaults to `span`.
+
+#### Examples:
+
+##### Basic usage
+
+```
+<<set $money to 10>>
+
+''Money:'' <<do>>$money<</do>>
+
+<<link "Update money display">>
+	<<set $money += 10>>
+	<<refresh>>
+<</link>>
+```
+
+```
+<<set $key to "">> /* no key */
+
+<<do>>
+	<<if $key>>
+		You have the $key key.
+	<<else>>
+		You do not have a key.
+	<</if>>
+<</do>>
+
+<<link "Update key display">>
+	<<set $key to ["", "red", "blue", "skull"].random()>>
+	<<refresh>>
+<</link>>
+```
+
+##### Filtering updates
+
+```
+<<set $foo to "—">>
+<<set $bar to "—">>
+
+''Foo:'' <<do tag "foo">>$foo<</do>>
+''Bar:'' <<do tag "bar">>$bar<</do>>
+
+<<link "Update foo">>
+	<<set $foo to ["fee", "fie", "foe", "fum"].random()>>
+	<<refresh "foo">>
+<</link>>
+<<link "Update bar">>
+	<<set $bar to ["alfa", "bravo", "charlie", "delta"].random()>>
+	<<refresh "bar">>
+<</link>>
+```
+
+<!-- *********************************************************************** -->
+
 ### `<<include passageName [elementName]>>`<br>`<<include linkMarkup [elementName]>>` {#macros-macro-include}
 
 Outputs the contents of the passage with the given name, optionally wrapping it within an HTML element.  May be called either with the passage name or with a link markup.
@@ -435,13 +501,31 @@ You weigh <<print $weight.toFixed(2)>> kg.  → Outputs: You weigh 74.65 kg.
 
 <!-- *********************************************************************** -->
 
-### `<<silently>> … <</silently>>` {#macros-macro-silently}
+### `<<refresh [tags]>>` {#macros-macro-refresh}
+
+Causes one or more [`<<do>>` macros](#macros-macro-do) to update their contents.
+
+#### History:
+
+* `v2.37.0`: Introduced.
+
+#### Arguments:
+
+* **`tags`:** (optional) The space separated list of tags corresponding to tagged `<<do>>` macros to send update commands to.  If omitted, sends update commands to all `<<do>>` macros.
+
+#### Examples:
+
+**SEE:** [`<<do>>` macro](#macros-macro-do).
+
+<!-- *********************************************************************** -->
+
+### `<<silent>> … <</silent>>` {#macros-macro-silent}
 
 Causes any output generated within its body to be discarded, except for errors (which will be displayed).  Generally, only really useful for formatting blocks of macros for ease of use/readability, while ensuring that no output is generated, from spacing or whatnot.
 
 #### History:
 
-* `v2.0.0`: Introduced.
+* `v2.37.0`: Introduced.
 
 #### Arguments: *none*
 
@@ -449,16 +533,16 @@ Causes any output generated within its body to be discarded, except for errors (
 
 ```
 → Basic
-<<silently>>
+<<silent>>
 
 	You'll never see any of this!
 
-<</silently>>
+<</silent>>
 
 → Hiding the guts of a countdown timer
 <<set $seconds to 10>>\
 Countdown: <span id="countdown">$seconds seconds remaining</span>!\
-<<silently>>
+<<silent>>
 	<<repeat 1s>>
 		<<set $seconds to $seconds - 1>>
 		<<if $seconds gt 0>>
@@ -469,7 +553,7 @@ Countdown: <span id="countdown">$seconds seconds remaining</span>!\
 			<<stop>>
 		<</if>>
 	<</repeat>>
-<</silently>>
+<</silent>>
 ```
 
 <!-- *********************************************************************** -->
@@ -570,6 +654,19 @@ This macro has been deprecated and should no longer be used.  See the <a href="#
 
 * `v2.0.0`: Introduced.
 * `v2.15.0`: Deprecated in favor of `<<include>>`.
+
+<!-- *********************************************************************** -->
+
+### <span class="deprecated">`<<silently>> … <</silently>>`</span> {#macros-macro-silently}
+
+<p role="note" class="warning"><b>Deprecated:</b>
+This macro has been deprecated and should no longer be used.  See the <a href="#macros-macro-silent"><code>&lt;&lt;silent&gt;&gt;</code></a> macro for its replacement.
+</p>
+
+#### History:
+
+* `v2.0.0`: Introduced.
+* `v2.37.0`: Deprecated in favor of `<<silent>>`.
 
 
 <!-- ***************************************************************************
