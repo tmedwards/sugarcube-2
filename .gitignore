@@ -1,11 +1,9 @@
 # Scripts
 *.sh
 
-# Documentation
-*.html
-
 # Development
 build/
+docs/build/
 node_modules/
 .build
 *.code-workspace
