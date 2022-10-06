@@ -160,7 +160,8 @@ var Patterns = (() => { // eslint-disable-line no-unused-vars, no-var
 	})();
 
 	// URL pattern.
-	const url = '(?:file|https?|mailto|ftp|javascript|irc|news|data):[^\\s\'"]+';
+	const url         = '(?:file|https?|mailto|ftp|javascript|irc|news|data):[^\\s\'"]+';
+	const externalUrl = url.replace(/\|javascript|\|data/g, '');
 
 
 	/*******************************************************************************************************************
@@ -185,7 +186,8 @@ var Patterns = (() => { // eslint-disable-line no-unused-vars, no-var
 		cssIdOrClassSigil,
 		cssImage,
 		inlineCss,
-		url
+		url,
+		externalUrl
 	});
 })();
 /* eslint-enable max-len */
