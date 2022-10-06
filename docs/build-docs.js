@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /***********************************************************************************************************************
 
-	build-docs.js (v1.2.0, 2021-12-21)
+	build-docs.js (v1.3.0, 2022-10-06)
 		A Node.js-hosted build script for SugarCube's documentation.
 
 	Copyright © 2020–2021 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
@@ -9,6 +9,7 @@
 
 ***********************************************************************************************************************/
 /* eslint-env node, es2021 */
+/* eslint-disable strict */
 'use strict';
 
 
@@ -191,13 +192,10 @@ const _opt  = require('node-getopt').create([
 	Utility Functions
 *******************************************************************************/
 function compileMarkdown(sourceConfig) {
-	const { execFileSync } = require('child_process');
+	const gfm = require('cmark-gfm-js');
 	return concatFiles(sourceConfig.files, (contents /* , filename */) => {
 		try {
-			// TODO: Replace `cmark-gfm` with a JavaScript solution.
-			return execFileSync('cmark-gfm', ['-t', 'html'], {
-				input : contents
-			});
+			return gfm.convertUnsafe(contents);
 		}
 		catch (ex) {
 			die(`markdown error: ${ex.message}`, ex);
@@ -225,7 +223,7 @@ function compileJavaScript(sourceConfig) {
 			die(`JavaScript minification error: ${message}\n[@: ${line}/${col}/${pos}]`);
 		}
 
-		return minified.code;
+		return `<script type="text/javascript">${minified.code}</script>`;
 	})(
 		  readFileContents(sourceConfig.intro)
 		+ concatFiles(sourceConfig.files)
