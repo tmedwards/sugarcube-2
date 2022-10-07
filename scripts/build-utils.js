@@ -1,9 +1,9 @@
 /***********************************************************************************************************************
 
-	scripts/build-utils.js (v1.1.1, 2021-12-21)
+	scripts/build-utils.js (v1.2.1, 2021-10-07)
 		Build utility functions for SugarCube.
 
-	Copyright © 2020–2021 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
+	Copyright © 2020–2022 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
@@ -37,13 +37,17 @@ function fileExists(pathname) {
 
 function walkPaths(paths) {
 	return paths.reduce((acc, path) => {
-		if (_fs.statSync(path)?.isDirectory()) {
+		const stats = _fs.statSync(path);
+
+		if (stats?.isDirectory()) {
 			acc.push(...walkPaths(
 				_fs.readdirSync(path)
+					// QUESTION: Do we actually need to defend against dot files?
+					.filter(fname => fname !== '.' && fname !== '..')
 					.map(fname => `${path}${path.endsWith('/') ? '' : '/'}${fname}`)
 			));
 		}
-		else {
+		else if (stats?.isFile()) {
 			acc.push(path);
 		}
 
