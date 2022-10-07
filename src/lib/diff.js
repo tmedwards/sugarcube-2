@@ -83,7 +83,7 @@ var Diff = (() => { // eslint-disable-line no-unused-vars, no-var
 
 							// Values are objects of the same reported type.
 							if (origPType === destPType) {
-								// Supported native objects.
+								// Supported natives and generic objects.
 								if (origP instanceof Date) {
 									if (Number(origP) !== Number(destP)) {
 										diffed[key] = [Op.Copy, clone(destP)];
@@ -100,21 +100,22 @@ var Diff = (() => { // eslint-disable-line no-unused-vars, no-var
 								else if (origP instanceof Set) {
 									diffed[key] = [Op.Copy, clone(destP)];
 								}
-
-								// Unknown non-generic objects (custom or unsupported natives).
-								else if (!(origP instanceof Array || origPType === '[object Object]')) {
-									// We cannot know how to process these objects,
-									// so we simply accept them as-is.
-									diffed[key] = [Op.Copy, clone(destP)];
-								}
-
-								// Arrays and generic objects.
-								else {
+								else if (
+									origP instanceof Array ||
+									origPType === '[object Object]'
+								) {
 									const delta = diff(origP, destP);
 
 									if (delta !== null) {
 										diffed[key] = delta;
 									}
+								}
+
+								// Unknown non-generic objects (custom or unsupported natives).
+								else {
+									// We cannot know how to process these objects,
+									// so we simply accept them as-is.
+									diffed[key] = [Op.Copy, clone(destP)];
 								}
 							}
 							// Values are objects of different reported types.
