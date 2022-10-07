@@ -166,9 +166,8 @@ Macro.add('type', {
 
 		// Push our typing handler onto the queue.
 		TempState.macroTypeQueue.push({
-			id : selfId,
-
-			handler() {
+			id      : selfId,
+			handler : this.shadowHandler(() => {
 				const $wrapper = jQuery(document.createElement(elTag))
 					.addClass(className);
 
@@ -311,7 +310,7 @@ Macro.add('type', {
 				else {
 					typeNode();
 				}
-			}
+			})
 		});
 
 		// If we're to start typing, then either set up a `:passageend` event handler
