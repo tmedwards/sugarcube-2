@@ -100,7 +100,7 @@
 				.addClass(`macro-${this.name} ${eventClass}`)
 				.attr('data-do-tags', tags.join(' '))
 				.wiki(contents)
-				.on(':dorefresh-internal', this.createShadowWrapper(() => {
+				.on(':dorefresh-internal', this.shadowHandler(() => {
 					const frag = document.createDocumentFragment();
 					new Wikifier(frag, contents);
 					$target.empty().append(frag);

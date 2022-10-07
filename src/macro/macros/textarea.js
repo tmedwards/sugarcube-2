@@ -56,7 +56,7 @@ Macro.add('textarea', {
 				tabindex : 0 // for accessiblity
 			})
 			.addClass(`macro-${this.name}`)
-			.on('change.macros', this.createShadowWrapper(function () {
+			.on('change.macros', this.shadowHandler(function () {
 				State.setVar(varName, this.value);
 			}))
 			.appendTo(this.output);

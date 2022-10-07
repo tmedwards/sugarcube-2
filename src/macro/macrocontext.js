@@ -166,12 +166,12 @@ var MacroContext = (() => { // eslint-disable-line no-unused-vars, no-var
 				});
 		}
 
-		createShadowWrapper(callback, doneCallback, startCallback) {
+		shadowHandler(callback, doneCallback, startCallback) {
 			const shadowContext = this;
 			let shadowStore;
 
 			if (typeof callback === 'function') {
-				shadowStore = {};
+				shadowStore = Object.create(null);
 				this.shadowView.forEach(varName => {
 					const varKey = varName.slice(1);
 					const store  = varName[0] === '$' ? State.variables : State.temporary;
@@ -280,6 +280,15 @@ var MacroContext = (() => { // eslint-disable-line no-unused-vars, no-var
 			return appendError(this._output, `<<${this.displayName}>>: ${message}`, source ? source : this.source);
 		}
 	}
+
+	/* legacy */
+	// Attach legacy aliases.
+	Object.defineProperties(MacroContext.prototype, {
+		createShadowWrapper : {
+			value : MacroContext.prototype.shadowHandler
+		}
+	});
+	/* /legacy */
 
 
 	/*******************************************************************************

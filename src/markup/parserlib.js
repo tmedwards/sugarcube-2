@@ -690,7 +690,7 @@
 								arg.text     = markup.hasOwnProperty('text') ? Wikifier.helpers.evalText(markup.text) : arg.link;
 								arg.external = !markup.forceInternal && Wikifier.isExternalLink(arg.link);
 								arg.setFn    = markup.hasOwnProperty('setter')
-									? Wikifier.helpers.createShadowSetterCallback(Scripting.parse(markup.setter))
+									? Wikifier.helpers.shadowHandler(Scripting.parse(markup.setter))
 									: null;
 							}
 							else if (markup.isImage) {
@@ -728,7 +728,7 @@
 								}
 
 								arg.setFn = markup.hasOwnProperty('setter')
-									? Wikifier.helpers.createShadowSetterCallback(Scripting.parse(markup.setter))
+									? Wikifier.helpers.shadowHandler(Scripting.parse(markup.setter))
 									: null;
 							}
 
@@ -765,7 +765,7 @@
 			const link  = Wikifier.helpers.evalPassageId(markup.link);
 			const text  = markup.hasOwnProperty('text') ? Wikifier.helpers.evalText(markup.text) : link;
 			const setFn = markup.hasOwnProperty('setter')
-				? Wikifier.helpers.createShadowSetterCallback(Scripting.parse(markup.setter))
+				? Wikifier.helpers.shadowHandler(Scripting.parse(markup.setter))
 				: null;
 
 			// Debug view setup.
@@ -823,7 +823,7 @@
 
 			// align=(left|right), title=(title), source=source, forceInternal=(~), link=(link), setter=(setter)
 			const setFn = markup.hasOwnProperty('setter')
-				? Wikifier.helpers.createShadowSetterCallback(Scripting.parse(markup.setter))
+				? Wikifier.helpers.shadowHandler(Scripting.parse(markup.setter))
 				: null;
 			let el     = (Config.debug ? debugView : w).output;
 			let source;
@@ -1638,7 +1638,7 @@
 						setter = String(setter).trim();
 
 						if (setter !== '') {
-							setFn = Wikifier.helpers.createShadowSetterCallback(Scripting.parse(setter));
+							setFn = Wikifier.helpers.shadowHandler(Scripting.parse(setter));
 						}
 					}
 
@@ -1908,7 +1908,7 @@
 						setter = String(setter).trim();
 
 						if (setter !== '') {
-							setFn = Wikifier.helpers.createShadowSetterCallback(Scripting.parse(setter));
+							setFn = Wikifier.helpers.shadowHandler(Scripting.parse(setter));
 						}
 					}
 

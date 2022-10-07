@@ -51,7 +51,7 @@ Macro.add('checkbox', {
 				tabindex : 0 // for accessiblity
 			})
 			.addClass(`macro-${this.name}`)
-			.on('change.macros', this.createShadowWrapper(function () {
+			.on('change.macros', this.shadowHandler(function () {
 				State.setVar(varName, this.checked ? checkValue : uncheckValue);
 			}))
 			.appendTo(this.output);

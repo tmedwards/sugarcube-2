@@ -79,10 +79,10 @@ Macro.add(['numberbox', 'textbox'], {
 				tabindex  : 0 // for accessiblity
 			})
 			.addClass(`macro-${this.name}`)
-			.on('change.macros', this.createShadowWrapper(function () {
+			.on('change.macros', this.shadowHandler(function () {
 				State.setVar(varName, asNumber ? Number(this.value) : this.value);
 			}))
-			.on('keypress.macros', this.createShadowWrapper(function (ev) {
+			.on('keypress.macros', this.shadowHandler(function (ev) {
 				// If Return/Enter is pressed, set the variable and, optionally, forward to another passage.
 				if (ev.which === 13) { // 13 is Return/Enter
 					ev.preventDefault();

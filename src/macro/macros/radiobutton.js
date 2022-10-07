@@ -60,7 +60,7 @@ Macro.add('radiobutton', {
 				tabindex : 0 // for accessiblity
 			})
 			.addClass(`macro-${this.name}`)
-			.on('change.macros', this.createShadowWrapper(function () {
+			.on('change.macros', this.shadowHandler(function () {
 				if (this.checked) {
 					State.setVar(varName, checkValue);
 				}

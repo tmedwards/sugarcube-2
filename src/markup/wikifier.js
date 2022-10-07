@@ -743,7 +743,7 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 			}
 		},
 
-		createShadowSetterCallback : {
+		shadowHandler : {
 			value : (() => {
 				let macroParser = null;
 
@@ -772,8 +772,8 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 					return [...view];
 				}
 
-				function helperCreateShadowSetterCallback(code) {
-					const shadowStore = {};
+				function helperShadowHandler(code) {
+					const shadowStore = Object.create(null);
 
 					getMacroContextShadowView().forEach(varName => {
 						const varKey = varName.slice(1);
@@ -832,9 +832,15 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 					};
 				}
 
-				return helperCreateShadowSetterCallback;
+				return helperShadowHandler;
 			})()
 		},
+
+		/* legacy */
+		// createShadowSetterCallback : {
+		// 	value : Wikifier.helpers.shadowHandler
+		// },
+		/* /legacy */
 
 		parseSquareBracketedMarkup : {
 			value : (() => {

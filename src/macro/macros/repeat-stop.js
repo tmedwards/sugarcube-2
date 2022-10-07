@@ -42,7 +42,7 @@ Macro.add('repeat', {
 			.appendTo(this.output);
 
 		// Register the timer.
-		this.self.registerInterval(this.createShadowWrapper(() => {
+		this.self.registerInterval(this.shadowHandler(() => {
 			const frag = document.createDocumentFragment();
 			new Wikifier(frag, this.payload[0].contents);
 

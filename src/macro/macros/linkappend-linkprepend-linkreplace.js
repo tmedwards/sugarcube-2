@@ -31,7 +31,7 @@ Macro.add(['linkappend', 'linkprepend', 'linkreplace'], {
 			.ariaClick({
 				namespace : '.macros',
 				one       : true
-			}, this.createShadowWrapper(
+			}, this.shadowHandler(
 				() => {
 					if (this.name === 'linkreplace') {
 						$link.remove();

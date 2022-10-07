@@ -197,7 +197,7 @@ Macro.add(['cycle', 'listbox'], {
 					.ariaClick({
 						namespace : '.macros',
 						role      : 'button'
-					}, this.createShadowWrapper(function () {
+					}, this.shadowHandler(function () {
 						const $this = $(this);
 						cycleIdx = (cycleIdx + 1) % options.length;
 						State.setVar(varName, options[cycleIdx].value);
@@ -228,7 +228,7 @@ Macro.add(['cycle', 'listbox'], {
 				})
 				.addClass(`macro-${this.name}`)
 				.val(selectedIdx)
-				.on('change.macros', this.createShadowWrapper(function () {
+				.on('change.macros', this.shadowHandler(function () {
 					State.setVar(varName, options[Number(this.value)].value);
 				}))
 				.appendTo(this.output);

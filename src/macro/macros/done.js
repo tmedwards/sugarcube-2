@@ -23,6 +23,6 @@ Macro.add('done', {
 			return;
 		}
 
-		setTimeout(this.createShadowWrapper(() => $.wiki(contents)), Engine.DOM_DELAY);
+		setTimeout(this.shadowHandler(() => $.wiki(contents)), Engine.DOM_DELAY);
 	}
 });

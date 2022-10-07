@@ -201,70 +201,6 @@ this.contextSelectAll(includeAncestor);  → Returns an array of all <<include>>
 
 <!-- *********************************************************************** -->
 
-### `<MacroContext>.createShadowWrapper(callback [, doneCallback [, startCallback]])` → *function* {#macrocontext-api-prototype-method-createshadowwrapper}
-
-Returns a callback function that wraps the specified callback functions to provide access to the variable shadowing system used by the [`<<capture>>` macro](#macros-macro-capture).
-
-<p role="note" class="note"><b>Note:</b>
-All of the specified callbacks are invoked as the wrapper is invoked—meaning, with their <code>this</code> set to the <code>this</code> of the wrapper and with whatever parameters were passed to the wrapper.
-</p>
-
-<p role="note" class="warning"><b>Warning:</b>
-Only useful when you have an asynchronous callback that invokes code/content that needs to access story and/or temporary variables shadowed by <code>&lt;&lt;capture&gt;&gt;</code>.  If you don't know what that means, then this API is likely not for you.
-</p>
-
-#### History:
-
-* `v2.14.0`: Introduced.
-* `v2.23.3`: Fixed an issue where shadows would fail for multiple layers of nested asynchronous code due to loss of context.
-
-#### Parameters:
-
-* **`callback`:** (*function*) The main callback function, executed when the wrapper is invoked.  Receives access to variable shadows.
-* **`doneCallback`:** (optional, *function*) The finalization callback function, executed after the main `callback` returns.  Does not receive access to variable shadows.
-* **`startCallback`:** (optional, *function*) The initialization callback function, executed before the main `callback` is invoked.  Does not receive access to variable shadows.
-
-#### Examples:
-
-##### Basic usage
-
-```
-$someElement.on('some_event', this.createShadowWrapper(function (ev) {
-	/* main asynchronous code */
-}));
-```
-
-##### With an optional `doneCallback`
-
-```
-$someElement.on('some_event', this.createShadowWrapper(
-	function (ev) {
-		/* main asynchronous code */
-	},
-	function (ev) {
-		/* asynchronous code invoked after the main code */
-	}
-));
-```
-
-##### With an optional `doneCallback` and `startCallback`
-
-```
-$someElement.on('some_event', this.createShadowWrapper(
-	function (ev) {
-		/* main asynchronous code */
-	},
-	function (ev) {
-		/* asynchronous code invoked after the main code */
-	},
-	function (ev) {
-		/* asynchronous code invoked before the main code */
-	}
-));
-```
-
-<!-- *********************************************************************** -->
-
 ### `<MacroContext>.error(message)` → *boolean:false* {#macrocontext-api-prototype-method-error}
 
 Renders the message prefixed with the name of the macro and returns `false`.
@@ -283,3 +219,80 @@ Renders the message prefixed with the name of the macro and returns `false`.
 // Given: <<someMacro …>>
 return this.error("oops");  → Outputs '<<someMacro>>: oops'
 ```
+
+<!-- *********************************************************************** -->
+
+### `<MacroContext>.shadowHandler(callback [, doneCallback [, startCallback]])` → *function* {#macrocontext-api-prototype-method-shadowhandler}
+
+Returns a callback function that wraps the specified callback functions to provide access to the variable shadowing system used by the [`<<capture>>` macro](#macros-macro-capture).
+
+<p role="note" class="note"><b>Note:</b>
+All of the specified callbacks are invoked as the wrapper is invoked—meaning, with their <code>this</code> set to the <code>this</code> of the wrapper and with whatever parameters were passed to the wrapper.
+</p>
+
+<p role="note" class="warning"><b>Warning:</b>
+Only useful when you have an asynchronous callback that invokes code/content that needs to access story and/or temporary variables shadowed by <code>&lt;&lt;capture&gt;&gt;</code>.  If you don't know what that means, then this API is likely not for you.
+</p>
+
+#### History:
+
+* `v2.37.0`: Introduced.
+
+#### Parameters:
+
+* **`callback`:** (*function*) The main callback function, executed when the wrapper is invoked.  Receives access to variable shadows.
+* **`doneCallback`:** (optional, *function*) The finalization callback function, executed after the main `callback` returns.  Does not receive access to variable shadows.
+* **`startCallback`:** (optional, *function*) The initialization callback function, executed before the main `callback` is invoked.  Does not receive access to variable shadows.
+
+#### Examples:
+
+##### Basic usage
+
+```
+$someElement.on('some_event', this.shadowHandler(function (ev) {
+	/* main asynchronous code */
+}));
+```
+
+##### With an optional `doneCallback`
+
+```
+$someElement.on('some_event', this.shadowHandler(
+	function (ev) {
+		/* main asynchronous code */
+	},
+	function (ev) {
+		/* asynchronous code invoked after the main code */
+	}
+));
+```
+
+##### With an optional `doneCallback` and `startCallback`
+
+```
+$someElement.on('some_event', this.shadowHandler(
+	function (ev) {
+		/* main asynchronous code */
+	},
+	function (ev) {
+		/* asynchronous code invoked after the main code */
+	},
+	function (ev) {
+		/* asynchronous code invoked before the main code */
+	}
+));
+```
+
+<!-- *********************************************************************** -->
+
+### <span class="deprecated">`<MacroContext>.createShadowWrapper(callback [, doneCallback [, startCallback]])` → *function*</span> {#macrocontext-api-prototype-method-createshadowwrapper}
+
+<p role="note" class="warning"><b>Deprecated:</b>
+This method has been deprecated and should no longer be used.  See the <a href="#macrocontext-api-prototype-method-shadowhandler"><code>&lt;MacroContext&gt;.shadowHandler()</code></a> method for its replacement.
+</p>
+
+#### History:
+
+* `v2.14.0`: Introduced.
+* `v2.23.3`: Fixed an issue where shadows would fail for multiple layers of nested asynchronous code due to loss of context.
+* `v2.37.0`: Deprecated in favor of `<MacroContext>.shadowHandler()`.

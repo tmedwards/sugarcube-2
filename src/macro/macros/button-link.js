@@ -82,7 +82,7 @@ Macro.add(['button', 'link'], {
 				namespace : '.macros',
 				role      : passage != null ? 'link' : 'button', // lazy equality for null
 				one       : passage != null // lazy equality for null
-			}, this.createShadowWrapper(
+			}, this.shadowHandler(
 				this.payload[0].contents !== ''
 					? () => Wikifier.wikifyEval(this.payload[0].contents.trim())
 					: null,

@@ -378,8 +378,8 @@
 * [`<MacroContext>.contextHas()`](#macrocontext-api-prototype-method-contexthas)
 * [`<MacroContext>.contextSelect()`](#macrocontext-api-prototype-method-contextselect)
 * [`<MacroContext>.contextSelectAll()`](#macrocontext-api-prototype-method-contextselectall)
-* [`<MacroContext>.createShadowWrapper()`](#macrocontext-api-prototype-method-createshadowwrapper)
 * [`<MacroContext>.error()`](#macrocontext-api-prototype-method-error)
+* [`<MacroContext>.shadowHandler()`](#macrocontext-api-prototype-method-shadowhandler)
 
 ## [`Passage` API](#passage-api)
 
