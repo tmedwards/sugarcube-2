@@ -9,14 +9,7 @@
 /* global clone, enumFrom */
 
 var Diff = (() => { // eslint-disable-line no-unused-vars, no-var
-	'use strict';
-
-	/*******************************************************************************************************************
-		Diff Functions.
-	*******************************************************************************************************************/
-	/*
-		Diff operations object.
-	*/
+	// Diff operations object.
 	const Op = enumFrom({
 		Delete      : 0,
 		SpliceArray : 1,
@@ -24,10 +17,13 @@ var Diff = (() => { // eslint-disable-line no-unused-vars, no-var
 		CopyDate    : 3
 	});
 
-	/*
-		Returns whether the given value is a finite number or a numeric string that
-		yields a finite number when parsed.
-	*/
+
+	/*******************************************************************************
+		Diff Functions.
+	*******************************************************************************/
+
+	// Returns whether the given value is a finite number or a numeric string that
+	// yields a finite number when parsed.
 	function isNumeric(O) {
 		let num;
 
@@ -40,9 +36,7 @@ var Diff = (() => { // eslint-disable-line no-unused-vars, no-var
 		return !Number.isNaN(num) && Number.isFinite(num);
 	}
 
-	/*
-		Returns a difference object generated from comparing the orig and dest objects.
-	*/
+	// Returns a difference object generated from comparing the orig and dest objects.
 	function diff(orig, dest) /* diff object */ {
 		const objToString = Object.prototype.toString;
 		const origIsArray = orig instanceof Array;
@@ -89,7 +83,7 @@ var Diff = (() => { // eslint-disable-line no-unused-vars, no-var
 
 							// Values are objects of the same reported type.
 							if (origPType === destPType) {
-								// Various special cases to handle supported non-generic objects.
+								// Supported native objects.
 								if (origP instanceof Date) {
 									if (Number(origP) !== Number(destP)) {
 										diffed[key] = [Op.Copy, clone(destP)];
@@ -108,18 +102,18 @@ var Diff = (() => { // eslint-disable-line no-unused-vars, no-var
 								}
 
 								// Unknown non-generic objects (custom or unsupported natives).
-								else if (origPType !== '[object Object]') {
+								else if (!(origP instanceof Array || origPType === '[object Object]')) {
 									// We cannot know how to process these objects,
 									// so we simply accept them as-is.
 									diffed[key] = [Op.Copy, clone(destP)];
 								}
 
-								// Generic objects.
+								// Arrays and generic objects.
 								else {
-									const recurse = diff(origP, destP);
+									const delta = diff(origP, destP);
 
-									if (recurse !== null) {
-										diffed[key] = recurse;
+									if (delta !== null) {
+										diffed[key] = delta;
 									}
 								}
 							}
