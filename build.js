@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /***********************************************************************************************************************
 
-	build.js (v1.8.1, 2022-10-06)
+	build.js (v1.8.2, 2022-10-06)
 		A Node.js-hosted build script for SugarCube.
 
 	Copyright © 2013–2022 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
@@ -29,7 +29,7 @@ const CONFIG = {
 			'src/lib/outliner.js',
 			'src/lib/visibility.js',
 			'src/lib/fullscreen.js',
-			'src/utils/',
+			'src/util/',
 			'src/lib/jquery-plugins.js',
 			'src/lib/simplestore/simplestore.js',
 			'src/lib/simplestore/adapters/webstorage.js',
@@ -68,15 +68,15 @@ const CONFIG = {
 			'src/sugarcube.js'
 		],
 		wrap : {
-			intro : 'src/templates/intro.js',
-			outro : 'src/templates/outro.js'
+			intro : 'template/intro.js',
+			outro : 'template/outro.js'
 		}
 	},
 	css : {
 		mixins : 'src/css/_mixins.css',
 		files  : [
 			// The ordering herein is significant.
-			'src/vendor/normalize.css',
+			'vendor/normalize.css',
 			'src/css/init-screen.css',
 			'src/css/font.css',
 			'src/css/core.css',
@@ -91,25 +91,25 @@ const CONFIG = {
 	},
 	libs : [
 		// The ordering herein is significant.
-		'src/vendor/classList.min.js',
-		'src/vendor/es5-shim.min.js',
-		'src/vendor/es6-shim.min.js',
-		'src/vendor/jquery.min.js',
-		'src/vendor/jquery.ba-throttle-debounce.min.js',
-		'src/vendor/imagesloaded.pkgd.min.js',
-		'src/vendor/lz-string.min.js',
-		'src/vendor/FileSaver.min.js',
-		'src/vendor/seedrandom.min.js',
-		'src/vendor/console-hack.min.js'
+		'vendor/classList.min.js',
+		'vendor/es5-shim.min.js',
+		'vendor/es6-shim.min.js',
+		'vendor/jquery.min.js',
+		'vendor/jquery.ba-throttle-debounce.min.js',
+		'vendor/imagesloaded.pkgd.min.js',
+		'vendor/lz-string.min.js',
+		'vendor/FileSaver.min.js',
+		'vendor/seedrandom.min.js',
+		'vendor/console-hack.min.js'
 	],
 	twine1 : {
 		build : {
-			src  : 'src/templates/twine1/html.tpl',
+			src  : 'template/twine1/html.tpl',
 			dest : 'build/twine1/sugarcube-2/header.html'
 		},
 		copy : [
 			{
-				src  : 'src/templates/twine1/sugarcube-2.py',
+				src  : 'template/twine1/sugarcube-2.py',
 				dest : 'build/twine1/sugarcube-2/sugarcube-2.py'
 			},
 			{
@@ -120,9 +120,9 @@ const CONFIG = {
 	},
 	twine2 : {
 		build : {
-			src  : 'src/templates/twine2/html.tpl',
+			src  : 'template/twine2/html.tpl',
 			dest : 'build/twine2/sugarcube-2/format.js',
-			json : 'src/templates/twine2/config.json'
+			json : 'template/twine2/config.json'
 		},
 		copy : [
 			{

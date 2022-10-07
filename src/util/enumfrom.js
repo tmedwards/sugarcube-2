@@ -33,7 +33,7 @@ function enumFrom(O) { // eslint-disable-line no-unused-vars
 		Object.assign(pEnum, O);
 	}
 	else {
-		throw new TypeError('mappingFrom O parameter must be an Array, Map, Set, or generic object');
+		throw new TypeError('enumFrom object parameter must be an Array, Map, Set, or generic object');
 	}
 
 	return Object.freeze(pEnum);

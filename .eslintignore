@@ -1,6 +1,6 @@
 # ignore directories
-src/templates/*
-src/vendor/*
+template/*
+vendor/*
 
 # ignore _{name} directories and files
 **/_*

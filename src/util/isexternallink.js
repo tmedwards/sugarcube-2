@@ -11,7 +11,7 @@
 /*
 	Returns whether the given link source is external (probably).
 */
-const isExternalLink = (() => { // eslint-disable-line no-unused-vars, no-var
+var isExternalLink = (() => { // eslint-disable-line no-unused-vars, no-var
 	const externalUrlRE = new RegExp(`^${Patterns.externalUrl}`, 'gim');
 	const fingerprintRE = /[/\\?]/;
 

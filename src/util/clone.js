@@ -95,7 +95,7 @@ function clone(O) { // eslint-disable-line no-unused-vars
 	// properties.
 	//
 	// WARNING: This preserves neither symbol properties nor ES5 property
-	// attributes.  Neither does the delta coding or serialization code,
+	// attributes.  Neither does the delta coding nor the serialization code,
 	// however, so it's not really an issue at the moment.
 	Object.keys(O).forEach(P => copy[P] = clone(O[P]));
 

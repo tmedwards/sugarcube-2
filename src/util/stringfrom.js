@@ -43,9 +43,9 @@ function stringFrom(value) { // eslint-disable-line no-unused-vars
 			}
 			else if (value instanceof Element) {
 				if (
-					value === document.documentElement ||
-					value === document.head ||
-					value === document.body
+					value === document.documentElement
+					|| value === document.head
+					|| value === document.body
 				) {
 					throw new Error('illegal operation; attempting to convert the <html>, <head>, or <body> tags to string is not allowed');
 				}
