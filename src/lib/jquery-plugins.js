@@ -21,8 +21,6 @@
 	    Checks the disabled status of the target WAI-ARIA-compatible clickable element(s).
 */
 (() => {
-	'use strict';
-
 	/*
 		Event handler & utility functions.
 
@@ -276,8 +274,6 @@
 	    element(s).
 */
 (() => {
-	'use strict';
-
 	jQuery.extend({
 		/*
 			Extend jQuery's static methods with a `wikiWithOptions()` method.

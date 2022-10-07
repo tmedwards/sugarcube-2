@@ -9,25 +9,25 @@
 /* global l10nStrings, strings */
 
 var L10n = (() => { // eslint-disable-line no-unused-vars, no-var
-	'use strict';
-
 	// Replacement pattern regular expressions.
 	const _patternRe    = /\{\w+\}/g;
 	const _hasPatternRe = new RegExp(_patternRe.source); // to drop the global flag
 
 
-	/*******************************************************************************************************************
+	/*******************************************************************************
 		Localization Functions.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	function l10nInit() {
 		/* legacy */
 		_mapStringsToL10nStrings();
 		/* /legacy */
 	}
 
-	/*******************************************************************************************************************
+	/*******************************************************************************
 		Localized String Functions.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	function l10nGet(ids, overrides) {
 		if (!ids) {
 			return '';
@@ -78,9 +78,10 @@ var L10n = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 
-	/*******************************************************************************************************************
+	/*******************************************************************************
 		Legacy Functions.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	/*
 		Attempt to map legacy `strings` object properties to the `l10nStrings` object.
 	*/
@@ -91,103 +92,77 @@ var L10n = (() => { // eslint-disable-line no-unused-vars, no-var
 					let value;
 
 					switch (id) {
-					/*
-						General.
-					*/
-					case 'identity': value = strings.identity; break;
-					case 'aborting': value = strings.aborting; break;
-					case 'cancel':   value = strings.cancel; break;
-					case 'close':    value = strings.close; break;
-					case 'ok':       value = strings.ok; break;
+						// General.
+						case 'identity': value = strings.identity; break;
+						case 'aborting': value = strings.aborting; break;
+						case 'cancel':   value = strings.cancel; break;
+						case 'close':    value = strings.close; break;
+						case 'ok':       value = strings.ok; break;
 
-					/*
-						Errors.
-					*/
-					case 'errorTitle':              value = strings.errors.title; break;
-					case 'errorNonexistentPassage': value = strings.errors.nonexistentPassage; break;
-					case 'errorSaveMissingData':    value = strings.errors.saveMissingData; break;
-					case 'errorSaveIdMismatch':     value = strings.errors.saveIdMismatch; break;
+						// Errors.
+						case 'errorTitle':              value = strings.errors.title; break;
+						case 'errorNonexistentPassage': value = strings.errors.nonexistentPassage; break;
+						case 'errorSaveMissingData':    value = strings.errors.saveMissingData; break;
+						case 'errorSaveIdMismatch':     value = strings.errors.saveIdMismatch; break;
 
-					/*
-						Warnings.
-					*/
-					case 'warningDegraded': value = strings.warnings.degraded; break;
+						// Warnings.
+						case 'warningDegraded': value = strings.warnings.degraded; break;
 
-					/*
-						Debug View.
-					*/
-					case 'debugViewTitle':  value = strings.debugView.title; break;
-					case 'debugViewToggle': value = strings.debugView.toggle; break;
+						// Debug View.
+						case 'debugViewTitle':  value = strings.debugView.title; break;
+						case 'debugViewToggle': value = strings.debugView.toggle; break;
 
-					/*
-						UI bar.
-					*/
-					case 'uiBarToggle':   value = strings.uiBar.toggle; break;
-					case 'uiBarBackward': value = strings.uiBar.backward; break;
-					case 'uiBarForward':  value = strings.uiBar.forward; break;
-					case 'uiBarJumpto':   value = strings.uiBar.jumpto; break;
+						// UI bar.
+						case 'uiBarToggle':   value = strings.uiBar.toggle; break;
+						case 'uiBarBackward': value = strings.uiBar.backward; break;
+						case 'uiBarForward':  value = strings.uiBar.forward; break;
+						case 'uiBarJumpto':   value = strings.uiBar.jumpto; break;
 
-					/*
-						Jump To.
-					*/
-					case 'jumptoTitle':       value = strings.jumpto.title; break;
-					case 'jumptoTurn':        value = strings.jumpto.turn; break;
-					case 'jumptoUnavailable': value = strings.jumpto.unavailable; break;
+						// Jump To.
+						case 'jumptoTitle':       value = strings.jumpto.title; break;
+						case 'jumptoTurn':        value = strings.jumpto.turn; break;
+						case 'jumptoUnavailable': value = strings.jumpto.unavailable; break;
 
-					/*
-						Saves.
-					*/
-					case 'savesTitle':       value = strings.saves.title; break;
-					case 'savesDisallowed':  value = strings.saves.disallowed; break;
-					case 'savesIncapable':   value = strings.saves.incapable; break;
-					case 'savesLabelAuto':   value = strings.saves.labelAuto; break;
-					case 'savesLabelDelete': value = strings.saves.labelDelete; break;
-					case 'savesLabelExport': value = strings.saves.labelExport; break;
-					case 'savesLabelImport': value = strings.saves.labelImport; break;
-					case 'savesLabelLoad':   value = strings.saves.labelLoad; break;
-					case 'savesLabelClear':  value = strings.saves.labelClear; break;
-					case 'savesLabelSave':   value = strings.saves.labelSave; break;
-					case 'savesLabelSlot':   value = strings.saves.labelSlot; break;
-					case 'savesUnavailable': value = strings.saves.unavailable; break;
-					case 'savesUnknownDate': value = strings.saves.unknownDate; break;
+						// Saves.
+						case 'savesTitle':       value = strings.saves.title; break;
+						case 'savesDisallowed':  value = strings.saves.disallowed; break;
+						case 'savesIncapable':   value = strings.saves.incapable; break;
+						case 'savesLabelAuto':   value = strings.saves.labelAuto; break;
+						case 'savesLabelDelete': value = strings.saves.labelDelete; break;
+						case 'savesLabelExport': value = strings.saves.labelExport; break;
+						case 'savesLabelImport': value = strings.saves.labelImport; break;
+						case 'savesLabelLoad':   value = strings.saves.labelLoad; break;
+						case 'savesLabelClear':  value = strings.saves.labelClear; break;
+						case 'savesLabelSave':   value = strings.saves.labelSave; break;
+						case 'savesLabelSlot':   value = strings.saves.labelSlot; break;
+						case 'savesUnavailable': value = strings.saves.unavailable; break;
+						case 'savesUnknownDate': value = strings.saves.unknownDate; break;
 
-					/*
-						Settings.
-					*/
-					case 'settingsTitle': value = strings.settings.title; break;
-					case 'settingsOff':   value = strings.settings.off; break;
-					case 'settingsOn':    value = strings.settings.on; break;
-					case 'settingsReset': value = strings.settings.reset; break;
+						// Settings.
+						case 'settingsTitle': value = strings.settings.title; break;
+						case 'settingsOff':   value = strings.settings.off; break;
+						case 'settingsOn':    value = strings.settings.on; break;
+						case 'settingsReset': value = strings.settings.reset; break;
 
-					/*
-						Restart.
-					*/
-					case 'restartTitle':  value = strings.restart.title; break;
-					case 'restartPrompt': value = strings.restart.prompt; break;
+						// Restart.
+						case 'restartTitle':  value = strings.restart.title; break;
+						case 'restartPrompt': value = strings.restart.prompt; break;
 
-					/*
-						Share.
-					*/
-					case 'shareTitle': value = strings.share.title; break;
+						// Share.
+						case 'shareTitle': value = strings.share.title; break;
 
-					/*
-						Alert.
-					*/
-					case 'alertTitle': /* none */ break;
+						// Alert.
+						case 'alertTitle': /* none */ break;
 
-					/*
-						Autoload.
-					*/
-					case 'autoloadTitle':  value = strings.autoload.title; break;
-					case 'autoloadCancel': value = strings.autoload.cancel; break;
-					case 'autoloadOk':     value = strings.autoload.ok; break;
-					case 'autoloadPrompt': value = strings.autoload.prompt; break;
+						// Autoload.
+						case 'autoloadTitle':  value = strings.autoload.title; break;
+						case 'autoloadCancel': value = strings.autoload.cancel; break;
+						case 'autoloadOk':     value = strings.autoload.ok; break;
+						case 'autoloadPrompt': value = strings.autoload.prompt; break;
 
-					/*
-						Macros.
-					*/
-					case 'macroBackText':   value = strings.macros.back.text; break;
-					case 'macroReturnText': value = strings.macros.return.text; break;
+						// Macros.
+						case 'macroBackText':   value = strings.macros.back.text; break;
+						case 'macroReturnText': value = strings.macros.return.text; break;
 					}
 
 					if (value) {
@@ -200,10 +175,11 @@ var L10n = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 
-	/*******************************************************************************************************************
-		Module Exports.
-	*******************************************************************************************************************/
-	return Object.freeze(Object.defineProperties({}, {
+	/*******************************************************************************
+		Object Exports.
+	*******************************************************************************/
+
+	return Object.preventExtensions(Object.create(null, {
 		/*
 			Localization Functions.
 		*/

@@ -186,7 +186,7 @@ Macro.add('actions', {
 			}
 
 			if (
-					State.variables.hasOwnProperty('#actions')
+				State.variables.hasOwnProperty('#actions')
 				&& State.variables['#actions'].hasOwnProperty(passage)
 				&& State.variables['#actions'][passage]
 			) {
@@ -277,7 +277,7 @@ Macro.add('choice', {
 		let $link;
 
 		if (
-				State.variables.hasOwnProperty('#choice')
+			State.variables.hasOwnProperty('#choice')
 			&& State.variables['#choice'].hasOwnProperty(choiceId)
 			&& State.variables['#choice'][choiceId]
 		) {

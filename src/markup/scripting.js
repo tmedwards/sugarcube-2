@@ -9,13 +9,12 @@
 /* global Engine, Patterns, State, Story, enumFrom, getTypeOf, now, parseURL, stringFrom */
 
 var Scripting = (() => { // eslint-disable-line no-unused-vars, no-var
-	'use strict';
-
 	/* eslint-disable no-unused-vars */
 
-	/*******************************************************************************************************************
+	/*******************************************************************************
 		Deprecated Legacy Functions.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	/*
 		[DEPRECATED] Returns the jQuery-wrapped target element(s) after making them accessible
 		clickables (ARIA compatibility).
@@ -236,9 +235,10 @@ var Scripting = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 
-	/*******************************************************************************************************************
+	/*******************************************************************************
 		User Functions.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	/*
 		Returns a random value from its given arguments.
 	*/
@@ -369,16 +369,16 @@ var Scripting = (() => { // eslint-disable-line no-unused-vars, no-var
 		let max;
 
 		switch (arguments.length) {
-		case 0:
-			throw new Error('random called with insufficient parameters');
-		case 1:
-			min = 0;
-			max = Math.trunc(arguments[0]);
-			break;
-		default:
-			min = Math.trunc(arguments[0]);
-			max = Math.trunc(arguments[1]);
-			break;
+			case 0:
+				throw new Error('random called with insufficient parameters');
+			case 1:
+				min = 0;
+				max = Math.trunc(arguments[0]);
+				break;
+			default:
+				min = Math.trunc(arguments[0]);
+				max = Math.trunc(arguments[1]);
+				break;
 		}
 
 		if (!Number.isInteger(min)) {
@@ -407,16 +407,16 @@ var Scripting = (() => { // eslint-disable-line no-unused-vars, no-var
 		let max;
 
 		switch (arguments.length) {
-		case 0:
-			throw new Error('randomFloat called with insufficient parameters');
-		case 1:
-			min = 0.0;
-			max = Number(arguments[0]);
-			break;
-		default:
-			min = Number(arguments[0]);
-			max = Number(arguments[1]);
-			break;
+			case 0:
+				throw new Error('randomFloat called with insufficient parameters');
+			case 1:
+				min = 0.0;
+				max = Number(arguments[0]);
+				break;
+			default:
+				min = Number(arguments[0]);
+				max = Number(arguments[1]);
+				break;
 		}
 
 		if (Number.isNaN(min) || !Number.isFinite(min)) {
@@ -571,9 +571,10 @@ var Scripting = (() => { // eslint-disable-line no-unused-vars, no-var
 	/* eslint-enable no-unused-vars */
 
 
-	/*******************************************************************************************************************
+	/*******************************************************************************
 		Import Functions.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	var { // eslint-disable-line no-var
 		/* eslint-disable no-unused-vars */
 		importScripts,
@@ -691,9 +692,10 @@ var Scripting = (() => { // eslint-disable-line no-unused-vars, no-var
 	})();
 
 
-	/*******************************************************************************************************************
+	/*******************************************************************************
 		Parsing Functions.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	/*
 		Returns the given string after converting all TwineScript syntactical sugars to
 		their native JavaScript counterparts.
@@ -889,9 +891,10 @@ var Scripting = (() => { // eslint-disable-line no-unused-vars, no-var
 	})();
 
 
-	/*******************************************************************************************************************
+	/*******************************************************************************
 		Eval Functions.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	/* eslint-disable no-eval, no-extra-parens, no-unused-vars */
 	/*
 		Evaluates the given JavaScript code and returns the result, throwing if there were errors.
@@ -915,10 +918,11 @@ var Scripting = (() => { // eslint-disable-line no-unused-vars, no-var
 	/* eslint-enable no-eval, no-extra-parens, no-unused-vars */
 
 
-	/*******************************************************************************************************************
-		Module Exports.
-	*******************************************************************************************************************/
-	return Object.freeze(Object.defineProperties({}, {
+	/*******************************************************************************
+		Object Exports.
+	*******************************************************************************/
+
+	return Object.preventExtensions(Object.create(null, {
 		parse           : { value : parse },
 		evalJavaScript  : { value : evalJavaScript },
 		evalTwineScript : { value : evalTwineScript }

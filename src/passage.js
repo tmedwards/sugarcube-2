@@ -6,11 +6,9 @@
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* global Config, L10n, Wikifier, createSlug, decodeEntities, encodeMarkup */
+/* global Config, L10n, Wikifier, createSlug, decodeEntities, encodeMarkup, enumFrom */
 
 var Passage = (() => { // eslint-disable-line no-unused-vars, no-var
-	'use strict';
-
 	let _tagsToSkip;
 	let _twine1Unescape;
 
@@ -40,7 +38,7 @@ var Passage = (() => { // eslint-disable-line no-unused-vars, no-var
 		*/
 		const _twine1EscapesRe    = /(?:\\n|\\t|\\s|\\|\r)/g;
 		const _hasTwine1EscapesRe = new RegExp(_twine1EscapesRe.source); // to drop the global flag
-		const _twine1EscapesMap   = Object.freeze({
+		const _twine1EscapesMap   = enumFrom({
 			'\\n' : '\n',
 			'\\t' : '\t',
 			'\\s' : '\\',
@@ -61,9 +59,10 @@ var Passage = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 
-	/*******************************************************************************************************************
+	/*******************************************************************************
 		Passage Class.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	class Passage {
 		constructor(title, el) {
 			Object.defineProperties(this, {
@@ -144,27 +143,27 @@ var Passage = (() => { // eslint-disable-line no-unused-vars, no-var
 			const descriptions = Config.passages.descriptions;
 
 			switch (typeof descriptions) {
-			case 'boolean':
-				if (descriptions) {
-					return this.title;
-				}
-				break;
+				case 'boolean':
+					if (descriptions) {
+						return this.title;
+					}
+					break;
 
-			case 'object':
-				if (descriptions.hasOwnProperty(this.title)) {
-					return descriptions[this.title];
-				}
-				break;
+				case 'object':
+					if (descriptions.hasOwnProperty(this.title)) {
+						return descriptions[this.title];
+					}
+					break;
 
-			case 'function':
-				{
+				case 'function': {
 					const result = descriptions.call(this);
 
 					if (result) {
 						return result;
 					}
+
+					break;
 				}
-				break;
 			}
 
 			// Initialize the excerpt cache from the raw passage text, if necessary.
@@ -281,8 +280,9 @@ var Passage = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 
-	/*******************************************************************************************************************
-		Module Exports.
-	*******************************************************************************************************************/
+	/*******************************************************************************
+		Object Exports.
+	*******************************************************************************/
+
 	return Passage;
 })();

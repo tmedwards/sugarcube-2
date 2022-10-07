@@ -9,8 +9,6 @@
 /* global Browser */
 
 var Fullscreen = (() => { // eslint-disable-line no-unused-vars, no-var
-	'use strict';
-
 	/*
 		SEE:
 			https://fullscreen.spec.whatwg.org
@@ -123,9 +121,9 @@ var Fullscreen = (() => { // eslint-disable-line no-unused-vars, no-var
 
 		// Document element scrolling workaround for older browsers.
 		if (
-			   selectedEl === document.documentElement
+			selectedEl === document.documentElement
 			&& (
-				   vendor.requestFn === 'msRequestFullscreen'   // IE 11
+				vendor.requestFn === 'msRequestFullscreen'   // IE 11
 				|| Browser.isOpera && Browser.operaVersion < 15 // Opera 12 (Presto)
 			)
 		) {
@@ -284,10 +282,10 @@ var Fullscreen = (() => { // eslint-disable-line no-unused-vars, no-var
 
 
 	/*******************************************************************************
-		Module Exports.
+		Object Exports.
 	*******************************************************************************/
 
-	return Object.freeze(Object.defineProperties({}, {
+	return Object.preventExtensions(Object.create(null, {
 		vendor       : { get : getVendor },
 		element      : { get : getElement },
 		isEnabled    : { value : isEnabled },

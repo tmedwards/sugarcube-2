@@ -41,87 +41,87 @@ Macro.add('type', {
 			const option = options.shift();
 
 			switch (option) {
-			case 'class': {
-				if (options.length === 0) {
-					return this.error('class option missing required class name(s)');
+				case 'class': {
+					if (options.length === 0) {
+						return this.error('class option missing required class name(s)');
+					}
+
+					elClass = options.shift();
+
+					if (elClass === '') {
+						throw new Error('class option class name(s) must be non-empty (received: "")');
+					}
+
+					break;
 				}
 
-				elClass = options.shift();
+				case 'element': {
+					if (options.length === 0) {
+						return this.error('element option missing required element tag name');
+					}
 
-				if (elClass === '') {
-					throw new Error('class option class name(s) must be non-empty (received: "")');
+					elTag = options.shift();
+
+					if (elTag === '') {
+						throw new Error('element option tag name must be non-empty (received: "")');
+					}
+
+					break;
 				}
 
-				break;
-			}
+				case 'id': {
+					if (options.length === 0) {
+						return this.error('id option missing required ID');
+					}
 
-			case 'element': {
-				if (options.length === 0) {
-					return this.error('element option missing required element tag name');
+					elId = options.shift();
+
+					if (elId === '') {
+						throw new Error('id option ID must be non-empty (received: "")');
+					}
+
+					break;
 				}
 
-				elTag = options.shift();
+				case 'keep':
+					cursor = 'keep';
+					break;
 
-				if (elTag === '') {
-					throw new Error('element option tag name must be non-empty (received: "")');
+				case 'none':
+					cursor = 'none';
+					break;
+
+				case 'skipkey': {
+					if (options.length === 0) {
+						return this.error('skipkey option missing required key value');
+					}
+
+					skipKey = options.shift();
+
+					if (skipKey === '') {
+						throw new Error('skipkey option key value must be non-empty (received: "")');
+					}
+
+					break;
 				}
 
-				break;
-			}
+				case 'start': {
+					if (options.length === 0) {
+						return this.error('start option missing required time value');
+					}
 
-			case 'id': {
-				if (options.length === 0) {
-					return this.error('id option missing required ID');
+					const value = options.shift();
+					start = cssTimeToMS(value);
+
+					if (start < 0) {
+						throw new Error(`start option time value must be non-negative (received: ${value})`);
+					}
+
+					break;
 				}
 
-				elId = options.shift();
-
-				if (elId === '') {
-					throw new Error('id option ID must be non-empty (received: "")');
-				}
-
-				break;
-			}
-
-			case 'keep':
-				cursor = 'keep';
-				break;
-
-			case 'none':
-				cursor = 'none';
-				break;
-
-			case 'skipkey': {
-				if (options.length === 0) {
-					return this.error('skipkey option missing required key value');
-				}
-
-				skipKey = options.shift();
-
-				if (skipKey === '') {
-					throw new Error('skipkey option key value must be non-empty (received: "")');
-				}
-
-				break;
-			}
-
-			case 'start': {
-				if (options.length === 0) {
-					return this.error('start option missing required time value');
-				}
-
-				const value = options.shift();
-				start = cssTimeToMS(value);
-
-				if (start < 0) {
-					throw new Error(`start option time value must be non-negative (received: ${value})`);
-				}
-
-				break;
-			}
-
-			default:
-				return this.error(`unknown option: ${option}`);
+				default:
+					return this.error(`unknown option: ${option}`);
 			}
 		}
 

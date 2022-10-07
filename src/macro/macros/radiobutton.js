@@ -71,15 +71,19 @@ Macro.add('radiobutton', {
 			Set the variable to the checked value and the input element to checked, if requested.
 		*/
 		switch (this.args[2]) {
-		case 'autocheck':
-			if (State.getVar(varName) === checkValue) {
-				el.checked = true;
+			case 'autocheck': {
+				if (State.getVar(varName) === checkValue) {
+					el.checked = true;
+				}
+
+				break;
 			}
-			break;
-		case 'checked':
-			el.checked = true;
-			State.setVar(varName, checkValue);
-			break;
+
+			case 'checked': {
+				el.checked = true;
+				State.setVar(varName, checkValue);
+				break;
+			}
 		}
 	}
 });

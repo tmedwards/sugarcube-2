@@ -16,15 +16,14 @@
 */
 /* eslint-disable max-len */
 var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
-	'use strict';
-
 	// Wikifier call depth.
 	let _callDepth = 0;
 
 
-	/*******************************************************************************************************************
+	/*******************************************************************************
 		Wikifier Class.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	class Wikifier {
 		constructor(destination, source, options) {
 			if (Wikifier.Parser.Profile.isEmpty()) {
@@ -206,7 +205,7 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 
 			// In case of <<break>>/<<continue>>, remove the last <br>.
 			else if (
-				   this.output.lastChild
+				this.output.lastChild
 				&& this.output.lastChild.nodeType === Node.ELEMENT_NODE
 				&& this.output.lastChild.nodeName.toUpperCase() === 'BR'
 			) {
@@ -322,9 +321,10 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 
-	/*******************************************************************************************************************
+	/*******************************************************************************
 		Option Static Object.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	Object.defineProperty(Wikifier, 'Option', {
 		value : (() => {
 			// Options array (stack).
@@ -366,7 +366,7 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 			/*
 				Exports.
 			*/
-			return Object.freeze(Object.defineProperties({}, {
+			return Object.preventExtensions(Object.create(null, {
 				length  : { get : optionLength },
 				options : { get : optionGetter },
 				clear   : { value : optionClear },
@@ -378,9 +378,10 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 	});
 
 
-	/*******************************************************************************************************************
+	/*******************************************************************************
 		Parser Static Object.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	Object.defineProperty(Wikifier, 'Parser', {
 		value : (() => {
 			// Parser definition array.  Ordering matters, so this must be an ordered list.
@@ -505,7 +506,7 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 			/*
 				Exports.
 			*/
-			return Object.freeze(Object.defineProperties({}, {
+			return Object.preventExtensions(Object.create(null, {
 				/*
 					Parser Containers.
 				*/
@@ -524,7 +525,7 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 					Parser Profile.
 				*/
 				Profile : {
-					value : Object.freeze(Object.defineProperties({}, {
+					value : Object.preventExtensions(Object.create(null, {
 						/*
 							Profiles Containers.
 						*/
@@ -544,9 +545,10 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 	});
 
 
-	/*******************************************************************************************************************
+	/*******************************************************************************
 		Additional Static Properties.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	Object.defineProperties(Wikifier, {
 		helpers : { value : {} },
 
@@ -563,9 +565,10 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 	});
 
 
-	/*******************************************************************************************************************
+	/*******************************************************************************
 		Helper Static Methods.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	Object.defineProperties(Wikifier.helpers, {
 		inlineCss : {
 			value : (() => {
@@ -632,17 +635,17 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 						still leak through—e.g. `window.status` → string.
 					*/
 					switch (typeof result) {
-					case 'string':
-						if (result.trim() === '') {
+						case 'string':
+							if (result.trim() === '') {
+								result = text;
+							}
+							break;
+						case 'number':
+							result = String(result);
+							break;
+						default:
 							result = text;
-						}
-						break;
-					case 'number':
-						result = String(result);
-						break;
-					default:
-						result = text;
-						break;
+							break;
 					}
 				}
 				catch (ex) {
@@ -671,8 +674,7 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 					const node = nodes[i];
 
 					switch (node.nodeType) {
-					case Node.ELEMENT_NODE:
-						{
+						case Node.ELEMENT_NODE: {
 							const tagName = node.nodeName.toUpperCase();
 
 							if (tagName === 'BR') {
@@ -697,43 +699,43 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 								element.
 							*/
 							switch (tagName) {
-							case 'ADDRESS':
-							case 'ARTICLE':
-							case 'ASIDE':
-							case 'BLOCKQUOTE':
-							case 'CENTER':
-							case 'DIV':
-							case 'DL':
-							case 'FIGURE':
-							case 'FOOTER':
-							case 'FORM':
-							case 'H1':
-							case 'H2':
-							case 'H3':
-							case 'H4':
-							case 'H5':
-							case 'H6':
-							case 'HEADER':
-							case 'HR':
-							case 'MAIN':
-							case 'NAV':
-							case 'OL':
-							case 'P':
-							case 'PRE':
-							case 'SECTION':
-							case 'TABLE':
-							case 'UL':
-								return true;
+								case 'ADDRESS':
+								case 'ARTICLE':
+								case 'ASIDE':
+								case 'BLOCKQUOTE':
+								case 'CENTER':
+								case 'DIV':
+								case 'DL':
+								case 'FIGURE':
+								case 'FOOTER':
+								case 'FORM':
+								case 'H1':
+								case 'H2':
+								case 'H3':
+								case 'H4':
+								case 'H5':
+								case 'H6':
+								case 'HEADER':
+								case 'HR':
+								case 'MAIN':
+								case 'NAV':
+								case 'OL':
+								case 'P':
+								case 'PRE':
+								case 'SECTION':
+								case 'TABLE':
+								case 'UL':
+									return true;
 							}
+
+							return false;
 						}
 
-						return false;
+						case Node.COMMENT_NODE:
+							continue;
 
-					case Node.COMMENT_NODE:
-						continue;
-
-					default:
-						return false;
+						default:
+							return false;
 					}
 				}
 
@@ -919,101 +921,103 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 
 					for (;;) {
 						switch (lexer.next()) {
-						case EOF:
-						case '\n':
-							return lexer.error(Item.Error, `unterminated ${what} markup`);
+							case EOF:
+							case '\n':
+								return lexer.error(Item.Error, `unterminated ${what} markup`);
 
-						case '"':
-							/*
-								This is not entirely reliable within sections that allow raw strings, since
-								it's possible, however unlikely, for a raw string to contain unpaired double
-								quotes.  The likelihood is low enough, however, that I'm deeming the risk as
-								acceptable—for now, at least.
-							*/
-							if (slurpQuote(lexer, '"') === EOF) {
-								return lexer.error(Item.Error, `unterminated double quoted string in ${what} markup`);
-							}
-							break;
-
-						case '|': // possible pipe ('|') delimiter
-							if (delim === Delim.None) {
-								delim = Delim.LTR;
-								lexer.backup();
-								lexer.emit(Item.Text);
-								lexer.forward();
-								lexer.emit(Item.DelimLTR);
-								// lexer.ignore();
-							}
-							break;
-
-						case '-': // possible right arrow ('->') delimiter
-							if (delim === Delim.None && lexer.peek() === '>') {
-								delim = Delim.LTR;
-								lexer.backup();
-								lexer.emit(Item.Text);
-								lexer.forward(2);
-								lexer.emit(Item.DelimLTR);
-								// lexer.ignore();
-							}
-							break;
-
-						case '<': // possible left arrow ('<-') delimiter
-							if (delim === Delim.None && lexer.peek() === '-') {
-								delim = Delim.RTL;
-								lexer.backup();
-								lexer.emit(lexer.data.isLink ? Item.Link : Item.Source);
-								lexer.forward(2);
-								lexer.emit(Item.DelimRTL);
-								// lexer.ignore();
-							}
-							break;
-
-						case '[':
-							++lexer.depth;
-							break;
-
-						case ']':
-							--lexer.depth;
-
-							if (lexer.depth === 1) {
-								switch (lexer.peek()) {
-								case '[':
-									++lexer.depth;
-									lexer.backup();
-
-									if (delim === Delim.RTL) {
-										lexer.emit(Item.Text);
-									}
-									else {
-										lexer.emit(lexer.data.isLink ? Item.Link : Item.Source);
-									}
-
-									lexer.forward(2);
-									lexer.emit(Item.InnerMeta);
-									// lexer.ignore();
-									return lexer.data.isLink ? lexSetter : lexImageLink;
-
-								case ']':
-									--lexer.depth;
-									lexer.backup();
-
-									if (delim === Delim.RTL) {
-										lexer.emit(Item.Text);
-									}
-									else {
-										lexer.emit(lexer.data.isLink ? Item.Link : Item.Source);
-									}
-
-									lexer.forward(2);
-									lexer.emit(Item.RightMeta);
-									// lexer.ignore();
-									return null;
-
-								default:
-									return lexer.error(Item.Error, `malformed ${what} markup`);
+							case '"':
+								/*
+									This is not entirely reliable within sections that allow raw strings, since
+									it's possible, however unlikely, for a raw string to contain unpaired double
+									quotes.  The likelihood is low enough, however, that I'm deeming the risk as
+									acceptable—for now, at least.
+								*/
+								if (slurpQuote(lexer, '"') === EOF) {
+									return lexer.error(Item.Error, `unterminated double quoted string in ${what} markup`);
 								}
+								break;
+
+							case '|': // possible pipe ('|') delimiter
+								if (delim === Delim.None) {
+									delim = Delim.LTR;
+									lexer.backup();
+									lexer.emit(Item.Text);
+									lexer.forward();
+									lexer.emit(Item.DelimLTR);
+									// lexer.ignore();
+								}
+								break;
+
+							case '-': // possible right arrow ('->') delimiter
+								if (delim === Delim.None && lexer.peek() === '>') {
+									delim = Delim.LTR;
+									lexer.backup();
+									lexer.emit(Item.Text);
+									lexer.forward(2);
+									lexer.emit(Item.DelimLTR);
+									// lexer.ignore();
+								}
+								break;
+
+							case '<': // possible left arrow ('<-') delimiter
+								if (delim === Delim.None && lexer.peek() === '-') {
+									delim = Delim.RTL;
+									lexer.backup();
+									lexer.emit(lexer.data.isLink ? Item.Link : Item.Source);
+									lexer.forward(2);
+									lexer.emit(Item.DelimRTL);
+									// lexer.ignore();
+								}
+								break;
+
+							case '[':
+								++lexer.depth;
+								break;
+
+							case ']': {
+								--lexer.depth;
+
+								if (lexer.depth === 1) {
+									switch (lexer.peek()) {
+										case '[':
+											++lexer.depth;
+											lexer.backup();
+
+											if (delim === Delim.RTL) {
+												lexer.emit(Item.Text);
+											}
+											else {
+												lexer.emit(lexer.data.isLink ? Item.Link : Item.Source);
+											}
+
+											lexer.forward(2);
+											lexer.emit(Item.InnerMeta);
+											// lexer.ignore();
+											return lexer.data.isLink ? lexSetter : lexImageLink;
+
+										case ']':
+											--lexer.depth;
+											lexer.backup();
+
+											if (delim === Delim.RTL) {
+												lexer.emit(Item.Text);
+											}
+											else {
+												lexer.emit(lexer.data.isLink ? Item.Link : Item.Source);
+											}
+
+											lexer.forward(2);
+											lexer.emit(Item.RightMeta);
+											// lexer.ignore();
+											return null;
+
+										default:
+											return lexer.error(Item.Error, `malformed ${what} markup`);
+									}
+								}
+
+								break;
 							}
-							break;
 						}
 					}
 				}
@@ -1023,54 +1027,58 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 
 					for (;;) {
 						switch (lexer.next()) {
-						case EOF:
-						case '\n':
-							return lexer.error(Item.Error, `unterminated ${what} markup`);
+							case EOF:
+							case '\n':
+								return lexer.error(Item.Error, `unterminated ${what} markup`);
 
-						case '"':
-							/*
-								This is not entirely reliable within sections that allow raw strings, since
-								it's possible, however unlikely, for a raw string to contain unpaired double
-								quotes.  The likelihood is low enough, however, that I'm deeming the risk as
-								acceptable—for now, at least.
-							*/
-							if (slurpQuote(lexer, '"') === EOF) {
-								return lexer.error(Item.Error, `unterminated double quoted string in ${what} markup link component`);
-							}
-							break;
-
-						case '[':
-							++lexer.depth;
-							break;
-
-						case ']':
-							--lexer.depth;
-
-							if (lexer.depth === 1) {
-								switch (lexer.peek()) {
-								case '[':
-									++lexer.depth;
-									lexer.backup();
-									lexer.emit(Item.Link);
-									lexer.forward(2);
-									lexer.emit(Item.InnerMeta);
-									// lexer.ignore();
-									return lexSetter;
-
-								case ']':
-									--lexer.depth;
-									lexer.backup();
-									lexer.emit(Item.Link);
-									lexer.forward(2);
-									lexer.emit(Item.RightMeta);
-									// lexer.ignore();
-									return null;
-
-								default:
-									return lexer.error(Item.Error, `malformed ${what} markup`);
+							case '"':
+								/*
+									This is not entirely reliable within sections that allow raw strings, since
+									it's possible, however unlikely, for a raw string to contain unpaired double
+									quotes.  The likelihood is low enough, however, that I'm deeming the risk as
+									acceptable—for now, at least.
+								*/
+								if (slurpQuote(lexer, '"') === EOF) {
+									return lexer.error(Item.Error, `unterminated double quoted string in ${what} markup link component`);
 								}
+								break;
+
+							case '[':
+								++lexer.depth;
+								break;
+
+							case ']': {
+								--lexer.depth;
+
+								if (lexer.depth === 1) {
+									switch (lexer.peek()) {
+										case '[': {
+											++lexer.depth;
+											lexer.backup();
+											lexer.emit(Item.Link);
+											lexer.forward(2);
+											lexer.emit(Item.InnerMeta);
+											// lexer.ignore();
+											return lexSetter;
+										}
+
+										case ']': {
+											--lexer.depth;
+											lexer.backup();
+											lexer.emit(Item.Link);
+											lexer.forward(2);
+											lexer.emit(Item.RightMeta);
+											// lexer.ignore();
+											return null;
+										}
+
+										default:
+											return lexer.error(Item.Error, `malformed ${what} markup`);
+									}
+								}
+
+								break;
 							}
-							break;
 						}
 					}
 				}
@@ -1080,43 +1088,45 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 
 					for (;;) {
 						switch (lexer.next()) {
-						case EOF:
-						case '\n':
-							return lexer.error(Item.Error, `unterminated ${what} markup`);
+							case EOF:
+							case '\n':
+								return lexer.error(Item.Error, `unterminated ${what} markup`);
 
-						case '"':
-							if (slurpQuote(lexer, '"') === EOF) {
-								return lexer.error(Item.Error, `unterminated double quoted string in ${what} markup setter component`);
-							}
-							break;
+							case '"':
+								if (slurpQuote(lexer, '"') === EOF) {
+									return lexer.error(Item.Error, `unterminated double quoted string in ${what} markup setter component`);
+								}
+								break;
 
-						case "'":
-							if (slurpQuote(lexer, "'") === EOF) {
-								return lexer.error(Item.Error, `unterminated single quoted string in ${what} markup setter component`);
-							}
-							break;
+							case "'":
+								if (slurpQuote(lexer, "'") === EOF) {
+									return lexer.error(Item.Error, `unterminated single quoted string in ${what} markup setter component`);
+								}
+								break;
 
-						case '[':
-							++lexer.depth;
-							break;
+							case '[':
+								++lexer.depth;
+								break;
 
-						case ']':
-							--lexer.depth;
+							case ']': {
+								--lexer.depth;
 
-							if (lexer.depth === 1) {
-								if (lexer.peek() !== ']') {
-									return lexer.error(Item.Error, `malformed ${what} markup`);
+								if (lexer.depth === 1) {
+									if (lexer.peek() !== ']') {
+										return lexer.error(Item.Error, `malformed ${what} markup`);
+									}
+
+									--lexer.depth;
+									lexer.backup();
+									lexer.emit(Item.Setter);
+									lexer.forward(2);
+									lexer.emit(Item.RightMeta);
+									// lexer.ignore();
+									return null;
 								}
 
-								--lexer.depth;
-								lexer.backup();
-								lexer.emit(Item.Setter);
-								lexer.forward(2);
-								lexer.emit(Item.RightMeta);
-								// lexer.ignore();
-								return null;
+								break;
 							}
-							break;
 						}
 					}
 				}
@@ -1142,42 +1152,42 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 							const text = item.text.trim();
 
 							switch (item.type) {
-							case Item.ImageMeta:
-								markup.isImage = true;
+								case Item.ImageMeta:
+									markup.isImage = true;
 
-								if (text[1] === '<') {
-									markup.align = 'left';
-								}
-								else if (text[1] === '>') {
-									markup.align = 'right';
-								}
-								break;
+									if (text[1] === '<') {
+										markup.align = 'left';
+									}
+									else if (text[1] === '>') {
+										markup.align = 'right';
+									}
+									break;
 
-							case Item.LinkMeta:
-								markup.isLink = true;
-								break;
+								case Item.LinkMeta:
+									markup.isLink = true;
+									break;
 
-							case Item.Link:
-								if (text[0] === '~') {
-									markup.forceInternal = true;
-									markup.link = text.slice(1);
-								}
-								else {
-									markup.link = text;
-								}
-								break;
+								case Item.Link:
+									if (text[0] === '~') {
+										markup.forceInternal = true;
+										markup.link = text.slice(1);
+									}
+									else {
+										markup.link = text;
+									}
+									break;
 
-							case Item.Setter:
-								markup.setter = text;
-								break;
+								case Item.Setter:
+									markup.setter = text;
+									break;
 
-							case Item.Source:
-								markup.source = text;
-								break;
+								case Item.Source:
+									markup.source = text;
+									break;
 
-							case Item.Text:
-								markup.text = text;
-								break;
+								case Item.Text:
+									markup.text = text;
+									break;
 							}
 						});
 					}
@@ -1193,9 +1203,10 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 	});
 
 
-	/*******************************************************************************************************************
-		Module Exports.
-	*******************************************************************************************************************/
+	/*******************************************************************************
+		Object Exports.
+	*******************************************************************************/
+
 	return Wikifier;
 })();
 /* eslint-enable max-len */

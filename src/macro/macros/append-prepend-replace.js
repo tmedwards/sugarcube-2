@@ -42,17 +42,17 @@ Macro.add(['append', 'prepend', 'replace'], {
 			$insert.wiki(this.payload[0].contents);
 
 			switch (this.name) {
-			case 'replace':
-				$targets.empty();
-				/* falls through */
+				case 'replace':
+					$targets.empty();
+					/* falls through */
 
-			case 'append':
-				$targets.append($insert);
-				break;
+				case 'append':
+					$targets.append($insert);
+					break;
 
-			case 'prepend':
-				$targets.prepend($insert);
-				break;
+				case 'prepend':
+					$targets.prepend($insert);
+					break;
 			}
 		}
 		else if (this.name === 'replace') {

@@ -60,21 +60,27 @@ Macro.add('checkbox', {
 			Set the variable and input element to the appropriate value and state, as requested.
 		*/
 		switch (this.args[3]) {
-		case 'autocheck':
-			if (State.getVar(varName) === checkValue) {
+			case 'autocheck': {
+				if (State.getVar(varName) === checkValue) {
+					el.checked = true;
+				}
+				else {
+					State.setVar(varName, uncheckValue);
+				}
+
+				break;
+			}
+
+			case 'checked': {
 				el.checked = true;
+				State.setVar(varName, checkValue);
+				break;
 			}
-			else {
+
+			default: {
 				State.setVar(varName, uncheckValue);
+				break;
 			}
-			break;
-		case 'checked':
-			el.checked = true;
-			State.setVar(varName, checkValue);
-			break;
-		default:
-			State.setVar(varName, uncheckValue);
-			break;
 		}
 	}
 });

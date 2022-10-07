@@ -2,11 +2,11 @@
 
 	lib/diff.js
 
-	Copyright © 2013–2021 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
+	Copyright © 2013–2022 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* global clone, enumFrom */
+/* global clone, enumFrom, hasOwn */
 
 var Diff = (() => { // eslint-disable-line no-unused-vars, no-var
 	// Diff operations object.
@@ -14,7 +14,10 @@ var Diff = (() => { // eslint-disable-line no-unused-vars, no-var
 		Delete      : 0,
 		SpliceArray : 1,
 		Copy        : 2,
-		CopyDate    : 3
+
+		/* legacy */
+		CopyDate : 3
+		/* /legacy */
 	});
 
 
@@ -22,8 +25,8 @@ var Diff = (() => { // eslint-disable-line no-unused-vars, no-var
 		Diff Functions.
 	*******************************************************************************/
 
-	// Returns whether the given value is a finite number or a numeric string that
-	// yields a finite number when parsed.
+	// Returns whether the given value is a finite number or a numeric string
+	// that yields a finite number when parsed.
 	function isNumeric(O) {
 		let num;
 
@@ -36,78 +39,78 @@ var Diff = (() => { // eslint-disable-line no-unused-vars, no-var
 		return !Number.isNaN(num) && Number.isFinite(num);
 	}
 
-	// Returns a difference object generated from comparing the orig and dest objects.
-	function diff(orig, dest) /* diff object */ {
-		const objToString = Object.prototype.toString;
-		const origIsArray = orig instanceof Array;
-		const keys        = []
-			.concat(Object.keys(orig), Object.keys(dest))
+	// Returns a delta object generated from comparing the `a` and `b` objects.
+	function diff(a, b) /* delta object */ {
+		const toString = Object.prototype.toString;
+		const aIsArray = a instanceof Array;
+		const delta    = Object.create(null);
+		const keys     = [...Object.keys(a), ...Object.keys(b)]
 			.sort()
 			.filter((val, i, arr) => i === 0 || arr[i - 1] !== val);
-		const diffed      = {};
-		let aOpRef;
+		let aOpKey;
 
-		const keyIsAOpRef = key => key === aOpRef;
+		// Array operation predicate.
+		const isAOpKey = key => key === aOpKey;
 
 		/* eslint-disable max-depth */
 		for (let i = 0, klen = keys.length; i < klen; ++i) {
-			const key   = keys[i];
-			const origP = orig[key];
-			const destP = dest[key];
+			const key  = keys[i];
+			const aVal = a[key];
+			const bVal = b[key];
 
-			if (orig.hasOwnProperty(key)) {
+			// Key exists in `a`.
+			if (hasOwn(a, key)) {
 				// Key exists in both.
-				if (dest.hasOwnProperty(key)) {
+				if (hasOwn(b, key)) {
 					// Values are exactly the same, so do nothing.
-					if (origP === destP) {
+					if (aVal === bVal) {
 						continue;
 					}
 
 					// Values are of the same basic type.
-					if (typeof origP === typeof destP) { // eslint-disable-line valid-typeof
+					if (typeof aVal === typeof bVal) {
 						// Values are functions.
-						if (typeof origP === 'function') {
-							/* diffed[key] = [Op.Copy, destP]; */
-							if (origP.toString() !== destP.toString()) {
-								diffed[key] = [Op.Copy, destP];
+						if (typeof aVal === 'function') {
+							/* delta[key] = [Op.Copy, bVal]; */
+							if (aVal.toString() !== bVal.toString()) {
+								delta[key] = [Op.Copy, bVal];
 							}
 						}
+
 						// Values are primitives.
-						else if (typeof origP !== 'object' || origP === null) {
-							diffed[key] = [Op.Copy, destP];
+						else if (typeof aVal !== 'object' || aVal === null) {
+							delta[key] = [Op.Copy, bVal];
 						}
+
 						// Values are objects.
 						else {
-							const origPType = objToString.call(origP);
-							const destPType = objToString.call(destP);
+							const aValType = toString.call(aVal);
+							const bValType = toString.call(bVal);
 
 							// Values are objects of the same reported type.
-							if (origPType === destPType) {
+							if (aValType === bValType) {
 								// Supported natives and generic objects.
-								if (origP instanceof Date) {
-									if (Number(origP) !== Number(destP)) {
-										diffed[key] = [Op.Copy, clone(destP)];
+								if (aVal instanceof Date) {
+									if (aVal.getTime() !== bVal.getTime()) {
+										delta[key] = [Op.Copy, clone(bVal)];
 									}
 								}
-								else if (origP instanceof Map) {
-									diffed[key] = [Op.Copy, clone(destP)];
+								else if (aVal instanceof Map) {
+									delta[key] = [Op.Copy, clone(bVal)];
 								}
-								else if (origP instanceof RegExp) {
-									if (origP.toString() !== destP.toString()) {
-										diffed[key] = [Op.Copy, clone(destP)];
+								else if (aVal instanceof RegExp) {
+									if (aVal.toString() !== bVal.toString()) {
+										delta[key] = [Op.Copy, clone(bVal)];
 									}
 								}
-								else if (origP instanceof Set) {
-									diffed[key] = [Op.Copy, clone(destP)];
+								else if (aVal instanceof Set) {
+									delta[key] = [Op.Copy, clone(bVal)];
 								}
-								else if (
-									origP instanceof Array ||
-									origPType === '[object Object]'
-								) {
-									const delta = diff(origP, destP);
+								else if (aVal instanceof Array || aValType === '[object Object]') {
+									const subDelta = diff(aVal, bVal);
 
-									if (delta !== null) {
-										diffed[key] = delta;
+									if (subDelta !== null) {
+										delta[key] = subDelta;
 									}
 								}
 
@@ -115,95 +118,100 @@ var Diff = (() => { // eslint-disable-line no-unused-vars, no-var
 								else {
 									// We cannot know how to process these objects,
 									// so we simply accept them as-is.
-									diffed[key] = [Op.Copy, clone(destP)];
+									delta[key] = [Op.Copy, clone(bVal)];
 								}
 							}
+
 							// Values are objects of different reported types.
 							else {
-								diffed[key] = [Op.Copy, clone(destP)];
+								delta[key] = [Op.Copy, clone(bVal)];
 							}
 						}
 					}
+
 					// Values are of different types.
 					else {
-						diffed[key] = [
+						delta[key] = [
 							Op.Copy,
-							typeof destP !== 'object' || destP === null ? destP : clone(destP)
+							typeof bVal !== 'object' || bVal === null ? bVal : clone(bVal)
 						];
 					}
 				}
-				// Key only exists in orig.
-				else {
-					if (origIsArray && isNumeric(key)) {
-						const nKey = Number(key);
 
-						if (!aOpRef) {
-							aOpRef = '';
+				// Key exists only in `a`.
+				else {
+					if (aIsArray && isNumeric(key)) {
+						const idx = Number(key);
+
+						if (!aOpKey) {
+							aOpKey = '';
 
 							do {
-								aOpRef += '~';
-							} while (keys.some(keyIsAOpRef));
+								aOpKey += '~';
+							} while (keys.some(isAOpKey));
 
-							diffed[aOpRef] = [Op.SpliceArray, nKey, nKey];
+							delta[aOpKey] = [Op.SpliceArray, idx, idx];
 						}
 
-						if (nKey < diffed[aOpRef][1]) {
-							diffed[aOpRef][1] = nKey;
+						if (idx < delta[aOpKey][1]) {
+							delta[aOpKey][1] = idx;
 						}
 
-						if (nKey > diffed[aOpRef][2]) {
-							diffed[aOpRef][2] = nKey;
+						if (idx > delta[aOpKey][2]) {
+							delta[aOpKey][2] = idx;
 						}
 					}
 					else {
-						diffed[key] = Op.Delete;
+						delta[key] = Op.Delete;
 					}
 				}
 			}
-			// Key only exists in dest.
+
+			// Key exists only in `b`.
 			else {
-				diffed[key] = [
+				delta[key] = [
 					Op.Copy,
-					typeof destP !== 'object' || destP === null ? destP : clone(destP)
+					typeof bVal !== 'object' || bVal === null ? bVal : clone(bVal)
 				];
 			}
 		}
 		/* eslint-enable max-depth */
 
-		return Object.keys(diffed).length > 0 ? diffed : null;
+		return Object.keys(delta).length > 0 ? delta : null;
 	}
 
-	/*
-		Returns the object resulting from updating the orig object with the diffed object.
-	*/
-	function patch(orig, diffed) /* patched object */ {
-		const keys    = Object.keys(diffed || {});
+	// Returns the object resulting from updating the `orig` object with the
+	// `delta` object.
+	function patch(orig, delta) /* patched object */ {
+		const keys    = delta ? Object.keys(delta) : [];
 		const patched = clone(orig);
 
 		for (let i = 0, klen = keys.length; i < klen; ++i) {
-			const key     = keys[i];
-			const diffedP = diffed[key];
+			const key   = keys[i];
+			const value = delta[key];
 
-			if (diffedP === Op.Delete) {
+			if (value === Op.Delete) {
 				delete patched[key];
 			}
-			else if (diffedP instanceof Array) {
-				switch (diffedP[0]) {
-				case Op.SpliceArray:
-					patched.splice(diffedP[1], 1 + (diffedP[2] - diffedP[1]));
-					break;
+			else if (value instanceof Array) {
+				switch (value[0]) {
+					case Op.SpliceArray:
+						patched.splice(value[1], value[2] - value[1] + 1);
+						break;
 
-				case Op.Copy:
-					patched[key] = clone(diffedP[1]);
-					break;
+					case Op.Copy:
+						patched[key] = clone(value[1]);
+						break;
 
-				case Op.CopyDate:
-					patched[key] = new Date(diffedP[1]);
-					break;
+					/* legacy */
+					case Op.CopyDate:
+						patched[key] = new Date(value[1]);
+						break;
+					/* /legacy */
 				}
 			}
 			else {
-				patched[key] = patch(patched[key], diffedP);
+				patched[key] = patch(patched[key], value);
 			}
 		}
 
@@ -211,10 +219,11 @@ var Diff = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 
-	/*******************************************************************************************************************
-		Module Exports.
-	*******************************************************************************************************************/
-	return Object.freeze(Object.defineProperties({}, {
+	/*******************************************************************************
+		Object Exports.
+	*******************************************************************************/
+
+	return Object.preventExtensions(Object.create(null, {
 		Op    : { value : Op },
 		diff  : { value : diff },
 		patch : { value : patch }

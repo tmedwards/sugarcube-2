@@ -9,8 +9,6 @@
 /* global Config, Engine */
 
 var LoadScreen = (() => { // eslint-disable-line no-unused-vars, no-var
-	'use strict';
-
 	// Locks collection.
 	const _locks = new Set();
 
@@ -18,9 +16,10 @@ var LoadScreen = (() => { // eslint-disable-line no-unused-vars, no-var
 	let _autoId = 0;
 
 
-	/*******************************************************************************************************************
+	/*******************************************************************************
 		LoadScreen Functions.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	/*
 		Initialize management of the loading screen.
 	*/
@@ -136,10 +135,11 @@ var LoadScreen = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 
-	/*******************************************************************************************************************
-		Module Exports.
-	*******************************************************************************************************************/
-	return Object.freeze(Object.defineProperties({}, {
+	/*******************************************************************************
+		Object Exports.
+	*******************************************************************************/
+
+	return Object.preventExtensions(Object.create(null, {
 		init   : { value : loadScreenInit },
 		clear  : { value : loadScreenClear },
 		hide   : { value : loadScreenHide },

@@ -11,8 +11,6 @@
 */
 
 var DebugBar = (() => { // eslint-disable-line no-unused-vars, no-var
-	'use strict';
-
 	const _variableRe   = new RegExp(`^${Patterns.variable}$`);
 	const _numericKeyRe = /^\d+$/;
 	const _watchList    = [];
@@ -23,9 +21,10 @@ var DebugBar = (() => { // eslint-disable-line no-unused-vars, no-var
 	let _stowed      = true;
 
 
-	/*******************************************************************************************************************
+	/*******************************************************************************
 		Debug Bar Functions.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	function debugBarInit() {
 		if (DEBUG) { console.log('[DebugBar/debugBarInit()]'); }
 
@@ -244,9 +243,10 @@ var DebugBar = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 
-	/*******************************************************************************************************************
+	/*******************************************************************************
 		Utility Functions.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	function _debugBarStowNoUpdate() {
 		_$debugBar.css('right', `-${_$debugBar.outerWidth()}px`);
 	}
@@ -426,24 +426,24 @@ var DebugBar = (() => { // eslint-disable-line no-unused-vars, no-var
 			Handle the rest of the primitives and functions.
 		*/
 		switch (typeof value) {
-		case 'number':
-			if (Number.isNaN(value)) {
-				return 'NaN';
-			}
-			else if (!Number.isFinite(value)) {
-				return 'Infinity';
-			}
-			/* falls through */
-		case 'boolean':
-		case 'symbol':
-		case 'undefined':
-			return String(value);
+			case 'number':
+				if (Number.isNaN(value)) {
+					return 'NaN';
+				}
+				else if (!Number.isFinite(value)) {
+					return 'Infinity';
+				}
+				/* falls through */
+			case 'boolean':
+			case 'symbol':
+			case 'undefined':
+				return String(value);
 
-		case 'string':
-			return JSON.stringify(value);
+			case 'string':
+				return JSON.stringify(value);
 
-		case 'function':
-			return 'Function';
+			case 'function':
+				return 'Function';
 		}
 
 		const objType = getToStringTag(value);
@@ -518,10 +518,11 @@ var DebugBar = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 
-	/*******************************************************************************************************************
-		Module Exports.
-	*******************************************************************************************************************/
-	return Object.freeze(Object.defineProperties({}, {
+	/*******************************************************************************
+		Object Exports.
+	*******************************************************************************/
+
+	return Object.preventExtensions(Object.create(null, {
 		/*
 			Debug Bar Functions.
 		*/
@@ -536,7 +537,7 @@ var DebugBar = (() => { // eslint-disable-line no-unused-vars, no-var
 			Watch Functions.
 		*/
 		watch : {
-			value : Object.freeze(Object.defineProperties({}, {
+			value : Object.preventExtensions(Object.create(null, {
 				add       : { value : debugBarWatchAdd },
 				all       : { value : debugBarWatchAddAll },
 				clear     : { value : debugBarWatchClear },

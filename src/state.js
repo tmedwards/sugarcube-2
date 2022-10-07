@@ -9,8 +9,6 @@
 /* global Config, Diff, Engine, PRNGWrapper, Scripting, clone, session, storage */
 
 var State = (() => { // eslint-disable-line no-unused-vars, no-var
-	'use strict';
-
 	// History moment stack.
 	let _history = [];
 
@@ -30,9 +28,10 @@ var State = (() => { // eslint-disable-line no-unused-vars, no-var
 	let _tempVariables = {};
 
 
-	/*******************************************************************************************************************
+	/*******************************************************************************
 		State Functions.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	/*
 		Resets the story state.
 	*/
@@ -123,7 +122,7 @@ var State = (() => { // eslint-disable-line no-unused-vars, no-var
 		}
 
 		if (
-			   !stateObj.hasOwnProperty(noDelta ? 'history' : 'delta')
+			!stateObj.hasOwnProperty(noDelta ? 'history' : 'delta')
 			|| stateObj[noDelta ? 'history' : 'delta'].length === 0
 		) {
 			throw new Error('state object has no history or history is empty');
@@ -216,9 +215,10 @@ var State = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 
-	/*******************************************************************************************************************
+	/*******************************************************************************
 		Moment Functions.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	/*
 		Returns a new moment object created from the given passage title and variables object.
 	*/
@@ -271,24 +271,25 @@ var State = (() => { // eslint-disable-line no-unused-vars, no-var
 			Set the active moment.
 		*/
 		switch (typeof moment) {
-		case 'object':
-			_active = clone(moment);
-			break;
+			case 'object':
+				_active = clone(moment);
+				break;
 
-		case 'number':
-			if (historyIsEmpty()) {
-				throw new Error('moment activation attempted with index on empty history');
+			case 'number': {
+				if (historyIsEmpty()) {
+					throw new Error('moment activation attempted with index on empty history');
+				}
+
+				if (moment < 0 || moment >= historySize()) {
+					throw new RangeError(`moment activation attempted with out-of-bounds index; need [0, ${historySize() - 1}], got ${moment}`);
+				}
+
+				_active = clone(_history[moment]);
+				break;
 			}
 
-			if (moment < 0 || moment >= historySize()) {
-				throw new RangeError(`moment activation attempted with out-of-bounds index; need [0, ${historySize() - 1}], got ${moment}`);
-			}
-
-			_active = clone(_history[moment]);
-			break;
-
-		default:
-			throw new TypeError(`moment activation attempted with a "${typeof moment}"; must be an object or valid history stack index`);
+			default:
+				throw new TypeError(`moment activation attempted with a "${typeof moment}"; must be an object or valid history stack index`);
 		}
 
 		/*
@@ -321,9 +322,10 @@ var State = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 
-	/*******************************************************************************************************************
+	/*******************************************************************************
 		History Functions.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	/*
 		Returns the moment history.
 	*/
@@ -469,7 +471,7 @@ var State = (() => { // eslint-disable-line no-unused-vars, no-var
 		if (DEBUG) { console.log(`[State/historyGoTo(index: ${index})]`); }
 
 		if (
-			   index == null /* lazy equality for null */
+			index == null /* lazy equality for null */
 			|| index < 0
 			|| index >= historySize()
 			|| index === _activeIndex
@@ -541,9 +543,10 @@ var State = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 
-	/*******************************************************************************************************************
+	/*******************************************************************************
 		PRNG Functions.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	function prngInit(seed, useEntropy) {
 		if (DEBUG) { console.log(`[State/prngInit(seed: ${seed}, useEntropy: ${useEntropy})]`); }
 
@@ -583,9 +586,10 @@ var State = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 
-	/*******************************************************************************************************************
+	/*******************************************************************************
 		Temporary Variables Functions.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	/*
 		Clear the temporary variables.
 	*/
@@ -607,9 +611,10 @@ var State = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 
-	/*******************************************************************************************************************
+	/*******************************************************************************
 		Variable Chain Parsing Functions.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	/*
 		Returns the value of the given story/temporary variable.
 	*/
@@ -634,9 +639,10 @@ var State = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 
-	/*******************************************************************************************************************
+	/*******************************************************************************
 		Story Metadata Functions.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	const _METADATA_STORE = 'metadata';
 
 	function metadataClear() {
@@ -710,10 +716,11 @@ var State = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 
-	/*******************************************************************************************************************
-		Module Exports.
-	*******************************************************************************************************************/
-	return Object.freeze(Object.defineProperties({}, {
+	/*******************************************************************************
+		Object Exports.
+	*******************************************************************************/
+
+	return Object.preventExtensions(Object.create(null, {
 		/*
 			State Functions.
 		*/
@@ -757,7 +764,7 @@ var State = (() => { // eslint-disable-line no-unused-vars, no-var
 			PRNG Functions.
 		*/
 		prng : {
-			value : Object.freeze(Object.defineProperties({}, {
+			value : Object.preventExtensions(Object.create(null, {
 				init      : { value : prngInit },
 				isEnabled : { value : prngIsEnabled },
 				pull      : { get : prngPull },
@@ -782,7 +789,7 @@ var State = (() => { // eslint-disable-line no-unused-vars, no-var
 			Story Metadata Functions.
 		*/
 		metadata : {
-			value : Object.freeze(Object.defineProperties({}, {
+			value : Object.preventExtensions(Object.create(null, {
 				clear   : { value : metadataClear },
 				delete  : { value : metadataDelete },
 				entries : { value : metadataEntries },

@@ -11,8 +11,6 @@
 */
 
 var UIBar = (() => { // eslint-disable-line no-unused-vars, no-var
-	'use strict';
-
 	// UI bar element cache.
 	let _$uiBar = null;
 
@@ -358,7 +356,7 @@ var UIBar = (() => { // eslint-disable-line no-unused-vars, no-var
 		Object Exports.
 	*******************************************************************************/
 
-	return Object.freeze(Object.defineProperties({}, {
+	return Object.preventExtensions(Object.create(null, {
 		destroy  : { value : uiBarDestroy },
 		hide     : { value : uiBarHide },
 		init     : { value : uiBarInit },

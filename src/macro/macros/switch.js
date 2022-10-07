@@ -32,21 +32,25 @@ Macro.add('switch', {
 		// Sanity checks.
 		for (/* declared previously */ i = 1; i < len; ++i) {
 			switch (this.payload[i].name) {
-			case 'default':
-				if (this.payload[i].args.length > 0) {
-					return this.error(`<<default>> does not accept values, invalid: ${this.payload[i].args.raw}`);
+				case 'default': {
+					if (this.payload[i].args.length > 0) {
+						return this.error(`<<default>> does not accept values, invalid: ${this.payload[i].args.raw}`);
+					}
+
+					if (i + 1 !== len) {
+						return this.error('<<default>> must be the final case');
+					}
+
+					break;
 				}
 
-				if (i + 1 !== len) {
-					return this.error('<<default>> must be the final case');
-				}
-				break;
+				default: {
+					if (this.payload[i].args.length === 0) {
+						return this.error(`no value(s) specified for <<${this.payload[i].name}>> (#${i})`);
+					}
 
-			default:
-				if (this.payload[i].args.length === 0) {
-					return this.error(`no value(s) specified for <<${this.payload[i].name}>> (#${i})`);
+					break;
 				}
-				break;
 			}
 		}
 

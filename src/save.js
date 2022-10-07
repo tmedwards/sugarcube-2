@@ -9,8 +9,6 @@
 /* global Config, Dialog, Engine, L10n, State, Story, UI, createFilename, enumFrom, getTypeOf, storage */
 
 var Save = (() => { // eslint-disable-line no-unused-vars, no-var
-	'use strict';
-
 	// Save operation type object.
 	const Type = enumFrom({
 		Autosave  : 'autosave',
@@ -29,9 +27,10 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 	const _onSaveHandlers = new Set();
 
 
-	/*******************************************************************************************************************
+	/*******************************************************************************
 		Saves Functions.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	function savesInit() {
 		if (DEBUG) { console.log('[Save/savesInit()]'); }
 
@@ -135,9 +134,10 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 
-	/*******************************************************************************************************************
+	/*******************************************************************************
 		Autosave Functions.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	function autosaveOk() {
 		return storage.name !== 'cookie' && typeof Config.saves.autosave !== 'undefined';
 	}
@@ -194,9 +194,10 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 
-	/*******************************************************************************************************************
+	/*******************************************************************************
 		Slots Functions.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	function slotsOk() {
 		return storage.name !== 'cookie' && _slotsUBound !== -1;
 	}
@@ -319,9 +320,10 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 
-	/*******************************************************************************************************************
+	/*******************************************************************************
 		Disk Import/Export Functions.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	function exportToDisk(filename, metadata) {
 		if (typeof Config.saves.isAllowed === 'function' && !Config.saves.isAllowed()) {
 			if (Dialog.isOpen()) {
@@ -394,9 +396,10 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 
-	/*******************************************************************************************************************
+	/*******************************************************************************
 		Serialization Functions.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	function serialize(metadata) {
 		if (typeof Config.saves.isAllowed === 'function' && !Config.saves.isAllowed()) {
 			if (Dialog.isOpen()) {
@@ -434,9 +437,10 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 
-	/*******************************************************************************************************************
+	/*******************************************************************************
 		Event Functions.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	function onLoadAdd(handler) {
 		const valueType = getTypeOf(handler);
 
@@ -482,9 +486,10 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 
-	/*******************************************************************************************************************
+	/*******************************************************************************
 		Utility Functions.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	function _appendSlots(array, num) {
 		for (let i = 0; i < num; ++i) {
 			array.push(null);
@@ -525,7 +530,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 
 		/* eslint-disable no-param-reassign */
 		if (
-			   !saveObj.hasOwnProperty('state')
+			!saveObj.hasOwnProperty('state')
 			|| !saveObj.state.hasOwnProperty('delta')
 			|| !saveObj.state.hasOwnProperty('index')
 		) {
@@ -564,9 +569,9 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 		}
 
 		if (
-			   saveObj.state.hasOwnProperty('expired') && typeof saveObj.state.expired === 'number'
-			||  saveObj.state.hasOwnProperty('unique')
-			||  saveObj.state.hasOwnProperty('last')
+			saveObj.state.hasOwnProperty('expired') && typeof saveObj.state.expired === 'number'
+			|| saveObj.state.hasOwnProperty('unique')
+			|| saveObj.state.hasOwnProperty('last')
 		) {
 			if (saveObj.state.hasOwnProperty('expired') && typeof saveObj.state.expired === 'number') {
 				delete saveObj.state.expired;
@@ -658,10 +663,11 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 
-	/*******************************************************************************************************************
-		Module Exports.
-	*******************************************************************************************************************/
-	return Object.freeze(Object.defineProperties({}, {
+	/*******************************************************************************
+		Object Exports.
+	*******************************************************************************/
+
+	return Object.preventExtensions(Object.create(null, {
 		/*
 			Save Functions.
 		*/
@@ -674,7 +680,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			Autosave Functions.
 		*/
 		autosave : {
-			value : Object.freeze(Object.defineProperties({}, {
+			value : Object.preventExtensions(Object.create(null, {
 				ok     : { value : autosaveOk },
 				has    : { value : autosaveHas },
 				get    : { value : autosaveGet },
@@ -688,7 +694,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			Slots Functions.
 		*/
 		slots : {
-			value : Object.freeze(Object.defineProperties({}, {
+			value : Object.preventExtensions(Object.create(null, {
 				ok      : { value : slotsOk },
 				length  : { get : slotsLength },
 				isEmpty : { value : slotsIsEmpty },
@@ -717,7 +723,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			Event Functions.
 		*/
 		onLoad : {
-			value : Object.freeze(Object.defineProperties({}, {
+			value : Object.preventExtensions(Object.create(null, {
 				add    : { value : onLoadAdd },
 				clear  : { value : onLoadClear },
 				delete : { value : onLoadDelete },
@@ -725,7 +731,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			}))
 		},
 		onSave : {
-			value : Object.freeze(Object.defineProperties({}, {
+			value : Object.preventExtensions(Object.create(null, {
 				add    : { value : onSaveAdd },
 				clear  : { value : onSaveClear },
 				delete : { value : onSaveDelete },

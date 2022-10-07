@@ -9,8 +9,6 @@
 /* global Config, Passage, Wikifier, characterAndPosAt, createSlug, decodeEntities, sameValueZero */
 
 var Story = (() => { // eslint-disable-line no-unused-vars, no-var
-	'use strict';
-
 	// Map of normal passages.
 	const _passages = {};
 
@@ -36,9 +34,10 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 	let _domId = '';
 
 
-	/*******************************************************************************************************************
+	/*******************************************************************************
 		Story Functions.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	function storyLoad() {
 		if (DEBUG) { console.log('[Story/storyLoad()]'); }
 
@@ -313,9 +312,10 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 
-	/*******************************************************************************************************************
+	/*******************************************************************************
 		Passage Functions.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	function passagesAdd(passage) {
 		if (!(passage instanceof Passage)) {
 			throw new TypeError('Story.add passage parameter must be an instance of Passage');
@@ -336,22 +336,22 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 
 		switch (type) {
 		// Valid types.
-		case 'number':
-		case 'string':
-			return _passages.hasOwnProperty(String(title));
+			case 'number':
+			case 'string':
+				return _passages.hasOwnProperty(String(title));
 
-		// Invalid types.  We do the extra processing just to make a nicer error.
-		case 'undefined':
-			/* no-op */
-			break;
+			// Invalid types.  We do the extra processing just to make a nicer error.
+			case 'undefined':
+				/* no-op */
+				break;
 
-		case 'object':
-			type = title === null ? 'null' : 'an object';
-			break;
+			case 'object':
+				type = title === null ? 'null' : 'an object';
+				break;
 
-		default: // 'bigint', 'boolean', 'function', 'symbol'
-			type = `a ${type}`;
-			break;
+			default: // 'bigint', 'boolean', 'function', 'symbol'
+				type = `a ${type}`;
+				break;
 		}
 
 		throw new TypeError(`Story.has title parameter cannot be ${type}`);
@@ -361,28 +361,25 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 		let type = typeof title;
 
 		switch (type) {
-		// Valid types.
-		case 'number':
-		case 'string':
-		/* eslint-disable indent */
-			{
+			// Valid types.
+			case 'number':
+			case 'string': {
 				const id = String(title);
 				return _passages.hasOwnProperty(id) ? _passages[id] : new Passage(id || '(unknown)');
 			}
-		/* eslint-enable indent */
 
-		// Invalid types.  We do the extra processing just to make a nicer error.
-		case 'undefined':
-			/* no-op */
-			break;
+			// Invalid types.  We do the extra processing just to make a nicer error.
+			case 'undefined':
+				/* no-op */
+				break;
 
-		case 'object':
-			type = title === null ? 'null' : 'an object';
-			break;
+			case 'object':
+				type = title === null ? 'null' : 'an object';
+				break;
 
-		default: // 'bigint', 'boolean', 'function', 'symbol'
-			type = `a ${type}`;
-			break;
+			default: // 'bigint', 'boolean', 'function', 'symbol'
+				type = `a ${type}`;
+				break;
 		}
 
 		throw new TypeError(`Story.get title parameter cannot be ${type}`);
@@ -481,10 +478,11 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 
-	/*******************************************************************************************************************
-		Module Exports.
-	*******************************************************************************************************************/
-	return Object.freeze(Object.defineProperties({}, {
+	/*******************************************************************************
+		Object Exports.
+	*******************************************************************************/
+
+	return Object.preventExtensions(Object.create(null, {
 		// Story Functions.
 		load  : { value : storyLoad },
 		title : { get : storyTitle },

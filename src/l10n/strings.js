@@ -6,7 +6,7 @@
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* eslint-disable max-len, prefer-template */
+/* eslint-disable max-len */
 
 /*
 	ATTENTION TRANSLATORS

@@ -28,35 +28,37 @@ Macro.add('if', {
 			const ifAssignRe = this.self.ifAssignRe;
 
 			for (/* declared previously */ i = 0; i < len; ++i) {
-				/* eslint-disable prefer-template */
 				switch (this.payload[i].name) {
-				case 'else':
-					if (this.payload[i].args.raw.length > 0) {
-						if (elseifWsRe.test(this.payload[i].args.raw)) {
-							return this.error(`whitespace is not allowed between the "else" and "if" in <<elseif>> clause${i > 0 ? ' (#' + i + ')' : ''}`);
+					case 'else': {
+						if (this.payload[i].args.raw.length > 0) {
+							if (elseifWsRe.test(this.payload[i].args.raw)) {
+								return this.error(`whitespace is not allowed between the "else" and "if" in <<elseif>> clause${i > 0 ? ` (#${i})` : ''}`);
+							}
+
+							return this.error(`<<else>> does not accept a conditional expression (perhaps you meant to use <<elseif>>), invalid: ${this.payload[i].args.raw}`);
 						}
 
-						return this.error(`<<else>> does not accept a conditional expression (perhaps you meant to use <<elseif>>), invalid: ${this.payload[i].args.raw}`);
+						if (i + 1 !== len) {
+							return this.error('<<else>> must be the final clause');
+						}
+
+						break;
 					}
 
-					if (i + 1 !== len) {
-						return this.error('<<else>> must be the final clause');
-					}
-					break;
-
-				default:
-					if (this.payload[i].args.full.length === 0) {
-						return this.error(`no conditional expression specified for <<${this.payload[i].name}>> clause${i > 0 ? ' (#' + i + ')' : ''}`);
-					}
-					else if (
+					default: {
+						if (this.payload[i].args.full.length === 0) {
+							return this.error(`no conditional expression specified for <<${this.payload[i].name}>> clause${i > 0 ? ` (#${i})` : ''}`);
+						}
+						else if (
 							Config.macros.ifAssignmentError
-						&& ifAssignRe.test(this.payload[i].args.full)
-					) {
-						return this.error(`assignment operator found within <<${this.payload[i].name}>> clause${i > 0 ? ' (#' + i + ')' : ''} (perhaps you meant to use an equality operator: ==, ===, eq, is), invalid: ${this.payload[i].args.raw}`);
+							&& ifAssignRe.test(this.payload[i].args.full)
+						) {
+							return this.error(`assignment operator found within <<${this.payload[i].name}>> clause${i > 0 ? ` (#${i})` : ''} (perhaps you meant to use an equality operator: ==, ===, eq, is), invalid: ${this.payload[i].args.raw}`);
+						}
+
+						break;
 					}
-					break;
 				}
-				/* eslint-enable prefer-template */
 			}
 
 			const evalJavaScript = Scripting.evalJavaScript;
@@ -112,7 +114,7 @@ Macro.add('if', {
 			}
 		}
 		catch (ex) {
-			return this.error(`bad conditional expression in <<${i === 0 ? 'if' : 'elseif'}>> clause${i > 0 ? ' (#' + i + ')' : ''}: ${typeof ex === 'object' ? ex.message : ex}`); // eslint-disable-line prefer-template
+			return this.error(`bad conditional expression in <<${i === 0 ? 'if' : 'elseif'}>> clause${i > 0 ? ` (#${i})` : ''}: ${typeof ex === 'object' ? ex.message : ex}`);
 		}
 	}
 });

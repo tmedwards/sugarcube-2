@@ -13,11 +13,10 @@
 /* eslint "no-param-reassign": [ 2, { "props" : false } ] */
 
 (() => {
-	'use strict';
-
-	/*******************************************************************************************************************
+	/*******************************************************************************
 		Utility Functions.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	function _verbatimTagHandler(w) {
 		this.lookahead.lastIndex = w.matchStart;
 
@@ -33,9 +32,10 @@
 	}
 
 
-	/*******************************************************************************************************************
+	/*******************************************************************************
 		Parsers.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	Wikifier.Parser.add({
 		name       : 'quoteByBlock',
 		profiles   : ['block'],
@@ -307,44 +307,50 @@
 				const hasArgs   = tagArgs.trim() !== '';
 
 				switch (tagName) {
-				case openTag:
-					++opened;
-					break;
+					case openTag:
+						++opened;
+						break;
 
-				case closeAlt:
-				case closeTag:
-					if (hasArgs) {
-						// Skip over malformed closing tags and throw.
-						w.nextMatch = tagBegin + 2 + tagName.length;
-						throw new Error(`malformed closing tag: "${tagSource}"`);
-					}
-					--opened;
-					break;
+					case closeAlt:
+					case closeTag: {
+						if (hasArgs) {
+							// Skip over malformed closing tags and throw.
+							w.nextMatch = tagBegin + 2 + tagName.length;
+							throw new Error(`malformed closing tag: "${tagSource}"`);
+						}
 
-				default:
-					if (hasArgs && (tagName.startsWith('/') || tagName.startsWith('end'))) {
-						// Skip over malformed alien closing tags.
-						this.lookahead.lastIndex = w.nextMatch = tagBegin + 2 + tagName.length;
-						continue;
+						--opened;
+
+						break;
 					}
-					if (opened === 1 && bodyTags) {
-						for (let i = 0, iend = bodyTags.length; i < iend; ++i) {
-							if (tagName === bodyTags[i]) {
-								payload.push({
-									source    : curSource,
-									name      : curTag,
-									arguments : curArgument,
-									args      : this.createArgs(curArgument, this.skipArgs(macro, curTag)),
-									contents  : w.source.slice(contentStart, tagBegin)
-								});
-								curSource    = tagSource;
-								curTag       = tagName;
-								curArgument  = tagArgs;
-								contentStart = tagEnd;
+
+					default: {
+						if (hasArgs && (tagName.startsWith('/') || tagName.startsWith('end'))) {
+							// Skip over malformed alien closing tags.
+							this.lookahead.lastIndex = w.nextMatch = tagBegin + 2 + tagName.length;
+							continue;
+						}
+
+						if (opened === 1 && bodyTags) {
+							for (let i = 0, iend = bodyTags.length; i < iend; ++i) {
+								if (tagName === bodyTags[i]) {
+									payload.push({
+										source    : curSource,
+										name      : curTag,
+										arguments : curArgument,
+										args      : this.createArgs(curArgument, this.skipArgs(macro, curTag)),
+										contents  : w.source.slice(contentStart, tagBegin)
+									});
+									curSource    = tagSource;
+									curTag       = tagName;
+									curArgument  = tagArgs;
+									contentStart = tagEnd;
+								}
 							}
 						}
+
+						break;
 					}
-					break;
 				}
 
 				if (opened === 0) {
@@ -453,16 +459,11 @@
 
 				// determine what the next state is
 				switch (lexer.next()) {
-				case '`':
-					return lexExpression;
-				case '"':
-					return lexDoubleQuote;
-				case "'":
-					return lexSingleQuote;
-				case '[':
-					return lexSquareBracket;
-				default:
-					return lexBareword;
+					case '`': return lexExpression;
+					case '"': return lexDoubleQuote;
+					case "'": return lexSingleQuote;
+					case '[': return lexSquareBracket;
+					default:  return lexBareword;
 				}
 			}
 
@@ -572,96 +573,101 @@
 					let arg = item.text;
 
 					switch (item.type) {
-					case Item.Error:
-						throw new Error(`unable to parse macro argument "${arg}": ${item.message}`);
+						case Item.Error:
+							throw new Error(`unable to parse macro argument "${arg}": ${item.message}`);
 
-					case Item.Bareword:
-						// A variable, so substitute its value.
-						if (varTest.test(arg)) {
-							arg = State.getVar(arg);
+						case Item.Bareword: {
+							// A variable, so substitute its value.
+							if (varTest.test(arg)) {
+								arg = State.getVar(arg);
+							}
+
+							// Property access on the settings or setup objects, so try to evaluate it.
+							else if (/^(?:settings|setup)[.[]/.test(arg)) {
+								try {
+									arg = Scripting.evalTwineScript(arg);
+								}
+								catch (ex) {
+									throw new Error(`unable to parse macro argument "${arg}": ${ex.message}`);
+								}
+							}
+
+							// Null literal, so convert it into null.
+							else if (arg === 'null') {
+								arg = null;
+							}
+
+							// Undefined literal, so convert it into undefined.
+							else if (arg === 'undefined') {
+								arg = undefined;
+							}
+
+							// Boolean true literal, so convert it into true.
+							else if (arg === 'true') {
+								arg = true;
+							}
+
+							// Boolean false literal, so convert it into false.
+							else if (arg === 'false') {
+								arg = false;
+							}
+
+							// NaN literal, so convert it into NaN.
+							else if (arg === 'NaN') {
+								arg = NaN;
+							}
+
+							// Attempt to convert it into a number, in case it's a numeric literal.
+							else {
+								const argAsNum = Number(arg);
+
+								if (!Number.isNaN(argAsNum)) {
+									arg = argAsNum;
+								}
+							}
+
+							break;
 						}
 
-						// Property access on the settings or setup objects, so try to evaluate it.
-						else if (/^(?:settings|setup)[.[]/.test(arg)) {
+						case Item.Expression: {
+							arg = arg.slice(1, -1).trim(); // remove the backquotes and trim the expression
+
+							// Empty backquotes.
+							if (arg === '') {
+								arg = undefined;
+							}
+
+							// Evaluate the expression.
+							else {
+								try {
+									/*
+										The enclosing parenthesis here are necessary to force a code string
+										consisting solely of an object literal to be evaluated as such, rather
+										than as a code block.
+									*/
+									arg = Scripting.evalTwineScript(`(${arg})`);
+								}
+								catch (ex) {
+									throw new Error(`unable to parse macro argument expression "${arg}": ${ex.message}`);
+								}
+							}
+
+							break;
+						}
+
+						case Item.String: {
+							// Evaluate the string to handle escaped characters.
 							try {
-								arg = Scripting.evalTwineScript(arg);
+								arg = Scripting.evalJavaScript(arg);
 							}
 							catch (ex) {
-								throw new Error(`unable to parse macro argument "${arg}": ${ex.message}`);
+								throw new Error(`unable to parse macro argument string "${arg}": ${ex.message}`);
 							}
+
+							break;
 						}
 
-						// Null literal, so convert it into null.
-						else if (arg === 'null') {
-							arg = null;
-						}
-
-						// Undefined literal, so convert it into undefined.
-						else if (arg === 'undefined') {
-							arg = undefined;
-						}
-
-						// Boolean true literal, so convert it into true.
-						else if (arg === 'true') {
-							arg = true;
-						}
-
-						// Boolean false literal, so convert it into false.
-						else if (arg === 'false') {
-							arg = false;
-						}
-
-						// NaN literal, so convert it into NaN.
-						else if (arg === 'NaN') {
-							arg = NaN;
-						}
-
-						// Attempt to convert it into a number, in case it's a numeric literal.
-						else {
-							const argAsNum = Number(arg);
-
-							if (!Number.isNaN(argAsNum)) {
-								arg = argAsNum;
-							}
-						}
-						break;
-
-					case Item.Expression:
-						arg = arg.slice(1, -1).trim(); // remove the backquotes and trim the expression
-
-						// Empty backquotes.
-						if (arg === '') {
-							arg = undefined;
-						}
-
-						// Evaluate the expression.
-						else {
-							try {
-								/*
-									The enclosing parenthesis here are necessary to force a code string
-									consisting solely of an object literal to be evaluated as such, rather
-									than as a code block.
-								*/
-								arg = Scripting.evalTwineScript(`(${arg})`);
-							}
-							catch (ex) {
-								throw new Error(`unable to parse macro argument expression "${arg}": ${ex.message}`);
-							}
-						}
-						break;
-
-					case Item.String:
-						// Evaluate the string to handle escaped characters.
-						try {
-							arg = Scripting.evalJavaScript(arg);
-						}
-						catch (ex) {
-							throw new Error(`unable to parse macro argument string "${arg}": ${ex.message}`);
-						}
-						break;
-
-					case Item.SquareBracket:
-						{
+						case Item.SquareBracket: {
 							const markup = Wikifier.helpers.parseSquareBracketedMarkup({
 								source     : arg,
 								matchStart : 0
@@ -725,8 +731,9 @@
 									? Wikifier.helpers.createShadowSetterCallback(Scripting.parse(markup.setter))
 									: null;
 							}
+
+							break;
 						}
-						break;
 					}
 
 					args.push(arg);
@@ -890,32 +897,31 @@
 
 		handler(w) {
 			switch (w.matchText) {
-			case "''":
-				w.subWikify(jQuery(document.createElement('strong')).appendTo(w.output).get(0), "''");
-				break;
+				case "''":
+					w.subWikify(jQuery(document.createElement('strong')).appendTo(w.output).get(0), "''");
+					break;
 
-			case '//':
-				w.subWikify(jQuery(document.createElement('em')).appendTo(w.output).get(0), '//');
-				break;
+				case '//':
+					w.subWikify(jQuery(document.createElement('em')).appendTo(w.output).get(0), '//');
+					break;
 
-			case '__':
-				w.subWikify(jQuery(document.createElement('u')).appendTo(w.output).get(0), '__');
-				break;
+				case '__':
+					w.subWikify(jQuery(document.createElement('u')).appendTo(w.output).get(0), '__');
+					break;
 
-			case '^^':
-				w.subWikify(jQuery(document.createElement('sup')).appendTo(w.output).get(0), '\\^\\^');
-				break;
+				case '^^':
+					w.subWikify(jQuery(document.createElement('sup')).appendTo(w.output).get(0), '\\^\\^');
+					break;
 
-			case '~~':
-				w.subWikify(jQuery(document.createElement('sub')).appendTo(w.output).get(0), '~~');
-				break;
+				case '~~':
+					w.subWikify(jQuery(document.createElement('sub')).appendTo(w.output).get(0), '~~');
+					break;
 
-			case '==':
-				w.subWikify(jQuery(document.createElement('s')).appendTo(w.output).get(0), '==');
-				break;
+				case '==':
+					w.subWikify(jQuery(document.createElement('s')).appendTo(w.output).get(0), '==');
+					break;
 
-			case '{{{':
-				{
+				case '{{{': {
 					const lookahead = /\{\{\{((?:.|\n)*?)\}\}\}/gm;
 
 					lookahead.lastIndex = w.matchStart;
@@ -928,8 +934,9 @@
 							.appendTo(w.output);
 						w.nextMatch = lookahead.lastIndex;
 					}
+
+					break;
 				}
-				break;
 			}
 		}
 	});
@@ -1077,21 +1084,23 @@
 			}
 
 			switch (typeof template) {
-			case 'function':
-				try {
-					result = stringFrom(template.call({ name }));
+				case 'function': {
+					try {
+						result = stringFrom(template.call({ name }));
+					}
+					catch (ex) {
+						return appendError(
+							w.output,
+							`cannot execute function template ?${name}: ${ex.message}`,
+							w.source.slice(w.matchStart, w.nextMatch)
+						);
+					}
+					break;
 				}
-				catch (ex) {
-					return appendError(
-						w.output,
-						`cannot execute function template ?${name}: ${ex.message}`,
-						w.source.slice(w.matchStart, w.nextMatch)
-					);
-				}
-				break;
-			case 'string':
-				result = template;
-				break;
+
+				case 'string':
+					result = template;
+					break;
 			}
 
 			if (result === null) {
@@ -1859,26 +1868,29 @@
 						let twineTag;
 
 						switch (tagName) {
-						case 'audio':
-						case 'video':
-							twineTag = `Twine.${tagName}`;
-							break;
-						case 'img':
-							twineTag = 'Twine.image';
-							break;
-						case 'track':
-							twineTag = 'Twine.vtt';
-							break;
-						case 'source':
-							{
+							case 'audio':
+							case 'video':
+								twineTag = `Twine.${tagName}`;
+								break;
+
+							case 'img':
+								twineTag = 'Twine.image';
+								break;
+
+							case 'track':
+								twineTag = 'Twine.vtt';
+								break;
+
+							case 'source': {
 								const $parent = $(el).closest('audio,picture,video');
 
 								if ($parent.length) {
 									parentName = $parent.get(0).tagName.toLowerCase();
 									twineTag = `Twine.${parentName === 'picture' ? 'image' : parentName}`;
 								}
+
+								break;
 							}
-							break;
 						}
 
 						if (passage.tags.includes(twineTag)) {

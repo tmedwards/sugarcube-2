@@ -9,8 +9,6 @@
 /* global Save, getTypeOf */
 
 var Config = (() => { // eslint-disable-line no-unused-vars, no-var
-	'use strict';
-
 	// General settings.
 	let _debug                 = false;
 	let _addVisitedLinkClass   = false;
@@ -237,7 +235,7 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 					const valueType = getTypeOf(value);
 
 					if (
-						   valueType !== 'string'
+						valueType !== 'string'
 						&& (valueType !== 'number' || !Number.isSafeInteger(value) || value < 0)
 					) {
 						throw new TypeError(`Config.passages.transitionOut must be a string, non-negative integer, or null/undefined (received: ${valueType})`);
@@ -279,7 +277,7 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 					// /legacy
 
 					if (
-						   valueType !== 'boolean'
+						valueType !== 'boolean'
 						&& (valueType !== 'Array' || !value.every(item => typeof item === 'string'))
 						&& valueType !== 'function'
 					) {
@@ -353,7 +351,7 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 				const valueType = getTypeOf(value);
 
 				if (
-					   valueType !== 'boolean'
+					valueType !== 'boolean'
 					&& (valueType !== 'number' || !Number.isSafeInteger(value) || value < 0)
 				) {
 					throw new TypeError(`Config.ui.stowBarInitially must be a boolean or non-negative integer (received: ${valueType})`);

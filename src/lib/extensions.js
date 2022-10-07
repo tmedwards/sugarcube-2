@@ -14,11 +14,10 @@
 	NOTE: The ES5 and ES6 polyfills come from the vendored `es5-shim.js` and `es6-shim.js` libraries.
 */
 (() => {
-	'use strict';
-
-	/*******************************************************************************************************************
+	/*******************************************************************************
 		Utility Functions.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	/*
 		Trims whitespace from either the start or end of the given string.
 	*/
@@ -35,14 +34,14 @@
 			}
 
 			switch (where) {
-			case 'start':
-				return startWSRe.test(val) ? val.replace(startWSRe, '') : val;
+				case 'start':
+					return startWSRe.test(val) ? val.replace(startWSRe, '') : val;
 
-			case 'end':
-				return endWSRe.test(val) ? val.replace(endWSRe, '') : val;
+				case 'end':
+					return endWSRe.test(val) ? val.replace(endWSRe, '') : val;
 
-			default:
-				throw new Error(`_trimString called with incorrect where parameter value: "${where}"`);
+				default:
+					throw new Error(`_trimString called with incorrect where parameter value: "${where}"`);
 			}
 		}
 
@@ -82,9 +81,10 @@
 	}
 
 
-	/*******************************************************************************************************************
+	/*******************************************************************************
 		Polyfills.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	/*
 		[ES2019] Returns a new array consisting of the source array with all sub-array elements
 		concatenated into it recursively up to the given depth.
@@ -433,14 +433,13 @@
 	JavaScript Extensions.
 */
 (() => {
-	'use strict';
-
 	const _nativeMathRandom = Math.random;
 
 
-	/*******************************************************************************************************************
+	/*******************************************************************************
 		Utility Functions.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	/*
 		Returns a pseudo-random whole number (integer) within the given bounds.
 	*/
@@ -449,16 +448,16 @@
 		let max;
 
 		switch (arguments.length) {
-		case 0:
-			throw new Error('_random called with insufficient parameters');
-		case 1:
-			min = 0;
-			max = arguments[0];
-			break;
-		default:
-			min = arguments[0];
-			max = arguments[1];
-			break;
+			case 0:
+				throw new Error('_random called with insufficient parameters');
+			case 1:
+				min = 0;
+				max = arguments[0];
+				break;
+			default:
+				min = arguments[0];
+				max = arguments[1];
+				break;
 		}
 
 		if (min > max) {
@@ -477,18 +476,18 @@
 		let max;
 
 		switch (boundsArgs.length) {
-		case 1:
-			min = 0;
-			max = length - 1;
-			break;
-		case 2:
-			min = 0;
-			max = Math.trunc(boundsArgs[1]);
-			break;
-		default:
-			min = Math.trunc(boundsArgs[1]);
-			max = Math.trunc(boundsArgs[2]);
-			break;
+			case 1:
+				min = 0;
+				max = length - 1;
+				break;
+			case 2:
+				min = 0;
+				max = Math.trunc(boundsArgs[1]);
+				break;
+			default:
+				min = Math.trunc(boundsArgs[1]);
+				max = Math.trunc(boundsArgs[2]);
+				break;
 		}
 
 		if (Number.isNaN(min)) {
@@ -598,9 +597,10 @@
 	}
 
 
-	/*******************************************************************************************************************
+	/*******************************************************************************
 		Extensions, General.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	/*
 		Randomly selects an element from the given array, or array-like object, and returns it.
 		[DEPRECATED] Optionally, from within the given bounds.
@@ -611,7 +611,7 @@
 
 		value(array /* DEPRECATED: [, [min ,] max] */) {
 			if (
-				   typeof array !== 'object'
+				typeof array !== 'object'
 				|| array === null
 				|| !Object.prototype.hasOwnProperty.call(array, 'length')
 			) {
@@ -1414,9 +1414,9 @@
 					}
 
 					switch (typeof retval) {
-					case 'string': /* no-op */ break;
-					case 'object': retval = JSON.stringify(retval); break;
-					default:       retval = String(retval); break;
+						case 'string': /* no-op */ break;
+						case 'object': retval = JSON.stringify(retval); break;
+						default:       retval = String(retval); break;
 					}
 
 					return padString(retval, !align ? 0 : Number.parseInt(align, 10), ' ');
@@ -1641,9 +1641,10 @@
 	});
 
 
-	/*******************************************************************************************************************
+	/*******************************************************************************
 		Extensions, JSON.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	/*
 		Define `toJSON()` methods on each prototype we wish to support.
 	*/
@@ -1766,32 +1767,32 @@
 				*/
 				if (Array.isArray(value) && value.length === 2) {
 					switch (value[0]) {
-					case '(revive:set)':
-						value = new Set(value[1]);
-						break;
-					case '(revive:map)':
-						value = new Map(value[1]);
-						break;
-					case '(revive:date)':
-						value = new Date(value[1]);
-						break;
-					case '(revive:eval)':
-						try {
-							/* eslint-disable no-eval */
-							// For post-v2.9.0 `JSON.reviveWrapper()`.
-							if (Array.isArray(value[1])) {
-								const $ReviveData$ = value[1][1]; // eslint-disable-line no-unused-vars
-								value = eval(value[1][0]);
-							}
+						case '(revive:set)':
+							value = new Set(value[1]);
+							break;
+						case '(revive:map)':
+							value = new Map(value[1]);
+							break;
+						case '(revive:date)':
+							value = new Date(value[1]);
+							break;
+						case '(revive:eval)':
+							try {
+								/* eslint-disable no-eval */
+								// For post-v2.9.0 `JSON.reviveWrapper()`.
+								if (Array.isArray(value[1])) {
+									const $ReviveData$ = value[1][1]; // eslint-disable-line no-unused-vars
+									value = eval(value[1][0]);
+								}
 
-							// For regular expressions, functions, and pre-v2.9.0 `JSON.reviveWrapper()`.
-							else {
-								value = eval(value[1]);
+								// For regular expressions, functions, and pre-v2.9.0 `JSON.reviveWrapper()`.
+								else {
+									value = eval(value[1]);
+								}
+								/* eslint-enable no-eval */
 							}
-							/* eslint-enable no-eval */
-						}
-						catch (ex) { /* no-op; although, perhaps, it would be better to throw an error here */ }
-						break;
+							catch (ex) { /* no-op; although, perhaps, it would be better to throw an error here */ }
+							break;
 					}
 				}
 
@@ -1820,9 +1821,10 @@
 	});
 
 
-	/*******************************************************************************************************************
+	/*******************************************************************************
 		Extensions, Deprecated.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	/*
 		[DEPRECATED] Returns whether the given element was found within the array.
 	*/

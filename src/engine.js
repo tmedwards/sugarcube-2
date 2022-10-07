@@ -12,8 +12,6 @@
 */
 
 var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
-	'use strict';
-
 	// Engine state types object.
 	const States = enumFrom({
 		Init      : 'init',
@@ -38,9 +36,10 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 	let _updating = null;
 
 
-	/*******************************************************************************************************************
+	/*******************************************************************************
 		Engine Functions.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	/*
 		Initialize the core story elements and perform some bookkeeping.
 	*/
@@ -287,27 +286,27 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 			let loadStart = true;
 
 			switch (typeof Config.saves.autoload) {
-			case 'boolean':
-				if (Config.saves.autoload && Save.autosave.ok() && Save.autosave.has()) {
-					if (DEBUG) { console.log(`\tattempting autoload: "${Save.autosave.get().title}"`); }
+				case 'boolean':
+					if (Config.saves.autoload && Save.autosave.ok() && Save.autosave.has()) {
+						if (DEBUG) { console.log(`\tattempting autoload: "${Save.autosave.get().title}"`); }
 
-					loadStart = !Save.autosave.load();
-				}
-				break;
-			case 'string':
-				if (Config.saves.autoload === 'prompt' && Save.autosave.ok() && Save.autosave.has()) {
-					loadStart = false;
-					UI.buildAutoload();
-					Dialog.open();
-				}
-				break;
-			case 'function':
-				if (Save.autosave.ok() && Save.autosave.has() && !!Config.saves.autoload()) {
-					if (DEBUG) { console.log(`\tattempting autoload: "${Save.autosave.get().title}"`); }
+						loadStart = !Save.autosave.load();
+					}
+					break;
+				case 'string':
+					if (Config.saves.autoload === 'prompt' && Save.autosave.ok() && Save.autosave.has()) {
+						loadStart = false;
+						UI.buildAutoload();
+						Dialog.open();
+					}
+					break;
+				case 'function':
+					if (Save.autosave.ok() && Save.autosave.has() && !!Config.saves.autoload()) {
+						if (DEBUG) { console.log(`\tattempting autoload: "${Save.autosave.get().title}"`); }
 
-					loadStart = !Save.autosave.load();
-				}
-				break;
+						loadStart = !Save.autosave.load();
+					}
+					break;
 			}
 
 			if (loadStart) {
@@ -597,7 +596,7 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 		// Empty the passage container.
 		if (containerEl.hasChildNodes()) {
 			if (
-				   typeof Config.passages.transitionOut === 'number'
+				typeof Config.passages.transitionOut === 'number'
 				|| typeof Config.passages.transitionOut === 'string'
 				&& Config.passages.transitionOut !== ''
 				&& Has.transitionEndEvent
@@ -743,21 +742,21 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 
 		// Handle autosaves.
 		switch (typeof Config.saves.autosave) {
-		case 'boolean':
-			if (Config.saves.autosave) {
-				Save.autosave.save();
-			}
-			break;
-		case 'object':
-			if (passage.tags.some(tag => Config.saves.autosave.includes(tag))) {
-				Save.autosave.save();
-			}
-			break;
-		case 'function':
-			if (Config.saves.autosave()) {
-				Save.autosave.save();
-			}
-			break;
+			case 'boolean':
+				if (Config.saves.autosave) {
+					Save.autosave.save();
+				}
+				break;
+			case 'object':
+				if (passage.tags.some(tag => Config.saves.autosave.includes(tag))) {
+					Save.autosave.save();
+				}
+				break;
+			case 'function':
+				if (Config.saves.autosave()) {
+					Save.autosave.save();
+				}
+				break;
 		}
 
 		// Execute post-play events.
@@ -777,9 +776,10 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 
-	/*******************************************************************************************************************
+	/*******************************************************************************
 		Legacy Functions.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	/*
 		[DEPRECATED] Play the given passage, optionally without altering the history.
 	*/
@@ -790,27 +790,28 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 
 		// Process the option parameter.
 		switch (option) {
-		case undefined:
-			/* no-op */
-			break;
+			case undefined:
+				/* no-op */
+				break;
 
-		case 'replace':
-		case 'back':
-			noHistory = true;
-			break;
+			case 'replace':
+			case 'back':
+				noHistory = true;
+				break;
 
-		default:
-			throw new Error(`Engine.display option parameter called with obsolete value "${option}"; please notify the developer`);
+			default:
+				throw new Error(`Engine.display option parameter called with obsolete value "${option}"; please notify the developer`);
 		}
 
 		enginePlay(title, noHistory);
 	}
 
 
-	/*******************************************************************************************************************
-		Module Exports.
-	*******************************************************************************************************************/
-	return Object.freeze(Object.defineProperties({}, {
+	/*******************************************************************************
+		Object Exports.
+	*******************************************************************************/
+
+	return Object.preventExtensions(Object.create(null, {
 		/*
 			Constants.
 		*/

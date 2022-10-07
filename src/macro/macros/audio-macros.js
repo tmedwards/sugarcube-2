@@ -50,141 +50,154 @@
 					let raw;
 
 					switch (arg) {
-					case 'load':
-					case 'pause':
-					case 'play':
-					case 'stop':
-					case 'unload':
-						if (action) {
-							return this.error(errorOnePlaybackAction(arg, action));
+						case 'load':
+						case 'pause':
+						case 'play':
+						case 'stop':
+						case 'unload': {
+							if (action) {
+								return this.error(errorOnePlaybackAction(arg, action));
+							}
+
+							action = arg;
+							break;
 						}
 
-						action = arg;
-						break;
+						case 'fadein': {
+							if (action) {
+								return this.error(errorOnePlaybackAction(arg, action));
+							}
 
-					case 'fadein':
-						if (action) {
-							return this.error(errorOnePlaybackAction(arg, action));
+							action = 'fade';
+							fadeTo = 1;
+							break;
 						}
 
-						action = 'fade';
-						fadeTo = 1;
-						break;
+						case 'fadeout': {
+							if (action) {
+								return this.error(errorOnePlaybackAction(arg, action));
+							}
 
-					case 'fadeout':
-						if (action) {
-							return this.error(errorOnePlaybackAction(arg, action));
+							action = 'fade';
+							fadeTo = 0;
+							break;
 						}
 
-						action = 'fade';
-						fadeTo = 0;
-						break;
+						case 'fadeto': {
+							if (action) {
+								return this.error(errorOnePlaybackAction(arg, action));
+							}
 
-					case 'fadeto':
-						if (action) {
-							return this.error(errorOnePlaybackAction(arg, action));
+							if (args.length === 0) {
+								return this.error('fadeto missing required level value');
+							}
+
+							action = 'fade';
+							raw = args.shift();
+							fadeTo = Number.parseFloat(raw);
+
+							if (Number.isNaN(fadeTo) || !Number.isFinite(fadeTo)) {
+								return this.error(`cannot parse fadeto: ${raw}`);
+							}
+
+							break;
 						}
 
-						if (args.length === 0) {
-							return this.error('fadeto missing required level value');
+						case 'fadeoverto': {
+							if (action) {
+								return this.error(errorOnePlaybackAction(arg, action));
+							}
+
+							if (args.length < 2) {
+								const errors = [];
+								if (args.length < 1) { errors.push('seconds'); }
+								if (args.length < 2) { errors.push('level'); }
+								return this.error(`fadeoverto missing required ${errors.join(' and ')} value${errors.length > 1 ? 's' : ''}`);
+							}
+
+							action = 'fade';
+							raw = args.shift();
+							fadeOver = Number.parseFloat(raw);
+
+							if (Number.isNaN(fadeOver) || !Number.isFinite(fadeOver)) {
+								return this.error(`cannot parse fadeoverto: ${raw}`);
+							}
+
+							raw = args.shift();
+							fadeTo = Number.parseFloat(raw);
+
+							if (Number.isNaN(fadeTo) || !Number.isFinite(fadeTo)) {
+								return this.error(`cannot parse fadeoverto: ${raw}`);
+							}
+
+							break;
 						}
 
-						action = 'fade';
-						raw = args.shift();
-						fadeTo = Number.parseFloat(raw);
+						case 'volume': {
+							if (args.length === 0) {
+								return this.error('volume missing required level value');
+							}
 
-						if (Number.isNaN(fadeTo) || !Number.isFinite(fadeTo)) {
-							return this.error(`cannot parse fadeto: ${raw}`);
-						}
-						break;
+							raw = args.shift();
+							volume = Number.parseFloat(raw);
 
-					case 'fadeoverto':
-						if (action) {
-							return this.error(errorOnePlaybackAction(arg, action));
-						}
+							if (Number.isNaN(volume) || !Number.isFinite(volume)) {
+								return this.error(`cannot parse volume: ${raw}`);
+							}
 
-						if (args.length < 2) {
-							const errors = [];
-							if (args.length < 1) { errors.push('seconds'); }
-							if (args.length < 2) { errors.push('level'); }
-							return this.error(`fadeoverto missing required ${errors.join(' and ')} value${errors.length > 1 ? 's' : ''}`);
+							break;
 						}
 
-						action = 'fade';
-						raw = args.shift();
-						fadeOver = Number.parseFloat(raw);
+						case 'mute':
+						case 'unmute':
+							mute = arg === 'mute';
+							break;
 
-						if (Number.isNaN(fadeOver) || !Number.isFinite(fadeOver)) {
-							return this.error(`cannot parse fadeoverto: ${raw}`);
+						case 'time': {
+							if (args.length === 0) {
+								return this.error('time missing required seconds value');
+							}
+
+							raw = args.shift();
+							time = Number.parseFloat(raw);
+
+							if (Number.isNaN(time) || !Number.isFinite(time)) {
+								return this.error(`cannot parse time: ${raw}`);
+							}
+
+							break;
 						}
 
-						raw = args.shift();
-						fadeTo = Number.parseFloat(raw);
+						case 'loop':
+						case 'unloop':
+							loop = arg === 'loop';
+							break;
 
-						if (Number.isNaN(fadeTo) || !Number.isFinite(fadeTo)) {
-							return this.error(`cannot parse fadeoverto: ${raw}`);
-						}
-						break;
+						case 'goto': {
+							if (args.length === 0) {
+								return this.error('goto missing required passage title');
+							}
 
-					case 'volume':
-						if (args.length === 0) {
-							return this.error('volume missing required level value');
-						}
+							raw = args.shift();
 
-						raw = args.shift();
-						volume = Number.parseFloat(raw);
+							if (typeof raw === 'object') {
+								// Argument was in wiki link syntax.
+								passage = raw.link;
+							}
+							else {
+								// Argument was simply the passage name.
+								passage = raw;
+							}
 
-						if (Number.isNaN(volume) || !Number.isFinite(volume)) {
-							return this.error(`cannot parse volume: ${raw}`);
-						}
-						break;
+							if (!Story.has(passage)) {
+								return this.error(`passage "${passage}" does not exist`);
+							}
 
-					case 'mute':
-					case 'unmute':
-						mute = arg === 'mute';
-						break;
-
-					case 'time':
-						if (args.length === 0) {
-							return this.error('time missing required seconds value');
+							break;
 						}
 
-						raw = args.shift();
-						time = Number.parseFloat(raw);
-
-						if (Number.isNaN(time) || !Number.isFinite(time)) {
-							return this.error(`cannot parse time: ${raw}`);
-						}
-						break;
-
-					case 'loop':
-					case 'unloop':
-						loop = arg === 'loop';
-						break;
-
-					case 'goto':
-						if (args.length === 0) {
-							return this.error('goto missing required passage title');
-						}
-
-						raw = args.shift();
-
-						if (typeof raw === 'object') {
-							// Argument was in wiki link syntax.
-							passage = raw.link;
-						}
-						else {
-							// Argument was simply the passage name.
-							passage = raw;
-						}
-
-						if (!Story.has(passage)) {
-							return this.error(`passage "${passage}" does not exist`);
-						}
-						break;
-
-					default:
-						return this.error(`unknown action: ${arg}`);
+						default:
+							return this.error(`unknown action: ${arg}`);
 					}
 				}
 
@@ -216,29 +229,29 @@
 					}
 
 					switch (action) {
-					case 'fade':
-						selected.fade(fadeOver, fadeTo);
-						break;
+						case 'fade':
+							selected.fade(fadeOver, fadeTo);
+							break;
 
-					case 'load':
-						selected.load();
-						break;
+						case 'load':
+							selected.load();
+							break;
 
-					case 'pause':
-						selected.pause();
-						break;
+						case 'pause':
+							selected.pause();
+							break;
 
-					case 'play':
-						selected.playWhenAllowed();
-						break;
+						case 'play':
+							selected.playWhenAllowed();
+							break;
 
-					case 'stop':
-						selected.stop();
-						break;
+						case 'stop':
+							selected.stop();
+							break;
 
-					case 'unload':
-						selected.unload();
-						break;
+						case 'unload':
+							selected.unload();
+							break;
 					}
 
 					// Custom debug view setup.
@@ -418,46 +431,50 @@
 						let parsed;
 
 						switch (arg) {
-						case 'copy': // [DEPRECATED]
-						case 'own':
-							trackObj.own = true;
-							break;
+							case 'copy': /* [DEPRECATED] */
+							case 'own':
+								trackObj.own = true;
+								break;
 
-						case 'rate':
-							// if (args.length === 0) {
-							// 	return this.error('rate missing required speed value');
-							// }
-							//
-							// raw = args.shift();
-							// parsed = Number.parseFloat(raw);
-							//
-							// if (Number.isNaN(parsed) || !Number.isFinite(parsed)) {
-							// 	return this.error(`cannot parse rate: ${raw}`);
-							// }
-							//
-							// trackObj.rate = parsed;
-							if (args.length > 0) {
-								args.shift();
-							}
-							break;
+							case 'rate': {
+								// if (args.length === 0) {
+								// 	return this.error('rate missing required speed value');
+								// }
+								//
+								// raw = args.shift();
+								// parsed = Number.parseFloat(raw);
+								//
+								// if (Number.isNaN(parsed) || !Number.isFinite(parsed)) {
+								// 	return this.error(`cannot parse rate: ${raw}`);
+								// }
+								//
+								// trackObj.rate = parsed;
 
-						case 'volume':
-							if (args.length === 0) {
-								return this.error('volume missing required level value');
+								if (args.length > 0) {
+									args.shift();
+								}
+
+								break;
 							}
 
-							raw = args.shift();
-							parsed = Number.parseFloat(raw);
+							case 'volume': {
+								if (args.length === 0) {
+									return this.error('volume missing required level value');
+								}
 
-							if (Number.isNaN(parsed) || !Number.isFinite(parsed)) {
-								return this.error(`cannot parse volume: ${raw}`);
+								raw = args.shift();
+								parsed = Number.parseFloat(raw);
+
+								if (Number.isNaN(parsed) || !Number.isFinite(parsed)) {
+									return this.error(`cannot parse volume: ${raw}`);
+								}
+
+								trackObj.volume = parsed;
+								break;
 							}
 
-							trackObj.volume = parsed;
-							break;
-
-						default:
-							return this.error(`unknown action: ${arg}`);
+							default:
+								return this.error(`unknown action: ${arg}`);
 						}
 					}
 
@@ -519,41 +536,45 @@
 					let raw;
 
 					switch (arg) {
-					case 'load':
-					case 'stop':
-					case 'unload':
-						if (action) {
-							return this.error(errorOnePlaybackAction(arg, action));
+						case 'load':
+						case 'stop':
+						case 'unload': {
+							if (action) {
+								return this.error(errorOnePlaybackAction(arg, action));
+							}
+
+							action = arg;
+
+							break;
 						}
 
-						action = arg;
-						break;
+						case 'mute':
+						case 'unmute':
+							mute = arg === 'mute';
+							break;
 
-					case 'mute':
-					case 'unmute':
-						mute = arg === 'mute';
-						break;
+						case 'muteonhide':
+						case 'nomuteonhide':
+							muteOnHide = arg === 'muteonhide';
+							break;
 
-					case 'muteonhide':
-					case 'nomuteonhide':
-						muteOnHide = arg === 'muteonhide';
-						break;
+						case 'volume': {
+							if (args.length === 0) {
+								return this.error('volume missing required level value');
+							}
 
-					case 'volume':
-						if (args.length === 0) {
-							return this.error('volume missing required level value');
+							raw = args.shift();
+							volume = Number.parseFloat(raw);
+
+							if (Number.isNaN(volume) || !Number.isFinite(volume)) {
+								return this.error(`cannot parse volume: ${raw}`);
+							}
+
+							break;
 						}
 
-						raw = args.shift();
-						volume = Number.parseFloat(raw);
-
-						if (Number.isNaN(volume) || !Number.isFinite(volume)) {
-							return this.error(`cannot parse volume: ${raw}`);
-						}
-						break;
-
-					default:
-						return this.error(`unknown action: ${arg}`);
+						default:
+							return this.error(`unknown action: ${arg}`);
 					}
 				}
 
@@ -571,17 +592,17 @@
 					}
 
 					switch (action) {
-					case 'load':
-						SimpleAudio.load();
-						break;
+						case 'load':
+							SimpleAudio.load();
+							break;
 
-					case 'stop':
-						SimpleAudio.stop();
-						break;
+						case 'stop':
+							SimpleAudio.stop();
+							break;
 
-					case 'unload':
-						SimpleAudio.unload();
-						break;
+						case 'unload':
+							SimpleAudio.unload();
+							break;
 					}
 
 					// Custom debug view setup.
@@ -652,113 +673,122 @@
 					let raw;
 
 					switch (arg) {
-					case 'load':
-					case 'pause':
-					case 'play':
-					case 'skip':
-					case 'stop':
-					case 'unload':
-						if (action) {
-							return this.error(errorOnePlaybackAction(arg, action));
+						case 'load':
+						case 'pause':
+						case 'play':
+						case 'skip':
+						case 'stop':
+						case 'unload': {
+							if (action) {
+								return this.error(errorOnePlaybackAction(arg, action));
+							}
+
+							action = arg;
+							break;
 						}
 
-						action = arg;
-						break;
+						case 'fadein': {
+							if (action) {
+								return this.error(errorOnePlaybackAction(arg, action));
+							}
 
-					case 'fadein':
-						if (action) {
-							return this.error(errorOnePlaybackAction(arg, action));
+							action = 'fade';
+							fadeTo = 1;
+							break;
 						}
 
-						action = 'fade';
-						fadeTo = 1;
-						break;
+						case 'fadeout': {
+							if (action) {
+								return this.error(errorOnePlaybackAction(arg, action));
+							}
 
-					case 'fadeout':
-						if (action) {
-							return this.error(errorOnePlaybackAction(arg, action));
+							action = 'fade';
+							fadeTo = 0;
+							break;
 						}
 
-						action = 'fade';
-						fadeTo = 0;
-						break;
+						case 'fadeto': {
+							if (action) {
+								return this.error(errorOnePlaybackAction(arg, action));
+							}
 
-					case 'fadeto':
-						if (action) {
-							return this.error(errorOnePlaybackAction(arg, action));
+							if (args.length === 0) {
+								return this.error('fadeto missing required level value');
+							}
+
+							action = 'fade';
+							raw = args.shift();
+							fadeTo = Number.parseFloat(raw);
+
+							if (Number.isNaN(fadeTo) || !Number.isFinite(fadeTo)) {
+								return this.error(`cannot parse fadeto: ${raw}`);
+							}
+
+							break;
 						}
 
-						if (args.length === 0) {
-							return this.error('fadeto missing required level value');
+						case 'fadeoverto': {
+							if (action) {
+								return this.error(errorOnePlaybackAction(arg, action));
+							}
+
+							if (args.length < 2) {
+								const errors = [];
+								if (args.length < 1) { errors.push('seconds'); }
+								if (args.length < 2) { errors.push('level'); }
+								return this.error(`fadeoverto missing required ${errors.join(' and ')} value${errors.length > 1 ? 's' : ''}`);
+							}
+
+							action = 'fade';
+							raw = args.shift();
+							fadeOver = Number.parseFloat(raw);
+
+							if (Number.isNaN(fadeOver) || !Number.isFinite(fadeOver)) {
+								return this.error(`cannot parse fadeoverto: ${raw}`);
+							}
+
+							raw = args.shift();
+							fadeTo = Number.parseFloat(raw);
+
+							if (Number.isNaN(fadeTo) || !Number.isFinite(fadeTo)) {
+								return this.error(`cannot parse fadeoverto: ${raw}`);
+							}
+
+							break;
 						}
 
-						action = 'fade';
-						raw = args.shift();
-						fadeTo = Number.parseFloat(raw);
+						case 'volume': {
+							if (args.length === 0) {
+								return this.error('volume missing required level value');
+							}
 
-						if (Number.isNaN(fadeTo) || !Number.isFinite(fadeTo)) {
-							return this.error(`cannot parse fadeto: ${raw}`);
-						}
-						break;
+							raw = args.shift();
+							volume = Number.parseFloat(raw);
 
-					case 'fadeoverto':
-						if (action) {
-							return this.error(errorOnePlaybackAction(arg, action));
-						}
+							if (Number.isNaN(volume) || !Number.isFinite(volume)) {
+								return this.error(`cannot parse volume: ${raw}`);
+							}
 
-						if (args.length < 2) {
-							const errors = [];
-							if (args.length < 1) { errors.push('seconds'); }
-							if (args.length < 2) { errors.push('level'); }
-							return this.error(`fadeoverto missing required ${errors.join(' and ')} value${errors.length > 1 ? 's' : ''}`);
+							break;
 						}
 
-						action = 'fade';
-						raw = args.shift();
-						fadeOver = Number.parseFloat(raw);
+						case 'mute':
+						case 'unmute':
+							mute = arg === 'mute';
+							break;
 
-						if (Number.isNaN(fadeOver) || !Number.isFinite(fadeOver)) {
-							return this.error(`cannot parse fadeoverto: ${raw}`);
-						}
+						case 'loop':
+						case 'unloop':
+							loop = arg === 'loop';
+							break;
 
-						raw = args.shift();
-						fadeTo = Number.parseFloat(raw);
+						case 'shuffle':
+						case 'unshuffle':
+							shuffle = arg === 'shuffle';
+							break;
 
-						if (Number.isNaN(fadeTo) || !Number.isFinite(fadeTo)) {
-							return this.error(`cannot parse fadeoverto: ${raw}`);
-						}
-						break;
-
-					case 'volume':
-						if (args.length === 0) {
-							return this.error('volume missing required level value');
-						}
-
-						raw = args.shift();
-						volume = Number.parseFloat(raw);
-
-						if (Number.isNaN(volume) || !Number.isFinite(volume)) {
-							return this.error(`cannot parse volume: ${raw}`);
-						}
-						break;
-
-					case 'mute':
-					case 'unmute':
-						mute = arg === 'mute';
-						break;
-
-					case 'loop':
-					case 'unloop':
-						loop = arg === 'loop';
-						break;
-
-					case 'shuffle':
-					case 'unshuffle':
-						shuffle = arg === 'shuffle';
-						break;
-
-					default:
-						return this.error(`unknown action: ${arg}`);
+						default:
+							return this.error(`unknown action: ${arg}`);
 					}
 				}
 
@@ -780,33 +810,33 @@
 					}
 
 					switch (action) {
-					case 'fade':
-						list.fade(fadeOver, fadeTo);
-						break;
+						case 'fade':
+							list.fade(fadeOver, fadeTo);
+							break;
 
-					case 'load':
-						list.load();
-						break;
+						case 'load':
+							list.load();
+							break;
 
-					case 'pause':
-						list.pause();
-						break;
+						case 'pause':
+							list.pause();
+							break;
 
-					case 'play':
-						list.playWhenAllowed();
-						break;
+						case 'play':
+							list.playWhenAllowed();
+							break;
 
-					case 'skip':
-						list.skip();
-						break;
+						case 'skip':
+							list.skip();
+							break;
 
-					case 'stop':
-						list.stop();
-						break;
+						case 'stop':
+							list.stop();
+							break;
 
-					case 'unload':
-						list.unload();
-						break;
+						case 'unload':
+							list.unload();
+							break;
 					}
 
 					// Custom debug view setup.

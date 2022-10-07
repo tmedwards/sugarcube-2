@@ -11,8 +11,6 @@
 	Outliner API static object.
 */
 var Outliner = (() => { // eslint-disable-line no-unused-vars, no-var
-	'use strict';
-
 	// Cache of the outline patching `<style>` element.
 	let styleEl = null;
 
@@ -46,7 +44,7 @@ var Outliner = (() => { // eslint-disable-line no-unused-vars, no-var
 			ev => {
 				if (ev.type !== lastEvent) {
 					lastEvent = ev.type;
-		
+
 					if (ev.type === 'keydown') {
 						outlinerShow();
 					}
@@ -96,7 +94,6 @@ var Outliner = (() => { // eslint-disable-line no-unused-vars, no-var
 	*******************************************************************************/
 
 	return Object.preventExtensions(Object.create(null, {
-		// Functions.
 		init : { value : outlinerInit },
 		hide : { value : outlinerHide },
 		show : { value : outlinerShow }

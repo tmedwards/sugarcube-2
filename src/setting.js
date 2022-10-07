@@ -9,8 +9,6 @@
 /* global enumFrom, settings:true, storage */
 
 var Setting = (() => { // eslint-disable-line no-unused-vars, no-var
-	'use strict';
-
 	// Setting control types object.
 	const Types = enumFrom({
 		Header : 0,
@@ -23,9 +21,10 @@ var Setting = (() => { // eslint-disable-line no-unused-vars, no-var
 	const _definitions = [];
 
 
-	/*******************************************************************************************************************
+	/*******************************************************************************
 		Settings Functions.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	function settingsInit() {
 		if (DEBUG) { console.log('[Setting/settingsInit()]'); }
 
@@ -125,9 +124,10 @@ var Setting = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 
-	/*******************************************************************************************************************
+	/*******************************************************************************
 		Definitions Functions.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	function definitionsForEach(callback, thisArg) {
 		_definitions.forEach(callback, thisArg);
 	}
@@ -186,129 +186,131 @@ var Setting = (() => { // eslint-disable-line no-unused-vars, no-var
 		}
 
 		switch (type) {
-		case Types.Header:
-			break;
+			case Types.Header:
+				break;
 
-		case Types.Toggle:
-			definition.default = !!def.default;
-			break;
+			case Types.Toggle:
+				definition.default = !!def.default;
+				break;
 
-		case Types.List:
-			if (!def.hasOwnProperty('list')) {
-				throw new Error('no list specified');
-			}
-			else if (!Array.isArray(def.list)) {
-				throw new TypeError('list must be an array');
-			}
-			else if (def.list.length === 0) {
-				throw new Error('list must not be empty');
-			}
-
-			definition.list = Object.freeze(def.list);
-
-			if (def.default == null) { // lazy equality for null
-				definition.default = def.list[0];
-			}
-			else {
-				const defaultIndex = def.list.indexOf(def.default);
-
-				if (defaultIndex === -1) {
-					throw new Error('list does not contain default');
+			case Types.List: {
+				if (!def.hasOwnProperty('list')) {
+					throw new Error('no list specified');
+				}
+				else if (!Array.isArray(def.list)) {
+					throw new TypeError('list must be an array');
+				}
+				else if (def.list.length === 0) {
+					throw new Error('list must not be empty');
 				}
 
-				definition.default = def.list[defaultIndex];
-			}
-			break;
+				definition.list = Object.freeze(def.list);
 
-		case Types.Range:
-			if (!def.hasOwnProperty('min')) {
-				throw new Error('no min specified');
-			}
-			else if (
-				   typeof def.min !== 'number'
-				|| Number.isNaN(def.min)
-				|| !Number.isFinite(def.min)
-			) {
-				throw new TypeError('min must be a finite number');
-			}
+				if (def.default == null) { // lazy equality for null
+					definition.default = def.list[0];
+				}
+				else {
+					const defaultIndex = def.list.indexOf(def.default);
 
-			if (!def.hasOwnProperty('max')) {
-				throw new Error('no max specified');
-			}
-			else if (
-				   typeof def.max !== 'number'
-				|| Number.isNaN(def.max)
-				|| !Number.isFinite(def.max)
-			) {
-				throw new TypeError('max must be a finite number');
-			}
-
-			if (!def.hasOwnProperty('step')) {
-				throw new Error('no step specified');
-			}
-			else if (
-				   typeof def.step !== 'number'
-				|| Number.isNaN(def.step)
-				|| !Number.isFinite(def.step)
-				|| def.step <= 0
-			) {
-				throw new TypeError('step must be a finite number greater than zero');
-			}
-			else {
-				// Determine how many fractional digits we need to be concerned with based on the step value.
-				const fracDigits = (() => {
-					const str = String(def.step);
-					const pos = str.lastIndexOf('.');
-					return pos === -1 ? 0 : str.length - pos - 1;
-				})();
-
-				// Set up a function to validate a given value against the step value.
-				function stepValidate(value) {
-					if (fracDigits > 0) {
-						const ma = Number(`${def.min}e${fracDigits}`);
-						const sa = Number(`${def.step}e${fracDigits}`);
-						const va = Number(`${value}e${fracDigits}`) - ma;
-						return Number(`${va - va % sa + ma}e-${fracDigits}`);
+					if (defaultIndex === -1) {
+						throw new Error('list does not contain default');
 					}
 
-					const va = value - def.min;
-					return va - va % def.step + def.min;
+					definition.default = def.list[defaultIndex];
 				}
-
-				// Sanity check the max value against the step value.
-				if (stepValidate(def.max) !== def.max) {
-					throw new RangeError(`max (${def.max}) is not a multiple of the step (${def.step}) plus the min (${def.min})`);
-				}
+				break;
 			}
 
-			definition.max = def.max;
-			definition.min = def.min;
-			definition.step = def.step;
-
-			if (def.default == null) { // lazy equality for null
-				definition.default = def.max;
-			}
-			else {
-				if (
-					   typeof def.default !== 'number'
-					|| Number.isNaN(def.default)
-					|| !Number.isFinite(def.default)
+			case Types.Range: {
+				if (!def.hasOwnProperty('min')) {
+					throw new Error('no min specified');
+				}
+				else if (
+					typeof def.min !== 'number'
+					|| Number.isNaN(def.min)
+					|| !Number.isFinite(def.min)
 				) {
-					throw new TypeError('default must be a finite number');
-				}
-				else if (def.default < def.min) {
-					throw new RangeError(`default (${def.default}) is less than min (${def.min})`);
-				}
-				else if (def.default > def.max) {
-					throw new RangeError(`default (${def.default}) is greater than max (${def.max})`);
+					throw new TypeError('min must be a finite number');
 				}
 
-				definition.default = def.default;
+				if (!def.hasOwnProperty('max')) {
+					throw new Error('no max specified');
+				}
+				else if (
+					typeof def.max !== 'number'
+					|| Number.isNaN(def.max)
+					|| !Number.isFinite(def.max)
+				) {
+					throw new TypeError('max must be a finite number');
+				}
+
+				if (!def.hasOwnProperty('step')) {
+					throw new Error('no step specified');
+				}
+				else if (
+					typeof def.step !== 'number'
+					|| Number.isNaN(def.step)
+					|| !Number.isFinite(def.step)
+					|| def.step <= 0
+				) {
+					throw new TypeError('step must be a finite number greater than zero');
+				}
+				else {
+					// Determine how many fractional digits we need to be concerned with based on the step value.
+					const fracDigits = (() => {
+						const str = String(def.step);
+						const pos = str.lastIndexOf('.');
+						return pos === -1 ? 0 : str.length - pos - 1;
+					})();
+
+					// Set up a function to validate a given value against the step value.
+					function stepValidate(value) {
+						if (fracDigits > 0) {
+							const ma = Number(`${def.min}e${fracDigits}`);
+							const sa = Number(`${def.step}e${fracDigits}`);
+							const va = Number(`${value}e${fracDigits}`) - ma;
+							return Number(`${va - va % sa + ma}e-${fracDigits}`);
+						}
+
+						const va = value - def.min;
+						return va - va % def.step + def.min;
+					}
+
+					// Sanity check the max value against the step value.
+					if (stepValidate(def.max) !== def.max) {
+						throw new RangeError(`max (${def.max}) is not a multiple of the step (${def.step}) plus the min (${def.min})`);
+					}
+				}
+
+				definition.max = def.max;
+				definition.min = def.min;
+				definition.step = def.step;
+
+				if (def.default == null) { // lazy equality for null
+					definition.default = def.max;
+				}
+				else {
+					if (
+						typeof def.default !== 'number'
+						|| Number.isNaN(def.default)
+						|| !Number.isFinite(def.default)
+					) {
+						throw new TypeError('default must be a finite number');
+					}
+					else if (def.default < def.min) {
+						throw new RangeError(`default (${def.default}) is less than min (${def.min})`);
+					}
+					else if (def.default > def.max) {
+						throw new RangeError(`default (${def.default}) is greater than max (${def.max})`);
+					}
+
+					definition.default = def.default;
+				}
+				break;
 			}
-			break;
 
-		default:
-			throw new Error(`unknown Setting type: ${type}`);
+			default:
+				throw new Error(`unknown Setting type: ${type}`);
 		}
 
 		if (typeof def.onInit === 'function') {
@@ -365,10 +367,11 @@ var Setting = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 
-	/*******************************************************************************************************************
-		Module Exports.
-	*******************************************************************************************************************/
-	return Object.freeze(Object.defineProperties({}, {
+	/*******************************************************************************
+		Object Exports.
+	*******************************************************************************/
+
+	return Object.preventExtensions(Object.create(null, {
 		/*
 			Enumerations.
 		*/

@@ -225,35 +225,40 @@ Macro.add('for', {
 		let list;
 
 		switch (typeof value) {
-		case 'string':
-			list = [];
-			for (let i = 0; i < value.length; /* empty */) {
-				const obj = characterAndPosAt(value, i);
-				list.push([i, obj.char]);
-				i = 1 + obj.end;
-			}
-			break;
+			case 'string': {
+				list = [];
 
-		case 'object':
-			if (Array.isArray(value)) {
-				list = value.map((val, i) => [i, val]);
-			}
-			else if (value instanceof Set) {
-				list = [...value].map((val, i) => [i, val]);
-			}
-			else if (value instanceof Map) {
-				list = [...value.entries()];
-			}
-			else if (getToStringTag(value) === 'Object') {
-				list = Object.keys(value).map(key => [key, value[key]]);
-			}
-			else {
-				throw new Error(`unsupported range expression type: ${getToStringTag(value)}`);
-			}
-			break;
+				for (let i = 0; i < value.length; /* empty */) {
+					const obj = characterAndPosAt(value, i);
+					list.push([i, obj.char]);
+					i = 1 + obj.end;
+				}
 
-		default:
-			throw new Error(`unsupported range expression type: ${typeof value}`);
+				break;
+			}
+
+			case 'object': {
+				if (Array.isArray(value)) {
+					list = value.map((val, i) => [i, val]);
+				}
+				else if (value instanceof Set) {
+					list = [...value].map((val, i) => [i, val]);
+				}
+				else if (value instanceof Map) {
+					list = [...value.entries()];
+				}
+				else if (getToStringTag(value) === 'Object') {
+					list = Object.keys(value).map(key => [key, value[key]]);
+				}
+				else {
+					throw new Error(`unsupported range expression type: ${getToStringTag(value)}`);
+				}
+
+				break;
+			}
+
+			default:
+				throw new Error(`unsupported range expression type: ${typeof value}`);
 		}
 
 		return list;

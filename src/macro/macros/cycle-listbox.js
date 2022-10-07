@@ -50,9 +50,9 @@ Macro.add(['cycle', 'listbox'], {
 			const arg = this.args[i];
 
 			switch (arg) {
-			case 'once':       config.once = true; break;
-			case 'autoselect': config.autoselect = true; break;
-			default:           return this.error(`unknown argument: ${arg}`);
+				case 'once':       config.once = true; break;
+				case 'autoselect': config.autoselect = true; break;
+				default:           return this.error(`unknown argument: ${arg}`);
 			}
 		}
 
@@ -76,27 +76,32 @@ Macro.add(['cycle', 'listbox'], {
 				let isSelected = false;
 
 				switch (payload.args.length) {
-				case 1:
-					option.value = payload.args[0];
-					break;
-
-				case 2:
-					if (payload.args[1] === 'selected') {
+					case 1: {
 						option.value = payload.args[0];
-						isSelected = true;
+						break;
 					}
-					else {
+
+					case 2: {
+						if (payload.args[1] === 'selected') {
+							option.value = payload.args[0];
+							isSelected = true;
+						}
+						else {
+							option.value = payload.args[1];
+						}
+
+						break;
+					}
+
+					default: {
 						option.value = payload.args[1];
-					}
-					break;
 
-				default:
-					option.value = payload.args[1];
+						if (payload.args[2] === 'selected') {
+							isSelected = true;
+						}
 
-					if (payload.args[2] === 'selected') {
-						isSelected = true;
+						break;
 					}
-					break;
 				}
 
 				options.push(option);

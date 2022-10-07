@@ -9,8 +9,6 @@
 /* global Patterns, Scripting, macros */
 
 var Macro = (() => { // eslint-disable-line no-unused-vars, no-var
-	'use strict';
-
 	// Macro definitions.
 	const _macros = {};
 
@@ -21,9 +19,10 @@ var Macro = (() => { // eslint-disable-line no-unused-vars, no-var
 	const _validNameRe = new RegExp(`^(?:${Patterns.macroName})$`);
 
 
-	/*******************************************************************************************************************
+	/*******************************************************************************
 		Macros Functions.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	function macrosAdd(name, def) {
 		if (Array.isArray(name)) {
 			name.forEach(name => macrosAdd(name, def));
@@ -156,9 +155,10 @@ var Macro = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 
-	/*******************************************************************************************************************
+	/*******************************************************************************
 		Tags Functions.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	function tagsRegister(parent, bodyTags) {
 		if (!parent) {
 			throw new Error('no parent specified');
@@ -214,10 +214,11 @@ var Macro = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 
-	/*******************************************************************************************************************
-		Module Exports.
-	*******************************************************************************************************************/
-	return Object.freeze(Object.defineProperties({}, {
+	/*******************************************************************************
+		Object Exports.
+	*******************************************************************************/
+
+	return Object.preventExtensions(Object.create(null, {
 		/*
 			Macro Functions.
 		*/
@@ -232,7 +233,7 @@ var Macro = (() => { // eslint-disable-line no-unused-vars, no-var
 			Tags Functions.
 		*/
 		tags : {
-			value : Object.freeze(Object.defineProperties({}, {
+			value : Object.preventExtensions(Object.create(null, {
 				register   : { value : tagsRegister },
 				unregister : { value : tagsUnregister },
 				has        : { value : tagsHas },

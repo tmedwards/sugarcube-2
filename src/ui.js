@@ -12,11 +12,10 @@
 */
 
 var UI = (() => { // eslint-disable-line no-unused-vars, no-var
-	'use strict';
-
-	/*******************************************************************************************************************
+	/*******************************************************************************
 		UI Functions, Core.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	function uiAssembleLinkList(passage, listEl) {
 		let list = listEl;
 
@@ -71,9 +70,10 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 
-	/*******************************************************************************************************************
+	/*******************************************************************************
 		UI Functions, Built-ins.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	function uiOpenAlert(message, /* options, closeFn */ ...args) {
 		jQuery(Dialog.setup(L10n.get('alertTitle'), 'alert'))
 			.append(
@@ -532,110 +532,116 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 			}
 
 			switch (control.type) {
-			case Setting.Types.Toggle:
-				$control = jQuery(document.createElement('button'));
+				case Setting.Types.Toggle: {
+					$control = jQuery(document.createElement('button'));
 
-				if (settings[name]) {
-					$control
-						.addClass('enabled')
-						.text(L10n.get('settingsOn'));
-				}
-				else {
-					$control
-						.text(L10n.get('settingsOff'));
-				}
-
-				$control.ariaClick(function () {
 					if (settings[name]) {
-						jQuery(this)
-							.removeClass('enabled')
-							.text(L10n.get('settingsOff'));
-						settings[name] = false;
-					}
-					else {
-						jQuery(this)
+						$control
 							.addClass('enabled')
 							.text(L10n.get('settingsOn'));
-						settings[name] = true;
+					}
+					else {
+						$control
+							.text(L10n.get('settingsOff'));
 					}
 
-					Setting.save();
+					$control.ariaClick(function () {
+						if (settings[name]) {
+							jQuery(this)
+								.removeClass('enabled')
+								.text(L10n.get('settingsOff'));
+							settings[name] = false;
+						}
+						else {
+							jQuery(this)
+								.addClass('enabled')
+								.text(L10n.get('settingsOn'));
+							settings[name] = true;
+						}
 
-					if (control.hasOwnProperty('onChange')) {
-						control.onChange.call({
-							name,
-							value   : settings[name],
-							default : control.default
-						});
-					}
-				});
-				break;
+						Setting.save();
 
-			case Setting.Types.List:
-				$control = jQuery(document.createElement('select'));
+						if (control.hasOwnProperty('onChange')) {
+							control.onChange.call({
+								name,
+								value   : settings[name],
+								default : control.default
+							});
+						}
+					});
 
-				for (let i = 0, iend = control.list.length; i < iend; ++i) {
-					jQuery(document.createElement('option'))
-						.val(i)
-						.text(control.list[i])
-						.appendTo($control);
+					break;
 				}
 
-				$control
-					.val(control.list.indexOf(settings[name]))
-					.attr('tabindex', 0)
-					.on('change', function () {
-						settings[name] = control.list[Number(this.value)];
-						Setting.save();
+				case Setting.Types.List: {
+					$control = jQuery(document.createElement('select'));
 
-						if (control.hasOwnProperty('onChange')) {
-							control.onChange.call({
-								name,
-								value   : settings[name],
-								default : control.default,
-								list    : control.list
-							});
-						}
-					});
-				break;
+					for (let i = 0, iend = control.list.length; i < iend; ++i) {
+						jQuery(document.createElement('option'))
+							.val(i)
+							.text(control.list[i])
+							.appendTo($control);
+					}
 
-			case Setting.Types.Range:
-				$control = jQuery(document.createElement('input'));
+					$control
+						.val(control.list.indexOf(settings[name]))
+						.attr('tabindex', 0)
+						.on('change', function () {
+							settings[name] = control.list[Number(this.value)];
+							Setting.save();
 
-				// NOTE: Setting the value with `<jQuery>.val()` can cause odd behavior
-				// in Edge if it's called before the type is set, so we use the `value`
-				// content attribute here to dodge the entire issue.
-				$control
-					.attr({
-						type     : 'range',
-						min      : control.min,
-						max      : control.max,
-						step     : control.step,
-						value    : settings[name],
-						tabindex : 0
-					})
-					.on('change input', function () {
-						settings[name] = Number(this.value);
-						Setting.save();
+							if (control.hasOwnProperty('onChange')) {
+								control.onChange.call({
+									name,
+									value   : settings[name],
+									default : control.default,
+									list    : control.list
+								});
+							}
+						});
 
-						if (control.hasOwnProperty('onChange')) {
-							control.onChange.call({
-								name,
-								value   : settings[name],
-								default : control.default,
-								min     : control.min,
-								max     : control.max,
-								step    : control.step
-							});
-						}
-					})
-					.on('keypress', ev => {
-						if (ev.which === 13) {
-							ev.preventDefault();
-							$control.trigger('change');
-						}
-					});
-				break;
+					break;
+				}
+
+				case Setting.Types.Range: {
+					$control = jQuery(document.createElement('input'));
+
+					// NOTE: Setting the value with `<jQuery>.val()` can cause odd behavior
+					// in Edge if it's called before the type is set, so we use the `value`
+					// content attribute here to dodge the entire issue.
+					$control
+						.attr({
+							type     : 'range',
+							min      : control.min,
+							max      : control.max,
+							step     : control.step,
+							value    : settings[name],
+							tabindex : 0
+						})
+						.on('change input', function () {
+							settings[name] = Number(this.value);
+							Setting.save();
+
+							if (control.hasOwnProperty('onChange')) {
+								control.onChange.call({
+									name,
+									value   : settings[name],
+									default : control.default,
+									min     : control.min,
+									max     : control.max,
+									step    : control.step
+								});
+							}
+						})
+						.on('keypress', ev => {
+							if (ev.which === 13) {
+								ev.preventDefault();
+								$control.trigger('change');
+							}
+						});
+
+					break;
+				}
 			}
 
 			$control
@@ -691,10 +697,11 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 
-	/*******************************************************************************************************************
-		Module Exports.
-	*******************************************************************************************************************/
-	return Object.freeze(Object.defineProperties({}, {
+	/*******************************************************************************
+		Object Exports.
+	*******************************************************************************/
+
+	return Object.preventExtensions(Object.create(null, {
 		/*
 			UI Functions, Core.
 		*/

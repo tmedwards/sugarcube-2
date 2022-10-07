@@ -9,8 +9,6 @@
 /* global Has, L10n, getActiveElement */
 
 var Dialog = (() => { // eslint-disable-line no-unused-vars, no-var
-	'use strict';
-
 	// Dialog element caches.
 	let _$overlay       = null;
 	let _$dialog        = null;
@@ -414,7 +412,7 @@ var Dialog = (() => { // eslint-disable-line no-unused-vars, no-var
 		Object Exports.
 	*******************************************************************************/
 
-	return Object.freeze(Object.defineProperties({}, {
+	return Object.preventExtensions(Object.create(null, {
 		append : { value : dialogBodyAppend },
 		body   : { value : dialogBody },
 		close  : { value : dialogClose },

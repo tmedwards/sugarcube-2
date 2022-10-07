@@ -27,13 +27,13 @@ Macro.add(['addclass', 'toggleclass'], {
 		}
 
 		switch (this.name) {
-		case 'addclass':
-			$targets.addClass(this.args[1].trim());
-			break;
+			case 'addclass':
+				$targets.addClass(this.args[1].trim());
+				break;
 
-		case 'toggleclass':
-			$targets.toggleClass(this.args[1].trim());
-			break;
+			case 'toggleclass':
+				$targets.toggleClass(this.args[1].trim());
+				break;
 		}
 
 		// Custom debug view setup.

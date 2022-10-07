@@ -9,8 +9,6 @@
 /* global Config, Has, LoadScreen, Story, Visibility, clone, parseURL */
 
 var SimpleAudio = (() => { // eslint-disable-line no-unused-vars, no-var
-	'use strict';
-
 	/*
 		Events that count as user activation—i.e. "user gestures", "activation behavior".
 
@@ -61,9 +59,10 @@ var SimpleAudio = (() => { // eslint-disable-line no-unused-vars, no-var
 	let _masterMuteOnHidden = false;
 
 
-	/*******************************************************************************************************************
+	/*******************************************************************************
 		Feature Detection Functions.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	// Return whether the `<HTMLAudioElement>.play()` method returns a `Promise`.
 	//
 	// NOTE: The initial result is cached for future calls.
@@ -117,9 +116,10 @@ var SimpleAudio = (() => { // eslint-disable-line no-unused-vars, no-var
 	})();
 
 
-	/*******************************************************************************************************************
+	/*******************************************************************************
 		AudioTrack Class.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	class AudioTrack {
 		constructor(obj) {
 			// Process the given array of sources or AudioTrack object.
@@ -164,8 +164,7 @@ var SimpleAudio = (() => { // eslint-disable-line no-unused-vars, no-var
 				let srcUri = null;
 
 				switch (typeof src) {
-				case 'string':
-					{
+					case 'string': {
 						let match;
 
 						if (src.slice(0, 5) === 'data:') {
@@ -186,11 +185,11 @@ var SimpleAudio = (() => { // eslint-disable-line no-unused-vars, no-var
 						if (formats[match[1]]) {
 							srcUri = src;
 						}
-					}
-					break;
 
-				case 'object':
-					{
+						break;
+					}
+
+					case 'object': {
 						if (src === null) {
 							throw new Error('source object cannot be null');
 						}
@@ -204,11 +203,12 @@ var SimpleAudio = (() => { // eslint-disable-line no-unused-vars, no-var
 						if (formats[src.format]) {
 							srcUri = src.src;
 						}
-					}
-					break;
 
-				default:
-					throw new Error(`invalid source value (type: ${typeof src})`);
+						break;
+					}
+
+					default:
+						throw new Error(`invalid source value (type: ${typeof src})`);
 				}
 
 				if (srcUri !== null) {
@@ -317,27 +317,31 @@ var SimpleAudio = (() => { // eslint-disable-line no-unused-vars, no-var
 				}
 
 				switch (mesg) {
-				case 'loadwithscreen':
-					if (this.hasSource()) {
-						const lockId = LoadScreen.lock();
-						this
-							// NOTE: Do not use an arrow function here.
-							.one(
-								'canplaythrough.AudioTrack_loadwithscreen error.AudioTrack_loadwithscreen',
-								function () {
-									jQuery(this).off('.AudioTrack_loadwithscreen');
-									LoadScreen.unlock(lockId);
-								}
-							)
-							.load();
+					case 'loadwithscreen': {
+						if (this.hasSource()) {
+							const lockId = LoadScreen.lock();
+							this
+								.off('.AudioTrack_loadwithscreen')
+								.one(
+									'canplaythrough.AudioTrack_loadwithscreen error.AudioTrack_loadwithscreen',
+									// NOTE: Do not use an arrow function here.
+									function () {
+										jQuery(this).off('.AudioTrack_loadwithscreen');
+										LoadScreen.unlock(lockId);
+									}
+								)
+								.load();
+						}
+
+						break;
 					}
-					break;
-				case 'load':   this.load();               break;
-				case 'mute':   this._updateAudioMute();   break;
-				case 'rate':   this._updateAudioRate();   break;
-				case 'stop':   this.stop();               break;
-				case 'volume': this._updateAudioVolume(); break;
-				case 'unload': this.unload();             break;
+
+					case 'load':   this.load();               break;
+					case 'mute':   this._updateAudioMute();   break;
+					case 'rate':   this._updateAudioRate();   break;
+					case 'stop':   this.stop();               break;
+					case 'volume': this._updateAudioVolume(); break;
+					case 'unload': this.unload();             break;
 				}
 			});
 
@@ -867,9 +871,10 @@ var SimpleAudio = (() => { // eslint-disable-line no-unused-vars, no-var
 	});
 
 
-	/*******************************************************************************************************************
+	/*******************************************************************************
 		AudioList Class.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	class AudioList {
 		constructor(obj) {
 			// Process the given array of track objects or AudioList object.
@@ -1313,9 +1318,10 @@ var SimpleAudio = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 
-	/*******************************************************************************************************************
+	/*******************************************************************************
 		AudioRunner Class.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	class AudioRunner {
 		constructor(list) {
 			if (!(list instanceof Set || list instanceof AudioRunner)) {
@@ -1454,9 +1460,10 @@ var SimpleAudio = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 
-	/*******************************************************************************************************************
+	/*******************************************************************************
 		Track Functions.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	/*
 		SimpleAudio.tracks.add(trackId, sources…);
 
@@ -1532,9 +1539,10 @@ var SimpleAudio = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 
-	/*******************************************************************************************************************
+	/*******************************************************************************
 		Group Functions.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	/*
 		SimpleAudio.groups.add(groupId, trackIds…);
 
@@ -1599,9 +1607,10 @@ var SimpleAudio = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 
-	/*******************************************************************************************************************
+	/*******************************************************************************
 		Playlist Functions.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	/*
 		SimpleAudio.lists.add(listId, sources…);
 			Where `sources` may be either a track ID or descriptor (object).
@@ -1654,22 +1663,22 @@ var SimpleAudio = (() => { // eslint-disable-line no-unused-vars, no-var
 				}
 
 				switch (typeof desc) {
-				case 'string':
-					// Simply a track ID, so convert it into an object.
-					desc = { id : desc }; // eslint-disable-line no-param-reassign
-					break;
+					case 'string':
+						// Simply a track ID, so convert it into an object.
+						desc = { id : desc }; // eslint-disable-line no-param-reassign
+						break;
 
-				case 'object':
-					if (!desc.hasOwnProperty('id') && !desc.hasOwnProperty('sources')) {
-						throw new Error('track descriptor must contain one of either an "id" or a "sources" property');
-					}
-					else if (desc.hasOwnProperty('id') && desc.hasOwnProperty('sources')) {
-						throw new Error('track descriptor must contain either an "id" or a "sources" property, not both');
-					}
-					break;
+					case 'object':
+						if (!desc.hasOwnProperty('id') && !desc.hasOwnProperty('sources')) {
+							throw new Error('track descriptor must contain one of either an "id" or a "sources" property');
+						}
+						else if (desc.hasOwnProperty('id') && desc.hasOwnProperty('sources')) {
+							throw new Error('track descriptor must contain either an "id" or a "sources" property, not both');
+						}
+						break;
 
-				default:
-					throw new Error(`track descriptor must be a string or object (type: ${typeof desc})`);
+					default:
+						throw new Error(`track descriptor must be a string or object (type: ${typeof desc})`);
 				}
 
 				let own;
@@ -1723,7 +1732,7 @@ var SimpleAudio = (() => { // eslint-disable-line no-unused-vars, no-var
 
 				// if (desc.hasOwnProperty('rate')) {
 				// 	if (
-				// 		   typeof desc.rate !== 'number'
+				// 		typeof desc.rate !== 'number'
 				// 		|| Number.isNaN(desc.rate)
 				// 		|| !Number.isFinite(desc.rate)
 				// 	) {
@@ -1735,7 +1744,7 @@ var SimpleAudio = (() => { // eslint-disable-line no-unused-vars, no-var
 
 				if (desc.hasOwnProperty('volume')) {
 					if (
-						   typeof desc.volume !== 'number'
+						typeof desc.volume !== 'number'
 						|| Number.isNaN(desc.volume)
 						|| !Number.isFinite(desc.volume)
 						|| desc.volume < 0
@@ -1789,9 +1798,10 @@ var SimpleAudio = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 
-	/*******************************************************************************************************************
+	/*******************************************************************************
 		Runner Functions.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	const _runnerParseSelector = (() => {
 		const notWsRe = /\S/g;
 		const parenRe = /[()]/g;
@@ -1897,12 +1907,12 @@ var SimpleAudio = (() => { // eslint-disable-line no-unused-vars, no-var
 				let ids;
 
 				switch (id) {
-				case ':all':     ids = allIds; break;
-				case ':looped':  ids = allIds.filter(id => _tracks.get(id).loop()); break;
-				case ':muted':   ids = allIds.filter(id => _tracks.get(id).mute()); break;
-				case ':paused':  ids = allIds.filter(id => _tracks.get(id).isPaused()); break;
-				case ':playing': ids = allIds.filter(id => _tracks.get(id).isPlaying()); break;
-				default:         ids = id[0] === ':' ? _groups.get(id) : [id]; break;
+					case ':all':     ids = allIds; break;
+					case ':looped':  ids = allIds.filter(id => _tracks.get(id).loop()); break;
+					case ':muted':   ids = allIds.filter(id => _tracks.get(id).mute()); break;
+					case ':paused':  ids = allIds.filter(id => _tracks.get(id).isPaused()); break;
+					case ':playing': ids = allIds.filter(id => _tracks.get(id).isPlaying()); break;
+					default:         ids = id[0] === ':' ? _groups.get(id) : [id]; break;
 				}
 
 				if (idObj.hasOwnProperty('not')) {
@@ -1929,9 +1939,10 @@ var SimpleAudio = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 
-	/*******************************************************************************************************************
+	/*******************************************************************************
 		Master Audio Functions.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	function masterLoad() {
 		publish('load');
 	}
@@ -2014,9 +2025,10 @@ var SimpleAudio = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 
-	/*******************************************************************************************************************
+	/*******************************************************************************
 		Subscription Functions.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	function subscribe(id, callback) {
 		if (typeof callback !== 'function') {
 			throw new Error('callback parameter must be a function');
@@ -2034,9 +2046,10 @@ var SimpleAudio = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 
-	/*******************************************************************************************************************
+	/*******************************************************************************
 		Utility Functions.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	function _newTrack(sources) {
 		return new AudioTrack(sources.map(source => {
 			// Handle audio passages.
@@ -2058,13 +2071,14 @@ var SimpleAudio = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 
-	/*******************************************************************************************************************
-		Module Exports.
-	*******************************************************************************************************************/
-	return Object.freeze(Object.defineProperties({}, {
+	/*******************************************************************************
+		Object Exports.
+	*******************************************************************************/
+
+	return Object.preventExtensions(Object.create(null, {
 		// Track Functions.
 		tracks : {
-			value : Object.freeze(Object.defineProperties({}, {
+			value : Object.preventExtensions(Object.create(null, {
 				add    : { value : trackAdd },
 				delete : { value : trackDelete },
 				clear  : { value : trackClear },
@@ -2075,7 +2089,7 @@ var SimpleAudio = (() => { // eslint-disable-line no-unused-vars, no-var
 
 		// Group Functions.
 		groups : {
-			value : Object.freeze(Object.defineProperties({}, {
+			value : Object.preventExtensions(Object.create(null, {
 				add    : { value : groupAdd },
 				delete : { value : groupDelete },
 				clear  : { value : groupClear },
@@ -2086,7 +2100,7 @@ var SimpleAudio = (() => { // eslint-disable-line no-unused-vars, no-var
 
 		// Playlist Functions.
 		lists : {
-			value : Object.freeze(Object.defineProperties({}, {
+			value : Object.preventExtensions(Object.create(null, {
 				add    : { value : listAdd },
 				delete : { value : listDelete },
 				clear  : { value : listClear },

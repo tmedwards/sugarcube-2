@@ -29,22 +29,16 @@ var version = Object.freeze({
 	/* /legacy */
 
 	toString() {
-		'use strict';
-
 		const prerelease = this.prerelease ? `-${this.prerelease}` : '';
 		return `${this.major}.${this.minor}.${this.patch}${prerelease}+${this.build}`;
 	},
 
 	short() {
-		'use strict';
-
 		const prerelease = this.prerelease ? `-${this.prerelease}` : '';
 		return `${this.title} (v${this.major}.${this.minor}.${this.patch}${prerelease})`;
 	},
 
 	long() {
-		'use strict';
-
 		return `${this.title} v${this.toString()} (${this.date.toUTCString()})`;
 	}
 });
@@ -139,8 +133,6 @@ Object.defineProperty(window, 'SugarCube', {
 	Main function, entry point for the story.
 */
 jQuery(() => {
-	'use strict';
-
 	if (DEBUG) { console.log('[SugarCube/main()] Document loaded; beginning startup.'); }
 
 	/*

@@ -8,8 +8,6 @@
 ***********************************************************************************************************************/
 
 var Browser = (() => { // eslint-disable-line no-unused-vars, no-var
-	'use strict';
-
 	/* eslint-disable max-len */
 	const userAgent = navigator.userAgent.toLowerCase();
 
@@ -50,8 +48,12 @@ var Browser = (() => { // eslint-disable-line no-unused-vars, no-var
 	const isVivaldi = userAgent.includes('vivaldi');
 	/* eslint-enable max-len */
 
-	// Module Exports.
-	return Object.freeze({
+
+	/*******************************************************************************
+		Object Exports.
+	*******************************************************************************/
+
+	return Object.freeze(Object.assign(Object.create(null), {
 		userAgent,
 		isMobile,
 		isGecko,
@@ -60,5 +62,5 @@ var Browser = (() => { // eslint-disable-line no-unused-vars, no-var
 		isOpera,
 		operaVersion,
 		isVivaldi
-	});
+	}));
 })();
