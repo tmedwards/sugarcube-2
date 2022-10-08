@@ -41,12 +41,13 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 	let _passagesTransitionOut;
 
 	// Saves settings.
-	let _savesAutoload;
-	let _savesAutosave;
-	let _savesId              = 'untitled-story';
+	let _savesAutoload; // QUESTION: Remove this?
+	let _savesAutosave; // QUESTION: Remove this?
+	// let _savesDescriptions;
+	let _savesId; // NOTE: Initially set by `Story.load()`.
 	let _savesIsAllowed;
-	let _savesSlots           = 8;
-	let _savesTryDiskOnMobile = true;
+	let _savesMaxAuto      = 1;
+	let _savesMaxSlot      = 8;
 	let _savesVersion;
 
 	// UI settings.
@@ -58,10 +59,12 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 		Error Constants.
 	*******************************************************************************/
 
-	const _errHistoryModeDeprecated     = 'Config.history.mode has been deprecated and is no longer used by SugarCube, please remove it from your code';
-	const _errHistoryTrackingDeprecated = 'Config.history.tracking has been deprecated, use Config.history.maxStates instead';
-	const _errSavesOnLoadDeprecated     = 'Config.saves.onLoad has been deprecated, use the Save.onLoad API instead';
-	const _errSavesOnSaveDeprecated     = 'Config.saves.onSave has been deprecated, use the Save.onSave API instead';
+	const _errHistoryModeDeprecated          = 'Config.history.mode has been deprecated and is no longer used by SugarCube, please remove it from your code';
+	const _errHistoryTrackingDeprecated      = 'Config.history.tracking has been deprecated, use Config.history.maxStates instead';
+	const _errSavesOnLoadDeprecated          = 'Config.saves.onLoad has been deprecated, use the Save.onLoad API instead';
+	const _errSavesOnSaveDeprecated          = 'Config.saves.onSave has been deprecated, use the Save.onSave API instead';
+	const _errSavesSlotsDeprecated           = 'Config.saves.slots has been deprecated, use the Config.saves.maxSlotSaves instead';
+	const _errSavesTryDiskOnMobileDeprecated = 'Config.saves.tryDiskOnMobile has been deprecated';
 
 
 	/*******************************************************************************
@@ -306,17 +309,29 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 				_savesIsAllowed = value;
 			},
 
-			get slots() { return _savesSlots; },
-			set slots(value) {
-				if (!Number.isSafeInteger(value) || value < 0) {
-					throw new TypeError(`Config.saves.slots must be a non-negative integer (received: ${getTypeOf(value)})`);
+			get maxAutoSaves() { return _savesMaxAuto; },
+			set maxAutoSaves(value) {
+				if (!Number.isInteger(value)) {
+					throw new TypeError('Config.saves.maxAutoSaves must be an integer');
+				}
+				else if (value < 0 || value > Save.MAX_SAVE_ID + 1) {
+					throw new RangeError(`Config.saves.maxAutoSaves out of bounds (range: 0–${Save.MAX_SAVE_ID}; received: ${value})`);
 				}
 
-				_savesSlots = value;
+				_savesMaxAuto = value;
 			},
 
-			get tryDiskOnMobile() { return _savesTryDiskOnMobile; },
-			set tryDiskOnMobile(value) { _savesTryDiskOnMobile = Boolean(value); },
+			get maxSlotSaves() { return _savesMaxSlot; },
+			set maxSlotSaves(value) {
+				if (!Number.isInteger(value)) {
+					throw new TypeError('Config.saves.maxSlotSaves must be an integer');
+				}
+				else if (value < 0 || value > Save.MAX_SAVE_ID + 1) {
+					throw new RangeError(`Config.saves.maxSlotSaves out of bounds (range: 0–${Save.MAX_SAVE_ID}; received: ${value})`);
+				}
+
+				_savesMaxSlot = value;
+			},
 
 			get version() { return _savesVersion; },
 			set version(value) { _savesVersion = value; },
@@ -338,7 +353,22 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 			set onSave(value) {
 				console.warn(_errSavesOnSaveDeprecated);
 				Save.onSave.add(value);
-			}
+			},
+
+			// Die if deprecated saves slots getter is accessed.
+			get slots() { throw new Error(_errSavesSlotsDeprecated); },
+			// Warn if deprecated saves slots setter is assigned to, then pass
+			// the value to the `Config.saves.maxSlotSaves` for compatibilities
+			// sake.
+			set slots(value) {
+				console.warn(_errSavesSlotsDeprecated);
+				Config.saves.maxSlotSaves = value;
+			},
+
+			// Return `true` if deprecated saves tryDiskOnMobile getter is accessed.
+			get tryDiskOnMobile() { return true; },
+			// Warn if deprecated saves tryDiskOnMobile setter is assigned to.
+			set tryDiskOnMobile(value) { console.warn(_errSavesTryDiskOnMobileDeprecated); }
 			// /legacy
 		}),
 

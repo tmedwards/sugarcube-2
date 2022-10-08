@@ -167,11 +167,6 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 			else {
 				throw new Error('cannot find the "StoryTitle" special passage');
 			}
-
-			/*
-				Set the default saves ID (must be done after the call to `_storySetTitle()`).
-			*/
-			Config.saves.id = Story.domId;
 		}
 
 		// For Twine 2.
@@ -253,12 +248,14 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 			*/
 			// _storySetTitle($storydata.attr('name'));
 			_storySetTitle('{{STORY_NAME}}');
-
-			/*
-				Set the default saves ID (must be done after the call to `_storySetTitle()`).
-			*/
-			Config.saves.id = Story.domId;
 		}
+
+		/*
+			Set the default saves ID to the story's ID.
+
+			NOTE: Must be done after the call to `_storySetTitle()`.
+		*/
+		Config.saves.id = _domId;
 	}
 
 	function _storySetTitle(rawTitle) {
