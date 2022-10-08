@@ -6,7 +6,7 @@
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* global Macro, Scripting, State, createSlug, getToStringTag, sameValueZero */
+/* global Macro, Scripting, State, createSlug, getErrorMessage, getToStringTag, sameValueZero */
 
 /*
 	<<cycle>>, <<listbox>>, <<option>>, & <<optionsfrom>>
@@ -139,7 +139,7 @@ Macro.add(['cycle', 'listbox'], {
 					result = Scripting.evalJavaScript(exp[0] === '{' ? `(${exp})` : exp);
 				}
 				catch (ex) {
-					return this.error(`bad evaluation: ${typeof ex === 'object' ? ex.message : ex}`);
+					return this.error(`bad evaluation: ${getErrorMessage(ex)}`);
 				}
 
 				if (typeof result !== 'object' || result === null) {

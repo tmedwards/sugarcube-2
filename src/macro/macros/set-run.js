@@ -6,7 +6,7 @@
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* global Config, Macro, Scripting */
+/* global Config, Macro, Scripting, getErrorMessage */
 
 /*
 	<<set>>
@@ -23,7 +23,7 @@ Macro.add('set', {
 			Scripting.evalJavaScript(this.args.full);
 		}
 		catch (ex) {
-			return this.error(`bad evaluation: ${typeof ex === 'object' ? ex.message : ex}`);
+			return this.error(`bad evaluation: ${getErrorMessage(ex)}`);
 		}
 
 		// Custom debug view setup.

@@ -6,7 +6,7 @@
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* global Config, DebugView, Patterns, State, Wikifier, appendError */
+/* global Config, DebugView, Patterns, State, Wikifier, appendError, hasOwn */
 
 var MacroContext = (() => { // eslint-disable-line no-unused-vars, no-var
 	/*******************************************************************************
@@ -204,7 +204,7 @@ var MacroContext = (() => { // eslint-disable-line no-unused-vars, no-var
 							const varKey = varName.slice(1);
 							const store  = varName[0] === '$' ? State.variables : State.temporary;
 
-							if (store.hasOwnProperty(varKey)) {
+							if (hasOwn(store, varKey)) {
 								valueCache[varKey] = store[varKey];
 							}
 
@@ -235,7 +235,7 @@ var MacroContext = (() => { // eslint-disable-line no-unused-vars, no-var
 							*/
 							shadowStore[varName] = store[varKey];
 
-							if (valueCache.hasOwnProperty(varKey)) {
+							if (hasOwn(valueCache, varKey)) {
 								store[varKey] = valueCache[varKey];
 							}
 							else {

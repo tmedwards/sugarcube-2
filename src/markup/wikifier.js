@@ -8,7 +8,7 @@
 ***********************************************************************************************************************/
 /*
 	global Config, EOF, Engine, Lexer, Patterns, Scripting, State, Story, TempState, convertBreaks,
-	       cssPropToDOMProp, errorPrologRegExp, getTypeOf, isExternalLink
+	       cssPropToDOMProp, errorPrologRegExp, getTypeOf, hasOwn, isExternalLink
 */
 
 /*
@@ -491,7 +491,7 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 			}
 
 			function profilesGet(profile) {
-				if (typeof _profiles !== 'object' || !_profiles.hasOwnProperty(profile)) {
+				if (typeof _profiles !== 'object' || !hasOwn(_profiles, profile)) {
 					throw new Error(`nonexistent parser profile "${profile}"`);
 				}
 
@@ -499,7 +499,7 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 			}
 
 			function profilesHas(profile) {
-				return typeof _profiles === 'object' && _profiles.hasOwnProperty(profile);
+				return typeof _profiles === 'object' && hasOwn(_profiles, profile);
 			}
 
 
@@ -799,7 +799,7 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 								const varKey = varName.slice(1);
 								const store  = varName[0] === '$' ? State.variables : State.temporary;
 
-								if (store.hasOwnProperty(varKey)) {
+								if (hasOwn(store, varKey)) {
 									valueCache[varKey] = store[varKey];
 								}
 
@@ -821,7 +821,7 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 								*/
 								shadowStore[varName] = store[varKey];
 
-								if (valueCache.hasOwnProperty(varKey)) {
+								if (hasOwn(valueCache, varKey)) {
 									store[varKey] = valueCache[varKey];
 								}
 								else {

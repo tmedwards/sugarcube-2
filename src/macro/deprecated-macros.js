@@ -6,7 +6,7 @@
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* global Config, Has, Macro, Patterns, Scripting, SimpleAudio, State, Wikifier, storage */
+/* global Config, Has, Macro, Patterns, Scripting, SimpleAudio, State, Wikifier, getErrorMessage, hasOwn, storage */
 
 /*******************************************************************************
 	Variables Macros.
@@ -28,7 +28,7 @@ Macro.add('remember', {
 			Scripting.evalJavaScript(this.args.full);
 		}
 		catch (ex) {
-			return this.error(`bad evaluation: ${typeof ex === 'object' ? ex.message : ex}`);
+			return this.error(`bad evaluation: ${getErrorMessage(ex)}`);
 		}
 
 		const remember = storage.get('remember') || {};
@@ -79,11 +79,11 @@ Macro.add('forget', {
 		while ((match = jsVarRe.exec(this.args.full)) !== null) {
 			const name = match[1];
 
-			if (State.variables.hasOwnProperty(name)) {
+			if (hasOwn(State.variables, name)) {
 				delete State.variables[name];
 			}
 
-			if (remember && remember.hasOwnProperty(name)) {
+			if (remember && hasOwn(remember, name)) {
 				needStore = true;
 				delete remember[name];
 			}

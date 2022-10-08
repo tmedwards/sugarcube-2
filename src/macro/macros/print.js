@@ -6,7 +6,7 @@
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* global Macro, Scripting, Wikifier, encodeEntities, stringFrom */
+/* global Macro, Scripting, Wikifier, encodeEntities, getErrorMessage, stringFrom */
 
 /*
 	<<print>>, <<=>>, & <<->>
@@ -27,7 +27,7 @@ Macro.add(['print', '=', '-'], {
 			}
 		}
 		catch (ex) {
-			return this.error(`bad evaluation: ${typeof ex === 'object' ? ex.message : ex}`);
+			return this.error(`bad evaluation: ${getErrorMessage(ex)}`);
 		}
 	}
 });

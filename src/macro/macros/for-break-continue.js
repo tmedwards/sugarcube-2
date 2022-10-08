@@ -6,7 +6,10 @@
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* global Config, Macro, Patterns, Scripting, State, TempState, Wikifier, characterAndPosAt, getToStringTag */
+/*
+	global Config, Macro, Patterns, Scripting, State, TempState, Wikifier, characterAndPosAt, getErrorMessage,
+	       getToStringTag
+*/
 
 /*
 	<<for>>, <<break>>, & <<continue>>
@@ -106,7 +109,7 @@ Macro.add('for', {
 					evalJavaScript(init);
 				}
 				catch (ex) {
-					return this.error(`bad init expression: ${typeof ex === 'object' ? ex.message : ex}`);
+					return this.error(`bad init expression: ${getErrorMessage(ex)}`);
 				}
 			}
 
@@ -136,13 +139,13 @@ Macro.add('for', {
 						evalJavaScript(post);
 					}
 					catch (ex) {
-						return this.error(`bad post expression: ${typeof ex === 'object' ? ex.message : ex}`);
+						return this.error(`bad post expression: ${getErrorMessage(ex)}`);
 					}
 				}
 			}
 		}
 		catch (ex) {
-			return this.error(`bad conditional expression: ${typeof ex === 'object' ? ex.message : ex}`);
+			return this.error(`bad conditional expression: ${getErrorMessage(ex)}`);
 		}
 		finally {
 			TempState.break = null;
@@ -193,7 +196,7 @@ Macro.add('for', {
 			}
 		}
 		catch (ex) {
-			return this.error(typeof ex === 'object' ? ex.message : ex);
+			return this.error(getErrorMessage(ex));
 		}
 		finally {
 			TempState.break = null;

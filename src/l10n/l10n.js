@@ -6,7 +6,7 @@
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* global l10nStrings, strings */
+/* global hasOwn, l10nStrings, strings */
 
 var L10n = (() => { // eslint-disable-line no-unused-vars, no-var
 	// Replacement pattern regular expressions.
@@ -36,7 +36,7 @@ var L10n = (() => { // eslint-disable-line no-unused-vars, no-var
 		const id = (idList => {
 			let selectedId;
 			idList.some(id => {
-				if (l10nStrings.hasOwnProperty(id)) {
+				if (hasOwn(l10nStrings, id)) {
 					selectedId = id;
 					return true;
 				}
@@ -65,10 +65,10 @@ var L10n = (() => { // eslint-disable-line no-unused-vars, no-var
 			processed = processed.replace(_patternRe, pat => {
 				const subId = pat.slice(1, -1);
 
-				if (overrides && overrides.hasOwnProperty(subId)) {
+				if (overrides && hasOwn(overrides, subId)) {
 					return overrides[subId];
 				}
-				else if (l10nStrings.hasOwnProperty(subId)) {
+				else if (hasOwn(l10nStrings, subId)) {
 					return l10nStrings[subId];
 				}
 			});

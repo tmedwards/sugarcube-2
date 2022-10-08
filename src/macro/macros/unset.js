@@ -6,7 +6,7 @@
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* global Config, Macro, Patterns, State */
+/* global Config, Macro, Patterns, State, hasOwn */
 
 /*
 	<<unset>>
@@ -30,7 +30,7 @@ Macro.add('unset', {
 			const store = State[match[1]];
 			const name  = match[2];
 
-			if (store.hasOwnProperty(name)) {
+			if (hasOwn(store, name)) {
 				delete store[name];
 			}
 		}

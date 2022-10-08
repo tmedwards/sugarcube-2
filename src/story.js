@@ -6,7 +6,7 @@
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* global Config, Passage, Wikifier, characterAndPosAt, createSlug, decodeEntities, sameValueZero */
+/* global Config, Passage, Wikifier, characterAndPosAt, createSlug, decodeEntities, hasOwn, sameValueZero */
 
 var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 	// Map of normal passages.
@@ -323,7 +323,7 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 
 		const title = passage.title;
 
-		if (!_passages.hasOwnProperty(title)) {
+		if (!hasOwn(_passages, title)) {
 			_passages[title] = passage;
 			return true;
 		}
@@ -365,7 +365,7 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 			case 'number':
 			case 'string': {
 				const id = String(title);
-				return _passages.hasOwnProperty(id) ? _passages[id] : new Passage(id || '(unknown)');
+				return hasOwn(_passages, id) ? _passages[id] : new Passage(id || '(unknown)');
 			}
 
 			// Invalid types.  We do the extra processing just to make a nicer error.

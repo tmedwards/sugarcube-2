@@ -8,7 +8,8 @@
 ***********************************************************************************************************************/
 /*
 	global Alert, Config, DebugView, Dialog, Has, LoadScreen, Save, Scripting, State, Story, StyleWrapper, UI,
-	       UIBar, Wikifier, enumFrom, now, postdisplay, postrender, predisplay, prehistory, prerender, setDisplayTitle
+	       UIBar, Wikifier, enumFrom, getErrorMessage, now, postdisplay, postrender, predisplay, prehistory,
+	       prerender, setDisplayTitle
 */
 
 var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
@@ -175,7 +176,7 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 			}
 			catch (ex) {
 				console.error(ex);
-				Alert.error(script.title, typeof ex === 'object' ? ex.message : ex);
+				Alert.error(script.title, getErrorMessage(ex));
 			}
 		});
 
@@ -186,7 +187,7 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 			}
 			catch (ex) {
 				console.error(ex);
-				Alert.error(widget.title, typeof ex === 'object' ? ex.message : ex);
+				Alert.error(widget.title, getErrorMessage(ex));
 			}
 		});
 	}
@@ -222,7 +223,7 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 			}
 			catch (ex) {
 				console.error(ex);
-				Alert.error(`${passage.title} [init-tagged]`, typeof ex === 'object' ? ex.message : ex);
+				Alert.error(`${passage.title} [init-tagged]`, getErrorMessage(ex));
 			}
 		});
 
@@ -247,7 +248,7 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 			}
 			catch (ex) {
 				console.error(ex);
-				Alert.error('StoryInit', typeof ex === 'object' ? ex.message : ex);
+				Alert.error('StoryInit', getErrorMessage(ex));
 			}
 		}
 	}
