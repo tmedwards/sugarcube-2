@@ -18,17 +18,18 @@ var Passage = (() => { // eslint-disable-line no-unused-vars, no-var
 			nobr       → special tag
 			passage    → the default class
 			script     → special tag (only in Twine 1)
+			storylet   → special tag
 			stylesheet → special tag (only in Twine 1)
 			twine.*    → special tag
 			widget     → special tag
 	*/
 	// For Twine 1
 	if (TWINE1) {
-		_tagsToSkip = /^(?:debug|nobr|passage|script|stylesheet|widget|twine\..*)$/i;
+		_tagsToSkip = /^(?:debug|nobr|passage|script|storylet|stylesheet|twine\..*|widget)$/i;
 	}
 	// For Twine 2
 	else {
-		_tagsToSkip = /^(?:debug|nobr|passage|widget|twine\..*)$/i;
+		_tagsToSkip = /^(?:debug|nobr|passage|storylet|twine\..*|widget)$/i;
 	}
 
 	// For Twine 1
@@ -89,6 +90,12 @@ var Passage = (() => { // eslint-disable-line no-unused-vars, no-var
 				_excerpt : {
 					writable : true,
 					value    : null
+				},
+
+				// Starting position.  Used by the `start()` getter & setter.
+				_start : {
+					writable : true,
+					value    : 0
 				}
 			});
 
@@ -116,9 +123,25 @@ var Passage = (() => { // eslint-disable-line no-unused-vars, no-var
 			});
 		}
 
-		// Getters.
+		// Getters & setters.
 		get className() {
 			return this.classes.join(' ');
+		}
+
+		get start() {
+			return this._start;
+		}
+		set start(value) {
+			if (!Number.isSafeInteger(value)) {
+				throw new TypeError('start value must be an integer');
+			}
+
+			if (value < 0 || value >= this.text.length) {
+				throw new RangeError(`start value out of bounds (range: 0–${this.text.length - 1}; received: ${value})`);
+			}
+
+			// Update the starting position.
+			this._start = value;
 		}
 
 		// TODO: (v3) This should be → `get source`.
@@ -129,14 +152,18 @@ var Passage = (() => { // eslint-disable-line no-unused-vars, no-var
 				return `<div class="error-view"><span class="error">${mesg}</span></div>`;
 			}
 
+			let content;
+
 			// For Twine 1
 			if (TWINE1) {
-				return _twine1Unescape(this.element.textContent);
+				content = _twine1Unescape(this.element.textContent);
 			}
 			// For Twine 2
-			else { // eslint-disable-line no-else-return
-				return this.element.textContent.replace(/\r/g, '');
+			else {
+				content = this.element.textContent.replace(/\r/g, '');
 			}
+
+			return this._start === 0 ? content : content.slice(this._start);
 		}
 
 		description() {
