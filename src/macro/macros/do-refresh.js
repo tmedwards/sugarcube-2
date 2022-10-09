@@ -6,14 +6,15 @@
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* global Config, Macro, Wikifier */
+/* global Config, Engine, Macro, Wikifier */
 
 (() => {
 	// Set up our event class name.
 	const eventClass = 'dorefresh-target';
 
 	// Set up a global `:dorefresh` event handler that sends non-bubbling
-	// `:dorefresh-internal` events to all `<<do>>` macros.
+	// `:dorefresh-internal` events to `<<do>>` macros matching the given
+	// selector.
 	jQuery(document).on(':dorefresh', ev => {
 		const evTags = ev.detail && ev.detail.tags || [];
 		const selector = evTags.length === 0
@@ -100,11 +101,13 @@
 				.addClass(`macro-${this.name} ${eventClass}`)
 				.attr('data-do-tags', tags.join(' '))
 				.wiki(contents)
-				.on(':dorefresh-internal', this.shadowHandler(() => {
-					const frag = document.createDocumentFragment();
-					new Wikifier(frag, contents);
-					$target.empty().append(frag);
-				}))
+				.on(':dorefresh-internal', jQuery.throttle(Engine.DOM_DELAY,
+					this.shadowHandler(() => {
+						const frag = document.createDocumentFragment();
+						new Wikifier(frag, contents);
+						$target.empty().append(frag);
+					})
+				))
 				.appendTo(this.output);
 		}
 	});
@@ -114,10 +117,23 @@
 	*/
 	Macro.add('refresh', {
 		handler() {
+			// Sanity check to prevent out-of-control refreshes.
+			//
+			// NOTE: This may be too restrictive.
+			const failRE  = /^(?:do|for)$/;
+			const passRE  = /^(?:button|link(?:append|prepend|replace)?)$/;
+			const closest = this.contextSelect(ctx => failRE.test(ctx.name) || passRE.test(ctx.name));
+
+			if (closest && failRE.test(closest.name)) {
+				return this.error(`must not be used directly within macro <<${closest.name}>>`);
+			}
+
+			// Gather any given tags.
 			const tags = this.args.length > 0
 				? String(this.args[0]).trim().splitOrEmpty(' ')
 				: [];
 
+			// Trigger a refresh, sending any tags along.
 			jQuery(document).trigger({
 				type   : ':dorefresh',
 				detail : { tags }
