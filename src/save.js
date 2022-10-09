@@ -122,6 +122,10 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 		return Number(key.slice(pos + 1));
 	}
 
+	function getTypeFromKey(key) {
+		return isAutoKey(key) ? Type.Auto : Type.Slot;
+	}
+
 	function getDescription(userDesc, saveType) {
 		let desc = String(userDesc).trim();
 
@@ -141,7 +145,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 	// Find the most recent ID, ordered by date (descending).
-	function getNewestId(saveType) {
+	function findNewest(saveType) {
 		let keys;
 
 		switch (saveType) {
@@ -151,18 +155,24 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 		}
 
 		switch (keys.length) {
-			case 0: return -1;
-			case 1: return getIdFromKey(keys[0]);
+			case 0: return { id : -1 };
+			case 1: return {
+				id   : getIdFromKey(keys[0]),
+				type : getTypeFromKey(keys[0])
+			};
 		}
 
 		return keys
 			.map(key => ({
-				id   : getIdFromKey(key),
+				value : {
+					id   : getIdFromKey(key),
+					type : getTypeFromKey(key)
+				},
 				date : storage.get(key).date
 			}))
 			.sort((a, b) => b.date - a.date)
 			.first()
-			.id;
+			.value;
 	}
 
 
@@ -278,7 +288,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			info.metadata = metadata;
 		}
 
-		const id      = (getNewestId(Type.Auto) + 1) % Config.saves.maxAutoSaves;
+		const id      = (findNewest(Type.Auto).id + 1) % Config.saves.maxAutoSaves;
 		const dataKey = autoDataKeyFromId(id);
 		const infoKey = autoInfoKeyFromId(id);
 		const data    = marshal(Type.Auto);
@@ -454,14 +464,15 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 	function browserContinue() {
-		const id = getNewestId();
+		const newest = findNewest();
 
-		if (id === -1) {
+		if (newest.id === -1) {
 			return Promise.reject(new Error(L10n.get('saveErrorNonexistent')));
 		}
 
-		// TODO: Load either auto or slot.
-		// return autoLoad(id);
+		return newest.type === Type.Auto
+			? autoLoad(newest.id)
+			: slotLoad(newest.id);
 	}
 
 	function browserExport(filename) {
@@ -496,6 +507,10 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 		}));
 
 		saveToDiskAs(filename, bundle);
+	}
+
+	function browserHasContinue() {
+		return findNewest().id !== -1;
 	}
 
 	function browserImport(event) {
@@ -876,11 +891,12 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 				},
 
 				// Browser General Saves Functions.
-				isEnabled : { value : browserIsEnabled },
-				clear     : { value : browserClear },
-				continue  : { value : browserContinue },
-				export    : { value : browserExport },
-				import    : { value : browserImport }
+				isEnabled   : { value : browserIsEnabled },
+				clear       : { value : browserClear },
+				continue    : { value : browserContinue },
+				export      : { value : browserExport },
+				hasContinue : { value : browserHasContinue },
+				import      : { value : browserImport }
 			}))
 		},
 
