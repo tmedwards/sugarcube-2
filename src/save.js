@@ -33,12 +33,6 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 	const SLOT_DATA_SUBKEY = `${SLOT_SUBKEY}data${ID_DELIMITER}`;
 	const SLOT_INFO_SUBKEY = `${SLOT_SUBKEY}info${ID_DELIMITER}`;
 
-	// Save key regular expressions.
-	// const isAuto = /^save\.auto/;
-	// const isSlot = /^save\.slot/;
-	// const isData = /^save\.(?:auto|slot)\.data/;
-	// const isInfo = /^save\.(?:auto|slot)\.info/;
-
 	// Set of onLoad handlers.
 	const _onLoadHandlers = new Set();
 
@@ -476,29 +470,29 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 	function browserExport(filename) {
-		const auto = getKeys(isAutoDataKey).map(dataKey => {
-			const id          = getIdFromKey(dataKey);
-			const manifestKey = autoInfoKeyFromId(id);
-			const data        = storage.get(dataKey);
-			const manifest    = storage.get(manifestKey);
+		const auto = getKeys(isAutoInfoKey).map(infoKey => {
+			const id      = getIdFromKey(infoKey);
+			const dataKey = autoDataKeyFromId(id);
+			const data    = storage.get(dataKey);
+			const info    = storage.get(infoKey);
 
-			if (!data || !manifest) {
-				throw new Error('during saves export auto save data or manifest nonexistent');
+			if (!data || !info) {
+				throw new Error('during saves export auto save data or info nonexistent');
 			}
 
-			return { id, data, manifest };
+			return { id, data, info };
 		});
-		const slot = getKeys(isSlotDataKey).map(dataKey => {
-			const id          = getIdFromKey(dataKey);
-			const manifestKey = slotInfoKeyFromId(id);
-			const data        = storage.get(dataKey);
-			const manifest    = storage.get(manifestKey);
+		const slot = getKeys(isSlotInfoKey).map(infoKey => {
+			const id      = getIdFromKey(infoKey);
+			const dataKey = slotDataKeyFromId(id);
+			const data    = storage.get(dataKey);
+			const info    = storage.get(infoKey);
 
-			if (!data || !manifest) {
-				throw new Error('during saves export slot slave data or manifest nonexistent');
+			if (!data || !info) {
+				throw new Error('during saves export slot slave data or info nonexistent');
 			}
 
-			return { id, data, manifest };
+			return { id, data, info };
 		});
 		const bundle = LZString.compressToBase64(JSON.stringify({
 			id : Config.saves.id,
@@ -525,7 +519,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 						// throw reader.error;
 					}
 
-					const badSave = O => !hasOwn(O, 'id') || !hasOwn(O, 'data') || !hasOwn(O, 'manifest');
+					const badSave = O => !hasOwn(O, 'id') || !hasOwn(O, 'data') || !hasOwn(O, 'info');
 					let bundle;
 
 					try {
@@ -559,29 +553,29 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 					// QUESTION: Should failures below throw exceptions?
 
 					bundle.auto.forEach(save => {
-						const { id, data, manifest } = save;
-						const dataKey                = autoDataKeyFromId(id);
-						const manifestKey            = autoInfoKeyFromId(id);
+						const { id, data, info } = save;
+						const dataKey            = autoDataKeyFromId(id);
+						const infoKey            = autoInfoKeyFromId(id);
 
 						if (!storage.set(dataKey, data)) {
 							return;
 						}
 
-						if (!storage.set(manifestKey, manifest)) {
+						if (!storage.set(infoKey, info)) {
 							storage.delete(dataKey);
 						}
 					});
 
 					bundle.slot.forEach(save => {
-						const { id, data, manifest } = save;
-						const dataKey                = slotDataKeyFromId(id);
-						const manifestKey            = slotInfoKeyFromId(id);
+						const { id, data, info } = save;
+						const dataKey            = slotDataKeyFromId(id);
+						const infoKey            = slotInfoKeyFromId(id);
 
 						if (!storage.set(dataKey, data)) {
 							return;
 						}
 
-						if (!storage.set(manifestKey, manifest)) {
+						if (!storage.set(infoKey, info)) {
 							storage.delete(dataKey);
 						}
 					});
@@ -945,7 +939,14 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 				// get    : { value() { autoGet(0); } },
 				load   : { value() { autoLoad(0); } },
 				save   : { value : autoSave },
-				delete : { value() { autoDelete(0); } }
+				delete : { value() { autoDelete(0); } },
+
+				// Unsupported.
+				get : {
+					value() {
+						throw new Error('legacy Save.autosave.get method currently unsupported; notify the developer if you need its functionality');
+					}
+				}
 			}))
 		},
 
@@ -960,7 +961,14 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 				// get     : { value : slotGet },
 				load    : { value : slotLoad },
 				save    : { value : slotSave },
-				delete  : { value : slotDelete }
+				delete  : { value : slotDelete },
+
+				// Unsupported.
+				get : {
+					value() {
+						throw new Error('legacy Save.slots.get method currently unsupported; notify the developer if you need its functionality');
+					}
+				}
 			}))
 		},
 
