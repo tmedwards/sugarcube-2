@@ -33,7 +33,7 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 	let _navigationOverride;
 
 	// Passages settings.
-	let _passagesDescriptions;
+	let _passagesDescriptions; // NOTE: Deprecate in favor of `Config.saves.descriptions`.
 	let _passagesDisplayTitles = false;
 	let _passagesNobr          = false;
 	let _passagesStart; // set by `Story.load()`
@@ -41,8 +41,8 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 	let _passagesTransitionOut;
 
 	// Saves settings.
-	let _savesAutoload; // QUESTION: Remove this?
-	let _savesAutosave; // QUESTION: Remove this?
+	let _savesAutoload; // QUESTION: Deprecate this?
+	let _savesAutosave; // QUESTION: Deprecate this?  Yes, `maxAutoSaves` & `isAllowed` can do the job.
 	// let _savesDescriptions;
 	let _savesId; // NOTE: Initially set by `Story.load()`.
 	let _savesIsAllowed;
@@ -315,7 +315,7 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 					throw new TypeError('Config.saves.maxAutoSaves must be an integer');
 				}
 				else if (value < 0 || value > Save.MAX_SAVE_ID + 1) {
-					throw new RangeError(`Config.saves.maxAutoSaves out of bounds (range: 0–${Save.MAX_SAVE_ID}; received: ${value})`);
+					throw new RangeError(`Config.saves.maxAutoSaves out of bounds (range: 0–${Save.MAX_SAVE_ID + 1}; received: ${value})`);
 				}
 
 				_savesMaxAuto = value;
@@ -327,7 +327,7 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 					throw new TypeError('Config.saves.maxSlotSaves must be an integer');
 				}
 				else if (value < 0 || value > Save.MAX_SAVE_ID + 1) {
-					throw new RangeError(`Config.saves.maxSlotSaves out of bounds (range: 0–${Save.MAX_SAVE_ID}; received: ${value})`);
+					throw new RangeError(`Config.saves.maxSlotSaves out of bounds (range: 0–${Save.MAX_SAVE_ID + 1}; received: ${value})`);
 				}
 
 				_savesMaxSlot = value;
