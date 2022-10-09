@@ -944,7 +944,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 				has    : { value() { autoHas(0); } },
 				// get    : { value() { autoGet(0); } },
 				load   : { value() { autoLoad(0); } },
-				save   : { value() { autoSave(0); } },
+				save   : { value : autoSave },
 				delete : { value() { autoDelete(0); } }
 			}))
 		},
