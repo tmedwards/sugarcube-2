@@ -301,8 +301,8 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 				if (!Number.isInteger(value)) {
 					throw new TypeError('Config.saves.maxAutoSaves must be an integer');
 				}
-				else if (value < 0 || value > Save.MAX_SAVE_ID + 1) {
-					throw new RangeError(`Config.saves.maxAutoSaves out of bounds (range: 0–${Save.MAX_SAVE_ID + 1}; received: ${value})`);
+				else if (value < 0 || value > Save.MAX_ID + 1) {
+					throw new RangeError(`Config.saves.maxAutoSaves out of bounds (range: 0–${Save.MAX_ID + 1}; received: ${value})`);
 				}
 
 				_savesMaxAuto = value;
@@ -313,8 +313,8 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 				if (!Number.isInteger(value)) {
 					throw new TypeError('Config.saves.maxSlotSaves must be an integer');
 				}
-				else if (value < 0 || value > Save.MAX_SAVE_ID + 1) {
-					throw new RangeError(`Config.saves.maxSlotSaves out of bounds (range: 0–${Save.MAX_SAVE_ID + 1}; received: ${value})`);
+				else if (value < 0 || value > Save.MAX_ID + 1) {
+					throw new RangeError(`Config.saves.maxSlotSaves out of bounds (range: 0–${Save.MAX_ID + 1}; received: ${value})`);
 				}
 
 				_savesMaxSlot = value;

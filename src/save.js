@@ -21,7 +21,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 	});
 
 	// Save ID maximum (`0`-based).
-	const MAX_SAVE_ID = 15;
+	const MAX_ID = 15;
 
 	// Save key constants.
 	const ID_DELIMITER     = ':';
@@ -192,8 +192,8 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			throw new TypeError('auto save id must be an integer');
 		}
 
-		if (id < 0 || id > MAX_SAVE_ID) {
-			throw new RangeError(`auto save id out of bounds (range: 0–${MAX_SAVE_ID}; received: ${id})`);
+		if (id < 0 || id > MAX_ID) {
+			throw new RangeError(`auto save id out of bounds (range: 0–${MAX_ID}; received: ${id})`);
 		}
 
 		storage.delete(autoDataKeyFromId(id));
@@ -206,8 +206,8 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			throw new TypeError('auto save id must be an integer');
 		}
 
-		if (id < 0 || id > MAX_SAVE_ID) {
-			throw new RangeError(`auto save id out of bounds (range: 0–${MAX_SAVE_ID}; received: ${id})`);
+		if (id < 0 || id > MAX_ID) {
+			throw new RangeError(`auto save id out of bounds (range: 0–${MAX_ID}; received: ${id})`);
 		}
 
 		return storage.get(autoInfoKeyFromId(id));
@@ -228,8 +228,8 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			throw new TypeError('auto save id must be an integer');
 		}
 
-		if (id < 0 || id > MAX_SAVE_ID) {
-			throw new RangeError(`auto save id out of bounds (range: 0–${MAX_SAVE_ID}; received: ${id})`);
+		if (id < 0 || id > MAX_ID) {
+			throw new RangeError(`auto save id out of bounds (range: 0–${MAX_ID}; received: ${id})`);
 		}
 
 		return storage.has(autoInfoKeyFromId(id));
@@ -247,8 +247,8 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 				throw new TypeError('auto save id must be an integer');
 			}
 
-			if (id < 0 || id > MAX_SAVE_ID) {
-				throw new RangeError(`auto save id out of bounds (range: 0–${MAX_SAVE_ID}; received: ${id})`);
+			if (id < 0 || id > MAX_ID) {
+				throw new RangeError(`auto save id out of bounds (range: 0–${MAX_ID}; received: ${id})`);
 			}
 
 			const data = storage.get(autoDataKeyFromId(id));
@@ -326,8 +326,8 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			throw new TypeError('slot save id must be an integer');
 		}
 
-		if (id < 0 || id > MAX_SAVE_ID) {
-			throw new RangeError(`slot save id out of bounds (range: 0–${MAX_SAVE_ID}; received: ${id})`);
+		if (id < 0 || id > MAX_ID) {
+			throw new RangeError(`slot save id out of bounds (range: 0–${MAX_ID}; received: ${id})`);
 		}
 
 		storage.delete(slotDataKeyFromId(id));
@@ -340,8 +340,8 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			throw new TypeError('slot save id must be an integer');
 		}
 
-		if (id < 0 || id > MAX_SAVE_ID) {
-			throw new RangeError(`slot save id out of bounds (range: 0–${MAX_SAVE_ID}; received: ${id})`);
+		if (id < 0 || id > MAX_ID) {
+			throw new RangeError(`slot save id out of bounds (range: 0–${MAX_ID}; received: ${id})`);
 		}
 
 		return storage.get(slotInfoKeyFromId(id));
@@ -362,8 +362,8 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			throw new TypeError('slot save id must be an integer');
 		}
 
-		if (id < 0 || id > MAX_SAVE_ID) {
-			throw new RangeError(`slot save id out of bounds (range: 0–${MAX_SAVE_ID}; received: ${id})`);
+		if (id < 0 || id > MAX_ID) {
+			throw new RangeError(`slot save id out of bounds (range: 0–${MAX_ID}; received: ${id})`);
 		}
 
 		return storage.has(slotInfoKeyFromId(id));
@@ -379,8 +379,8 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 				throw new TypeError('slot save id must be an integer');
 			}
 
-			if (id < 0 || id > MAX_SAVE_ID) {
-				throw new RangeError(`slot save id out of bounds (range: 0–${MAX_SAVE_ID}; received: ${id})`);
+			if (id < 0 || id > MAX_ID) {
+				throw new RangeError(`slot save id out of bounds (range: 0–${MAX_ID}; received: ${id})`);
 			}
 
 			const data = storage.get(slotDataKeyFromId(id));
@@ -927,7 +927,8 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 
 	return Object.preventExtensions(Object.create(null, {
 		// General Save Constants.
-		MAX_SAVE_ID : { value : MAX_SAVE_ID },
+		Type   : { value : Type },
+		MAX_ID : { get MAX_ID() { return MAX_ID; } },
 
 		// General Save Functions.
 		init : { value : init },
