@@ -33,7 +33,6 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 	let _navigationOverride;
 
 	// Passages settings.
-	let _passagesDescriptions; // NOTE: Deprecate in favor of `Config.saves.descriptions`.
 	let _passagesDisplayTitles = false;
 	let _passagesNobr          = false;
 	let _passagesStart; // set by `Story.load()`
@@ -42,8 +41,7 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 
 	// Saves settings.
 	let _savesAutoload; // QUESTION: Deprecate this?
-	let _savesAutosave; // QUESTION: Deprecate this?  Yes, `maxAutoSaves` & `isAllowed` can do the job.
-	// let _savesDescriptions;
+	let _savesDescriptions;
 	let _savesId; // NOTE: Initially set by `Story.load()`.
 	let _savesIsAllowed;
 	let _savesMaxAuto      = 1;
@@ -61,9 +59,11 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 
 	const _errHistoryModeDeprecated          = 'Config.history.mode has been deprecated and is no longer used by SugarCube, please remove it from your code';
 	const _errHistoryTrackingDeprecated      = 'Config.history.tracking has been deprecated, use Config.history.maxStates instead';
+	const _errPassagesDescriptionsDeprecated = 'Config.passages.descriptions has been deprecated, use Config.saves.descriptions instead';
+	const _errSavesAutosaveDeprecated        = 'Config.saves.autosave has been deprecated, use Config.saves.isAllowed instead';
 	const _errSavesOnLoadDeprecated          = 'Config.saves.onLoad has been deprecated, use the Save.onLoad API instead';
 	const _errSavesOnSaveDeprecated          = 'Config.saves.onSave has been deprecated, use the Save.onSave API instead';
-	const _errSavesSlotsDeprecated           = 'Config.saves.slots has been deprecated, use the Config.saves.maxSlotSaves instead';
+	const _errSavesSlotsDeprecated           = 'Config.saves.slots has been deprecated, use Config.saves.maxSlotSaves instead';
 	const _errSavesTryDiskOnMobileDeprecated = 'Config.saves.tryDiskOnMobile has been deprecated';
 
 
@@ -184,19 +184,6 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 			Passages settings.
 		*/
 		passages : Object.freeze({
-			get descriptions() { return _passagesDescriptions; },
-			set descriptions(value) {
-				if (value != null) { // lazy equality for null
-					const valueType = getTypeOf(value);
-
-					if (valueType !== 'boolean' && valueType !== 'Object' && valueType !== 'function') {
-						throw new TypeError(`Config.passages.descriptions must be a boolean, object, function, or null/undefined (received: ${valueType})`);
-					}
-				}
-
-				_passagesDescriptions = value;
-			},
-
 			// TODO: (v3) This should be under Navigation settings → `Config.navigation.updateTitle`.
 			get displayTitles() { return _passagesDisplayTitles; },
 			set displayTitles(value) { _passagesDisplayTitles = Boolean(value); },
@@ -246,7 +233,19 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 				}
 
 				_passagesTransitionOut = value;
+			},
+
+			/* legacy */
+			// Die if deprecated passages descriptions getter is accessed.
+			get descriptions() { throw new Error(_errPassagesDescriptionsDeprecated); },
+			// Warn if deprecated passages descriptions setter is assigned to,
+			// then pass the value to the `Config.saves.descriptions` for
+			// compatibilities sake.
+			set descriptions(value) {
+				console.warn(_errPassagesDescriptionsDeprecated);
+				Config.saves.descriptions = value;
 			}
+			/* /legacy */
 		}),
 
 		/*
@@ -266,29 +265,17 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 				_savesAutoload = value;
 			},
 
-			get autosave() { return _savesAutosave; },
-			set autosave(value) {
+			get descriptions() { return _savesDescriptions; },
+			set descriptions(value) {
 				if (value != null) { // lazy equality for null
 					const valueType = getTypeOf(value);
 
-					// legacy
-					// Convert a string value to an Array of string.
-					if (valueType === 'string') {
-						_savesAutosave = [value];
-						return;
-					}
-					// /legacy
-
-					if (
-						valueType !== 'boolean'
-						&& (valueType !== 'Array' || !value.every(item => typeof item === 'string'))
-						&& valueType !== 'function'
-					) {
-						throw new TypeError(`Config.saves.autosave must be a boolean, Array<string>, function, or null/undefined (received: ${valueType}${valueType === 'Array' ? '<any>' : ''})`);
+					if (valueType !== 'boolean' && valueType !== 'Object' && valueType !== 'function') {
+						throw new TypeError(`Config.saves.descriptions must be a boolean, object, function, or null/undefined (received: ${valueType})`);
 					}
 				}
 
-				_savesAutosave = value;
+				_savesDescriptions = value;
 			},
 
 			get id() { return _savesId; },
@@ -336,7 +323,12 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 			get version() { return _savesVersion; },
 			set version(value) { _savesVersion = value; },
 
-			// legacy
+			/* legacy */
+			// Die if deprecated saves autosave getter is accessed.
+			get autosave() { throw new Error(_errSavesAutosaveDeprecated); },
+			// Die if deprecated saves autosave setter is accessed.
+			set autosave(value) { throw new Error(_errSavesAutosaveDeprecated); },
+
 			// Die if deprecated saves onLoad handler getter is accessed.
 			get onLoad() { throw new Error(_errSavesOnLoadDeprecated); },
 			// Warn if deprecated saves onLoad handler setter is assigned to, then
@@ -373,7 +365,7 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 			},
 			// Warn if deprecated saves tryDiskOnMobile setter is assigned to.
 			set tryDiskOnMobile(value) { console.warn(_errSavesTryDiskOnMobileDeprecated); }
-			// /legacy
+			/* /legacy */
 		}),
 
 		/*
