@@ -365,8 +365,12 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 				Config.saves.maxSlotSaves = value;
 			},
 
-			// Return `true` if deprecated saves tryDiskOnMobile getter is accessed.
-			get tryDiskOnMobile() { return true; },
+			// Warn if deprecated saves tryDiskOnMobile getter is accessed, then
+			// return `true`.
+			get tryDiskOnMobile() {
+				console.warn(_errSavesTryDiskOnMobileDeprecated);
+				return true;
+			},
 			// Warn if deprecated saves tryDiskOnMobile setter is assigned to.
 			set tryDiskOnMobile(value) { console.warn(_errSavesTryDiskOnMobileDeprecated); }
 			// /legacy

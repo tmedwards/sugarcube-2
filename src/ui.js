@@ -7,7 +7,7 @@
 
 ***********************************************************************************************************************/
 /*
-	global Alert, Browser, Config, Dialog, Engine, Has, L10n, Save, Setting, State, Story, Wikifier,
+	global Alert, Config, Dialog, Engine, Has, L10n, Save, Setting, State, Story, Wikifier,
 	       createSlug, errorPrologRegExp, settings
 */
 
@@ -394,7 +394,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 
 		const $dialogBody = jQuery(Dialog.setup(L10n.get('savesTitle'), 'saves'));
 		const savesOk     = Save.ok();
-		const fileOk      = Has.fileAPI && (Config.saves.tryDiskOnMobile || !Browser.isMobile.any());
+		const fileOk      = Has.fileAPI;
 
 		// Add saves list.
 		if (savesOk) {
