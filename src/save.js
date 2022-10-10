@@ -21,7 +21,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 	});
 
 	// Save ID maximum (`0`-based).
-	const MAX_SAVE_ID = 49;
+	const MAX_SAVE_ID = 15;
 
 	// Save key constants.
 	const ID_DELIMITER     = ':';
@@ -50,8 +50,8 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 	function init() {
 		if (DEBUG) { console.log('[Save/init()]'); }
 
-		// TODO: Update saves from the old monolithic save object to the new style here.
-		// updateSaves();
+		// Convert saves from the old monolithic save object to the new style.
+		browserUpdateSaves();
 
 		return true;
 	}
@@ -589,6 +589,87 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 
 			// Initiate the file load.
 			reader.readAsText(event.target.files[0]);
+		});
+	}
+
+	function browserUpdateSaves() {
+		const oldSaves = storage.get('saves');
+
+		// Bail out if no old saves object exists.
+		if (oldSaves === null) {
+			return;
+		}
+
+		// Old saves object:
+		// 	{
+		// 		autosave : null | save,
+		// 		slots    : Array<save>
+		// 	}
+		//
+		// Old save object:
+		// 	{
+		// 		title    : description,
+		// 		date     : unix_datestamp,
+		// 		metadata : undefined | metadata,
+		// 		id       : id,
+		// 		state    : state,
+		// 		version  : undefined | version
+		// 	}
+
+		// Convert the auto save.
+		if (oldSaves.autosave) {
+			const oldAuto = oldSaves.autosave;
+
+			const info = {
+				date : oldAuto.date,
+				desc : oldAuto.title
+			};
+
+			if (oldAuto.metadata != null) { // lazy equality for null
+				info.metadata = oldAuto.metadata;
+			}
+
+			const data = { state : oldAuto.state };
+
+			if (oldAuto.version != null) { // lazy equality for null
+				data.version = oldAuto.version;
+			}
+
+			const dataKey = autoDataKeyFromId(0);
+			const infoKey = autoInfoKeyFromId(0);
+
+			if (storage.set(dataKey, data)) {
+				if (!storage.set(infoKey, info)) {
+					storage.delete(dataKey);
+				}
+			}
+		}
+
+		// Convert slot saves.
+		oldSaves.slots.forEach((oldSlot, id) => {
+			const info = {
+				date : oldSlot.date,
+				desc : oldSlot.title
+			};
+
+			if (oldSlot.metadata != null) { // lazy equality for null
+				info.metadata = oldSlot.metadata;
+			}
+
+			const data = { state : oldSlot.state };
+
+			if (oldSlot.version != null) { // lazy equality for null
+				data.version = oldSlot.version;
+			}
+
+			const dataKey = slotDataKeyFromId(id);
+			const infoKey = slotInfoKeyFromId(id);
+
+			if (storage.set(dataKey, data)) {
+				if (!storage.set(infoKey, info)) {
+					storage.delete(dataKey);
+				}
+			}
 		});
 	}
 
