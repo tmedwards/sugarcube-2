@@ -590,9 +590,9 @@
 
 ## [`Story` API](#story-api)
 
-* [`Story.domId`](#story-api-getter-domid)
+* [`Story.id`](#story-api-getter-id)
 * [`Story.ifId`](#story-api-getter-ifid)
-* [`Story.title`](#story-api-getter-title)
+* [`Story.name`](#story-api-getter-name)
 * [`Story.get()`](#story-api-method-get)
 * [`Story.has()`](#story-api-method-has)
 * [`Story.lookup()`](#story-api-method-lookup)

@@ -5,13 +5,13 @@
 
 <!-- *********************************************************************** -->
 
-### `Story.domId` → *string* {#story-api-getter-domid}
+### `Story.id` → *string* {#story-api-getter-id}
 
-The DOM ID of the story, created from the slugified story title.
+The DOM-compatible ID of the story, created from the slugified story name.
 
 #### History:
 
-* `v2.0.0`: Introduced.
+* `v2.37.0`: Introduced.
 
 <!-- *********************************************************************** -->
 
@@ -25,13 +25,13 @@ The IFID (Interactive Fiction IDentifier) of the story, if any.
 
 <!-- *********************************************************************** -->
 
-### `Story.title` → *string* {#story-api-getter-title}
+### `Story.name` → *string* {#story-api-getter-name}
 
-The title of the story.
+The name of the story.
 
 #### History:
 
-* `v2.0.0`: Introduced.
+* `v2.37.0`: Introduced.
 
 <!-- *********************************************************************** -->
 
@@ -141,3 +141,29 @@ Story.lookupWith(function (p) {
 	return hasWhitespaceRegExp.test(p.title);
 });
 ```
+
+<!-- *********************************************************************** -->
+
+### <span class="deprecated">`Story.domId` → *string*</span> {#story-api-getter-domid}
+
+<p role="note" class="warning"><b>Deprecated:</b>
+This setting has been deprecated and should no longer be used.  See the <a href="#story-api-getter-id"><code>Story.id</code></a> setting for its replacement.
+</p>
+
+#### History:
+
+* `v2.0.0`: Introduced.
+* `v2.37.0`: Deprecated in favor of `Story.id`.
+
+<!-- *********************************************************************** -->
+
+### <span class="deprecated">`Story.title` → *string*</span> {#story-api-getter-title}
+
+<p role="note" class="warning"><b>Deprecated:</b>
+This setting has been deprecated and should no longer be used.  See the <a href="#story-api-getter-name"><code>Story.name</code></a> setting for its replacement.
+</p>
+
+#### History:
+
+* `v2.0.0`: Introduced.
+* `v2.37.0`: Deprecated in favor of `Story.name`.
