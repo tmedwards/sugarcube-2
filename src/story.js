@@ -9,6 +9,15 @@
 /* global Config, Passage, Wikifier, characterAndPosAt, createSlug, decodeEntities, hasOwn, sameValueZero */
 
 var Story = (() => { // eslint-disable-line no-unused-vars, no-var
+	// Story IFID.
+	let _ifId = '';
+
+	// DOM-compatible ID.
+	let _id = '';
+
+	// Story name.
+	let _name = '';
+
 	// Map of normal passages.
 	const _passages = {};
 
@@ -24,19 +33,61 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 	// List of widget passages.
 	const _widgets = [];
 
-	// Story title.
-	let _title = '';
 
-	// Story IFID.
-	let _ifId = '';
+	/*******************************************************************************
+		Story Utility Functions.
+	*******************************************************************************/
 
-	// DOM-compatible ID.
-	let _domId = '';
+	function _storySetTitle(rawTitle) {
+		if (rawTitle == null) { // lazy equality for null
+			throw new Error('story title must not be null or undefined');
+		}
+
+		const title = decodeEntities(String(rawTitle)).trim();
+
+		if (title === '') { // lazy equality for null
+			throw new Error('story title must not be empty or consist solely of whitespace');
+		}
+
+		document.title = _name = title;
+
+		// TODO: In v3 the `_domId` should be created from a combination of the
+		// `_title` slug and the IFID, if available, to avoid collisions between
+		// stories whose titles generate identical slugs.
+		_id = createSlug(_name);
+
+		// [v2] Protect the `_domId` against being an empty string.
+		//
+		// If `_domId` is empty, attempt a failover.
+		if (_id === '') {
+			// If `_ifId` is not empty, then use it.
+			if (_ifId !== '') {
+				_id = _ifId;
+			}
+
+			// Elsewise generate a string from the `_title`'s code points (in hexadecimal).
+			else {
+				for (let i = 0, len = _name.length; i < len; ++i) {
+					const { char, start, end } = characterAndPosAt(_name, i);
+					_id += char.codePointAt(0).toString(16);
+					i += end - start;
+				}
+			}
+		}
+	}
 
 
 	/*******************************************************************************
 		Story Functions.
 	*******************************************************************************/
+
+	function storyId() {
+		return _id;
+	}
+
+	function storyIfId() {
+		return _ifId;
+	}
 
 	function storyLoad() {
 		if (DEBUG) { console.log('[Story/storyLoad()]'); }
@@ -255,57 +306,11 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 
 			NOTE: Must be done after the call to `_storySetTitle()`.
 		*/
-		Config.saves.id = _domId;
+		Config.saves.id = _id;
 	}
 
-	function _storySetTitle(rawTitle) {
-		if (rawTitle == null) { // lazy equality for null
-			throw new Error('story title must not be null or undefined');
-		}
-
-		const title = decodeEntities(String(rawTitle)).trim();
-
-		if (title === '') { // lazy equality for null
-			throw new Error('story title must not be empty or consist solely of whitespace');
-		}
-
-		document.title = _title = title;
-
-		// TODO: In v3 the `_domId` should be created from a combination of the
-		// `_title` slug and the IFID, if available, to avoid collisions between
-		// stories whose titles generate identical slugs.
-		_domId = createSlug(_title);
-
-		// [v2] Protect the `_domId` against being an empty string.
-		//
-		// If `_domId` is empty, attempt a failover.
-		if (_domId === '') {
-			// If `_ifId` is not empty, then use it.
-			if (_ifId !== '') {
-				_domId = _ifId;
-			}
-
-			// Elsewise generate a string from the `_title`'s code points (in hexadecimal).
-			else {
-				for (let i = 0, len = _title.length; i < len; ++i) {
-					const { char, start, end } = characterAndPosAt(_title, i);
-					_domId += char.codePointAt(0).toString(16);
-					i += end - start;
-				}
-			}
-		}
-	}
-
-	function storyTitle() {
-		return _title;
-	}
-
-	function storyDomId() {
-		return _domId;
-	}
-
-	function storyIfId() {
-		return _ifId;
+	function storyName() {
+		return _name;
 	}
 
 
@@ -481,10 +486,10 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 
 	return Object.preventExtensions(Object.create(null, {
 		// Story Functions.
-		load  : { value : storyLoad },
-		title : { get : storyTitle },
-		domId : { get : storyDomId },
-		ifId  : { get : storyIfId },
+		id   : { get : storyId },
+		ifId : { get : storyIfId },
+		load : { value : storyLoad },
+		name : { get : storyName },
 
 		// Passage Functions.
 		add              : { value : passagesAdd },
@@ -496,6 +501,11 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 		getAllStylesheet : { value : passagesGetAllStylesheet },
 		getAllWidget     : { value : passagesGetAllWidget },
 		lookup           : { value : passagesLookup },
-		lookupWith       : { value : passagesLookupWith }
+		lookupWith       : { value : passagesLookupWith },
+
+		/* legacy */
+		domId : { get : storyId },
+		title : { get : storyName }
+		/* /legacy */
 	}));
 })();

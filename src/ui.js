@@ -202,19 +202,28 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 	function uiBuildSaves() {
-		const savesAllowed = typeof Config.saves.isAllowed !== 'function' || Config.saves.isAllowed();
+		const savesAllowed = typeof Config.saves.isAllowed !== 'function' || Config.saves.isAllowed(Save.Type.Slot);
 
-		function createActionItem(bId, bClass, bText, bAction) {
+		function showAlert(message) {
+			if (Dialog.isOpen()) {
+				$(document).one(':dialogclosed', () => uiOpenAlert(message));
+			}
+			else {
+				uiOpenAlert(message);
+			}
+		}
+
+		function createActionItem(elId, elClass, elLabel, elAction) {
 			const $btn = jQuery(document.createElement('button'))
-				.attr('id', `saves-${bId}`)
-				.html(bText);
+				.attr('id', `saves-${elId}`)
+				.text(elLabel);
 
-			if (bClass) {
-				$btn.addClass(bClass);
+			if (elClass) {
+				$btn.addClass(elClass);
 			}
 
-			if (bAction) {
-				$btn.ariaClick(bAction);
+			if (elAction) {
+				$btn.ariaClick({ label : elLabel }, elAction);
 			}
 			else {
 				$btn.ariaDisabled(true);
@@ -225,27 +234,27 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 		}
 
 		function createSaveList() {
-			function createButton(bId, bClass, bText, bSlot, bAction) {
+			function createButton(elId, elClass, elLabel, saveId, elAction) {
 				const $btn = jQuery(document.createElement('button'))
-					.attr('id', `saves-${bId}-${bSlot}`)
-					.addClass(bId)
-					.html(bText);
+					.attr('id', `saves-${elId}-${saveId}`)
+					.addClass(elId)
+					.text(elLabel);
 
-				if (bClass) {
-					$btn.addClass(bClass);
+				if (elClass) {
+					$btn.addClass(elClass);
 				}
 
-				if (bAction) {
-					if (bSlot === 'auto') {
-						$btn.ariaClick({
-							label : `${bText} ${L10n.get('savesLabelAuto')}`
-						}, () => bAction());
-					}
-					else {
-						$btn.ariaClick({
-							label : `${bText} ${L10n.get('savesLabelSlot')} ${bSlot + 1}`
-						}, () => bAction(bSlot));
-					}
+				if (elAction) {
+					$btn.ariaClick({
+						label : `${elLabel} ${saveId + 1}`
+					}, () => {
+						try {
+							elAction(saveId);
+						}
+						catch (ex) {
+							showAlert(ex.message);
+						}
+					});
 				}
 				else {
 					$btn.ariaDisabled(true);
@@ -254,10 +263,14 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 				return $btn;
 			}
 
-			const saves  = Save.get();
+			// const saves  = Save.get();
 			const $tbody = jQuery(document.createElement('tbody'));
 
-			if (Save.autosave.ok()) {
+			const autoInfoList = Save.browser.auto.getInfoList();
+
+			for (let i = 0; i < autoInfoList.length; ++i) {
+				const { id, info } = autoInfoList[i];
+
 				const $tdSlot = jQuery(document.createElement('td'));
 				const $tdLoad = jQuery(document.createElement('td'));
 				const $tdDesc = jQuery(document.createElement('td'));
@@ -272,49 +285,47 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 					.text('A') // '\u25C6' Black Diamond
 					.appendTo($tdSlot);
 
-				if (saves.autosave) {
-					// Add the load button.
-					$tdLoad.append(
-						createButton('load', 'ui-close', L10n.get('savesLabelLoad'), 'auto', () => {
-							jQuery(document).one(':dialogclosed', () => Save.autosave.load());
-						})
-					);
+				// Add the load button.
+				$tdLoad.append(createButton(
+					'load',
+					'ui-close',
+					`${L10n.get('savesLabelLoad')} ${L10n.get('savesLabelAuto')}`,
+					id,
+					id => {
+						jQuery(document).one(':dialogclosed', () => {
+							Save.browser.auto.load(id)
+								.then(
+									Engine.show,
+									ex => showAlert(`${ex.message.toUpperFirst()}.</p><p>${L10n.get('aborting')}.`)
+								);
+						});
+					}
+				));
 
-					// Add the description (title and datestamp).
-					jQuery(document.createElement('div'))
-						.text(saves.autosave.title)
-						.appendTo($tdDesc);
-					jQuery(document.createElement('div'))
-						.addClass('datestamp')
-						.html(
-							saves.autosave.date
-								? `${new Date(saves.autosave.date).toLocaleString()}`
-								: `<em>${L10n.get('savesUnknownDate')}</em>`
-						)
-						.appendTo($tdDesc);
+				// Add the description and datestamp.
+				jQuery(document.createElement('div'))
+					.text(info.desc)
+					.appendTo($tdDesc);
+				jQuery(document.createElement('div'))
+					.addClass('datestamp')
+					.html(
+						info.date
+							? `${new Date(info.date).toLocaleString()}`
+							: `<em>${L10n.get('savesUnknownDate')}</em>`
+					)
+					.appendTo($tdDesc);
 
-					// Add the delete button.
-					$tdDele.append(
-						createButton('delete', null, L10n.get('savesLabelDelete'), 'auto', () => {
-							Save.autosave.delete();
-							uiBuildSaves();
-						})
-					);
-				}
-				else {
-					// Add the disabled load button.
-					$tdLoad.append(
-						createButton('load', null, L10n.get('savesLabelLoad'), 'auto')
-					);
-
-					// Add the description.
-					$tdDesc.addClass('empty').text('\u2022\u00a0\u00a0\u2022\u00a0\u00a0\u2022');
-
-					// Add the disabled delete button.
-					$tdDele.append(
-						createButton('delete', null, L10n.get('savesLabelDelete'), 'auto')
-					);
-				}
+				// Add the delete button.
+				$tdDele.append(createButton(
+					'delete',
+					null,
+					`${L10n.get('savesLabelDelete')} ${L10n.get('savesLabelAuto')}`,
+					id,
+					id => {
+						Save.browser.auto.delete(id);
+						uiBuildSaves();
+					}
+				));
 
 				jQuery(document.createElement('tr'))
 					.append($tdSlot)
@@ -324,57 +335,95 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 					.appendTo($tbody);
 			}
 
-			for (let i = 0, iend = saves.slots.length; i < iend; ++i) {
+			const slotInfoObj = {};
+			let slotLength    = Config.saves.maxSlotSaves;
+
+			for (let i = 0; i < slotLength; ++i) {
+				slotInfoObj[i] = { id : i };
+			}
+
+			Save.browser.slot.getInfoList().forEach((entry, i) => {
+				slotInfoObj[i] = entry;
+
+				if (i > Config.saves.maxSlotSaves) {
+					++slotLength;
+				}
+			});
+
+			for (let i = 0; i < slotLength; ++i) {
+				const { id, info } = slotInfoObj[i];
+
 				const $tdSlot = jQuery(document.createElement('td'));
 				const $tdLoad = jQuery(document.createElement('td'));
 				const $tdDesc = jQuery(document.createElement('td'));
 				const $tdDele = jQuery(document.createElement('td'));
 
 				// Add the slot ID.
-				$tdSlot.append(document.createTextNode(i + 1));
+				$tdSlot.append(document.createTextNode(id + 1));
 
-				if (saves.slots[i]) {
+				if (info) {
 					// Add the load button.
-					$tdLoad.append(
-						createButton('load', 'ui-close', L10n.get('savesLabelLoad'), i, slot => {
-							jQuery(document).one(':dialogclosed', () => Save.slots.load(slot));
-						})
-					);
+					$tdLoad.append(createButton(
+						'load',
+						'ui-close',
+						`${L10n.get('savesLabelLoad')} ${L10n.get('savesLabelSlot')}`,
+						id,
+						id => {
+							jQuery(document).one(':dialogclosed', () => {
+								Save.browser.slot.load(id)
+									.then(
+										Engine.show,
+										ex => showAlert(`${ex.message.toUpperFirst()}.</p><p>${L10n.get('aborting')}.`)
+									);
+							});
+						}
+					));
 
 					// Add the description (title and datestamp).
 					jQuery(document.createElement('div'))
-						.text(saves.slots[i].title)
+						.text(info.desc)
 						.appendTo($tdDesc);
 					jQuery(document.createElement('div'))
 						.addClass('datestamp')
 						.html(
-							saves.slots[i].date
-								? `${new Date(saves.slots[i].date).toLocaleString()}`
+							info.date
+								? `${new Date(info.date).toLocaleString()}`
 								: `<em>${L10n.get('savesUnknownDate')}</em>`
 						)
 						.appendTo($tdDesc);
 
 					// Add the delete button.
-					$tdDele.append(
-						createButton('delete', null, L10n.get('savesLabelDelete'), i, slot => {
-							Save.slots.delete(slot);
+					$tdDele.append(createButton(
+						'delete',
+						null,
+						`${L10n.get('savesLabelDelete')} ${L10n.get('savesLabelSlot')}`,
+						id,
+						id => {
+							Save.browser.slot.delete(id);
 							uiBuildSaves();
-						})
-					);
+						}
+					));
 				}
 				else {
-					// Add the save button.
-					$tdLoad.append(
-						createButton('save', 'ui-close', L10n.get('savesLabelSave'), i, savesAllowed ? Save.slots.save : null)
-					);
+					// Add the save button, possibly disabled.
+					$tdLoad.append(createButton(
+						'save',
+						'ui-close',
+						`${L10n.get('savesLabelSave')} ${L10n.get('savesLabelSlot')}`,
+						id,
+						id < Config.saves.maxSlotSaves && savesAllowed ? Save.browser.slot.save : null
+					));
 
 					// Add the description.
 					$tdDesc.addClass('empty').text('\u2022\u00a0\u00a0\u2022\u00a0\u00a0\u2022');
 
 					// Add the disabled delete button.
-					$tdDele.append(
-						createButton('delete', null, L10n.get('savesLabelDelete'), i)
-					);
+					$tdDele.append(createButton(
+						'delete',
+						null,
+						`${L10n.get('savesLabelDelete')} ${L10n.get('savesLabelSlot')}`,
+						id
+					));
 				}
 
 				jQuery(document.createElement('tr'))
@@ -392,33 +441,39 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 
 		if (DEBUG) { console.log('[UI/uiBuildSaves()]'); }
 
+		const browserEnabled = Save.browser.isEnabled();
+
+		// Bail out if both saves and the file API are disabled/missing.
+		if (!browserEnabled && !Has.fileAPI) {
+			showAlert(L10n.get('savesIncapable'));
+			return false;
+		}
+
 		const $dialogBody = jQuery(Dialog.setup(L10n.get('savesTitle'), 'saves'));
-		const savesOk     = Save.ok();
-		const fileOk      = Has.fileAPI;
 
 		// Add saves list.
-		if (savesOk) {
+		if (browserEnabled) {
 			$dialogBody.append(createSaveList());
 		}
 
 		// Add button bar items (export, import, and clear).
-		if (savesOk || fileOk) {
+		if (browserEnabled || Has.fileAPI) {
 			const $btnBar = jQuery(document.createElement('ul'))
 				.addClass('buttons')
 				.appendTo($dialogBody);
 
-			if (fileOk) {
+			if (Has.fileAPI) {
 				$btnBar.append(createActionItem(
 					'export',
 					'ui-close',
 					L10n.get('savesLabelExport'),
-					savesAllowed ? () => Save.export() : null
+					savesAllowed ? () => Save.disk.save(Story.name) : null
 				));
 				$btnBar.append(createActionItem(
 					'import',
 					null,
 					L10n.get('savesLabelImport'),
-					() => $dialogBody.find('#saves-import-file').trigger('click')
+					() => $dialogBody.find('#saves-disk-load-handler').trigger('click')
 				));
 
 				// Add the hidden `input[type=file]` element which will be triggered by the `#saves-import` button.
@@ -434,36 +489,42 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 					})
 					.attr({
 						type          : 'file',
-						id            : 'saves-import-file',
+						id            : 'saves-disk-load-handler',
 						tabindex      : -1,
 						'aria-hidden' : true
 					})
 					.on('change', ev => {
-						jQuery(document).one(':dialogclosed', () => Save.import(ev));
+						jQuery(document).one(':dialogclosed', () => {
+							Save.disk.load(ev)
+								.then(
+									Engine.show,
+									ex => {
+										Dialog.close();
+										showAlert(`${ex.message.toUpperFirst()}.</p><p>${L10n.get('aborting')}.`);
+									}
+								);
+						});
 						Dialog.close();
 					})
 					.appendTo($dialogBody);
 			}
 
-			if (savesOk) {
+			if (browserEnabled) {
 				$btnBar.append(createActionItem(
 					'clear',
 					null,
 					L10n.get('savesLabelClear'),
-					Save.autosave.has() || !Save.slots.isEmpty()
+					Save.browser.auto.size() > 0 || Save.browser.slot.size() > 0
 						? () => {
-							Save.clear();
+							Save.browser.clear();
 							uiBuildSaves();
 						}
 						: null
 				));
 			}
-
-			return true;
 		}
 
-		uiOpenAlert(L10n.get('savesIncapable'));
-		return false;
+		return true;
 	}
 
 	function uiBuildSettings() {

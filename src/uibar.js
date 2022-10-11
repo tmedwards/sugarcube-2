@@ -192,10 +192,10 @@ var UIBar = (() => { // eslint-disable-line no-unused-vars, no-var
 		}
 		else {
 			if (TWINE1) { // for Twine 1
-				setPageElement('story-title', 'StoryTitle', Story.title);
+				setPageElement('story-title', 'StoryTitle', Story.name);
 			}
 			else { // for Twine 2
-				jQuery('#story-title').text(Story.title);
+				jQuery('#story-title').text(Story.name);
 			}
 		}
 

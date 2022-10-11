@@ -655,7 +655,7 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 			}
 		}
 		else if (Config.passages.displayTitles && passage.name !== Config.passages.start) {
-			document.title = `${passage.name} | ${Story.title}`;
+			document.title = `${passage.name} | ${Story.name}`;
 		}
 
 		// Scroll the window to the top.

@@ -158,8 +158,8 @@ jQuery(() => {
 
 		// Initialize the databases.
 		// NOTE: `SimpleStore.create(storageId, persistent)`
-		storage = SimpleStore.create(Story.domId, true);
-		session = SimpleStore.create(Story.domId, false);
+		storage = SimpleStore.create(Story.id, true);
+		session = SimpleStore.create(Story.id, false);
 
 		// Initialize the user interfaces.
 		//
