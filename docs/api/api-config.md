@@ -368,7 +368,6 @@ This setting has been deprecated and should no longer be used.  See the <a href=
 * `v2.37.0`: Deprecated in favor of the `Config.saves.descriptions` setting.
 
 
-
 <!-- ***************************************************************************
 	Saves
 **************************************************************************** -->

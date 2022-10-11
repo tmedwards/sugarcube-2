@@ -382,11 +382,10 @@
 
 ## [`Passage` API](#passage-api)
 
-* [`<Passage>.domId`](#passage-api-prototype-getter-domid)
+* [`<Passage>.id`](#passage-api-prototype-getter-id)
+* [`<Passage>.name`](#passage-api-prototype-getter-name)
 * [`<Passage>.tags`](#passage-api-prototype-getter-tags)
 * [`<Passage>.text`](#passage-api-prototype-getter-text)
-* [`<Passage>.title`](#passage-api-prototype-getter-title)
-* [`<Passage>.description()`](#passage-api-prototype-method-description)
 * [`<Passage>.processText()`](#passage-api-prototype-method-processtext)
 
 ## [`Save` API](#save-api)
