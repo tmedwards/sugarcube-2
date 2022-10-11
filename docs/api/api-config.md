@@ -405,17 +405,9 @@ Config.saves.autoload = function () {
 
 <!-- *********************************************************************** -->
 
-### `Config.saves.descriptions` ↔ *boolean* | *object* | *function* (default: *none*) {#config-api-property-saves-descriptions}
+### `Config.saves.descriptions` ↔ *function* (default: *none*) {#config-api-property-saves-descriptions}
 
-Sets alternate saves descriptions—by default an excerpt from the current passage is used.  Valid values are boolean `true`, which causes the passages titles to be used, an object, which maps passages' titles to descriptions, or a function, which should return the passages' description.
-
-<div role="note"><b>Note:</b>
-<ul class="asnote">
-<li><b>As boolean:</b> You should ensure that all encounterable passage titles are meaningful.</li>
-<li><b>As object:</b> If the mapping object does not contain an entry for the passage in question, then the passage's excerpt is used instead.</li>
-<li><b>As function:</b> The function is called with the passage in question as its <code>this</code> value.  If the function returns falsy, then the passage's excerpt is used instead.</li>
-</ul>
-</div>
+Sets browser saves descriptions—by default an excerpt from the current passage is used.  The callback is passed one parameter, the type of save being attempted.  If its return value is falsy, the default description is used.  If its return value is truthy, the returned description is used.
 
 #### History:
 
@@ -425,22 +417,20 @@ Sets alternate saves descriptions—by default an excerpt from the current passa
 
 ```
 // Uses passages' titles
-Config.saves.descriptions = true;
-```
-
-```
-// Uses the description mapped by the title
-Config.saves.descriptions = {
-	"passage_title" : "description text…"
+Config.saves.descriptions = function (saveType) {
+	return passage();
 };
 ```
 
 ```
-// Returns the description to be used
+// Uses the description mapped by passages' titles
+var saveDescriptions = {
+	"passage_title_a" : "description text a…",
+	"passage_title_b" : "description text b…",
+	"passage_title_c" : "description text c…"
+};
 Config.saves.descriptions = function (saveType) {
-	if (passage() === "passage_title") {
-		return "description text…";
-	}
+	return saveDescriptions[passage()];
 };
 ```
 
@@ -466,16 +456,13 @@ Config.saves.id = "a-big-huge-story-part-1";
 
 Determines whether saving is allowed within the current context.  The callback is passed one parameter, the type of save being attempted.  If its return value is falsy, the save is disallowed.  If its return value is truthy, the save is allowed to continue unperturbed.
 
+<p role="note" class="see"><b>See:</b>
+<a href="#save-api-constant-type"><code>Save.Type</code> pseudo-enumeration</a> for more information on save types.
+</p>
+
 #### History:
 
 * `v2.0.0`: Introduced.
-
-#### Save types:
-
-* `"auto"`
-* `"disk"`
-* `"serialize"`
-* `"slot"`
 
 #### Examples:
 
@@ -500,7 +487,7 @@ Config.saves.isAllowed = function (saveType) {
 ```
 // Allow auto saves only on passages tagged wtih `bookmark` or `autosave`.
 Config.saves.isAllowed = function (saveType) {
-	if (saveType === "auto") {
+	if (saveType === Save.Type.Auto) {
 		return tags().includesAny("bookmark", "autosave");
 	}
 };

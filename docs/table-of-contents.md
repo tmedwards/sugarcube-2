@@ -392,6 +392,8 @@
 ## [`Save` API](#save-api)
 
 * [Save Objects](#save-api-save-objects)
+* [Constants](#save-api-constants)
+	* [`Save.Type`](#save-api-constant-type)
 * [General](#save-api-general)
 	* [`Save.clear()`](#save-api-method-clear)
 	* [`Save.get()`](#save-api-method-get)

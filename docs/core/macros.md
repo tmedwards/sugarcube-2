@@ -515,7 +515,9 @@ Causes one or more [`<<do>>` macros](#macros-macro-do) to update their contents.
 
 #### Examples:
 
-**SEE:** [`<<do>>` macro](#macros-macro-do).
+<p role="note" class="see"><b>See:</b>
+<a href="#macros-macro-do"><code>&lt;&lt;do&gt;&gt;</code> macro</a> for examples.
+</p>
 
 <!-- *********************************************************************** -->
 
