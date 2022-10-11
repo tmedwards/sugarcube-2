@@ -59,7 +59,7 @@
 							throw new Error('tag option tag name(s) must be non-empty');
 						}
 
-						tags = String(raw).trim().splitOrEmpty(' ');
+						tags = String(raw).trim().splitOrEmpty(/\s+/);
 
 						break;
 					}
@@ -130,7 +130,7 @@
 
 			// Gather any given tags.
 			const tags = this.args.length > 0
-				? String(this.args[0]).trim().splitOrEmpty(' ')
+				? String(this.args[0]).trim().splitOrEmpty(/\s+/)
 				: [];
 
 			// Trigger a refresh, sending any tags along.
