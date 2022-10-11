@@ -90,7 +90,7 @@ var Passage = (() => { // eslint-disable-line no-unused-vars, no-var
 			Object.defineProperties(this, {
 				// Passage DOM-compatible ID.
 				id : {
-					value : `passage-${createSlug(this.title)}`
+					value : `passage-${createSlug(this.name)}`
 				},
 
 				// Passage classes array (sorted and unique).
@@ -127,7 +127,7 @@ var Passage = (() => { // eslint-disable-line no-unused-vars, no-var
 		// TODO: (v3) This should be → `get source`.
 		get text() {
 			if (this.element == null) { // lazy equality for null
-				const passage = encodeMarkup(this.title);
+				const passage = encodeMarkup(this.name);
 				const mesg    = `${L10n.get('errorTitle')}: ${L10n.get('errorNonexistentPassage', { passage })}`;
 				return `<div class="error-view"><span class="error">${mesg}</span></div>`;
 			}
@@ -158,7 +158,7 @@ var Passage = (() => { // eslint-disable-line no-unused-vars, no-var
 			// Handle `Config.passages.onProcess`.
 			if (Config.passages.onProcess) {
 				processed = Config.passages.onProcess.call(null, {
-					title : this.title,
+					title : this.name,
 					tags  : this.tags,
 					text  : processed
 				});

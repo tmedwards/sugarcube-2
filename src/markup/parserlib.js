@@ -707,7 +707,7 @@
 
 										if (passage.tags.includes('Twine.image')) {
 											imgObj.source  = passage.text;
-											imgObj.passage = passage.title;
+											imgObj.passage = passage.name;
 										}
 									}
 
@@ -851,7 +851,7 @@
 				const passage = Story.get(source);
 
 				if (passage.tags.includes('Twine.image')) {
-					el.setAttribute('data-passage', passage.title);
+					el.setAttribute('data-passage', passage.name);
 					source = passage.text.trim();
 				}
 			}

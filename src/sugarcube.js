@@ -17,7 +17,7 @@
 	Version object.
 */
 var version = Object.freeze({
-	title      : 'SugarCube',
+	name       : 'SugarCube',
 	major      : '{{BUILD_VERSION_MAJOR}}',
 	minor      : '{{BUILD_VERSION_MINOR}}',
 	patch      : '{{BUILD_VERSION_PATCH}}',
@@ -35,11 +35,11 @@ var version = Object.freeze({
 
 	short() {
 		const prerelease = this.prerelease ? `-${this.prerelease}` : '';
-		return `${this.title} (v${this.major}.${this.minor}.${this.patch}${prerelease})`;
+		return `${this.name} (v${this.major}.${this.minor}.${this.patch}${prerelease})`;
 	},
 
 	long() {
-		return `${this.title} v${this.toString()} (${this.date.toUTCString()})`;
+		return `${this.name} v${this.toString()} (${this.date.toUTCString()})`;
 	}
 });
 

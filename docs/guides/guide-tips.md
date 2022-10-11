@@ -27,7 +27,7 @@ For example, you may use the following JavaScript code to record the last non-me
 ```
 $(document).on(':passagestart', function (ev) {
 	if (!ev.passage.tags.includes('noreturn')) {
-		State.variables.return = ev.passage.title;
+		State.variables.return = ev.passage.name;
 	}
 });
 ```

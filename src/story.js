@@ -61,13 +61,13 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 
 		function validateStartingPassage(passage) {
 			if (passage.tags.includesAny(validationCodeTags)) {
-				throw new Error(`starting passage "${passage.title}" contains special tags; invalid: "${passage.tags.filter(tag => validationCodeTags.includes(tag)).sort().join('", "')}"`);
+				throw new Error(`starting passage "${passage.name}" contains special tags; invalid: "${passage.tags.filter(tag => validationCodeTags.includes(tag)).sort().join('", "')}"`);
 			}
 		}
 
 		function validateSpecialPassages(passage, ...tags) {
-			if (validationNoCodeTagPassages.includes(passage.title)) {
-				throw new Error(`special passage "${passage.title}" contains special tags; invalid: "${tags.sort().join('", "')}"`);
+			if (validationNoCodeTagPassages.includes(passage.name)) {
+				throw new Error(`special passage "${passage.name}" contains special tags; invalid: "${tags.sort().join('", "')}"`);
 			}
 
 			const codeTags  = [...validationCodeTags];
@@ -80,7 +80,7 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 			});
 
 			if (foundTags.length > 1) {
-				throw new Error(`passage "${passage.title}" contains multiple special tags; invalid: "${foundTags.sort().join('", "')}"`);
+				throw new Error(`passage "${passage.name}" contains multiple special tags; invalid: "${foundTags.sort().join('", "')}"`);
 			}
 		}
 
@@ -129,9 +129,9 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 					const passage = new Passage($this.attr('tiddler'), this);
 
 					// Special cases.
-					if (passage.title === Config.passages.start) {
+					if (passage.name === Config.passages.start) {
 						validateStartingPassage(passage);
-						_passages[passage.title] = passage;
+						_passages[passage.name] = passage;
 					}
 					else if (passage.tags.includes('init')) {
 						validateSpecialPassages(passage, 'init');
@@ -152,7 +152,7 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 
 					// All other passages.
 					else {
-						_passages[passage.title] = passage;
+						_passages[passage.name] = passage;
 					}
 				});
 
@@ -217,9 +217,9 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 
 					// Special cases.
 					if (pid === startNode && startNode !== '') {
-						Config.passages.start = passage.title;
+						Config.passages.start = passage.name;
 						validateStartingPassage(passage);
-						_passages[passage.title] = passage;
+						_passages[passage.name] = passage;
 					}
 					else if (passage.tags.includes('init')) {
 						validateSpecialPassages(passage, 'init');
@@ -232,7 +232,7 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 
 					// All other passages.
 					else {
-						_passages[passage.title] = passage;
+						_passages[passage.name] = passage;
 					}
 				});
 
@@ -318,7 +318,7 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 			throw new TypeError('Story.add passage parameter must be an instance of Passage');
 		}
 
-		const title = passage.title;
+		const title = passage.name;
 
 		if (!hasOwn(_passages, title)) {
 			_passages[title] = passage;
@@ -432,7 +432,7 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 		// For v3.
 		// /* eslint-disable no-nested-ternary */
 		// // QUESTION: Do we really need to sort the list?
-		// results.sort((a, b) => a.title === b.title ? 0 : a.title < b.title ? -1 : +1);
+		// results.sort((a, b) => a.name === b.name ? 0 : a.name < b.name ? -1 : +1);
 		// /* eslint-enable no-nested-ternary */
 
 		/* legacy */
@@ -462,7 +462,7 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 		// For v3.
 		// /* eslint-disable no-nested-ternary */
 		// // QUESTION: Do we really need to sort the list?
-		// results.sort((a, b) => a.title === b.title ? 0 : a.title < b.title ? -1 : +1);
+		// results.sort((a, b) => a.name === b.name ? 0 : a.name < b.name ? -1 : +1);
 		// /* eslint-enable no-nested-ternary */
 
 		/* legacy */

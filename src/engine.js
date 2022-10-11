@@ -176,7 +176,7 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 			}
 			catch (ex) {
 				console.error(ex);
-				Alert.error(script.title, getErrorMessage(ex));
+				Alert.error(script.name, getErrorMessage(ex));
 			}
 		});
 
@@ -187,7 +187,7 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 			}
 			catch (ex) {
 				console.error(ex);
-				Alert.error(widget.title, getErrorMessage(ex));
+				Alert.error(widget.name, getErrorMessage(ex));
 			}
 		});
 	}
@@ -213,8 +213,8 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 					const debugView = new DebugView(
 						document.createDocumentFragment(),
 						'special',
-						`${passage.title} [init-tagged]`,
-						`${passage.title} [init-tagged]`
+						`${passage.name} [init-tagged]`,
+						`${passage.name} [init-tagged]`
 					);
 					debugView.modes({ hidden : true });
 					debugView.append(debugBuffer);
@@ -223,7 +223,7 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 			}
 			catch (ex) {
 				console.error(ex);
-				Alert.error(`${passage.title} [init-tagged]`, getErrorMessage(ex));
+				Alert.error(`${passage.name} [init-tagged]`, getErrorMessage(ex));
 			}
 		});
 
@@ -481,7 +481,7 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 		// NOTE: The values of the `title` parameter and `passageTitle` variable
 		// may be empty, strings, or numbers (though using a number as reference
 		// to a numeric title should be discouraged), so after loading the passage,
-		// always refer to `passage.title` and never to the others.
+		// always refer to `passage.name` and never to the others.
 		const passage = Story.get(passageTitle);
 
 		// Execute the pre-history events and tasks.
@@ -497,7 +497,7 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 
 		// Create a new entry in the history.
 		if (!noHistory) {
-			State.create(passage.title);
+			State.create(passage.name);
 		}
 
 		// Clear the document body's classes.
@@ -539,8 +539,8 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 		const passageEl = document.createElement('div');
 		jQuery(passageEl)
 			.attr({
-				id             : passage.domId,
-				'data-passage' : passage.title,
+				id             : passage.id,
+				'data-passage' : passage.name,
 				'data-tags'    : dataTags
 			})
 			.addClass(`passage ${passage.className}`);
@@ -654,8 +654,8 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 				setDisplayTitle(Story.get('StoryDisplayTitle').processText());
 			}
 		}
-		else if (Config.passages.displayTitles && passage.title !== Config.passages.start) {
-			document.title = `${passage.title} | ${Story.title}`;
+		else if (Config.passages.displayTitles && passage.name !== Config.passages.start) {
+			document.title = `${passage.name} | ${Story.title}`;
 		}
 
 		// Scroll the window to the top.
