@@ -135,7 +135,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			}
 		}
 
-		return `Turn ${State.turns}`;
+		return `${L10n.get('turn')} ${State.turns}`;
 	}
 
 	// Find the most recent ID, ordered by date (descending).

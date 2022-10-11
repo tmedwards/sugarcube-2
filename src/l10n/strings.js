@@ -25,6 +25,7 @@ var l10nStrings = { // eslint-disable-line no-unused-vars, no-var
 	cancel   : 'Cancel',
 	close    : 'Close',
 	ok       : 'OK',
+	turn     : 'Turn', // (noun) chance to act (in a game), moment, period
 
 	/*
 		Errors.

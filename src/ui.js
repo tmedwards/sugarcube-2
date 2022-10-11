@@ -162,7 +162,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 								return () => jQuery(document).one(':dialogclosed', () => Engine.goTo(idx));
 							})(i))
 							.addClass('ui-close')
-							.text(`${L10n.get('jumptoTurn')} ${expired + i + 1}: ${passage.description()}`)
+							.text(`${L10n.get('jumptoTurn')} ${expired + i + 1}`)
 					)
 					.appendTo(list);
 			}
