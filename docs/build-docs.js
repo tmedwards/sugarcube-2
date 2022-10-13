@@ -195,7 +195,7 @@ function compileMarkdown(sourceConfig) {
 	return concatFiles(sourceConfig.files, (contents /* , filename */) => {
 		try {
 			// TODO: Replace `cmark-gfm` with a JavaScript solution.
-			return execFileSync('cmark-gfm', ['-t', 'html'], {
+			return execFileSync('cmark-gfm', ['--unsafe', '-t', 'html'], {
 				input : contents
 			});
 		}
