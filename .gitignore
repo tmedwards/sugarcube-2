@@ -3,6 +3,7 @@
 
 # Documentation
 *.html
+!/docs/templates/html/*
 
 # Development
 build/
