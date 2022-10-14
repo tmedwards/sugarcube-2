@@ -549,6 +549,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 						throw new Error(L10n.get('saveErrorIdMismatch'));
 					}
 
+					// Delete existing saves before storing the imports.
 					autoClear();
 					slotClear();
 
@@ -601,6 +602,10 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 		if (oldSaves === null) {
 			return;
 		}
+
+		// Delete existing saves before storing the migrated saves.
+		autoClear();
+		slotClear();
 
 		// Old monolithic saves object:
 		// 	{
@@ -673,6 +678,9 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 				}
 			}
 		});
+
+		// Delete the old saves object.
+		storage.delete('saves');
 	}
 
 
