@@ -50,8 +50,10 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 	function init() {
 		if (DEBUG) { console.log('[Save/init()]'); }
 
-		// Convert saves from the old monolithic save object to the new style.
-		browserUpdateSaves();
+		// Migrate saves from the old monolithic v2 save object to the
+		// new v3 style with separate entries not only for each save but
+		// also for a save's info and data chunks.
+		browserMigrateV2Saves();
 
 		return true;
 	}
@@ -592,7 +594,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 		});
 	}
 
-	function browserUpdateSaves() {
+	function browserMigrateV2Saves() {
 		const oldSaves = storage.get('saves');
 
 		// Bail out if no old saves object exists.
@@ -600,13 +602,13 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			return;
 		}
 
-		// Old saves object:
+		// Old monolithic saves object:
 		// 	{
 		// 		autosave : null | save,
 		// 		slots    : Array<save>
 		// 	}
 		//
-		// Old save object:
+		// Old auto & slot save objects:
 		// 	{
 		// 		title    : description,
 		// 		date     : unix_datestamp,
@@ -616,7 +618,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 		// 		version  : undefined | version
 		// 	}
 
-		// Convert the auto save.
+		// Migrate the auto save.
 		if (oldSaves.autosave) {
 			const oldAuto = oldSaves.autosave;
 
@@ -645,7 +647,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			}
 		}
 
-		// Convert slot saves.
+		// Migrate the slot saves.
 		oldSaves.slots.forEach((oldSlot, id) => {
 			const info = {
 				date : oldSlot.date,
@@ -1018,7 +1020,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			value : Object.preventExtensions(Object.create(null, {
 				ok     : { value : autoIsEnabled },
 				has    : { value() { autoHas(0); } },
-				// get    : { value() { autoGet(0); } },
+				get    : { value() { autoGetInfo(0); } },
 				load   : { value() { autoLoad(0); } },
 				save   : { value : autoSave },
 				delete : { value() { autoDelete(0); } },
@@ -1040,7 +1042,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 				isEmpty : { value() { return slotSize() === 0; } },
 				count   : { value : slotSize },
 				has     : { value : slotHas },
-				// get     : { value : slotGet },
+				get     : { value : slotGetInfo },
 				load    : { value : slotLoad },
 				save    : { value : slotSave },
 				delete  : { value : slotDelete },
