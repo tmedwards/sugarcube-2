@@ -102,8 +102,8 @@ var L10n = (() => { // eslint-disable-line no-unused-vars, no-var
 						// Errors.
 						case 'errorTitle':              value = strings.errors.title; break;
 						case 'errorNonexistentPassage': value = strings.errors.nonexistentPassage; break;
-						case 'errorSaveMissingData':    value = strings.errors.saveMissingData; break;
-						case 'errorSaveIdMismatch':     value = strings.errors.saveIdMismatch; break;
+						case 'saveErrorInvalidData':    value = strings.errors.saveMissingData; break;
+						case 'saveErrorIdMismatch':     value = strings.errors.saveIdMismatch; break;
 
 						// Warnings.
 						case 'warningDegraded': value = strings.warnings.degraded; break;
@@ -124,19 +124,19 @@ var L10n = (() => { // eslint-disable-line no-unused-vars, no-var
 						case 'jumptoUnavailable': value = strings.jumpto.unavailable; break;
 
 						// Saves.
-						case 'savesTitle':       value = strings.saves.title; break;
-						case 'savesDisallowed':  value = strings.saves.disallowed; break;
-						case 'savesIncapable':   value = strings.saves.incapable; break;
-						case 'savesLabelAuto':   value = strings.saves.labelAuto; break;
-						case 'savesLabelDelete': value = strings.saves.labelDelete; break;
-						case 'savesLabelExport': value = strings.saves.labelExport; break;
-						case 'savesLabelImport': value = strings.saves.labelImport; break;
-						case 'savesLabelLoad':   value = strings.saves.labelLoad; break;
-						case 'savesLabelClear':  value = strings.saves.labelClear; break;
-						case 'savesLabelSave':   value = strings.saves.labelSave; break;
-						case 'savesLabelSlot':   value = strings.saves.labelSlot; break;
-						case 'savesUnavailable': value = strings.saves.unavailable; break;
-						case 'savesUnknownDate': value = strings.saves.unknownDate; break;
+						case 'savesTitle':         value = strings.saves.title; break;
+						case 'savesDisallowed':    value = strings.saves.disallowed; break;
+						case 'warningNoSaves':     value = strings.saves.incapable; break;
+						case 'savesLabelAuto':     value = strings.saves.labelAuto; break;
+						case 'savesLabelDelete':   value = strings.saves.labelDelete; break;
+						case 'savesLabelDiskSave':   value = strings.saves.labelExport; break;
+						case 'savesLabelDiskLoad': value = strings.saves.labelImport; break;
+						case 'savesLabelLoad':     value = strings.saves.labelLoad; break;
+						case 'savesLabelClear':    value = strings.saves.labelClear; break;
+						case 'savesLabelSave':     value = strings.saves.labelSave; break;
+						case 'savesLabelSlot':     value = strings.saves.labelSlot; break;
+						case 'savesUnavailable':   value = strings.saves.unavailable; break;
+						case 'savesUnknownDate':   value = strings.saves.unknownDate; break;
 
 						// Settings.
 						case 'settingsTitle': value = strings.settings.title; break;

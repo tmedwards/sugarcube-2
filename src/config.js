@@ -44,7 +44,7 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 	let _savesDescriptions;
 	let _savesId; // NOTE: Initially set by `Story.load()`.
 	let _savesIsAllowed;
-	let _savesMaxAuto      = 1;
+	let _savesMaxAuto      = 0;
 	let _savesMaxSlot      = 8;
 	let _savesVersion;
 
@@ -257,8 +257,12 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 				if (value != null) { // lazy equality for null
 					const valueType = getTypeOf(value);
 
-					if (valueType !== 'boolean' && valueType !== 'string' && valueType !== 'function') {
-						throw new TypeError(`Config.saves.autoload must be a boolean, string, function, or null/undefined (received: ${valueType})`);
+					if (
+						valueType !== 'boolean'
+						&& (valueType !== 'string' || value !== 'prompt')
+						&& valueType !== 'function'
+					) {
+						throw new TypeError(`Config.saves.autoload must be a boolean, string ('prompt'), function, or null/undefined (received: ${valueType})`);
 					}
 				}
 
@@ -301,8 +305,8 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 				if (!Number.isInteger(value)) {
 					throw new TypeError('Config.saves.maxAutoSaves must be an integer');
 				}
-				else if (value < 0 || value > Save.MAX_ID + 1) {
-					throw new RangeError(`Config.saves.maxAutoSaves out of bounds (range: 0–${Save.MAX_ID + 1}; received: ${value})`);
+				else if (value < 0 || value > Save.MAX_IDX + 1) {
+					throw new RangeError(`Config.saves.maxAutoSaves out of bounds (range: 0–${Save.MAX_IDX + 1}; received: ${value})`);
 				}
 
 				_savesMaxAuto = value;
@@ -313,8 +317,8 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 				if (!Number.isInteger(value)) {
 					throw new TypeError('Config.saves.maxSlotSaves must be an integer');
 				}
-				else if (value < 0 || value > Save.MAX_ID + 1) {
-					throw new RangeError(`Config.saves.maxSlotSaves out of bounds (range: 0–${Save.MAX_ID + 1}; received: ${value})`);
+				else if (value < 0 || value > Save.MAX_IDX + 1) {
+					throw new RangeError(`Config.saves.maxSlotSaves out of bounds (range: 0–${Save.MAX_IDX + 1}; received: ${value})`);
 				}
 
 				_savesMaxSlot = value;

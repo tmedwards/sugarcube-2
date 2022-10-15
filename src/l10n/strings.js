@@ -33,9 +33,6 @@ var l10nStrings = { // eslint-disable-line no-unused-vars, no-var
 	errorTitle              : 'Error',
 	errorToggle             : 'Toggle the error view',
 	errorNonexistentPassage : 'the passage "{passage}" does not exist', // NOTE: `passage` is supplied locally
-	errorSaveDiskLoadFailed : 'failed to load save file from disk',
-	errorSaveMissingData    : 'save is missing required data. Either the loaded file is not a save or the save has become corrupted',
-	errorSaveIdMismatch     : 'save is from the wrong {identity}',
 
 	/*
 		Warnings.
@@ -44,6 +41,7 @@ var l10nStrings = { // eslint-disable-line no-unused-vars, no-var
 	_warningOutroDegraded : ', so this {identity} is running in a degraded mode. You may be able to continue, however, some parts may not work properly.',
 	warningNoWebStorage   : '{_warningIntroLacking} the Web Storage API{_warningOutroDegraded}',
 	warningDegraded       : '{_warningIntroLacking} some of the capabilities required by this {identity}{_warningOutroDegraded}',
+	warningNoSaves        : '{_warningIntroLacking} the capabilities required to support saves, so saves have been disabled for this session.', // was: savesIncapable
 
 	/*
 		Debug bar.
@@ -79,19 +77,27 @@ var l10nStrings = { // eslint-disable-line no-unused-vars, no-var
 	/*
 		Saves.
 	*/
-	savesTitle       : 'Saves',
-	savesDisallowed  : 'Saving has been disallowed on this passage.',
-	savesIncapable   : '{_warningIntroLacking} the capabilities required to support saves, so saves have been disabled for this session.',
-	savesLabelAuto   : 'Autosave',
-	savesLabelDelete : 'Delete',
-	savesLabelExport : 'Save to Disk\u2026',
-	savesLabelImport : 'Load from Disk\u2026',
-	savesLabelLoad   : 'Load',
-	savesLabelClear  : 'Delete All',
-	savesLabelSave   : 'Save',
-	savesLabelSlot   : 'Slot',
-	savesUnavailable : 'No save slots found\u2026',
-	savesUnknownDate : 'unknown',
+	savesTitle            : 'Saves',
+	savesHeaderBrowser    : 'Browser Saves',
+	savesHeaderDisk       : 'Disk Saves',
+	savesDisallowed       : 'Saving has been disallowed on this passage.',
+	savesLabelAuto        : 'Auto',
+	savesLabelClear       : 'Delete All',
+	savesLabelDelete      : 'Delete',
+	savesLabelDiskExport  : 'Export\u2026',
+	savesLabelDiskImport  : 'Import\u2026',
+	savesLabelDiskLoad    : 'Load from Disk\u2026', // was: savesLabelImport
+	savesLabelDiskSave    : 'Save to Disk\u2026', // was: savesLabelExport
+	savesLabelLoad        : 'Load',
+	savesLabelSave        : 'Save',
+	savesLabelSlot        : 'Slot',
+	savesUnavailable      : 'No save slots found\u2026',
+	savesUnknownDate      : 'unknown',
+	saveErrorDecodeFail   : 'unable to decode save, likely due to corruption',
+	saveErrorDiskLoadFail : 'failed to load save file from disk', // was: errorSaveDiskLoadFailed
+	saveErrorIdMismatch   : 'save is from the wrong {identity}', // was: errorSaveIdMismatch
+	saveErrorInvalidData  : 'save is missing required data, likely due to corruption', // was: errorSaveMissingData
+	saveErrorNonexistent  : 'save does not exist',
 
 	/*
 		Settings.

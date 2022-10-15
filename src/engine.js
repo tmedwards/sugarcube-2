@@ -284,36 +284,38 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 			engineShow();
 		}
 		else {
-			let loadStart = true;
+			const autoloadType = typeof Config.saves.autoload;
 
-			switch (typeof Config.saves.autoload) {
-				case 'boolean':
-					if (Config.saves.autoload && Save.autosave.ok() && Save.autosave.has()) {
-						if (DEBUG) { console.log(`\tattempting autoload: "${Save.autosave.get().title}"`); }
-
-						loadStart = !Save.autosave.load();
-					}
-					break;
-				case 'string':
-					if (Config.saves.autoload === 'prompt' && Save.autosave.ok() && Save.autosave.has()) {
-						loadStart = false;
-						UI.buildAutoload();
-						Dialog.open();
-					}
-					break;
-				case 'function':
-					if (Save.autosave.ok() && Save.autosave.has() && !!Config.saves.autoload()) {
-						if (DEBUG) { console.log(`\tattempting autoload: "${Save.autosave.get().title}"`); }
-
-						loadStart = !Save.autosave.load();
-					}
-					break;
+			if (autoloadType === 'string') {
+				if (Config.saves.autoload === 'prompt') {
+					UI.buildAutoload();
+					Dialog.open();
+				}
 			}
+			else {
+				new Promise((resolve, reject) => {
+					if (
+						Save.browser.hasContinue()
+						&& (
+							autoloadType === 'boolean' && Config.saves.autoload
+							|| autoloadType === 'function' && Config.saves.autoload()
+						)
+					) {
+						return resolve();
+					}
 
-			if (loadStart) {
-				if (DEBUG) { console.log(`\tstarting passage: "${Config.passages.start}"`); }
+					reject(); // eslint-disable-line prefer-promise-reject-errors
+				})
+					.then(() => {
+						if (DEBUG) { console.log('\tattempting autoload of browser continue'); }
 
-				enginePlay(Config.passages.start);
+						return Save.browser.continue();
+					})
+					.catch(() => {
+						if (DEBUG) { console.log(`\tstarting passage: "${Config.passages.start}"`); }
+
+						enginePlay(Config.passages.start);
+					});
 			}
 		}
 	}
@@ -742,22 +744,8 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 			.attr('tabindex', 0);
 
 		// Handle autosaves.
-		switch (typeof Config.saves.autosave) {
-			case 'boolean':
-				if (Config.saves.autosave) {
-					Save.autosave.save();
-				}
-				break;
-			case 'object':
-				if (passage.tags.some(tag => Config.saves.autosave.includes(tag))) {
-					Save.autosave.save();
-				}
-				break;
-			case 'function':
-				if (Config.saves.autosave()) {
-					Save.autosave.save();
-				}
-				break;
+		if (State.turns > 1 && Save.browser.auto.isEnabled()) {
+			Save.browser.auto.save();
 		}
 
 		// Execute post-play events.
@@ -817,7 +805,7 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 			Constants.
 		*/
 		States    : { value : States },
-		DOM_DELAY : { value : DOM_DELAY },
+		DOM_DELAY : { get : () => DOM_DELAY },
 
 		/*
 			Core Functions.

@@ -126,11 +126,23 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 		jQuery(document).one('click.autoload', '.ui-close', ev => {
 			const isAutoloadOk = ev.target.id === 'autoload-ok';
 			jQuery(document).one(':dialogclosed', () => {
-				if (DEBUG) { console.log(`\tattempting autoload: "${Save.autosave.get().title}"`); }
+				new Promise((resolve, reject) => {
+					if (isAutoloadOk) {
+						resolve();
+					}
 
-				if (!isAutoloadOk || !Save.autosave.load()) {
-					Engine.play(Config.passages.start);
-				}
+					reject(); // eslint-disable-line prefer-promise-reject-errors
+				})
+					.then(() => {
+						if (DEBUG) { console.log('\tattempting autoload of browser continue'); }
+
+						return Save.browser.continue();
+					})
+					.catch(() => {
+						if (DEBUG) { console.log(`\tstarting passage: "${Config.passages.start}"`); }
+
+						Engine.play(Config.passages.start);
+					});
 			});
 		});
 
@@ -263,14 +275,10 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 				return $btn;
 			}
 
-			// const saves  = Save.get();
 			const $tbody = jQuery(document.createElement('tbody'));
 
-			const autoInfoList = Save.browser.auto.getInfoList();
-
-			for (let i = 0; i < autoInfoList.length; ++i) {
-				const { id, info } = autoInfoList[i];
-
+			// Auto saves.
+			Save.browser.auto.getInfoList().forEach(({ idx, info }) => {
 				const $tdSlot = jQuery(document.createElement('td'));
 				const $tdLoad = jQuery(document.createElement('td'));
 				const $tdDesc = jQuery(document.createElement('td'));
@@ -282,7 +290,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 						title        : L10n.get('savesLabelAuto'),
 						'aria-label' : L10n.get('savesLabelAuto')
 					})
-					.text('A') // '\u25C6' Black Diamond
+					.text(`A${idx + 1}`) // '\u25C6' Black Diamond
 					.appendTo($tdSlot);
 
 				// Add the load button.
@@ -290,7 +298,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 					'load',
 					'ui-close',
 					`${L10n.get('savesLabelLoad')} ${L10n.get('savesLabelAuto')}`,
-					id,
+					idx,
 					id => {
 						jQuery(document).one(':dialogclosed', () => {
 							Save.browser.auto.load(id)
@@ -320,9 +328,9 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 					'delete',
 					null,
 					`${L10n.get('savesLabelDelete')} ${L10n.get('savesLabelAuto')}`,
-					id,
-					id => {
-						Save.browser.auto.delete(id);
+					idx,
+					idx => {
+						Save.browser.auto.delete(idx);
 						uiBuildSaves();
 					}
 				));
@@ -333,33 +341,31 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 					.append($tdDesc)
 					.append($tdDele)
 					.appendTo($tbody);
-			}
-
-			const slotInfoObj = {};
-			let slotLength    = Config.saves.maxSlotSaves;
-
-			for (let i = 0; i < slotLength; ++i) {
-				slotInfoObj[i] = { id : i };
-			}
-
-			Save.browser.slot.getInfoList().forEach((entry, i) => {
-				slotInfoObj[i] = entry;
-
-				if (i > Config.saves.maxSlotSaves) {
-					++slotLength;
-				}
 			});
 
-			for (let i = 0; i < slotLength; ++i) {
-				const { id, info } = slotInfoObj[i];
+			// Slot saves.
+			const slotInfoList = [];
 
+			// Add entries to the array.  May be sparse.
+			Save.browser.slot.getInfoList().forEach(entry => {
+				slotInfoList[entry.idx] = entry;
+			});
+
+			// Fill in slots as necessary with empty entries.
+			for (let i = 0; i < Config.saves.maxSlotSaves; ++i) {
+				if (!slotInfoList[i]) {
+					slotInfoList[i] = { idx : i };
+				}
+			}
+
+			slotInfoList.forEach(({ idx, info }) => {
 				const $tdSlot = jQuery(document.createElement('td'));
 				const $tdLoad = jQuery(document.createElement('td'));
 				const $tdDesc = jQuery(document.createElement('td'));
 				const $tdDele = jQuery(document.createElement('td'));
 
 				// Add the slot ID.
-				$tdSlot.append(document.createTextNode(id + 1));
+				$tdSlot.append(document.createTextNode(idx + 1));
 
 				if (info) {
 					// Add the load button.
@@ -367,10 +373,10 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 						'load',
 						'ui-close',
 						`${L10n.get('savesLabelLoad')} ${L10n.get('savesLabelSlot')}`,
-						id,
-						id => {
+						idx,
+						idx => {
 							jQuery(document).one(':dialogclosed', () => {
-								Save.browser.slot.load(id)
+								Save.browser.slot.load(idx)
 									.then(
 										Engine.show,
 										ex => showAlert(`${ex.message.toUpperFirst()}.</p><p>${L10n.get('aborting')}.`)
@@ -397,9 +403,9 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 						'delete',
 						null,
 						`${L10n.get('savesLabelDelete')} ${L10n.get('savesLabelSlot')}`,
-						id,
-						id => {
-							Save.browser.slot.delete(id);
+						idx,
+						idx => {
+							Save.browser.slot.delete(idx);
 							uiBuildSaves();
 						}
 					));
@@ -410,8 +416,8 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 						'save',
 						'ui-close',
 						`${L10n.get('savesLabelSave')} ${L10n.get('savesLabelSlot')}`,
-						id,
-						id < Config.saves.maxSlotSaves && savesAllowed ? Save.browser.slot.save : null
+						idx,
+						idx < Config.saves.maxSlotSaves && savesAllowed ? Save.browser.slot.save : null
 					));
 
 					// Add the description.
@@ -422,7 +428,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 						'delete',
 						null,
 						`${L10n.get('savesLabelDelete')} ${L10n.get('savesLabelSlot')}`,
-						id
+						idx
 					));
 				}
 
@@ -432,7 +438,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 					.append($tdDesc)
 					.append($tdDele)
 					.appendTo($tbody);
-			}
+			});
 
 			return jQuery(document.createElement('table'))
 				.attr('id', 'saves-list')
@@ -445,7 +451,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 
 		// Bail out if both saves and the file API are disabled/missing.
 		if (!browserEnabled && !Has.fileAPI) {
-			showAlert(L10n.get('savesIncapable'));
+			showAlert(L10n.get('warningNoSaves'));
 			return false;
 		}
 
@@ -466,13 +472,13 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 				$btnBar.append(createActionItem(
 					'export',
 					'ui-close',
-					L10n.get('savesLabelExport'),
+					L10n.get('savesLabelDiskSave'),
 					savesAllowed ? () => Save.disk.save(Story.name) : null
 				));
 				$btnBar.append(createActionItem(
 					'import',
 					null,
-					L10n.get('savesLabelImport'),
+					L10n.get('savesLabelDiskLoad'),
 					() => $dialogBody.find('#saves-disk-load-handler').trigger('click')
 				));
 
