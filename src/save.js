@@ -463,7 +463,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 	function browserHasContinue() {
-		return findNewest().idx !== -1;
+		return getKeys(isSaveKey).length > 0;
 	}
 
 	function browserImport(event) {
