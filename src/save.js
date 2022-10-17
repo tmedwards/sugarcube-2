@@ -20,24 +20,18 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 		Slot      : 'slot'
 	});
 
-	// Save index maximum (`0`-based).
+	// Save index maximum value (`0`-based).
 	const MAX_IDX = 15;
 
-	// Save key constants.
-	const IDX_DELIM        = ':';
-	const SAVE_SUBKEY      = 'save.';
-	const AUTO_SUBKEY      = `${SAVE_SUBKEY}auto.`;
-	const AUTO_DATA_SUBKEY = `${AUTO_SUBKEY}data${IDX_DELIM}`;
-	const AUTO_INFO_SUBKEY = `${AUTO_SUBKEY}info${IDX_DELIM}`;
-	const SLOT_SUBKEY      = `${SAVE_SUBKEY}slot.`;
-	const SLOT_DATA_SUBKEY = `${SLOT_SUBKEY}data${IDX_DELIM}`;
-	const SLOT_INFO_SUBKEY = `${SLOT_SUBKEY}info${IDX_DELIM}`;
+	// Browser save key constants.
+	const IDX_DELIMITER = ':';
+	const SAVE_SUBKEY   = 'save.';
+	const AUTO_SUBKEY   = `${SAVE_SUBKEY}auto${IDX_DELIMITER}`;
+	const SLOT_SUBKEY   = `${SAVE_SUBKEY}slot${IDX_DELIMITER}`;
 
-	// Set of onLoad handlers.
-	const _onLoadHandlers = new Set();
-
-	// Set of onSave handlers.
-	const _onSaveHandlers = new Set();
+	// Save handler sets.
+	const onLoadHandlers = new Set();
+	const onSaveHandlers = new Set();
 
 
 	/*******************************************************************************
@@ -51,8 +45,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 		if (DEBUG) { console.log('[Save/init()]'); }
 
 		// Migrate saves from the old monolithic v2 save object to the
-		// new v3 style with separate entries not only for each save but
-		// also for a save's info and data chunks.
+		// new v3 style with separate entries for each save.
 		browserMigrateV2Saves();
 
 		return true;
@@ -60,86 +53,27 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 
 
 	/*******************************************************************************
-		Browser Saves Predicate Functions.
+		Saves Utility Functions.
 	*******************************************************************************/
 
-	// function isSaveKey(key) {
-	// 	return key.startsWith(SAVE_SUBKEY);
-	// }
-
-	// function isDataKey(key) {
-	// 	return key.startsWith(AUTO_DATA_SUBKEY) || key.startsWith(SLOT_DATA_SUBKEY);
-	// }
-
-	function isInfoKey(key) {
-		return key.startsWith(AUTO_INFO_SUBKEY) || key.startsWith(SLOT_INFO_SUBKEY);
-	}
-
-	function isAutoKey(key) {
-		return key.startsWith(AUTO_SUBKEY);
-	}
-
-	// function isAutoDataKey(key) {
-	// 	return key.startsWith(AUTO_DATA_SUBKEY);
-	// }
-
-	function isAutoInfoKey(key) {
-		return key.startsWith(AUTO_INFO_SUBKEY);
-	}
-
-	function isSlotKey(key) {
-		return key.startsWith(SLOT_SUBKEY);
-	}
-
-	// function isSlotDataKey(key) {
-	// 	return key.startsWith(SLOT_DATA_SUBKEY);
-	// }
-
-	function isSlotInfoKey(key) {
-		return key.startsWith(SLOT_INFO_SUBKEY);
-	}
-
-
-	/*******************************************************************************
-		Browser Saves Utility Functions.
-	*******************************************************************************/
-
-	function getKeys(predicate) {
-		return storage.keys().filter(predicate);
-	}
-
-	function getIdxFromKey(key) {
-		const pos = key.lastIndexOf(IDX_DELIM);
-
-		if (pos === -1) {
-			throw new Error(`unable to get index from save key (received: ${key})`);
+	function createDatestamp(date) {
+		if (!(date instanceof Date)) {
+			throw new TypeError('createDatestamp date parameter must be a Date object');
 		}
 
-		return Number(key.slice(pos + 1));
-	}
+		let MM = date.getMonth() + 1;
+		let DD = date.getDate();
+		let hh = date.getHours();
+		let mm = date.getMinutes();
+		let ss = date.getSeconds();
 
-	function getTypeFromKey(key) {
-		return isAutoKey(key) ? Type.Auto : Type.Slot;
-	}
+		if (MM < 10) { MM = `0${MM}`; }
+		if (DD < 10) { DD = `0${DD}`; }
+		if (hh < 10) { hh = `0${hh}`; }
+		if (mm < 10) { mm = `0${mm}`; }
+		if (ss < 10) { ss = `0${ss}`; }
 
-	function getDescription(userDesc, saveType) {
-		let desc;
-
-		// Try the supplied description.
-		if (userDesc != null) { // lazy equality for null
-			desc = String(userDesc).trim();
-		}
-
-		// Try the `Config.saves.descriptions` description.
-		if (!desc && typeof Config.saves.descriptions === 'function') {
-			desc =  String(Config.saves.descriptions(saveType)).trim();
-		}
-
-		if (desc) {
-			return desc;
-		}
-
-		return `${L10n.get('turn')} ${State.turns}`;
+		return `${date.getFullYear()}${MM}${DD}-${hh}${mm}${ss}`;
 	}
 
 	// Find the most recent index, ordered by date (descending).
@@ -147,9 +81,9 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 		let keys;
 
 		switch (saveType) {
-			case Type.Auto: keys = getKeys(isAutoInfoKey); break;
-			case Type.Slot: keys = getKeys(isSlotInfoKey); break;
-			default:        keys = getKeys(isInfoKey); break;
+			case Type.Auto: keys = getKeys(isAutoKey); break;
+			case Type.Slot: keys = getKeys(isSlotKey); break;
+			default:        keys = getKeys(isSaveKey); break;
 		}
 
 		switch (keys.length) {
@@ -173,18 +107,80 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			.value;
 	}
 
+	function getDesc(userDesc, saveType) {
+		let desc;
+
+		// Try the given description.
+		if (userDesc != null) { // lazy equality for null
+			desc = String(userDesc).trim();
+		}
+
+		// Try the `Config.saves.descriptions` description.
+		if (!desc && typeof Config.saves.descriptions === 'function') {
+			desc =  String(Config.saves.descriptions(saveType)).trim();
+		}
+
+		if (desc) {
+			return desc;
+		}
+
+		return `${L10n.get('turn')} ${State.turns}`;
+	}
+
+	function getIdxFromKey(key) {
+		const pos = key.lastIndexOf(IDX_DELIMITER);
+
+		if (pos === -1) {
+			throw new Error(`unable to get index from save key (received: ${key})`);
+		}
+
+		return Number(key.slice(pos + 1));
+	}
+
+	function getKeys(predicate) {
+		return storage.keys().filter(predicate);
+	}
+
+	function getTypeFromKey(key) {
+		return isAutoKey(key) ? Type.Auto : Type.Slot;
+	}
+
+	function isSaveKey(key) {
+		return key.startsWith(SAVE_SUBKEY);
+	}
+
+	function isAutoKey(key) {
+		return key.startsWith(AUTO_SUBKEY);
+	}
+
+	function isSlotKey(key) {
+		return key.startsWith(SLOT_SUBKEY);
+	}
+
+	function saveBlobToDiskAs(data, filename, extension) {
+		if (typeof filename !== 'string') {
+			throw new Error('filename parameter must be a string');
+		}
+
+		const baseName = createFilename(filename);
+
+		if (baseName === '') {
+			throw new Error('filename parameter must not consist solely of illegal characters');
+		}
+
+		const datestamp = createDatestamp(new Date());
+		const fileExt   = createFilename(extension) || 'save';
+
+		saveAs(
+			new Blob([data], { type : 'text/plain;charset=UTF-8' }),
+			`${baseName}-${datestamp}.${fileExt}`
+		);
+	}
+
 
 	/*******************************************************************************
 		Browser Auto Saves Functions.
 	*******************************************************************************/
-
-	function autoDataKeyFromIdx(idx) {
-		return `${AUTO_DATA_SUBKEY}${idx}`;
-	}
-
-	function autoInfoKeyFromIdx(idx) {
-		return `${AUTO_INFO_SUBKEY}${idx}`;
-	}
 
 	function autoClear() {
 		getKeys(isAutoKey).forEach(key => storage.delete(key));
@@ -200,12 +196,21 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			throw new RangeError(`auto save index out of bounds (range: 0–${MAX_IDX}; received: ${idx})`);
 		}
 
-		storage.delete(autoDataKeyFromIdx(idx));
-		storage.delete(autoInfoKeyFromIdx(idx));
+		storage.delete(autoKeyFromIdx(idx));
 		return true;
 	}
 
-	function autoGetInfo(idx) {
+	function autoEntries() {
+		// NOTE: Order by date (descending).
+		return getKeys(isAutoKey)
+			.map(key => ({
+				idx  : getIdxFromKey(key),
+				save : storage.get(key)
+			}))
+			.sort((a, b) => b.info.date - a.info.date);
+	}
+
+	function autoGet(idx) {
 		if (!Number.isInteger(idx)) {
 			throw new TypeError('auto save index must be an integer');
 		}
@@ -214,17 +219,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			throw new RangeError(`auto save index out of bounds (range: 0–${MAX_IDX}; received: ${idx})`);
 		}
 
-		return storage.get(autoInfoKeyFromIdx(idx));
-	}
-
-	function autoGetInfoList() {
-		// NOTE: Order by date (descending).
-		return getKeys(isAutoInfoKey)
-			.map(key => ({
-				idx  : getIdxFromKey(key),
-				info : storage.get(key)
-			}))
-			.sort((a, b) => b.info.date - a.info.date);
+		return storage.get(autoKeyFromIdx(idx));
 	}
 
 	function autoHas(idx) {
@@ -236,11 +231,15 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			throw new RangeError(`auto save index out of bounds (range: 0–${MAX_IDX}; received: ${idx})`);
 		}
 
-		return storage.has(autoInfoKeyFromIdx(idx));
+		return storage.has(autoKeyFromIdx(idx));
 	}
 
 	function autoIsEnabled() {
 		return storage.name !== 'cookie' && Config.saves.maxAutoSaves > 0;
+	}
+
+	function autoKeyFromIdx(idx) {
+		return `${AUTO_SUBKEY}${idx}`;
 	}
 
 	function autoLoad(idx) {
@@ -253,14 +252,14 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 				throw new RangeError(`auto save index out of bounds (range: 0–${MAX_IDX}; received: ${idx})`);
 			}
 
-			const data = storage.get(autoDataKeyFromIdx(idx));
+			const save = storage.get(autoKeyFromIdx(idx));
 
-			if (!data) {
+			if (!save) {
 				throw new Error(L10n.get('saveErrorNonexistent'));
 			}
 
 			// NOTE: May throw exceptions.
-			unmarshal(data);
+			unmarshal(save);
 
 			resolve(true);
 		});
@@ -275,26 +274,20 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			return false;
 		}
 
-		const info = {
-			date : Date.now(),
-			desc : getDescription(desc, Type.Auto)
+		const details = {
+			desc : getDesc(desc, Type.Auto),
+			type : Type.Auto
 		};
 
 		if (metadata != null) { // lazy equality for null
-			info.metadata = metadata;
+			details.metadata = metadata;
 		}
 
-		const idx     = (findNewest(Type.Auto).idx + 1) % Config.saves.maxAutoSaves;
-		const dataKey = autoDataKeyFromIdx(idx);
-		const infoKey = autoInfoKeyFromIdx(idx);
-		const data    = marshal(Type.Auto);
+		const save = marshal(details);
+		const idx  = (findNewest(Type.Auto).idx + 1) % Config.saves.maxAutoSaves;
+		const key  = autoKeyFromIdx(idx);
 
-		if (!storage.set(dataKey, data)) {
-			return false;
-		}
-
-		if (!storage.set(infoKey, info)) {
-			storage.delete(dataKey);
+		if (!storage.set(key, save)) {
 			return false;
 		}
 
@@ -302,7 +295,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 	function autoSize() {
-		return getKeys(isAutoInfoKey).length;
+		return getKeys(isAutoKey).length;
 	}
 
 
@@ -310,12 +303,8 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 		Browser Slot Saves Functions.
 	*******************************************************************************/
 
-	function slotDataKeyFromIdx(idx) {
-		return `${SLOT_DATA_SUBKEY}${idx}`;
-	}
-
-	function slotInfoKeyFromIdx(idx) {
-		return `${SLOT_INFO_SUBKEY}${idx}`;
+	function slotKeyFromIdx(idx) {
+		return `${SLOT_SUBKEY}${idx}`;
 	}
 
 	function slotClear() {
@@ -332,12 +321,21 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			throw new RangeError(`slot save index out of bounds (range: 0–${MAX_IDX}; received: ${idx})`);
 		}
 
-		storage.delete(slotDataKeyFromIdx(idx));
-		storage.delete(slotInfoKeyFromIdx(idx));
+		storage.delete(slotKeyFromIdx(idx));
 		return true;
 	}
 
-	function slotGetInfo(idx) {
+	function slotEntries() {
+		// NOTE: Order by ID (ascending).
+		return getKeys(isSlotKey)
+			.map(key => ({
+				idx  : getIdxFromKey(key),
+				save : storage.get(key)
+			}))
+			.sort((a, b) => a.idx - b.idx);
+	}
+
+	function slotGet(idx) {
 		if (!Number.isInteger(idx)) {
 			throw new TypeError('slot save index must be an integer');
 		}
@@ -346,17 +344,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			throw new RangeError(`slot save index out of bounds (range: 0–${MAX_IDX}; received: ${idx})`);
 		}
 
-		return storage.get(slotInfoKeyFromIdx(idx));
-	}
-
-	function slotGetInfoList() {
-		// NOTE: Order by ID (ascending).
-		return getKeys(isSlotInfoKey)
-			.map(key => ({
-				idx  : getIdxFromKey(key),
-				info : storage.get(key)
-			}))
-			.sort((a, b) => a.idx - b.idx);
+		return storage.get(slotKeyFromIdx(idx));
 	}
 
 	function slotHas(idx) {
@@ -368,7 +356,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			throw new RangeError(`slot save index out of bounds (range: 0–${MAX_IDX}; received: ${idx})`);
 		}
 
-		return storage.has(slotInfoKeyFromIdx(idx));
+		return storage.has(slotKeyFromIdx(idx));
 	}
 
 	function slotIsEnabled() {
@@ -385,14 +373,14 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 				throw new RangeError(`slot save index out of bounds (range: 0–${MAX_IDX}; received: ${idx})`);
 			}
 
-			const data = storage.get(slotDataKeyFromIdx(idx));
+			const save = storage.get(slotKeyFromIdx(idx));
 
-			if (!data) {
+			if (!save) {
 				throw new Error(L10n.get('saveErrorNonexistent'));
 			}
 
 			// NOTE: May throw exceptions.
-			unmarshal(data);
+			unmarshal(save);
 
 			resolve(true);
 		});
@@ -415,25 +403,19 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			throw new Error(L10n.get('savesDisallowed'));
 		}
 
-		const info = {
-			date : Date.now(),
-			desc : getDescription(desc, Type.Slot)
+		const details = {
+			desc : getDesc(desc, Type.Slot),
+			type : Type.Slot
 		};
 
 		if (metadata != null) { // lazy equality for null
-			info.metadata = metadata;
+			details.metadata = metadata;
 		}
 
-		const dataKey = slotDataKeyFromIdx(idx);
-		const infoKey = slotInfoKeyFromIdx(idx);
-		const data    = marshal(Type.Slot);
+		const save = marshal(details);
+		const key  = slotKeyFromIdx(idx);
 
-		if (!storage.set(dataKey, data)) {
-			return false;
-		}
-
-		if (!storage.set(infoKey, info)) {
-			storage.delete(dataKey);
+		if (!storage.set(key, save)) {
 			return false;
 		}
 
@@ -441,7 +423,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 	function slotSize() {
-		return  getKeys(isSlotInfoKey).length;
+		return  getKeys(isSlotKey).length;
 	}
 
 
@@ -472,33 +454,12 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 	function browserExport(filename) {
-		const auto = getKeys(isAutoInfoKey).map(infoKey => {
-			const idx     = getIdxFromKey(infoKey);
-			const dataKey = autoDataKeyFromIdx(idx);
-			const data    = storage.get(dataKey);
-			const info    = storage.get(infoKey);
+		const bundle = LZString.compressToBase64(JSON.stringify({
+			auto : autoEntries(),
+			slot : slotEntries()
+		}));
 
-			if (!data || !info) {
-				throw new Error('during saves export auto save data or info nonexistent');
-			}
-
-			return { idx, data, info };
-		});
-		const slot = getKeys(isSlotInfoKey).map(infoKey => {
-			const idx     = getIdxFromKey(infoKey);
-			const dataKey = slotDataKeyFromIdx(idx);
-			const data    = storage.get(dataKey);
-			const info    = storage.get(infoKey);
-
-			if (!data || !info) {
-				throw new Error('during saves export slot slave data or info nonexistent');
-			}
-
-			return { idx, data, info };
-		});
-		const bundle = LZString.compressToBase64(JSON.stringify({ auto, slot }));
-
-		saveToDiskAs(filename, bundle);
+		saveBlobToDiskAs(bundle, filename, 'savesexport');
 	}
 
 	function browserHasContinue() {
@@ -509,7 +470,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 		return new Promise((resolve, reject) => {
 			const reader = new FileReader();
 
-			// Add the handler that will capture the file information once the load is finished.
+			// Add the handler that will capture the file data once the load is finished.
 			jQuery(reader).on('loadend', () => {
 				try {
 					if (reader.error) {
@@ -517,7 +478,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 						// throw reader.error;
 					}
 
-					const badSave = O => !hasOwn(O, 'idx') || !hasOwn(O, 'data') || !hasOwn(O, 'info');
+					const badSave = O => !hasOwn(O, 'idx') || !hasOwn(O, 'save');
 					let bundle;
 
 					try {
@@ -544,31 +505,9 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 					autoClear();
 					slotClear();
 
-					// QUESTION: Should failures below throw exceptions?
-
-					bundle.auto.forEach(save => {
-						const { idx, data, info } = save;
-						const dataKey             = autoDataKeyFromIdx(idx);
-						const infoKey             = autoInfoKeyFromIdx(idx);
-
-						if (storage.set(dataKey, data)) {
-							if (!storage.set(infoKey, info)) {
-								storage.delete(dataKey);
-							}
-						}
-					});
-
-					bundle.slot.forEach(save => {
-						const { idx, data, info } = save;
-						const dataKey             = slotDataKeyFromIdx(idx);
-						const infoKey             = slotInfoKeyFromIdx(idx);
-
-						if (storage.set(dataKey, data)) {
-							if (!storage.set(infoKey, info)) {
-								storage.delete(dataKey);
-							}
-						}
-					});
+					// QUESTION: Should failures throw exceptions?
+					bundle.auto.forEach(({ idx, save }) => storage.set(autoKeyFromIdx(idx), save));
+					bundle.slot.forEach(({ idx, save }) => storage.set(slotKeyFromIdx(idx), save));
 
 					resolve(true);
 				}
@@ -590,8 +529,6 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			return;
 		}
 
-		console.log('oldSaves:', oldSaves);
-
 		// Delete existing saves before storing the migrated saves.
 		autoClear();
 		slotClear();
@@ -606,76 +543,56 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 		// 	{
 		// 		title    : description,
 		// 		date     : unix_datestamp,
-		// 		metadata : undefined | metadata,
+		// 		metadata : metadata | undefined,
 		// 		id       : id,
 		// 		state    : state,
-		// 		version  : undefined | version
+		// 		version  : version | undefined
 		// 	}
 
 		// Migrate the auto save.
 		if (oldSaves.autosave) {
-			const oldAuto = oldSaves.autosave;
+			const old = oldSaves.autosave;
 
-			const info = {
-				date : oldAuto.date,
-				desc : oldAuto.title
+			const save = {
+				date  : old.date,
+				desc  : old.title,
+				id    : old.id,
+				state : old.state
 			};
 
-			if (oldAuto.metadata != null) { // lazy equality for null
-				info.metadata = oldAuto.metadata;
+			if (old.metadata != null) { // lazy equality for null
+				save.metadata = old.metadata;
 			}
 
-			const data = {
-				id    : oldAuto.id,
-				state : oldAuto.state
-			};
-
-			if (oldAuto.version != null) { // lazy equality for null
-				data.version = oldAuto.version;
+			if (old.version != null) { // lazy equality for null
+				save.version = old.version;
 			}
 
-			const dataKey = autoDataKeyFromIdx(0);
-			const infoKey = autoInfoKeyFromIdx(0);
-
-			if (storage.set(dataKey, data)) {
-				if (!storage.set(infoKey, info)) {
-					storage.delete(dataKey);
-				}
-			}
+			storage.set(autoKeyFromIdx(0), save);
 		}
 
 		// Migrate the slot saves.
-		oldSaves.slots.forEach((oldSlot, idx) => {
-			if (!oldSlot) {
+		oldSaves.slots.forEach((old, idx) => {
+			if (!old) {
 				return;
 			}
 
-			const info = {
-				date : oldSlot.date,
-				desc : oldSlot.title
+			const save = {
+				date  : old.date,
+				desc  : old.title,
+				id    : old.id,
+				state : old.state
 			};
 
-			if (oldSlot.metadata != null) { // lazy equality for null
-				info.metadata = oldSlot.metadata;
+			if (old.metadata != null) { // lazy equality for null
+				save.metadata = old.metadata;
 			}
 
-			const data = {
-				id    : oldSlot.id,
-				state : oldSlot.state
-			};
-
-			if (oldSlot.version != null) { // lazy equality for null
-				data.version = oldSlot.version;
+			if (old.version != null) { // lazy equality for null
+				save.version = old.version;
 			}
 
-			const dataKey = slotDataKeyFromIdx(idx);
-			const infoKey = slotInfoKeyFromIdx(idx);
-
-			if (storage.set(dataKey, data)) {
-				if (!storage.set(infoKey, info)) {
-					storage.delete(dataKey);
-				}
-			}
+			storage.set(slotKeyFromIdx(idx), save);
 		});
 
 		// Delete the old saves object.
@@ -687,7 +604,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 		Disk Saves Functions.
 	*******************************************************************************/
 
-	function diskSave(filename) {
+	function diskSave(filename, metadata) {
 		if (
 			typeof Config.saves.isAllowed === 'function'
 			&& !Config.saves.isAllowed(Type.Disk)
@@ -695,16 +612,25 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			throw new Error(L10n.get('savesDisallowed'));
 		}
 
-		const bundle = LZString.compressToBase64(JSON.stringify(marshal(Type.Disk)));
+		const details = {
+			desc : getDesc(filename, Type.Disk),
+			type : Type.Disk
+		};
 
-		saveToDiskAs(filename, bundle);
+		if (metadata != null) { // lazy equality for null
+			details.metadata = metadata;
+		}
+
+		const b64Save = LZString.compressToBase64(JSON.stringify(marshal(details)));
+
+		saveBlobToDiskAs(b64Save, filename, 'save');
 	}
 
 	function diskLoad(event) {
 		return new Promise((resolve, reject) => {
 			const reader = new FileReader();
 
-			// Add the handler that will capture the file information once the load is finished.
+			// Add the handler that will capture the file data once the load is finished.
 			jQuery(reader).on('loadend', () => {
 				try {
 					if (reader.error) {
@@ -712,17 +638,17 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 						// throw reader.error;
 					}
 
-					let data;
+					let save;
 
 					try {
-						data = JSON.parse(LZString.decompressFromBase64(reader.result));
+						save = JSON.parse(LZString.decompressFromBase64(reader.result));
 					}
 					catch (ex) {
 						throw new Error(L10n.get('saveErrorDecodeFail'));
 					}
 
 					// NOTE: May also throw exceptions.
-					unmarshal(data);
+					unmarshal(save);
 
 					resolve(true);
 				}
@@ -741,7 +667,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 		Serialization Saves Functions.
 	*******************************************************************************/
 
-	function serialize() {
+	function serialize(metadata) {
 		if (
 			typeof Config.saves.isAllowed === 'function'
 			&& !Config.saves.isAllowed(Type.Serialize)
@@ -749,22 +675,31 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			throw new Error(L10n.get('savesDisallowed'));
 		}
 
-		return LZString.compressToBase64(JSON.stringify(marshal(Type.Serialize)));
+		const details = {
+			desc : getDesc(null, Type.Serialize),
+			type : Type.Serialize
+		};
+
+		if (metadata != null) { // lazy equality for null
+			details.metadata = metadata;
+		}
+
+		return LZString.compressToBase64(JSON.stringify(marshal(details)));
 	}
 
-	function deserialize(base64Str) {
+	function deserialize(b64Save) {
 		return new Promise(resolve => {
-			let data;
+			let save;
 
 			try {
-				data = JSON.parse(LZString.decompressFromBase64(base64Str));
+				save = JSON.parse(LZString.decompressFromBase64(b64Save));
 			}
 			catch (ex) {
 				throw new Error(L10n.get('saveErrorDecodeFail'));
 			}
 
 			// NOTE: May also throw exceptions.
-			unmarshal(data);
+			unmarshal(save);
 
 			resolve(true);
 		});
@@ -772,71 +707,24 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 
 
 	/*******************************************************************************
-		Event Functions.
+		Marshaling Functions.
 	*******************************************************************************/
 
-	function onLoadAdd(handler) {
-		const valueType = getTypeOf(handler);
+	function marshal(details) {
+		if (DEBUG) { console.log(`[Save/marshal({ type : "${details.type}" })]`); }
 
-		if (valueType !== 'function') {
-			throw new TypeError(`Save.onLoad.add handler parameter must be a function (received: ${valueType})`);
-		}
-
-		_onLoadHandlers.add(handler);
-	}
-
-	function onLoadClear() {
-		_onLoadHandlers.clear();
-	}
-
-	function onLoadDelete(handler) {
-		return _onLoadHandlers.delete(handler);
-	}
-
-	function onLoadSize() {
-		return _onLoadHandlers.size;
-	}
-
-	function onSaveAdd(handler) {
-		const valueType = getTypeOf(handler);
-
-		if (valueType !== 'function') {
-			throw new TypeError(`Save.onSave.add handler parameter must be a function (received: ${valueType})`);
-		}
-
-		_onSaveHandlers.add(handler);
-	}
-
-	function onSaveClear() {
-		_onSaveHandlers.clear();
-	}
-
-	function onSaveDelete(handler) {
-		return _onSaveHandlers.delete(handler);
-	}
-
-	function onSaveSize() {
-		return _onSaveHandlers.size;
-	}
-
-
-	/*******************************************************************************
-		Utility Functions.
-	*******************************************************************************/
-
-	function marshal(saveType) {
-		if (DEBUG) { console.log(`[Save/marshal(saveType: "${saveType}")]`); }
-
-		const save = {
+		const save = Object.assign({}, details, {
+			date  : Date.now(),
 			id    : Config.saves.id,
 			state : State.marshalForSave()
-		};
+		});
 
 		if (Config.saves.version != null) { // lazy equality for null
 			save.version = Config.saves.version;
 		}
 
-		_onSaveHandlers.forEach(fn => fn(save, { type : saveType }));
+		// Call any `onSave` handlers.
+		onSaveHandlers.forEach(fn => fn(save));
 
 		// Delta encode the state history and delete the non-encoded property.
 		save.state.delta = State.deltaEncode(save.state.history);
@@ -856,7 +744,6 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			|| typeof save.state !== 'object'
 			|| !hasOwn(save.state, 'delta')
 		) {
-			// throw new Error(L10n.get('saveErrorInvalid'));
 			throw new Error(L10n.get('saveErrorInvalidData'));
 		}
 
@@ -870,7 +757,8 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 		delete save.state.delta;
 		/* eslint-enable no-param-reassign */
 
-		_onLoadHandlers.forEach(fn => fn(save));
+		// Call any `onLoad` handlers.
+		onLoadHandlers.forEach(fn => fn(save));
 
 		// Restore the state.
 		//
@@ -878,40 +766,53 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 		State.unmarshalForSave(save.state);
 	}
 
-	function saveToDiskAs(filename, blobData) {
-		if (typeof filename !== 'string') {
-			throw new Error('filename parameter must be a string');
+
+	/*******************************************************************************
+		Event Functions.
+	*******************************************************************************/
+
+	function onLoadAdd(handler) {
+		const valueType = getTypeOf(handler);
+
+		if (valueType !== 'function') {
+			throw new TypeError(`Save.onLoad.add handler parameter must be a function (received: ${valueType})`);
 		}
 
-		const baseName = createFilename(filename);
-
-		if (baseName === '') {
-			throw new Error('filename parameter must not consist solely of illegal characters');
-		}
-
-		const datestamp = createDatestamp(new Date());
-		const blobName  = `${baseName}-${datestamp}.save`;
-		saveAs(new Blob([blobData], { type : 'text/plain;charset=UTF-8' }), blobName);
+		onLoadHandlers.add(handler);
 	}
 
-	function createDatestamp(date) {
-		if (!(date instanceof Date)) {
-			throw new TypeError('createDatestamp date parameter must be a Date object');
+	function onLoadClear() {
+		onLoadHandlers.clear();
+	}
+
+	function onLoadDelete(handler) {
+		return onLoadHandlers.delete(handler);
+	}
+
+	function onLoadSize() {
+		return onLoadHandlers.size;
+	}
+
+	function onSaveAdd(handler) {
+		const valueType = getTypeOf(handler);
+
+		if (valueType !== 'function') {
+			throw new TypeError(`Save.onSave.add handler parameter must be a function (received: ${valueType})`);
 		}
 
-		let MM = date.getMonth() + 1;
-		let DD = date.getDate();
-		let hh = date.getHours();
-		let mm = date.getMinutes();
-		let ss = date.getSeconds();
+		onSaveHandlers.add(handler);
+	}
 
-		if (MM < 10) { MM = `0${MM}`; }
-		if (DD < 10) { DD = `0${DD}`; }
-		if (hh < 10) { hh = `0${hh}`; }
-		if (mm < 10) { mm = `0${mm}`; }
-		if (ss < 10) { ss = `0${ss}`; }
+	function onSaveClear() {
+		onSaveHandlers.clear();
+	}
 
-		return `${date.getFullYear()}${MM}${DD}-${hh}${mm}${ss}`;
+	function onSaveDelete(handler) {
+		return onSaveHandlers.delete(handler);
+	}
+
+	function onSaveSize() {
+		return onSaveHandlers.size;
 	}
 
 
@@ -933,30 +834,30 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 				// Browser Auto Saves Functions.
 				auto : {
 					value : Object.preventExtensions(Object.create(null, {
-						clear       : { value : autoClear },
-						delete      : { value : autoDelete },
-						getInfo     : { value : autoGetInfo },
-						getInfoList : { value : autoGetInfoList },
-						has         : { value : autoHas },
-						isEnabled   : { value : autoIsEnabled },
-						load        : { value : autoLoad },
-						save        : { value : autoSave },
-						size        : { value : autoSize }
+						clear     : { value : autoClear },
+						delete    : { value : autoDelete },
+						entries   : { value : autoEntries },
+						get       : { value : autoGet },
+						has       : { value : autoHas },
+						isEnabled : { value : autoIsEnabled },
+						load      : { value : autoLoad },
+						save      : { value : autoSave },
+						size      : { value : autoSize }
 					}))
 				},
 
 				// Browser Slot Saves Functions.
 				slot : {
 					value : Object.preventExtensions(Object.create(null, {
-						clear       : { value : slotClear },
-						delete      : { value : slotDelete },
-						getInfo     : { value : slotGetInfo },
-						getInfoList : { value : slotGetInfoList },
-						has         : { value : slotHas },
-						isEnabled   : { value : slotIsEnabled },
-						load        : { value : slotLoad },
-						save        : { value : slotSave },
-						size        : { value : slotSize }
+						clear     : { value : slotClear },
+						delete    : { value : slotDelete },
+						entries   : { value : slotEntries },
+						get       : { value : slotGet },
+						has       : { value : slotHas },
+						isEnabled : { value : slotIsEnabled },
+						load      : { value : slotLoad },
+						save      : { value : slotSave },
+						size      : { value : slotSize }
 					}))
 				},
 
@@ -1012,7 +913,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			value : Object.preventExtensions(Object.create(null, {
 				ok     : { value : autoIsEnabled },
 				has    : { value() { autoHas(0); } },
-				get    : { value() { autoGetInfo(0); } },
+				get    : { value() { autoGet(0); } },
 				load   : { value() { autoLoad(0); } },
 				save   : { value : autoSave },
 				delete : { value() { autoDelete(0); } }
@@ -1027,7 +928,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 				isEmpty : { value() { return slotSize() === 0; } },
 				count   : { value : slotSize },
 				has     : { value : slotHas },
-				get     : { value : slotGetInfo },
+				get     : { value : slotGet },
 				load    : { value : slotLoad },
 				save    : { value : slotSave },
 				delete  : { value : slotDelete }
