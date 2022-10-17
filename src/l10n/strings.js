@@ -77,6 +77,7 @@ var l10nStrings = { // eslint-disable-line no-unused-vars, no-var
 	/*
 		Saves.
 	*/
+	continueTitle         : 'Continue',
 	savesTitle            : 'Saves',
 	savesHeaderBrowser    : 'Browser Saves',
 	savesHeaderDisk       : 'Disk Saves',
