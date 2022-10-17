@@ -274,8 +274,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			throw new RangeError(`auto save index out of bounds (range: 0–${MAX_IDX}; received: ${idx})`);
 		}
 
-		storage.delete(autoKeyFromIdx(idx));
-		return true;
+		return storage.delete(autoKeyFromIdx(idx));
 	}
 
 	function autoEntries() {
@@ -365,11 +364,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 		const idx  = (findNewest(Type.Auto).idx + 1) % Config.saves.maxAutoSaves;
 		const key  = autoKeyFromIdx(idx);
 
-		if (!storage.set(key, save)) {
-			return false;
-		}
-
-		return true;
+		return storage.set(key, save);
 	}
 
 	function autoSize() {
@@ -399,8 +394,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			throw new RangeError(`slot save index out of bounds (range: 0–${MAX_IDX}; received: ${idx})`);
 		}
 
-		storage.delete(slotKeyFromIdx(idx));
-		return true;
+		return storage.delete(slotKeyFromIdx(idx));
 	}
 
 	function slotEntries() {
@@ -493,11 +487,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 		const save = marshal(details);
 		const key  = slotKeyFromIdx(idx);
 
-		if (!storage.set(key, save)) {
-			return false;
-		}
-
-		return true;
+		return storage.set(key, save);
 	}
 
 	function slotSize() {
