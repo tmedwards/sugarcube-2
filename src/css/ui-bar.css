@@ -208,6 +208,9 @@
 #ui-bar.stowed #ui-bar-toggle:before {
 	content: "\e81e";
 }
+#menu-item-continue a:before {
+	content: "\e817\00a0";
+}
 #menu-item-saves a:before {
 	content: "\e82b\00a0";
 }
