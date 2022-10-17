@@ -7,7 +7,7 @@
 
 ***********************************************************************************************************************/
 /*
-	global Alert, Dialog, Engine, L10n, Setting, State, Story, UI, Config, setDisplayTitle, setPageElement
+	global Alert, Dialog, Engine, L10n, Save, Setting, State, Story, UI, Config, setDisplayTitle, setPageElement
 */
 
 var UIBar = (() => { // eslint-disable-line no-unused-vars, no-var
@@ -88,6 +88,7 @@ var UIBar = (() => { // eslint-disable-line no-unused-vars, no-var
 					+         '<nav id="menu" role="navigation">'
 					+             '<ul id="menu-story"></ul>'
 					+             '<ul id="menu-core">'
+					+                 `<li id="menu-item-continue"><a tabindex="0">${L10n.get('continueTitle')}</a></li>`
 					+                 `<li id="menu-item-saves"><a tabindex="0">${L10n.get('savesTitle')}</a></li>`
 					+                 `<li id="menu-item-settings"><a tabindex="0">${L10n.get('settingsTitle')}</a></li>`
 					+                 `<li id="menu-item-restart"><a tabindex="0">${L10n.get('restartTitle')}</a></li>`
@@ -212,6 +213,21 @@ var UIBar = (() => { // eslint-disable-line no-unused-vars, no-var
 			// We only need to set the story elements here if `Config.ui.updateStoryElements`
 			// is falsy, since otherwise they will be set by `Engine.play()`.
 			uiBarUpdate();
+		}
+
+		// Set up the Continue menu item.
+		if (Save.browser.size > 0) {
+			jQuery('#menu-item-continue a')
+				.ariaClick({
+					role : 'button'
+				}, ev => {
+					ev.preventDefault();
+					Save.browser.continue();
+				})
+				.text(L10n.get('continueTitle'));
+		}
+		else {
+			jQuery('#menu-item-continue').remove();
 		}
 
 		// Set up the Saves menu item.
