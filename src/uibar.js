@@ -222,7 +222,11 @@ var UIBar = (() => { // eslint-disable-line no-unused-vars, no-var
 					role : 'button'
 				}, ev => {
 					ev.preventDefault();
-					Save.browser.continue();
+					Save.browser.continue()
+						.then(
+							Engine.show,
+							ex => UI.alert(`${ex.message.toUpperFirst()}.</p><p>${L10n.get('aborting')}.`)
+						);
 				})
 				.text(L10n.get('continueTitle'));
 		}

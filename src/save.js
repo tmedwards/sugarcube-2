@@ -842,7 +842,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 						isEnabled : { value : autoIsEnabled },
 						load      : { value : autoLoad },
 						save      : { value : autoSave },
-						size      : { value : autoSize }
+						size      : { get : autoSize }
 					}))
 				},
 
@@ -857,7 +857,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 						isEnabled : { value : slotIsEnabled },
 						load      : { value : slotLoad },
 						save      : { value : slotSave },
-						size      : { value : slotSize }
+						size      : { get : slotSize }
 					}))
 				},
 
@@ -867,7 +867,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 				export    : { value : browserExport },
 				import    : { value : browserImport },
 				isEnabled : { value : browserIsEnabled },
-				size      : { value : browserSize }
+				size      : { get : browserSize }
 			}))
 		},
 

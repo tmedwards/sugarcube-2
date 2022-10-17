@@ -520,7 +520,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 					'clear',
 					null,
 					L10n.get('savesLabelClear'),
-					Save.browser.auto.size() > 0 || Save.browser.slot.size() > 0
+					Save.browser.size > 0
 						? () => {
 							Save.browser.clear();
 							uiBuildSaves();
