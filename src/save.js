@@ -35,7 +35,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 
 
 	/*******************************************************************************
-		General Saves Functions.
+		Initialization Functions.
 	*******************************************************************************/
 
 	/*
@@ -46,9 +46,87 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 
 		// Migrate saves from the old monolithic v2 save object to the
 		// new v3 style with separate entries for each save.
-		browserMigrateV2Saves();
+		migrateV2Saves();
 
 		return true;
+	}
+
+	function migrateV2Saves() {
+		const oldSaves = storage.get('saves');
+
+		// Bail out if no old saves object exists.
+		if (oldSaves === null) {
+			return;
+		}
+
+		// Delete existing saves before storing the migrated saves.
+		autoClear();
+		slotClear();
+
+		// Old monolithic saves object:
+		// 	{
+		// 		autosave : save | null,
+		// 		slots    : Array<save | null>
+		// 	}
+		//
+		// Old auto & slot save objects:
+		// 	{
+		// 		title    : description,
+		// 		date     : unix_datestamp,
+		// 		metadata : metadata | undefined,
+		// 		id       : id,
+		// 		state    : state,
+		// 		version  : version | undefined
+		// 	}
+
+		// Migrate the auto save.
+		if (oldSaves.autosave) {
+			const old = oldSaves.autosave;
+
+			const save = {
+				date  : old.date,
+				desc  : old.title,
+				id    : old.id,
+				state : old.state
+			};
+
+			if (old.metadata != null) { // lazy equality for null
+				save.metadata = old.metadata;
+			}
+
+			if (old.version != null) { // lazy equality for null
+				save.version = old.version;
+			}
+
+			storage.set(autoKeyFromIdx(0), save);
+		}
+
+		// Migrate the slot saves.
+		oldSaves.slots.forEach((old, idx) => {
+			if (!old) {
+				return;
+			}
+
+			const save = {
+				date  : old.date,
+				desc  : old.title,
+				id    : old.id,
+				state : old.state
+			};
+
+			if (old.metadata != null) { // lazy equality for null
+				save.metadata = old.metadata;
+			}
+
+			if (old.version != null) { // lazy equality for null
+				save.version = old.version;
+			}
+
+			storage.set(slotKeyFromIdx(idx), save);
+		});
+
+		// Delete the old saves object.
+		storage.delete('saves');
 	}
 
 
@@ -431,10 +509,6 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 		Browser General Saves Functions.
 	*******************************************************************************/
 
-	function browserIsEnabled() {
-		return autoIsEnabled() || slotIsEnabled();
-	}
-
 	function browserClear() {
 		autoClear();
 		slotClear();
@@ -460,10 +534,6 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 		}));
 
 		saveBlobToDiskAs(bundle, filename, 'savesexport');
-	}
-
-	function browserHasContinue() {
-		return getKeys(isSaveKey).length > 0;
 	}
 
 	function browserImport(event) {
@@ -521,82 +591,12 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 		});
 	}
 
-	function browserMigrateV2Saves() {
-		const oldSaves = storage.get('saves');
+	function browserIsEnabled() {
+		return autoIsEnabled() || slotIsEnabled();
+	}
 
-		// Bail out if no old saves object exists.
-		if (oldSaves === null) {
-			return;
-		}
-
-		// Delete existing saves before storing the migrated saves.
-		autoClear();
-		slotClear();
-
-		// Old monolithic saves object:
-		// 	{
-		// 		autosave : save | null,
-		// 		slots    : Array<save | null>
-		// 	}
-		//
-		// Old auto & slot save objects:
-		// 	{
-		// 		title    : description,
-		// 		date     : unix_datestamp,
-		// 		metadata : metadata | undefined,
-		// 		id       : id,
-		// 		state    : state,
-		// 		version  : version | undefined
-		// 	}
-
-		// Migrate the auto save.
-		if (oldSaves.autosave) {
-			const old = oldSaves.autosave;
-
-			const save = {
-				date  : old.date,
-				desc  : old.title,
-				id    : old.id,
-				state : old.state
-			};
-
-			if (old.metadata != null) { // lazy equality for null
-				save.metadata = old.metadata;
-			}
-
-			if (old.version != null) { // lazy equality for null
-				save.version = old.version;
-			}
-
-			storage.set(autoKeyFromIdx(0), save);
-		}
-
-		// Migrate the slot saves.
-		oldSaves.slots.forEach((old, idx) => {
-			if (!old) {
-				return;
-			}
-
-			const save = {
-				date  : old.date,
-				desc  : old.title,
-				id    : old.id,
-				state : old.state
-			};
-
-			if (old.metadata != null) { // lazy equality for null
-				save.metadata = old.metadata;
-			}
-
-			if (old.version != null) { // lazy equality for null
-				save.version = old.version;
-			}
-
-			storage.set(slotKeyFromIdx(idx), save);
-		});
-
-		// Delete the old saves object.
-		storage.delete('saves');
+	function browserSize() {
+		return getKeys(isSaveKey).length;
 	}
 
 
@@ -862,12 +862,12 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 				},
 
 				// Browser General Saves Functions.
-				isEnabled   : { value : browserIsEnabled },
-				clear       : { value : browserClear },
-				continue    : { value : browserContinue },
-				export      : { value : browserExport },
-				hasContinue : { value : browserHasContinue },
-				import      : { value : browserImport }
+				clear     : { value : browserClear },
+				continue  : { value : browserContinue },
+				export    : { value : browserExport },
+				import    : { value : browserImport },
+				isEnabled : { value : browserIsEnabled },
+				size      : { value : browserSize }
 			}))
 		},
 
