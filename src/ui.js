@@ -278,7 +278,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 			const $tbody = jQuery(document.createElement('tbody'));
 
 			// Auto saves.
-			Save.browser.auto.getInfoList().forEach(({ idx, info }) => {
+			Save.browser.auto.entries().forEach(({ idx, save }) => {
 				const $tdSlot = jQuery(document.createElement('td'));
 				const $tdLoad = jQuery(document.createElement('td'));
 				const $tdDesc = jQuery(document.createElement('td'));
@@ -290,7 +290,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 						title        : L10n.get('savesLabelAuto'),
 						'aria-label' : L10n.get('savesLabelAuto')
 					})
-					.text(`A${idx + 1}`) // '\u25C6' Black Diamond
+					.text(`A${idx + 1}`)
 					.appendTo($tdSlot);
 
 				// Add the load button.
@@ -299,9 +299,9 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 					'ui-close',
 					`${L10n.get('savesLabelLoad')} ${L10n.get('savesLabelAuto')}`,
 					idx,
-					id => {
+					idx => {
 						jQuery(document).one(':dialogclosed', () => {
-							Save.browser.auto.load(id)
+							Save.browser.auto.load(idx)
 								.then(
 									Engine.show,
 									ex => showAlert(`${ex.message.toUpperFirst()}.</p><p>${L10n.get('aborting')}.`)
@@ -312,13 +312,13 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 
 				// Add the description and datestamp.
 				jQuery(document.createElement('div'))
-					.text(info.desc)
+					.text(save.desc)
 					.appendTo($tdDesc);
 				jQuery(document.createElement('div'))
 					.addClass('datestamp')
 					.html(
-						info.date
-							? `${new Date(info.date).toLocaleString()}`
+						save.date
+							? `${new Date(save.date).toLocaleString()}`
 							: `<em>${L10n.get('savesUnknownDate')}</em>`
 					)
 					.appendTo($tdDesc);
@@ -347,7 +347,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 			const slotInfoList = [];
 
 			// Add entries to the array.  May be sparse.
-			Save.browser.slot.getInfoList().forEach(entry => {
+			Save.browser.slot.entries().forEach(entry => {
 				slotInfoList[entry.idx] = entry;
 			});
 
@@ -358,7 +358,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 				}
 			}
 
-			slotInfoList.forEach(({ idx, info }) => {
+			slotInfoList.forEach(({ idx, save }) => {
 				const $tdSlot = jQuery(document.createElement('td'));
 				const $tdLoad = jQuery(document.createElement('td'));
 				const $tdDesc = jQuery(document.createElement('td'));
@@ -367,7 +367,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 				// Add the slot ID.
 				$tdSlot.append(document.createTextNode(idx + 1));
 
-				if (info) {
+				if (save) {
 					// Add the load button.
 					$tdLoad.append(createButton(
 						'load',
@@ -387,13 +387,13 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 
 					// Add the description (title and datestamp).
 					jQuery(document.createElement('div'))
-						.text(info.desc)
+						.text(save.desc)
 						.appendTo($tdDesc);
 					jQuery(document.createElement('div'))
 						.addClass('datestamp')
 						.html(
-							info.date
-								? `${new Date(info.date).toLocaleString()}`
+							save.date
+								? `${new Date(save.date).toLocaleString()}`
 								: `<em>${L10n.get('savesUnknownDate')}</em>`
 						)
 						.appendTo($tdDesc);
