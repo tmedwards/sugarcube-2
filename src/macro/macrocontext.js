@@ -94,7 +94,7 @@ var MacroContext = (() => { // eslint-disable-line no-unused-vars, no-var
 
 		get shadowView() {
 			const view = new Set();
-			this.contextSelectAll(ctx => ctx._shadows)
+			this.contextFilter(ctx => ctx._shadows)
 				.forEach(ctx => ctx._shadows.forEach(name => view.add(name)));
 			return [...view];
 		}
@@ -107,41 +107,39 @@ var MacroContext = (() => { // eslint-disable-line no-unused-vars, no-var
 			return null;
 		}
 
-		contextHas(filter) {
-			let context = this;
-
-			while ((context = context.parent) !== null) {
-				if (filter(context)) {
-					return true;
-				}
-			}
-
-			return false;
-		}
-
-		contextSelect(filter) {
-			let context = this;
-
-			while ((context = context.parent) !== null) {
-				if (filter(context)) {
-					return context;
-				}
-			}
-
-			return null;
-		}
-
-		contextSelectAll(filter) {
+		contextFilter(predicate) {
 			const result = [];
 			let context = this;
 
 			while ((context = context.parent) !== null) {
-				if (filter(context)) {
+				if (predicate(context)) {
 					result.push(context);
 				}
 			}
 
 			return result;
+		}
+
+		contextFind(predicate) {
+			let context = this;
+
+			while ((context = context.parent) !== null) {
+				if (predicate(context)) {
+					return context;
+				}
+			}
+		}
+
+		contextSome(predicate) {
+			let context = this;
+
+			while ((context = context.parent) !== null) {
+				if (predicate(context)) {
+					return true;
+				}
+			}
+
+			return false;
 		}
 
 		addShadow(...names) {
@@ -284,6 +282,15 @@ var MacroContext = (() => { // eslint-disable-line no-unused-vars, no-var
 	/* legacy */
 	// Attach legacy aliases.
 	Object.defineProperties(MacroContext.prototype, {
+		contextHas : {
+			value : MacroContext.prototype.contextSome
+		},
+		contextSelect : {
+			value : MacroContext.prototype.contextFind
+		},
+		contextSelectAll : {
+			value : MacroContext.prototype.contextFilter
+		},
 		createShadowWrapper : {
 			value : MacroContext.prototype.shadowHandler
 		}

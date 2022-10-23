@@ -122,7 +122,7 @@
 			// NOTE: This may be too restrictive.
 			const failRE  = /^(?:do|for)$/;
 			const passRE  = /^(?:button|link(?:append|prepend|replace)?)$/;
-			const closest = this.contextSelect(ctx => failRE.test(ctx.name) || passRE.test(ctx.name));
+			const closest = this.contextFind(ctx => failRE.test(ctx.name) || passRE.test(ctx.name));
 
 			if (closest && failRE.test(closest.name)) {
 				return this.error(`must not be used directly within macro <<${closest.name}>>`);

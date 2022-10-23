@@ -271,7 +271,7 @@ Macro.add(['break', 'continue'], {
 	skipArgs : true,
 
 	handler() {
-		if (this.contextHas(ctx => ctx.name === 'for')) {
+		if (this.contextSome(ctx => ctx.name === 'for')) {
 			TempState.break = this.name === 'continue' ? 1 : 2;
 		}
 		else {
