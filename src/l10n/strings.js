@@ -83,10 +83,10 @@ var l10nStrings = { // eslint-disable-line no-unused-vars, no-var
 	savesHeaderDisk       : 'Disk Saves',
 	savesDisallowed       : 'Saving has been disallowed on this passage.',
 	savesLabelAuto        : 'Auto',
-	savesLabelClear       : 'Delete All',
+	savesLabelClear       : 'Clear',
 	savesLabelDelete      : 'Delete',
-	savesLabelDiskExport  : 'Export\u2026',
-	savesLabelDiskImport  : 'Import\u2026',
+	savesLabelExport      : 'Export\u2026',
+	savesLabelImport      : 'Import\u2026',
 	savesLabelDiskLoad    : 'Load from Disk\u2026', // was: savesLabelImport
 	savesLabelDiskSave    : 'Save to Disk\u2026', // was: savesLabelExport
 	savesLabelLoad        : 'Load',

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /***********************************************************************************************************************
 
-	build.js (v1.8.2, 2022-10-06)
+	build.js (v1.8.3, 2022-10-23)
 		A Node.js-hosted build script for SugarCube.
 
 	Copyright © 2013–2022 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
@@ -40,7 +40,6 @@ const CONFIG = {
 			'src/lib/stylewrapper.js',
 			'src/lib/diff.js',
 			'src/l10n/l10n.js',
-			'src/l10n/legacy.js',
 			'src/l10n/strings.js',
 			'src/config.js',
 			'src/simpleaudio.js',

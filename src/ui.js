@@ -214,8 +214,6 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 	function uiBuildSaves() {
-		const savesAllowed = typeof Config.saves.isAllowed !== 'function' || Config.saves.isAllowed(Save.Type.Slot);
-
 		function showAlert(message) {
 			if (Dialog.isOpen()) {
 				$(document).one(':dialogclosed', () => uiOpenAlert(message));
@@ -223,6 +221,26 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 			else {
 				uiOpenAlert(message);
 			}
+		}
+
+		function $createFileInput(id, handler) {
+			return jQuery(document.createElement('input'))
+				.attr({
+					id,
+					type          : 'file',
+					tabindex      : -1,
+					'aria-hidden' : true
+				})
+				.css({
+					display    : 'block',
+					visibility : 'hidden',
+					position   : 'fixed',
+					left       : '-16128px', // 8K UHD horizontal ×2.1
+					top        : '-16128px', // 8K UHD horizontal ×2.1
+					width      : '1px',
+					height     : '1px'
+				})
+				.on('change', handler);
 		}
 
 		function createActionItem(elId, elClass, elLabel, elAction) {
@@ -277,7 +295,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 
 			const $tbody = jQuery(document.createElement('tbody'));
 
-			// Auto saves.
+			// Create auto save UI entries.
 			Save.browser.auto.entries().forEach(({ idx, save }) => {
 				const $tdSlot = jQuery(document.createElement('td'));
 				const $tdLoad = jQuery(document.createElement('td'));
@@ -343,22 +361,25 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 					.appendTo($tbody);
 			});
 
-			// Slot saves.
-			const slotInfoList = [];
+			// Initialize slot save array.
+			const slotEntries = [];
 
-			// Add entries to the array.  May be sparse.
+			// Add slot entries to the array.  May be sparse.
 			Save.browser.slot.entries().forEach(entry => {
-				slotInfoList[entry.idx] = entry;
+				slotEntries[entry.idx] = entry;
 			});
 
-			// Fill in slots as necessary with empty entries.
+			// Fill in configured slots as necessary with empty entries.
 			for (let i = 0; i < Config.saves.maxSlotSaves; ++i) {
-				if (!slotInfoList[i]) {
-					slotInfoList[i] = { idx : i };
+				if (!slotEntries[i]) {
+					slotEntries[i] = { idx : i };
 				}
 			}
 
-			slotInfoList.forEach(({ idx, save }) => {
+			const slotAllowed = typeof Config.saves.isAllowed !== 'function' || Config.saves.isAllowed(Save.Type.Slot);
+
+			// Create slot save UI entries.
+			slotEntries.forEach(({ idx, save }) => {
 				const $tdSlot = jQuery(document.createElement('td'));
 				const $tdLoad = jQuery(document.createElement('td'));
 				const $tdDesc = jQuery(document.createElement('td'));
@@ -417,7 +438,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 						'ui-close',
 						`${L10n.get('savesLabelSave')} ${L10n.get('savesLabelSlot')}`,
 						idx,
-						idx < Config.saves.maxSlotSaves && savesAllowed ? Save.browser.slot.save : null
+						idx < Config.saves.maxSlotSaves && slotAllowed ? Save.browser.slot.save : null
 					));
 
 					// Add the description.
@@ -455,79 +476,105 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 			return false;
 		}
 
-		const $dialogBody = jQuery(Dialog.setup(L10n.get('savesTitle'), 'saves'));
+		Dialog.setup(L10n.get('savesTitle'), 'saves');
+		const $dialogBody = jQuery(Dialog.body());
 
-		// Add saves list.
+		// Add slots header, list, and button list.
 		if (browserEnabled) {
-			$dialogBody.append(createSaveList());
-		}
+			jQuery(document.createElement('h2'))
+				.text(L10n.get('savesHeaderBrowser'))
+				.appendTo($dialogBody);
 
-		// Add button bar items (export, import, and clear).
-		if (browserEnabled || Has.fileAPI) {
-			const $btnBar = jQuery(document.createElement('ul'))
-				.addClass('buttons')
+			$dialogBody.append(createSaveList());
+
+			const $slotButtons = jQuery(document.createElement('ul'))
+				.addClass('buttons slots')
 				.appendTo($dialogBody);
 
 			if (Has.fileAPI) {
-				$btnBar.append(createActionItem(
+				// Add the browser export/import buttons and the hidden `input[type=file]`
+				// element that will be triggered by the `#saves-import` button.
+				const $slotImportInput = $createFileInput('saves-import-handler', ev => {
+					Save.browser.import(ev)
+						.then(
+							uiBuildSaves,
+							ex => {
+								Dialog.close();
+								showAlert(`${ex.message.toUpperFirst()}.</p><p>${L10n.get('aborting')}.`);
+							}
+						);
+				});
+				$slotButtons.append(createActionItem(
 					'export',
-					'ui-close',
-					L10n.get('savesLabelDiskSave'),
-					savesAllowed ? () => Save.disk.save(Story.name) : null
+					null,
+					L10n.get('savesLabelExport'),
+					() => Save.browser.export(`saves-export-${Story.name}`)
 				));
-				$btnBar.append(createActionItem(
+				$slotButtons.append(createActionItem(
 					'import',
 					null,
-					L10n.get('savesLabelDiskLoad'),
-					() => $dialogBody.find('#saves-disk-load-handler').trigger('click')
+					L10n.get('savesLabelImport'),
+					() => $slotImportInput.trigger('click')
 				));
-
-				// Add the hidden `input[type=file]` element which will be triggered by the `#saves-import` button.
-				jQuery(document.createElement('input'))
-					.css({
-						display    : 'block',
-						visibility : 'hidden',
-						position   : 'fixed',
-						left       : '-9999px',
-						top        : '-9999px',
-						width      : '1px',
-						height     : '1px'
-					})
-					.attr({
-						type          : 'file',
-						id            : 'saves-disk-load-handler',
-						tabindex      : -1,
-						'aria-hidden' : true
-					})
-					.on('change', ev => {
-						jQuery(document).one(':dialogclosed', () => {
-							Save.disk.load(ev)
-								.then(
-									Engine.show,
-									ex => {
-										Dialog.close();
-										showAlert(`${ex.message.toUpperFirst()}.</p><p>${L10n.get('aborting')}.`);
-									}
-								);
-						});
-						Dialog.close();
-					})
-					.appendTo($dialogBody);
+				$slotImportInput.appendTo($dialogBody);
 			}
 
-			if (browserEnabled) {
-				$btnBar.append(createActionItem(
-					'clear',
-					null,
-					L10n.get('savesLabelClear'),
-					Save.browser.size > 0
-						? () => {
-							Save.browser.clear();
-							uiBuildSaves();
-						}
-						: null
-				));
-			}
+			// Add the slots clear button.
+			$slotButtons.append(createActionItem(
+				'clear',
+				null,
+				L10n.get('savesLabelClear'),
+				Save.browser.size > 0
+					? () => {
+						Save.browser.clear();
+						uiBuildSaves();
+					}
+					: null
+			));
+		}
+
+		// Add button bar items (export, import, and clear).
+		if (Has.fileAPI) {
+			jQuery(document.createElement('h2'))
+				.text(L10n.get('savesHeaderDisk'))
+				.appendTo($dialogBody);
+
+			const $diskButtons = jQuery(document.createElement('ul'))
+				.addClass('buttons')
+				.appendTo($dialogBody);
+
+			// Add the disk save/load buttons and the hidden `input[type=file]`
+			// element that will be triggered by the `#saves-disk-load` button.
+			const $diskLoadInput = $createFileInput('saves-disk-load-handler', ev => {
+				jQuery(document).one(':dialogclosed', () => {
+					Save.disk.load(ev)
+						.then(
+							Engine.show,
+							ex => {
+								Dialog.close();
+								showAlert(`${ex.message.toUpperFirst()}.</p><p>${L10n.get('aborting')}.`);
+							}
+						);
+				});
+				Dialog.close();
+			});
+			$diskButtons.append(createActionItem(
+				'disk-save',
+				null,
+				L10n.get('savesLabelDiskSave'),
+				typeof Config.saves.isAllowed !== 'function' || Config.saves.isAllowed(Save.Type.Disk)
+					// If saving is allowed, add the save action.
+					? () => Save.disk.save(Story.name)
+					// Elsewise, disable the button.
+					: null
+			));
+			$diskButtons.append(createActionItem(
+				'disk-load',
+				null,
+				L10n.get('savesLabelDiskLoad'),
+				() => $diskLoadInput.trigger('click')
+			));
+			$diskLoadInput.appendTo($dialogBody);
 		}
 
 		return true;
