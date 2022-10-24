@@ -7,19 +7,9 @@
 
 ***********************************************************************************************************************/
 
-/*
-	Default structural styles.
-*/
-html {
-	/*
-		We define the base font size and line height here as they affect the layout
-		of the base page elements (i.e. `#ui-bar`, `#ui-dialog`, and `#story`).
-	*/
-	font: 16px/1 Helmet, Freesans, sans-serif;
-}
-
 /* Story data styling. */
-#store-area, tw-storydata {
+#store-area,
+tw-storydata {
 	display: none !important;
 	z-index: 0;
 }
@@ -29,10 +19,7 @@ html {
 	transition: none !important;
 }
 
-
-/*
-	Fullscreen appearance styles.
-*/
+/* Fullscreen styles. */
 *:fullscreen { /* Cause Blink/WebKit to behave like Gecko. */
 	height: 100%;
 	width: 100%;
@@ -41,15 +28,19 @@ body::-ms-backdrop { /* Prevent IE 11 from hiding the `body` element's backgroun
 	background: none;
 }
 
-
-/*
-	Default appearance styles.
-*/
+/* Base styles. */
 *:focus {
 	outline: thin dotted;
 }
 *:disabled {
 	cursor: not-allowed !important;
+}
+html {
+	/*
+		We define the base font size and line height here as they affect the layout
+		of the base page elements (i.e. `#ui-bar`, `#ui-dialog`, and `#story`).
+	*/
+	font: 16px/1 Helmet, Freesans, sans-serif;
 }
 body {
 	color: #eee;
@@ -72,7 +63,8 @@ a.link-broken {
 a.link-broken:hover {
 	color: #e44;
 }
-a[disabled], span.link-disabled {
+a[disabled],
+span.link-disabled {
 	color: #aaa;
 	cursor: not-allowed !important;
 	/*
@@ -104,7 +96,9 @@ button:disabled {
 	background-color: #444;
 	border: 1px solid #666;
 }
-input, select, textarea {
+input,
+select,
+textarea {
 	color: #eee;
 	background-color: transparent;
 	border: 1px solid #444;
@@ -120,12 +114,15 @@ textarea {
 	min-width: 30em;
 	resize: vertical;
 }
-input[type="checkbox"], input[type="file"], input[type="radio"], select {
+input[type="checkbox"],
+input[type="file"],
+input[type="radio"],
+select {
 	cursor: pointer;
 }
 /* BEGIN: input[type="range"] */
 input[type="range"] {
-	-webkit-appearance: none;
+	-webkit-appearance: none; /* stylelint-disable-line property-no-vendor-prefix */
 	min-height: 1.2em;
 }
 input[type="range"]:focus {
@@ -140,7 +137,7 @@ input[type="range"]::-webkit-slider-runnable-track {
 	width: 100%;
 }
 input[type="range"]::-webkit-slider-thumb {
-	-webkit-appearance: none;
+	-webkit-appearance: none; /* stylelint-disable-line property-no-vendor-prefix */
 	background: #35a;
 	border: 1px solid #57c;
 	border-radius: 0;
@@ -201,8 +198,12 @@ input[type="range"]::-ms-thumb {
 	width: 33px;
 }
 /* END: input[type="range"] */
-input:not(:disabled):focus, select:not(:disabled):focus, textarea:not(:disabled):focus,
-input:not(:disabled):hover, select:not(:disabled):hover, textarea:not(:disabled):hover {
+input:not(:disabled):focus,
+input:not(:disabled):hover,
+select:not(:disabled):focus,
+select:not(:disabled):hover,
+textarea:not(:disabled):focus,
+textarea:not(:disabled):hover {
 	background-color: #333;
 	border-color: #eee;
 }
@@ -214,7 +215,10 @@ hr {
 	margin: 1em 0;
 	padding: 0;
 }
-audio, canvas, progress, video {
+audio,
+canvas,
+progress,
+video {
 	max-width: 100%;
 	vertical-align: middle;
 }
@@ -256,7 +260,8 @@ audio, canvas, progress, video {
 	padding: 0.25em;
 }
 
-.highlight, .marked {
+.highlight,
+.marked {
 	color: yellow;
 	font-weight: bold;
 	font-style: italic;
@@ -265,32 +270,32 @@ audio, canvas, progress, video {
 	white-space: nowrap;
 }
 
-[data-icon]:before,
-[data-icon-before]:before,
-[data-icon-after]:after,
-.error-view > .error-toggle:before,
-.error-view > .error:before,
-a.link-external:after {
+[data-icon]::before,
+[data-icon-before]::before,
+[data-icon-after]::after,
+.error-view > .error-toggle::before,
+.error-view > .error::before,
+a.link-external::after {
 	@mixin tme-fa-icons-properties;
 }
-[data-icon]:before {
+[data-icon]::before {
 	content: attr(data-icon);
 }
-[data-icon-before]:before {
+[data-icon-before]::before {
 	content: attr(data-icon-before) "\00a0\00a0";
 }
-[data-icon-after]:after {
+[data-icon-after]::after {
 	content: "\00a0\00a0" attr(data-icon-after);
 }
-.error-view > .error-toggle:before {
+.error-view > .error-toggle::before {
 	content: "\e81a";
 }
-.error-view > .error-toggle.enabled:before {
+.error-view > .error-toggle.enabled::before {
 	content: "\e818";
 }
-.error-view > .error:before {
+.error-view > .error::before {
 	content: "\e80d\00a0\00a0";
 }
-a.link-external:after {
+a.link-external::after {
 	content: "\00a0\e80e";
 }

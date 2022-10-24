@@ -7,9 +7,7 @@
 
 ***********************************************************************************************************************/
 
-/*
-	Default appearance styles.
-*/
+/* Base styles. */
 .passage {
 	line-height: 1.75;
 	text-align: left;
@@ -18,7 +16,8 @@
 .passage-in {
 	opacity: 0;
 }
-.passage ul, .passage ol {
+.passage ul,
+.passage ol {
 	margin-left: 0.5em;
 	padding-left: 1.5em;
 }
@@ -27,14 +26,14 @@
 	border-collapse: collapse;
 	font-size: 100%;
 }
-.passage tr, .passage th, .passage td, .passage caption {
+.passage tr,
+.passage th,
+.passage td,
+.passage caption {
 	padding: 3px;
 }
 
-
-/*
-	Accessibility styles.
-*/
+/* Accessibility styles. */
 @media (prefers-reduced-motion: reduce) {
 	.passage {
 		transition: opacity 0s;
