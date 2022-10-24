@@ -7,9 +7,7 @@
 
 ***********************************************************************************************************************/
 
-/*
-	Default debug bar styles.
-*/
+/* Base styles. */
 #debug-bar {
 	background-color: #222;
 	border-left: 1px solid #444;
@@ -42,9 +40,7 @@
 	color: #eee;
 	background-color: #222;
 	border: 1px solid #444;
-	height: 101%; /* fallback for browsers without support for calc() */
 	height: calc(100% + 1px);
-	left: -2em; /* fallback for browsers without support for calc() */
 	left: calc(-2em - 1px);
 	position: absolute;
 	top: -1px;
@@ -70,7 +66,6 @@
 	background-color: #222;
 	border-left: 1px solid #444;
 	border-top: 1px solid #444;
-	bottom: 102%; /* fallback for browsers without support for calc() */
 	bottom: calc(100% + 1px);
 	font-size: 0.9em;
 	left: -1px;
@@ -136,47 +131,44 @@ html[data-debug-view] #debug-bar-views-toggle:hover {
 	border-color: #6c6;
 }
 
-#debug-bar-toggle:before,
-#debug-bar-hint:after,
-#debug-bar-watch .watch-delete:before,
-#debug-bar-watch-add:before,
-#debug-bar-watch-all:before,
-#debug-bar-watch-none:before,
-#debug-bar-watch-toggle:after,
-#debug-bar-views-toggle:after {
+#debug-bar-toggle::before,
+#debug-bar-hint::after,
+#debug-bar-watch .watch-delete::before,
+#debug-bar-watch-add::before,
+#debug-bar-watch-all::before,
+#debug-bar-watch-none::before,
+#debug-bar-watch-toggle::after,
+#debug-bar-views-toggle::after {
 	@mixin tme-fa-icons-properties;
 }
-#debug-bar-toggle:before {
+#debug-bar-toggle::before {
 	content: "\e838";
 }
-#debug-bar-hint:after {
+#debug-bar-hint::after {
 	content: "\e838\202f\e822";
 }
-#debug-bar-watch .watch-delete:before {
+#debug-bar-watch .watch-delete::before {
 	content: "\e804";
 }
-#debug-bar-watch-add:before {
+#debug-bar-watch-add::before {
 	content: "\e805";
 }
-#debug-bar-watch-all:before {
+#debug-bar-watch-all::before {
 	content: "\e83a";
 }
-#debug-bar-watch-none:before {
+#debug-bar-watch-none::before {
 	content: "\e827";
 }
-#debug-bar-watch-toggle:after,
-#debug-bar-views-toggle:after {
+#debug-bar-watch-toggle::after,
+#debug-bar-views-toggle::after {
 	content: "\00a0\00a0\e830";
 }
-#debug-bar-watch:not([hidden]) ~ div #debug-bar-watch-toggle:after,
-html[data-debug-view] #debug-bar-views-toggle:after {
+#debug-bar-watch:not([hidden]) ~ div #debug-bar-watch-toggle::after,
+html[data-debug-view] #debug-bar-views-toggle::after {
 	content: "\00a0\00a0\e831";
 }
 
-
-/*
-	Default debug view styles.
-*/
+/* Debug view styles. */
 html[data-debug-view] .debug {
 	padding: 0.25em;
 	background-color: #234; /* #541, #151 */
@@ -199,34 +191,34 @@ html:not([data-debug-view]) .debug.hidden {
 	display: none;
 }
 
-html[data-debug-view] .debug[data-name][data-type]:before,
-html[data-debug-view] .debug[data-name][data-type].nonvoid:after {
-	background-color: rgba(0,0,0,0.25);
+html[data-debug-view] .debug[data-name][data-type]::before,
+html[data-debug-view] .debug[data-name][data-type].nonvoid::after {
+	background-color: rgba(0, 0, 0, 0.25);
 	font-family: monospace, monospace;
 	white-space: pre;
 }
-html[data-debug-view] .debug[data-name][data-type]:before {
+html[data-debug-view] .debug[data-name][data-type]::before {
 	content: attr(data-name);
 }
-html[data-debug-view] .debug[data-name][data-type|="macro"]:before {
+html[data-debug-view] .debug[data-name][data-type|="macro"]::before {
 	content: "<<" attr(data-name) ">>";
 }
-html[data-debug-view] .debug[data-name][data-type|="macro"].nonvoid:after {
+html[data-debug-view] .debug[data-name][data-type|="macro"].nonvoid::after {
 	content: "<</" attr(data-name) ">>";
 }
-html[data-debug-view] .debug[data-name][data-type|="html"]:before {
+html[data-debug-view] .debug[data-name][data-type|="html"]::before {
 	content: "<" attr(data-name) ">";
 }
-html[data-debug-view] .debug[data-name][data-type|="html"].nonvoid:after {
+html[data-debug-view] .debug[data-name][data-type|="html"].nonvoid::after {
 	content: "</" attr(data-name) ">";
 }
-html[data-debug-view] .debug[data-name][data-type]:not(:empty):before {
+html[data-debug-view] .debug[data-name][data-type]:not(:empty)::before {
 	margin-right: 0.25em;
 }
-html[data-debug-view] .debug[data-name][data-type].nonvoid:not(:empty):after {
+html[data-debug-view] .debug[data-name][data-type].nonvoid:not(:empty)::after {
 	margin-left: 0.25em;
 }
 html[data-debug-view] .debug[data-name][data-type|="special"],
-html[data-debug-view] .debug[data-name][data-type|="special"]:before {
+html[data-debug-view] .debug[data-name][data-type|="special"]::before {
 	display: block;
 }

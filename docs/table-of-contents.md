@@ -374,9 +374,9 @@
 * [`<MacroContext>.parser`](#macrocontext-api-prototype-property-parser)
 * [`<MacroContext>.payload`](#macrocontext-api-prototype-property-payload)
 * [`<MacroContext>.self`](#macrocontext-api-prototype-property-self)
-* [`<MacroContext>.contextHas()`](#macrocontext-api-prototype-method-contexthas)
-* [`<MacroContext>.contextSelect()`](#macrocontext-api-prototype-method-contextselect)
-* [`<MacroContext>.contextSelectAll()`](#macrocontext-api-prototype-method-contextselectall)
+* [`<MacroContext>.contextFilter()`](#macrocontext-api-prototype-method-contextfilter)
+* [`<MacroContext>.contextFind()`](#macrocontext-api-prototype-method-contextfind)
+* [`<MacroContext>.contextSome()`](#macrocontext-api-prototype-method-contextsome)
 * [`<MacroContext>.error()`](#macrocontext-api-prototype-method-error)
 * [`<MacroContext>.shadowHandler()`](#macrocontext-api-prototype-method-shadowhandler)
 

@@ -138,65 +138,65 @@ The macro's definition—created via [`Macro.add()`](#macro-api-method-add).
 
 <!-- *********************************************************************** -->
 
-### `<MacroContext>.contextHas(filter)` → *boolean* {#macrocontext-api-prototype-method-contexthas}
+### `<MacroContext>.contextFilter(predicate)` → *Array&lt;object&gt;* {#macrocontext-api-prototype-method-contextfilter}
 
-Returns whether any of the macro's ancestors passed the test implemented by the given filter function.
+Returns a new array containing all of the macro's ancestors that passed the test implemented by the given predicate function or an empty array, if no members pass.
 
 #### History:
 
-* `v2.0.0`: Introduced.
+* `v2.37.0`: Introduced.
 
 #### Parameters:
 
-* **`filter`:** (*function*) The function used to test each ancestor execution context object, which is passed in as its sole parameter.
+* **`predicate`:** (*function*) The function used to test each ancestor execution context object, which is passed in as its sole parameter.
 
 #### Examples:
 
 ```
 var includeAncestor = function (ctx) { return ctx.name === "include"; };
-this.contextHas(includeAncestor);  → Returns true if any ancestor was an <<include>> macro
+this.contextFilter(includeAncestor); // Returns an array of all <<include>> macro ancestors
 ```
 
 <!-- *********************************************************************** -->
 
-### `<MacroContext>.contextSelect(filter)` → *null* | *object* {#macrocontext-api-prototype-method-contextselect}
+### `<MacroContext>.contextFind(predicate)` → *object* | *undefined* {#macrocontext-api-prototype-method-contextfind}
 
-Returns the first of the macro's ancestors that passed the test implemented by the given filter function or `null`, if no members pass.
+Returns the first of the macro's ancestors that passed the test implemented by the given predicate function or `undefined`, if no members pass.
 
 #### History:
 
-* `v2.0.0`: Introduced.
+* `v2.37.0`: Introduced.
 
 #### Parameters:
 
-* **`filter`:** (*function*) The function used to test each ancestor execution context object, which is passed in as its sole parameter.
+* **`predicate`:** (*function*) The function used to test each ancestor execution context object, which is passed in as its sole parameter.
 
 #### Examples:
 
 ```
 var includeAncestor = function (ctx) { return ctx.name === "include"; };
-this.contextSelect(includeAncestor);  → Returns the first <<include>> macro ancestor
+this.contextFind(includeAncestor); // Returns the first <<include>> macro ancestor
 ```
 
 <!-- *********************************************************************** -->
 
-### `<MacroContext>.contextSelectAll(filter)` → *Array&lt;object&gt;* {#macrocontext-api-prototype-method-contextselectall}
+### `<MacroContext>.contextSome(predicate)` → *boolean* {#macrocontext-api-prototype-method-contextsome}
 
-Returns a new array containing all of the macro's ancestors that passed the test implemented by the given filter function or an empty array, if no members pass.
+Returns whether any of the macro's ancestors passed the test implemented by the given predicate function.
 
 #### History:
 
-* `v2.0.0`: Introduced.
+* `v2.37.0`: Introduced.
 
 #### Parameters:
 
-* **`filter`:** (*function*) The function used to test each ancestor execution context object, which is passed in as its sole parameter.
+* **`predicate`:** (*function*) The function used to test each ancestor execution context object, which is passed in as its sole parameter.
 
 #### Examples:
 
 ```
 var includeAncestor = function (ctx) { return ctx.name === "include"; };
-this.contextSelectAll(includeAncestor);  → Returns an array of all <<include>> macro ancestors
+this.contextSome(includeAncestor);  → Returns true if any ancestor was an <<include>> macro
 ```
 
 <!-- *********************************************************************** -->
@@ -217,7 +217,7 @@ Renders the message prefixed with the name of the macro and returns `false`.
 
 ```
 // Given: <<someMacro …>>
-return this.error("oops");  → Outputs '<<someMacro>>: oops'
+return this.error("oops"); // Outputs '<<someMacro>>: oops'
 ```
 
 <!-- *********************************************************************** -->
@@ -282,6 +282,45 @@ $someElement.on('some_event', this.shadowHandler(
 	}
 ));
 ```
+
+<!-- *********************************************************************** -->
+
+### <span class="deprecated">`<MacroContext>.contextHas(filter)` → *boolean*</span> {#macrocontext-api-prototype-method-contexthas}
+
+<p role="note" class="warning"><b>Deprecated:</b>
+This method has been deprecated and should no longer be used.  See the <a href="#macrocontext-api-prototype-method-contextsome"><code>&lt;MacroContext&gt;.contextSome()</code></a> method for its replacement.
+</p>
+
+#### History:
+
+* `v2.0.0`: Introduced.
+* `v2.37.0`: Deprecated in favor of `<MacroContext>.contextSome()`.
+
+<!-- *********************************************************************** -->
+
+### <span class="deprecated">`<MacroContext>.contextSelect(filter)` → *null* | *object*</span> {#macrocontext-api-prototype-method-contextselect}
+
+<p role="note" class="warning"><b>Deprecated:</b>
+This method has been deprecated and should no longer be used.  See the <a href="#macrocontext-api-prototype-method-contextfind"><code>&lt;MacroContext&gt;.contextFind()</code></a> method for its replacement.
+</p>
+
+#### History:
+
+* `v2.0.0`: Introduced.
+* `v2.37.0`: Deprecated in favor of `<MacroContext>.contextFind()`.
+
+<!-- *********************************************************************** -->
+
+### <span class="deprecated">`<MacroContext>.contextSelectAll(filter)` → *Array&lt;object&gt;*</span> {#macrocontext-api-prototype-method-contextselectall}
+
+<p role="note" class="warning"><b>Deprecated:</b>
+This method has been deprecated and should no longer be used.  See the <a href="#macrocontext-api-prototype-method-contextfilter"><code>&lt;MacroContext&gt;.contextFilter()</code></a> method for its replacement.
+</p>
+
+#### History:
+
+* `v2.0.0`: Introduced.
+* `v2.37.0`: Deprecated in favor of `<MacroContext>.contextFilter()`.
 
 <!-- *********************************************************************** -->
 

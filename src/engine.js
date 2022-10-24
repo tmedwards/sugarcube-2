@@ -545,7 +545,7 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 				'data-passage' : passage.name,
 				'data-tags'    : dataTags
 			})
-			.addClass(`passage ${passage.className}`);
+			.addClass(`passage passage-in ${passage.className}`);
 
 		// Add the passage's classes and tags to the document body.
 		jQuery(document.body)
@@ -643,11 +643,10 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 			}
 		}
 
-		// Append the passage element to the passage container and set up its transition.
-		jQuery(passageEl)
-			.addClass('passage-in')
-			.appendTo(containerEl);
-		setTimeout(() => jQuery(passageEl).removeClass('passage-in'), DOM_DELAY);
+		// Append the passage element to the passage container and initiate
+		// its transition animation.
+		jQuery(passageEl).appendTo(containerEl);
+		setTimeout(() => jQuery(passageEl).removeClass('passage-in'), DOM_DELAY / 2);
 
 		// Update the story display title, if necessary.
 		if (Story.has('StoryDisplayTitle')) {

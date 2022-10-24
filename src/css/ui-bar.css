@@ -7,9 +7,7 @@
 
 ***********************************************************************************************************************/
 
-/*
-	Patches to the core styles.
-*/
+/* Core styles patches. */
 #story {
 	margin-left: 20em;
 	transition: margin-left 200ms ease-in;
@@ -26,9 +24,9 @@
 	}
 }
 /*
-	At very narrow viewport widths, set `#story{margin-left}` equal to the value
-	of `#ui-bar.stowed~#story{margin-left}`, so that `#ui-bar` will side over top
-	of `#story` when unstowed, rather than shoving it over.
+	At narrow viewport widths, set `#story{margin-left}` equal to the value
+	of `#ui-bar.stowed~#story{margin-left}`, so that `#ui-bar` will side
+	over top of `#story` when unstowed, rather than shoving it over.
 */
 @media screen and (max-width: 768px) {
 	#story {
@@ -36,20 +34,22 @@
 	}
 }
 
-
-/*
-	Default structural styles.
-*/
+/* Base styles. */
 #ui-bar {
-	position: fixed;
-	z-index: 50;
-	top: 0;
-	left: 0;
-	width: 17.5em;
+	background-color: #222;
+	border-right: 1px solid #444;
 	height: 100%;
+	left: 0;
+	line-height: 1.5;
 	margin: 0;
+	overflow: auto;
 	padding: 0;
+	position: fixed;
+	text-align: center;
+	top: 0;
 	transition: left 200ms ease-in;
+	width: 17.5em;
+	z-index: 50;
 }
 #ui-bar.stowed {
 	left: -15.5em;
@@ -61,7 +61,6 @@
 	right: 0;
 }
 #ui-bar-body {
-	height: 90%; /* fallback for browsers without support for calc() */
 	height: calc(100% - 2.5em);
 	margin: 2.5em 0;
 	padding: 0 1.5em;
@@ -70,29 +69,6 @@
 #ui-bar.stowed #ui-bar-body {
 	visibility: hidden;
 	transition: visibility 200ms step-end;
-}
-
-
-/*
-	Accessibility styles.
-*/
-@media (prefers-reduced-motion: reduce) {
-	#story {
-		transition: margin-left 0s;
-	}
-	#ui-bar {
-		transition: left 0s;
-	}
-}
-
-
-/*
-	Default appearance styles.
-*/
-#ui-bar {
-	background-color: #222;
-	border-right: 1px solid #444;
-	text-align: center;
 }
 #ui-bar a {
 	text-decoration: none;
@@ -144,10 +120,6 @@
 	background-color: transparent;
 	border-color: #444;
 }
-#ui-bar-body {
-	line-height: 1.5;
-	overflow: auto;
-}
 #ui-bar-body > :not(:first-child) {
 	margin-top: 2em;
 }
@@ -193,33 +165,40 @@
 	user-select: none;
 }
 
-
-/*
-	Default font icon styles.
-*/
-#ui-bar-toggle:before,
+/* Font icon styles. */
+#ui-bar-toggle::before,
 #ui-bar-history [id|="history"],
-#menu-core li[id|="menu-item"] a:before {
+#menu-core li[id|="menu-item"] a::before {
 	@mixin tme-fa-icons-properties;
 }
-#ui-bar-toggle:before {
+#ui-bar-toggle::before {
 	content: "\e81d";
 }
-#ui-bar.stowed #ui-bar-toggle:before {
+#ui-bar.stowed #ui-bar-toggle::before {
 	content: "\e81e";
 }
-#menu-item-continue a:before {
+#menu-item-continue a::before {
 	content: "\e817\00a0";
 }
-#menu-item-saves a:before {
+#menu-item-saves a::before {
 	content: "\e82b\00a0";
 }
-#menu-item-settings a:before {
+#menu-item-settings a::before {
 	content: "\e82d\00a0";
 }
-#menu-item-restart a:before {
+#menu-item-restart a::before {
 	content: "\e82c\00a0";
 }
-#menu-item-share a:before {
+#menu-item-share a::before {
 	content: "\e82f\00a0";
+}
+
+/* Accessibility styles. */
+@media (prefers-reduced-motion: reduce) {
+	#story {
+		transition: margin-left 0s;
+	}
+	#ui-bar {
+		transition: left 0s;
+	}
 }

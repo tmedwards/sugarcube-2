@@ -7,138 +7,95 @@
 
 ***********************************************************************************************************************/
 
-/*
-	Patches to the core styles.
-*/
+/* Core styles patches. */
 html[data-dialog] body {
 	overflow: hidden;
 }
 
-
-/*
-	Default structural styles.
-*/
-#ui-overlay.open {
-	visibility: visible;
-	transition: opacity 200ms ease-in;
-}
-#ui-overlay:not(.open) {
-	transition: visibility 200ms step-end, opacity 200ms ease-in;
-}
+/* Base styles. */
 #ui-overlay {
-	visibility: hidden;
-	opacity: 0;
-	z-index: 100000;
-	position: fixed;
-	/*
-	top: -50vh;
-	left: -50vw;
-	height: 200vh;
-	width: 200vw;
-	*/
-	top: -50%;
-	left: -50%;
+	background-color: #000;
 	height: 200%;
+	left: -50%;
+	opacity: 0;
+	position: fixed;
+	top: -50%;
+	transition: visibility 200ms step-end, opacity 200ms ease-in;
+	visibility: hidden;
 	width: 200%;
+	z-index: 100000;
 }
-#ui-dialog.open {
-	display: block;
-	transition: opacity 200ms ease-in;
+/* #ui-overlay:not(.open) {
+	transition: visibility 200ms step-end, opacity 200ms ease-in;
+} */
+#ui-overlay.open {
+	opacity: 0.8;
+	/* transition: opacity 200ms ease-in; */
+	transition: visibility 0s;
+	visibility: visible;
 }
 /*
-	We do not animate `#ui-dialog:not(.open)` for various reasons.  Chief among
-	them, however, is so that the dialog isn't in the middle of its animation
+	We do not animate the closing `#ui-dialog` for various reasons.  Chief
+	among them is so that the dialog isn't in the middle of its animation
 	when other page updates happen.
 
-	e.g. The restoration of `overflow` on `body` would cause the still animating
-	     dialog to jump around a little if a scrollbar were to pop in.
+	In particular, the restoration of `overflow` on `body` would cause the
+	still animating dialog to jump around a little if a scrollbar were to
+	pop in.
 
-	     Any dialog action which performs a task which has its own animations
-	     (e.g. passage display) or causes the page to reload in addition to
-	     closing the dialog could cause display shenanigans.
+	Any dialog action which performs a task which has its own animations—e.g.,
+	passage display—or causes the page to reload in addition to closing the
+	dialog could cause display shenanigans.
 */
 #ui-dialog {
 	display: none;
+	margin: 0;
+	max-width: 66em;
 	opacity: 0;
-	z-index: 100100;
+	padding: 0;
 	position: fixed;
 	top: 50px;
-	margin: 0;
-	padding: 0;
+	z-index: 100100;
+}
+#ui-dialog.open {
+	display: block;
+	opacity: 1;
+	transition: opacity 200ms ease-in;
 }
 #ui-dialog > * {
 	box-sizing: border-box;
 }
 #ui-dialog-titlebar {
-	position: relative;
-}
-#ui-dialog-close {
-	display: block;
-	position: absolute;
-	right: 0;
-	top: 0;
-	white-space: nowrap;
-}
-#ui-dialog-body {
-	overflow: auto;
-	min-width: 280px;
-	height: 92%; /* fallback for browsers without support for calc() */
-	height: calc(100% - 2.1em); /* parent - title(2.1em) */
-}
-
-
-/*
-	Accessibility styles.
-*/
-@media (prefers-reduced-motion: reduce) {
-	#ui-overlay.open {
-		transition: opacity 0s;
-	}
-	#ui-overlay:not(.open) {
-		transition: opacity 0s;
-	}
-	#ui-dialog.open {
-		transition: opacity 0s;
-	}
-}
-
-
-/*
-	Default appearance styles.
-*/
-#ui-overlay {
-	background-color: #000;
-}
-#ui-overlay.open {
-	opacity: 0.8;
-}
-#ui-dialog {
-	max-width: 66em;
-}
-#ui-dialog.open {
-	opacity: 1;
-}
-#ui-dialog-titlebar {
 	background-color: #444;
 	min-height: 24px;
+	position: relative;
 }
 #ui-dialog-title {
+	font-size: 1.5em;
 	margin: 0;
 	padding: 0.2em 3.5em 0.2em 0.5em;
-	font-size: 1.5em;
 	text-align: center;
 	text-transform: uppercase;
 }
 #ui-dialog-close {
-	cursor: pointer;
-	font-size: 120%;
-	margin: 0;
-	padding: 0;
-	width: 3.6em;
-	height: 92%;
 	background-color: transparent;
 	border: 1px solid transparent;
+	cursor: pointer;
+	display: block;
+	font-size: 120%;
+	height: 92%;
+	margin: 0;
+	padding: 0;
+	position: absolute;
+	right: 0;
+	top: 0;
 	transition-duration: 200ms;
+	user-select: none;
+	white-space: nowrap;
+	width: 3.6em;
+
+	/* Font icon styles. */
+	@mixin tme-fa-icons-properties;
 }
 #ui-dialog-close:hover {
 	background-color: #b44;
@@ -147,9 +104,12 @@ html[data-dialog] body {
 #ui-dialog-body {
 	background-color: #111;
 	border: 1px solid #444;
-	text-align: left;
+	height: calc(100% - 2.1em); /* parent - title(2.1em) */
 	line-height: 1.5;
+	min-width: 280px;
+	overflow: auto;
 	padding: 1em;
+	text-align: left;
 }
 #ui-dialog-body > *:first-child {
 	margin-top: 0;
@@ -158,7 +118,7 @@ html[data-dialog] body {
 	background-color: #444;
 }
 
-/* Default dialog button bar styling. */
+/* Button bar styles. */
 #ui-dialog-body ul.buttons {
 	margin: 0;
 	padding: 0;
@@ -173,15 +133,15 @@ html[data-dialog] body {
 	margin-left: 1em;
 }
 
-/* Stop text selection on certain UI elements. */
-#ui-dialog-close {
-	user-select: none;
-}
-
-
-/*
-	Default font icon styles.
-*/
-#ui-dialog-close {
-	@mixin tme-fa-icons-properties;
+/* Accessibility styles. */
+@media (prefers-reduced-motion: reduce) {
+	#ui-overlay {
+		transition: opacity 0s;
+	}
+	#ui-overlay.open {
+		transition: opacity 0s;
+	}
+	#ui-dialog.open {
+		transition: opacity 0s;
+	}
 }
