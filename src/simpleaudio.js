@@ -10,20 +10,24 @@
 
 var SimpleAudio = (() => { // eslint-disable-line no-unused-vars, no-var
 	/*
-		Events that count as user activation—i.e. "user gestures", "activation behavior".
+		Activation triggering input events.
 
-		NOTE (ca. Dec, 2018): This not an exhaustive list and varies significantly by browser.
-		Proposals for a specification/standard are still very much in flux at this point.
+		An activation triggering input event is any event whose `isTrusted` attribute is true
+		and whose `type` is one of:
+			- keydown, provided the key is neither the Esc key nor a shortcut key reserved by the user agent.
+			- mousedown.
+			- pointerdown, provided the event's `pointerType` is "mouse".
+			- pointerup, provided the event's `pointerType` is not "mouse".
+			- touchend.
 
-		TODO (ca. Dec, 2018): Revisit this topic.
+		SEE: [6.4] https://html.spec.whatwg.org/#tracking-user-activation
 
-		SEE: (too many to list)
-			https://github.com/whatwg/html/issues/3849
-			https://github.com/whatwg/html/issues/1903
-			https://html.spec.whatwg.org/#activation
-			https://docs.google.com/spreadsheets/d/1DGXjhQ6D3yZXIePOMo0dsd2agz0t5W7rYH1NwJ-QGJo/edit#gid=0
+		SEE, HISTORICAL: (ca. Dec, 2018)
+			- https://github.com/whatwg/html/issues/3849
+			- https://github.com/whatwg/html/issues/1903
+			- https://docs.google.com/spreadsheets/d/1DGXjhQ6D3yZXIePOMo0dsd2agz0t5W7rYH1NwJ-QGJo/edit#gid=0
 	*/
-	const _gestureEventNames = Object.freeze(['click', 'contextmenu', 'dblclick', 'keyup', 'mouseup', 'pointerup', 'touchend']);
+	const _activationEvents = Object.freeze(['keydown', 'mousedown', 'pointerdown', 'pointerup', 'touchend']);
 
 	// Special group IDs.
 	const _specialIds = Object.freeze([':not', ':all', ':looped', ':muted', ':paused', ':playing']);
@@ -466,10 +470,19 @@ var SimpleAudio = (() => { // eslint-disable-line no-unused-vars, no-var
 		}
 
 		playWhenAllowed() {
-			this.play().catch(() => {
-				const gestures = _gestureEventNames.map(name => `${name}.AudioTrack_playWhenAllowed`).join(' ');
-				jQuery(document).one(gestures, () => {
-					jQuery(document).off('.AudioTrack_playWhenAllowed');
+			return this.play().catch(ex => {
+				// If the rejection isn't because of a `NotAllowedError` DOMException,
+				// rethrow it so that consumers of this method may catch it.
+				if (ex.name !== 'NotAllowedError') {
+					throw ex;
+				}
+
+				// Elsewise, listen for activation input events and attempt to play
+				// the track once the user has interacted with the page.
+				const namespace = '.AudioTrack_playWhenAllowed';
+				const events    = _activationEvents.map(name => `${name}${namespace}`).join(' ');
+				jQuery(document).one(events, () => {
+					jQuery(document).off(namespace);
 					this.audio.play();
 				});
 			});
@@ -1027,10 +1040,19 @@ var SimpleAudio = (() => { // eslint-disable-line no-unused-vars, no-var
 		}
 
 		playWhenAllowed() {
-			this.play().catch(() => {
-				const gestures = _gestureEventNames.map(name => `${name}.AudioList_playWhenAllowed`).join(' ');
-				jQuery(document).one(gestures, () => {
-					jQuery(document).off('.AudioList_playWhenAllowed');
+			return this.play().catch(ex => {
+				// If the rejection isn't because of a `NotAllowedError` DOMException,
+				// rethrow it so that consumers of this method may catch it.
+				if (ex.name !== 'NotAllowedError') {
+					throw ex;
+				}
+
+				// Elsewise, listen for activation input events and attempt to play
+				// the track once the user has interacted with the page.
+				const namespace = '.AudioList_playWhenAllowed';
+				const events    = _activationEvents.map(name => `${name}${namespace}`).join(' ');
+				jQuery(document).one(events, () => {
+					jQuery(document).off(namespace);
 					this.play();
 				});
 			});
