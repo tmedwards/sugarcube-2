@@ -6,29 +6,9 @@
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* global Config, Has, LoadScreen, Story, Visibility, clone, parseURL */
+/* global Config, Has, LoadScreen, Story, Visibility, clone, onUserActivation, parseURL */
 
 var SimpleAudio = (() => { // eslint-disable-line no-unused-vars, no-var
-	/*
-		Activation triggering input events.
-
-		An activation triggering input event is any event whose `isTrusted` attribute is true
-		and whose `type` is one of:
-			- keydown, provided the key is neither the Esc key nor a shortcut key reserved by the user agent.
-			- mousedown.
-			- pointerdown, provided the event's `pointerType` is "mouse".
-			- pointerup, provided the event's `pointerType` is not "mouse".
-			- touchend.
-
-		SEE: [6.4] https://html.spec.whatwg.org/#tracking-user-activation
-
-		SEE, HISTORICAL: (ca. Dec, 2018)
-			- https://github.com/whatwg/html/issues/3849
-			- https://github.com/whatwg/html/issues/1903
-			- https://docs.google.com/spreadsheets/d/1DGXjhQ6D3yZXIePOMo0dsd2agz0t5W7rYH1NwJ-QGJo/edit#gid=0
-	*/
-	const _activationEvents = Object.freeze(['keydown', 'mousedown', 'pointerdown', 'pointerup', 'touchend']);
-
 	// Special group IDs.
 	const _specialIds = Object.freeze([':not', ':all', ':looped', ':muted', ':paused', ':playing']);
 
@@ -471,20 +451,13 @@ var SimpleAudio = (() => { // eslint-disable-line no-unused-vars, no-var
 
 		playWhenAllowed() {
 			return this.play().catch(ex => {
-				// If the rejection isn't because of a `NotAllowedError` DOMException,
-				// rethrow it so that consumers of this method may catch it.
+				// Bail out if the rejection is not `NotAllowedError`.
 				if (ex.name !== 'NotAllowedError') {
 					throw ex;
 				}
 
-				// Elsewise, listen for activation input events and attempt to play
-				// the track once the user has interacted with the page.
-				const namespace = '.AudioTrack_playWhenAllowed';
-				const events    = _activationEvents.map(name => `${name}${namespace}`).join(' ');
-				jQuery(document).one(events, () => {
-					jQuery(document).off(namespace);
-					this.audio.play();
-				});
+				// Attempt to play the track upon user interaction.
+				onUserActivation('.AudioTrack_playWhenAllowed', () => this.audio.play());
 			});
 		}
 
@@ -1041,20 +1014,13 @@ var SimpleAudio = (() => { // eslint-disable-line no-unused-vars, no-var
 
 		playWhenAllowed() {
 			return this.play().catch(ex => {
-				// If the rejection isn't because of a `NotAllowedError` DOMException,
-				// rethrow it so that consumers of this method may catch it.
+				// Bail out if the rejection is not `NotAllowedError`.
 				if (ex.name !== 'NotAllowedError') {
 					throw ex;
 				}
 
-				// Elsewise, listen for activation input events and attempt to play
-				// the track once the user has interacted with the page.
-				const namespace = '.AudioList_playWhenAllowed';
-				const events    = _activationEvents.map(name => `${name}${namespace}`).join(' ');
-				jQuery(document).one(events, () => {
-					jQuery(document).off(namespace);
-					this.play();
-				});
+				// Attempt to play the track upon user interaction.
+				onUserActivation('.AudioList_playWhenAllowed', () => this.play());
 			});
 		}
 
