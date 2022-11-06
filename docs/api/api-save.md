@@ -45,6 +45,51 @@ Each **`moment`** object has the following properties:
 
 
 <!-- ***************************************************************************
+	Save Constants
+**************************************************************************** -->
+## Constants {#save-api-constants}
+
+<!-- *********************************************************************** -->
+
+### `Save.Type` {#save-api-constant-type}
+
+Save types pseudo-enumeration.  Passed to various saves related callbacks to denote the type of save being attempted.
+
+#### History:
+
+* `v2.33.0`: Introduced.
+* `v2.37.0`: Changed into a public API.
+
+#### Save type values:
+
+<table>
+<thead>
+	<tr>
+		<th>Type</th>
+		<th>Value</th>
+	</tr>
+</thead>
+<tbody>
+	<tr>
+		<th><code>Save.Type.Auto</code></th>
+		<td><code>auto</code></td>
+	</tr>
+	<tr>
+		<th><code>Save.Type.Disk</code></th>
+		<td><code>disk</code></td>
+	</tr>
+	<tr>
+		<th><code>Save.Type.Serialize</code></th>
+		<td><code>serialize</code></td>
+	</tr>
+	<tr>
+		<th><code>Save.Type.Slot</code></th>
+		<td><code>slot</code></td>
+	</tr>
+</tbody>
+</table>
+
+<!-- ***************************************************************************
 	Save General
 **************************************************************************** -->
 ## General {#save-api-general}

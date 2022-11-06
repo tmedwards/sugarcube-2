@@ -226,43 +226,6 @@ Config.navigation.override = function (dest) {
 
 <!-- *********************************************************************** -->
 
-### `Config.passages.descriptions` ↔ *boolean* | *object* | *function* (default: *none*) {#config-api-property-passages-descriptions}
-
-Determines whether alternate passage descriptions are used by the *Saves* and *Jump To* menus—by default an excerpt from the passage is used.  Valid values are boolean `true`, which simply causes the passages' titles to be used, an object, which maps passages' titles to their descriptions, or a function, which should return the passages' description.
-
-<div role="note"><b>Note:</b>
-<ul class="asnote">
-<li><b>As boolean:</b> You should ensure that all encounterable passage titles are meaningful.</li>
-<li><b>As object:</b> If the mapping object does not contain an entry for the passage in question, then the passage's excerpt is used instead.</li>
-<li><b>As function:</b> The function is called with the passage in question as its <code>this</code> value.  If the function returns falsy, then the passage's excerpt is used instead.</li>
-</ul>
-</div>
-
-#### History:
-
-* `v2.0.0`: Introduced.
-
-#### Examples:
-
-```
-// Uses passages' titles
-Config.passages.descriptions = true;
-
-// Uses the description mapped by the title
-Config.passages.descriptions = {
-	"title" : "description"
-};
-
-// Returns the description to be used
-Config.passages.descriptions = function () {
-	if (this.title === "title") {
-		return "description";
-	}
-};
-```
-
-<!-- *********************************************************************** -->
-
 ### `Config.passages.displayTitles` ↔ *boolean* (default: `false`) {#config-api-property-passages-displaytitles}
 
 Determines whether passage titles are combined with the story title, within the browser's/tab's titlebar, when passages are displayed.
@@ -391,6 +354,19 @@ That probably won't be very pleasing to the eye, however, so you will likely nee
 }
 ```
 
+<!-- *********************************************************************** -->
+
+### <span class="deprecated">`Config.passages.descriptions` ↔ *boolean* | *object* | *function* (default: *none*)</span> {#config-api-property-passages-descriptions}
+
+<p role="note" class="warning"><b>Deprecated:</b>
+This setting has been deprecated and should no longer be used.  See the <a href="#config-api-property-saves-descriptions"><code>Config.saves.descriptions</code></a> setting for its replacement.
+</p>
+
+#### History:
+
+* `v2.0.0`: Introduced.
+* `v2.37.0`: Deprecated in favor of the `Config.saves.descriptions` setting.
+
 
 <!-- ***************************************************************************
 	Saves
@@ -428,41 +404,32 @@ Config.saves.autoload = function () {
 
 <!-- *********************************************************************** -->
 
-### `Config.saves.autosave` ↔ *boolean* | *Array&lt;string&gt;* | *function* (default: *none*) {#config-api-property-saves-autosave}
+### `Config.saves.descriptions` ↔ *function* (default: *none*) {#config-api-property-saves-descriptions}
 
-Determines whether the autosave is created/updated when passages are displayed.
-
-Valid values are:
-
-* Boolean `true`, which causes the autosave to be updated with every passage.
-* Boolean `false`, which causes the autosave to never update automatically—i.e., you must do it manually via the <a href="#save-api-method-autosave-save"><code>Save.autosave.save()</code> static method</a>.
-* An array of strings, which causes the autosave to be updated for each passage with at least one matching tag.
-* A function, which causes the autosave to be updated for each passage where its return value is truthy.
-
-<p role="note" class="warning"><b>Warning:</b>
-When setting the value to boolean <code>true</code>, you will likely also need to use the <a href="#config-api-property-saves-isallowed"><code>Config.saves.isAllowed</code> property</a> to disallow saving on the start passage.  Or, if you use the start passage as real part of your story and allow the player to reenter it, rather than just as the initial landing/cover page, then you may wish to only disallow saving on the start passage the very first time it's displayed—i.e., at story startup.
-</p>
+Sets browser saves descriptions—by default an excerpt from the current passage is used.  The callback is passed one parameter, the type of save being attempted.  If its return value is falsy, the default description is used.  If its return value is truthy, the returned description is used.
 
 #### History:
 
-* `v2.0.0`: Introduced.
-* `v2.30.0`: Added function values and deprecated string values.
+* `v2.37.0`: Introduced.
 
 #### Examples:
 
 ```
-// Autosaves every passage
-Config.saves.autosave = true;
+// Uses passages' titles
+Config.saves.descriptions = function (saveType) {
+	return passage();
+};
+```
 
-// Allows manual autosaving
-Config.saves.autosave = false;
-
-// Autosaves on passages tagged with any of "bookmark" or "autosave"
-Config.saves.autosave = ["bookmark", "autosave"];
-
-// Autosaves on passages if it returns a truthy value
-Config.saves.autosave = function () {
-	/* code */
+```
+// Uses the description mapped by passages' titles
+var saveDescriptions = {
+	"passage_title_a" : "description text a…",
+	"passage_title_b" : "description text b…",
+	"passage_title_c" : "description text c…"
+};
+Config.saves.descriptions = function (saveType) {
+	return saveDescriptions[passage()];
 };
 ```
 
@@ -486,7 +453,11 @@ Config.saves.id = "a-big-huge-story-part-1";
 
 ### `Config.saves.isAllowed` ↔ *function* (default: *none*) {#config-api-property-saves-isallowed}
 
-Determines whether saving is allowed within the current context.  The callback is invoked each time a save is requested.  If its return value is falsy, the save is disallowed.  If its return value is truthy, the save is allowed to continue unperturbed.
+Determines whether saving is allowed within the current context.  The callback is passed one parameter, the type of save being attempted.  If its return value is falsy, the save is disallowed.  If its return value is truthy, the save is allowed to continue unperturbed.
+
+<p role="note" class="see"><b>See:</b>
+<a href="#save-api-constant-type"><code>Save.Type</code> pseudo-enumeration</a> for more information on save types.
+</p>
 
 #### History:
 
@@ -494,47 +465,63 @@ Determines whether saving is allowed within the current context.  The callback i
 
 #### Examples:
 
+##### Basic
+
 ```
-Config.saves.isAllowed = function () {
+// Allows saves on passages if it returns a truthy value
+Config.saves.isAllowed = function (saveType) {
 	/* code */
+};
+```
+
+```
+// Deny all saves on passages tagged wtih `menu`.
+Config.saves.isAllowed = function (saveType) {
+	return !tags().includes("menu");
+};
+```
+
+##### Using the save type parameter
+
+```
+// Allow auto saves only on passages tagged wtih `bookmark` or `autosave`.
+Config.saves.isAllowed = function (saveType) {
+	if (saveType === Save.Type.Auto) {
+		return tags().includesAny("bookmark", "autosave");
+	}
 };
 ```
 
 <!-- *********************************************************************** -->
 
-### `Config.saves.slots` *integer* (default: `8`) {#config-api-property-saves-slots}
+### `Config.saves.maxAutoSaves` *integer* (default: `1`) {#config-api-property-saves-maxautosaves}
 
-Sets the maximum number of available save slots.
+Sets the maximum number of available auto saves.
 
 #### History:
 
-* `v2.0.0`: Introduced.
+* `v2.37.0`: Introduced.
 
 #### Examples:
 
 ```
-Config.saves.slots = 4;
+Config.saves.maxAutoSaves = 3;
 ```
 
 <!-- *********************************************************************** -->
 
-### `Config.saves.tryDiskOnMobile` ↔ *boolean* (default: `true`) {#config-api-property-saves-trydiskonmobile}
+### `Config.saves.maxSlotSaves` *integer* (default: `8`) {#config-api-property-saves-maxslotsaves}
 
-Determines whether saving to disk is enabled on mobile devices—i.e., smartphones, tablets, etc.
-
-<p role="note" class="warning"><b>Warning:</b>
-Mobile browsers can be fickle, so saving to disk may not work as expected in all browsers.
-</p>
+Sets the maximum number of available slot saves.
 
 #### History:
 
-* `v2.34.0`: Introduced.
+* `v2.37.0`: Introduced.
 
 #### Examples:
 
 ```
-/* To disable saving to disk on mobile devices. */
-Config.saves.tryDiskOnMobile = false;
+Config.saves.maxSlotSaves = 4;
 ```
 
 <!-- *********************************************************************** -->
@@ -563,6 +550,20 @@ Config.saves.version = "v3";
 
 <!-- *********************************************************************** -->
 
+### <span class="deprecated">`Config.saves.autosave` ↔ *boolean* | *Array&lt;string&gt;* | *function* (default: *none*)</span> {#config-api-property-saves-autosave}
+
+<p role="note" class="warning"><b>Deprecated:</b>
+This setting has been deprecated and should no longer be used.  See the <a href="#config-api-property-saves-isallowed"><code>Config.saves.isAllowed</code></a> setting to replace its functionality.
+</p>
+
+#### History:
+
+* `v2.0.0`: Introduced.
+* `v2.30.0`: Added function values and deprecated string values.
+* `v2.37.0`: Deprecated.
+
+<!-- *********************************************************************** -->
+
 ### <span class="deprecated">`Config.saves.onLoad` ↔ *function* (default: *none*)</span> {#config-api-property-saves-onload}
 
 <p role="note" class="warning"><b>Deprecated:</b>
@@ -587,6 +588,32 @@ This setting has been deprecated and should no longer be used.  See the <a href=
 * `v2.0.0`: Introduced.
 * `v2.33.0`: Added save operation details object parameter to the callback function.
 * `v2.36.0`: Deprecated in favor of the [`Save` Events API](#save-api-events).
+
+<!-- *********************************************************************** -->
+
+### <span class="deprecated">`Config.saves.slots` *integer* (default: `8`)</span> {#config-api-property-saves-slots}
+
+<p role="note" class="warning"><b>Deprecated:</b>
+This setting has been deprecated and should no longer be used.  See the <a href="#config-api-property-saves-maxslotsaves"><code>Config.saves.maxSlotSaves</code></a> setting for its replacement.
+</p>
+
+#### History:
+
+* `v2.0.0`: Introduced.
+* `v2.37.0`: Deprecated in favor of the `Config.saves.maxSlotSaves` setting.
+
+<!-- *********************************************************************** -->
+
+### <span class="deprecated">`Config.saves.tryDiskOnMobile` ↔ *boolean* (default: `true`)</span> {#config-api-property-saves-trydiskonmobile}
+
+<p role="note" class="warning"><b>Deprecated:</b>
+This setting has been deprecated and should no longer be used.  Saving to disk on mobile devices is now unconditionally enabled.
+</p>
+
+#### History:
+
+* `v2.34.0`: Introduced.
+* `v2.37.0`: Deprecated.
 
 
 <!-- ***************************************************************************

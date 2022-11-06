@@ -6,434 +6,852 @@
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* global Config, Dialog, Engine, L10n, State, Story, UI, createFilename, enumFrom, getTypeOf, storage */
+/* global Config, L10n, State, createFilename, enumFrom, getTypeOf, hasOwn, storage */
 
+/*
+	Save API static object.
+*/
 var Save = (() => { // eslint-disable-line no-unused-vars, no-var
-	// Save operation type object.
+	// Save type pseudo-enumeration.
 	const Type = enumFrom({
-		Autosave  : 'autosave',
+		Auto      : 'auto',
 		Disk      : 'disk',
 		Serialize : 'serialize',
 		Slot      : 'slot'
 	});
 
-	// The upper bound of the saves slots.
-	let _slotsUBound = -1;
+	// Save index maximum value (`0`-based).
+	const MAX_IDX = 15;
 
-	// Set of onLoad handlers.
-	const _onLoadHandlers = new Set();
+	// Browser save key constants.
+	const IDX_DELIMITER    = ':';
+	const SAVE_SUBKEY      = 'save.';
+	const AUTO_SUBKEY      = `${SAVE_SUBKEY}auto.`;
+	const AUTO_DATA_SUBKEY = `${AUTO_SUBKEY}data${IDX_DELIMITER}`;
+	const AUTO_INFO_SUBKEY = `${AUTO_SUBKEY}info${IDX_DELIMITER}`;
+	const SLOT_SUBKEY      = `${SAVE_SUBKEY}slot.`;
+	const SLOT_DATA_SUBKEY = `${SLOT_SUBKEY}data${IDX_DELIMITER}`;
+	const SLOT_INFO_SUBKEY = `${SLOT_SUBKEY}info${IDX_DELIMITER}`;
 
-	// Set of onSave handlers.
-	const _onSaveHandlers = new Set();
+	// Save handler sets.
+	const onLoadHandlers = new Set();
+	const onSaveHandlers = new Set();
 
 
 	/*******************************************************************************
-		Saves Functions.
+		Initialization Functions.
 	*******************************************************************************/
 
-	function savesInit() {
-		if (DEBUG) { console.log('[Save/savesInit()]'); }
+	/*
+		Initialize the saves subsystem.
+	*/
+	function init() {
+		if (DEBUG) { console.log('[Save/init()]'); }
 
-		// Disable save slots and the autosave when Web Storage is unavailable.
-		if (storage.name === 'cookie') {
-			savesObjClear();
-			Config.saves.autoload = undefined;
-			Config.saves.autosave = undefined;
-			Config.saves.slots = 0;
-			return false;
-		}
-
-		let saves   = savesObjGet();
-		let updated = false;
-
-		/* legacy */
-		// Convert an ancient saves array into a new saves object.
-		if (Array.isArray(saves)) {
-			saves = {
-				autosave : null,
-				slots    : saves
-			};
-			updated = true;
-		}
-		/* /legacy */
-
-		// Handle the author changing the number of save slots.
-		if (Config.saves.slots !== saves.slots.length) {
-			if (Config.saves.slots < saves.slots.length) {
-				// Attempt to decrease the number of slots; this will only compact
-				// the slots array, by removing empty slots, no saves will be deleted.
-				saves.slots.reverse();
-
-				saves.slots = saves.slots.filter(function (val) {
-					if (val === null && this.count > 0) {
-						--this.count;
-						return false;
-					}
-
-					return true;
-				}, { count : saves.slots.length - Config.saves.slots });
-
-				saves.slots.reverse();
-			}
-			else if (Config.saves.slots > saves.slots.length) {
-				// Attempt to increase the number of slots.
-				_appendSlots(saves.slots, Config.saves.slots - saves.slots.length);
-			}
-
-			updated = true;
-		}
-
-		/* legacy */
-		// Update saves with old/obsolete properties.
-		if (_savesObjUpdate(saves.autosave)) {
-			updated = true;
-		}
-
-		for (let i = 0; i < saves.slots.length; ++i) {
-			if (_savesObjUpdate(saves.slots[i])) {
-				updated = true;
-			}
-		}
-
-		// Remove save stores which are empty.
-		if (_savesObjIsEmpty(saves)) {
-			storage.delete('saves');
-			updated = false;
-		}
-		/* /legacy */
-
-		// If the saves object was updated, then update the store.
-		if (updated) {
-			_savesObjSave(saves);
-		}
-
-		_slotsUBound = saves.slots.length - 1;
+		// Migrate saves from the old monolithic v2 save object to the
+		// new v3 style with separate entries for each save.
+		migrateV2Saves();
 
 		return true;
 	}
 
-	function savesObjCreate() {
-		return {
-			autosave : null,
-			slots    : _appendSlots([], Config.saves.slots)
-		};
-	}
+	function migrateV2Saves() {
+		const oldSaves = storage.get('saves');
 
-	function savesObjGet() {
-		const saves = storage.get('saves');
-		return saves === null ? savesObjCreate() : saves;
-	}
-
-	function savesObjClear() {
-		storage.delete('saves');
-		return true;
-	}
-
-	function savesOk() {
-		return autosaveOk() || slotsOk();
-	}
-
-
-	/*******************************************************************************
-		Autosave Functions.
-	*******************************************************************************/
-
-	function autosaveOk() {
-		return storage.name !== 'cookie' && typeof Config.saves.autosave !== 'undefined';
-	}
-
-	function autosaveHas() {
-		const saves = savesObjGet();
-
-		if (saves.autosave === null) {
-			return false;
-		}
-
-		return true;
-	}
-
-	function autosaveGet() {
-		const saves = savesObjGet();
-		return saves.autosave;
-	}
-
-	function autosaveLoad() {
-		const saves = savesObjGet();
-
-		if (saves.autosave === null) {
-			return false;
-		}
-
-		return _unmarshal(saves.autosave);
-	}
-
-	function autosaveSave(title, metadata) {
-		if (typeof Config.saves.isAllowed === 'function' && !Config.saves.isAllowed()) {
-			return false;
-		}
-
-		const saves        = savesObjGet();
-		const supplemental = {
-			title : title || Story.get(State.passage).description(),
-			date  : Date.now()
-		};
-
-		if (metadata != null) { // lazy equality for null
-			supplemental.metadata = metadata;
-		}
-
-		saves.autosave = _marshal(supplemental, { type : Type.Autosave });
-
-		return _savesObjSave(saves);
-	}
-
-	function autosaveDelete() {
-		const saves = savesObjGet();
-		saves.autosave = null;
-		return _savesObjSave(saves);
-	}
-
-
-	/*******************************************************************************
-		Slots Functions.
-	*******************************************************************************/
-
-	function slotsOk() {
-		return storage.name !== 'cookie' && _slotsUBound !== -1;
-	}
-
-	function slotsLength() {
-		return _slotsUBound + 1;
-	}
-
-	function slotsCount() {
-		if (!slotsOk()) {
-			return 0;
-		}
-
-		const saves = savesObjGet();
-		let count = 0;
-
-		for (let i = 0, iend = saves.slots.length; i < iend; ++i) {
-			if (saves.slots[i] !== null) {
-				++count;
-			}
-		}
-		return count;
-	}
-
-	function slotsIsEmpty() {
-		return slotsCount() === 0;
-	}
-
-	function slotsHas(slot) {
-		if (slot < 0 || slot > _slotsUBound) {
-			return false;
-		}
-
-		const saves = savesObjGet();
-
-		if (slot >= saves.slots.length || saves.slots[slot] === null) {
-			return false;
-		}
-
-		return true;
-	}
-
-	function slotsGet(slot) {
-		if (slot < 0 || slot > _slotsUBound) {
-			return null;
-		}
-
-		const saves = savesObjGet();
-
-		if (slot >= saves.slots.length) {
-			return null;
-		}
-
-		return saves.slots[slot];
-	}
-
-	function slotsLoad(slot) {
-		if (slot < 0 || slot > _slotsUBound) {
-			return false;
-		}
-
-		const saves = savesObjGet();
-
-		if (slot >= saves.slots.length || saves.slots[slot] === null) {
-			return false;
-		}
-
-		return _unmarshal(saves.slots[slot]);
-	}
-
-	function slotsSave(slot, title, metadata) {
-		if (typeof Config.saves.isAllowed === 'function' && !Config.saves.isAllowed()) {
-			if (Dialog.isOpen()) {
-				$(document).one(':dialogclosed', () => UI.alert(L10n.get('savesDisallowed')));
-			}
-			else {
-				UI.alert(L10n.get('savesDisallowed'));
-			}
-
-			return false;
-		}
-
-		if (slot < 0 || slot > _slotsUBound) {
-			return false;
-		}
-
-		const saves = savesObjGet();
-
-		if (slot >= saves.slots.length) {
-			return false;
-		}
-
-		const supplemental = {
-			title : title || Story.get(State.passage).description(),
-			date  : Date.now()
-		};
-
-		if (metadata != null) { // lazy equality for null
-			supplemental.metadata = metadata;
-		}
-
-		saves.slots[slot] = _marshal(supplemental, { type : Type.Slot });
-
-		return _savesObjSave(saves);
-	}
-
-	function slotsDelete(slot) {
-		if (slot < 0 || slot > _slotsUBound) {
-			return false;
-		}
-
-		const saves = savesObjGet();
-
-		if (slot >= saves.slots.length) {
-			return false;
-		}
-
-		saves.slots[slot] = null;
-		return _savesObjSave(saves);
-	}
-
-
-	/*******************************************************************************
-		Disk Import/Export Functions.
-	*******************************************************************************/
-
-	function exportToDisk(filename, metadata) {
-		if (typeof Config.saves.isAllowed === 'function' && !Config.saves.isAllowed()) {
-			if (Dialog.isOpen()) {
-				$(document).one(':dialogclosed', () => UI.alert(L10n.get('savesDisallowed')));
-			}
-			else {
-				UI.alert(L10n.get('savesDisallowed'));
-			}
-
+		// Bail out if no old saves object exists.
+		if (oldSaves === null) {
 			return;
 		}
 
-		function getDatestamp() {
-			const now = new Date();
-			let MM = now.getMonth() + 1;
-			let DD = now.getDate();
-			let hh = now.getHours();
-			let mm = now.getMinutes();
-			let ss = now.getSeconds();
+		// Delete existing saves before storing the migrated saves.
+		autoClear();
+		slotClear();
 
-			if (MM < 10) { MM = `0${MM}`; }
-			if (DD < 10) { DD = `0${DD}`; }
-			if (hh < 10) { hh = `0${hh}`; }
-			if (mm < 10) { mm = `0${mm}`; }
-			if (ss < 10) { ss = `0${ss}`; }
+		// Old monolithic saves object:
+		// 	{
+		// 		autosave : save | null,
+		// 		slots    : Array<save | null>
+		// 	}
+		//
+		// Old auto & slot save objects:
+		// 	{
+		// 		title    : description,
+		// 		date     : unix_datestamp,
+		// 		metadata : metadata | undefined,
+		// 		id       : id,
+		// 		state    : state,
+		// 		version  : version | undefined
+		// 	}
 
-			return `${now.getFullYear()}${MM}${DD}-${hh}${mm}${ss}`;
+		// Migrate the auto save.
+		if (oldSaves.autosave) {
+			const { info, data } = splitSave(oldSaves.autosave);
+
+			// Property updates.
+			info.desc = info.title;
+			delete info.title;
+
+			const infoKey = getAutoInfoKeyFromIdx(0);
+			const dataKey = getAutoDataKeyFromIdx(0);
+
+			// If storing either chunk is going to fail, it's more likely
+			// to be the data chunk, so we attempt to store it first.
+			if (storage.set(dataKey, data)) {
+				if (!storage.set(infoKey, info)) {
+					storage.delete(dataKey);
+				}
+			}
 		}
 
-		function getFilename(str) {
-			return createFilename(str)
-				.replace(/[_\s\u2013\u2014-]+/g, '-'); // legacy
-		}
-
-		const baseName     = filename == null ? Story.domId : getFilename(filename); // lazy equality for null
-		const saveName     = `${baseName}-${getDatestamp()}.save`;
-		const supplemental = metadata == null ? {} : { metadata }; // lazy equality for null
-		const saveObj      = LZString.compressToBase64(JSON.stringify(_marshal(supplemental, { type : Type.Disk })));
-		saveAs(new Blob([saveObj], { type : 'text/plain;charset=UTF-8' }), saveName);
-	}
-
-	function importFromDisk(event) {
-		const file   = event.target.files[0];
-		const reader = new FileReader();
-
-		// Add the handler that will capture the file information once the load is finished.
-		jQuery(reader).one('loadend', () => {
-			if (reader.error) {
-				const ex = reader.error;
-				UI.alert(`${L10n.get('errorSaveDiskLoadFailed').toUpperFirst()} (${ex.name}: ${ex.message}).</p><p>${L10n.get('aborting')}.`);
+		// Migrate the slot saves.
+		oldSaves.slots.forEach((save, idx) => {
+			if (!save) {
 				return;
 			}
 
-			let saveObj;
+			const { info, data } = splitSave(save);
 
-			try {
-				saveObj = JSON.parse(
-					/* legacy */ /\.json$/i.test(file.name) || /^\{/.test(reader.result)
-						? reader.result
-						: /* /legacy */ LZString.decompressFromBase64(reader.result)
-				);
+			// Property updates.
+			info.desc = info.title;
+			delete info.title;
+
+			const infoKey = getSlotInfoKeyFromIdx(idx);
+			const dataKey = getSlotDataKeyFromIdx(idx);
+
+			// If storing either chunk is going to fail, it's more likely
+			// to be the data chunk, so we attempt to store it first.
+			if (storage.set(dataKey, data)) {
+				if (!storage.set(infoKey, info)) {
+					storage.delete(dataKey);
+				}
 			}
-			catch (ex) { /* no-op; `_unmarshal()` will handle the error */ }
-
-			_unmarshal(saveObj);
 		});
 
-		// Initiate the file load.
-		reader.readAsText(file);
+		// Delete the old saves object.
+		storage.delete('saves');
 	}
 
 
 	/*******************************************************************************
-		Serialization Functions.
+		Saves Utility Functions.
+	*******************************************************************************/
+
+	function createDatestamp(date) {
+		if (!(date instanceof Date)) {
+			throw new TypeError('createDatestamp date parameter must be a Date object');
+		}
+
+		let MM = date.getMonth() + 1;
+		let DD = date.getDate();
+		let hh = date.getHours();
+		let mm = date.getMinutes();
+		let ss = date.getSeconds();
+
+		if (MM < 10) { MM = `0${MM}`; }
+		if (DD < 10) { DD = `0${DD}`; }
+		if (hh < 10) { hh = `0${hh}`; }
+		if (mm < 10) { mm = `0${mm}`; }
+		if (ss < 10) { ss = `0${ss}`; }
+
+		return `${date.getFullYear()}${MM}${DD}-${hh}${mm}${ss}`;
+	}
+
+	// Find the most recent index, ordered by date (descending).
+	function findNewest(saveType) {
+		let keys;
+
+		switch (saveType) {
+			case Type.Auto: keys = getKeys(isAutoInfoKey); break;
+			case Type.Slot: keys = getKeys(isSlotInfoKey); break;
+			default:        keys = getKeys(isInfoKey); break;
+		}
+
+		switch (keys.length) {
+			case 0: return { idx : -1 };
+			case 1: return {
+				idx  : getIdxFromKey(keys[0]),
+				type : getTypeFromKey(keys[0])
+			};
+		}
+
+		return keys
+			.map(key => ({
+				value : {
+					idx  : getIdxFromKey(key),
+					type : getTypeFromKey(key)
+				},
+				date : storage.get(key).date
+			}))
+			.sort((a, b) => b.date - a.date)
+			.first()
+			.value;
+	}
+
+	function getDesc(userDesc, saveType) {
+		let desc;
+
+		// Try the given description.
+		if (userDesc != null) { // lazy equality for null
+			desc = String(userDesc).trim();
+		}
+
+		// Try the `Config.saves.descriptions` description.
+		if (!desc && typeof Config.saves.descriptions === 'function') {
+			desc =  String(Config.saves.descriptions(saveType)).trim();
+		}
+
+		if (desc) {
+			return desc;
+		}
+
+		return `${L10n.get('turn')} ${State.turns}`;
+	}
+
+	function getIdxFromKey(key) {
+		const pos = key.lastIndexOf(IDX_DELIMITER);
+
+		if (pos === -1) {
+			throw new Error(`unable to get index from save key (received: ${key})`);
+		}
+
+		return Number(key.slice(pos + 1));
+	}
+
+	function getAutoInfoKeyFromIdx(idx) {
+		return `${AUTO_INFO_SUBKEY}${idx}`;
+	}
+
+	function getAutoDataKeyFromIdx(idx) {
+		return `${AUTO_DATA_SUBKEY}${idx}`;
+	}
+
+	function getSlotInfoKeyFromIdx(idx) {
+		return `${SLOT_INFO_SUBKEY}${idx}`;
+	}
+
+	function getSlotDataKeyFromIdx(idx) {
+		return `${SLOT_DATA_SUBKEY}${idx}`;
+	}
+
+	function getKeys(predicate) {
+		return storage.keys().filter(predicate);
+	}
+
+	function getTypeFromKey(key) {
+		return isAutoKey(key) ? Type.Auto : Type.Slot;
+	}
+
+	function isInfoKey(key) {
+		return key.startsWith(AUTO_INFO_SUBKEY) || key.startsWith(SLOT_INFO_SUBKEY);
+	}
+
+	function isAutoKey(key) {
+		return key.startsWith(AUTO_SUBKEY);
+	}
+
+	function isAutoInfoKey(key) {
+		return key.startsWith(AUTO_INFO_SUBKEY);
+	}
+
+	function isSlotKey(key) {
+		return key.startsWith(SLOT_SUBKEY);
+	}
+
+	function isSlotInfoKey(key) {
+		return key.startsWith(SLOT_INFO_SUBKEY);
+	}
+
+	function saveBlobToDiskAs(data, filename, extension) {
+		if (typeof filename !== 'string') {
+			throw new Error('filename parameter must be a string');
+		}
+
+		const baseName = createFilename(filename);
+
+		if (baseName === '') {
+			throw new Error('filename parameter must not consist solely of illegal characters');
+		}
+
+		const datestamp = createDatestamp(new Date());
+		const fileExt   = createFilename(extension) || 'save';
+
+		saveAs(
+			new Blob([data], { type : 'text/plain;charset=UTF-8' }),
+			`${baseName}-${datestamp}.${fileExt}`
+		);
+	}
+
+
+	/*******************************************************************************
+		Browser Auto Saves Functions.
+	*******************************************************************************/
+
+	function autoClear() {
+		getKeys(isAutoKey).forEach(key => storage.delete(key));
+		return true;
+	}
+
+	function autoDelete(idx) {
+		if (!Number.isInteger(idx)) {
+			throw new TypeError('auto save index must be an integer');
+		}
+
+		if (idx < 0 || idx > MAX_IDX) {
+			throw new RangeError(`auto save index out of bounds (range: 0–${MAX_IDX}; received: ${idx})`);
+		}
+
+		storage.delete(getAutoInfoKeyFromIdx(idx));
+		storage.delete(getAutoDataKeyFromIdx(idx));
+		return true;
+	}
+
+	function autoEntries() {
+		// NOTE: Order by date (descending).
+		return getKeys(isAutoInfoKey)
+			.map(key => ({
+				idx  : getIdxFromKey(key),
+				info : storage.get(key)
+			}))
+			.sort((a, b) => b.info.date - a.info.date);
+	}
+
+	function autoGet(idx) {
+		if (!Number.isInteger(idx)) {
+			throw new TypeError('auto save index must be an integer');
+		}
+
+		if (idx < 0 || idx > MAX_IDX) {
+			throw new RangeError(`auto save index out of bounds (range: 0–${MAX_IDX}; received: ${idx})`);
+		}
+
+		return storage.get(getAutoInfoKeyFromIdx(idx));
+	}
+
+	function autoHas(idx) {
+		if (!Number.isInteger(idx)) {
+			throw new TypeError('auto save index must be an integer');
+		}
+
+		if (idx < 0 || idx > MAX_IDX) {
+			throw new RangeError(`auto save index out of bounds (range: 0–${MAX_IDX}; received: ${idx})`);
+		}
+
+		return storage.has(getAutoInfoKeyFromIdx(idx));
+	}
+
+	function autoIsEnabled() {
+		return storage.name !== 'cookie' && Config.saves.maxAutoSaves > 0;
+	}
+
+	function autoLoad(idx) {
+		return new Promise(resolve => {
+			if (!Number.isInteger(idx)) {
+				throw new TypeError('auto save index must be an integer');
+			}
+
+			if (idx < 0 || idx > MAX_IDX) {
+				throw new RangeError(`auto save index out of bounds (range: 0–${MAX_IDX}; received: ${idx})`);
+			}
+
+			const info = storage.get(getAutoInfoKeyFromIdx(idx));
+			const data = storage.get(getAutoDataKeyFromIdx(idx));
+
+			if (!info || !data) {
+				throw new Error(L10n.get('saveErrorNonexistent'));
+			}
+
+			// NOTE: May throw exceptions.
+			unmarshal(Object.assign(info, data));
+
+			resolve(true);
+		});
+	}
+
+	function autoSave(desc, metadata) {
+		if (
+			!autoIsEnabled()
+			|| typeof Config.saves.isAllowed === 'function'
+			&& !Config.saves.isAllowed(Type.Auto)
+		) {
+			return false;
+		}
+
+		const details = {
+			desc : getDesc(desc, Type.Auto),
+			type : Type.Auto
+		};
+
+		if (metadata != null) { // lazy equality for null
+			details.metadata = metadata;
+		}
+
+		const idx            = (findNewest(Type.Auto).idx + 1) % Config.saves.maxAutoSaves;
+		const { info, data } = splitSave(marshal(details));
+		const infoKey        = getAutoInfoKeyFromIdx(idx);
+		const dataKey        = getAutoDataKeyFromIdx(idx);
+
+		console.log(`[auto] idx=${idx}, infoKey=${infoKey}:`, info);
+		console.log(`[auto] idx=${idx}, dataKey=${dataKey}:`, data);
+
+		// If storing either chunk is going to fail, it's more likely
+		// to be the data chunk, so we attempt to store it first.
+		if (storage.set(dataKey, data)) {
+			if (!storage.set(infoKey, info)) {
+				storage.delete(dataKey);
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	function autoSize() {
+		return getKeys(isAutoInfoKey).length;
+	}
+
+
+	/*******************************************************************************
+		Browser Slot Saves Functions.
+	*******************************************************************************/
+
+	function slotClear() {
+		getKeys(isSlotKey).forEach(key => storage.delete(key));
+		return true;
+	}
+
+	function slotDelete(idx) {
+		if (!Number.isInteger(idx)) {
+			throw new TypeError('slot save index must be an integer');
+		}
+
+		if (idx < 0 || idx > MAX_IDX) {
+			throw new RangeError(`slot save index out of bounds (range: 0–${MAX_IDX}; received: ${idx})`);
+		}
+
+		storage.delete(getSlotInfoKeyFromIdx(idx));
+		storage.delete(getSlotDataKeyFromIdx(idx));
+		return true;
+	}
+
+	function slotEntries() {
+		// NOTE: Order by ID (ascending).
+		return getKeys(isSlotInfoKey)
+			.map(key => ({
+				idx  : getIdxFromKey(key),
+				info : storage.get(key)
+			}))
+			.sort((a, b) => a.idx - b.idx);
+	}
+
+	function slotGet(idx) {
+		if (!Number.isInteger(idx)) {
+			throw new TypeError('slot save index must be an integer');
+		}
+
+		if (idx < 0 || idx > MAX_IDX) {
+			throw new RangeError(`slot save index out of bounds (range: 0–${MAX_IDX}; received: ${idx})`);
+		}
+
+		return storage.get(getSlotInfoKeyFromIdx(idx));
+	}
+
+	function slotHas(idx) {
+		if (!Number.isInteger(idx)) {
+			throw new TypeError('slot save index must be an integer');
+		}
+
+		if (idx < 0 || idx > MAX_IDX) {
+			throw new RangeError(`slot save index out of bounds (range: 0–${MAX_IDX}; received: ${idx})`);
+		}
+
+		return storage.has(getSlotInfoKeyFromIdx(idx));
+	}
+
+	function slotIsEnabled() {
+		return storage.name !== 'cookie' && Config.saves.maxSlotSaves > 0;
+	}
+
+	function slotLoad(idx) {
+		return new Promise(resolve => {
+			if (!Number.isInteger(idx)) {
+				throw new TypeError('slot save index must be an integer');
+			}
+
+			if (idx < 0 || idx > MAX_IDX) {
+				throw new RangeError(`slot save index out of bounds (range: 0–${MAX_IDX}; received: ${idx})`);
+			}
+
+			const info = storage.get(getSlotInfoKeyFromIdx(idx));
+			const data = storage.get(getSlotDataKeyFromIdx(idx));
+
+			if (!info || !data) {
+				throw new Error(L10n.get('saveErrorNonexistent'));
+			}
+
+			// NOTE: May throw exceptions.
+			unmarshal(Object.assign(info, data));
+
+			resolve(true);
+		});
+	}
+
+	function slotSave(idx, desc, metadata) {
+		if (!Number.isInteger(idx)) {
+			throw new TypeError('slot save index must be an integer');
+		}
+
+		if (idx < 0 || idx >= Config.saves.maxSlotSaves) {
+			throw new RangeError(`slot save index out of bounds (range: 0–${Config.saves.maxSlotSaves - 1}; received: ${idx})`);
+		}
+
+		if (
+			!slotIsEnabled()
+			|| typeof Config.saves.isAllowed === 'function'
+			&& !Config.saves.isAllowed(Type.Slot)
+		) {
+			throw new Error(L10n.get('savesDisallowed'));
+		}
+
+		const details = {
+			desc : getDesc(desc, Type.Slot),
+			type : Type.Slot
+		};
+
+		if (metadata != null) { // lazy equality for null
+			details.metadata = metadata;
+		}
+
+		const { info, data } = splitSave(marshal(details));
+		const infoKey        = getSlotInfoKeyFromIdx(idx);
+		const dataKey        = getSlotDataKeyFromIdx(idx);
+
+		console.log(`[slot] idx=${idx}, infoKey=${infoKey}:`, info);
+		console.log(`[slot] idx=${idx}, dataKey=${dataKey}:`, data);
+
+		// If storing either chunk is going to fail, it's more likely
+		// to be the data chunk, so we attempt to store it first.
+		if (storage.set(dataKey, data)) {
+			if (!storage.set(infoKey, info)) {
+				storage.delete(dataKey);
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	function slotSize() {
+		return  getKeys(isSlotInfoKey).length;
+	}
+
+
+	/*******************************************************************************
+		Browser General Saves Functions.
+	*******************************************************************************/
+
+	function browserClear() {
+		autoClear();
+		slotClear();
+		return true;
+	}
+
+	function browserContinue() {
+		const newest = findNewest();
+
+		if (newest.idx === -1) {
+			return Promise.reject(new Error(L10n.get('saveErrorNonexistent')));
+		}
+
+		return newest.type === Type.Auto
+			? autoLoad(newest.idx)
+			: slotLoad(newest.idx);
+	}
+
+	function browserExport(filename) {
+		const auto = getKeys(isAutoInfoKey).map(infoKey => {
+			const idx  = getIdxFromKey(infoKey);
+			const info = storage.get(infoKey);
+			const data = storage.get(getAutoDataKeyFromIdx(idx));
+
+			if (!info || !data) {
+				throw new Error('during saves export auto save info or data nonexistent');
+			}
+
+			return { idx, info, data };
+		});
+		const slot = getKeys(isSlotInfoKey).map(infoKey => {
+			const idx  = getIdxFromKey(infoKey);
+			const info = storage.get(infoKey);
+			const data = storage.get(getSlotDataKeyFromIdx(idx));
+
+			if (!info || !data) {
+				throw new Error('during saves export slot save info or data nonexistent');
+			}
+
+			return { idx, info, data };
+		});
+		const bundle = LZString.compressToBase64(JSON.stringify({ auto, slot }));
+
+		saveBlobToDiskAs(bundle, filename, 'savesexport');
+	}
+
+	function browserImport(event) {
+		return new Promise((resolve, reject) => {
+			const reader = new FileReader();
+
+			// Add the handler that will capture the file data once the load is finished.
+			jQuery(reader).on('loadend', () => {
+				try {
+					if (reader.error) {
+						throw new Error(`${L10n.get('saveErrorDiskLoadFail')}: ${reader.error}`);
+						// throw reader.error;
+					}
+
+					const badSave = O => !hasOwn(O, 'idx') || !hasOwn(O, 'info') || !hasOwn(O, 'data');
+					let bundle;
+
+					try {
+						bundle = JSON.parse(LZString.decompressFromBase64(reader.result));
+					}
+					catch (ex) {
+						throw new Error(L10n.get('saveErrorDecodeFail'));
+					}
+
+					if (
+						bundle == null // lazy equality for null
+						|| typeof bundle !== 'object'
+						|| !hasOwn(bundle, 'auto')
+						|| !(bundle.auto instanceof Array)
+						|| bundle.auto.some(badSave)
+						|| !hasOwn(bundle, 'slot')
+						|| !(bundle.slot instanceof Array)
+						|| bundle.slot.some(badSave)
+					) {
+						throw new Error(L10n.get('saveErrorInvalidData'));
+					}
+
+					// Delete existing saves before storing the imports.
+					autoClear();
+					slotClear();
+
+					// QUESTION: Should failures throw exceptions?
+					bundle.auto.forEach(save => {
+						const { idx, info, data } = save;
+						const infoKey             = getAutoInfoKeyFromIdx(idx);
+						const dataKey             = getAutoDataKeyFromIdx(idx);
+
+						// If storing either chunk is going to fail, it's more likely
+						// to be the data chunk, so we attempt to store it first.
+						if (storage.set(dataKey, data)) {
+							if (!storage.set(infoKey, info)) {
+								storage.delete(dataKey);
+							}
+						}
+					});
+					bundle.slot.forEach(save => {
+						const { idx, info, data } = save;
+						const infoKey             = getSlotInfoKeyFromIdx(idx);
+						const dataKey             = getSlotDataKeyFromIdx(idx);
+
+						// If storing either chunk is going to fail, it's more likely
+						// to be the data chunk, so we attempt to store it first.
+						if (storage.set(dataKey, data)) {
+							if (!storage.set(infoKey, info)) {
+								storage.delete(dataKey);
+							}
+						}
+					});
+
+					resolve(true);
+				}
+				catch (ex) {
+					reject(ex);
+				}
+			});
+
+			// Initiate the file load.
+			reader.readAsText(event.target.files[0]);
+		});
+	}
+
+	function browserIsEnabled() {
+		return autoIsEnabled() || slotIsEnabled();
+	}
+
+	function browserSize() {
+		return getKeys(isInfoKey).length;
+	}
+
+
+	/*******************************************************************************
+		Disk Saves Functions.
+	*******************************************************************************/
+
+	function diskSave(filename, metadata) {
+		if (
+			typeof Config.saves.isAllowed === 'function'
+			&& !Config.saves.isAllowed(Type.Disk)
+		) {
+			throw new Error(L10n.get('savesDisallowed'));
+		}
+
+		const details = {
+			desc : getDesc(filename, Type.Disk),
+			type : Type.Disk
+		};
+
+		if (metadata != null) { // lazy equality for null
+			details.metadata = metadata;
+		}
+
+		const b64Save = LZString.compressToBase64(JSON.stringify(marshal(details)));
+
+		saveBlobToDiskAs(b64Save, filename, 'save');
+	}
+
+	function diskLoad(event) {
+		return new Promise((resolve, reject) => {
+			const reader = new FileReader();
+
+			// Add the handler that will capture the file data once the load is finished.
+			jQuery(reader).on('loadend', () => {
+				try {
+					if (reader.error) {
+						throw new Error(`${L10n.get('saveErrorDiskLoadFail')}: ${reader.error}`);
+						// throw reader.error;
+					}
+
+					let save;
+
+					try {
+						save = JSON.parse(LZString.decompressFromBase64(reader.result));
+					}
+					catch (ex) {
+						throw new Error(L10n.get('saveErrorDecodeFail'));
+					}
+
+					// NOTE: May also throw exceptions.
+					unmarshal(save);
+
+					resolve(true);
+				}
+				catch (ex) {
+					reject(ex);
+				}
+			});
+
+			// Initiate the file load.
+			reader.readAsText(event.target.files[0]);
+		});
+	}
+
+
+	/*******************************************************************************
+		Serialization Saves Functions.
 	*******************************************************************************/
 
 	function serialize(metadata) {
-		if (typeof Config.saves.isAllowed === 'function' && !Config.saves.isAllowed()) {
-			if (Dialog.isOpen()) {
-				$(document).one(':dialogclosed', () => UI.alert(L10n.get('savesDisallowed')));
-			}
-			else {
-				UI.alert(L10n.get('savesDisallowed'));
-			}
-
-			return null;
+		if (
+			typeof Config.saves.isAllowed === 'function'
+			&& !Config.saves.isAllowed(Type.Serialize)
+		) {
+			throw new Error(L10n.get('savesDisallowed'));
 		}
 
-		const supplemental = metadata == null ? {} : { metadata }; // lazy equality for null
-		return LZString.compressToBase64(JSON.stringify(_marshal(supplemental, { type : Type.Serialize })));
+		const details = {
+			desc : getDesc(null, Type.Serialize),
+			type : Type.Serialize
+		};
+
+		if (metadata != null) { // lazy equality for null
+			details.metadata = metadata;
+		}
+
+		return LZString.compressToBase64(JSON.stringify(marshal(details)));
 	}
 
-	function deserialize(base64Str) {
-		/*
-			NOTE: We purposefully do not attempt to catch parameter shenanigans
-			here, instead relying on `_unmarshal()` to do the heavy lifting.
-		*/
+	function deserialize(b64Save) {
+		return new Promise(resolve => {
+			let save;
 
-		let saveObj;
+			try {
+				save = JSON.parse(LZString.decompressFromBase64(b64Save));
+			}
+			catch (ex) {
+				throw new Error(L10n.get('saveErrorDecodeFail'));
+			}
 
-		try {
-			saveObj = JSON.parse(LZString.decompressFromBase64(base64Str));
+			// NOTE: May also throw exceptions.
+			unmarshal(save);
+
+			resolve(true);
+		});
+	}
+
+
+	/*******************************************************************************
+		Marshaling Functions.
+	*******************************************************************************/
+
+	function marshal(details) {
+		if (DEBUG) { console.log(`[Save/marshal({ type : "${details.type}" })]`); }
+
+		const save = Object.assign({}, details, {
+			date  : Date.now(),
+			id    : Config.saves.id,
+			state : State.marshalForSave()
+		});
+
+		if (Config.saves.version != null) { // lazy equality for null
+			save.version = Config.saves.version;
 		}
-		catch (ex) { /* no-op; `_unmarshal()` will handle the error */ }
 
-		if (!_unmarshal(saveObj)) {
-			return null;
+		// Call any `onSave` handlers.
+		onSaveHandlers.forEach(fn => fn(save));
+
+		// Delta encode the state history and delete the non-encoded property.
+		save.state.delta = State.deltaEncode(save.state.history);
+		delete save.state.history;
+
+		return save;
+	}
+
+	function splitSave(save) {
+		const { state, ...info } = save;
+		return { info, data : { state } };
+	}
+
+	function unmarshal(save) {
+		if (DEBUG) { console.log('[Save/unmarshal()]'); }
+
+		if (
+			save == null // lazy equality for null
+			|| typeof save !== 'object'
+			|| !hasOwn(save, 'id')
+			|| !hasOwn(save, 'state')
+			|| typeof save.state !== 'object'
+			|| !hasOwn(save.state, 'delta')
+		) {
+			throw new Error(L10n.get('saveErrorInvalidData'));
 		}
 
-		return saveObj.metadata;
+		if (save.id !== Config.saves.id) {
+			throw new Error(L10n.get('saveErrorIdMismatch'));
+		}
+
+		// Delta decode the state history and delete the encoded property.
+		/* eslint-disable no-param-reassign */
+		save.state.history = State.deltaDecode(save.state.delta);
+		delete save.state.delta;
+		/* eslint-enable no-param-reassign */
+
+		// Call any `onLoad` handlers.
+		onLoadHandlers.forEach(fn => fn(save));
+
+		// Restore the state.
+		//
+		// NOTE: May throw exceptions.
+		State.unmarshalForSave(save.state);
 	}
 
 
@@ -448,19 +866,19 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			throw new TypeError(`Save.onLoad.add handler parameter must be a function (received: ${valueType})`);
 		}
 
-		_onLoadHandlers.add(handler);
+		onLoadHandlers.add(handler);
 	}
 
 	function onLoadClear() {
-		_onLoadHandlers.clear();
+		onLoadHandlers.clear();
 	}
 
 	function onLoadDelete(handler) {
-		return _onLoadHandlers.delete(handler);
+		return onLoadHandlers.delete(handler);
 	}
 
 	function onLoadSize() {
-		return _onLoadHandlers.size;
+		return onLoadHandlers.size;
 	}
 
 	function onSaveAdd(handler) {
@@ -470,196 +888,19 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			throw new TypeError(`Save.onSave.add handler parameter must be a function (received: ${valueType})`);
 		}
 
-		_onSaveHandlers.add(handler);
+		onSaveHandlers.add(handler);
 	}
 
 	function onSaveClear() {
-		_onSaveHandlers.clear();
+		onSaveHandlers.clear();
 	}
 
 	function onSaveDelete(handler) {
-		return _onSaveHandlers.delete(handler);
+		return onSaveHandlers.delete(handler);
 	}
 
 	function onSaveSize() {
-		return _onSaveHandlers.size;
-	}
-
-
-	/*******************************************************************************
-		Utility Functions.
-	*******************************************************************************/
-
-	function _appendSlots(array, num) {
-		for (let i = 0; i < num; ++i) {
-			array.push(null);
-		}
-
-		return array;
-	}
-
-	function _savesObjIsEmpty(saves) {
-		const slots = saves.slots;
-		let isSlotsEmpty = true;
-
-		for (let i = 0, iend = slots.length; i < iend; ++i) {
-			if (slots[i] !== null) {
-				isSlotsEmpty = false;
-				break;
-			}
-		}
-
-		return saves.autosave === null && isSlotsEmpty;
-	}
-
-	function _savesObjSave(saves) {
-		if (_savesObjIsEmpty(saves)) {
-			storage.delete('saves');
-			return true;
-		}
-
-		return storage.set('saves', saves);
-	}
-
-	function _savesObjUpdate(saveObj) {
-		if (saveObj == null || typeof saveObj !== 'object') { // lazy equality for null
-			return false;
-		}
-
-		let updated = false;
-
-		/* eslint-disable no-param-reassign */
-		if (
-			!saveObj.hasOwnProperty('state')
-			|| !saveObj.state.hasOwnProperty('delta')
-			|| !saveObj.state.hasOwnProperty('index')
-		) {
-			if (saveObj.hasOwnProperty('data')) {
-				delete saveObj.mode;
-				saveObj.state = {
-					delta : State.deltaEncode(saveObj.data)
-				};
-				delete saveObj.data;
-			}
-			else if (!saveObj.state.hasOwnProperty('delta')) {
-				delete saveObj.state.mode;
-				saveObj.state.delta = State.deltaEncode(saveObj.state.history);
-				delete saveObj.state.history;
-			}
-			else if (!saveObj.state.hasOwnProperty('index')) {
-				delete saveObj.state.mode;
-			}
-
-			saveObj.state.index = saveObj.state.delta.length - 1;
-			updated = true;
-		}
-
-		if (saveObj.state.hasOwnProperty('rseed')) {
-			saveObj.state.seed = saveObj.state.rseed;
-			delete saveObj.state.rseed;
-
-			saveObj.state.delta.forEach((_, i, delta) => {
-				if (delta[i].hasOwnProperty('rcount')) {
-					delta[i].pull = delta[i].rcount;
-					delete delta[i].rcount;
-				}
-			});
-
-			updated = true;
-		}
-
-		if (
-			saveObj.state.hasOwnProperty('expired') && typeof saveObj.state.expired === 'number'
-			|| saveObj.state.hasOwnProperty('unique')
-			|| saveObj.state.hasOwnProperty('last')
-		) {
-			if (saveObj.state.hasOwnProperty('expired') && typeof saveObj.state.expired === 'number') {
-				delete saveObj.state.expired;
-			}
-
-			if (saveObj.state.hasOwnProperty('unique') || saveObj.state.hasOwnProperty('last')) {
-				saveObj.state.expired = [];
-
-				if (saveObj.state.hasOwnProperty('unique')) {
-					saveObj.state.expired.push(saveObj.state.unique);
-					delete saveObj.state.unique;
-				}
-
-				if (saveObj.state.hasOwnProperty('last')) {
-					saveObj.state.expired.push(saveObj.state.last);
-					delete saveObj.state.last;
-				}
-			}
-
-			updated = true;
-		}
-		/* eslint-enable no-param-reassign */
-
-		return updated;
-	}
-
-	function _marshal(supplemental, details) {
-		if (DEBUG) { console.log(`[Save/_marshal(…, { type : '${details.type}' })]`); }
-
-		if (supplemental != null && typeof supplemental !== 'object') { // lazy equality for null
-			throw new Error('supplemental parameter must be an object');
-		}
-
-		const saveObj = Object.assign({}, supplemental, {
-			id    : Config.saves.id,
-			state : State.marshalForSave()
-		});
-
-		if (Config.saves.version) {
-			saveObj.version = Config.saves.version;
-		}
-
-		_onSaveHandlers.forEach(fn => fn(saveObj, details));
-
-		// Delta encode the state history and delete the non-encoded property.
-		saveObj.state.delta = State.deltaEncode(saveObj.state.history);
-		delete saveObj.state.history;
-
-		return saveObj;
-	}
-
-	function _unmarshal(saveObj) {
-		if (DEBUG) { console.log('[Save/_unmarshal()]'); }
-
-		try {
-			/* eslint-disable no-param-reassign */
-			/* legacy */
-			// Update saves with old/obsolete properties.
-			_savesObjUpdate(saveObj);
-			/* /legacy */
-
-			if (!saveObj || !saveObj.hasOwnProperty('id') || !saveObj.hasOwnProperty('state')) {
-				throw new Error(L10n.get('errorSaveMissingData'));
-			}
-
-			// Delta decode the state history and delete the encoded property.
-			saveObj.state.history = State.deltaDecode(saveObj.state.delta);
-			delete saveObj.state.delta;
-
-			_onLoadHandlers.forEach(fn => fn(saveObj));
-
-			if (saveObj.id !== Config.saves.id) {
-				throw new Error(L10n.get('errorSaveIdMismatch'));
-			}
-
-			// Restore the state.
-			State.unmarshalForSave(saveObj.state); // may also throw exceptions
-
-			// Show the active moment.
-			Engine.show();
-			/* eslint-enable no-param-reassign */
-		}
-		catch (ex) {
-			UI.alert(`${ex.message.toUpperFirst()}.</p><p>${L10n.get('aborting')}.`);
-			return false;
-		}
-
-		return true;
+		return onSaveHandlers.size;
 	}
 
 
@@ -668,60 +909,69 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 	*******************************************************************************/
 
 	return Object.preventExtensions(Object.create(null, {
-		/*
-			Save Functions.
-		*/
-		init  : { value : savesInit },
-		get   : { value : savesObjGet },
-		clear : { value : savesObjClear },
-		ok    : { value : savesOk },
+		// General Save Constants.
+		Type    : { value : Type },
+		MAX_IDX : { get : () => MAX_IDX },
 
-		/*
-			Autosave Functions.
-		*/
-		autosave : {
+		// General Save Functions.
+		init : { value : init },
+
+		// Browser Saves Functions.
+		browser : {
 			value : Object.preventExtensions(Object.create(null, {
-				ok     : { value : autosaveOk },
-				has    : { value : autosaveHas },
-				get    : { value : autosaveGet },
-				load   : { value : autosaveLoad },
-				save   : { value : autosaveSave },
-				delete : { value : autosaveDelete }
+				// Browser Auto Saves Functions.
+				auto : {
+					value : Object.preventExtensions(Object.create(null, {
+						clear     : { value : autoClear },
+						delete    : { value : autoDelete },
+						entries   : { value : autoEntries },
+						get       : { value : autoGet },
+						has       : { value : autoHas },
+						isEnabled : { value : autoIsEnabled },
+						load      : { value : autoLoad },
+						save      : { value : autoSave },
+						size      : { get : autoSize }
+					}))
+				},
+
+				// Browser Slot Saves Functions.
+				slot : {
+					value : Object.preventExtensions(Object.create(null, {
+						clear     : { value : slotClear },
+						delete    : { value : slotDelete },
+						entries   : { value : slotEntries },
+						get       : { value : slotGet },
+						has       : { value : slotHas },
+						isEnabled : { value : slotIsEnabled },
+						load      : { value : slotLoad },
+						save      : { value : slotSave },
+						size      : { get : slotSize }
+					}))
+				},
+
+				// Browser General Saves Functions.
+				clear     : { value : browserClear },
+				continue  : { value : browserContinue },
+				export    : { value : browserExport },
+				import    : { value : browserImport },
+				isEnabled : { value : browserIsEnabled },
+				size      : { get : browserSize }
 			}))
 		},
 
-		/*
-			Slots Functions.
-		*/
-		slots : {
+		// Disk Saves Functions.
+		disk : {
 			value : Object.preventExtensions(Object.create(null, {
-				ok      : { value : slotsOk },
-				length  : { get : slotsLength },
-				isEmpty : { value : slotsIsEmpty },
-				count   : { value : slotsCount },
-				has     : { value : slotsHas },
-				get     : { value : slotsGet },
-				load    : { value : slotsLoad },
-				save    : { value : slotsSave },
-				delete  : { value : slotsDelete }
+				load : { value : diskLoad },
+				save : { value : diskSave }
 			}))
 		},
 
-		/*
-			Disk Import/Export Functions.
-		*/
-		export : { value : exportToDisk },
-		import : { value : importFromDisk },
-
-		/*
-			Serialization Functions.
-		*/
+		// Serialization Saves Functions.
 		serialize   : { value : serialize },
 		deserialize : { value : deserialize },
 
-		/*
-			Event Functions.
-		*/
+		// Event Functions.
 		onLoad : {
 			value : Object.preventExtensions(Object.create(null, {
 				add    : { value : onLoadAdd },
@@ -737,6 +987,44 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 				delete : { value : onSaveDelete },
 				size   : { get : onSaveSize }
 			}))
-		}
+		},
+
+		/*
+			Legacy API.
+		*/
+		// get   : { value : savesObjGet },
+		clear : { value : browserClear },
+		ok    : { value : browserIsEnabled },
+
+		// Autosave Functions.
+		autosave : {
+			value : Object.preventExtensions(Object.create(null, {
+				ok     : { value : autoIsEnabled },
+				has    : { value() { autoHas(0); } },
+				get    : { value() { autoGet(0); } },
+				load   : { value() { autoLoad(0); } },
+				save   : { value : autoSave },
+				delete : { value() { autoDelete(0); } }
+			}))
+		},
+
+		// Slots Functions.
+		slots : {
+			value : Object.preventExtensions(Object.create(null, {
+				ok      : { value : slotIsEnabled },
+				length  : { get : slotSize },
+				isEmpty : { value() { return slotSize() === 0; } },
+				count   : { value : slotSize },
+				has     : { value : slotHas },
+				get     : { value : slotGet },
+				load    : { value : slotLoad },
+				save    : { value : slotSave },
+				delete  : { value : slotDelete }
+			}))
+		},
+
+		// Disk Import/Export Functions.
+		export : { value : diskSave },
+		import : { value : diskLoad }
 	}));
 })();

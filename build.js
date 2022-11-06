@@ -40,7 +40,6 @@ const CONFIG = {
 			'src/lib/stylewrapper.js',
 			'src/lib/diff.js',
 			'src/l10n/l10n.js',
-			'src/l10n/legacy.js',
 			'src/l10n/strings.js',
 			'src/config.js',
 			'src/simpleaudio.js',

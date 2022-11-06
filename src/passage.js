@@ -6,7 +6,7 @@
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* global Config, L10n, Wikifier, createSlug, decodeEntities, encodeMarkup, enumFrom */
+/* global Config, L10n, State, Wikifier, createSlug, decodeEntities, encodeMarkup, enumFrom */
 
 var Passage = (() => { // eslint-disable-line no-unused-vars, no-var
 	let _tagsToSkip;
@@ -64,11 +64,11 @@ var Passage = (() => { // eslint-disable-line no-unused-vars, no-var
 	*******************************************************************************/
 
 	class Passage {
-		constructor(title, el) {
+		constructor(name, el) {
 			Object.defineProperties(this, {
-				// Passage title/ID.
-				title : {
-					value : decodeEntities(title)
+				// Passage title.
+				name : {
+					value : decodeEntities(name)
 				},
 
 				// Passage data element (within the story data element; i.e. T1: '[tiddler]', T2: 'tw-passagedata').
@@ -83,20 +83,14 @@ var Passage = (() => { // eslint-disable-line no-unused-vars, no-var
 							? Array.from(new Set(el.getAttribute('tags').trim().splitOrEmpty(/\s+/)))
 							: []
 					)
-				},
-
-				// Passage excerpt.  Used by the `description()` method.
-				_excerpt : {
-					writable : true,
-					value    : null
 				}
 			});
 
 			// Properties dependant upon the above set.
 			Object.defineProperties(this, {
 				// Passage DOM-compatible ID.
-				domId : {
-					value : `passage-${createSlug(this.title)}`
+				id : {
+					value : `passage-${createSlug(this.name)}`
 				},
 
 				// Passage classes array (sorted and unique).
@@ -112,7 +106,16 @@ var Passage = (() => { // eslint-disable-line no-unused-vars, no-var
 							.filter(tag => !_tagsToSkip.test(tag))
 							.map(tag => createSlug(tag))
 					)())
+				},
+
+				/* legacy */
+				domId : {
+					get domId() { return this.id; }
+				},
+				title : {
+					get title() { return this.name; }
 				}
+				/* /legacy */
 			});
 		}
 
@@ -124,7 +127,7 @@ var Passage = (() => { // eslint-disable-line no-unused-vars, no-var
 		// TODO: (v3) This should be → `get source`.
 		get text() {
 			if (this.element == null) { // lazy equality for null
-				const passage = encodeMarkup(this.title);
+				const passage = encodeMarkup(this.name);
 				const mesg    = `${L10n.get('errorTitle')}: ${L10n.get('errorNonexistentPassage', { passage })}`;
 				return `<div class="error-view"><span class="error">${mesg}</span></div>`;
 			}
@@ -137,41 +140,6 @@ var Passage = (() => { // eslint-disable-line no-unused-vars, no-var
 			else { // eslint-disable-line no-else-return
 				return this.element.textContent.replace(/\r/g, '');
 			}
-		}
-
-		description() {
-			const descriptions = Config.passages.descriptions;
-
-			switch (typeof descriptions) {
-				case 'boolean':
-					if (descriptions) {
-						return this.title;
-					}
-					break;
-
-				case 'object':
-					if (descriptions.hasOwnProperty(this.title)) {
-						return descriptions[this.title];
-					}
-					break;
-
-				case 'function': {
-					const result = descriptions.call(this);
-
-					if (result) {
-						return result;
-					}
-
-					break;
-				}
-			}
-
-			// Initialize the excerpt cache from the raw passage text, if necessary.
-			if (this._excerpt === null) {
-				this._excerpt = Passage.getExcerptFromText(this.text);
-			}
-
-			return this._excerpt;
 		}
 
 		// TODO: (v3) This should be → `get text`.
@@ -190,7 +158,7 @@ var Passage = (() => { // eslint-disable-line no-unused-vars, no-var
 			// Handle `Config.passages.onProcess`.
 			if (Config.passages.onProcess) {
 				processed = Config.passages.onProcess.call(null, {
-					title : this.title,
+					title : this.name,
 					tags  : this.tags,
 					text  : processed
 				});
@@ -207,76 +175,16 @@ var Passage = (() => { // eslint-disable-line no-unused-vars, no-var
 		}
 
 		render(options) {
-			// Wikify the passage into a document fragment.
 			const frag = document.createDocumentFragment();
 			new Wikifier(frag, this.processText(), options);
-
-			// Update the excerpt cache to reflect the rendered text.
-			this._excerpt = Passage.getExcerptFromNode(frag);
-
 			return frag;
 		}
 
-		static getExcerptFromNode(node, count) {
-			if (DEBUG) { console.log(`[Passage.getExcerptFromNode(node=…, count=${count})]`, node); }
-
-			if (!node.hasChildNodes()) {
-				return '';
-			}
-
-			// WARNING: es5-shim's `<String>.trim()` can cause "too much recursion" errors
-			// here on very large strings (e.g., ≥40 KiB), at least in Firefox, for unknown
-			// reasons.
-			//
-			// To fix the issue, we're removed `\u180E` from es5-shim's whitespace pattern
-			// to prevent it from erroneously shimming `<String>.trim()` in the first place.
-			let excerpt = node.textContent.trim();
-
-			if (excerpt !== '') {
-				const excerptRe = new RegExp(`(\\S+(?:\\s+\\S+){0,${count > 0 ? count - 1 : 7}})`);
-				excerpt = excerpt
-					// Compact whitespace.
-					.replace(/\s+/g, ' ')
-					// Attempt to match the excerpt regexp.
-					.match(excerptRe);
-			}
-
-			return excerpt ? `${excerpt[1]}\u2026` : '\u2026'; // horizontal ellipsis
+		/* legacy */
+		description() { // eslint-disable-line class-methods-use-this
+			return `${L10n.get('turn')} ${State.turns}`;
 		}
-
-		static getExcerptFromText(text, count) {
-			if (DEBUG) { console.log(`[Passage.getExcerptFromText(text=…, count=${count})]`, text); }
-
-			if (text === '') {
-				return '';
-			}
-
-			const excerptRe = new RegExp(`(\\S+(?:\\s+\\S+){0,${count > 0 ? count - 1 : 7}})`);
-			const excerpt   = text
-				// Strip macro tags (replace with a space).
-				.replace(/<<.*?>>/g, ' ')
-				// Strip html tags (replace with a space).
-				.replace(/<.*?>/g, ' ')
-				// The above might have left problematic whitespace, so trim.
-				.trim()
-				// Strip table markup.
-				.replace(/^\s*\|.*\|.*?$/gm, '')
-				// Strip image markup.
-				.replace(/\[[<>]?img\[[^\]]*\]\]/g, '')
-				// Clean link markup (remove all but the link text).
-				.replace(/\[\[([^|\]]*?)(?:(?:\||->|<-)[^\]]*)?\]\]/g, '$1')
-				// Clean heading markup.
-				.replace(/^\s*!+(.*?)$/gm, '$1')
-				// Clean bold/italic/underline/highlight styles.
-				.replace(/'{2}|\/{2}|_{2}|@{2}/g, '')
-				// A final trim.
-				.trim()
-				// Compact whitespace.
-				.replace(/\s+/g, ' ')
-				// Attempt to match the excerpt regexp.
-				.match(excerptRe);
-			return excerpt ? `${excerpt[1]}\u2026` : '\u2026'; // horizontal ellipsis
-		}
+		/* /legacy */
 	}
 
 

@@ -176,7 +176,7 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 			}
 			catch (ex) {
 				console.error(ex);
-				Alert.error(script.title, getErrorMessage(ex));
+				Alert.error(script.name, getErrorMessage(ex));
 			}
 		});
 
@@ -187,7 +187,7 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 			}
 			catch (ex) {
 				console.error(ex);
-				Alert.error(widget.title, getErrorMessage(ex));
+				Alert.error(widget.name, getErrorMessage(ex));
 			}
 		});
 	}
@@ -213,8 +213,8 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 					const debugView = new DebugView(
 						document.createDocumentFragment(),
 						'special',
-						`${passage.title} [init-tagged]`,
-						`${passage.title} [init-tagged]`
+						`${passage.name} [init-tagged]`,
+						`${passage.name} [init-tagged]`
 					);
 					debugView.modes({ hidden : true });
 					debugView.append(debugBuffer);
@@ -223,7 +223,7 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 			}
 			catch (ex) {
 				console.error(ex);
-				Alert.error(`${passage.title} [init-tagged]`, getErrorMessage(ex));
+				Alert.error(`${passage.name} [init-tagged]`, getErrorMessage(ex));
 			}
 		});
 
@@ -284,36 +284,38 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 			engineShow();
 		}
 		else {
-			let loadStart = true;
+			const autoloadType = typeof Config.saves.autoload;
 
-			switch (typeof Config.saves.autoload) {
-				case 'boolean':
-					if (Config.saves.autoload && Save.autosave.ok() && Save.autosave.has()) {
-						if (DEBUG) { console.log(`\tattempting autoload: "${Save.autosave.get().title}"`); }
-
-						loadStart = !Save.autosave.load();
-					}
-					break;
-				case 'string':
-					if (Config.saves.autoload === 'prompt' && Save.autosave.ok() && Save.autosave.has()) {
-						loadStart = false;
-						UI.buildAutoload();
-						Dialog.open();
-					}
-					break;
-				case 'function':
-					if (Save.autosave.ok() && Save.autosave.has() && !!Config.saves.autoload()) {
-						if (DEBUG) { console.log(`\tattempting autoload: "${Save.autosave.get().title}"`); }
-
-						loadStart = !Save.autosave.load();
-					}
-					break;
+			if (autoloadType === 'string') {
+				if (Config.saves.autoload === 'prompt') {
+					UI.buildAutoload();
+					Dialog.open();
+				}
 			}
+			else {
+				new Promise((resolve, reject) => {
+					if (
+						Save.browser.hasContinue()
+						&& (
+							autoloadType === 'boolean' && Config.saves.autoload
+							|| autoloadType === 'function' && Config.saves.autoload()
+						)
+					) {
+						return resolve();
+					}
 
-			if (loadStart) {
-				if (DEBUG) { console.log(`\tstarting passage: "${Config.passages.start}"`); }
+					reject(); // eslint-disable-line prefer-promise-reject-errors
+				})
+					.then(() => {
+						if (DEBUG) { console.log('\tattempting autoload of browser continue'); }
 
-				enginePlay(Config.passages.start);
+						return Save.browser.continue();
+					})
+					.catch(() => {
+						if (DEBUG) { console.log(`\tstarting passage: "${Config.passages.start}"`); }
+
+						enginePlay(Config.passages.start);
+					});
 			}
 		}
 	}
@@ -481,7 +483,7 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 		// NOTE: The values of the `title` parameter and `passageTitle` variable
 		// may be empty, strings, or numbers (though using a number as reference
 		// to a numeric title should be discouraged), so after loading the passage,
-		// always refer to `passage.title` and never to the others.
+		// always refer to `passage.name` and never to the others.
 		const passage = Story.get(passageTitle);
 
 		// Execute the pre-history events and tasks.
@@ -497,7 +499,7 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 
 		// Create a new entry in the history.
 		if (!noHistory) {
-			State.create(passage.title);
+			State.create(passage.name);
 		}
 
 		// Clear the document body's classes.
@@ -539,8 +541,8 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 		const passageEl = document.createElement('div');
 		jQuery(passageEl)
 			.attr({
-				id             : passage.domId,
-				'data-passage' : passage.title,
+				id             : passage.id,
+				'data-passage' : passage.name,
 				'data-tags'    : dataTags
 			})
 			.addClass(`passage passage-in ${passage.className}`);
@@ -653,8 +655,8 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 				setDisplayTitle(Story.get('StoryDisplayTitle').processText());
 			}
 		}
-		else if (Config.passages.displayTitles && passage.title !== Config.passages.start) {
-			document.title = `${passage.title} | ${Story.title}`;
+		else if (Config.passages.displayTitles && passage.name !== Config.passages.start) {
+			document.title = `${passage.name} | ${Story.name}`;
 		}
 
 		// Scroll the window to the top.
@@ -741,22 +743,8 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 			.attr('tabindex', 0);
 
 		// Handle autosaves.
-		switch (typeof Config.saves.autosave) {
-			case 'boolean':
-				if (Config.saves.autosave) {
-					Save.autosave.save();
-				}
-				break;
-			case 'object':
-				if (passage.tags.some(tag => Config.saves.autosave.includes(tag))) {
-					Save.autosave.save();
-				}
-				break;
-			case 'function':
-				if (Config.saves.autosave()) {
-					Save.autosave.save();
-				}
-				break;
+		if (State.turns > 1 && Save.browser.auto.isEnabled()) {
+			Save.browser.auto.save();
 		}
 
 		// Execute post-play events.
@@ -816,7 +804,7 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 			Constants.
 		*/
 		States    : { value : States },
-		DOM_DELAY : { value : DOM_DELAY },
+		DOM_DELAY : { get : () => DOM_DELAY },
 
 		/*
 			Core Functions.

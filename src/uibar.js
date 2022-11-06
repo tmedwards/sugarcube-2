@@ -7,7 +7,7 @@
 
 ***********************************************************************************************************************/
 /*
-	global Alert, Dialog, Engine, L10n, Setting, State, Story, UI, Config, setDisplayTitle, setPageElement
+	global Alert, Dialog, Engine, L10n, Save, Setting, State, Story, UI, Config, setDisplayTitle, setPageElement
 */
 
 var UIBar = (() => { // eslint-disable-line no-unused-vars, no-var
@@ -88,6 +88,7 @@ var UIBar = (() => { // eslint-disable-line no-unused-vars, no-var
 					+         '<nav id="menu" role="navigation">'
 					+             '<ul id="menu-story"></ul>'
 					+             '<ul id="menu-core">'
+					+                 `<li id="menu-item-continue"><a tabindex="0">${L10n.get('continueTitle')}</a></li>`
 					+                 `<li id="menu-item-saves"><a tabindex="0">${L10n.get('savesTitle')}</a></li>`
 					+                 `<li id="menu-item-settings"><a tabindex="0">${L10n.get('settingsTitle')}</a></li>`
 					+                 `<li id="menu-item-restart"><a tabindex="0">${L10n.get('restartTitle')}</a></li>`
@@ -192,10 +193,10 @@ var UIBar = (() => { // eslint-disable-line no-unused-vars, no-var
 		}
 		else {
 			if (TWINE1) { // for Twine 1
-				setPageElement('story-title', 'StoryTitle', Story.title);
+				setPageElement('story-title', 'StoryTitle', Story.name);
 			}
 			else { // for Twine 2
-				jQuery('#story-title').text(Story.title);
+				jQuery('#story-title').text(Story.name);
 			}
 		}
 
@@ -212,6 +213,31 @@ var UIBar = (() => { // eslint-disable-line no-unused-vars, no-var
 			// We only need to set the story elements here if `Config.ui.updateStoryElements`
 			// is falsy, since otherwise they will be set by `Engine.play()`.
 			uiBarUpdate();
+		}
+
+		// Set up the Continue menu item.
+		if (Save.browser.size > 0) {
+			jQuery('#menu-item-continue a')
+				.ariaClick({
+					role : 'button'
+				}, ev => {
+					ev.preventDefault();
+					Save.browser.continue()
+						.then(
+							Engine.show,
+							ex => UI.alert(`${ex.message.toUpperFirst()}.</p><p>${L10n.get('aborting')}.`)
+						);
+				})
+				.text(L10n.get('continueTitle'));
+			jQuery(document).on(':passagestart.menu-item-continue', () => {
+				if (State.turns > 1) {
+					jQuery(document).off('.menu-item-continue');
+					jQuery('#menu-item-continue').remove();
+				}
+			});
+		}
+		else {
+			jQuery('#menu-item-continue').remove();
 		}
 
 		// Set up the Saves menu item.
