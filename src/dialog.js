@@ -9,6 +9,9 @@
 /* global Has, L10n, getActiveElement */
 
 var Dialog = (() => { // eslint-disable-line no-unused-vars, no-var
+	// Default top position.
+	const DEFAULT_TOP = 50; // in pixels, sans unit
+
 	// Dialog element caches.
 	let _$overlay       = null;
 	let _$dialog        = null;
@@ -33,6 +36,8 @@ var Dialog = (() => { // eslint-disable-line no-unused-vars, no-var
 		[DEPRECATED] Adds a click hander to the target element(s) which opens the dialog modal.
 	*/
 	function dialogAddClickHandler(targets, options, startFn, doneFn, closeFn) {
+		console.warn('[DEPRECATED] Dialog.addClickHandler() is deprecated.');
+
 		return jQuery(targets).ariaClick(ev => {
 			ev.preventDefault();
 
@@ -108,8 +113,8 @@ var Dialog = (() => { // eslint-disable-line no-unused-vars, no-var
 		}
 
 		// Call the given "on close" callback function, if any.
-		if (ev && ev.data && typeof ev.data.closeFn === 'function') {
-			ev.data.closeFn(ev);
+		if (ev && ev.detail && typeof ev.detail.closeFn === 'function') {
+			ev.detail.closeFn(ev);
 		}
 
 		// Trigger a `:dialogclosed` event on the dialog body.
@@ -218,7 +223,7 @@ var Dialog = (() => { // eslint-disable-line no-unused-vars, no-var
 		_$dialogBody.trigger(':dialogopening');
 
 		// Grab the options we care about.
-		const { top } = jQuery.extend({ top : 50 }, options);
+		const { top } = Object.assign({ top : DEFAULT_TOP }, options);
 
 		// Record the last active/focused non-dialog element.
 		if (!dialogIsOpen()) {
@@ -241,10 +246,10 @@ var Dialog = (() => { // eslint-disable-line no-unused-vars, no-var
 			exists.  The best that jQuery offers is analogous to `querySelectorAll()`,
 			which enumerates all elements of the specified type.
 		*/
-		if (_$dialogBody[0].querySelector('img') !== null) {
+		if (_$dialogBody.get(0).querySelector('img') !== null) {
 			_$dialogBody
 				.imagesLoaded()
-				.always(() => _resizeHandler({ data : { top } }));
+				.always(() => _resizeHandler({ detail : { top } }));
 		}
 
 		// Add `aria-hidden=true` to all direct non-dialog-children of <body> to
@@ -272,12 +277,12 @@ var Dialog = (() => { // eslint-disable-line no-unused-vars, no-var
 			_dialogObserver = new MutationObserver(mutations => {
 				for (let i = 0; i < mutations.length; ++i) {
 					if (mutations[i].type === 'childList') {
-						_resizeHandler({ data : { top } });
+						_resizeHandler({ detail : { top } });
 						break;
 					}
 				}
 			});
-			_dialogObserver.observe(_$dialogBody[0], {
+			_dialogObserver.observe(_$dialogBody.get(0), {
 				childList : true,
 				subtree   : true
 			});
@@ -317,8 +322,8 @@ var Dialog = (() => { // eslint-disable-line no-unused-vars, no-var
 		return Dialog;
 	}
 
-	function dialogResize(data) {
-		return _resizeHandler(typeof data === 'object' ? { data } : undefined);
+	function dialogResize(detail) {
+		return _resizeHandler(typeof detail === 'object' ? { detail } : undefined);
 	}
 
 	function dialogSetup(title, classNames) {
@@ -349,61 +354,56 @@ var Dialog = (() => { // eslint-disable-line no-unused-vars, no-var
 	*******************************************************************************/
 
 	function _calcPosition(topPos) {
-		const top       = topPos != null ? topPos : 50; // lazy equality for null
-		const $parent   = jQuery(window);
-		const dialogPos = { left : '', right : '', top : '', bottom : '' };
+		const $parent = jQuery(window);
+		const inset   = { left : '', right : '', top : '', bottom : '' };
+		const minPos  = 10;
+		const top     = topPos != null ? topPos : DEFAULT_TOP; // lazy equality for null
 
 		// Unset the dialog's positional properties before checking its dimensions.
-		_$dialog.css(dialogPos);
+		_$dialog.css(inset);
 
 		let horzSpace = $parent.width() - _$dialog.outerWidth(true) - 1;   // -1 to address a Firefox issue
 		let vertSpace = $parent.height() - _$dialog.outerHeight(true) - 1; // -1 to address a Firefox issue
 
-		if (horzSpace <= 32 + _scrollbarWidth) {
+		if (horzSpace <= minPos * 2 + _scrollbarWidth) {
 			vertSpace -= _scrollbarWidth;
 		}
 
-		if (vertSpace <= 32 + _scrollbarWidth) {
+		if (vertSpace <= minPos * 2 + _scrollbarWidth) {
 			horzSpace -= _scrollbarWidth;
 		}
 
-		if (horzSpace <= 32) {
-			dialogPos.left = dialogPos.right = 16;
+		if (horzSpace <= minPos * 2) {
+			inset.left = inset.right = minPos;
 		}
 		else {
-			dialogPos.left = dialogPos.right = horzSpace / 2 >> 0;
+			inset.left = inset.right = horzSpace / 2 >> 0;
 		}
 
-		if (vertSpace <= 32) {
-			dialogPos.top = dialogPos.bottom = 16;
+		if (vertSpace <= minPos * 2) {
+			inset.top = inset.bottom = minPos;
 		}
 		else {
-			if (vertSpace / 2 > top) {
-				dialogPos.top = top;
+			const vertPos = vertSpace / 2 >> 0;
+
+			if (vertPos > top) {
+				inset.top = top;
 			}
 			else {
-				dialogPos.top = dialogPos.bottom = vertSpace / 2 >> 0;
+				inset.top = inset.bottom = vertPos;
 			}
 		}
 
-		Object.keys(dialogPos).forEach(key => {
-			if (dialogPos[key] !== '') {
-				dialogPos[key] += 'px';
-			}
-		});
+		Object.keys(inset).forEach(key => inset[key] += 'px');
 
-		return dialogPos;
+		return inset;
 	}
 
 	function _resizeHandler(ev) {
-		const top = ev && ev.data && typeof ev.data.top !== 'undefined' ? ev.data.top : 50;
+		const top = ev && ev.detail && typeof ev.detail.top !== 'undefined' ? ev.detail.top : DEFAULT_TOP;
 
 		if (_$dialog.css('display') === 'block') {
-			// Stow the dialog.
-			_$dialog.css({ display : 'none' });
-
-			// Restore the dialog with its new positional properties.
-			_$dialog.css(jQuery.extend({ display : '' }, _calcPosition(top)));
+			_$dialog.css(_calcPosition(top));
 		}
 	}
 

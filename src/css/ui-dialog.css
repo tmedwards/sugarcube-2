@@ -106,7 +106,7 @@ html[data-dialog] body {
 	border: 1px solid #444;
 	height: calc(100% - 2.1em); /* parent - title(2.1em) */
 	line-height: 1.5;
-	min-width: 280px;
+	min-width: 300px;
 	overflow: auto;
 	padding: 1em;
 	text-align: left;
