@@ -229,6 +229,12 @@ var UIBar = (() => { // eslint-disable-line no-unused-vars, no-var
 						);
 				})
 				.text(L10n.get('continueTitle'));
+			jQuery(document).on(':passagestart.menu-item-continue', () => {
+				if (State.turns > 1) {
+					jQuery(document).off('.menu-item-continue');
+					jQuery('#menu-item-continue').remove();
+				}
+			});
 		}
 		else {
 			jQuery('#menu-item-continue').remove();
