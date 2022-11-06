@@ -24,10 +24,14 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 	const MAX_IDX = 15;
 
 	// Browser save key constants.
-	const IDX_DELIMITER = ':';
-	const SAVE_SUBKEY   = 'save.';
-	const AUTO_SUBKEY   = `${SAVE_SUBKEY}auto${IDX_DELIMITER}`;
-	const SLOT_SUBKEY   = `${SAVE_SUBKEY}slot${IDX_DELIMITER}`;
+	const IDX_DELIMITER    = ':';
+	const SAVE_SUBKEY      = 'save.';
+	const AUTO_SUBKEY      = `${SAVE_SUBKEY}auto.`;
+	const AUTO_DATA_SUBKEY = `${AUTO_SUBKEY}data${IDX_DELIMITER}`;
+	const AUTO_INFO_SUBKEY = `${AUTO_SUBKEY}info${IDX_DELIMITER}`;
+	const SLOT_SUBKEY      = `${SAVE_SUBKEY}slot.`;
+	const SLOT_DATA_SUBKEY = `${SLOT_SUBKEY}data${IDX_DELIMITER}`;
+	const SLOT_INFO_SUBKEY = `${SLOT_SUBKEY}info${IDX_DELIMITER}`;
 
 	// Save handler sets.
 	const onLoadHandlers = new Set();
@@ -81,48 +85,46 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 
 		// Migrate the auto save.
 		if (oldSaves.autosave) {
-			const old = oldSaves.autosave;
+			const { info, data } = splitSave(oldSaves.autosave);
 
-			const save = {
-				date  : old.date,
-				desc  : old.title,
-				id    : old.id,
-				state : old.state
-			};
+			// Property updates.
+			info.desc = info.title;
+			delete info.title;
 
-			if (old.metadata != null) { // lazy equality for null
-				save.metadata = old.metadata;
+			const infoKey = getAutoInfoKeyFromIdx(0);
+			const dataKey = getAutoDataKeyFromIdx(0);
+
+			// If storing either chunk is going to fail, it's more likely
+			// to be the data chunk, so we attempt to store it first.
+			if (storage.set(dataKey, data)) {
+				if (!storage.set(infoKey, info)) {
+					storage.delete(dataKey);
+				}
 			}
-
-			if (old.version != null) { // lazy equality for null
-				save.version = old.version;
-			}
-
-			storage.set(autoKeyFromIdx(0), save);
 		}
 
 		// Migrate the slot saves.
-		oldSaves.slots.forEach((old, idx) => {
-			if (!old) {
+		oldSaves.slots.forEach((save, idx) => {
+			if (!save) {
 				return;
 			}
 
-			const save = {
-				date  : old.date,
-				desc  : old.title,
-				id    : old.id,
-				state : old.state
-			};
+			const { info, data } = splitSave(save);
 
-			if (old.metadata != null) { // lazy equality for null
-				save.metadata = old.metadata;
+			// Property updates.
+			info.desc = info.title;
+			delete info.title;
+
+			const infoKey = getSlotInfoKeyFromIdx(idx);
+			const dataKey = getSlotDataKeyFromIdx(idx);
+
+			// If storing either chunk is going to fail, it's more likely
+			// to be the data chunk, so we attempt to store it first.
+			if (storage.set(dataKey, data)) {
+				if (!storage.set(infoKey, info)) {
+					storage.delete(dataKey);
+				}
 			}
-
-			if (old.version != null) { // lazy equality for null
-				save.version = old.version;
-			}
-
-			storage.set(slotKeyFromIdx(idx), save);
 		});
 
 		// Delete the old saves object.
@@ -159,9 +161,9 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 		let keys;
 
 		switch (saveType) {
-			case Type.Auto: keys = getKeys(isAutoKey); break;
-			case Type.Slot: keys = getKeys(isSlotKey); break;
-			default:        keys = getKeys(isSaveKey); break;
+			case Type.Auto: keys = getKeys(isAutoInfoKey); break;
+			case Type.Slot: keys = getKeys(isSlotInfoKey); break;
+			default:        keys = getKeys(isInfoKey); break;
 		}
 
 		switch (keys.length) {
@@ -215,6 +217,22 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 		return Number(key.slice(pos + 1));
 	}
 
+	function getAutoInfoKeyFromIdx(idx) {
+		return `${AUTO_INFO_SUBKEY}${idx}`;
+	}
+
+	function getAutoDataKeyFromIdx(idx) {
+		return `${AUTO_DATA_SUBKEY}${idx}`;
+	}
+
+	function getSlotInfoKeyFromIdx(idx) {
+		return `${SLOT_INFO_SUBKEY}${idx}`;
+	}
+
+	function getSlotDataKeyFromIdx(idx) {
+		return `${SLOT_DATA_SUBKEY}${idx}`;
+	}
+
 	function getKeys(predicate) {
 		return storage.keys().filter(predicate);
 	}
@@ -223,16 +241,24 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 		return isAutoKey(key) ? Type.Auto : Type.Slot;
 	}
 
-	function isSaveKey(key) {
-		return key.startsWith(SAVE_SUBKEY);
+	function isInfoKey(key) {
+		return key.startsWith(AUTO_INFO_SUBKEY) || key.startsWith(SLOT_INFO_SUBKEY);
 	}
 
 	function isAutoKey(key) {
 		return key.startsWith(AUTO_SUBKEY);
 	}
 
+	function isAutoInfoKey(key) {
+		return key.startsWith(AUTO_INFO_SUBKEY);
+	}
+
 	function isSlotKey(key) {
 		return key.startsWith(SLOT_SUBKEY);
+	}
+
+	function isSlotInfoKey(key) {
+		return key.startsWith(SLOT_INFO_SUBKEY);
 	}
 
 	function saveBlobToDiskAs(data, filename, extension) {
@@ -274,15 +300,17 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			throw new RangeError(`auto save index out of bounds (range: 0–${MAX_IDX}; received: ${idx})`);
 		}
 
-		return storage.delete(autoKeyFromIdx(idx));
+		storage.delete(getAutoInfoKeyFromIdx(idx));
+		storage.delete(getAutoDataKeyFromIdx(idx));
+		return true;
 	}
 
 	function autoEntries() {
 		// NOTE: Order by date (descending).
-		return getKeys(isAutoKey)
+		return getKeys(isAutoInfoKey)
 			.map(key => ({
 				idx  : getIdxFromKey(key),
-				save : storage.get(key)
+				info : storage.get(key)
 			}))
 			.sort((a, b) => b.info.date - a.info.date);
 	}
@@ -296,7 +324,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			throw new RangeError(`auto save index out of bounds (range: 0–${MAX_IDX}; received: ${idx})`);
 		}
 
-		return storage.get(autoKeyFromIdx(idx));
+		return storage.get(getAutoInfoKeyFromIdx(idx));
 	}
 
 	function autoHas(idx) {
@@ -308,15 +336,11 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			throw new RangeError(`auto save index out of bounds (range: 0–${MAX_IDX}; received: ${idx})`);
 		}
 
-		return storage.has(autoKeyFromIdx(idx));
+		return storage.has(getAutoInfoKeyFromIdx(idx));
 	}
 
 	function autoIsEnabled() {
 		return storage.name !== 'cookie' && Config.saves.maxAutoSaves > 0;
-	}
-
-	function autoKeyFromIdx(idx) {
-		return `${AUTO_SUBKEY}${idx}`;
 	}
 
 	function autoLoad(idx) {
@@ -329,14 +353,15 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 				throw new RangeError(`auto save index out of bounds (range: 0–${MAX_IDX}; received: ${idx})`);
 			}
 
-			const save = storage.get(autoKeyFromIdx(idx));
+			const info = storage.get(getAutoInfoKeyFromIdx(idx));
+			const data = storage.get(getAutoDataKeyFromIdx(idx));
 
-			if (!save) {
+			if (!info || !data) {
 				throw new Error(L10n.get('saveErrorNonexistent'));
 			}
 
 			// NOTE: May throw exceptions.
-			unmarshal(save);
+			unmarshal(Object.assign(info, data));
 
 			resolve(true);
 		});
@@ -360,25 +385,34 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			details.metadata = metadata;
 		}
 
-		const save = marshal(details);
-		const idx  = (findNewest(Type.Auto).idx + 1) % Config.saves.maxAutoSaves;
-		const key  = autoKeyFromIdx(idx);
+		const idx            = (findNewest(Type.Auto).idx + 1) % Config.saves.maxAutoSaves;
+		const { info, data } = splitSave(marshal(details));
+		const infoKey        = getAutoInfoKeyFromIdx(idx);
+		const dataKey        = getAutoDataKeyFromIdx(idx);
 
-		return storage.set(key, save);
+		console.log(`[auto] idx=${idx}, infoKey=${infoKey}:`, info);
+		console.log(`[auto] idx=${idx}, dataKey=${dataKey}:`, data);
+
+		// If storing either chunk is going to fail, it's more likely
+		// to be the data chunk, so we attempt to store it first.
+		if (storage.set(dataKey, data)) {
+			if (!storage.set(infoKey, info)) {
+				storage.delete(dataKey);
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	function autoSize() {
-		return getKeys(isAutoKey).length;
+		return getKeys(isAutoInfoKey).length;
 	}
 
 
 	/*******************************************************************************
 		Browser Slot Saves Functions.
 	*******************************************************************************/
-
-	function slotKeyFromIdx(idx) {
-		return `${SLOT_SUBKEY}${idx}`;
-	}
 
 	function slotClear() {
 		getKeys(isSlotKey).forEach(key => storage.delete(key));
@@ -394,15 +428,17 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			throw new RangeError(`slot save index out of bounds (range: 0–${MAX_IDX}; received: ${idx})`);
 		}
 
-		return storage.delete(slotKeyFromIdx(idx));
+		storage.delete(getSlotInfoKeyFromIdx(idx));
+		storage.delete(getSlotDataKeyFromIdx(idx));
+		return true;
 	}
 
 	function slotEntries() {
 		// NOTE: Order by ID (ascending).
-		return getKeys(isSlotKey)
+		return getKeys(isSlotInfoKey)
 			.map(key => ({
 				idx  : getIdxFromKey(key),
-				save : storage.get(key)
+				info : storage.get(key)
 			}))
 			.sort((a, b) => a.idx - b.idx);
 	}
@@ -416,7 +452,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			throw new RangeError(`slot save index out of bounds (range: 0–${MAX_IDX}; received: ${idx})`);
 		}
 
-		return storage.get(slotKeyFromIdx(idx));
+		return storage.get(getSlotInfoKeyFromIdx(idx));
 	}
 
 	function slotHas(idx) {
@@ -428,7 +464,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			throw new RangeError(`slot save index out of bounds (range: 0–${MAX_IDX}; received: ${idx})`);
 		}
 
-		return storage.has(slotKeyFromIdx(idx));
+		return storage.has(getSlotInfoKeyFromIdx(idx));
 	}
 
 	function slotIsEnabled() {
@@ -445,14 +481,15 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 				throw new RangeError(`slot save index out of bounds (range: 0–${MAX_IDX}; received: ${idx})`);
 			}
 
-			const save = storage.get(slotKeyFromIdx(idx));
+			const info = storage.get(getSlotInfoKeyFromIdx(idx));
+			const data = storage.get(getSlotDataKeyFromIdx(idx));
 
-			if (!save) {
+			if (!info || !data) {
 				throw new Error(L10n.get('saveErrorNonexistent'));
 			}
 
 			// NOTE: May throw exceptions.
-			unmarshal(save);
+			unmarshal(Object.assign(info, data));
 
 			resolve(true);
 		});
@@ -484,14 +521,27 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			details.metadata = metadata;
 		}
 
-		const save = marshal(details);
-		const key  = slotKeyFromIdx(idx);
+		const { info, data } = splitSave(marshal(details));
+		const infoKey        = getSlotInfoKeyFromIdx(idx);
+		const dataKey        = getSlotDataKeyFromIdx(idx);
 
-		return storage.set(key, save);
+		console.log(`[slot] idx=${idx}, infoKey=${infoKey}:`, info);
+		console.log(`[slot] idx=${idx}, dataKey=${dataKey}:`, data);
+
+		// If storing either chunk is going to fail, it's more likely
+		// to be the data chunk, so we attempt to store it first.
+		if (storage.set(dataKey, data)) {
+			if (!storage.set(infoKey, info)) {
+				storage.delete(dataKey);
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	function slotSize() {
-		return  getKeys(isSlotKey).length;
+		return  getKeys(isSlotInfoKey).length;
 	}
 
 
@@ -518,10 +568,29 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 	function browserExport(filename) {
-		const bundle = LZString.compressToBase64(JSON.stringify({
-			auto : autoEntries(),
-			slot : slotEntries()
-		}));
+		const auto = getKeys(isAutoInfoKey).map(infoKey => {
+			const idx  = getIdxFromKey(infoKey);
+			const info = storage.get(infoKey);
+			const data = storage.get(getAutoDataKeyFromIdx(idx));
+
+			if (!info || !data) {
+				throw new Error('during saves export auto save info or data nonexistent');
+			}
+
+			return { idx, info, data };
+		});
+		const slot = getKeys(isSlotInfoKey).map(infoKey => {
+			const idx  = getIdxFromKey(infoKey);
+			const info = storage.get(infoKey);
+			const data = storage.get(getSlotDataKeyFromIdx(idx));
+
+			if (!info || !data) {
+				throw new Error('during saves export slot save info or data nonexistent');
+			}
+
+			return { idx, info, data };
+		});
+		const bundle = LZString.compressToBase64(JSON.stringify({ auto, slot }));
 
 		saveBlobToDiskAs(bundle, filename, 'savesexport');
 	}
@@ -538,7 +607,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 						// throw reader.error;
 					}
 
-					const badSave = O => !hasOwn(O, 'idx') || !hasOwn(O, 'save');
+					const badSave = O => !hasOwn(O, 'idx') || !hasOwn(O, 'info') || !hasOwn(O, 'data');
 					let bundle;
 
 					try {
@@ -566,8 +635,32 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 					slotClear();
 
 					// QUESTION: Should failures throw exceptions?
-					bundle.auto.forEach(({ idx, save }) => storage.set(autoKeyFromIdx(idx), save));
-					bundle.slot.forEach(({ idx, save }) => storage.set(slotKeyFromIdx(idx), save));
+					bundle.auto.forEach(save => {
+						const { idx, info, data } = save;
+						const infoKey             = getAutoInfoKeyFromIdx(idx);
+						const dataKey             = getAutoDataKeyFromIdx(idx);
+
+						// If storing either chunk is going to fail, it's more likely
+						// to be the data chunk, so we attempt to store it first.
+						if (storage.set(dataKey, data)) {
+							if (!storage.set(infoKey, info)) {
+								storage.delete(dataKey);
+							}
+						}
+					});
+					bundle.slot.forEach(save => {
+						const { idx, info, data } = save;
+						const infoKey             = getSlotInfoKeyFromIdx(idx);
+						const dataKey             = getSlotDataKeyFromIdx(idx);
+
+						// If storing either chunk is going to fail, it's more likely
+						// to be the data chunk, so we attempt to store it first.
+						if (storage.set(dataKey, data)) {
+							if (!storage.set(infoKey, info)) {
+								storage.delete(dataKey);
+							}
+						}
+					});
 
 					resolve(true);
 				}
@@ -586,7 +679,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 	function browserSize() {
-		return getKeys(isSaveKey).length;
+		return getKeys(isInfoKey).length;
 	}
 
 
@@ -721,6 +814,11 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 		delete save.state.history;
 
 		return save;
+	}
+
+	function splitSave(save) {
+		const { state, ...info } = save;
+		return { info, data : { state } };
 	}
 
 	function unmarshal(save) {
