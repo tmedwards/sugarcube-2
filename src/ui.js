@@ -223,7 +223,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 			}
 		}
 
-		function $createFileInput(id, handler) {
+		function $createFileInput(id, callback) {
 			return jQuery(document.createElement('input'))
 				.attr({
 					id,
@@ -240,20 +240,20 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 					width      : '1px',
 					height     : '1px'
 				})
-				.on('change', handler);
+				.on('change', callback);
 		}
 
-		function createActionItem(elId, elClass, elLabel, elAction) {
+		function createActionItem(id, classNames, label, callback) {
 			const $btn = jQuery(document.createElement('button'))
-				.attr('id', `saves-${elId}`)
-				.text(elLabel);
+				.attr('id', `saves-${id}`)
+				.text(label);
 
-			if (elClass) {
-				$btn.addClass(elClass);
+			if (classNames) {
+				$btn.addClass(classNames);
 			}
 
-			if (elAction) {
-				$btn.ariaClick({ label : elLabel }, elAction);
+			if (callback) {
+				$btn.ariaClick({ label }, callback);
 			}
 			else {
 				$btn.ariaDisabled(true);
@@ -264,22 +264,31 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 		}
 
 		function createSaveList() {
-			function createButton(elId, elClass, elLabel, saveId, elAction) {
-				const $btn = jQuery(document.createElement('button'))
-					.attr('id', `saves-${elId}-${saveId}`)
-					.addClass(elId)
-					.text(elLabel);
+			function createButton(id, classNames, typeLabel, idx, callback) {
+				let btnText;
 
-				if (elClass) {
-					$btn.addClass(elClass);
+				switch (id) {
+					case 'delete': btnText = L10n.get('savesLabelDelete'); break;
+					case 'load':   btnText = L10n.get('savesLabelLoad'); break;
+					case 'save':   btnText = L10n.get('savesLabelSave'); break;
+					default:       throw new Error(`buildSaves unknown ID "${id}"`);
 				}
 
-				if (elAction) {
+				const $btn = jQuery(document.createElement('button'))
+					.attr('id', `saves-${id}-${idx}`)
+					.addClass(id)
+					.text(btnText);
+
+				if (classNames) {
+					$btn.addClass(classNames);
+				}
+
+				if (callback) {
 					$btn.ariaClick({
-						label : `${elLabel} ${saveId + 1}`
+						label : `${btnText} ${typeLabel} ${idx + 1}`
 					}, () => {
 						try {
-							elAction(saveId);
+							callback(idx);
 						}
 						catch (ex) {
 							showAlert(ex.message);
@@ -296,26 +305,44 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 			const $tbody = jQuery(document.createElement('tbody'));
 
 			// Create auto save UI entries.
-			Save.browser.auto.entries().forEach(({ idx, save }) => {
+			Save.browser.auto.entries().forEach(({ idx, info }) => {
+				/* legacy */
 				const $tdSlot = jQuery(document.createElement('td'));
+				/* /legacy */
 				const $tdLoad = jQuery(document.createElement('td'));
 				const $tdDesc = jQuery(document.createElement('td'));
 				const $tdDele = jQuery(document.createElement('td'));
 
-				// Add the slot ID.
-				jQuery(document.createElement('b'))
-					.attr({
-						title        : L10n.get('savesLabelAuto'),
-						'aria-label' : L10n.get('savesLabelAuto')
-					})
-					.text(`A${idx + 1}`)
-					.appendTo($tdSlot);
+				// // Add the slot ID.
+				// $tdSlot
+				// 	.attr({
+				// 		title        : `${L10n.get('savesLabelAuto')} ${idx + 1}`,
+				// 		'aria-label' : `${L10n.get('savesLabelAuto')} ${idx + 1}`
+				// 	})
+				// 	.text(`A${idx + 1}`);
+
+				// Add the description and details.
+				jQuery(document.createElement('div'))
+					.text(info.desc)
+					.appendTo($tdDesc);
+				jQuery(document.createElement('div'))
+					.addClass('details')
+					/* legacy */
+					.addClass('datestamp')
+					/* /legacy */
+					.text(`${L10n.get('savesLabelAuto')}\u00a0${idx + 1}\u00a0\u00a0\u2022\u00a0\u00a0`)
+					.append(
+						info.date
+							? `${new Date(info.date).toLocaleString()}`
+							: `<em>${L10n.get('savesUnknownDate')}</em>`
+					)
+					.appendTo($tdDesc);
 
 				// Add the load button.
 				$tdLoad.append(createButton(
 					'load',
 					'ui-close',
-					`${L10n.get('savesLabelLoad')} ${L10n.get('savesLabelAuto')}`,
+					L10n.get('savesLabelAuto'),
 					idx,
 					idx => {
 						jQuery(document).one(':dialogclosed', () => {
@@ -328,24 +355,11 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 					}
 				));
 
-				// Add the description and datestamp.
-				jQuery(document.createElement('div'))
-					.text(save.desc)
-					.appendTo($tdDesc);
-				jQuery(document.createElement('div'))
-					.addClass('datestamp')
-					.html(
-						save.date
-							? `${new Date(save.date).toLocaleString()}`
-							: `<em>${L10n.get('savesUnknownDate')}</em>`
-					)
-					.appendTo($tdDesc);
-
 				// Add the delete button.
 				$tdDele.append(createButton(
 					'delete',
 					null,
-					`${L10n.get('savesLabelDelete')} ${L10n.get('savesLabelAuto')}`,
+					L10n.get('savesLabelAuto'),
 					idx,
 					idx => {
 						Save.browser.auto.delete(idx);
@@ -354,46 +368,67 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 				));
 
 				jQuery(document.createElement('tr'))
+					/* legacy */
 					.append($tdSlot)
+					/* /legacy */
 					.append($tdLoad)
 					.append($tdDesc)
 					.append($tdDele)
 					.appendTo($tbody);
 			});
 
-			// Initialize slot save array.
-			const slotEntries = [];
-
-			// Add slot entries to the array.  May be sparse.
-			Save.browser.slot.entries().forEach(entry => {
-				slotEntries[entry.idx] = entry;
-			});
-
-			// Fill in configured slots as necessary with empty entries.
-			for (let i = 0; i < Config.saves.maxSlotSaves; ++i) {
-				if (!slotEntries[i]) {
-					slotEntries[i] = { idx : i };
-				}
-			}
-
 			const slotAllowed = typeof Config.saves.isAllowed !== 'function' || Config.saves.isAllowed(Save.Type.Slot);
 
 			// Create slot save UI entries.
-			slotEntries.forEach(({ idx, save }) => {
+			//
+			// NOTE: The array may be sparse.
+			Save.browser.slot.entries().reduce(
+				// Add slot entries.
+				(slots, entry) => {
+					slots[entry.idx] = entry; // eslint-disable-line no-param-reassign
+					return slots;
+				},
+				// Fill configured slots with empty entries.
+				Array.from({ length : Config.saves.maxSlotSaves }, (_, i) => ({ idx : i }))
+			).forEach(({ idx, info }) => {
+				/* legacy */
 				const $tdSlot = jQuery(document.createElement('td'));
+				/* /legacy */
 				const $tdLoad = jQuery(document.createElement('td'));
 				const $tdDesc = jQuery(document.createElement('td'));
 				const $tdDele = jQuery(document.createElement('td'));
 
-				// Add the slot ID.
-				$tdSlot.append(document.createTextNode(idx + 1));
+				// // Add the slot ID.
+				// $tdSlot
+				// 	.attr({
+				// 		title        : `${L10n.get('savesLabelSlot')} ${idx + 1}`,
+				// 		'aria-label' : `${L10n.get('savesLabelSlot')} ${idx + 1}`
+				// 	})
+				// 	.text(idx + 1);
 
-				if (save) {
+				if (info) {
+					// Add the description and details.
+					jQuery(document.createElement('div'))
+						.text(info.desc)
+						.appendTo($tdDesc);
+					jQuery(document.createElement('div'))
+						.addClass('details')
+						/* legacy */
+						.addClass('datestamp')
+						/* /legacy */
+						.text(`${L10n.get('savesLabelSlot')}\u00a0${idx + 1}\u00a0\u00a0\u2022\u00a0\u00a0`)
+						.append(
+							info.date
+								? `${new Date(info.date).toLocaleString()}`
+								: `<em>${L10n.get('savesUnknownDate')}</em>`
+						)
+						.appendTo($tdDesc);
+
 					// Add the load button.
 					$tdLoad.append(createButton(
 						'load',
 						'ui-close',
-						`${L10n.get('savesLabelLoad')} ${L10n.get('savesLabelSlot')}`,
+						L10n.get('savesLabelSlot'),
 						idx,
 						idx => {
 							jQuery(document).one(':dialogclosed', () => {
@@ -406,24 +441,11 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 						}
 					));
 
-					// Add the description (title and datestamp).
-					jQuery(document.createElement('div'))
-						.text(save.desc)
-						.appendTo($tdDesc);
-					jQuery(document.createElement('div'))
-						.addClass('datestamp')
-						.html(
-							save.date
-								? `${new Date(save.date).toLocaleString()}`
-								: `<em>${L10n.get('savesUnknownDate')}</em>`
-						)
-						.appendTo($tdDesc);
-
 					// Add the delete button.
 					$tdDele.append(createButton(
 						'delete',
 						null,
-						`${L10n.get('savesLabelDelete')} ${L10n.get('savesLabelSlot')}`,
+						L10n.get('savesLabelSlot'),
 						idx,
 						idx => {
 							Save.browser.slot.delete(idx);
@@ -432,29 +454,34 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 					));
 				}
 				else {
+					// Add the description.
+					// $tdDesc.addClass('empty').text('\u2022\u00a0\u00a0\u2022\u00a0\u00a0\u2022');
+					$tdDesc.addClass('empty');
+
 					// Add the save button, possibly disabled.
 					$tdLoad.append(createButton(
 						'save',
 						'ui-close',
-						`${L10n.get('savesLabelSave')} ${L10n.get('savesLabelSlot')}`,
+						L10n.get('savesLabelSlot'),
 						idx,
-						idx < Config.saves.maxSlotSaves && slotAllowed ? Save.browser.slot.save : null
+						idx < Config.saves.maxSlotSaves && slotAllowed
+							? Save.browser.slot.save
+							: null
 					));
-
-					// Add the description.
-					$tdDesc.addClass('empty').text('\u2022\u00a0\u00a0\u2022\u00a0\u00a0\u2022');
 
 					// Add the disabled delete button.
 					$tdDele.append(createButton(
 						'delete',
 						null,
-						`${L10n.get('savesLabelDelete')} ${L10n.get('savesLabelSlot')}`,
+						L10n.get('savesLabelSlot'),
 						idx
 					));
 				}
 
 				jQuery(document.createElement('tr'))
+					/* legacy */
 					.append($tdSlot)
+					/* /legacy */
 					.append($tdLoad)
 					.append($tdDesc)
 					.append($tdDele)
@@ -504,18 +531,21 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 							}
 						);
 				});
-				$slotButtons.append(createActionItem(
-					'export',
-					null,
-					L10n.get('savesLabelExport'),
-					() => Save.browser.export(`saves-export-${Story.name}`)
-				));
-				$slotButtons.append(createActionItem(
-					'import',
-					null,
-					L10n.get('savesLabelImport'),
-					() => $slotImportInput.trigger('click')
-				));
+
+				$slotButtons
+					.append(createActionItem(
+						'export',
+						null,
+						L10n.get('savesLabelExport'),
+						() => Save.browser.export(`saves-export-${Story.name}`)
+					))
+					.append(createActionItem(
+						'import',
+						null,
+						L10n.get('savesLabelImport'),
+						() => $slotImportInput.trigger('click')
+					));
+
 				$slotImportInput.appendTo($dialogBody);
 			}
 
@@ -558,22 +588,23 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 				});
 				Dialog.close();
 			});
-			$diskButtons.append(createActionItem(
-				'disk-save',
-				null,
-				L10n.get('savesLabelDiskSave'),
-				typeof Config.saves.isAllowed !== 'function' || Config.saves.isAllowed(Save.Type.Disk)
-					// If saving is allowed, add the save action.
-					? () => Save.disk.save(Story.name)
-					// Elsewise, disable the button.
-					: null
-			));
-			$diskButtons.append(createActionItem(
-				'disk-load',
-				null,
-				L10n.get('savesLabelDiskLoad'),
-				() => $diskLoadInput.trigger('click')
-			));
+
+			$diskButtons
+				.append(createActionItem(
+					'disk-save',
+					null,
+					L10n.get('savesLabelDiskSave'),
+					typeof Config.saves.isAllowed !== 'function' || Config.saves.isAllowed(Save.Type.Disk)
+						? () => Save.disk.save(Story.name)
+						: null
+				))
+				.append(createActionItem(
+					'disk-load',
+					null,
+					L10n.get('savesLabelDiskLoad'),
+					() => $diskLoadInput.trigger('click')
+				));
+
 			$diskLoadInput.appendTo($dialogBody);
 		}
 
