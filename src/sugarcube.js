@@ -158,8 +158,8 @@ jQuery(() => {
 
 		// Initialize the databases.
 		// NOTE: `SimpleStore.create(storageId, persistent)`
-		storage = SimpleStore.create(Story.id, true);
-		session = SimpleStore.create(Story.id, false);
+		SugarCube.storage = storage = SimpleStore.create(Story.id, true); // eslint-disable-line no-undef
+		SugarCube.session = session = SimpleStore.create(Story.id, false); // eslint-disable-line no-undef
 
 		// Initialize the user interfaces.
 		//
@@ -224,7 +224,7 @@ jQuery(() => {
 			}
 
 			// Trigger the `:storyready` global synthetic event.
-			jQuery.event.trigger({ type : ':storyready' });
+			jQuery.event.trigger(':storyready');
 
 			// Release our loading screen lock after a short delay.
 			setTimeout(() => LoadScreen.unlock(lockId), Engine.DOM_DELAY * 2);

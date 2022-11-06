@@ -6,25 +6,9 @@
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* global Config, Has, LoadScreen, Story, Visibility, clone, parseURL */
+/* global Config, Has, LoadScreen, Story, Visibility, clone, onUserActivation, parseURL */
 
 var SimpleAudio = (() => { // eslint-disable-line no-unused-vars, no-var
-	/*
-		Events that count as user activation—i.e. "user gestures", "activation behavior".
-
-		NOTE (ca. Dec, 2018): This not an exhaustive list and varies significantly by browser.
-		Proposals for a specification/standard are still very much in flux at this point.
-
-		TODO (ca. Dec, 2018): Revisit this topic.
-
-		SEE: (too many to list)
-			https://github.com/whatwg/html/issues/3849
-			https://github.com/whatwg/html/issues/1903
-			https://html.spec.whatwg.org/#activation
-			https://docs.google.com/spreadsheets/d/1DGXjhQ6D3yZXIePOMo0dsd2agz0t5W7rYH1NwJ-QGJo/edit#gid=0
-	*/
-	const _gestureEventNames = Object.freeze(['click', 'contextmenu', 'dblclick', 'keyup', 'mouseup', 'pointerup', 'touchend']);
-
 	// Special group IDs.
 	const _specialIds = Object.freeze([':not', ':all', ':looped', ':muted', ':paused', ':playing']);
 
@@ -466,12 +450,14 @@ var SimpleAudio = (() => { // eslint-disable-line no-unused-vars, no-var
 		}
 
 		playWhenAllowed() {
-			this.play().catch(() => {
-				const gestures = _gestureEventNames.map(name => `${name}.AudioTrack_playWhenAllowed`).join(' ');
-				jQuery(document).one(gestures, () => {
-					jQuery(document).off('.AudioTrack_playWhenAllowed');
-					this.audio.play();
-				});
+			return this.play().catch(ex => {
+				// Bail out if the rejection is not `NotAllowedError`.
+				if (ex.name !== 'NotAllowedError') {
+					throw ex;
+				}
+
+				// Attempt to play the track upon user interaction.
+				onUserActivation('.AudioTrack_playWhenAllowed', () => this.audio.play());
 			});
 		}
 
@@ -1027,12 +1013,14 @@ var SimpleAudio = (() => { // eslint-disable-line no-unused-vars, no-var
 		}
 
 		playWhenAllowed() {
-			this.play().catch(() => {
-				const gestures = _gestureEventNames.map(name => `${name}.AudioList_playWhenAllowed`).join(' ');
-				jQuery(document).one(gestures, () => {
-					jQuery(document).off('.AudioList_playWhenAllowed');
-					this.play();
-				});
+			return this.play().catch(ex => {
+				// Bail out if the rejection is not `NotAllowedError`.
+				if (ex.name !== 'NotAllowedError') {
+					throw ex;
+				}
+
+				// Attempt to play the track upon user interaction.
+				onUserActivation('.AudioList_playWhenAllowed', () => this.play());
 			});
 		}
 
