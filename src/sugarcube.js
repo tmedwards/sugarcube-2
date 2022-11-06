@@ -17,7 +17,7 @@
 	Version object.
 */
 var version = Object.freeze({
-	title      : 'SugarCube',
+	name       : 'SugarCube',
 	major      : '{{BUILD_VERSION_MAJOR}}',
 	minor      : '{{BUILD_VERSION_MINOR}}',
 	patch      : '{{BUILD_VERSION_PATCH}}',
@@ -35,11 +35,11 @@ var version = Object.freeze({
 
 	short() {
 		const prerelease = this.prerelease ? `-${this.prerelease}` : '';
-		return `${this.title} (v${this.major}.${this.minor}.${this.patch}${prerelease})`;
+		return `${this.name} (v${this.major}.${this.minor}.${this.patch}${prerelease})`;
 	},
 
 	long() {
-		return `${this.title} v${this.toString()} (${this.date.toUTCString()})`;
+		return `${this.name} v${this.toString()} (${this.date.toUTCString()})`;
 	}
 });
 
@@ -158,8 +158,8 @@ jQuery(() => {
 
 		// Initialize the databases.
 		// NOTE: `SimpleStore.create(storageId, persistent)`
-		storage = SimpleStore.create(Story.domId, true);
-		session = SimpleStore.create(Story.domId, false);
+		SugarCube.storage = storage = SimpleStore.create(Story.id, true); // eslint-disable-line no-undef
+		SugarCube.session = session = SimpleStore.create(Story.id, false); // eslint-disable-line no-undef
 
 		// Initialize the user interfaces.
 		//
@@ -224,7 +224,7 @@ jQuery(() => {
 			}
 
 			// Trigger the `:storyready` global synthetic event.
-			jQuery.event.trigger({ type : ':storyready' });
+			jQuery.event.trigger(':storyready');
 
 			// Release our loading screen lock after a short delay.
 			setTimeout(() => LoadScreen.unlock(lockId), Engine.DOM_DELAY * 2);
