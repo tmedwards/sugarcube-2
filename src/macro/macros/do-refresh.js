@@ -101,7 +101,8 @@
 				.addClass(`macro-${this.name} ${eventClass}`)
 				.attr('data-do-tags', tags.join(' '))
 				.wiki(contents)
-				.on(':dorefresh-internal', jQuery.throttle(Engine.DOM_DELAY,
+				.on(':dorefresh-internal', jQuery.throttle(
+					Engine.DOM_DELAY,
 					this.shadowHandler(() => {
 						const frag = document.createDocumentFragment();
 						new Wikifier(frag, contents);
