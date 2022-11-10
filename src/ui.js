@@ -112,6 +112,8 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 	function uiBuildAutoload() {
 		if (DEBUG) { console.log('[UI/uiBuildAutoload()]'); }
 
+		console.warn('[DEPRECATED] UI.buildAutoload() is deprecated.');
+
 		jQuery(Dialog.setup(L10n.get('autoloadTitle'), 'autoload'))
 			.append(
 				/* eslint-disable max-len */
@@ -151,6 +153,8 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 
 	function uiBuildJumpto() {
 		if (DEBUG) { console.log('[UI/uiBuildJumpto()]'); }
+
+		console.warn('[DEPRECATED] UI.buildJumpto() is deprecated.');
 
 		const list = document.createElement('ul');
 
@@ -827,6 +831,8 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 
 	function uiBuildShare() {
 		if (DEBUG) { console.log('[UI/uiBuildShare()]'); }
+
+		console.warn('[DEPRECATED] UI.buildShare() is deprecated.');
 
 		try {
 			jQuery(Dialog.setup(L10n.get('shareTitle'), 'share list'))
