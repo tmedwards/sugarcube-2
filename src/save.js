@@ -390,9 +390,6 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 		const infoKey        = getAutoInfoKeyFromIdx(idx);
 		const dataKey        = getAutoDataKeyFromIdx(idx);
 
-		console.log(`[auto] idx=${idx}, infoKey=${infoKey}:`, info);
-		console.log(`[auto] idx=${idx}, dataKey=${dataKey}:`, data);
-
 		// If storing either chunk is going to fail, it's more likely
 		// to be the data chunk, so we attempt to store it first.
 		if (storage.set(dataKey, data)) {
@@ -524,9 +521,6 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 		const { info, data } = splitSave(marshal(details));
 		const infoKey        = getSlotInfoKeyFromIdx(idx);
 		const dataKey        = getSlotDataKeyFromIdx(idx);
-
-		console.log(`[slot] idx=${idx}, infoKey=${infoKey}:`, info);
-		console.log(`[slot] idx=${idx}, dataKey=${dataKey}:`, data);
 
 		// If storing either chunk is going to fail, it's more likely
 		// to be the data chunk, so we attempt to store it first.
