@@ -36,5 +36,12 @@ function enumFrom(O) { // eslint-disable-line no-unused-vars
 		throw new TypeError('enumFrom object parameter must be an Array, Map, Set, or generic object');
 	}
 
-	return Object.freeze(pEnum);
+	return Object.freeze(Object.defineProperties(pEnum, {
+		nameFrom : {
+			value(needle) {
+				const entry = Object.entries(this).find(entry => entry[1] === needle);
+				return entry ? entry[0] : undefined;
+			}
+		}
+	}));
 }
