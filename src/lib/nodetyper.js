@@ -18,7 +18,7 @@ var NodeTyper = (() => { // eslint-disable-line no-unused-vars, no-var
 			if (typeof config !== 'object' || config === null) {
 				throw new Error(`config parameter must be an object (received: ${getTypeOf(config)})`);
 			}
-			if (!config.hasOwnProperty('targetNode') || !(config.targetNode instanceof Node)) {
+			if (!Object.hasOwn(config, 'targetNode') || !(config.targetNode instanceof Node)) {
 				throw new Error('config parameter object "targetNode" property must be a node');
 			}
 

@@ -6,7 +6,7 @@
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* global Config, Diff, Engine, PRNGWrapper, Scripting, clone, hasOwn, session, storage */
+/* global Config, Diff, Engine, PRNGWrapper, Scripting, clone session, storage */
 
 var State = (() => { // eslint-disable-line no-unused-vars, no-var
 	// History moment stack.
@@ -122,21 +122,21 @@ var State = (() => { // eslint-disable-line no-unused-vars, no-var
 		}
 
 		if (
-			!stateObj.hasOwnProperty(noDelta ? 'history' : 'delta')
+			!Object.hasOwn(stateObj, noDelta ? 'history' : 'delta')
 			|| stateObj[noDelta ? 'history' : 'delta'].length === 0
 		) {
 			throw new Error('state object has no history or history is empty');
 		}
 
-		if (!stateObj.hasOwnProperty('index')) {
+		if (!Object.hasOwn(stateObj, 'index')) {
 			throw new Error('state object has no index');
 		}
 
-		if (_prng !== null && !stateObj.hasOwnProperty('seed')) {
+		if (_prng !== null && !Object.hasOwn(stateObj, 'seed')) {
 			throw new Error('state object has no seed, but PRNG is enabled');
 		}
 
-		if (_prng === null && stateObj.hasOwnProperty('seed')) {
+		if (_prng === null && Object.hasOwn(stateObj, 'seed')) {
 			throw new Error('state object has seed, but PRNG is disabled');
 		}
 
@@ -145,9 +145,9 @@ var State = (() => { // eslint-disable-line no-unused-vars, no-var
 		*/
 		_history     = noDelta ? clone(stateObj.history) : historyDeltaDecode(stateObj.delta);
 		_activeIndex = stateObj.index;
-		_expired     = stateObj.hasOwnProperty('expired') ? [...stateObj.expired] : [];
+		_expired     = Object.hasOwn(stateObj, 'expired') ? [...stateObj.expired] : [];
 
-		if (stateObj.hasOwnProperty('seed')) {
+		if (Object.hasOwn(stateObj, 'seed')) {
 			/*
 				We only need to restore the PRNG's seed here as `momentActivate()` will handle
 				fully restoring the PRNG to its proper state.
@@ -656,7 +656,7 @@ var State = (() => { // eslint-disable-line no-unused-vars, no-var
 
 		const store = storage.get(_METADATA_STORE);
 
-		if (store && hasOwn(store, key)) {
+		if (store && Object.hasOwn(store, key)) {
 			if (Object.keys(store).length === 1) {
 				storage.delete(_METADATA_STORE);
 			}
@@ -678,7 +678,7 @@ var State = (() => { // eslint-disable-line no-unused-vars, no-var
 		}
 
 		const store = storage.get(_METADATA_STORE);
-		return store && hasOwn(store, key) ? store[key] : undefined;
+		return store && Object.hasOwn(store, key) ? store[key] : undefined;
 	}
 
 	function metadataHas(key) {
@@ -687,7 +687,7 @@ var State = (() => { // eslint-disable-line no-unused-vars, no-var
 		}
 
 		const store = storage.get(_METADATA_STORE);
-		return store && hasOwn(store, key);
+		return store && Object.hasOwn(store, key);
 	}
 
 	function metadataKeys() {

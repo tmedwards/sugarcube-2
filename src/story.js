@@ -6,7 +6,7 @@
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* global Config, Passage, Wikifier, characterAndPosAt, createSlug, decodeEntities, hasOwn, sameValueZero */
+/* global Config, Passage, Wikifier, characterAndPosAt, createSlug, decodeEntities, sameValueZero */
 
 var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 	// Story IFID.
@@ -210,7 +210,7 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 			/*
 				Set the story title or throw an exception.
 			*/
-			if (_passages.hasOwnProperty('StoryTitle')) {
+			if (Object.hasOwn(_passages, 'StoryTitle')) {
 				const buf = document.createDocumentFragment();
 				new Wikifier(buf, _passages.StoryTitle.processText().trim());
 				_storySetTitle(buf.textContent);
@@ -325,7 +325,7 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 
 		const title = passage.name;
 
-		if (!hasOwn(_passages, title)) {
+		if (!Object.hasOwn(_passages, title)) {
 			_passages[title] = passage;
 			return true;
 		}
@@ -340,7 +340,7 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 		// Valid types.
 			case 'number':
 			case 'string':
-				return _passages.hasOwnProperty(String(title));
+				return Object.hasOwn(_passages, String(title));
 
 			// Invalid types.  We do the extra processing just to make a nicer error.
 			case 'undefined':
@@ -367,7 +367,7 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 			case 'number':
 			case 'string': {
 				const id = String(title);
-				return hasOwn(_passages, id) ? _passages[id] : new Passage(id || '(unknown)');
+				return Object.hasOwn(_passages, id) ? _passages[id] : new Passage(id || '(unknown)');
 			}
 
 			// Invalid types.  We do the extra processing just to make a nicer error.

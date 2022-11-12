@@ -31,19 +31,19 @@ Macro.add(['back', 'return'], {
 					$image = jQuery(document.createElement('img'))
 						.attr('src', this.args[0].source);
 
-					if (this.args[0].hasOwnProperty('passage')) {
+					if (Object.hasOwn(this.args[0], 'passage')) {
 						$image.attr('data-passage', this.args[0].passage);
 					}
 
-					if (this.args[0].hasOwnProperty('title')) {
+					if (Object.hasOwn(this.args[0], 'title')) {
 						$image.attr('title', this.args[0].title);
 					}
 
-					if (this.args[0].hasOwnProperty('align')) {
+					if (Object.hasOwn(this.args[0], 'align')) {
 						$image.attr('align', this.args[0].align);
 					}
 
-					if (this.args[0].hasOwnProperty('link')) {
+					if (Object.hasOwn(this.args[0], 'link')) {
 						passage = this.args[0].link;
 					}
 				}

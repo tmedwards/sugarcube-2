@@ -177,10 +177,10 @@ var SimpleAudio = (() => { // eslint-disable-line no-unused-vars, no-var
 						if (src === null) {
 							throw new Error('source object cannot be null');
 						}
-						else if (!src.hasOwnProperty('src')) {
+						else if (!Object.hasOwn(src, 'src')) {
 							throw new Error('source object missing required "src" property');
 						}
-						else if (!src.hasOwnProperty('format')) {
+						else if (!Object.hasOwn(src, 'format')) {
 							throw new Error('source object missing required "format" property');
 						}
 
@@ -895,20 +895,20 @@ var SimpleAudio = (() => { // eslint-disable-line no-unused-vars, no-var
 					volume = trackObj.volume();
 				}
 				else {
-					if (!trackObj.hasOwnProperty('track')) {
+					if (!Object.hasOwn(trackObj, 'track')) {
 						throw new Error('track object missing required "track" property');
 					}
 					else if (!(trackObj.track instanceof AudioTrack)) {
 						throw new Error('track object\'s "track" property must be an AudioTrack object');
 					}
-					// else if (!trackObj.hasOwnProperty('volume')) {
+					// else if (!Object.hasOwn(trackObj, 'volume')) {
 					// 	throw new Error('track object missing required "volume" property');
 					// }
 
-					own    = trackObj.hasOwnProperty('own') && trackObj.own;
-					rate   = trackObj.hasOwnProperty('rate') ? trackObj.rate : trackObj.track.rate();
+					own    = Object.hasOwn(trackObj, 'own') && trackObj.own;
+					rate   = Object.hasOwn(trackObj, 'rate') ? trackObj.rate : trackObj.track.rate();
 					track  = trackObj.track;
-					volume = trackObj.hasOwnProperty('volume') ? trackObj.volume : trackObj.track.volume();
+					volume = Object.hasOwn(trackObj, 'volume') ? trackObj.volume : trackObj.track.volume();
 				}
 
 				track.stop();
@@ -1657,10 +1657,10 @@ var SimpleAudio = (() => { // eslint-disable-line no-unused-vars, no-var
 						break;
 
 					case 'object':
-						if (!desc.hasOwnProperty('id') && !desc.hasOwnProperty('sources')) {
+						if (!Object.hasOwn(desc, 'id') && !Object.hasOwn(desc, 'sources')) {
 							throw new Error('track descriptor must contain one of either an "id" or a "sources" property');
 						}
-						else if (desc.hasOwnProperty('id') && desc.hasOwnProperty('sources')) {
+						else if (Object.hasOwn(desc, 'id') && Object.hasOwn(desc, 'sources')) {
 							throw new Error('track descriptor must contain either an "id" or a "sources" property, not both');
 						}
 						break;
@@ -1674,7 +1674,7 @@ var SimpleAudio = (() => { // eslint-disable-line no-unused-vars, no-var
 				let track;
 				let volume;
 
-				if (desc.hasOwnProperty('id')) {
+				if (Object.hasOwn(desc, 'id')) {
 					if (typeof desc.id !== 'string') {
 						throw new Error('"id" property must be a string');
 					}
@@ -1684,11 +1684,11 @@ var SimpleAudio = (() => { // eslint-disable-line no-unused-vars, no-var
 
 					track = _tracks.get(desc.id);
 				}
-				else if (desc.hasOwnProperty('sources')) {
+				else if (Object.hasOwn(desc, 'sources')) {
 					if (!Array.isArray(desc.sources) || desc.sources.length === 0) {
 						throw new Error('"sources" property must be a non-empty array');
 					}
-					if (desc.hasOwnProperty('own')) {
+					if (Object.hasOwn(desc, 'own')) {
 						throw new Error('"own" property is not allowed with the "sources" property');
 					}
 
@@ -1706,7 +1706,7 @@ var SimpleAudio = (() => { // eslint-disable-line no-unused-vars, no-var
 					}
 				}
 
-				if (desc.hasOwnProperty('own')) {
+				if (Object.hasOwn(desc, 'own')) {
 					if (typeof desc.own !== 'boolean') {
 						throw new Error('"own" property must be a boolean');
 					}
@@ -1718,7 +1718,7 @@ var SimpleAudio = (() => { // eslint-disable-line no-unused-vars, no-var
 					}
 				}
 
-				// if (desc.hasOwnProperty('rate')) {
+				// if (Object.hasOwn(desc, 'rate')) {
 				// 	if (
 				// 		typeof desc.rate !== 'number'
 				// 		|| Number.isNaN(desc.rate)
@@ -1730,7 +1730,7 @@ var SimpleAudio = (() => { // eslint-disable-line no-unused-vars, no-var
 				// 	rate = desc.rate;
 				// }
 
-				if (desc.hasOwnProperty('volume')) {
+				if (Object.hasOwn(desc, 'volume')) {
 					if (
 						typeof desc.volume !== 'number'
 						|| Number.isNaN(desc.volume)
@@ -1903,7 +1903,7 @@ var SimpleAudio = (() => { // eslint-disable-line no-unused-vars, no-var
 					default:         ids = id[0] === ':' ? _groups.get(id) : [id]; break;
 				}
 
-				if (idObj.hasOwnProperty('not')) {
+				if (Object.hasOwn(idObj, 'not')) {
 					const negated = idObj.not.map(idObj => renderIds(idObj)).flat(Infinity);
 					ids = ids.filter(id => !negated.includes(id));
 				}

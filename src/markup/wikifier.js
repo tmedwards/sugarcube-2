@@ -8,7 +8,7 @@
 ***********************************************************************************************************************/
 /*
 	global Config, EOF, Engine, Lexer, Patterns, Scripting, State, Story, TempState, convertBreaks,
-	       cssPropToDOMProp, errorPrologRegExp, getTypeOf, hasOwn, isExternalLink
+	       cssPropToDOMProp, errorPrologRegExp, getTypeOf, isExternalLink
 */
 
 /*
@@ -66,7 +66,9 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 			}
 
 			// jQuery-wrapped destination.  Grab the first element.
-			else if (destination.jquery) { // cannot use `hasOwnProperty()` here as `jquery` is from jQuery's prototype
+			//
+			// NOTE: Cannot use `Object.hasOwn()` here as `jquery` is from jQuery's prototype.
+			else if (destination.jquery) {
 				this.output = destination[0];
 			}
 
@@ -404,28 +406,28 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 					throw new Error('Wikifier.Parser.add parser parameter must be an object');
 				}
 
-				if (!parser.hasOwnProperty('name')) {
+				if (!Object.hasOwn(parser, 'name')) {
 					throw new Error('parser object missing required "name" property');
 				}
 				else if (typeof parser.name !== 'string') {
 					throw new Error('parser object "name" property must be a string');
 				}
 
-				if (!parser.hasOwnProperty('match')) {
+				if (!Object.hasOwn(parser, 'match')) {
 					throw new Error('parser object missing required "match" property');
 				}
 				else if (typeof parser.match !== 'string') {
 					throw new Error('parser object "match" property must be a string');
 				}
 
-				if (!parser.hasOwnProperty('handler')) {
+				if (!Object.hasOwn(parser, 'handler')) {
 					throw new Error('parser object missing required "handler" property');
 				}
 				else if (typeof parser.handler !== 'function') {
 					throw new Error('parser object "handler" property must be a function');
 				}
 
-				if (parser.hasOwnProperty('profiles') && !Array.isArray(parser.profiles)) {
+				if (Object.hasOwn(parser, 'profiles') && !Array.isArray(parser.profiles)) {
 					throw new Error('parser object "profiles" property must be an array');
 				}
 
@@ -491,7 +493,7 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 			}
 
 			function profilesGet(profile) {
-				if (typeof _profiles !== 'object' || !hasOwn(_profiles, profile)) {
+				if (typeof _profiles !== 'object' || !Object.hasOwn(_profiles, profile)) {
 					throw new Error(`nonexistent parser profile "${profile}"`);
 				}
 
@@ -499,7 +501,7 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 			}
 
 			function profilesHas(profile) {
-				return typeof _profiles === 'object' && hasOwn(_profiles, profile);
+				return typeof _profiles === 'object' && Object.hasOwn(_profiles, profile);
 			}
 
 
@@ -799,7 +801,7 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 								const varKey = varName.slice(1);
 								const store  = varName[0] === '$' ? State.variables : State.temporary;
 
-								if (hasOwn(store, varKey)) {
+								if (Object.hasOwn(store, varKey)) {
 									valueCache[varKey] = store[varKey];
 								}
 
@@ -821,7 +823,7 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 								*/
 								shadowStore[varName] = store[varKey];
 
-								if (hasOwn(valueCache, varKey)) {
+								if (Object.hasOwn(valueCache, varKey)) {
 									store[varKey] = valueCache[varKey];
 								}
 								else {

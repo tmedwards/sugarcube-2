@@ -39,7 +39,7 @@ Macro.add('widget', {
 						const shadowStore = {};
 
 						// Cache the existing value of the `_args` variable, if necessary.
-						if (State.temporary.hasOwnProperty('args')) {
+						if (Object.hasOwn(State.temporary, 'args')) {
 							shadowStore._args = State.temporary.args;
 						}
 
@@ -51,7 +51,7 @@ Macro.add('widget', {
 
 						if (isNonVoid) {
 							// Cache the existing value of the `_contents` variable, if necessary.
-							if (State.temporary.hasOwnProperty('contents')) {
+							if (Object.hasOwn(State.temporary, 'contents')) {
 								shadowStore._contents = State.temporary.contents;
 							}
 
@@ -62,7 +62,7 @@ Macro.add('widget', {
 
 						/* legacy */
 						// Cache the existing value of the `$args` variable, if necessary.
-						if (State.variables.hasOwnProperty('args')) {
+						if (Object.hasOwn(State.variables, 'args')) {
 							shadowStore.$args = State.variables.args;
 						}
 
@@ -96,7 +96,7 @@ Macro.add('widget', {
 						}
 						finally {
 							// Revert the `_args` variable shadowing.
-							if (shadowStore.hasOwnProperty('_args')) {
+							if (Object.hasOwn(shadowStore, '_args')) {
 								State.temporary.args = shadowStore._args;
 							}
 							else {
@@ -105,7 +105,7 @@ Macro.add('widget', {
 
 							if (isNonVoid) {
 								// Revert the `_contents` variable shadowing.
-								if (shadowStore.hasOwnProperty('_contents')) {
+								if (Object.hasOwn(shadowStore, '_contents')) {
 									State.temporary.contents = shadowStore._contents;
 								}
 								else {
@@ -115,7 +115,7 @@ Macro.add('widget', {
 
 							/* legacy */
 							// Revert the `$args` variable shadowing.
-							if (shadowStore.hasOwnProperty('$args')) {
+							if (Object.hasOwn(shadowStore, '$args')) {
 								State.variables.args = shadowStore.$args;
 							}
 							else {

@@ -140,7 +140,7 @@ Macro.add('timed', {
 		timers.add(timerId);
 
 		// Set up a single-use `prehistory` task to remove pending timers.
-		if (!prehistory.hasOwnProperty('#timed-timers-cleanup')) {
+		if (!Object.hasOwn(prehistory, '#timed-timers-cleanup')) {
 			prehistory['#timed-timers-cleanup'] = task => {
 				delete prehistory[task]; // single-use task
 				timers.forEach(timerId => clearTimeout(timerId)); // eslint-disable-line no-shadow

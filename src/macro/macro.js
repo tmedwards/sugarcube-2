@@ -6,7 +6,7 @@
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* global Patterns, Scripting, hasOwn, macros */
+/* global Patterns, Scripting, macros */
 
 var Macro = (() => { // eslint-disable-line no-unused-vars, no-var
 	// Macro definitions.
@@ -120,7 +120,7 @@ var Macro = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 	function macrosHas(name) {
-		return hasOwn(_macros, name);
+		return Object.hasOwn(_macros, name);
 	}
 
 	function macrosGet(name) {
@@ -130,7 +130,7 @@ var Macro = (() => { // eslint-disable-line no-unused-vars, no-var
 			macro = _macros[name];
 		}
 		/* legacy macro support */
-		else if (hasOwn(macros, name) && typeof macros[name].handler === 'function') {
+		else if (Object.hasOwn(macros, name) && typeof macros[name].handler === 'function') {
 			macro = macros[name];
 		}
 		/* /legacy macro support */
@@ -206,7 +206,7 @@ var Macro = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 	function tagsHas(name) {
-		return hasOwn(_tags, name);
+		return Object.hasOwn(_tags, name);
 	}
 
 	function tagsGet(name) {

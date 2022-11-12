@@ -6,7 +6,6 @@
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* global hasOwn */
 
 /*
 	Returns an immutable object containing the component properties parsed from the given URL.
@@ -26,7 +25,7 @@ function parseURL(url) { // eslint-disable-line no-unused-vars
 			.forEach(query => {
 				const [key, value] = query.split('=');
 
-				if (hasOwn(searchParams, key)) {
+				if (Object.hasOwn(searchParams, key)) {
 					searchParams[key].push(value);
 				}
 				else {

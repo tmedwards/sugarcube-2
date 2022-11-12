@@ -673,7 +673,7 @@
 								matchStart : 0
 							});
 
-							if (markup.hasOwnProperty('error')) {
+							if (Object.hasOwn(markup, 'error')) {
 								throw new Error(`unable to parse macro argument "${arg}": ${markup.error}`);
 							}
 
@@ -685,11 +685,11 @@
 							if (markup.isLink) {
 								// .isLink, [.text], [.forceInternal], .link, [.setter]
 								arg = { isLink : true };
-								arg.count    = markup.hasOwnProperty('text') ? 2 : 1;
+								arg.count    = Object.hasOwn(markup, 'text') ? 2 : 1;
 								arg.link     = Wikifier.helpers.evalPassageId(markup.link);
-								arg.text     = markup.hasOwnProperty('text') ? Wikifier.helpers.evalText(markup.text) : arg.link;
+								arg.text     = Object.hasOwn(markup, 'text') ? Wikifier.helpers.evalText(markup.text) : arg.link;
 								arg.external = !markup.forceInternal && Wikifier.isExternalLink(arg.link);
-								arg.setFn    = markup.hasOwnProperty('setter')
+								arg.setFn    = Object.hasOwn(markup, 'setter')
 									? Wikifier.helpers.shadowHandler(Scripting.parse(markup.setter))
 									: null;
 							}
@@ -714,20 +714,20 @@
 									return imgObj;
 								})(Wikifier.helpers.evalPassageId(markup.source));
 
-								if (markup.hasOwnProperty('align')) {
+								if (Object.hasOwn(markup, 'align')) {
 									arg.align = markup.align;
 								}
 
-								if (markup.hasOwnProperty('text')) {
+								if (Object.hasOwn(markup, 'text')) {
 									arg.title = Wikifier.helpers.evalText(markup.text);
 								}
 
-								if (markup.hasOwnProperty('link')) {
+								if (Object.hasOwn(markup, 'link')) {
 									arg.link     = Wikifier.helpers.evalPassageId(markup.link);
 									arg.external = !markup.forceInternal && Wikifier.isExternalLink(arg.link);
 								}
 
-								arg.setFn = markup.hasOwnProperty('setter')
+								arg.setFn = Object.hasOwn(markup, 'setter')
 									? Wikifier.helpers.shadowHandler(Scripting.parse(markup.setter))
 									: null;
 							}
@@ -754,7 +754,7 @@
 		handler(w) {
 			const markup = Wikifier.helpers.parseSquareBracketedMarkup(w);
 
-			if (markup.hasOwnProperty('error')) {
+			if (Object.hasOwn(markup, 'error')) {
 				w.outputText(w.output, w.matchStart, w.nextMatch);
 				return;
 			}
@@ -763,8 +763,8 @@
 
 			// text=(text), forceInternal=(~), link=link, setter=(setter)
 			const link  = Wikifier.helpers.evalPassageId(markup.link);
-			const text  = markup.hasOwnProperty('text') ? Wikifier.helpers.evalText(markup.text) : link;
-			const setFn = markup.hasOwnProperty('setter')
+			const text  = Object.hasOwn(markup, 'text') ? Wikifier.helpers.evalText(markup.text) : link;
+			const setFn = Object.hasOwn(markup, 'setter')
 				? Wikifier.helpers.shadowHandler(Scripting.parse(markup.setter))
 				: null;
 
@@ -801,7 +801,7 @@
 		handler(w) {
 			const markup = Wikifier.helpers.parseSquareBracketedMarkup(w);
 
-			if (markup.hasOwnProperty('error')) {
+			if (Object.hasOwn(markup, 'error')) {
 				w.outputText(w.output, w.matchStart, w.nextMatch);
 				return;
 			}
@@ -815,20 +815,20 @@
 				debugView = new DebugView(
 					w.output,
 					'image-markup',
-					markup.hasOwnProperty('link') ? '[img[][link]]' : '[img[]]',
+					Object.hasOwn(markup, 'link') ? '[img[][link]]' : '[img[]]',
 					w.source.slice(w.matchStart, w.nextMatch)
 				);
 				debugView.modes({ block : true });
 			}
 
 			// align=(left|right), title=(title), source=source, forceInternal=(~), link=(link), setter=(setter)
-			const setFn = markup.hasOwnProperty('setter')
+			const setFn = Object.hasOwn(markup, 'setter')
 				? Wikifier.helpers.shadowHandler(Scripting.parse(markup.setter))
 				: null;
 			let el     = (Config.debug ? debugView : w).output;
 			let source;
 
-			if (markup.hasOwnProperty('link')) {
+			if (Object.hasOwn(markup, 'link')) {
 				const link = Wikifier.helpers.evalPassageId(markup.link);
 
 				if (markup.forceInternal || !Wikifier.isExternalLink(link)) {
@@ -858,11 +858,11 @@
 
 			el.src = source;
 
-			if (markup.hasOwnProperty('text')) {
+			if (Object.hasOwn(markup, 'text')) {
 				el.title = Wikifier.helpers.evalText(markup.text);
 			}
 
-			if (markup.hasOwnProperty('align')) {
+			if (Object.hasOwn(markup, 'align')) {
 				el.align = markup.align;
 			}
 		}
@@ -1479,7 +1479,7 @@
 							matchStart : 0
 						});
 
-						if (markup.hasOwnProperty('error') || markup.pos < wikiImage.length) {
+						if (Object.hasOwn(markup, 'error') || markup.pos < wikiImage.length) {
 							return wikiImage;
 						}
 

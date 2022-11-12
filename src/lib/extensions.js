@@ -286,6 +286,23 @@
 	}
 
 	/*
+		[ES2022] Returns whether the given object has an own property by the given name.
+	*/
+	if (!Object.hasOwn) {
+		// Cache the `<Object>.hasOwnProperty()` method.
+		const hasOwnProperty = Object.prototype.hasOwnProperty;
+
+		Object.defineProperty(Object, 'hasOwn', {
+			configurable : true,
+			writable     : true,
+
+			value(O, P) {
+				return hasOwnProperty.call(Object(O), P);
+			}
+		});
+	}
+
+	/*
 		[ES2017] Returns a new array consisting of the given object's own enumerable property values.
 	*/
 	if (!Object.values) {
@@ -613,7 +630,7 @@
 			if (
 				typeof array !== 'object'
 				|| array === null
-				|| !Object.prototype.hasOwnProperty.call(array, 'length')
+				|| !Object.hasOwn(array, 'length')
 			) {
 				throw new TypeError('Array.random array parameter must be an array or array-lke object');
 			}

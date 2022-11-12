@@ -47,14 +47,14 @@ var Setting = (() => { // eslint-disable-line no-unused-vars, no-var
 
 		// Execute `onInit` callbacks.
 		_definitions.forEach(def => {
-			if (def.hasOwnProperty('onInit')) {
+			if (Object.hasOwn(def, 'onInit')) {
 				const thisArg = {
 					name    : def.name,
 					value   : settings[def.name],
 					default : def.default
 				};
 
-				if (def.hasOwnProperty('list')) {
+				if (Object.hasOwn(def, 'list')) {
 					thisArg.list = def.list;
 				}
 
@@ -194,7 +194,7 @@ var Setting = (() => { // eslint-disable-line no-unused-vars, no-var
 				break;
 
 			case Types.List: {
-				if (!def.hasOwnProperty('list')) {
+				if (!Object.hasOwn(def, 'list')) {
 					throw new Error('no list specified');
 				}
 				else if (!Array.isArray(def.list)) {
@@ -222,7 +222,7 @@ var Setting = (() => { // eslint-disable-line no-unused-vars, no-var
 			}
 
 			case Types.Range: {
-				if (!def.hasOwnProperty('min')) {
+				if (!Object.hasOwn(def, 'min')) {
 					throw new Error('no min specified');
 				}
 				else if (
@@ -233,7 +233,7 @@ var Setting = (() => { // eslint-disable-line no-unused-vars, no-var
 					throw new TypeError('min must be a finite number');
 				}
 
-				if (!def.hasOwnProperty('max')) {
+				if (!Object.hasOwn(def, 'max')) {
 					throw new Error('no max specified');
 				}
 				else if (
@@ -244,7 +244,7 @@ var Setting = (() => { // eslint-disable-line no-unused-vars, no-var
 					throw new TypeError('max must be a finite number');
 				}
 
-				if (!def.hasOwnProperty('step')) {
+				if (!Object.hasOwn(def, 'step')) {
 					throw new Error('no step specified');
 				}
 				else if (

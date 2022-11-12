@@ -41,11 +41,11 @@ Macro.add('radiobutton', {
 		/*
 			Set up and initialize the group counter.
 		*/
-		if (!TempState.hasOwnProperty(this.name)) {
+		if (!Object.hasOwn(TempState, this.name)) {
 			TempState[this.name] = {};
 		}
 
-		if (!TempState[this.name].hasOwnProperty(varId)) {
+		if (!Object.hasOwn(TempState[this.name], varId)) {
 			TempState[this.name][varId] = 0;
 		}
 

@@ -94,7 +94,7 @@ Macro.add('repeat', {
 				TempState.break = null;
 
 				// Set up the `repeatTimerId` value, caching the existing value, if necessary.
-				if (TempState.hasOwnProperty('repeatTimerId')) {
+				if (Object.hasOwn(TempState, 'repeatTimerId')) {
 					timerIdCache = TempState.repeatTimerId;
 				}
 
@@ -118,7 +118,7 @@ Macro.add('repeat', {
 		timers.add(timerId);
 
 		// Set up a single-use `prehistory` task to remove pending timers.
-		if (!prehistory.hasOwnProperty('#repeat-timers-cleanup')) {
+		if (!Object.hasOwn(prehistory, '#repeat-timers-cleanup')) {
 			prehistory['#repeat-timers-cleanup'] = task => {
 				delete prehistory[task]; // single-use task
 				timers.forEach(timerId => clearInterval(timerId));
@@ -131,7 +131,7 @@ Macro.add('stop', {
 	skipArgs : true,
 
 	handler() {
-		if (!TempState.hasOwnProperty('repeatTimerId')) {
+		if (!Object.hasOwn(TempState, 'repeatTimerId')) {
 			return this.error('must only be used in conjunction with its parent macro <<repeat>>');
 		}
 

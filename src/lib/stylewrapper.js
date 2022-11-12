@@ -66,7 +66,7 @@ var StyleWrapper = (() => { // eslint-disable-line no-unused-vars, no-var
 						matchStart : 0
 					});
 
-					if (markup.hasOwnProperty('error') || markup.pos < wikiImage.length) {
+					if (Object.hasOwn(markup, 'error') || markup.pos < wikiImage.length) {
 						return wikiImage;
 					}
 

@@ -6,7 +6,7 @@
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* global clone, enumFrom, hasOwn */
+/* global clone, enumFrom */
 
 var Diff = (() => { // eslint-disable-line no-unused-vars, no-var
 	// Diff operations object.
@@ -59,9 +59,9 @@ var Diff = (() => { // eslint-disable-line no-unused-vars, no-var
 			const bVal = b[key];
 
 			// Key exists in `a`.
-			if (hasOwn(a, key)) {
+			if (Object.hasOwn(a, key)) {
 				// Key exists in both.
-				if (hasOwn(b, key)) {
+				if (Object.hasOwn(b, key)) {
 					// Values are exactly the same, so do nothing.
 					if (aVal === bVal) {
 						continue;

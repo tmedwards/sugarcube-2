@@ -6,7 +6,7 @@
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* global hasOwn, l10nStrings */
+/* global l10nStrings */
 
 var L10n = (() => { // eslint-disable-line no-unused-vars, no-var
 	// Maximum replacement depth.
@@ -34,7 +34,7 @@ var L10n = (() => { // eslint-disable-line no-unused-vars, no-var
 			return '';
 		}
 
-		const id = (Array.isArray(ids) ? ids : [ids]).find(id => hasOwn(l10nStrings, id));
+		const id = (Array.isArray(ids) ? ids : [ids]).find(id => Object.hasOwn(l10nStrings, id));
 
 		if (!id) {
 			return '';
@@ -54,10 +54,10 @@ var L10n = (() => { // eslint-disable-line no-unused-vars, no-var
 			value = value.replace(replaceRE, replacement => {
 				const rid = replacement.slice(1, -1);
 
-				if (overrides && hasOwn(overrides, rid)) {
+				if (overrides && Object.hasOwn(overrides, rid)) {
 					return overrides[rid];
 				}
-				else if (hasOwn(l10nStrings, rid)) {
+				else if (Object.hasOwn(l10nStrings, rid)) {
 					return l10nStrings[rid];
 				}
 			});

@@ -6,7 +6,7 @@
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* global Macro, Patterns, State, Wikifier, hasOwn */
+/* global Macro, Patterns, State, Wikifier */
 
 /*
 	<<capture>>
@@ -40,7 +40,7 @@ Macro.add('capture', {
 				const varKey  = varName.slice(1);
 				const store   = varName[0] === '$' ? State.variables : State.temporary;
 
-				if (hasOwn(store, varKey)) {
+				if (Object.hasOwn(store, varKey)) {
 					valueCache[varKey] = store[varKey];
 				}
 
@@ -55,7 +55,7 @@ Macro.add('capture', {
 				const varKey = varName.slice(1);
 				const store  = varName[0] === '$' ? State.variables : State.temporary;
 
-				if (hasOwn(valueCache, varKey)) {
+				if (Object.hasOwn(valueCache, varKey)) {
 					store[varKey] = valueCache[varKey];
 				}
 				else {

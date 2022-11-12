@@ -6,7 +6,7 @@
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* global Config, L10n, State, createFilename, enumFrom, getTypeOf, hasOwn, storage */
+/* global Config, L10n, State, createFilename, enumFrom, getTypeOf, storage */
 
 /*
 	Save API static object.
@@ -601,7 +601,9 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 						// throw reader.error;
 					}
 
-					const badSave = O => !hasOwn(O, 'idx') || !hasOwn(O, 'info') || !hasOwn(O, 'data');
+					const badSave = O => !Object.hasOwn(O, 'idx')
+						|| !Object.hasOwn(O, 'info')
+						|| !Object.hasOwn(O, 'data');
 					let bundle;
 
 					try {
@@ -614,10 +616,10 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 					if (
 						bundle == null // lazy equality for null
 						|| typeof bundle !== 'object'
-						|| !hasOwn(bundle, 'auto')
+						|| !Object.hasOwn(bundle, 'auto')
 						|| !(bundle.auto instanceof Array)
 						|| bundle.auto.some(badSave)
-						|| !hasOwn(bundle, 'slot')
+						|| !Object.hasOwn(bundle, 'slot')
 						|| !(bundle.slot instanceof Array)
 						|| bundle.slot.some(badSave)
 					) {
@@ -821,10 +823,10 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 		if (
 			save == null // lazy equality for null
 			|| typeof save !== 'object'
-			|| !hasOwn(save, 'id')
-			|| !hasOwn(save, 'state')
+			|| !Object.hasOwn(save, 'id')
+			|| !Object.hasOwn(save, 'state')
 			|| typeof save.state !== 'object'
-			|| !hasOwn(save.state, 'delta')
+			|| !Object.hasOwn(save.state, 'delta')
 		) {
 			throw new Error(L10n.get('saveErrorInvalidData'));
 		}

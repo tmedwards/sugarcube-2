@@ -6,7 +6,7 @@
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* global Config, Has, Macro, Patterns, Scripting, SimpleAudio, State, Wikifier, getErrorMessage, hasOwn, storage */
+/* global Config, Has, Macro, Patterns, Scripting, SimpleAudio, State, Wikifier, getErrorMessage, storage */
 
 /*******************************************************************************
 	Variables Macros.
@@ -79,11 +79,11 @@ Macro.add('forget', {
 		while ((match = jsVarRe.exec(this.args.full)) !== null) {
 			const name = match[1];
 
-			if (hasOwn(State.variables, name)) {
+			if (Object.hasOwn(State.variables, name)) {
 				delete State.variables[name];
 			}
 
-			if (remember && hasOwn(remember, name)) {
+			if (remember && Object.hasOwn(remember, name)) {
 				needStore = true;
 				delete remember[name];
 			}
@@ -158,15 +158,15 @@ Macro.add('actions', {
 					$image = jQuery(document.createElement('img'))
 						.attr('src', this.args[i].source);
 
-					if (this.args[i].hasOwnProperty('passage')) {
+					if (Object.hasOwn(this.args[i], 'passage')) {
 						$image.attr('data-passage', this.args[i].passage);
 					}
 
-					if (this.args[i].hasOwnProperty('title')) {
+					if (Object.hasOwn(this.args[i], 'title')) {
 						$image.attr('title', this.args[i].title);
 					}
 
-					if (this.args[i].hasOwnProperty('align')) {
+					if (Object.hasOwn(this.args[i], 'align')) {
 						$image.attr('align', this.args[i].align);
 					}
 
@@ -186,8 +186,8 @@ Macro.add('actions', {
 			}
 
 			if (
-				State.variables.hasOwnProperty('#actions')
-				&& State.variables['#actions'].hasOwnProperty(passage)
+				Object.hasOwn(State.variables, '#actions')
+				&& Object.hasOwn(State.variables['#actions'], passage)
 				&& State.variables['#actions'][passage]
 			) {
 				continue;
@@ -198,7 +198,7 @@ Macro.add('actions', {
 				passage,
 				null,
 				((passage, fn) => () => {
-					if (!State.variables.hasOwnProperty('#actions')) {
+					if (!Object.hasOwn(State.variables, '#actions')) {
 						State.variables['#actions'] = {};
 					}
 
@@ -241,15 +241,15 @@ Macro.add('choice', {
 					$image = jQuery(document.createElement('img'))
 						.attr('src', this.args[0].source);
 
-					if (this.args[0].hasOwnProperty('passage')) {
+					if (Object.hasOwn(this.args[0], 'passage')) {
 						$image.attr('data-passage', this.args[0].passage);
 					}
 
-					if (this.args[0].hasOwnProperty('title')) {
+					if (Object.hasOwn(this.args[0], 'title')) {
 						$image.attr('title', this.args[0].title);
 					}
 
-					if (this.args[0].hasOwnProperty('align')) {
+					if (Object.hasOwn(this.args[0], 'align')) {
 						$image.attr('align', this.args[0].align);
 					}
 
@@ -277,8 +277,8 @@ Macro.add('choice', {
 		let $link;
 
 		if (
-			State.variables.hasOwnProperty('#choice')
-			&& State.variables['#choice'].hasOwnProperty(choiceId)
+			Object.hasOwn(State.variables, '#choice')
+			&& Object.hasOwn(State.variables['#choice'], choiceId)
 			&& State.variables['#choice'][choiceId]
 		) {
 			$link = jQuery(document.createElement('span'))
@@ -295,7 +295,7 @@ Macro.add('choice', {
 		}
 
 		$link = jQuery(Wikifier.createInternalLink(this.output, passage, null, () => {
-			if (!State.variables.hasOwnProperty('#choice')) {
+			if (!Object.hasOwn(State.variables, '#choice')) {
 				State.variables['#choice'] = {};
 			}
 

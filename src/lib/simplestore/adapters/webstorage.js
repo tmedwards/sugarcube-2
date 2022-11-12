@@ -109,7 +109,7 @@ SimpleStore.adapters.push((() => {
 			// // FIXME: This method should probably check for the key, rather than comparing its value.
 			// return this._engine.getItem(this._prefix + key) != null; // lazy equality for null
 
-			return this._engine.hasOwnProperty(this._prefix + key);
+			return Object.hasOwn(this._engine, this._prefix + key);
 		}
 
 		get(key) {

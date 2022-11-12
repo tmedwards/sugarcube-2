@@ -44,7 +44,7 @@ var PRNGWrapper = (() => { // eslint-disable-line no-unused-vars, no-var
 		}
 
 		static marshal(prng) {
-			if (!prng || !prng.hasOwnProperty('seed') || !prng.hasOwnProperty('pull')) {
+			if (!prng || !Object.hasOwn(prng, 'seed') || !Object.hasOwn(prng, 'pull')) {
 				throw new Error('PRNG is missing required data');
 			}
 
@@ -55,7 +55,7 @@ var PRNGWrapper = (() => { // eslint-disable-line no-unused-vars, no-var
 		}
 
 		static unmarshal(prngObj) {
-			if (!prngObj || !prngObj.hasOwnProperty('seed') || !prngObj.hasOwnProperty('pull')) {
+			if (!prngObj || !Object.hasOwn(prngObj, 'seed') || !Object.hasOwn(prngObj, 'pull')) {
 				throw new Error('PRNG object is missing required data');
 			}
 

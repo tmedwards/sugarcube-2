@@ -710,7 +710,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 
 						Setting.save();
 
-						if (control.hasOwnProperty('onChange')) {
+						if (Object.hasOwn(control, 'onChange')) {
 							control.onChange.call({
 								name,
 								value   : settings[name],
@@ -739,7 +739,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 							settings[name] = control.list[Number(this.value)];
 							Setting.save();
 
-							if (control.hasOwnProperty('onChange')) {
+							if (Object.hasOwn(control, 'onChange')) {
 								control.onChange.call({
 									name,
 									value   : settings[name],
@@ -771,7 +771,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 							settings[name] = Number(this.value);
 							Setting.save();
 
-							if (control.hasOwnProperty('onChange')) {
+							if (Object.hasOwn(control, 'onChange')) {
 								control.onChange.call({
 									name,
 									value   : settings[name],

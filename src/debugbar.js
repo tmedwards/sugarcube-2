@@ -7,7 +7,7 @@
 
 ***********************************************************************************************************************/
 /*
-	global DebugView, Engine, L10n, Patterns, State, encodeEntities, getToStringTag, hasOwn, session
+	global DebugView, Engine, L10n, Patterns, State, encodeEntities, getToStringTag, session
 */
 
 var DebugBar = (() => { // eslint-disable-line no-unused-vars, no-var
@@ -487,7 +487,7 @@ var DebugBar = (() => { // eslint-disable-line no-unused-vars, no-var
 			// own numeric properties
 			// NOTE: Do not use `<Array>.forEach()` here as it skips undefined members.
 			for (let i = 0, len = list.length; i < len; ++i) {
-				result.push(hasOwn(list, i) ? _toWatchString(list[i]) : '<empty>');
+				result.push(Object.hasOwn(list, i) ? _toWatchString(list[i]) : '<empty>');
 			}
 
 			// own enumerable non-numeric expando properties
