@@ -8,8 +8,8 @@
 ***********************************************************************************************************************/
 /*
 	global Scripting, characterAndPosAt, encodeEntities, encodeMarkup, cssPropToDOMProp, cssTimeToMS, getTypeOf,
-	       hasMediaQuery, isIterable, exceptionFrom, now, parseURL, sameValueZero, createFilename, scrubEventKey,
-	       createSlug, msToCSSTime, enumFrom, getToStringTag, decodeEntities, decodeEntities, encodeEntities
+	       hasMediaQuery, exceptionFrom, now, parseURL, sameValueZero, createFilename, scrubEventKey, createSlug,
+	       msToCSSTime, enumFrom, getToStringTag, decodeEntities, decodeEntities, encodeEntities
 */
 
 /*
@@ -23,7 +23,6 @@ var Util = Object.preventExtensions(Object.create(null, { // eslint-disable-line
 	fromCssTime      : { value : cssTimeToMS },
 	getType          : { value : getTypeOf },
 	hasMediaQuery    : { value : hasMediaQuery },
-	isIterable       : { value : isIterable },
 	newExceptionFrom : { value : exceptionFrom },
 	now              : { value : now },
 	parseUrl         : { value : parseURL },
