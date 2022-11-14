@@ -900,7 +900,7 @@ var Scripting = (() => { // eslint-disable-line no-unused-vars, no-var
 		Evaluates the given JavaScript code and returns the result, throwing if there were errors.
 	*/
 	function evalJavaScript(code, output, data) {
-		return (function (code, output, evalJavaScript$Data$) {
+		return (function (code, output, SCRIPT$DATA$) {
 			return eval(code);
 		}).call(output ? { output } : null, String(code), output, data);
 	}
@@ -909,9 +909,10 @@ var Scripting = (() => { // eslint-disable-line no-unused-vars, no-var
 		Evaluates the given TwineScript code and returns the result, throwing if there were errors.
 	*/
 	function evalTwineScript(code, output, data) {
-		// NOTE: Do not move the dollar sign to the front of `evalTwineScript$Data$`,
-		// as `parse()` will break references to it within the code string.
-		return (function (code, output, evalTwineScript$Data$) {
+		// WARNING: Do not use a dollar sign or underscore as the first character of the
+		// data variable, `SCRIPT$DATA$`, as `parse()` will break references to it within
+		// the code string.
+		return (function (code, output, SCRIPT$DATA$) {
 			return eval(code);
 		}).call(output ? { output } : null, parse(String(code)), output, data);
 	}
