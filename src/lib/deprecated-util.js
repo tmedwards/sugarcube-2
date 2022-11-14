@@ -7,7 +7,7 @@
 
 ***********************************************************************************************************************/
 /*
-	global Scripting, characterAndPosAt, encodeEntities, encodeMarkup, cssPropToDOMProp, cssTimeToMS, getTypeOf,
+	global Scripting, charAndPosAt, encodeEntities, encodeMarkup, cssPropToDOMProp, cssTimeToMS, getTypeOf,
 	       hasMediaQuery, exceptionFrom, now, parseURL, sameValueZero, createFilename, scrubEventKey, createSlug,
 	       msToCSSTime, enumFrom, getToStringTag, decodeEntities, decodeEntities, encodeEntities
 */
@@ -16,7 +16,7 @@
 	Legacy `Util` Exports.
 */
 var Util = Object.preventExtensions(Object.create(null, { // eslint-disable-line no-unused-vars, no-var
-	charAndPosAt     : { value : characterAndPosAt },
+	charAndPosAt     : { value : charAndPosAt },
 	escape           : { value : encodeEntities },
 	escapeMarkup     : { value : encodeMarkup },
 	fromCssProperty  : { value : cssPropToDOMProp },

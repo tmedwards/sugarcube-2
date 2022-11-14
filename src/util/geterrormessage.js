@@ -12,5 +12,9 @@
 	object with such a property, or the value itself.
 */
 function getErrorMessage(O) { // eslint-disable-line no-unused-vars
-	return typeof O === 'object' && O !== null && 'message' in O ? O.message : O;
+	if (O == null) { // lazy equality for null
+		return 'unknown error';
+	}
+
+	return typeof O === 'object' && 'message' in O ? O.message : String(O);
 }

@@ -6,7 +6,7 @@
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* global characterAndPosAt, getTypeOf */
+/* global charAndPosAt, getTypeOf */
 
 var NodeTyper = (() => { // eslint-disable-line no-unused-vars, no-var
 	/*******************************************************************************
@@ -109,9 +109,9 @@ var NodeTyper = (() => { // eslint-disable-line no-unused-vars, no-var
 					this.nodeValue = '';
 				}
 				else {
-					// Use `characterAndPosAt()` here to properly handle Unicode code points
+					// Use `charAndPosAt()` here to properly handle Unicode code points
 					// that are comprised of surrogate pairs.
-					const { char, start, end } = characterAndPosAt(this.nodeValue, 0);
+					const { char, start, end } = charAndPosAt(this.nodeValue, 0);
 					this.node.nodeValue += char;
 					this.nodeValue = this.nodeValue.slice(1 + end - start);
 				}

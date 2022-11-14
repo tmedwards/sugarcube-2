@@ -6,7 +6,7 @@
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* global Config, Passage, Wikifier, characterAndPosAt, createSlug, decodeEntities, sameValueZero */
+/* global Config, Passage, Wikifier, charAndPosAt, createSlug, decodeEntities, sameValueZero */
 
 var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 	// Story IFID.
@@ -68,7 +68,7 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 			// Elsewise generate a string from the `_title`'s code points (in hexadecimal).
 			else {
 				for (let i = 0, len = _name.length; i < len; ++i) {
-					const { char, start, end } = characterAndPosAt(_name, i);
+					const { char, start, end } = charAndPosAt(_name, i);
 					_id += char.codePointAt(0).toString(16);
 					i += end - start;
 				}

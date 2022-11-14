@@ -9,7 +9,7 @@
 /* global getTypeOf */
 
 /*
-	Returns a deep copy of the given object.
+	Returns a deep copy of the given value.
 
 	Supports: arrays, booleans, dates, functions, generic objects, maps,
 	numbers, null, regexps, sets, strings, symbols, and undefined.  Throws
@@ -64,8 +64,6 @@ function clone(O) { // eslint-disable-line no-unused-vars
 	// Copy `RegExp` objects.
 	else if (O instanceof RegExp) {
 		copy = new RegExp(O);
-		// TODO: Either make `JSON` also handle `.lastIndex` or remove this.
-		copy.lastIndex = O.lastIndex;
 	}
 
 	// Copy `Set` objects.

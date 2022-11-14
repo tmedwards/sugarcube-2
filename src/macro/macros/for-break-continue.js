@@ -7,7 +7,7 @@
 
 ***********************************************************************************************************************/
 /*
-	global Config, Macro, Patterns, Scripting, State, TempState, Wikifier, characterAndPosAt, getErrorMessage,
+	global Config, Macro, Patterns, Scripting, State, TempState, Wikifier, charAndPosAt, getErrorMessage,
 	       getToStringTag
 */
 
@@ -232,7 +232,7 @@ Macro.add('for', {
 				list = [];
 
 				for (let i = 0; i < value.length; /* empty */) {
-					const obj = characterAndPosAt(value, i);
+					const obj = charAndPosAt(value, i);
 					list.push([i, obj.char]);
 					i = 1 + obj.end;
 				}

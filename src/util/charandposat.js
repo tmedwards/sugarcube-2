@@ -1,6 +1,6 @@
 /***********************************************************************************************************************
 
-	util/characterandposat.js
+	util/charandposat.js
 
 	Copyright © 2013–2022 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
@@ -8,22 +8,13 @@
 ***********************************************************************************************************************/
 
 /*
-	Returns an object (`{ char, start, end }`) containing the Unicode character at
-	position `pos`, its starting position, and its ending position—surrogate pairs
-	are properly handled.  If `pos` is out-of-bounds, returns an object containing
-	the empty string and start/end positions of `-1`.
-
-	This function is necessary because JavaScript strings are sequences of UTF-16
-	code units, so surrogate pairs are exposed and thus must be handled.  While the
-	ES6/2015 standard does improve the situation somewhat, it does not alleviate
-	the need for this function.
-
-	NOTE: Returns the individual code units of invalid surrogate pairs as-is.
-
-	IDEA: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/charAt
+	Returns an object containing the Unicode character, which may consist of one
+	or two UTF-16 code points, at the given position within the given string and
+	its starting/ending positions.  If the position is out-of-bounds, returns an
+	object containing the empty string and both positions set to `-1`.
 */
-function characterAndPosAt(text, position) { // eslint-disable-line no-unused-vars
-	const str  = String(text);
+function charAndPosAt(string, position) { // eslint-disable-line no-unused-vars
+	const str  = String(string);
 	const pos  = Math.trunc(position);
 	const code = str.charCodeAt(pos);
 

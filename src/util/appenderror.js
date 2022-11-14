@@ -9,7 +9,7 @@
 /* global L10n */
 
 /*
-	Appends an error view to the given DOM element and logs a message to the console.
+	Appends an error view to the given DOM element or fragment and logs a message to the console.
 */
 function appendError(output, message, source) { // eslint-disable-line no-unused-vars
 	const $wrapper = jQuery(document.createElement('div'));
