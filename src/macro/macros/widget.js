@@ -23,12 +23,7 @@ Macro.add('widget', {
 		const isNonVoid  = this.args.length > 1 && this.args[1] === 'container';
 
 		if (Macro.has(widgetName)) {
-			if (!Macro.get(widgetName).isWidget) {
-				return this.error(`cannot clobber existing macro "${widgetName}"`);
-			}
-
-			// Delete the existing widget.
-			Macro.delete(widgetName);
+			return this.error(`cannot clobber existing ${Macro.get(widgetName).isWidget ? 'widget' : 'macro'} "${widgetName}"`);
 		}
 
 		try {
