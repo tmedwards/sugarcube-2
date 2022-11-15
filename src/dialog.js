@@ -176,6 +176,11 @@ var Dialog = (() => { // eslint-disable-line no-unused-vars, no-var
 		}
 	}
 
+	function onImageLoad(top) {
+		// Attempt to add the imagesLoaded handlers to images.
+		$body.imagesLoaded().always(() => onResize(top));
+	}
+
 
 	/*******************************************************************************
 		API Functions.
@@ -291,24 +296,13 @@ var Dialog = (() => { // eslint-disable-line no-unused-vars, no-var
 		}
 
 		// Add the `data-dialog` attribute to <html> (mostly used to style <body>).
-		jQuery(document.documentElement)
-			.attr('data-dialog', 'open');
+		jQuery(document.documentElement).attr('data-dialog', 'open');
 
 		// Display the overlay.
-		$overlay
-			.addClass('open');
+		$overlay.addClass('open');
 
-		// Add the imagesLoaded handler to the dialog body, if necessary.
-		//
-		// NOTE: We use `querySelector()` here as jQuery has no simple way to
-		// check if, and only if, at least one element of the specified type
-		// exists.  The best that jQuery offers is analogous to `querySelectorAll()`,
-		// which enumerates all elements of the specified type.
-		if ($body.get(0).querySelector('img') !== null) {
-			$body
-				.imagesLoaded()
-				.always(() => onResize(top));
-		}
+		// Invoke onImageLoad initially.
+		onImageLoad(top);
 
 		// Add `aria-hidden=true` to all direct non-dialog-children of <body> to
 		// hide the underlying page from screen readers while the dialog is open.
@@ -328,6 +322,7 @@ var Dialog = (() => { // eslint-disable-line no-unused-vars, no-var
 
 		// Add the resize handler.
 		jQuery(window)
+			.off('.dialog-resize')
 			.on('resize.dialog-resize', jQuery.throttle(40, () => onResize(top)));
 
 		// Add the dialog mutation resize handler.
@@ -335,26 +330,32 @@ var Dialog = (() => { // eslint-disable-line no-unused-vars, no-var
 			observer = new MutationObserver(mutations => {
 				for (let i = 0; i < mutations.length; ++i) {
 					if (mutations[i].type === 'childList') {
+						onImageLoad(top);
 						onResize(top);
 						break;
 					}
 				}
 			});
-			observer.observe($body.get(0), {
+			observer.observe(getBodyElement(), {
 				childList : true,
 				subtree   : true
 			});
 		}
 		else {
 			$body
+				.off('.dialog-resize')
 				.on(
 					'DOMNodeInserted.dialog-resize DOMNodeRemoved.dialog-resize',
-					jQuery.throttle(40, () => onResize(top))
+					jQuery.throttle(40, () => {
+						onImageLoad(top);
+						onResize(top);
+					})
 				);
 		}
 
 		// Set up the delegated close handler.
 		jQuery(document)
+			.off('.dialog-close')
 			.one('click.dialog-close', '.ui-close', ev => {
 				// NOTE: Do not allow this event handler to return the `Dialog` static object,
 				// as doing so causes Edge (ca. 18) to throw a "Number expected" exception due
