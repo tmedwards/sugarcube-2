@@ -13,10 +13,10 @@
 
 var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 	/*******************************************************************************
-		UI Functions, Core.
+		Utility Functions.
 	*******************************************************************************/
 
-	function uiAssembleLinkList(passage, listEl) {
+	function assembleLinkList(passage, listEl) {
 		let list = listEl;
 
 		// Cache the values of `Config.debug` and `Config.cleanupWikifierOutput`,
@@ -69,47 +69,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 		return list;
 	}
 
-
-	/*******************************************************************************
-		UI Functions, Built-ins.
-	*******************************************************************************/
-
-	function uiOpenAlert(message, /* options, closeFn */ ...args) {
-		jQuery(Dialog.setup(L10n.get('alertTitle'), 'alert'))
-			.append(
-				  `<p>${message}</p><ul class="buttons">`
-				+ `<li><button id="alert-ok" class="ui-close">${L10n.get(['alertOk', 'ok'])}</button></li>`
-				+ '</ul>'
-			);
-		Dialog.open(...args);
-	}
-
-	function uiOpenJumpto(/* options, closeFn */ ...args) {
-		uiBuildJumpto();
-		Dialog.open(...args);
-	}
-
-	function uiOpenRestart(/* options, closeFn */ ...args) {
-		uiBuildRestart();
-		Dialog.open(...args);
-	}
-
-	function uiOpenSaves(/* options, closeFn */ ...args) {
-		uiBuildSaves();
-		Dialog.open(...args);
-	}
-
-	function uiOpenSettings(/* options, closeFn */ ...args) {
-		uiBuildSettings();
-		Dialog.open(...args);
-	}
-
-	function uiOpenShare(/* options, closeFn */ ...args) {
-		uiBuildShare();
-		Dialog.open(...args);
-	}
-
-	function uiBuildAutoload() {
+	function buildAutoload() {
 		if (DEBUG) { console.log('[UI/uiBuildAutoload()]'); }
 
 		console.warn('[DEPRECATED] UI.buildAutoload() is deprecated.');
@@ -151,45 +111,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 		return true;
 	}
 
-	function uiBuildJumpto() {
-		if (DEBUG) { console.log('[UI/uiBuildJumpto()]'); }
-
-		console.warn('[DEPRECATED] UI.buildJumpto() is deprecated.');
-
-		const list = document.createElement('ul');
-
-		jQuery(Dialog.setup(L10n.get('jumptoTitle'), 'jumpto list'))
-			.append(list);
-
-		const expired = State.expired.length;
-
-		for (let i = State.size - 1; i >= 0; --i) {
-			if (i === State.activeIndex) {
-				continue;
-			}
-
-			const passage = Story.get(State.history[i].title);
-
-			if (passage && passage.tags.includes('bookmark')) {
-				jQuery(document.createElement('li'))
-					.append(
-						jQuery(document.createElement('a'))
-							.ariaClick({ one : true }, (function (idx) {
-								return () => jQuery(document).one(':dialogclosed', () => Engine.goTo(idx));
-							})(i))
-							.addClass('ui-close')
-							.text(`${L10n.get('jumptoTurn')} ${expired + i + 1}`)
-					)
-					.appendTo(list);
-			}
-		}
-
-		if (!list.hasChildNodes()) {
-			jQuery(list).append(`<li><a><em>${L10n.get('jumptoUnavailable')}</em></a></li>`);
-		}
-	}
-
-	function uiBuildRestart() {
+	function buildRestart() {
 		if (DEBUG) { console.log('[UI/uiBuildRestart()]'); }
 
 		jQuery(Dialog.setup(L10n.get('restartTitle'), 'restart'))
@@ -201,14 +123,12 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 				+ '</ul>'
 				/* eslint-enable max-len */
 			)
+			// Instead of adding '.ui-close' to '#restart-ok' (to receive the use of the default
+			// delegated dialog close handler), we set up a special case close handler here.  We
+			// do this to ensure that the invocation of `Engine.restart()` happens after the dialog
+			// has fully closed.  If we did not, then a race condition could occur, causing display
+			// shenanigans.
 			.find('#restart-ok')
-			/*
-				Instead of adding '.ui-close' to '#restart-ok' (to receive the use of the default
-				delegated dialog close handler), we set up a special case close handler here.  We
-				do this to ensure that the invocation of `Engine.restart()` happens after the dialog
-				has fully closed.  If we did not, then a race condition could occur, causing display
-				shenanigans.
-			*/
 			.ariaClick({ one : true }, () => {
 				jQuery(document).one(':dialogclosed', () => Engine.restart());
 				Dialog.close();
@@ -217,13 +137,13 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 		return true;
 	}
 
-	function uiBuildSaves() {
+	function buildSaves() {
 		function showAlert(message) {
 			if (Dialog.isOpen()) {
-				$(document).one(':dialogclosed', () => uiOpenAlert(message));
+				$(document).one(':dialogclosed', () => openAlert(message));
 			}
 			else {
-				uiOpenAlert(message);
+				openAlert(message);
 			}
 		}
 
@@ -367,7 +287,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 					idx,
 					idx => {
 						Save.browser.auto.delete(idx);
-						uiBuildSaves();
+						buildSaves();
 					}
 				));
 
@@ -453,7 +373,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 						idx,
 						idx => {
 							Save.browser.slot.delete(idx);
-							uiBuildSaves();
+							buildSaves();
 						}
 					));
 				}
@@ -528,7 +448,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 				const $slotImportInput = $createFileInput('saves-import-handler', ev => {
 					Save.browser.import(ev)
 						.then(
-							uiBuildSaves,
+							buildSaves,
 							ex => {
 								Dialog.close();
 								showAlert(`${ex.message.toUpperFirst()}.</p><p>${L10n.get('aborting')}.`);
@@ -561,7 +481,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 				Save.browser.size > 0
 					? () => {
 						Save.browser.clear();
-						uiBuildSaves();
+						buildSaves();
 					}
 					: null
 			));
@@ -615,7 +535,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 		return true;
 	}
 
-	function uiBuildSettings() {
+	function buildSettings() {
 		if (DEBUG) { console.log('[UI/uiBuildSettings()]'); }
 
 		const $dialogBody = jQuery(Dialog.setup(L10n.get('settingsTitle'), 'settings'));
@@ -829,14 +749,89 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 		return true;
 	}
 
-	function uiBuildShare() {
+
+	/*******************************************************************************
+		Built-in Dialog Functions.
+	*******************************************************************************/
+
+	function openAlert(message, /* options, closeFn */ ...args) {
+		jQuery(Dialog.setup(L10n.get('alertTitle'), 'alert'))
+			.append(
+				  `<p>${message}</p><ul class="buttons">`
+				+ `<li><button id="alert-ok" class="ui-close">${L10n.get(['alertOk', 'ok'])}</button></li>`
+				+ '</ul>'
+			);
+		Dialog.open(...args);
+	}
+
+	function openRestart(/* options, closeFn */ ...args) {
+		buildRestart();
+		Dialog.open(...args);
+	}
+
+	function openSaves(/* options, closeFn */ ...args) {
+		buildSaves();
+		Dialog.open(...args);
+	}
+
+	function openSettings(/* options, closeFn */ ...args) {
+		buildSettings();
+		Dialog.open(...args);
+	}
+
+
+	/*******************************************************************************
+		Deprecated Functions.
+	*******************************************************************************/
+
+	// [DEPRECATED]
+	function buildJumpto() {
+		if (DEBUG) { console.log('[UI/uiBuildJumpto()]'); }
+
+		console.warn('[DEPRECATED] UI.buildJumpto() is deprecated.');
+
+		const list = document.createElement('ul');
+
+		jQuery(Dialog.setup(L10n.get('jumptoTitle'), 'jumpto list'))
+			.append(list);
+
+		const expired = State.expired.length;
+
+		for (let i = State.size - 1; i >= 0; --i) {
+			if (i === State.activeIndex) {
+				continue;
+			}
+
+			const passage = Story.get(State.history[i].title);
+
+			if (passage && passage.tags.includes('bookmark')) {
+				jQuery(document.createElement('li'))
+					.append(
+						jQuery(document.createElement('a'))
+							.ariaClick({ one : true }, (function (idx) {
+								return () => jQuery(document).one(':dialogclosed', () => Engine.goTo(idx));
+							})(i))
+							.addClass('ui-close')
+							.text(`${L10n.get('jumptoTurn')} ${expired + i + 1}`)
+					)
+					.appendTo(list);
+			}
+		}
+
+		if (!list.hasChildNodes()) {
+			jQuery(list).append(`<li><a><em>${L10n.get('jumptoUnavailable')}</em></a></li>`);
+		}
+	}
+
+	// [DEPRECATED]
+	function buildShare() {
 		if (DEBUG) { console.log('[UI/uiBuildShare()]'); }
 
 		console.warn('[DEPRECATED] UI.buildShare() is deprecated.');
 
 		try {
 			jQuery(Dialog.setup(L10n.get('shareTitle'), 'share list'))
-				.append(uiAssembleLinkList('StoryShare'));
+				.append(assembleLinkList('StoryShare'));
 		}
 		catch (ex) {
 			console.error(ex);
@@ -847,36 +842,44 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 		return true;
 	}
 
+	// [DEPRECATED]
+	function openJumpto(/* options, closeFn */ ...args) {
+		buildJumpto();
+		Dialog.open(...args);
+	}
+
+	// [DEPRECATED]
+	function openShare(/* options, closeFn */ ...args) {
+		buildShare();
+		Dialog.open(...args);
+	}
+
 
 	/*******************************************************************************
 		Object Exports.
 	*******************************************************************************/
 
 	return Object.preventExtensions(Object.create(null, {
-		/*
-			UI Functions, Core.
-		*/
-		assembleLinkList : { value : uiAssembleLinkList },
+		// Utility Functions.
+		assembleLinkList : { value : assembleLinkList },
+		buildAutoload    : { value : buildAutoload },
+		buildRestart     : { value : buildRestart },
+		buildSaves       : { value : buildSaves },
+		buildSettings    : { value : buildSettings },
 
-		/*
-			UI Functions, Built-ins.
-		*/
-		alert         : { value : uiOpenAlert },
-		jumpto        : { value : uiOpenJumpto },
-		restart       : { value : uiOpenRestart },
-		saves         : { value : uiOpenSaves },
-		settings      : { value : uiOpenSettings },
-		share         : { value : uiOpenShare },
-		buildAutoload : { value : uiBuildAutoload },
-		buildJumpto   : { value : uiBuildJumpto },
-		buildRestart  : { value : uiBuildRestart },
-		buildSaves    : { value : uiBuildSaves },
-		buildSettings : { value : uiBuildSettings },
-		buildShare    : { value : uiBuildShare },
+		// Built-in Dialog Functions.
+		alert    : { value : openAlert },
+		restart  : { value : openRestart },
+		saves    : { value : openSaves },
+		settings : { value : openSettings },
 
-		/*
-			Legacy Aliases.
-		*/
+		// Deprecated Functions.
+		buildJumpto : { value : buildJumpto },
+		buildShare  : { value : buildShare },
+		jumpto      : { value : openJumpto },
+		share       : { value : openShare },
+
+		// Legacy Aliases.
 		// `UIBar` methods.
 		/* global UIBar */
 		stow                     : { value : () => UIBar.stow() },
@@ -891,12 +894,12 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 		close                    : { value : (...args) => Dialog.close(...args) },
 		resize                   : { value : () => Dialog.resize() },
 		// Deprecated method names.
-		buildDialogAutoload      : { value : uiBuildAutoload },
-		buildDialogJumpto        : { value : uiBuildJumpto },
-		buildDialogRestart       : { value : uiBuildRestart },
-		buildDialogSaves         : { value : uiBuildSaves },
-		buildDialogSettings      : { value : uiBuildSettings },
-		buildDialogShare         : { value : uiBuildShare },
-		buildLinkListFromPassage : { value : uiAssembleLinkList }
+		buildDialogAutoload      : { value : buildAutoload },
+		buildDialogJumpto        : { value : buildJumpto },
+		buildDialogRestart       : { value : buildRestart },
+		buildDialogSaves         : { value : buildSaves },
+		buildDialogSettings      : { value : buildSettings },
+		buildDialogShare         : { value : buildShare },
+		buildLinkListFromPassage : { value : assembleLinkList }
 	}));
 })();

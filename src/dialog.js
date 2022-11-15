@@ -450,7 +450,7 @@ var Dialog = (() => { // eslint-disable-line no-unused-vars, no-var
 		setup  : { value : setup },
 		wiki   : { value : wikiToBody },
 
-		// Legacy Functions.
+		// Deprecated Functions.
 		addClickHandler : { value : addClickHandler }
 	}));
 })();
