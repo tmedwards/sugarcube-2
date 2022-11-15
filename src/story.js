@@ -121,7 +121,7 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 				throw new Error(`special passage "${passage.name}" contains special tags; invalid: "${tags.sort().join('", "')}"`);
 			}
 
-			const codeTags  = [...validationCodeTags];
+			const codeTags  = Array.from(validationCodeTags);
 			const foundTags = [];
 
 			passage.tags.forEach(tag => {

@@ -89,14 +89,14 @@ var MacroContext = (() => { // eslint-disable-line no-unused-vars, no-var
 		}
 
 		get shadows() {
-			return [...this._shadows];
+			return Array.from(this._shadows);
 		}
 
 		get shadowView() {
 			const view = new Set();
 			this.contextFilter(ctx => ctx._shadows)
 				.forEach(ctx => ctx._shadows.forEach(name => view.add(name)));
-			return [...view];
+			return Array.from(view);
 		}
 
 		get debugView() {

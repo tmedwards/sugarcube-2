@@ -94,7 +94,7 @@ var Has = (() => { // eslint-disable-line no-unused-vars, no-var
 				['WebkitTransition', 'webkitTransitionEnd'],
 				['MozTransition',    'transitionend']
 			]);
-			const teKeys = [...teMap.keys()];
+			const teKeys = Array.from(teMap.keys());
 			const el     = document.createElement('div');
 
 			for (let i = 0; i < teKeys.length; ++i) {

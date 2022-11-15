@@ -89,7 +89,7 @@ var State = (() => { // eslint-disable-line no-unused-vars, no-var
 		}
 
 		if (_expired.length > 0) {
-			state.expired = [..._expired];
+			state.expired = Array.from(_expired);
 		}
 
 		if (_prng !== null) {
@@ -129,7 +129,7 @@ var State = (() => { // eslint-disable-line no-unused-vars, no-var
 		// Restore the properties.
 		_history     = noDelta ? clone(state.history) : historyDeltaDecode(state.delta);
 		_activeIndex = state.index;
-		_expired     = Object.hasOwn(state, 'expired') ? [...state.expired] : [];
+		_expired     = Object.hasOwn(state, 'expired') ? Array.from(state.expired) : [];
 
 		if (Object.hasOwn(state, 'seed')) {
 			// Only the PRNG's seed should be restored here as `momentActivate()`

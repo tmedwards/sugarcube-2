@@ -1561,7 +1561,7 @@
 			// NOTE: The `.attributes` property yields a live collection, so we
 			// must make a non-live copy of it as we will be adding and removing
 			// members of said collection if any directives are found.
-			[...el.attributes].forEach(({ name, value }) => {
+			Array.from(el.attributes).forEach(({ name, value }) => {
 				const evalShorthand = name[0] === '@';
 
 				if (evalShorthand || name.startsWith('sc-eval:')) {
@@ -1804,7 +1804,7 @@
 			// NOTE: The `.attributes` property yields a live collection, so we
 			// must make a non-live copy of it as we will be adding and removing
 			// members of said collection if any directives are found.
-			[...el.attributes].forEach(({ name, value }) => {
+			Array.from(el.attributes).forEach(({ name, value }) => {
 				const evalShorthand = name[0] === '@';
 
 				if (evalShorthand || name.startsWith('sc-eval:')) {

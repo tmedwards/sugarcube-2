@@ -109,8 +109,7 @@
 						this,
 						(acc, cur) => {
 							if (cur instanceof Array) {
-								// acc.push.apply(acc, flat.call(cur, depth - 1));
-								acc.push(...flat.call(cur, depth - 1));
+								Array.prototype.push.apply(acc, flat.call(cur, depth - 1));
 							}
 							else {
 								acc.push(cur);
@@ -832,15 +831,12 @@
 			}
 
 			const splice     = Array.prototype.splice;
-			const cpyIndices = [
-				...new Set(
-					Array.prototype.concat.apply([], arguments)
-						// Map negative indices to their positive counterparts,
-						// so the Set can properly filter out duplicates.
-						.map(x => x < 0 ? Math.max(0, length + x) : x)
-				).values()
-			];
-			const delIndices = [...cpyIndices].sort((a, b) => b - a);
+			const cpyIndices = Array.from(new Set(
+				// Map negative indices to their positive counterparts,
+				// so the Set can properly filter out duplicates.
+				Array.from(arguments).map(x => x < 0 ? Math.max(0, length + x) : x)
+			).values());
+			const delIndices = Array.from(cpyIndices).sort((a, b) => b - a);
 			const result     = [];
 
 			// Copy the elements (in originally specified order).
@@ -1033,7 +1029,7 @@
 
 			const index = arguments.length === 0
 				? _random(0, length - 1)
-				: _randomIndex(length, [...arguments]);
+				: _randomIndex(length, Array.from(arguments));
 
 			return Array.prototype.splice.call(this, index, 1)[0];
 		}
@@ -1139,7 +1135,7 @@
 
 			const index = arguments.length === 0
 				? _random(0, length - 1)
-				: _randomIndex(length, [...arguments]);
+				: _randomIndex(length, Array.from(arguments));
 
 			return this[index];
 		}
@@ -1405,7 +1401,7 @@
 				}
 
 				const args = arguments.length === 2 && Array.isArray(arguments[1])
-					? [...arguments[1]]
+					? Array.from(arguments[1])
 					: Array.prototype.slice.call(arguments, 1);
 
 				if (args.length === 0) {
@@ -1693,7 +1689,7 @@
 		writable     : true,
 
 		value() {
-			return ['(revive:map)', [...this]];
+			return ['(revive:map)', Array.from(this)];
 		}
 	});
 	Object.defineProperty(RegExp.prototype, 'toJSON', {
@@ -1709,7 +1705,7 @@
 		writable     : true,
 
 		value() {
-			return ['(revive:set)', [...this]];
+			return ['(revive:set)', Array.from(this)];
 		}
 	});
 

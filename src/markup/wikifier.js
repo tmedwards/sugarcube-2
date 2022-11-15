@@ -771,7 +771,7 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 						}
 					}
 
-					return [...view];
+					return Array.from(view);
 				}
 
 				function helperShadowHandler(code) {

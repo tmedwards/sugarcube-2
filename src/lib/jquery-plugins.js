@@ -289,7 +289,7 @@
 			sources.forEach(content => new Wikifier(frag, content, options));
 
 			// Gather the text of any error elements within the fragment…
-			const errors = [...frag.querySelectorAll('.error')]
+			const errors = Array.from(frag.querySelectorAll('.error'))
 				.map(errEl => errEl.textContent.replace(errorPrologRegExp, ''));
 
 			// …and throw an exception, if there were any errors.

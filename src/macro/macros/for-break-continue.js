@@ -245,10 +245,10 @@ Macro.add('for', {
 					list = value.map((val, i) => [i, val]);
 				}
 				else if (value instanceof Set) {
-					list = [...value].map((val, i) => [i, val]);
+					list = Array.from(value).map((val, i) => [i, val]);
 				}
 				else if (value instanceof Map) {
-					list = [...value.entries()];
+					list = Array.from(value.entries());
 				}
 				else if (getToStringTag(value) === 'Object') {
 					list = Object.keys(value).map(key => [key, value[key]]);

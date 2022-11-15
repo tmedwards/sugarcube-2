@@ -26,7 +26,7 @@ Macro.add('silent', {
 		}
 		else {
 			// Discard the output, unless there were errors.
-			const errList = [...frag.querySelectorAll('.error')].map(errEl => errEl.textContent);
+			const errList = Array.from(frag.querySelectorAll('.error')).map(errEl => errEl.textContent);
 
 			if (errList.length > 0) {
 				return this.error(`error${errList.length === 1 ? '' : 's'} within contents (${errList.join('; ')})`);

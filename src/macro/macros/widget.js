@@ -39,7 +39,7 @@ Macro.add('widget', {
 						}
 
 						// Set up the widget `_args` variable and add a shadow.
-						State.temporary.args = [...this.args];
+						State.temporary.args = Array.from(this.args);
 						State.temporary.args.raw = this.args.raw;
 						State.temporary.args.full = this.args.full;
 						this.addShadow('_args');

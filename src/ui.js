@@ -36,7 +36,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 			new Wikifier(frag, Story.get(passage).processText().trim());
 
 			// Gather the text of any error elements within the fragment…
-			const errors = [...frag.querySelectorAll('.error')]
+			const errors = Array.from(frag.querySelectorAll('.error'))
 				.map(errEl => errEl.textContent.replace(errorPrologRegExp, ''));
 
 			// …and throw an exception, if there were any errors.

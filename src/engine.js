@@ -604,7 +604,7 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 				&& Config.passages.transitionOut !== ''
 				&& Has.transitionEndEvent
 			) {
-				[...containerEl.childNodes].forEach(outgoing => {
+				Array.from(containerEl.childNodes).forEach(outgoing => {
 					const $outgoing = jQuery(outgoing);
 
 					if (outgoing.nodeType === Node.ELEMENT_NODE && $outgoing.hasClass('passage')) {
