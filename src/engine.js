@@ -87,8 +87,12 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 					.attr('aria-live', 'polite')
 					.end();
 
+				// Cache the data passage elements now to prevent recursive processing.
+				const $dataInitPassages = $elems.find('[data-init-passage]');
+				const $dataPassages     = $elems.find('[data-passage]');
+
 				// Data passage elements updated once during initialization.
-				$elems.find('[data-init-passage]').each((i, el) => {
+				$dataInitPassages.each((i, el) => {
 					if (el.id === 'passages') {
 						throw new Error(`"StoryInterface" element <${el.nodeName.toLowerCase()} id="passages"> must not contain a "data-init-passage" content attribute`);
 					}
@@ -110,7 +114,7 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 
 				// Data passage elements updated upon navigation.
 				const updating = [];
-				$elems.find('[data-passage]').each((i, el) => {
+				$dataPassages.each((i, el) => {
 					if (el.id === 'passages') {
 						throw new Error(`"StoryInterface" element <${el.nodeName.toLowerCase()} id="passages"> must not contain a "data-passage" content attribute`);
 					}
