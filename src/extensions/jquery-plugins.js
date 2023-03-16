@@ -75,21 +75,27 @@
 	}
 
 	function disableTabindex(el) {
-		const tabindexValue = el.getAttribute('tabindex');
+		if (!el.hasAttribute('data-last-tabindex')) {
+			const tabindex = el.getAttribute('tabindex');
 
-		if (tabindexValue !== null) {
-			el.setAttribute('data-last-tabindex', tabindexValue);
+			el.setAttribute('data-last-tabindex', tabindex !== null ? tabindex.trim() : '');
 		}
 
 		el.setAttribute('tabindex', -1);
 	}
 
 	function restoreTabindex(el) {
-		const tabindexValue = el.getAttribute('data-last-tabindex');
+		const lastTabindex = el.getAttribute('data-last-tabindex');
 
-		if (tabindexValue !== null) {
-			el.setAttribute('tabindex', tabindexValue);
+		if (lastTabindex !== null) {
 			el.removeAttribute('data-last-tabindex');
+
+			if (lastTabindex === '') {
+				el.removeAttribute('tabindex');
+			}
+			else {
+				el.setAttribute('tabindex', lastTabindex);
+			}
 		}
 	}
 
