@@ -6,6 +6,7 @@
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
+/* global Serial */
 
 /*
 	ECMAScript Extensions.
@@ -1291,6 +1292,22 @@
 			}
 
 			return Array.prototype.flat.call(this, Infinity);
+		}
+	});
+
+	/*
+		[DEPRECATED] Utility method to allow users to easily wrap their code in the revive wrapper.
+	*/
+	Object.defineProperty(JSON, 'reviveWrapper', {
+		configurable : true,
+		writable     : true,
+
+		value(code, data) {
+			if (typeof code !== 'string') {
+				throw new TypeError('JSON.reviveWrapper code parameter must be a string');
+			}
+
+			return Serial.createReviveString(code, data);
 		}
 	});
 

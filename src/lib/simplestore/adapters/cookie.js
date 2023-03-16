@@ -6,7 +6,7 @@
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* global SimpleStore, exceptionFrom */
+/* global Serial, SimpleStore, exceptionFrom */
 
 SimpleStore.adapters.push((() => {
 	// Expiry constants.
@@ -243,11 +243,11 @@ SimpleStore.adapters.push((() => {
 		}
 
 		static _serialize(obj) {
-			return LZString.compressToBase64(JSON.stringify(obj));
+			return LZString.compressToBase64(Serial.stringify(obj));
 		}
 
 		static _deserialize(str) {
-			return JSON.parse(LZString.decompressFromBase64(str));
+			return Serial.parse(LZString.decompressFromBase64(str));
 		}
 	}
 

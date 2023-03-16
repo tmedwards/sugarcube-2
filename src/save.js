@@ -6,7 +6,7 @@
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* global Config, L10n, State, createFilename, enumFrom, getTypeOf, storage */
+/* global Config, L10n, Serial, State, createFilename, enumFrom, getTypeOf, storage */
 
 /*
 	Save API static object.
@@ -584,7 +584,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 
 			return { idx, info, data };
 		});
-		const bundle = LZString.compressToBase64(JSON.stringify({ auto, slot }));
+		const bundle = LZString.compressToBase64(Serial.stringify({ auto, slot }));
 
 		saveBlobToDiskAs(bundle, filename, 'savesexport');
 	}
@@ -607,7 +607,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 					let bundle;
 
 					try {
-						bundle = JSON.parse(LZString.decompressFromBase64(reader.result));
+						bundle = Serial.parse(LZString.decompressFromBase64(reader.result));
 					}
 					catch (ex) {
 						throw new Error(L10n.get('saveErrorDecodeFail'));
@@ -700,7 +700,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			details.metadata = metadata;
 		}
 
-		const b64Save = LZString.compressToBase64(JSON.stringify(marshal(details)));
+		const b64Save = LZString.compressToBase64(Serial.stringify(marshal(details)));
 
 		saveBlobToDiskAs(b64Save, filename, 'save');
 	}
@@ -720,7 +720,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 					let save;
 
 					try {
-						save = JSON.parse(LZString.decompressFromBase64(reader.result));
+						save = Serial.parse(LZString.decompressFromBase64(reader.result));
 					}
 					catch (ex) {
 						throw new Error(L10n.get('saveErrorDecodeFail'));
@@ -763,7 +763,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			details.metadata = metadata;
 		}
 
-		return LZString.compressToBase64(JSON.stringify(marshal(details)));
+		return LZString.compressToBase64(Serial.stringify(marshal(details)));
 	}
 
 	function deserialize(b64Save) {
@@ -771,7 +771,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			let save;
 
 			try {
-				save = JSON.parse(LZString.decompressFromBase64(b64Save));
+				save = Serial.parse(LZString.decompressFromBase64(b64Save));
 			}
 			catch (ex) {
 				throw new Error(L10n.get('saveErrorDecodeFail'));

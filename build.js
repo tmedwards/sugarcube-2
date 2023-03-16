@@ -30,6 +30,7 @@ const CONFIG = {
 			'src/lib/has.js',
 			'src/lib/fullscreen.js',
 			'src/lib/outliner.js',
+			'src/lib/serial.js',
 			'src/lib/visibility.js',
 			'src/util/',
 			'src/lib/simplestore/simplestore.js',
