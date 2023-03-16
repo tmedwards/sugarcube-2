@@ -3026,7 +3026,7 @@ I like green <span id="eggs">eggs</span> and ham!\
 <<next 1s>>
 	<<set $choice to 4>>
 <</timed>>
-<<silently>>
+<</silently>>
 
 → Replace some text with a variable interval
 → Given: _delay is "2s" the interval will be 2 seconds
