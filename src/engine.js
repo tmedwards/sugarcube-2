@@ -91,6 +91,9 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 				const $dataInitPassages = $elems.find('[data-init-passage]');
 				const $dataPassages     = $elems.find('[data-passage]');
 
+				// Array of updating passage/element objects.
+				const updating = [];
+
 				// Data passage elements updated once during initialization.
 				$dataInitPassages.each((i, el) => {
 					if (el.id === 'passages') {
@@ -108,12 +111,15 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 					}
 
 					if (Story.has(passage)) {
-						jQuery(el).empty().wiki(Story.get(passage).processText().trim());
+						updating.push({
+							passage,
+							element : el,
+							once    : true
+						});
 					}
 				});
 
 				// Data passage elements updated upon navigation.
-				const updating = [];
 				$dataPassages.each((i, el) => {
 					if (el.id === 'passages') {
 						throw new Error(`"StoryInterface" element <${el.nodeName.toLowerCase()} id="passages"> must not contain a "data-passage" content attribute`);
@@ -693,10 +699,18 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 
 		// Update the other interface elements, if necessary.
 		if (_updating !== null) {
-			_updating.forEach(pair => {
-				jQuery(pair.element).empty();
-				new Wikifier(pair.element, Story.get(pair.passage).processText().trim());
-			});
+			for (let i = 0; i < _updating.length; /* empty */) {
+				const { element, passage, once } = _updating[i];
+
+				jQuery(element).empty().wiki(Story.get(passage).processText().trim());
+
+				if (once) {
+					_updating.deleteAt(i);
+				}
+				else {
+					++i;
+				}
+			}
 		}
 		else if (Config.ui.updateStoryElements) {
 			UIBar.update();
