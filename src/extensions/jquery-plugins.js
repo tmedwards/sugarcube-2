@@ -74,6 +74,25 @@
 		});
 	}
 
+	function disableTabindex(el) {
+		const tabindexValue = el.getAttribute('tabindex');
+
+		if (tabindexValue !== null) {
+			el.setAttribute('data-last-tabindex', tabindexValue);
+		}
+
+		el.setAttribute('tabindex', -1);
+	}
+
+	function restoreTabindex(el) {
+		const tabindexValue = el.getAttribute('data-last-tabindex');
+
+		if (tabindexValue !== null) {
+			el.setAttribute('tabindex', tabindexValue);
+			el.removeAttribute('data-last-tabindex');
+		}
+	}
+
 	jQuery.fn.extend({
 		/*
 			Extend jQuery's chainable methods with an `ariaClick()` method.
@@ -211,6 +230,7 @@
 				$nonDisableable.each(function () {
 					this.setAttribute('disabled', '');
 					this.setAttribute('aria-disabled', 'true');
+					disableTabindex(this);
 				});
 
 				// Set IDL attribute `disabled` to `true` and set non-boolean content attribute
@@ -218,6 +238,7 @@
 				$disableable.each(function () {
 					this.disabled = true;
 					this.setAttribute('aria-disabled', 'true');
+					disableTabindex(this);
 				});
 			}
 			else {
@@ -225,6 +246,7 @@
 				$nonDisableable.each(function () {
 					this.removeAttribute('disabled');
 					this.removeAttribute('aria-disabled');
+					restoreTabindex(this);
 				});
 
 				// Set IDL attribute `disabled` to `false` and remove content attribute `aria-disabled`,
@@ -232,6 +254,7 @@
 				$disableable.each(function () {
 					this.disabled = false;
 					this.removeAttribute('aria-disabled');
+					restoreTabindex(this);
 				});
 			}
 
