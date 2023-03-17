@@ -197,21 +197,35 @@ Sets story $variables and temporary \_variables based on the given expression.
 
 ### `<<unset variableList>>` {#macros-macro-unset}
 
-Unsets story $variables and temporary \_variables.
+Unsets story $variables, temporary \_variables, and properties of objects stored within either.
 
 #### History:
 
 * `v2.0.0`: Introduced.
+* `v2.37.0`: Added ability to unset object properties.
 
 #### Arguments:
 
-* **`variableList`:** A list of story $variables and/or temporary \_variables.
+* **`variableList`:** A list of story $variables, temporary variables, or properties of objects stored within either.
 
 #### Examples:
 
+Basic usage, unsetting story and temporary variables.
+
 ```
-<<unset $cheese, $chestEmpty, $gold>>
-<<unset _someTempVar>>
+<<unset $rumors>>
+<<unset _npc>>
+
+<<unset $rumors, _npc, _choices, $job>>
+```
+
+Unsetting object properties.
+
+```
+<<unset _choices.b>>
+<<unset $towns['port ulster'].rumors>>
+
+<<unset _choices.b, $towns['port ulster'].rumors, $pc.notes, _park.rides['wheel of death']>>
 ```
 
 <!-- *********************************************************************** -->

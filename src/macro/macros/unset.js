@@ -2,37 +2,34 @@
 
 	macro/macros/unset.js
 
-	Copyright © 2013–2022 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
+	Copyright © 2013–2023 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* global Config, Macro, Patterns, State */
+/* global Config, Macro, Scripting, getErrorMessage */
 
 /*
 	<<unset>>
 */
 Macro.add('unset', {
 	skipArgs : true,
-	jsVarRe  : new RegExp(
-		`State\\.(variables|temporary)\\.(${Patterns.identifier})`,
-		'g'
-	),
 
 	handler() {
 		if (this.args.full.length === 0) {
 			return this.error('no story/temporary variable list specified');
 		}
 
-		const jsVarRe = this.self.jsVarRe;
-		let match;
+		const searchRe  = /[,;\s]*((?:State\.(?:variables|temporary)|setup)\.)/g;
+		const replacer  = (_, p1) => `; delete ${p1}`;
+		const cleanupRe = /^; /;
 
-		while ((match = jsVarRe.exec(this.args.full)) !== null) {
-			const store = State[match[1]];
-			const name  = match[2];
+		try {
+			const unsetExp = this.args.full.replace(searchRe, replacer).replace(cleanupRe, '');
 
-			if (Object.hasOwn(store, name)) {
-				delete store[name];
-			}
+			Scripting.evalJavaScript(unsetExp);
+		}
+		catch (ex) {
+			return this.error(`bad evaluation: ${getErrorMessage(ex)}`);
 		}
 
 		// Custom debug view setup.
