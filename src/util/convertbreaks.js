@@ -18,18 +18,19 @@
 	FIXME: Controls are being processed.  Fix it!
 */
 var convertBreaks = (() => { // eslint-disable-line no-unused-vars, no-var
-	const isNotSpaceRE = new RegExp(`/${Patterns.notSpace}/`);
+	const isNotSpaceRE = new RegExp(`${Patterns.notSpace}`);
 
-	function isParagraphEmpty(p) {
-		if (!p.hasChildNodes()) {
+	function isParagraphEmpty(para) {
+		if (!para.hasChildNodes()) {
 			return true;
 		}
 
-		const nodes  = p.childNodes;
+		const nodes  = para.childNodes;
 		const length = nodes.length;
 
 		for (let i = 0; i < length; ++i) {
 			const node = nodes[i];
+
 			switch (node.nodeType) {
 				case Node.TEXT_NODE: {
 					if (isNotSpaceRE.test(node.nodeValue)) {
@@ -46,6 +47,8 @@ var convertBreaks = (() => { // eslint-disable-line no-unused-vars, no-var
 					return false;
 			}
 		}
+
+		return true;
 	}
 
 	function convertBreaks(source) {
