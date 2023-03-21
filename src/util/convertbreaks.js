@@ -6,6 +6,7 @@
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
+/* global Patterns */
 
 /*
 	Converts <br> elements to <p> elements within the given node tree.
@@ -16,80 +17,123 @@
 
 	FIXME: Controls are being processed.  Fix it!
 */
-function convertBreaks(source) { // eslint-disable-line no-unused-vars
-	const output = document.createDocumentFragment();
-	let para = document.createElement('p');
-	let node;
+var convertBreaks = (() => { // eslint-disable-line no-unused-vars, no-var
+	const isNotSpaceRE = new RegExp(`${Patterns.notSpace}`);
 
-	while ((node = source.firstChild) !== null) {
-		if (node.nodeType === Node.ELEMENT_NODE) {
-			const tagName = node.nodeName.toUpperCase();
+	function isParagraphEmpty(para) {
+		if (!para.hasChildNodes()) {
+			return true;
+		}
 
-			switch (tagName) {
-				case 'BR':
-					if (
-						node.nextSibling !== null
-						&& node.nextSibling.nodeType === Node.ELEMENT_NODE
-						&& node.nextSibling.nodeName.toUpperCase() === 'BR'
-					) {
-						source.removeChild(node.nextSibling);
-						source.removeChild(node);
-						output.appendChild(para);
-						para = document.createElement('p');
-						continue;
-					}
-					else if (!para.hasChildNodes()) {
-						source.removeChild(node);
-						continue;
+		const nodes  = para.childNodes;
+		const length = nodes.length;
+
+		for (let i = 0; i < length; ++i) {
+			const node = nodes[i];
+
+			switch (node.nodeType) {
+				case Node.TEXT_NODE: {
+					if (isNotSpaceRE.test(node.nodeValue)) {
+						return false;
 					}
 
 					break;
+				}
 
-				case 'DIV':
-					convertBreaks(node);
-					/* falls through */
+				case Node.COMMENT_NODE:
+					break;
 
-				case 'ADDRESS':
-				case 'ARTICLE':
-				case 'ASIDE':
-				case 'BLOCKQUOTE':
-				case 'CENTER':
-				case 'DL':
-				case 'FIGURE':
-				case 'FOOTER':
-				case 'FORM':
-				case 'H1':
-				case 'H2':
-				case 'H3':
-				case 'H4':
-				case 'H5':
-				case 'H6':
-				case 'HEADER':
-				case 'HR':
-				case 'MAIN':
-				case 'NAV':
-				case 'OL':
-				case 'P':
-				case 'PRE':
-				case 'SECTION':
-				case 'TABLE':
-				case 'UL':
-					if (para.hasChildNodes()) {
-						output.appendChild(para);
-						para = document.createElement('p');
-					}
-
-					output.appendChild(node);
-					continue;
+				default:
+					return false;
 			}
 		}
 
-		para.appendChild(node);
+		return true;
 	}
 
-	if (para.hasChildNodes()) {
-		output.appendChild(para);
+	function convertBreaks(source) {
+		const output = document.createDocumentFragment();
+		let para = document.createElement('p');
+		let node;
+
+		while ((node = source.firstChild) !== null) {
+			if (node.nodeType === Node.ELEMENT_NODE) {
+				const tagName = node.nodeName.toUpperCase();
+
+				switch (tagName) {
+					case 'BR': {
+						if (
+							node.nextSibling !== null
+							&& node.nextSibling.nodeType === Node.ELEMENT_NODE
+							&& node.nextSibling.nodeName.toUpperCase() === 'BR'
+						) {
+							source.removeChild(node.nextSibling);
+							source.removeChild(node);
+
+							if (!isParagraphEmpty(para)) {
+								output.appendChild(para);
+							}
+
+							para = document.createElement('p');
+							continue;
+						}
+						else if (isParagraphEmpty(para)) {
+							source.removeChild(node);
+							continue;
+						}
+
+						break;
+					}
+
+					case 'DIV':
+						convertBreaks(node);
+						/* falls through */
+
+					case 'ADDRESS':
+					case 'ARTICLE':
+					case 'ASIDE':
+					case 'BLOCKQUOTE':
+					case 'CENTER':
+					case 'DL':
+					case 'FIGURE':
+					case 'FOOTER':
+					case 'FORM':
+					case 'H1':
+					case 'H2':
+					case 'H3':
+					case 'H4':
+					case 'H5':
+					case 'H6':
+					case 'HEADER':
+					case 'HR':
+					case 'MAIN':
+					case 'NAV':
+					case 'OL':
+					case 'P':
+					case 'PRE':
+					case 'SECTION':
+					case 'TABLE':
+					case 'UL': {
+						if (!isParagraphEmpty(para)) {
+							output.appendChild(para);
+							para = document.createElement('p');
+						}
+
+						output.appendChild(node);
+						continue;
+					}
+				}
+			}
+
+			para.appendChild(node);
+		}
+
+		if (!isParagraphEmpty(para)) {
+			output.appendChild(para);
+		}
+
+		source.appendChild(output);
 	}
 
-	source.appendChild(output);
-}
+	return convertBreaks;
+})();
