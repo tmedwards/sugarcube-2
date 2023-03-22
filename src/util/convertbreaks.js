@@ -2,18 +2,19 @@
 
 	util/convertbreaks.js
 
-	Copyright © 2013–2022 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
+	Copyright © 2013–2023 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
 /* global Patterns */
 
 /*
-	Converts <br> elements to <p> elements within the given node tree.
+	Within the given node tree, gathers sequences of top-level text nodes and
+	inline elements that are separated by two <br> elements, wraps them within
+	<p> elements, and removes the <br> elements.
 
-	TODO: Recheck all current elements (ca. Apr 2020) to see which are block-level
-	and which should be recurively processed—e.g., as `<div>` has been.  When doing
-	so, however, care should be taken so that controls are not processed.
+	TODO: Update the list of default block-level elements (below) as necessary.
+	Last checked: Apr 2020.
 
 	FIXME: Controls are being processed.  Fix it!
 */
@@ -85,15 +86,15 @@ var convertBreaks = (() => { // eslint-disable-line no-unused-vars, no-var
 						break;
 					}
 
-					case 'DIV':
-						convertBreaks(node);
-						/* falls through */
-
+					// Default block-level elements.
+					//
+					// NOTE: Periodically recheck this list for new block-level elements.
 					case 'ADDRESS':
 					case 'ARTICLE':
 					case 'ASIDE':
 					case 'BLOCKQUOTE':
 					case 'CENTER':
+					case 'DIV':
 					case 'DL':
 					case 'FIGURE':
 					case 'FOOTER':
