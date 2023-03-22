@@ -6,7 +6,7 @@
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* global Config, Engine, Macro, State, TempState, Wikifier, cssTimeToMS, prehistory */
+/* global Config, Engine, Macro, State, TempState, Wikifier, cssTimeToMS */
 
 /*
 	<<repeat>> & <<stop>>
@@ -75,7 +75,7 @@ Macro.add('repeat', {
 		const timers = this.timers;
 		let timerId = null;
 
-		// Set up the interval.
+		// Set up the interval and record its ID.
 		timerId = setInterval(() => {
 			// Terminate if we've navigated away.
 			if (State.passage !== passage || State.turns !== turn) {
@@ -117,13 +117,12 @@ Macro.add('repeat', {
 		}, delay);
 		timers.add(timerId);
 
-		// Set up a single-use `prehistory` task to remove pending timers.
-		if (!Object.hasOwn(prehistory, '#repeat-timers-cleanup')) {
-			prehistory['#repeat-timers-cleanup'] = task => {
-				delete prehistory[task]; // single-use task
+		// Set up a single-use event handler to remove pending timers upon passage navigation.
+		if (timers.size === 1) {
+			jQuery(document).one(':passageinit', () => {
 				timers.forEach(timerId => clearInterval(timerId));
 				timers.clear();
-			};
+			});
 		}
 	}
 });

@@ -6,7 +6,7 @@
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* global Config, DebugView, Engine, Macro, State, Wikifier, cssTimeToMS, prehistory */
+/* global Config, DebugView, Engine, Macro, State, Wikifier, cssTimeToMS */
 
 /*
 	<<timed>> & <<next>>
@@ -135,17 +135,16 @@ Macro.add('timed', {
 			callback.call(this, curItem);
 		};
 
-		// Setup the timeout.
+		// Set up the timeout and record its ID.
 		timerId = setTimeout(worker, nextItem.delay);
 		timers.add(timerId);
 
-		// Set up a single-use `prehistory` task to remove pending timers.
-		if (!Object.hasOwn(prehistory, '#timed-timers-cleanup')) {
-			prehistory['#timed-timers-cleanup'] = task => {
-				delete prehistory[task]; // single-use task
-				timers.forEach(timerId => clearTimeout(timerId)); // eslint-disable-line no-shadow
+		// Set up a single-use event handler to remove pending timers upon passage navigation.
+		if (timers.size === 1) {
+			jQuery(document).one(':passageinit', () => {
+				timers.forEach(timerId => clearTimeout(timerId));
 				timers.clear();
-			};
+			});
 		}
 	}
 });
