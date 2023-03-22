@@ -6,7 +6,7 @@
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* global Config, Engine, Macro, State, createSlug, postdisplay */
+/* global Config, Engine, Macro, State, createSlug */
 
 /*
 	<<numberbox>> & <<textbox>>
@@ -109,11 +109,10 @@ Macro.add(['numberbox', 'textbox'], {
 			// Set the element's "autofocus" attribute.
 			el.setAttribute('autofocus', 'autofocus');
 
-			// Set up a single-use post-display task to autofocus the element.
-			postdisplay[`#autofocus:${el.id}`] = task => {
-				delete postdisplay[task]; // single-use task
+			// Set up a single-use task to autofocus the element.
+			jQuery(document).one(':passageend', () => {
 				setTimeout(() => el.focus(), Engine.DOM_DELAY);
-			};
+			});
 		}
 	}
 });

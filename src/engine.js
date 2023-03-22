@@ -285,7 +285,7 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 		_state = States.Idle;
 
 		// Focus the document element initially.
-		jQuery(document.documentElement).focus();
+		document.documentElement.focus();
 
 		// Attempt to restore an active session.  Failing that, attempt to
 		// autoload the autosave, if requested.  Failing that, display the
