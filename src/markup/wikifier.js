@@ -66,9 +66,7 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 			}
 
 			// jQuery-wrapped destination.  Grab the first element.
-			//
-			// NOTE: Cannot use `Object.hasOwn()` here as `jquery` is from jQuery's prototype.
-			else if (destination.jquery) {
+			else if (destination instanceof jQuery) {
 				this.output = destination[0];
 			}
 

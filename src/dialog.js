@@ -234,7 +234,7 @@ var Dialog = (() => { // eslint-disable-line no-unused-vars, no-var
 
 		// Attempt to restore focus to whichever element had it prior to opening the dialog.
 		if (lastActive) {
-			jQuery(lastActive).focus();
+			lastActive.focus();
 			lastActive = null;
 		}
 

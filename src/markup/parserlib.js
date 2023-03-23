@@ -1884,7 +1884,7 @@
 							case 'source': {
 								const $parent = $(el).closest('audio,picture,video');
 
-								if ($parent.length) {
+								if ($parent.length > 0) {
 									parentName = $parent.get(0).tagName.toLowerCase();
 									twineTag = `Twine.${parentName === 'picture' ? 'image' : parentName}`;
 								}
