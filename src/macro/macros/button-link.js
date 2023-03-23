@@ -54,7 +54,7 @@ Macro.add(['button', 'link'], {
 		}
 		else {
 			// Argument was simply the link text.
-			$link.wikiWithOptions({ profile : 'core' }, this.args[0]);
+			$link.wikiWithOptions({ cleanup : false, profile : 'core' }, this.args[0]);
 			passage = this.args.length > 1 ? this.args[1] : undefined;
 		}
 

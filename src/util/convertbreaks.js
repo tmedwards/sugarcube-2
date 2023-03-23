@@ -87,8 +87,6 @@ var convertBreaks = (() => { // eslint-disable-line no-unused-vars, no-var
 					}
 
 					// Default block-level elements.
-					//
-					// NOTE: Periodically recheck this list for new block-level elements.
 					case 'ADDRESS':
 					case 'ARTICLE':
 					case 'ASIDE':

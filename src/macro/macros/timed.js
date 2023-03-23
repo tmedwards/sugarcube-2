@@ -71,7 +71,7 @@ Macro.add('timed', {
 		// Register the timer.
 		this.self.registerTimeout(this.shadowHandler(item => {
 			const frag = document.createDocumentFragment();
-			new Wikifier(frag, item.content);
+			new Wikifier(frag, item.content, { cleanup : false });
 
 			// Output.
 			let $output = $wrapper;

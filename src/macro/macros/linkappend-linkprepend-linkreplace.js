@@ -26,7 +26,7 @@ Macro.add(['linkappend', 'linkprepend', 'linkreplace'], {
 		const transition = this.args.length > 1 && this.self.t8nRe.test(this.args[1]);
 
 		$link
-			.wikiWithOptions({ profile : 'core' }, this.args[0])
+			.wikiWithOptions({ cleanup : false, profile : 'core' }, this.args[0])
 			.addClass(`link-internal macro-${this.name}`)
 			.ariaClick({
 				namespace : '.macros',
@@ -44,7 +44,7 @@ Macro.add(['linkappend', 'linkprepend', 'linkreplace'], {
 
 					if (this.payload[0].contents !== '') {
 						const frag = document.createDocumentFragment();
-						new Wikifier(frag, this.payload[0].contents);
+						new Wikifier(frag, this.payload[0].contents, { cleanup : false });
 						$insert.append(frag);
 					}
 

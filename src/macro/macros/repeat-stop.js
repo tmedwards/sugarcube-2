@@ -44,7 +44,7 @@ Macro.add('repeat', {
 		// Register the timer.
 		this.self.registerInterval(this.shadowHandler(() => {
 			const frag = document.createDocumentFragment();
-			new Wikifier(frag, this.payload[0].contents);
+			new Wikifier(frag, this.payload[0].contents, { cleanup : false });
 
 			let $output = $wrapper;
 

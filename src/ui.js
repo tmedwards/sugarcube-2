@@ -19,12 +19,9 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 	function assembleLinkList(passage, listEl) {
 		let list = listEl;
 
-		// Cache the values of `Config.debug` and `Config.cleanupWikifierOutput`,
-		// then disable them during this method's run.
+		// Cache the value of `Config.debug`, then disable it during this method's run.
 		const debugState = Config.debug;
-		const cleanState = Config.cleanupWikifierOutput;
 		Config.debug = false;
-		Config.cleanupWikifierOutput = false;
 
 		try {
 			if (list == null) { // lazy equality for null
@@ -33,7 +30,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 
 			// Wikify the content of the given source passage into a fragment.
 			const frag = document.createDocumentFragment();
-			new Wikifier(frag, Story.get(passage).processText().trim());
+			new Wikifier(frag, Story.get(passage).processText().trim(), { cleanup : false });
 
 			// Gather the text of any error elements within the fragment…
 			const errors = Array.from(frag.querySelectorAll('.error'))
@@ -61,8 +58,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 			}
 		}
 		finally {
-			// Restore the `Config` settings to their original values.
-			Config.cleanupWikifierOutput = cleanState;
+			// Restore `Config.debug` to its original value.
 			Config.debug = debugState;
 		}
 
@@ -553,13 +549,13 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 					.appendTo($dialogBody);
 				$heading
 					.attr('id', `header-heading-${id}`)
-					.wiki(name);
+					.wikiWithOptions({ cleanup : false }, name);
 
 				// Set up the description, if any.
 				if (control.desc) {
 					jQuery(document.createElement('p'))
 						.attr('id', `header-desc-${id}`)
-						.wiki(control.desc)
+						.wikiWithOptions({ cleanup : false }, control.desc)
 						.appendTo($header);
 				}
 
@@ -583,7 +579,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 			if (control.desc) {
 				jQuery(document.createElement('p'))
 					.attr('id', `setting-desc-${id}`)
-					.wiki(control.desc)
+					.wikiWithOptions({ cleanup : false }, control.desc)
 					.appendTo($setting);
 			}
 
@@ -593,7 +589,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 					id  : `setting-label-${id}`,
 					for : `setting-control-${id}` // must be in sync with $control's ID (see below)
 				})
-				.wiki(control.label);
+				.wikiWithOptions({ cleanup : false }, control.label);
 
 			// Set up the control.
 			if (settings[name] == null) { // lazy equality for null

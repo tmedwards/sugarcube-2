@@ -91,7 +91,15 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 				this.subWikify(this.output);
 
 				// Limit line break conversion to non-recursive calls.
-				if (_callDepth === 1 && Config.cleanupWikifierOutput) {
+				if (
+					_callDepth === 1
+					&& (
+						Object.hasOwn(this.options, 'cleanup')
+						&& this.options.cleanup != null // lazy equality for null
+							? this.options.cleanup
+							: Config.cleanupWikifierOutput
+					)
+				) {
 					convertBreaks(this.output);
 				}
 			}

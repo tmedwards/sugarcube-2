@@ -165,6 +165,7 @@ Macro.add('type', {
 		const selfId = ++this.self.typeId;
 
 		// Push our typing handler onto the queue.
+		const allowCleanup = this.self.allowCleanup;
 		TempState.macroTypeQueue.push({
 			id      : selfId,
 			handler : this.shadowHandler(() => {
@@ -182,7 +183,7 @@ Macro.add('type', {
 				}
 
 				// Wikify the contents into `$wrapper`.
-				new Wikifier($wrapper, contents);
+				new Wikifier($wrapper, contents, allowCleanup(elTag) ? undefined : { cleanup : false });
 
 				// Cache info about the current turn.
 				const passage = State.passage;
@@ -323,5 +324,20 @@ Macro.add('type', {
 				TempState.macroTypeQueue.first().handler();
 			}
 		}
+	},
+
+	allowCleanup(tagName) {
+		switch (tagName.toUpperCase()) {
+			case 'ARTICLE':
+			case 'DIV':
+			case 'FOOTER':
+			case 'FORM':
+			case 'HEADER':
+			case 'MAIN':
+			case 'SECTION':
+				return true;
+		}
+
+		return false;
 	}
 });
