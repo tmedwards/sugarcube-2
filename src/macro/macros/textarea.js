@@ -44,9 +44,7 @@ Macro.add('textarea', {
 		const autofocus    = this.args[2] === 'autofocus';
 		const el           = document.createElement('textarea');
 
-		/*
-			Set up and append the textarea element to the output buffer.
-		*/
+		// Set up and append the textarea element to the output buffer.
 		jQuery(el)
 			.attr({
 				id       : `${this.name}-${varId}`,
@@ -61,25 +59,26 @@ Macro.add('textarea', {
 			}))
 			.appendTo(this.output);
 
-		/*
-			Set the variable and textarea element to the default value.
-		*/
+		// Set the variable and textarea element to the default value.
 		State.setVar(varName, defaultValue);
 		// Ideally, we should be setting `.defaultValue` here, but IE doesn't support it,
 		// so we have to use `.textContent`, which is equivalent.
 		el.textContent = defaultValue;
 
-		/*
-			Autofocus the textarea element, if requested.
-		*/
+		// Autofocus the textarea element, if requested.
 		if (autofocus) {
 			// Set the element's "autofocus" attribute.
 			el.setAttribute('autofocus', 'autofocus');
 
 			// Set up a single-use task to autofocus the element.
-			jQuery(document).one(':passageend', () => {
+			if (Engine.isPlaying()) {
+				jQuery(document).one(':passageend', () => {
+					setTimeout(() => el.focus(), Engine.DOM_DELAY);
+				});
+			}
+			else {
 				setTimeout(() => el.focus(), Engine.DOM_DELAY);
-			});
+			}
 		}
 	}
 });

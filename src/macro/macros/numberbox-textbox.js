@@ -110,9 +110,14 @@ Macro.add(['numberbox', 'textbox'], {
 			el.setAttribute('autofocus', 'autofocus');
 
 			// Set up a single-use task to autofocus the element.
-			jQuery(document).one(':passageend', () => {
+			if (Engine.isPlaying()) {
+				jQuery(document).one(':passageend', () => {
+					setTimeout(() => el.focus(), Engine.DOM_DELAY);
+				});
+			}
+			else {
 				setTimeout(() => el.focus(), Engine.DOM_DELAY);
-			});
+			}
 		}
 	}
 });
