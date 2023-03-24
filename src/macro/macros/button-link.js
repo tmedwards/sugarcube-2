@@ -24,8 +24,8 @@ Macro.add(['button', 'link'], {
 		let passage;
 
 		if (typeof this.args[0] === 'object') {
+			// Argument was in wiki image syntax.
 			if (this.args[0].isImage) {
-				// Argument was in wiki image syntax.
 				const $image = jQuery(document.createElement('img'))
 					.attr('src', this.args[0].source)
 					.appendTo($link);
@@ -46,14 +46,14 @@ Macro.add(['button', 'link'], {
 
 				passage = this.args[0].link;
 			}
+			// Argument was in wiki link syntax.
 			else {
-				// Argument was in wiki link syntax.
 				$link.append(document.createTextNode(this.args[0].text));
 				passage = this.args[0].link;
 			}
 		}
+		// Argument was simply the link text.
 		else {
-			// Argument was simply the link text.
 			$link.wikiWithOptions({ cleanup : false, profile : 'core' }, this.args[0]);
 			passage = this.args.length > 1 ? this.args[1] : undefined;
 		}
