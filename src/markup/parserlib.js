@@ -1483,7 +1483,7 @@
 							return wikiImage;
 						}
 
-						let source = markup.source;
+						let source = Wikifier.helpers.evalPassageId(markup.source);
 
 						// Handle image passage transclusion.
 						if (source.slice(0, 5) !== 'data:' && Story.has(source)) {
