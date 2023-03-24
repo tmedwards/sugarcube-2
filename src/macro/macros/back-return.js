@@ -13,22 +13,17 @@
 */
 Macro.add(['back', 'return'], {
 	handler() {
-		/* legacy */
-		if (this.args.length > 1) {
-			return this.error('too many arguments specified, check the documentation for details');
-		}
-		/* /legacy */
-
 		let momentIndex = -1;
 		let passage;
-		let text;
-		let $image;
+		let content;
 
-		if (this.args.length === 1) {
+		if (this.args.length > 0) {
 			if (typeof this.args[0] === 'object') {
+				// Argument was in wiki image syntax.
 				if (this.args[0].isImage) {
-					// Argument was in wiki image syntax.
-					$image = jQuery(document.createElement('img'))
+					content = document.createElement('img');
+
+					const $image = jQuery(content)
 						.attr('src', this.args[0].source);
 
 					if (Object.hasOwn(this.args[0], 'passage')) {
@@ -47,30 +42,23 @@ Macro.add(['back', 'return'], {
 						passage = this.args[0].link;
 					}
 				}
+				// Argument was in wiki link syntax.
 				else {
-					// Argument was in wiki link syntax.
-					if (this.args[0].count === 1) {
-						// Simple link syntax: `[[...]]`.
-						passage = this.args[0].link;
-					}
-					else {
-						// Pretty link syntax: `[[...|...]]`.
-						text    = this.args[0].text;
-						passage = this.args[0].link;
-					}
+					content = document.createTextNode(this.args[0].text);
+					passage = this.args[0].link;
 				}
 			}
-			else if (this.args.length === 1) {
-				// Argument was simply the link text.
-				text = this.args[0];
+			// Argument was simply the link text.
+			else {
+				content = document.createDocumentFragment();
+				jQuery(content).wikiWithOptions({ cleanup : false, profile : 'core' }, this.args[0]);
+				passage = this.args.length > 1 ? this.args[1] : undefined;
 			}
 		}
 
 		if (passage == null) { // lazy equality for null
-			/*
-				Find the index and title of the most recent moment whose title does not match
-				that of the active (present) moment's.
-			*/
+			// Find the index and title of the most recent moment whose title does not match
+			// that of the active (present) moment's.
 			for (let i = State.length - 2; i >= 0; --i) {
 				if (State.history[i].title !== State.passage) {
 					momentIndex = i;
@@ -95,10 +83,8 @@ Macro.add(['back', 'return'], {
 			}
 
 			if (this.name === 'back') {
-				/*
-					Find the index of the most recent moment whose title matches that of the
-					specified passage.
-				*/
+				// Find the index of the most recent moment whose title matches that of the
+				// specified passage.
 				for (let i = State.length - 2; i >= 0; --i) {
 					if (State.history[i].title === passage) {
 						momentIndex = i;
@@ -133,7 +119,7 @@ Macro.add(['back', 'return'], {
 						: () => Engine.goTo(momentIndex)
 				);
 
-			if ($image) {
+			if (content instanceof HTMLImageElement) {
 				$link.addClass('link-image');
 			}
 		}
@@ -144,7 +130,7 @@ Macro.add(['back', 'return'], {
 
 		$link
 			.addClass(`macro-${this.name}`)
-			.append($image || document.createTextNode(text || L10n.get(`macro${this.name.toUpperFirst()}Text`)))
+			.append(content || document.createTextNode(L10n.get(`macro${this.name.toUpperFirst()}Text`)))
 			.appendTo(this.output);
 	}
 });

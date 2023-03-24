@@ -1763,9 +1763,9 @@ Creates a list of single-use passage links.  Each link removes itself and all ot
 
 <!-- *********************************************************************** -->
 
-### `<<back [linkText]>>`<br>`<<back linkMarkup>>`<br>`<<back imageMarkup>>` {#macros-macro-back}
+### `<<back [linkText [passageName]]>>`<br>`<<back linkMarkup>>`<br>`<<back imageMarkup>>` {#macros-macro-back}
 
-Creates a link that undoes past moments within the story history.  May be called with, optional, link text or with a link or image markup.
+Creates a link that undoes past moments within the story history.  May be called with, optional, the link text and passage name as separate arguments, a link markup, or an image markup.
 
 <p role="note"><b>Note:</b>
 If you want to return to a previously visited passage, rather than undo a moment within the history, see the <a href="#macros-macro-return"><code>&lt;&lt;return&gt;&gt;</code> macro</a> or the <a href="#functions-function-previous"><code>previous()</code> function</a>.
@@ -1774,12 +1774,14 @@ If you want to return to a previously visited passage, rather than undo a moment
 #### History:
 
 * `v2.0.0`: Introduced.
+* `v2.37.0`: Added optional passage name argument in separate argument form.
 
 #### Arguments:
 
-##### Link text form
+##### Separate argument form
 
-* **`linkText`:** (optional) The text of the link.
+* **`linkText`:** (optional if `passageName` is not specified) The text of the link.  May contain markup.
+* **`passageName`:** (optional) The name of the moment to undo to until it's reached.
 
 ##### Link markup form
 
@@ -1798,11 +1800,14 @@ If you want to return to a previously visited passage, rather than undo a moment
 <<back>>
 ```
 
-##### Link text form
+##### Separate argument form
 
 ```
 → Creates a link that undoes the most recent moment, with text "Home."
 <<back "Home.">>
+
+→ Creates a link that undoes past moments until the most recent "HQ" moment is reached, with text "Home."
+<<back "Home." "HQ">>
 ```
 
 ##### Link markup form
@@ -1878,9 +1883,9 @@ Normally, when both link and text arguments are accepted, the order is text then
 
 <!-- *********************************************************************** -->
 
-### `<<return [linkText]>>`<br>`<<return linkMarkup>>`<br>`<<return imageMarkup>>` {#macros-macro-return}
+### `<<return [linkText [passageName]]>>`<br>`<<return linkMarkup>>`<br>`<<return imageMarkup>>` {#macros-macro-return}
 
-Creates a link that navigates forward to a previously visited passage.  May be called with, optional, link text or with a link or image markup.
+Creates a link that navigates forward to a previously visited passage.  May be called with, optional, the link text and passage name as separate arguments, a link markup, or an image markup.
 
 <p role="note"><b>Note:</b>
 If you want to undo previous moments within the history, rather than return to a passage, see the <a href="#macros-macro-back"><code>&lt;&lt;back&gt;&gt;</code> macro</a>.
@@ -1889,12 +1894,14 @@ If you want to undo previous moments within the history, rather than return to a
 #### History:
 
 * `v2.0.0`: Introduced.
+* `v2.37.0`: Added optional passage name argument in separate argument form.
 
 #### Arguments:
 
-##### Link text form
+##### Separate argument form
 
-* **`linkText`:** (optional) The text of the link.
+* **`linkText`:** (optional if `passageName` is not specified) The text of the link.  May contain markup.
+* **`passageName`:** (optional) The name of the passage to go to.
 
 ##### Link markup form
 
@@ -1917,11 +1924,14 @@ The versions that forward to a specific passage are largely unnecessary, as you 
 <<return>>
 ```
 
-##### Link text form
+##### Separate argument form
 
 ```
 → Creates a link that forwards to the previous passage, with text "Home."
 <<return "Home.">>
+
+→ Creates a link that forwards to the "HQ" passage, with text "Home."
+<<return "Home." "HQ">>
 ```
 
 ##### Link markup form
