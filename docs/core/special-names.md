@@ -130,7 +130,13 @@ Used for pre-story-start initialization tasks, like variable initialization (hap
 
 ### `StoryInterface` {#special-passage-storyinterface}
 
-Used to replace SugarCube's default UI.  Its contents are treated as raw HTML markup—i.e., *none* of SugarCube's special HTML processing is performed.  It must contain, at least, an element with the ID `passages` that will be the main passage display area.
+Used to replace SugarCube's default UI.  Its contents are treated as raw HTML markup—i.e., *none* of SugarCube's special HTML processing is performed.  The markup is contained within a `<div id="story" role="main">` element and must itself contain, at least, an element with the ID `passages` that will be the main passage display area.  For example:
+
+```
+<div id="story" role="main">
+	<!-- StoryInterface elements added here -->
+</div>
+```
 
 Additional elements, aside from the `#passages` element, may include either the `data-init-passage` or `data-passage` content attribute, whose value is the name of the passage used to populate the element—the passage will be processed as normal, meaning that markup and macros will work as expected.  The `data-init-passage` attribute causes the element to be updated once at initialization, while the `data-passage` attribute causes the element to be updated upon each passage navigation.
 
@@ -143,6 +149,7 @@ Elements that include either a <code>data-init-passage</code> or <code>data-pass
 * `v2.18.0`: Introduced.
 * `v2.28.0`: Added processing of the `data-passage` content attribute.
 * `v2.36.0`: Added processing of the `data-init-passage` content attribute.
+* `v2.37.0`: Fixed processing of the `data-init-passage` content attribute.  Added the `<div#story>` container element.
 
 #### Examples:
 
@@ -155,11 +162,9 @@ Elements that include either a <code>data-init-passage</code> or <code>data-pass
 ##### With `data-init-passage` and `data-passage` content attributes
 
 ```
-<div id="interface">
-	<div id="menu" data-init-passage="Menu"></div>
-	<div id="notifications" data-passage="Notifications"></div>
-	<div id="passages"></div>
-</div>
+<div id="menu" data-init-passage="Menu"></div>
+<div id="notifications" data-passage="Notifications"></div>
+<div id="passages"></div>
 ```
 
 <!-- *********************************************************************** -->

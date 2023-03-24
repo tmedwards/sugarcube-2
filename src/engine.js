@@ -70,7 +70,7 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 				// Remove the core display area styles.
 				jQuery(document.head).find('#style-core-display').remove();
 
-				$elems.append(markup);
+				$elems.append(`<div id="story" role="main">${markup}</div>`);
 
 				const $passages = $elems.find('#passages');
 
