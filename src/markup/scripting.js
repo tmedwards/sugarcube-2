@@ -734,6 +734,7 @@ var Scripting = (() => { // eslint-disable-line no-unused-vars, no-var
 			"(?:'(?:\\\\.|[^'\\\\])+')",                          //   Single quoted, non-empty
 			'(`(?:\\\\.|[^`\\\\])+`)',                            // 1=Template literal, non-empty
 			'(?:[=+\\-*\\/%<>&\\|\\^~!?:,;\\(\\)\\[\\]{}]+)',     //   Operator delimiters
+			'(?:\\.{3})',                                         //   Spread/rest syntax
 			'([^"\'=+\\-*\\/%<>&\\|\\^~!?:,;\\(\\)\\[\\]{}\\s]+)' // 2=Barewords
 		].join('|'), 'g');
 		const notSpaceRe      = /\S/;
