@@ -242,10 +242,10 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 
 		/*
 			[DEPRECATED] Meant to be called by legacy macros, this returns the text given to
-			the currently executing macro after doing TwineScript-to-JavaScript transformations.
+			the currently executing macro after doing TwineScript to JavaScript desugaring.
 		*/
 		fullArgs() {
-			return Scripting.parse(this._rawArgs);
+			return Scripting.desugar(this._rawArgs);
 		}
 
 		/*
@@ -566,7 +566,7 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 		isExternalLink : { value : isExternalLink },
 		getValue       : { value : State.getVar },              // SEE: `state.js`.
 		setValue       : { value : State.setVar },              // SEE: `state.js`.
-		parse          : { value : Scripting.parse },           // SEE: `markup/scripting.js`.
+		parse          : { value : Scripting.desugar },         // SEE: `markup/scripting.js`.
 		evalExpression : { value : Scripting.evalTwineScript }, // SEE: `markup/scripting.js`.
 		evalStatements : { value : Scripting.evalTwineScript }, // SEE: `markup/scripting.js`.
 		textPrimitives : { value : Patterns }                   // SEE: `lib/patterns.js`.

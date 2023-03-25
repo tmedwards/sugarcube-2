@@ -693,21 +693,21 @@ var Scripting = (() => { // eslint-disable-line no-unused-vars, no-var
 
 
 	/*******************************************************************************
-		Parsing Functions.
+		Desugaring Functions.
 	*******************************************************************************/
 
 	/*
-		Returns the given string after converting all TwineScript syntactical sugars to
-		their native JavaScript counterparts.
+		Returns the given string after converting all TwineScript syntactical sugars
+		to their native JavaScript counterparts.
 	*/
-	const parse = (() => {
+	const desugar = (() => {
 		const tokenTable = enumFrom({
 			/* eslint-disable quote-props */
 			// Story $variable sigil-prefix.
 			'$'     : 'State.variables.',
 			// Temporary _variable sigil-prefix.
 			'_'     : 'State.temporary.',
-			// Assignment operators.
+			// Assignment operator.
 			'to'    : '=',
 			// Equality operators.
 			'eq'    : '==',
@@ -728,7 +728,7 @@ var Scripting = (() => { // eslint-disable-line no-unused-vars, no-var
 			'ndef'  : '"undefined" === typeof'
 			/* eslint-enable quote-props */
 		});
-		const parseRe = new RegExp([
+		const desugarRE = new RegExp([
 			'(?:""|\'\'|``)',                                     //   Empty quotes (incl. template literal)
 			'(?:"(?:\\\\.|[^"\\\\])+")',                          //   Double quoted, non-empty
 			"(?:'(?:\\\\.|[^'\\\\])+')",                          //   Single quoted, non-empty
@@ -737,34 +737,34 @@ var Scripting = (() => { // eslint-disable-line no-unused-vars, no-var
 			'(?:\\.{3})',                                         //   Spread/rest syntax
 			'([^"\'=+\\-*\\/%<>&\\|\\^~!?:,;\\(\\)\\[\\]{}\\s]+)' // 2=Barewords
 		].join('|'), 'g');
-		const notSpaceRe      = /\S/;
+		const notSpaceRE      = new RegExp(`${Patterns.notSpace}`);
 		const varTest         = new RegExp(`^${Patterns.variable}`);
-		const withColonTestRe = /^\s*:/;
-		const withNotTestRe   = /^\s+not\b/;
+		const withColonTestRE = new RegExp(`^${Patterns.space}*:`);
+		const withNotTestRE   = new RegExp(`^${Patterns.space}+not\b`);
 
-		function parse(rawCodeString) {
-			if (parseRe.lastIndex !== 0) {
-				throw new RangeError('Scripting.parse last index is non-zero at start');
+		function desugar(rawCodeString) {
+			if (desugarRE.lastIndex !== 0) {
+				throw new RangeError('Scripting.desugar last index is non-zero at start');
 			}
 
 			let code  = rawCodeString;
 			let match;
 
-			while ((match = parseRe.exec(code)) !== null) {
-				// no-op: Empty quotes | Double quoted | Single quoted | Operator delimiters
+			while ((match = desugarRE.exec(code)) !== null) {
+				// no-op: Empty quotes, Double quoted, Single quoted, Operator delimiters, Spread/rest syntax
 
 				// Template literal, non-empty.
 				if (match[1]) {
 					const rawTemplate = match[1];
-					const parsedTemplate = parseTemplate(rawTemplate);
+					const desugaredTemplate = desugarTemplate(rawTemplate);
 
-					if (parsedTemplate !== rawTemplate) {
+					if (desugaredTemplate !== rawTemplate) {
 						code = code.splice(
 							match.index,        // starting index
 							rawTemplate.length, // replace how many
-							parsedTemplate      // replacement string
+							desugaredTemplate      // replacement string
 						);
-						parseRe.lastIndex += parsedTemplate.length - rawTemplate.length;
+						desugarRE.lastIndex += desugaredTemplate.length - rawTemplate.length;
 					}
 				}
 
@@ -790,11 +790,11 @@ var Scripting = (() => { // eslint-disable-line no-unused-vars, no-var
 					// NOTE: This is a safety feature, since `$a is not $b` probably sounds
 					// reasonable to most users.
 					else if (token === 'is') {
-						const start = parseRe.lastIndex;
+						const start = desugarRE.lastIndex;
 						const ahead = code.slice(start);
 
-						if (withNotTestRe.test(ahead)) {
-							code = code.splice(start, ahead.search(notSpaceRe));
+						if (withNotTestRE.test(ahead)) {
+							code = code.splice(start, ahead.search(notSpaceRE));
 							token = 'isnot';
 						}
 					}
@@ -802,9 +802,9 @@ var Scripting = (() => { // eslint-disable-line no-unused-vars, no-var
 					// If the token is followed by a colon, then it's likely to be an object
 					// property, so skip it.
 					else {
-						const ahead = code.slice(parseRe.lastIndex);
+						const ahead = code.slice(desugarRE.lastIndex);
 
-						if (withColonTestRe.test(ahead)) {
+						if (withColonTestRE.test(ahead)) {
 							continue;
 						}
 					}
@@ -817,7 +817,7 @@ var Scripting = (() => { // eslint-disable-line no-unused-vars, no-var
 							token.length,     // replace how many
 							tokenTable[token] // replacement string
 						);
-						parseRe.lastIndex += tokenTable[token].length - token.length;
+						desugarRE.lastIndex += tokenTable[token].length - token.length;
 					}
 				}
 			}
@@ -825,8 +825,8 @@ var Scripting = (() => { // eslint-disable-line no-unused-vars, no-var
 			return code;
 		}
 
-		const templateGroupStartRe = /\$\{/g;
-		const templateGroupParseRe = new RegExp([
+		const templateGroupStartRE = /\$\{/g;
+		const templateGroupParseRE = new RegExp([
 			'(?:""|\'\')',               //   Empty quotes
 			'(?:"(?:\\\\.|[^"\\\\])+")', //   Double quoted, non-empty
 			"(?:'(?:\\\\.|[^'\\\\])+')", //   Single quoted, non-empty
@@ -834,23 +834,24 @@ var Scripting = (() => { // eslint-disable-line no-unused-vars, no-var
 			'(\\})'                      // 2=Closing curly brace
 		].join('|'), 'g');
 
-		function parseTemplate(rawTemplateLiteral) {
-			if (templateGroupStartRe.lastIndex !== 0) {
-				throw new RangeError('Scripting.parse last index is non-zero at start of template literal');
+		// WARNING: Does not currently handle nested template strings.
+		function desugarTemplate(rawTemplateLiteral) {
+			if (templateGroupStartRE.lastIndex !== 0) {
+				throw new RangeError('Scripting.desugar last index is non-zero at start of template literal');
 			}
 
 			let template   = rawTemplateLiteral;
 			let startMatch;
 
-			while ((startMatch = templateGroupStartRe.exec(template)) !== null) {
-				const startIdx = startMatch.index + 2;
-				let endIdx   = startIdx;
+			while ((startMatch = templateGroupStartRE.exec(template)) !== null) {
+				const startIndex = startMatch.index + 2;
+				let endIndex = startIndex;
 				let depth    = 1;
 				let endMatch;
 
-				templateGroupParseRe.lastIndex = startIdx;
+				templateGroupParseRE.lastIndex = startIndex;
 
-				while ((endMatch = templateGroupParseRe.exec(template)) !== null) {
+				while ((endMatch = templateGroupParseRE.exec(template)) !== null) {
 					// Opening curly brace.
 					if (endMatch[1]) {
 						++depth;
@@ -861,34 +862,34 @@ var Scripting = (() => { // eslint-disable-line no-unused-vars, no-var
 					}
 
 					if (depth === 0) {
-						endIdx = endMatch.index;
+						endIndex = endMatch.index;
 						break;
 					}
 				}
 
 				// If the group is not empty, replace it within the template
-				// with its parsed counterpart.
-				if (endIdx > startIdx) {
-					const parseIndex = parseRe.lastIndex;
-					const rawGroup   = template.slice(startIdx, endIdx);
+				// with its desugared counterpart.
+				if (endIndex > startIndex) {
+					const desugarIndex = desugarRE.lastIndex;
+					const rawGroup     = template.slice(startIndex, endIndex);
 
-					parseRe.lastIndex = 0;
-					const parsedGroup = parse(rawGroup);
-					parseRe.lastIndex = parseIndex;
+					desugarRE.lastIndex = 0;
+					const desugaredGroup = desugar(rawGroup);
+					desugarRE.lastIndex = desugarIndex;
 
 					template = template.splice(
-						startIdx,        // starting index
+						startIndex,      // starting index
 						rawGroup.length, // replace how many
-						parsedGroup      // replacement string
+						desugaredGroup   // replacement string
 					);
-					templateGroupStartRe.lastIndex += parsedGroup.length - rawGroup.length;
+					templateGroupStartRE.lastIndex += desugaredGroup.length - rawGroup.length;
 				}
 			}
 
 			return template;
 		}
 
-		return parse;
+		return desugar;
 	})();
 
 
@@ -911,11 +912,11 @@ var Scripting = (() => { // eslint-disable-line no-unused-vars, no-var
 	*/
 	function evalTwineScript(code, output, data) {
 		// WARNING: Do not use a dollar sign or underscore as the first character of the
-		// data variable, `SCRIPT$DATA$`, as `parse()` will break references to it within
+		// data variable, `SCRIPT$DATA$`, as `desugar()` will break references to it within
 		// the code string.
 		return (function (code, output, SCRIPT$DATA$) {
 			return eval(code);
-		}).call(output ? { output } : null, parse(String(code)), output, data);
+		}).call(output ? { output } : null, desugar(String(code)), output, data);
 	}
 	/* eslint-enable no-eval, no-extra-parens, no-unused-vars */
 
@@ -925,8 +926,13 @@ var Scripting = (() => { // eslint-disable-line no-unused-vars, no-var
 	*******************************************************************************/
 
 	return Object.preventExtensions(Object.create(null, {
-		parse           : { value : parse },
+		desugar         : { value : desugar },
 		evalJavaScript  : { value : evalJavaScript },
-		evalTwineScript : { value : evalTwineScript }
+		evalTwineScript : { value : evalTwineScript },
+
+		/*
+			Legacy Functions.
+		*/
+		parse : { value : desugar }
 	}));
 })();
