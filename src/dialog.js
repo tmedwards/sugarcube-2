@@ -176,11 +176,6 @@ var Dialog = (() => { // eslint-disable-line no-unused-vars, no-var
 		}
 	}
 
-	function onImageLoad(top) {
-		// Attempt to add the imagesLoaded handlers to images.
-		$body.imagesLoaded().always(() => onResize(top));
-	}
-
 
 	/*******************************************************************************
 		API Functions.
@@ -301,9 +296,6 @@ var Dialog = (() => { // eslint-disable-line no-unused-vars, no-var
 		// Display the overlay.
 		$overlay.addClass('open');
 
-		// Invoke onImageLoad initially.
-		onImageLoad(top);
-
 		// Add `aria-hidden=true` to all direct non-dialog-children of <body> to
 		// hide the underlying page from screen readers while the dialog is open.
 		jQuery('body>:not(script,#store-area,tw-storydata,#ui-bar,#ui-overlay,#ui-dialog)')
@@ -314,24 +306,30 @@ var Dialog = (() => { // eslint-disable-line no-unused-vars, no-var
 			.attr('tabindex', -2)
 			.attr('aria-hidden', true);
 
+		// Create our throttled resize handler.
+		const resizeHandler = jQuery.throttle(40, () => onResize(top));
+
+		// Add the imagesLoaded handlers to images.
+		$body.imagesLoaded().always(resizeHandler);
+
 		// Display the dialog.
 		$dialog
 			.css(calcInset(top))
 			.addClass('open')
 			.focus();
 
-		// Add the resize handler.
+		// Attach the window `resize` event resize handler.
 		jQuery(window)
 			.off('.dialog-resize')
-			.on('resize.dialog-resize', jQuery.throttle(40, () => onResize(top)));
+			.on('resize.dialog-resize', resizeHandler);
 
 		// Add the dialog mutation resize handler.
 		if (Has.mutationObserver) {
 			observer = new MutationObserver(mutations => {
 				for (let i = 0; i < mutations.length; ++i) {
 					if (mutations[i].type === 'childList') {
-						onImageLoad(top);
-						onResize(top);
+						$body.imagesLoaded().always(resizeHandler);
+						resizeHandler();
 						break;
 					}
 				}
@@ -346,10 +344,10 @@ var Dialog = (() => { // eslint-disable-line no-unused-vars, no-var
 				.off('.dialog-resize')
 				.on(
 					'DOMNodeInserted.dialog-resize DOMNodeRemoved.dialog-resize',
-					jQuery.throttle(40, () => {
-						onImageLoad(top);
-						onResize(top);
-					})
+					() => {
+						$body.imagesLoaded().always(resizeHandler);
+						resizeHandler();
+					}
 				);
 		}
 
