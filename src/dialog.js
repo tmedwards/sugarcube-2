@@ -6,7 +6,7 @@
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* global Has, L10n, getActiveElement, getTypeOf */
+/* global Has, L10n, Story, getActiveElement, getTypeOf */
 
 var Dialog = (() => { // eslint-disable-line no-unused-vars, no-var
 	// Default top position.
@@ -117,6 +117,10 @@ var Dialog = (() => { // eslint-disable-line no-unused-vars, no-var
 		Utility Functions.
 	*******************************************************************************/
 
+	/*
+		Calculate the inset values required to fit the dialog within the viewport
+		based on the size of its contents and the current viewport dimentions.
+	*/
 	function calcInset(top) {
 		const $window = jQuery(window);
 		const inset   = { left : '', right : '', top : '', bottom : '' };
@@ -170,6 +174,9 @@ var Dialog = (() => { // eslint-disable-line no-unused-vars, no-var
 		return inset;
 	}
 
+	/*
+		Resize handler.
+	*/
 	function onResize(top) {
 		if ($dialog.css('display') === 'block') {
 			$dialog.css(calcInset(top != null ? top : DEFAULT_TOP)); // lazy equality for null
@@ -181,11 +188,19 @@ var Dialog = (() => { // eslint-disable-line no-unused-vars, no-var
 		API Functions.
 	*******************************************************************************/
 
-	function appendToBody(...args) {
+	/*
+		Appends the specified content sources to the dialog's body container.
+		Returns `Dialog` for further chaining.
+	*/
+	function append(...args) {
 		$body.append(...args);
 		return Dialog;
 	}
 
+	/*
+		Closes and resets the dialog.
+		Returns `Dialog` for further chaining.
+	*/
 	function close(ev) {
 		// Trigger a `:dialogclosing` event on the dialog body.
 		$body.trigger(':dialogclosing');
@@ -255,15 +270,55 @@ var Dialog = (() => { // eslint-disable-line no-unused-vars, no-var
 		return Dialog;
 	}
 
-	function getBodyElement() {
+	/*
+		Prepares the dialog for use.
+		Returns `Dialog` for further chaining.
+	*/
+	function create(title, classNames) {
+		$title
+			.empty()
+			.append((title != null ? String(title) : '') || '\u00A0'); // lazy equality for null
+
+		$body
+			.empty()
+			.removeClass();
+
+		if (classNames != null) { // lazy equality for null
+			$body.addClass(classNames);
+		}
+
+		return Dialog;
+	}
+
+	/*
+		Empties the dialog's body container.
+		Returns `Dialog` for further chaining.
+	*/
+	function empty() {
+		$body.empty();
+		return Dialog;
+	}
+
+	/*
+		Returns the dialog's body container.
+	*/
+	function getBody() {
 		return $body.get(0);
 	}
 
+	/*
+		Returns whether the dialog is open.
+		The test may be narrowed by specifing class names.
+	*/
 	function isOpen(classNames) {
 		return $dialog.hasClass('open')
 			&& (classNames ? classNames.splitOrEmpty(/\s+/).every(cn => $body.hasClass(cn)) : true);
 	}
 
+	/*
+		Opens the dialog.
+		Returns `Dialog` for further chaining.
+	*/
 	function open(options, onClose) {
 		// Grab the options we care about.
 		const { top } = Object.assign({ top : DEFAULT_TOP }, options);
@@ -334,7 +389,7 @@ var Dialog = (() => { // eslint-disable-line no-unused-vars, no-var
 					}
 				}
 			});
-			observer.observe(getBodyElement(), {
+			observer.observe(getBody(), {
 				childList : true,
 				subtree   : true
 			});
@@ -377,30 +432,28 @@ var Dialog = (() => { // eslint-disable-line no-unused-vars, no-var
 		return Dialog;
 	}
 
+	/*
+		Resize the dialog.
+	*/
 	function resize(options) {
 		return onResize(typeof options === 'object' ? options.top : undefined);
 	}
 
-	function setup(title, classNames) {
-		$body
-			.empty()
-			.removeClass();
-
-		if (classNames != null) { // lazy equality for null
-			$body.addClass(classNames);
-		}
-
-		$title
-			.empty()
-			.append((title != null ? String(title) : '') || '\u00A0'); // lazy equality for null
-
-		// TODO: In v3 this should return `Dialog` for chaining.
-		return getBodyElement();
-	}
-
-	function wikiToBody(...args) {
+	/*
+		Renders and appends the specified content sources to the dialog's body container.
+		Returns `Dialog` for further chaining.
+	*/
+	function wiki(...args) {
 		$body.wiki(...args);
 		return Dialog;
+	}
+
+	/*
+		Renders and appends the specified passage to the dialog's body container.
+		Returns `Dialog` for further chaining.
+	*/
+	function wikiPassage(name) {
+		return wiki(Story.get(name).processText());
 	}
 
 
@@ -432,23 +485,37 @@ var Dialog = (() => { // eslint-disable-line no-unused-vars, no-var
 		});
 	}
 
+	/*
+		[DEPRECATED] Prepares the dialog for use.
+		Returns the dialog's body container.
+	*/
+	function setup(title, classNames) {
+		console.warn('[DEPRECATED] Dialog.setup() is deprecated.');
+
+		create(title, classNames);
+		return getBody();
+	}
+
 
 	/*******************************************************************************
 		Object Exports.
 	*******************************************************************************/
 
 	return Object.preventExtensions(Object.create(null, {
-		append : { value : appendToBody },
-		body   : { value : getBodyElement },
-		close  : { value : close },
-		init   : { value : init },
-		isOpen : { value : isOpen },
-		open   : { value : open },
-		resize : { value : resize },
-		setup  : { value : setup },
-		wiki   : { value : wikiToBody },
+		append      : { value : append },
+		body        : { value : getBody },
+		close       : { value : close },
+		create      : { value : create },
+		empty       : { value : empty },
+		init        : { value : init },
+		isOpen      : { value : isOpen },
+		open        : { value : open },
+		resize      : { value : resize },
+		wiki        : { value : wiki },
+		wikiPassage : { value : wikiPassage },
 
 		// Deprecated Functions.
-		addClickHandler : { value : addClickHandler }
+		addClickHandler : { value : addClickHandler },
+		setup           : { value : setup }
 	}));
 })();

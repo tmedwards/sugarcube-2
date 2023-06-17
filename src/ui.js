@@ -70,7 +70,8 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 
 		console.warn('[DEPRECATED] UI.buildAutoload() is deprecated.');
 
-		jQuery(Dialog.setup(L10n.get('autoloadTitle'), 'autoload'))
+		Dialog
+			.create(L10n.get('autoloadTitle'), 'autoload')
 			.append(
 				/* eslint-disable max-len */
 				  `<p>${L10n.get('autoloadPrompt')}</p><ul class="buttons">`
@@ -110,7 +111,8 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 	function buildRestart() {
 		if (DEBUG) { console.log('[UI/uiBuildRestart()]'); }
 
-		jQuery(Dialog.setup(L10n.get('restartTitle'), 'restart'))
+		Dialog
+			.create(L10n.get('restartTitle'), 'restart')
 			.append(
 				/* eslint-disable max-len */
 				  `<p>${L10n.get('restartPrompt')}</p><ul class="buttons">`
@@ -118,12 +120,14 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 				+ `<li><button id="restart-cancel" class="ui-close">${L10n.get(['restartCancel', 'cancel'])}</button></li>`
 				+ '</ul>'
 				/* eslint-enable max-len */
-			)
-			// Instead of adding '.ui-close' to '#restart-ok' (to receive the use of the default
-			// delegated dialog close handler), we set up a special case close handler here.  We
-			// do this to ensure that the invocation of `Engine.restart()` happens after the dialog
-			// has fully closed.  If we did not, then a race condition could occur, causing display
-			// shenanigans.
+			);
+
+		// NOTE: Instead of adding '.ui-close' to the '#restart-ok' button (to receive
+		// the use of the default delegated dialog close handler), we set up a special
+		// case close handler here.  We do this to ensure that the invocation of
+		// `Engine.restart()` happens after the dialog has fully closed.  If we did not,
+		// then a race condition could occur, causing display shenanigans.
+		jQuery(Dialog.body())
 			.find('#restart-ok')
 			.ariaClick({ one : true }, () => {
 				jQuery(document).one(':dialogclosed', () => Engine.restart());
@@ -423,7 +427,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 			return false;
 		}
 
-		Dialog.setup(L10n.get('savesTitle'), 'saves');
+		Dialog.create(L10n.get('savesTitle'), 'saves');
 		const $dialogBody = jQuery(Dialog.body());
 
 		// Add slots header, list, and button list.
@@ -534,7 +538,8 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 	function buildSettings() {
 		if (DEBUG) { console.log('[UI/uiBuildSettings()]'); }
 
-		const $dialogBody = jQuery(Dialog.setup(L10n.get('settingsTitle'), 'settings'));
+		Dialog.create(L10n.get('settingsTitle'), 'settings');
+		const $dialogBody = jQuery(Dialog.body());
 
 		Setting.forEach(control => {
 			if (control.type === Setting.Types.Header) {
@@ -751,13 +756,14 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 	*******************************************************************************/
 
 	function openAlert(message, /* options, closeFn */ ...args) {
-		jQuery(Dialog.setup(L10n.get('alertTitle'), 'alert'))
+		Dialog
+			.create(L10n.get('alertTitle'), 'alert')
 			.append(
 				  `<p>${message}</p><ul class="buttons">`
 				+ `<li><button id="alert-ok" class="ui-close">${L10n.get(['alertOk', 'ok'])}</button></li>`
 				+ '</ul>'
-			);
-		Dialog.open(...args);
+			)
+			.open(...args);
 	}
 
 	function openRestart(/* options, closeFn */ ...args) {
@@ -788,7 +794,8 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 
 		const list = document.createElement('ul');
 
-		jQuery(Dialog.setup(L10n.get('jumptoTitle'), 'jumpto list'))
+		Dialog
+			.create(L10n.get('jumptoTitle'), 'jumpto list')
 			.append(list);
 
 		const expired = State.expired.length;
@@ -826,7 +833,8 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 		console.warn('[DEPRECATED] UI.buildShare() is deprecated.');
 
 		try {
-			jQuery(Dialog.setup(L10n.get('shareTitle'), 'share list'))
+			Dialog
+				.create(L10n.get('shareTitle'), 'share list')
 				.append(assembleLinkList('StoryShare'));
 		}
 		catch (ex) {
