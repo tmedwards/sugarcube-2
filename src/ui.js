@@ -542,29 +542,36 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 		const $dialogBody = jQuery(Dialog.body());
 
 		Setting.forEach(control => {
-			if (control.type === Setting.Types.Header) {
-				const name     = control.name;
-				const id       = createSlug(name);
-				const $header  = jQuery(document.createElement('div'));
-				const $heading = jQuery(document.createElement('h2'));
+			switch (control.type) {
+				case Setting.Types.Header: {
+					const name     = control.name;
+					const id       = createSlug(name);
+					const $header  = jQuery(document.createElement('div'));
+					const $heading = jQuery(document.createElement('h2'));
 
-				$header
-					.attr('id', `header-body-${id}`)
-					.append($heading)
-					.appendTo($dialogBody);
-				$heading
-					.attr('id', `header-heading-${id}`)
-					.wikiWithOptions({ cleanup : false }, name);
+					$header
+						.attr('id', `header-body-${id}`)
+						.append($heading)
+						.appendTo($dialogBody);
+					$heading
+						.attr('id', `header-heading-${id}`)
+						.wikiWithOptions({ cleanup : false }, name);
 
-				// Set up the description, if any.
-				if (control.desc) {
-					jQuery(document.createElement('p'))
-						.attr('id', `header-desc-${id}`)
-						.wikiWithOptions({ cleanup : false }, control.desc)
-						.appendTo($header);
+					// Set up the description, if any.
+					if (control.desc) {
+						jQuery(document.createElement('p'))
+							.attr('id', `header-desc-${id}`)
+							.wikiWithOptions({ cleanup : false }, control.desc)
+							.appendTo($header);
+					}
+
+					return;
 				}
 
-				return;
+				case Setting.Types.Value: {
+					// no-op
+					return;
+				}
 			}
 
 			const name        = control.name;

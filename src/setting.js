@@ -14,7 +14,8 @@ var Setting = (() => { // eslint-disable-line no-unused-vars, no-var
 		Header : 0,
 		Toggle : 1,
 		List   : 2,
-		Range  : 3
+		Range  : 3,
+		Value  : 4
 	});
 
 	// Setting definition array.
@@ -22,11 +23,11 @@ var Setting = (() => { // eslint-disable-line no-unused-vars, no-var
 
 
 	/*******************************************************************************
-		Settings Functions.
+		Initialization Functions.
 	*******************************************************************************/
 
-	function settingsInit() {
-		if (DEBUG) { console.log('[Setting/settingsInit()]'); }
+	function init() {
+		if (DEBUG) { console.log('[Setting/init()]'); }
 
 		/* legacy */
 		// Attempt to migrate an existing `options` store to `settings`.
@@ -34,41 +35,64 @@ var Setting = (() => { // eslint-disable-line no-unused-vars, no-var
 			const old = storage.get('options');
 
 			if (old !== null) {
-				window.SugarCube.settings = settings = Object.assign(settingsCreate(), old);
+				updateSettingsObject(Object.assign(create(), old));
 			}
 
-			settingsSave();
+			save();
 			storage.delete('options');
 		}
 		/* /legacy */
 
 		// Load existing settings.
-		settingsLoad();
+		load();
 
 		// Execute `onInit` callbacks.
 		_definitions.forEach(def => {
 			if (Object.hasOwn(def, 'onInit')) {
-				const thisArg = {
+				const data = {
 					name    : def.name,
 					value   : settings[def.name],
 					default : def.default
 				};
 
 				if (Object.hasOwn(def, 'list')) {
-					thisArg.list = def.list;
+					data.list = def.list;
+				}
+				if (Object.hasOwn(def, 'min')) {
+					data.min = def.min;
+				}
+				if (Object.hasOwn(def, 'max')) {
+					data.max = def.max;
+				}
+				if (Object.hasOwn(def, 'step')) {
+					data.step = def.step;
 				}
 
-				def.onInit.call(thisArg);
+				def.onInit.call(data, data);
 			}
 		});
 	}
 
-	function settingsCreate() {
+
+	/*******************************************************************************
+		Utility Functions.
+	*******************************************************************************/
+
+	function updateSettingsObject(value) {
+		window.SugarCube.settings = settings = value;
+	}
+
+
+	/*******************************************************************************
+		API Functions.
+	*******************************************************************************/
+
+	function create() {
 		return Object.create(null);
 	}
 
-	function settingsSave() {
-		const savedSettings = settingsCreate();
+	function save() {
+		const savedSettings = create();
 
 		if (Object.keys(settings).length > 0) {
 			_definitions
@@ -84,9 +108,9 @@ var Setting = (() => { // eslint-disable-line no-unused-vars, no-var
 		return storage.set('settings', savedSettings);
 	}
 
-	function settingsLoad() {
-		const defaultSettings = settingsCreate();
-		const loadedSettings  = storage.get('settings') || settingsCreate();
+	function load() {
+		const defaultSettings = create();
+		const loadedSettings  = storage.get('settings') || create();
 
 		// Load the defaults.
 		_definitions
@@ -94,33 +118,33 @@ var Setting = (() => { // eslint-disable-line no-unused-vars, no-var
 			.forEach(def => defaultSettings[def.name] = def.default);
 
 		// Assign to the `settings` object while overwriting the defaults with the loaded settings.
-		window.SugarCube.settings = settings = Object.assign(defaultSettings, loadedSettings);
+		updateSettingsObject(Object.assign(defaultSettings, loadedSettings));
 	}
 
-	function settingsClear() {
-		window.SugarCube.settings = settings = settingsCreate();
+	function clear() {
+		updateSettingsObject(create());
 		storage.delete('settings');
 		return true;
 	}
 
-	function settingsReset(name) {
+	function reset(name) {
 		if (arguments.length === 0) {
-			settingsClear();
-			settingsLoad();
+			clear();
+			load();
 		}
 		else {
-			if (name == null || !definitionsHas(name)) { // lazy equality for null
+			if (name == null || !has(name)) { // lazy equality for null
 				throw new Error(`nonexistent setting "${name}"`);
 			}
 
-			const def = definitionsGet(name);
+			const def = get(name);
 
 			if (def.type !== Types.Header) {
 				settings[name] = def.default;
 			}
 		}
 
-		return settingsSave();
+		return save();
 	}
 
 
@@ -128,24 +152,26 @@ var Setting = (() => { // eslint-disable-line no-unused-vars, no-var
 		Definitions Functions.
 	*******************************************************************************/
 
-	function definitionsForEach(callback, thisArg) {
+	function forEach(callback, thisArg) {
 		_definitions.forEach(callback, thisArg);
 	}
 
-	function definitionsAdd(type, name, def) {
-		if (arguments.length < 3) {
+	function add(type, name, def) {
+		if (arguments.length < 2) {
 			const errors = [];
 			if (arguments.length < 1) { errors.push('type'); }
 			if (arguments.length < 2) { errors.push('name'); }
-			if (arguments.length < 3) { errors.push('definition'); }
 			throw new Error(`missing parameters, no ${errors.join(' or ')} specified`);
 		}
 
-		if (typeof def !== 'object') {
+		if (def == null) { // lazy equality for null
+			def = {}; // eslint-disable-line no-param-reassign
+		}
+		else if (typeof def !== 'object') {
 			throw new TypeError('definition parameter must be an object');
 		}
 
-		if (definitionsHas(name)) {
+		if (has(name)) {
 			throw new Error(`cannot clobber existing setting "${name}"`);
 		}
 
@@ -160,10 +186,12 @@ var Setting = (() => { // eslint-disable-line no-unused-vars, no-var
  						  →  Toggle  → boolean
 						  →  List    → Array
 						  →  Range   → number
+						  →  Value   → any
 					(if undefined)
 						  →  Toggle  → false
 						  →  List    → list[0]
 						  →  Range   → max
+						  →  Value   → undefined
 				list      →  List    → Array
 				min       →  Range   → number
 				max       →  Range   → number
@@ -173,9 +201,12 @@ var Setting = (() => { // eslint-disable-line no-unused-vars, no-var
 		*/
 		const definition = {
 			type,
-			name,
-			label : typeof def.label === 'string' ? def.label.trim() : ''
+			name
 		};
+
+		if (type !== Types.Value) {
+			definition.label = typeof def.label === 'string' ? def.label.trim() : '';
+		}
 
 		if (typeof def.desc === 'string') {
 			const desc = def.desc.trim();
@@ -309,6 +340,10 @@ var Setting = (() => { // eslint-disable-line no-unused-vars, no-var
 				break;
 			}
 
+			case Types.Value:
+				definition.default = def.default;
+				break;
+
 			default:
 				throw new Error(`unknown Setting type: ${type}`);
 		}
@@ -324,46 +359,98 @@ var Setting = (() => { // eslint-disable-line no-unused-vars, no-var
 		_definitions.push(Object.freeze(definition));
 	}
 
-	function definitionsAddHeader(name, desc) {
-		definitionsAdd(Types.Header, name, { desc });
+	function addHeader(name, desc) {
+		add(Types.Header, name, { desc });
 	}
 
-	function definitionsAddToggle(...args) {
-		definitionsAdd(Types.Toggle, ...args);
+	function addToggle(...args) {
+		add(Types.Toggle, ...args);
 	}
 
-	function definitionsAddList(...args) {
-		definitionsAdd(Types.List, ...args);
+	function addList(...args) {
+		add(Types.List, ...args);
 	}
 
-	function definitionsAddRange(...args) {
-		definitionsAdd(Types.Range, ...args);
+	function addRange(...args) {
+		add(Types.Range, ...args);
 	}
 
-	function definitionsIsEmpty() {
+	function addValue(...args) {
+		add(Types.Value, ...args);
+	}
+
+	function isEmpty() {
 		return _definitions.length === 0;
 	}
 
-	function definitionsHas(name) {
+	function has(name) {
 		return _definitions.some(definition => definition.name === name);
 	}
 
-	function definitionsGet(name) {
+	function get(name) {
 		return _definitions.find(definition => definition.name === name);
 	}
 
-	function definitionsDelete(name) {
-		if (definitionsHas(name)) {
-			delete settings[name];
-		}
-
+	function delete_(name) {
 		for (let i = 0; i < _definitions.length; ++i) {
 			if (_definitions[i].name === name) {
 				_definitions.splice(i, 1);
-				definitionsDelete(name);
+				// deleteDef(name); // QUESTION: WTAF is this doing here?
 				break;
 			}
 		}
+
+		if (has(name)) {
+			delete settings[name];
+		}
+	}
+
+
+	/*******************************************************************************
+		Values Functions.
+	*******************************************************************************/
+
+	function getValue(name) {
+		return settings[name];
+	}
+
+	function setValue(name, value) {
+		if (!has(name)) {
+			throw new Error('no such setting');
+		}
+
+		settings[name] = value;
+
+		const wasSaved = save();
+
+		if (wasSaved) {
+			const def = get(name);
+
+			if (Object.hasOwn(def, 'onChange')) {
+				const data = {
+					name,
+					value   : settings[name],
+					default : def.default
+				};
+
+				if (Object.hasOwn(def, 'list')) {
+					data.list = def.list;
+				}
+				if (Object.hasOwn(def, 'min')) {
+					data.min = def.min;
+				}
+				if (Object.hasOwn(def, 'max')) {
+					data.max = def.max;
+				}
+				if (Object.hasOwn(def, 'step')) {
+					data.step = def.step;
+				}
+
+				def.onChange.call(data, data);
+			}
+		}
+
+		return wasSaved;
 	}
 
 
@@ -380,25 +467,32 @@ var Setting = (() => { // eslint-disable-line no-unused-vars, no-var
 		/*
 			Settings Functions.
 		*/
-		init   : { value : settingsInit },
-		create : { value : settingsCreate },
-		save   : { value : settingsSave },
-		load   : { value : settingsLoad },
-		clear  : { value : settingsClear },
-		reset  : { value : settingsReset },
+		init   : { value : init },
+		create : { value : create },
+		save   : { value : save },
+		load   : { value : load },
+		clear  : { value : clear },
+		reset  : { value : reset },
 
 		/*
 			Definitions Functions.
 		*/
-		forEach   : { value : definitionsForEach },
-		add       : { value : definitionsAdd },
-		addHeader : { value : definitionsAddHeader },
-		addToggle : { value : definitionsAddToggle },
-		addList   : { value : definitionsAddList },
-		addRange  : { value : definitionsAddRange },
-		isEmpty   : { value : definitionsIsEmpty },
-		has       : { value : definitionsHas },
-		get       : { value : definitionsGet },
-		delete    : { value : definitionsDelete }
+		forEach   : { value : forEach },
+		add       : { value : add },
+		addHeader : { value : addHeader },
+		addToggle : { value : addToggle },
+		addList   : { value : addList },
+		addRange  : { value : addRange },
+		addValue  : { value : addValue },
+		isEmpty   : { value : isEmpty },
+		has       : { value : has },
+		get       : { value : get },
+		delete    : { value : delete_ },
+
+		/*
+			Values Functions.
+		*/
+		getValue : { value : getValue },
+		setValue : { value : setValue }
 	}));
 })();
