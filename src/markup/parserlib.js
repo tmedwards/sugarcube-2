@@ -1447,7 +1447,7 @@
 		name      : 'verbatimScriptTag',
 		profiles  : ['core'],
 		match     : '<[Ss][Cc][Rr][Ii][Pp][Tt][^>]*>',
-		lookahead : /(<[Ss][Cc][Rr][Ii][Pp][Tt]*>(?:.|\n)*?<\/[Ss][Cc][Rr][Ii][Pp][Tt]>)/gm,
+		lookahead : /(<[Ss][Cc][Rr][Ii][Pp][Tt][^>]*>(?:.|\n)*?<\/[Ss][Cc][Rr][Ii][Pp][Tt]>)/gm,
 		handler   : _verbatimTagHandler
 	});
 
@@ -1455,7 +1455,7 @@
 		name           : 'styleTag',
 		profiles       : ['core'],
 		match          : '<[Ss][Tt][Yy][Ll][Ee][^>]*>',
-		lookahead      : /(<[Ss][Tt][Yy][Ll][Ee]*>)((?:.|\n)*?)(<\/[Ss][Tt][Yy][Ll][Ee]>)/gm,
+		lookahead      : /(<[Ss][Tt][Yy][Ll][Ee][^>]*>)((?:.|\n)*?)(<\/[Ss][Tt][Yy][Ll][Ee]>)/gm,
 		imageMarkup    : new RegExp(Patterns.cssImage, 'g'),
 		hasImageMarkup : new RegExp(Patterns.cssImage),
 
