@@ -624,8 +624,9 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 
 						$outgoing
 							.attr({
-								id          : `out-${$outgoing.attr('id')}`,
-								'aria-live' : 'off'
+								id            : `out-${$outgoing.attr('id')}`,
+								'aria-hidden' : 'true',
+								'aria-live'   : 'off'
 							})
 							.addClass('passage-out');
 
