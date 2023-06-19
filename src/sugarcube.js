@@ -72,7 +72,7 @@ var prerender = {};
 var session = null;
 
 // Settings object.
-var settings = {};
+var settings = Setting.create();
 
 // Setup object.
 var setup = {};
