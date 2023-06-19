@@ -28,15 +28,16 @@
 		Etc.
 */
 var getTypeOf = (() => { // eslint-disable-line no-unused-vars, no-var
-	// Cache the `<Object>.toString()` method.
+	// Cache built-in object method.
 	const toString = Object.prototype.toString;
+	const slice    = String.prototype.slice;
 
 	function getTypeOf(O) {
 		// Special case for `null`, since `typeof` is a buggy piece of shit.
 		if (O === null) { return 'null'; }
 
 		const baseType = typeof O;
-		return baseType === 'object' ? toString.call(O).slice(8, -1) : baseType;
+		return baseType === 'object' ? slice.call(toString.call(O), 8, -1) : baseType;
 	}
 
 	return getTypeOf;
