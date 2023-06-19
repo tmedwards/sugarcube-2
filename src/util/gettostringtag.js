@@ -2,7 +2,7 @@
 
 	util/gettostringtag.js
 
-	Copyright © 2013–2022 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
+	Copyright © 2013–2023 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
@@ -13,8 +13,9 @@
 	NOTE: In ≤ES5, returns the value of the `[[Class]]` internal slot.
 */
 var getToStringTag = (() => { // eslint-disable-line no-unused-vars, no-var
-	// Cache the `<Object>.toString()` method.
+	// Cache built-in object method.
 	const toString = Object.prototype.toString;
+	const slice    = String.prototype.slice;
 
 	// If the browser is using the `Map()` and `Set()` polyfills, then return a
 	// version of `getToStringTag()` that contains special cases for them, since
@@ -29,12 +30,12 @@ var getToStringTag = (() => { // eslint-disable-line no-unused-vars, no-var
 			if (O instanceof Map) { return 'Map'; }
 			if (O instanceof Set) { return 'Set'; }
 
-			return toString.call(O).slice(8, -1);
+			return slice.call(toString.call(O), 8, -1);
 		};
 	}
 
 	// Elsewise, return the regular `getToStringTag()` function.
 	return function getToStringTag(O) {
-		return toString.call(O).slice(8, -1);
+		return slice.call(toString.call(O), 8, -1);
 	};
 })();
