@@ -391,16 +391,15 @@ var Setting = (() => { // eslint-disable-line no-unused-vars, no-var
 		return _definitions.find(definition => definition.name === name);
 	}
 
-	function delete_(name) {
+	function delete$(name) {
 		for (let i = 0; i < _definitions.length; ++i) {
 			if (_definitions[i].name === name) {
 				_definitions.splice(i, 1);
-				// deleteDef(name); // QUESTION: WTAF is this doing here?
 				break;
 			}
 		}
 
-		if (has(name)) {
+		if (Object.hasOwn(settings, name)) {
 			delete settings[name];
 		}
 	}
@@ -487,7 +486,7 @@ var Setting = (() => { // eslint-disable-line no-unused-vars, no-var
 		isEmpty   : { value : isEmpty },
 		has       : { value : has },
 		get       : { value : get },
-		delete    : { value : delete_ },
+		delete    : { value : delete$ },
 
 		/*
 			Values Functions.
