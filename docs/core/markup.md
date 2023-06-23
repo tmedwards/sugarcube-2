@@ -348,9 +348,19 @@ HTML attributes may be prefixed with directives, special text, which trigger spe
 			<td><pre><code>&lt;span id=&quot;foo&quot;&gt;…&lt;/span&gt;</code></pre></td>
 		</tr>
 		<tr>
+			<td><pre><code>sc-eval:<i>attribute-name</i></code></pre></td>
+			<td><pre><code>&lt;span sc-eval:id=&quot;'pre-' + _id + '-suf'&quot;&gt;…&lt;/span&gt;</code></pre></td>
+			<td><pre><code>&lt;span id=&quot;pre-foo-suf&quot;&gt;…&lt;/span&gt;</code></pre></td>
+		</tr>
+		<tr>
 			<td><pre><code>@<i>attribute-name</i></code></pre></td>
 			<td><pre><code>&lt;span @id=&quot;_id&quot;&gt;…&lt;/span&gt;</code></pre></td>
 			<td><pre><code>&lt;span id=&quot;foo&quot;&gt;…&lt;/span&gt;</code></pre></td>
+		</tr>
+		<tr>
+			<td><pre><code>@<i>attribute-name</i></code></pre></td>
+			<td><pre><code>&lt;span @id=&quot;'pre-' + _id + '-suf'&quot;&gt;…&lt;/span&gt;</code></pre></td>
+			<td><pre><code>&lt;span id=&quot;pre-foo-suf&quot;&gt;…&lt;/span&gt;</code></pre></td>
 		</tr>
 	</tbody>
 	</table>
