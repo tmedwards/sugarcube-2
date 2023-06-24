@@ -22,9 +22,11 @@ When you have a situation where you're using a set of passages as some kind of m
 
 The most common way to resolve this arbitrarily long return issue is to use a bit of JavaScript to record the last non-menu passage the player visited into a story variable and then to create a link with that.
 
-For example, you may use the following JavaScript code to record the last non-menu passage into the `$return` story variable: (Twine&nbsp;2: the Story JavaScript, Twine&nbsp;1/Twee: a `script`-tagged passage)
+For instance, you may use ***one*** of the following examples—they both do the same thing—to record the last non-menu passage into the `$return` story variable.
 
-```
+**Via JavaScript** (Twine&nbsp;2: the Story JavaScript, Twine&nbsp;1/Twee: a `script`-tagged passage)
+
+```js
 $(document).on(':passagestart', function (ev) {
 	if (!ev.passage.tags.includes('noreturn')) {
 		State.variables.return = ev.passage.name;
@@ -32,7 +34,15 @@ $(document).on(':passagestart', function (ev) {
 });
 ```
 
-You'll need to tag each and every one of your menu passages with `noreturn`—you may use any tag you wish (e.g., `menu`, `inventory`), just ensure you change the name in the code if you decide upon another.  If necessary, you may also use multiple tags by switching from [`<Array>.includes()`](#methods-array-prototype-method-includes) to [`<Array>.includesAny()`](#methods-array-prototype-method-includesany) in the above example.
+**Via macros** (best used in the `PassageReady` special passage)
+
+```
+<<if not tags().includes("noreturn")>>
+	<<set $return to passage()>>
+<</if>>
+```
+
+You'll need to tag each and every one of your menu passages with `noreturn`—you may use any tag you wish (e.g., `menu`, `inventory`), just ensure you change the name in the code if you decide upon another.  If necessary, you may also use multiple tags by switching from [`<Array>.includes()`](#methods-array-prototype-method-includes) to [`<Array>.includesAny()`](#methods-array-prototype-method-includesany) in whichever of the above examples you choose to use.
 
 In your menu passages, your long return links will simply reference the `$return` story variable, like so:
 
@@ -73,7 +83,7 @@ The <a href="#methods-json-method-revivewrapper"><code>JSON.reviveWrapper()</cod
 
 Here's a simple example whose constructor takes a single config/option object parameter:
 
-```
+```js
 window.ContactInfo = function (config) {
 	// Set up our own data properties with some defaults.
 	this.name    = '';
@@ -112,7 +122,7 @@ ContactInfo.prototype.toJSON = function () {
 
 Creating a new instance of this `ContactInfo` example would be something like:
 
-```
+```js
 <<set $Joe to new ContactInfo({
 	name  : 'Joe Blow',
 	phone : '1 555 555 1212',
@@ -124,7 +134,7 @@ Creating a new instance of this `ContactInfo` example would be something like:
 
 Here's a simple example whose constructor takes multiple discrete parameters:
 
-```
+```js
 window.ContactInfo = function (name, addr, phone, email) {
 	// Set up our own data properties with the given values or defaults.
 	this.name    = name || '';
