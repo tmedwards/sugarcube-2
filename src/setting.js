@@ -49,25 +49,7 @@ var Setting = (() => { // eslint-disable-line no-unused-vars, no-var
 		// Execute `onInit` callbacks.
 		_definitions.forEach(def => {
 			if (Object.hasOwn(def, 'onInit')) {
-				const data = {
-					name    : def.name,
-					value   : settings[def.name],
-					default : def.default
-				};
-
-				if (Object.hasOwn(def, 'list')) {
-					data.list = def.list;
-				}
-				if (Object.hasOwn(def, 'min')) {
-					data.min = def.min;
-				}
-				if (Object.hasOwn(def, 'max')) {
-					data.max = def.max;
-				}
-				if (Object.hasOwn(def, 'step')) {
-					data.step = def.step;
-				}
-
+				const data = createResultObject(def);
 				def.onInit.call(data, data);
 			}
 		});
@@ -82,30 +64,42 @@ var Setting = (() => { // eslint-disable-line no-unused-vars, no-var
 		window.SugarCube.settings = settings = value;
 	}
 
+	function createResultObject(def) {
+		const result = {
+			name    : def.name,
+			value   : settings[def.name],
+			default : def.default
+		};
+
+		if (Object.hasOwn(def, 'list')) {
+			result.list = def.list;
+		}
+		if (Object.hasOwn(def, 'min')) {
+			result.min = def.min;
+		}
+		if (Object.hasOwn(def, 'max')) {
+			result.max = def.max;
+		}
+		if (Object.hasOwn(def, 'step')) {
+			result.step = def.step;
+		}
+
+		return result;
+	}
+
 
 	/*******************************************************************************
 		API Functions.
 	*******************************************************************************/
 
-	function create() {
-		return Object.create(null);
+	function clear() {
+		updateSettingsObject(create());
+		storage.delete('settings');
+		return true;
 	}
 
-	function save() {
-		const savedSettings = create();
-
-		if (Object.keys(settings).length > 0) {
-			_definitions
-				.filter(def => def.type !== Types.Header && settings[def.name] !== def.default)
-				.forEach(def => savedSettings[def.name] = settings[def.name]);
-		}
-
-		if (Object.keys(savedSettings).length === 0) {
-			storage.delete('settings');
-			return true;
-		}
-
-		return storage.set('settings', savedSettings);
+	function create() {
+		return Object.create(null);
 	}
 
 	function load() {
@@ -119,12 +113,6 @@ var Setting = (() => { // eslint-disable-line no-unused-vars, no-var
 
 		// Assign to the `settings` object while overwriting the defaults with the loaded settings.
 		updateSettingsObject(Object.assign(defaultSettings, loadedSettings));
-	}
-
-	function clear() {
-		updateSettingsObject(create());
-		storage.delete('settings');
-		return true;
 	}
 
 	function reset(name) {
@@ -145,6 +133,23 @@ var Setting = (() => { // eslint-disable-line no-unused-vars, no-var
 		}
 
 		return save();
+	}
+
+	function save() {
+		const savedSettings = create();
+
+		if (Object.keys(settings).length > 0) {
+			_definitions
+				.filter(def => def.type !== Types.Header && settings[def.name] !== def.default)
+				.forEach(def => savedSettings[def.name] = settings[def.name]);
+		}
+
+		if (Object.keys(savedSettings).length === 0) {
+			storage.delete('settings');
+			return true;
+		}
+
+		return storage.set('settings', savedSettings);
 	}
 
 
@@ -218,10 +223,6 @@ var Setting = (() => { // eslint-disable-line no-unused-vars, no-var
 
 		switch (type) {
 			case Types.Header:
-				break;
-
-			case Types.Toggle:
-				definition.default = !!def.default;
 				break;
 
 			case Types.List: {
@@ -340,9 +341,15 @@ var Setting = (() => { // eslint-disable-line no-unused-vars, no-var
 				break;
 			}
 
-			case Types.Value:
+			case Types.Toggle: {
+				definition.default = Boolean(def.default);
+				break;
+			}
+
+			case Types.Value: {
 				definition.default = def.default;
 				break;
+			}
 
 			default:
 				throw new Error(`unknown Setting type: ${type}`);
@@ -363,16 +370,16 @@ var Setting = (() => { // eslint-disable-line no-unused-vars, no-var
 		add(Types.Header, name, { desc });
 	}
 
-	function addToggle(...args) {
-		add(Types.Toggle, ...args);
-	}
-
 	function addList(...args) {
 		add(Types.List, ...args);
 	}
 
 	function addRange(...args) {
 		add(Types.Range, ...args);
+	}
+
+	function addToggle(...args) {
+		add(Types.Toggle, ...args);
 	}
 
 	function addValue(...args) {
@@ -420,36 +427,17 @@ var Setting = (() => { // eslint-disable-line no-unused-vars, no-var
 
 		settings[name] = value;
 
-		const wasSaved = save();
+		// QUESTION: Should we something on failure?
+		save();
 
-		if (wasSaved) {
-			const def = get(name);
+		const def = get(name);
 
-			if (Object.hasOwn(def, 'onChange')) {
-				const data = {
-					name,
-					value   : settings[name],
-					default : def.default
-				};
-
-				if (Object.hasOwn(def, 'list')) {
-					data.list = def.list;
-				}
-				if (Object.hasOwn(def, 'min')) {
-					data.min = def.min;
-				}
-				if (Object.hasOwn(def, 'max')) {
-					data.max = def.max;
-				}
-				if (Object.hasOwn(def, 'step')) {
-					data.step = def.step;
-				}
-
-				def.onChange.call(data, data);
-			}
+		if (Object.hasOwn(def, 'onChange')) {
+			const data = createResultObject(def);
+			def.onChange.call(data, data);
 		}
 
-		return wasSaved;
+		return true;
 	}
 
 

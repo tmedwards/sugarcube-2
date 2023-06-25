@@ -8,7 +8,7 @@
 ***********************************************************************************************************************/
 /*
 	global Alert, Config, Dialog, Engine, Has, L10n, Save, Setting, State, Story, Wikifier,
-	       createSlug, errorPrologRegExp, settings
+	       createSlug, errorPrologRegExp
 */
 
 var UI = (() => { // eslint-disable-line no-unused-vars, no-var
@@ -604,52 +604,11 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 				.wikiWithOptions({ cleanup : false }, control.label);
 
 			// Set up the control.
-			if (settings[name] == null) { // lazy equality for null
-				settings[name] = control.default;
+			if (Setting.getValue(name) == null) { // lazy equality for null
+				Setting.setValue(name, control.default);
 			}
 
 			switch (control.type) {
-				case Setting.Types.Toggle: {
-					$control = jQuery(document.createElement('button'));
-
-					if (settings[name]) {
-						$control
-							.addClass('enabled')
-							.text(L10n.get('settingsOn'));
-					}
-					else {
-						$control
-							.text(L10n.get('settingsOff'));
-					}
-
-					$control.ariaClick(function () {
-						if (settings[name]) {
-							jQuery(this)
-								.removeClass('enabled')
-								.text(L10n.get('settingsOff'));
-							settings[name] = false;
-						}
-						else {
-							jQuery(this)
-								.addClass('enabled')
-								.text(L10n.get('settingsOn'));
-							settings[name] = true;
-						}
-
-						Setting.save();
-
-						if (Object.hasOwn(control, 'onChange')) {
-							control.onChange.call({
-								name,
-								value   : settings[name],
-								default : control.default
-							});
-						}
-					});
-
-					break;
-				}
-
 				case Setting.Types.List: {
 					$control = jQuery(document.createElement('select'));
 
@@ -661,20 +620,10 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 					}
 
 					$control
-						.val(control.list.indexOf(settings[name]))
+						.val(control.list.indexOf(Setting.getValue(name)))
 						.attr('tabindex', 0)
 						.on('change', function () {
-							settings[name] = control.list[Number(this.value)];
-							Setting.save();
-
-							if (Object.hasOwn(control, 'onChange')) {
-								control.onChange.call({
-									name,
-									value   : settings[name],
-									default : control.default,
-									list    : control.list
-								});
-							}
+							Setting.setValue(name, control.list[Number(this.value)]);
 						});
 
 					break;
@@ -692,23 +641,11 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 							min      : control.min,
 							max      : control.max,
 							step     : control.step,
-							value    : settings[name],
+							value    : Setting.getValue(name),
 							tabindex : 0
 						})
 						.on('change input', function () {
-							settings[name] = Number(this.value);
-							Setting.save();
-
-							if (Object.hasOwn(control, 'onChange')) {
-								control.onChange.call({
-									name,
-									value   : settings[name],
-									default : control.default,
-									min     : control.min,
-									max     : control.max,
-									step    : control.step
-								});
-							}
+							Setting.setValue(name, Number(this.value));
 						})
 						.on('keypress', ev => {
 							if (ev.which === 13) {
@@ -716,6 +653,39 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 								$control.trigger('change');
 							}
 						});
+
+					break;
+				}
+
+				case Setting.Types.Toggle: {
+					$control = jQuery(document.createElement('button'));
+
+					if (Setting.getValue(name)) {
+						$control
+							.addClass('enabled')
+							.text(L10n.get('settingsOn'));
+					}
+					else {
+						$control
+							.text(L10n.get('settingsOff'));
+					}
+
+					$control.ariaClick(function () {
+						const status = Setting.getValue(name);
+
+						if (status) {
+							jQuery(this)
+								.removeClass('enabled')
+								.text(L10n.get('settingsOff'));
+						}
+						else {
+							jQuery(this)
+								.addClass('enabled')
+								.text(L10n.get('settingsOn'));
+						}
+
+						Setting.setValue(name, !status);
+					});
 
 					break;
 				}
