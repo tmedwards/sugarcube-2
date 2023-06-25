@@ -433,12 +433,15 @@
 ## [`Setting` API](#setting-api)
 
 * [`Setting.addHeader()`](#setting-api-method-addheader)
-* [`Setting.addToggle()`](#setting-api-method-addtoggle)
 * [`Setting.addList()`](#setting-api-method-addlist)
 * [`Setting.addRange()`](#setting-api-method-addrange)
+* [`Setting.addToggle()`](#setting-api-method-addtoggle)
+* [`Setting.addValue()`](#setting-api-method-addvalue)
+* [`Setting.getValue()`](#setting-api-method-getvalue)
 * [`Setting.load()`](#setting-api-method-load)
 * [`Setting.reset()`](#setting-api-method-reset)
 * [`Setting.save()`](#setting-api-method-save)
+* [`Setting.setValue()`](#setting-api-method-setvalue)
 * [`settings`](#setting-api-object-settings)
 
 ## [`SimpleAudio` API](#simpleaudio-api)
