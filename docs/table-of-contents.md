@@ -316,10 +316,12 @@
 * [`Dialog.append()`](#dialog-api-method-append)
 * [`Dialog.body()`](#dialog-api-method-body)
 * [`Dialog.close()`](#dialog-api-method-close)
+* [`Dialog.create()`](#dialog-api-method-create)
+* [`Dialog.empty()`](#dialog-api-method-empty)
 * [`Dialog.isOpen()`](#dialog-api-method-isopen)
 * [`Dialog.open()`](#dialog-api-method-open)
-* [`Dialog.setup()`](#dialog-api-method-setup)
 * [`Dialog.wiki()`](#dialog-api-method-wiki)
+* [`Dialog.wikiPassage()`](#dialog-api-method-wikipassage)
 
 ## [`Engine` API](#engine-api)
 
