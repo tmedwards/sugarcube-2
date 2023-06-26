@@ -338,7 +338,7 @@
 			Extend jQuery's static methods with a `wikiPassage()` method.
 		*/
 		wikiPassage(name) {
-			return this.wikiWithOptions(undefined, Story.get(name).processText());
+			this.wikiWithOptions(undefined, Story.get(name).processText());
 		}
 	});
 
