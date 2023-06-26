@@ -858,6 +858,26 @@ $.wiki('<<somemacro>>');  → Invokes the <<somemacro>> macro, discarding any ou
 
 <!-- *********************************************************************** -->
 
+### `jQuery.wikiPassage(name)` {#methods-jquery-method-wikipassage}
+
+Wikifies the passage by the given name and discards the result.  If there were errors, an exception is thrown.  This is only really useful when you want to invoke a macro for its side-effects and aren't interested in its output.
+
+#### History:
+
+* `v2.37.0`: Introduced.
+
+#### Parameters:
+
+* **`name`:** (*string*) The name of the passage.
+
+#### Examples:
+
+```
+$.wikiPassage('Fight Init');  → Renders the passage, discarding any output
+```
+
+<!-- *********************************************************************** -->
+
 ### `<jQuery>.wiki(sources…)` → *`jQuery` object* {#methods-jquery-prototype-method-wiki}
 
 Wikifies the given content source(s) and appends the result to the target element(s).  Returns a reference to the current `jQuery` object for chaining.
@@ -875,6 +895,27 @@ Wikifies the given content source(s) and appends the result to the target elemen
 ```
 // Given an element: <div id="the-box"></div>
 $('#the-box').wiki('Who //are// you?');  → Appends "Who <em>are</em> you?" to the target element
+```
+
+<!-- *********************************************************************** -->
+
+### `<jQuery>.wikiPassage(name)` → *`jQuery` object* {#methods-jquery-prototype-method-wikipassage}
+
+Wikifies the passage by the given name and appends the result to the target element(s).  Returns a reference to the current `jQuery` object for chaining.
+
+#### History:
+
+* `v2.37.0`: Introduced.
+
+#### Parameters:
+
+* **`name`:** (*string*) The name of the passage.
+
+#### Examples:
+
+```
+// Given an element: <div id="notebook"></div>
+$('#notebook').wikiPassage('Notes');  → Appends the rendered passage to the target element
 ```
 
 
