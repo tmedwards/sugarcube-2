@@ -332,6 +332,13 @@
 		*/
 		wiki(...sources) {
 			this.wikiWithOptions(undefined, ...sources);
+		},
+
+		/*
+			Extend jQuery's static methods with a `wikiPassage()` method.
+		*/
+		wikiPassage(name) {
+			return this.wikiWithOptions(undefined, Story.get(name).processText());
 		}
 	});
 
@@ -361,6 +368,13 @@
 		*/
 		wiki(...sources) {
 			return this.wikiWithOptions(undefined, ...sources);
+		},
+
+		/*
+			Extend jQuery's chainable methods with a `wikiPassage()` method.
+		*/
+		wikiPassage(name) {
+			return this.wikiWithOptions(undefined, Story.get(name).processText());
 		}
 	});
 })();
