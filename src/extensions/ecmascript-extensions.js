@@ -1326,36 +1326,4 @@
 			return String.prototype.indexOf.apply(this, arguments) !== -1;
 		}
 	});
-
-	/*
-		[DEPRECATED] Returns an array of link titles, parsed from the string.
-
-		NOTE: Unused in SugarCube, only included for compatibility.
-	*/
-	Object.defineProperty(String.prototype, 'readBracketedList', {
-		configurable : true,
-		writable     : true,
-
-		value() {
-			if (this == null) { // lazy equality for null
-				throw new TypeError('String.prototype.readBracketedList called on null or undefined');
-			}
-
-			// RegExp groups: Double-square-bracket quoted | Unquoted.
-			const re    = new RegExp('(?:\\[\\[((?:\\s|\\S)*?)\\]\\])|([^"\'\\s]\\S*)', 'gm');
-			const names = [];
-			let match;
-
-			while ((match = re.exec(this)) !== null) {
-				if (match[1]) { // double-square-bracket quoted
-					names.push(match[1]);
-				}
-				else if (match[2]) { // unquoted
-					names.push(match[2]);
-				}
-			}
-
-			return names;
-		}
-	});
 })();
