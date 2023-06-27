@@ -206,7 +206,6 @@
 	* [`StorySubtitle`](#special-passage-storysubtitle)
 	* [`StoryTitle`](#special-passage-storytitle)
 * [Tag Names](#special-tags)
-	* [`bookmark`](#special-tag-bookmark)
 	* [`nobr`](#special-tag-nobr)
 	* [`init`](#special-tag-init)
 	* [`script`](#special-tag-script)

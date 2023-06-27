@@ -248,16 +248,6 @@ If you want to set a title for display that contains code, markup, or macros, se
 
 <!-- *********************************************************************** -->
 
-### `bookmark` {#special-tag-bookmark}
-
-Registers the passage into the *Jump To* menu.
-
-#### History:
-
-* `v2.0.0`: Introduced.
-
-<!-- *********************************************************************** -->
-
 ### `nobr` {#special-tag-nobr}
 
 Causes leading/trailing newlines to be removed and all remaining sequences of newlines to be replaced with single spaces before the passage is rendered.  Equivalent to wrapping the entire passage in a [`<<nobr>>` macro](#macros-macro-nobr).  See the [`Config.passages.nobr` setting](#config-api-property-passages-nobr) for a way to apply the same processing to all passages at once.
@@ -357,6 +347,19 @@ Registers the passage as [`<<widget>>` macro](#macros-macro-widget) definitions,
 #### History:
 
 * `v2.0.0`: Introduced.
+
+<!-- *********************************************************************** -->
+
+### <span class="deprecated">`bookmark`</span> {#special-tag-bookmark}
+
+<p role="note" class="warning"><b>Deprecated:</b>
+This special tag has been deprecated and should no longer be used.
+</p>
+
+#### History:
+
+* `v2.0.0`: Introduced.
+* `v2.37.0`: Deprecated.
 
 
 <!-- ***************************************************************************
