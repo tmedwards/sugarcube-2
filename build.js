@@ -165,7 +165,7 @@ const _path = require('path');
 const _opts = require('commander')
 	.program
 	.option('-b, --build <version>', 'Build only for Twine major version: 1 or 2; default: build for all.')
-	.option('-d, --debug', 'Keep debugging code; gated by DEBUG symbol.')
+	.option('-d, --debug', 'Keep debugging code; gated by BUILD_DEBUG symbol.')
 	.option('-u, --unminified', 'Suppress minification stages.')
 	.option('-n, --notranspile', 'Suppress JavaScript transpilation stages.')
 	.helpOption('-h, --help', 'Print this help, then exit.')
@@ -315,8 +315,8 @@ function compileJavaScript(config, options) {
 	return (async source => {
 		if (_opts.unminified) {
 			return [
-				`window.TWINE1=${Boolean(options.twine1)}`,
-				`window.DEBUG=${_opts.debug || false}`,
+				`window.BUILD_TWINE1=${Boolean(options.twine1)}`,
+				`window.BUILD_DEBUG=${_opts.debug || false}`,
 				source
 			].join(';\n');
 		}
@@ -326,8 +326,8 @@ function compileJavaScript(config, options) {
 		const minified   = await minify(source, {
 			compress : {
 				global_defs : { // eslint-disable-line camelcase
-					TWINE1 : !!options.twine1,
-					DEBUG  : _opts.debug || false
+					BUILD_TWINE1 : !!options.twine1,
+					BUILD_DEBUG  : _opts.debug || false
 				}
 			},
 			mangle : false

@@ -11,10 +11,10 @@
         "jquery"  : true
     },
     "globals": {
-        "DEBUG"    : false,
-        "TWINE1"   : false,
-        "LZString" : false,
-        "saveAs"   : false
+        "BUILD_DEBUG"  : false,
+        "BUILD_TWINE1" : false,
+        "LZString"     : false,
+        "saveAs"       : false
     },
     "rules" : {
         "array-bracket-spacing"            : ["error", "never"],

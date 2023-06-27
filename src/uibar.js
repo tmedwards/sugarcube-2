@@ -20,7 +20,7 @@ var UIBar = (() => { // eslint-disable-line no-unused-vars, no-var
 	*******************************************************************************/
 
 	function uiBarDestroy() {
-		if (DEBUG) { console.log('[UIBar/uiBarDestroy()]'); }
+		if (BUILD_DEBUG) { console.log('[UIBar/uiBarDestroy()]'); }
 
 		if (!_$uiBar) {
 			return;
@@ -51,7 +51,7 @@ var UIBar = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 	function uiBarInit() {
-		if (DEBUG) { console.log('[UIBar/uiBarInit()]'); }
+		if (BUILD_DEBUG) { console.log('[UIBar/uiBarInit()]'); }
 
 		if (document.getElementById('ui-bar')) {
 			return;
@@ -139,7 +139,7 @@ var UIBar = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 	function uiBarStart() {
-		if (DEBUG) { console.log('[UIBar/uiBarStart()]'); }
+		if (BUILD_DEBUG) { console.log('[UIBar/uiBarStart()]'); }
 
 		if (!_$uiBar) {
 			return;
@@ -192,7 +192,7 @@ var UIBar = (() => { // eslint-disable-line no-unused-vars, no-var
 			setDisplayTitle(Story.get('StoryDisplayTitle').processText());
 		}
 		else {
-			if (TWINE1) { // for Twine 1
+			if (BUILD_TWINE1) { // for Twine 1
 				setPageElement('story-title', 'StoryTitle', Story.name);
 			}
 			else { // for Twine 2
@@ -342,7 +342,7 @@ var UIBar = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 	function uiBarUpdate() {
-		if (DEBUG) { console.log('[UIBar/uiBarUpdate()]'); }
+		if (BUILD_DEBUG) { console.log('[UIBar/uiBarUpdate()]'); }
 
 		// Set up the display title, both the document title and page element.
 		if (Story.has('StoryDisplayTitle')) {

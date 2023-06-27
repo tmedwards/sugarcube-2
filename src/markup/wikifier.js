@@ -475,7 +475,7 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 			}
 
 			function profilesCompile() {
-				if (DEBUG) { console.log('[Wikifier.Parser/profilesCompile()]'); }
+				if (BUILD_DEBUG) { console.log('[Wikifier.Parser/profilesCompile()]'); }
 
 				const all  = _parsers;
 				const core = all.filter(parser => !Array.isArray(parser.profiles) || parser.profiles.includes('core'));

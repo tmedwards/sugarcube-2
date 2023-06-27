@@ -46,7 +46,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 		Initialize the saves subsystem.
 	*/
 	function init() {
-		if (DEBUG) { console.log('[Save/init()]'); }
+		if (BUILD_DEBUG) { console.log('[Save/init()]'); }
 
 		// Migrate saves from the old monolithic v2 save object to the
 		// new v3 style with separate entries for each save.
@@ -790,7 +790,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 	*******************************************************************************/
 
 	function marshal(details) {
-		if (DEBUG) { console.log(`[Save/marshal({ type : "${details.type}" })]`); }
+		if (BUILD_DEBUG) { console.log(`[Save/marshal({ type : "${details.type}" })]`); }
 
 		const save = Object.assign({}, details, {
 			date  : Date.now(),
@@ -818,7 +818,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 	function unmarshal(save) {
-		if (DEBUG) { console.log('[Save/unmarshal()]'); }
+		if (BUILD_DEBUG) { console.log('[Save/unmarshal()]'); }
 
 		if (
 			save == null // lazy equality for null

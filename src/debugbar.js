@@ -26,7 +26,7 @@ var DebugBar = (() => { // eslint-disable-line no-unused-vars, no-var
 	*******************************************************************************/
 
 	function debugBarInit() {
-		if (DEBUG) { console.log('[DebugBar/debugBarInit()]'); }
+		if (BUILD_DEBUG) { console.log('[DebugBar/debugBarInit()]'); }
 
 		/*
 			Generate the debug bar elements and append them to the `<body>`.
@@ -143,7 +143,7 @@ var DebugBar = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 	function debugBarStart() {
-		if (DEBUG) { console.log('[DebugBar/debugBarStart()]'); }
+		if (BUILD_DEBUG) { console.log('[DebugBar/debugBarStart()]'); }
 
 		// Attempt to restore an existing session.
 		_restoreSession();

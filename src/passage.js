@@ -23,7 +23,7 @@ var Passage = (() => { // eslint-disable-line no-unused-vars, no-var
 			widget     → special tag
 	*/
 	// For Twine 1
-	if (TWINE1) {
+	if (BUILD_TWINE1) {
 		_tagsToSkip = /^(?:debug|nobr|passage|script|stylesheet|widget|twine\..*)$/i;
 	}
 	// For Twine 2
@@ -32,7 +32,7 @@ var Passage = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 	// For Twine 1
-	if (TWINE1) {
+	if (BUILD_TWINE1) {
 		/*
 			Returns a decoded version of the passed Twine 1 passage store encoded string.
 		*/
@@ -133,7 +133,7 @@ var Passage = (() => { // eslint-disable-line no-unused-vars, no-var
 			}
 
 			// For Twine 1
-			if (TWINE1) {
+			if (BUILD_TWINE1) {
 				return _twine1Unescape(this.element.textContent);
 			}
 			// For Twine 2

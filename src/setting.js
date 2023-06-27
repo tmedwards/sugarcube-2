@@ -27,7 +27,7 @@ var Setting = (() => { // eslint-disable-line no-unused-vars, no-var
 	*******************************************************************************/
 
 	function init() {
-		if (DEBUG) { console.log('[Setting/init()]'); }
+		if (BUILD_DEBUG) { console.log('[Setting/init()]'); }
 
 		/* legacy */
 		// Attempt to migrate an existing `options` store to `settings`.

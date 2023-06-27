@@ -45,7 +45,7 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 		Initialize the core story elements and perform some bookkeeping.
 	*/
 	function engineInit() {
-		if (DEBUG) { console.log('[Engine/engineInit()]'); }
+		if (BUILD_DEBUG) { console.log('[Engine/engineInit()]'); }
 
 		if (_state !== States.Init) {
 			return;
@@ -158,7 +158,7 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 		Run user scripts (user stylesheet, JavaScript, and widgets).
 	*/
 	function engineRunUserScripts() {
-		if (DEBUG) { console.log('[Engine/engineRunUserScripts()]'); }
+		if (BUILD_DEBUG) { console.log('[Engine/engineRunUserScripts()]'); }
 
 		if (_state !== States.Init) {
 			return;
@@ -206,7 +206,7 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 		Run the user init passages.
 	*/
 	function engineRunUserInit() {
-		if (DEBUG) { console.log('[Engine/engineRunUserInit()]'); }
+		if (BUILD_DEBUG) { console.log('[Engine/engineRunUserInit()]'); }
 
 		if (_state !== States.Init) {
 			return;
@@ -267,7 +267,7 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 		Starts the story.
 	*/
 	function engineStart() {
-		if (DEBUG) { console.log('[Engine/engineStart()]'); }
+		if (BUILD_DEBUG) { console.log('[Engine/engineStart()]'); }
 
 		if (_state !== States.Init) {
 			return;
@@ -317,12 +317,12 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 					reject(); // eslint-disable-line prefer-promise-reject-errors
 				})
 					.then(() => {
-						if (DEBUG) { console.log('\tattempting autoload of browser continue'); }
+						if (BUILD_DEBUG) { console.log('\tattempting autoload of browser continue'); }
 
 						return Save.browser.continue();
 					})
 					.catch(() => {
-						if (DEBUG) { console.log(`\tstarting passage: "${Config.passages.start}"`); }
+						if (BUILD_DEBUG) { console.log(`\tstarting passage: "${Config.passages.start}"`); }
 
 						enginePlay(Config.passages.start);
 					});
@@ -334,7 +334,7 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 		Restarts the story.
 	*/
 	function engineRestart() {
-		if (DEBUG) { console.log('[Engine/engineRestart()]'); }
+		if (BUILD_DEBUG) { console.log('[Engine/engineRestart()]'); }
 
 		/*
 			Show the loading screen to hide any unsightly rendering shenanigans during the
@@ -461,7 +461,7 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 			return false;
 		}
 
-		if (DEBUG) { console.log(`[Engine/enginePlay(title: "${title}", noHistory: ${noHistory})]`); }
+		if (BUILD_DEBUG) { console.log(`[Engine/enginePlay(title: "${title}", noHistory: ${noHistory})]`); }
 
 		let passageTitle = title;
 
@@ -791,7 +791,7 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 		[DEPRECATED] Play the given passage, optionally without altering the history.
 	*/
 	function engineDisplay(title, link, option) {
-		if (DEBUG) { console.log('[Engine/engineDisplay()]'); }
+		if (BUILD_DEBUG) { console.log('[Engine/engineDisplay()]'); }
 
 		let noHistory = false;
 

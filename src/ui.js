@@ -109,7 +109,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 	function buildRestart() {
-		if (DEBUG) { console.log('[UI/uiBuildRestart()]'); }
+		if (BUILD_DEBUG) { console.log('[UI/buildRestart()]'); }
 
 		Dialog
 			.create(L10n.get('restartTitle'), 'restart')
@@ -417,7 +417,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 				.append($tbody);
 		}
 
-		if (DEBUG) { console.log('[UI/uiBuildSaves()]'); }
+		if (BUILD_DEBUG) { console.log('[UI/buildSaves()]'); }
 
 		const browserEnabled = Save.browser.isEnabled();
 
@@ -765,7 +765,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 
 	// [DEPRECATED]
 	function buildJumpto() {
-		if (DEBUG) { console.log('[UI/uiBuildJumpto()]'); }
+		if (BUILD_DEBUG) { console.log('[UI/buildJumpto()]'); }
 
 		console.warn('[DEPRECATED] UI.buildJumpto() is deprecated.');
 
@@ -805,7 +805,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 
 	// [DEPRECATED]
 	function buildShare() {
-		if (DEBUG) { console.log('[UI/uiBuildShare()]'); }
+		if (BUILD_DEBUG) { console.log('[UI/buildShare()]'); }
 
 		console.warn('[DEPRECATED] UI.buildShare() is deprecated.');
 

@@ -50,20 +50,20 @@ SimpleStore.adapters.push((() => {
 
 		/* legacy */
 		get length() {
-			if (DEBUG) { console.log(`[<SimpleStore:${this.name}>.length : Number]`); }
+			if (BUILD_DEBUG) { console.log(`[<SimpleStore:${this.name}>.length : Number]`); }
 
 			return this.keys().length;
 		}
 		/* /legacy */
 
 		size() {
-			if (DEBUG) { console.log(`[<SimpleStore:${this.name}>.size() : Number]`); }
+			if (BUILD_DEBUG) { console.log(`[<SimpleStore:${this.name}>.size() : Number]`); }
 
 			return this.keys().length;
 		}
 
 		keys() {
-			if (DEBUG) { console.log(`[<SimpleStore:${this.name}>.keys() : String Array]`); }
+			if (BUILD_DEBUG) { console.log(`[<SimpleStore:${this.name}>.keys() : String Array]`); }
 
 			if (document.cookie === '') {
 				return [];
@@ -94,7 +94,7 @@ SimpleStore.adapters.push((() => {
 		}
 
 		has(key) {
-			if (DEBUG) { console.log(`[<SimpleStore:${this.name}>.has(key: "${key}") : Boolean]`); }
+			if (BUILD_DEBUG) { console.log(`[<SimpleStore:${this.name}>.has(key: "${key}") : Boolean]`); }
 
 			if (typeof key !== 'string' || !key) {
 				return false;
@@ -104,7 +104,7 @@ SimpleStore.adapters.push((() => {
 		}
 
 		get(key) {
-			if (DEBUG) { console.log(`[<SimpleStore:${this.name}>.get(key: "${key}") : Any]`); }
+			if (BUILD_DEBUG) { console.log(`[<SimpleStore:${this.name}>.get(key: "${key}") : Any]`); }
 
 			if (typeof key !== 'string' || !key) {
 				return null;
@@ -116,7 +116,7 @@ SimpleStore.adapters.push((() => {
 		}
 
 		set(key, value) {
-			if (DEBUG) { console.log(`[<SimpleStore:${this.name}>.set(key: "${key}", value: \u2026) : Boolean]`); }
+			if (BUILD_DEBUG) { console.log(`[<SimpleStore:${this.name}>.set(key: "${key}", value: \u2026) : Boolean]`); }
 
 			if (typeof key !== 'string' || !key) {
 				return false;
@@ -144,7 +144,7 @@ SimpleStore.adapters.push((() => {
 		}
 
 		delete(key) {
-			if (DEBUG) { console.log(`[<SimpleStore:${this.name}>.delete(key: "${key}") : Boolean]`); }
+			if (BUILD_DEBUG) { console.log(`[<SimpleStore:${this.name}>.delete(key: "${key}") : Boolean]`); }
 
 			/*
 				Attempting to delete a cookie implies setting it, so we test for its existence
@@ -178,18 +178,18 @@ SimpleStore.adapters.push((() => {
 		}
 
 		clear() {
-			if (DEBUG) { console.log(`[<SimpleStore:${this.name}>.clear() : Boolean]`); }
+			if (BUILD_DEBUG) { console.log(`[<SimpleStore:${this.name}>.clear() : Boolean]`); }
 
 			const keys = this.keys();
 
 			for (let i = 0, iend = keys.length; i < iend; ++i) {
-				if (DEBUG) { console.log('\tdeleting key:', keys[i]); }
+				if (BUILD_DEBUG) { console.log('\tdeleting key:', keys[i]); }
 
 				this.delete(keys[i]);
 			}
 
 			// this.keys().forEach(key => {
-			// 	if (DEBUG) { console.log('\tdeleting key:', key); }
+			// 	if (BUILD_DEBUG) { console.log('\tdeleting key:', key); }
 			//
 			// 	this.delete(key);
 			// });

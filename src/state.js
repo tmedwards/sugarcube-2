@@ -36,7 +36,7 @@ var State = (() => { // eslint-disable-line no-unused-vars, no-var
 		Resets the story state.
 	*/
 	function stateReset() {
-		if (DEBUG) { console.log('[State/stateReset()]'); }
+		if (BUILD_DEBUG) { console.log('[State/stateReset()]'); }
 
 		// Delete the active session.
 		session.delete('state');
@@ -56,12 +56,12 @@ var State = (() => { // eslint-disable-line no-unused-vars, no-var
 		Restores the story state from the active session.
 	*/
 	function stateRestore() {
-		if (DEBUG) { console.log('[State/stateRestore()]'); }
+		if (BUILD_DEBUG) { console.log('[State/stateRestore()]'); }
 
 		// Retrieve the active session.
 		const state = session.get('state');
 
-		if (DEBUG) { console.log('\tsession state:', state); }
+		if (BUILD_DEBUG) { console.log('\tsession state:', state); }
 
 		if (state == null) { // lazy equality for null
 			return false;
@@ -396,13 +396,13 @@ var State = (() => { // eslint-disable-line no-unused-vars, no-var
 		Creates a new moment and pushes it onto the history, discarding future moments if necessary.
 	*/
 	function historyCreate(title) {
-		if (DEBUG) { console.log(`[State/historyCreate(title: "${title}")]`); }
+		if (BUILD_DEBUG) { console.log(`[State/historyCreate(title: "${title}")]`); }
 
 		// TODO: It might be good to have some assertions about the passage title here.
 
 		// If we're not at the top of the stack, discard the future moments.
 		if (historyLength() < historySize()) {
-			if (DEBUG) { console.log(`\tnon-top push; discarding ${historySize() - historyLength()} future moments`); }
+			if (BUILD_DEBUG) { console.log(`\tnon-top push; discarding ${historySize() - historyLength()} future moments`); }
 
 			_history.splice(historyLength(), historySize() - historyLength());
 		}
@@ -430,7 +430,7 @@ var State = (() => { // eslint-disable-line no-unused-vars, no-var
 		Activate the moment at the given index within the history.
 	*/
 	function historyGoTo(index) {
-		if (DEBUG) { console.log(`[State/historyGoTo(index: ${index})]`); }
+		if (BUILD_DEBUG) { console.log(`[State/historyGoTo(index: ${index})]`); }
 
 		if (
 			index == null /* lazy equality for null */
@@ -451,7 +451,7 @@ var State = (() => { // eslint-disable-line no-unused-vars, no-var
 		Activate the moment at the given offset from the active moment within the history.
 	*/
 	function historyGo(offset) {
-		if (DEBUG) { console.log(`[State/historyGo(offset: ${offset})]`); }
+		if (BUILD_DEBUG) { console.log(`[State/historyGo(offset: ${offset})]`); }
 
 		if (offset == null || offset === 0) { // lazy equality for null
 			return false;
@@ -540,13 +540,13 @@ var State = (() => { // eslint-disable-line no-unused-vars, no-var
 		Initializes the PRNG for use.
 	*/
 	function prngInit(seed, mixEntropy) {
-		if (DEBUG) { console.log(`[State/prngInit(seed: ${seed}, useEntropy: ${Boolean(mixEntropy)})]`); }
+		if (BUILD_DEBUG) { console.log(`[State/prngInit(seed: ${seed}, useEntropy: ${Boolean(mixEntropy)})]`); }
 
 		if (!historyIsEmpty()) {
 			let what;
 
 			// for Twine 1
-			if (TWINE1) {
+			if (BUILD_TWINE1) {
 				what = 'a script-tagged passage';
 			}
 			// for Twine 2
@@ -604,7 +604,7 @@ var State = (() => { // eslint-disable-line no-unused-vars, no-var
 		PRNG is not enabled, `Math.random()`.
 	*/
 	function prngRandom() {
-		if (DEBUG) { console.log('[State/prngRandom()]'); }
+		if (BUILD_DEBUG) { console.log('[State/prngRandom()]'); }
 
 		return _prng !== null ? _prng.random() : Math.random();
 	}
@@ -618,7 +618,7 @@ var State = (() => { // eslint-disable-line no-unused-vars, no-var
 		Clear the temporary variables.
 	*/
 	function tempVariablesClear() {
-		if (DEBUG) { console.log('[State/tempVariablesClear()]'); }
+		if (BUILD_DEBUG) { console.log('[State/tempVariablesClear()]'); }
 
 		_temporary = Object.create(null);
 

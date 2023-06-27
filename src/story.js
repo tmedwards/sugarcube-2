@@ -90,7 +90,7 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 	function storyLoad() {
-		if (DEBUG) { console.log('[Story/storyLoad()]'); }
+		if (BUILD_DEBUG) { console.log('[Story/storyLoad()]'); }
 
 		const validationCodeTags = [
 			'init',
@@ -136,7 +136,7 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 		}
 
 		// For Twine 1.
-		if (TWINE1) {
+		if (BUILD_TWINE1) {
 			/*
 				Additional Twine 1 validation setup.
 			*/
@@ -160,7 +160,7 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 				const testPlay = String("START_AT"); // eslint-disable-line quotes
 
 				if (testPlay !== '') {
-					if (DEBUG) { console.log(`\tTest play; starting passage: "${testPlay}"`); }
+					if (BUILD_DEBUG) { console.log(`\tTest play; starting passage: "${testPlay}"`); }
 
 					Config.debug = true;
 					return testPlay;

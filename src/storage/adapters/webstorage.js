@@ -61,7 +61,7 @@ SimpleStore.adapters.push((() => {
 
 		/* legacy */
 		get length() {
-			if (DEBUG) { console.log(`[<SimpleStore:${this.name}>.length : Number]`); }
+			if (BUILD_DEBUG) { console.log(`[<SimpleStore:${this.name}>.length : Number]`); }
 
 			/*
 				NOTE: DO NOT do something like `return this._engine.length;` here,
@@ -73,7 +73,7 @@ SimpleStore.adapters.push((() => {
 		/* /legacy */
 
 		size() {
-			if (DEBUG) { console.log(`[<SimpleStore:${this.name}>.size() : Number]`); }
+			if (BUILD_DEBUG) { console.log(`[<SimpleStore:${this.name}>.size() : Number]`); }
 
 			/*
 				NOTE: DO NOT do something like `return this._engine.length;` here,
@@ -84,7 +84,7 @@ SimpleStore.adapters.push((() => {
 		}
 
 		keys() {
-			if (DEBUG) { console.log(`[<SimpleStore:${this.name}>.keys() : String Array]`); }
+			if (BUILD_DEBUG) { console.log(`[<SimpleStore:${this.name}>.keys() : String Array]`); }
 
 			const keys = [];
 
@@ -100,7 +100,7 @@ SimpleStore.adapters.push((() => {
 		}
 
 		has(key) {
-			if (DEBUG) { console.log(`[<SimpleStore:${this.name}>.has(key: "${key}") : Boolean]`); }
+			if (BUILD_DEBUG) { console.log(`[<SimpleStore:${this.name}>.has(key: "${key}") : Boolean]`); }
 
 			if (typeof key !== 'string' || !key) {
 				return false;
@@ -113,7 +113,7 @@ SimpleStore.adapters.push((() => {
 		}
 
 		get(key) {
-			if (DEBUG) { console.log(`[<SimpleStore:${this.name}>.get(key: "${key}") : Any]`); }
+			if (BUILD_DEBUG) { console.log(`[<SimpleStore:${this.name}>.get(key: "${key}") : Any]`); }
 
 			if (typeof key !== 'string' || !key) {
 				return null;
@@ -125,7 +125,7 @@ SimpleStore.adapters.push((() => {
 		}
 
 		set(key, value) {
-			if (DEBUG) { console.log(`[<SimpleStore:${this.name}>.set(key: "${key}", value: \u2026) : Boolean]`); }
+			if (BUILD_DEBUG) { console.log(`[<SimpleStore:${this.name}>.set(key: "${key}", value: \u2026) : Boolean]`); }
 
 			if (typeof key !== 'string' || !key) {
 				return false;
@@ -156,7 +156,7 @@ SimpleStore.adapters.push((() => {
 		}
 
 		delete(key) {
-			if (DEBUG) { console.log(`[<SimpleStore:${this.name}>.delete(key: "${key}") : Boolean]`); }
+			if (BUILD_DEBUG) { console.log(`[<SimpleStore:${this.name}>.delete(key: "${key}") : Boolean]`); }
 
 			if (typeof key !== 'string' || !key) {
 				return false;
@@ -168,18 +168,18 @@ SimpleStore.adapters.push((() => {
 		}
 
 		clear() {
-			if (DEBUG) { console.log(`[<SimpleStore:${this.name}>.clear() : Boolean]`); }
+			if (BUILD_DEBUG) { console.log(`[<SimpleStore:${this.name}>.clear() : Boolean]`); }
 
 			const keys = this.keys();
 
 			for (let i = 0, iend = keys.length; i < iend; ++i) {
-				if (DEBUG) { console.log('\tdeleting key:', keys[i]); }
+				if (BUILD_DEBUG) { console.log('\tdeleting key:', keys[i]); }
 
 				this.delete(keys[i]);
 			}
 
 			// return this.keys().forEach(key => {
-			// 	if (DEBUG) { console.log('\tdeleting key:', key); }
+			// 	if (BUILD_DEBUG) { console.log('\tdeleting key:', key); }
 			//
 			// 	this.delete(key);
 			// });

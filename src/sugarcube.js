@@ -133,7 +133,7 @@ Object.defineProperty(window, 'SugarCube', {
 	Main function, entry point for the story.
 */
 jQuery(() => {
-	if (DEBUG) { console.log('[SugarCube/main()] Document loaded; beginning startup.'); }
+	if (BUILD_DEBUG) { console.log('[SugarCube/main()] Document loaded; beginning startup.'); }
 
 	/*
 		WARNING!
@@ -229,7 +229,7 @@ jQuery(() => {
 			// Release our loading screen lock after a short delay.
 			setTimeout(() => LoadScreen.unlock(lockId), Engine.DOM_DELAY * 2);
 
-			if (DEBUG) { console.log('[SugarCube/main()] Startup complete; story ready.'); }
+			if (BUILD_DEBUG) { console.log('[SugarCube/main()] Startup complete; story ready.'); }
 		})
 		.catch(ex => {
 			console.error(ex);
