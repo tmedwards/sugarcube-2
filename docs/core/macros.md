@@ -1512,7 +1512,7 @@ This macro has been deprecated and should no longer be used.  See the <a href="#
 
 ### `<<actions passageList>>`<br>`<<actions linkMarkupList>>`<br>`<<actions imageMarkupList>>` {#macros-macro-actions}
 
-Creates a list of single-use passage links.  Each link removes itself and all other `<<actions>>` links to the same passage after being activated.  May be called either with a list of passages, with a list of link markup, or with a list of image markup.  Probably most useful when paired with [`<<include>>`](#macros-macro-include).  See the [`<<actions>>`](https://twinery.org/wiki/actions) section of the [Twine&nbsp;1 reference documentation](https://twinery.org/wiki/twine1:reference) for more information.
+Creates a list of single-use passage links.  Each link removes itself and all other `<<actions>>` links to the same passage after being activated.  May be called either with a list of passages, with a list of link markup, or with a list of image markup.
 
 #### History:
 
