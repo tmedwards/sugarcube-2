@@ -300,7 +300,7 @@ You weigh <<- $weight.toFixed(2)>> kg.  → Outputs: You weigh 74.65 kg.
 
 ### `<<do [tag tags] [element tag]>> … <</do>>` {#macros-macro-do}
 
-Displays its contents.  Listens for [`<<refresh>>` macro](#macros-macro-refresh) commands upon which it updates its contents.
+Displays its contents.  Listens for [`<<redo>>` macro](#macros-macro-redo) commands upon which it updates its contents.
 
 #### History:
 
@@ -308,7 +308,7 @@ Displays its contents.  Listens for [`<<refresh>>` macro](#macros-macro-refresh)
 
 #### Arguments:
 
-* **`tag` *`tags`*:** (optional) The space separated list of tags used to filter `<<refresh>>` commands.
+* **`tag` *`tags`*:** (optional) The space separated list of tags used to filter `<<redo>>` commands.
 * **`element` *`tag`*:** (optional) The element to use as the content container—e.g., `div` and `span`.  If omitted, defaults to `span`.
 
 #### Examples:
@@ -322,7 +322,7 @@ Displays its contents.  Listens for [`<<refresh>>` macro](#macros-macro-refresh)
 
 <<link "Update money display">>
 	<<set $money += 10>>
-	<<refresh>>
+	<<redo>>
 <</link>>
 ```
 
@@ -339,7 +339,7 @@ Displays its contents.  Listens for [`<<refresh>>` macro](#macros-macro-refresh)
 
 <<link "Update key display">>
 	<<set $key to ["", "red", "blue", "skull"].random()>>
-	<<refresh>>
+	<<redo>>
 <</link>>
 ```
 
@@ -354,11 +354,11 @@ Displays its contents.  Listens for [`<<refresh>>` macro](#macros-macro-refresh)
 
 <<link "Update foo">>
 	<<set $foo to ["fee", "fie", "foe", "fum"].random()>>
-	<<refresh "foo">>
+	<<redo "foo">>
 <</link>>
 <<link "Update bar">>
 	<<set $bar to ["alfa", "bravo", "charlie", "delta"].random()>>
-	<<refresh "bar">>
+	<<redo "bar">>
 <</link>>
 ```
 
@@ -452,7 +452,7 @@ You weigh <<print $weight.toFixed(2)>> kg.  → Outputs: You weigh 74.65 kg.
 
 <!-- *********************************************************************** -->
 
-### `<<refresh [tags]>>` {#macros-macro-refresh}
+### `<<redo [tags]>>` {#macros-macro-redo}
 
 Causes one or more [`<<do>>` macros](#macros-macro-do) to update their contents.
 

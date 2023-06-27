@@ -1,8 +1,8 @@
 /***********************************************************************************************************************
 
-	macro/macros/do-refresh.js
+	macro/macros/do-redo.js
 
-	Copyright © 2013–2022 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
+	Copyright © 2013–2023 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
@@ -10,12 +10,12 @@
 
 (() => {
 	// Set up our event class name.
-	const eventClass = 'dorefresh-target';
+	const eventClass = 'redo-target';
 
-	// Set up a global `:dorefresh` event handler that sends non-bubbling
-	// `:dorefresh-internal` events to `<<do>>` macros matching the given
+	// Set up a global `:redo` event handler that sends non-bubbling
+	// `:redo-internal` events to `<<do>>` macros matching the given
 	// selector.
-	jQuery(document).on(':dorefresh', ev => {
+	jQuery(document).on(':redo', ev => {
 		const evTags = ev.detail && ev.detail.tags || [];
 		const selector = evTags.length === 0
 			? `.${eventClass}`
@@ -25,7 +25,7 @@
 		// for each element individually.
 		jQuery(selector).each((_, el) => {
 			jQuery(el).triggerHandler({
-				type   : ':dorefresh-internal',
+				type   : ':redo-internal',
 				detail : ev.detail
 			});
 		});
@@ -101,7 +101,7 @@
 				.addClass(`macro-${this.name} ${eventClass}`)
 				.attr('data-do-tags', tags.join(' '))
 				.wiki(contents)
-				.on(':dorefresh-internal', jQuery.throttle(
+				.on(':redo-internal', jQuery.throttle(
 					Engine.DOM_DELAY,
 					this.shadowHandler(() => {
 						const frag = document.createDocumentFragment();
@@ -114,11 +114,11 @@
 	});
 
 	/*
-		<<refresh [tags]>>
+		<<redo [tags]>>
 	*/
-	Macro.add('refresh', {
+	Macro.add('redo', {
 		handler() {
-			// Sanity check to prevent out-of-control refreshes.
+			// Sanity check to prevent out-of-control redoes.
 			//
 			// NOTE: This may be too restrictive.
 			const failRE  = /^(?:do|for)$/;
@@ -134,9 +134,9 @@
 				? String(this.args[0]).trim().splitOrEmpty(/\s+/)
 				: [];
 
-			// Trigger a refresh, sending any tags along.
+			// Trigger a redo, sending any tags along.
 			jQuery(document).trigger({
-				type   : ':dorefresh',
+				type   : ':redo',
 				detail : { tags }
 			});
 		}

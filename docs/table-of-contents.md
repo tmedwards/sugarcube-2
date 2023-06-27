@@ -54,7 +54,7 @@
 	* [`<<include>>`](#macros-macro-include)
 	* [`<<nobr>>`](#macros-macro-nobr)
 	* [`<<print>>`](#macros-macro-print)
-	* [`<<refresh>>`](#macros-macro-refresh)
+	* [`<<redo>>`](#macros-macro-redo)
 	* [`<<silent>>`](#macros-macro-silent)
 	* [`<<type>>`](#macros-macro-type)
 * [Control Macros](#macros-control)
