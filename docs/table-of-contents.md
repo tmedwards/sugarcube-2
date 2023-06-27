@@ -35,6 +35,7 @@
 * [Variables](#twinescript-variables)
 * [Supported Types](#twinescript-supported-types)
 * [Expressions](#twinescript-expressions)
+* [Operators](#twinescript-operators)
 
 ## [Macros](#macros)
 
