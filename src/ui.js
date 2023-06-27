@@ -536,7 +536,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 	function buildSettings() {
-		if (DEBUG) { console.log('[UI/uiBuildSettings()]'); }
+		if (BUILD_DEBUG) { console.log('[UI/buildSettings()]'); }
 
 		Dialog.create(L10n.get('settingsTitle'), 'settings');
 		const $dialogBody = jQuery(Dialog.body());
