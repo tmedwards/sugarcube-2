@@ -11,6 +11,83 @@ The majority of newer SugarCube versions do not have any changes that would requ
 
 
 <!-- ***************************************************************************
+	Updating to any version ≥2.36.0 from a lesser version
+**************************************************************************** -->
+## Updating to any version ≥2.36.0 from a lesser version {#guide-code-updates-2.36.0}
+
+All changes within this version are elective changes that you may address at your leisure.
+
+### `Config` API
+
+<table>
+	<thead>
+		<tr>
+			<th>Property</th>
+			<th>Change</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><code>Config.history.maxStates</code></td>
+			<td>This setting property has been updated to disallow unlimited states.</td>
+		</tr>
+		<tr>
+			<td><code>Config.saves.onLoad</code></td>
+			<td>This setting property has been deprecated in favor of the <a href="#save-api-events"><code>Save</code> Events API</a>, specifically the <a href="#save-api-method-onload-add"><code>Save.onLoad.add</code> static method</a>.</td>
+		</tr>
+		<tr>
+			<td><code>Config.saves.onSave</code></td>
+			<td>This setting property has been deprecated in favor of the <a href="#save-api-events"><code>Save</code> Events API</a>, specifically the <a href="#save-api-method-onsave-add"><code>Save.onSave.add</code> static method</a>.</td>
+		</tr>
+	</tbody>
+</table>
+
+### Macro library
+
+<table>
+	<thead>
+		<tr>
+			<th>Macro</th>
+			<th>Change</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><code>&lt;&lt;widget&gt;&gt;</code></td>
+			<td>The special <code>$args</code> story variable has been deprecated in favor of the <code>_args_</code> temporary variable.</td>
+		</tr>
+	</tbody>
+</table>
+
+
+<!-- ***************************************************************************
+	Updating to any version ≥2.31.0 from a lesser version
+**************************************************************************** -->
+## Updating to any version ≥2.31.0 from a lesser version {#guide-code-updates-2.31.0}
+
+<p role="note" class="warning"><b>Warning:</b>
+All changes within this version are <strong>breaking changes</strong> that you <strong><em>must</em></strong> address immediately.
+</p>
+
+### Parser library
+
+<table>
+	<thead>
+		<tr>
+			<th>Parser</th>
+			<th>Change</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>HTML&nbsp;tag</td>
+			<td>The parser has been updated to disallow use of the evaluation attribute directive on the <code>data-setter</code> content attribute.  They were never supposed to be combined.</td>
+		</tr>
+	</tbody>
+</table>
+
+
+<!-- ***************************************************************************
 	Updating to any version ≥2.30.0 from a lesser version
 **************************************************************************** -->
 ## Updating to any version ≥2.30.0 from a lesser version {#guide-code-updates-2.30.0}
@@ -23,7 +100,7 @@ All changes within this version are elective changes that you may address at you
 	<thead>
 		<tr>
 			<th>Property</th>
-			<th>Changes</th>
+			<th>Change</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -48,7 +125,7 @@ All changes within this version are elective changes that you may address at you
 	<thead>
 		<tr>
 			<th>Method</th>
-			<th>Changes</th>
+			<th>Change</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -65,7 +142,7 @@ All changes within this version are elective changes that you may address at you
 	<thead>
 		<tr>
 			<th>Macro</th>
-			<th>Changes</th>
+			<th>Change</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -90,7 +167,7 @@ All changes within this version are elective changes that you may address at you
 	<thead>
 		<tr>
 			<th>Method</th>
-			<th>Changes</th>
+			<th>Change</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -107,7 +184,7 @@ All changes within this version are elective changes that you may address at you
 	<thead>
 		<tr>
 			<th>Method</th>
-			<th>Changes</th>
+			<th>Change</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -132,7 +209,7 @@ All changes within this version are elective changes that you may address at you
 	<thead>
 		<tr>
 			<th>Macro</th>
-			<th>Changes</th>
+			<th>Change</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -157,7 +234,7 @@ All changes within this version are elective changes that you may address at you
 	<thead>
 		<tr>
 			<th>Method</th>
-			<th>Changes</th>
+			<th>Change</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -182,7 +259,7 @@ All changes within this version are elective changes that you may address at you
 	<thead>
 		<tr>
 			<th>Macro</th>
-			<th>Changes</th>
+			<th>Change</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -207,7 +284,7 @@ All changes within this version are elective changes that you may address at you
 	<thead>
 		<tr>
 			<th>Method</th>
-			<th>Changes</th>
+			<th>Change</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -247,7 +324,7 @@ All changes within this version are elective changes that you may address at you
 	<thead>
 		<tr>
 			<th>Macro</th>
-			<th>Changes</th>
+			<th>Change</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -384,7 +461,7 @@ The HTML &amp; CSS have undergone ***significant*** changes.  See the [`HTML`](#
 	<thead>
 		<tr>
 			<th>Passage</th>
-			<th>Changes</th>
+			<th>Change</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -411,7 +488,7 @@ The `config` object has been renamed to `Config` and some of its properties have
 	<thead>
 		<tr>
 			<th>Property</th>
-			<th>Changes</th>
+			<th>Change</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -476,7 +553,7 @@ The `Macros` API object has been renamed to `Macro` and several of its methods h
 	<thead>
 		<tr>
 			<th>Macro</th>
-			<th>Changes</th>
+			<th>Change</th>
 		</tr>
 	</thead>
 	<tbody>
