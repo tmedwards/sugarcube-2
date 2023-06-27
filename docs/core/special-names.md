@@ -132,7 +132,7 @@ Used for pre-story-start initialization tasks, like variable initialization (hap
 
 Used to replace SugarCube's default UI.  Its contents are treated as raw HTML markup—i.e., *none* of SugarCube's special HTML processing is performed.  The markup is contained within a `<div id="story" role="main">` element and must itself contain, at least, an element with the ID `passages` that will be the main passage display area.  For example:
 
-```
+```html
 <div id="story" role="main">
 	<!-- StoryInterface elements added here -->
 </div>
@@ -266,7 +266,7 @@ Does not affect <code>script</code> or <code>stylesheet</code> tagged passages, 
 Registers the passage as an initialization passage.  Used for pre-story-start initialization tasks, like variable initialization (happens at the beginning of story initialization).  Generates no output.
 
 <p role="note"><b>Note:</b>
-This is chiefly intended for use by add-ons/libraries.  For normal projects, authors are encouraged to continue to use the <a href="#special-passage-storyinit"><code>StoryInit</code> special named passage</a>.
+This is chiefly intended for use by add-ons/libraries.  For normal projects, authors are <strong>strongly</strong> encouraged to continue to use the <a href="#special-passage-storyinit"><code>StoryInit</code> special named passage</a>.
 </p>
 
 #### History:

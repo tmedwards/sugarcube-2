@@ -23,10 +23,10 @@ An array of discrete arguments parsed from the argument string.
 
 ```
 // Given: <<someMacro "a" "b" "c">>
-this.args.length  → Returns 3
-this.args[0]      → Returns 'a'
-this.args[1]      → Returns 'b'
-this.args[2]      → Returns 'c'
+this.args.length  // Returns 3
+this.args[0]      // Returns 'a'
+this.args[1]      // Returns 'b'
+this.args[2]      // Returns 'c'
 ```
 
 <!-- *********************************************************************** -->
@@ -42,8 +42,8 @@ The argument string after converting all TwineScript syntax elements into their 
 #### Examples:
 
 ```
-// Given: <<if "a" is "b">>
-this.args.full  → Returns '"a" === "b"'
+// Given: <<if $a is "b">>
+this.args.full  // Returns 'State.variables.a === "b"'
 ```
 
 <!-- *********************************************************************** -->
@@ -60,7 +60,7 @@ The unprocessed argument string.
 
 ```
 // Given: <<if "a" is "b">>
-this.args.raw  → Returns '"a" is "b"'
+this.args.raw  // Returns '"a" is "b"'
 ```
 
 <!-- *********************************************************************** -->
@@ -77,7 +77,7 @@ The name of the macro.
 
 ```
 // Given: <<someMacro …>>
-this.name  → Returns 'someMacro'
+this.name  // Returns 'someMacro'
 ```
 
 <!-- *********************************************************************** -->
@@ -153,8 +153,8 @@ Returns a new array containing all of the macro's ancestors that passed the test
 #### Examples:
 
 ```
-var includeAncestor = function (ctx) { return ctx.name === "include"; };
-this.contextFilter(includeAncestor); // Returns an array of all <<include>> macro ancestors
+var isInclude = function (ctx) { return ctx.name === "include"; };
+this.contextFilter(isInclude); // Returns an array of all <<include>> macro ancestors
 ```
 
 <!-- *********************************************************************** -->
@@ -174,8 +174,8 @@ Returns the first of the macro's ancestors that passed the test implemented by t
 #### Examples:
 
 ```
-var includeAncestor = function (ctx) { return ctx.name === "include"; };
-this.contextFind(includeAncestor); // Returns the first <<include>> macro ancestor
+var isInclude = function (ctx) { return ctx.name === "include"; };
+this.contextFind(isInclude); // Returns the first <<include>> macro ancestor
 ```
 
 <!-- *********************************************************************** -->
@@ -195,8 +195,8 @@ Returns whether any of the macro's ancestors passed the test implemented by the 
 #### Examples:
 
 ```
-var includeAncestor = function (ctx) { return ctx.name === "include"; };
-this.contextSome(includeAncestor);  → Returns true if any ancestor was an <<include>> macro
+var isInclude = function (ctx) { return ctx.name === "include"; };
+this.contextSome(isInclude);  // Returns true if any ancestor was an <<include>> macro
 ```
 
 <!-- *********************************************************************** -->
