@@ -27,27 +27,6 @@ UI.alert("You smell of elderberries!");
 
 <!-- *********************************************************************** -->
 
-### `UI.jumpto([options [, closeFn]])` {#ui-api-method-jumpto}
-
-Opens the built-in jump to dialog, which is populated via the [`bookmark` tag](#special-tag-bookmark).
-
-#### History:
-
-* `v2.0.0`: Introduced.
-
-#### Parameters:
-
-* **`options`:** (optional, *null* | *object*) The options object.  See [`Dialog.open()`](#dialog-api-method-open) for more information.
-* **`closeFn`:** (optional, *null* | *function*) The function to execute whenever the dialog is closed.
-
-#### Examples:
-
-```
-UI.jumpto();
-```
-
-<!-- *********************************************************************** -->
-
 ### `UI.restart([options])` {#ui-api-method-restart}
 
 Opens the built-in restart dialog, prompting the player to restart the story.
@@ -110,21 +89,26 @@ UI.settings();
 
 <!-- *********************************************************************** -->
 
-### `UI.share([options [, closeFn]])` {#ui-api-method-share}
+### <span class="deprecated">`UI.jumpto([options [, closeFn]])`</span> {#ui-api-method-jumpto}
 
-Opens the built-in share dialog, which is populated from the [`StoryShare` passage](#special-passage-storyshare).
+<p role="note" class="warning"><b>Deprecated:</b>
+This method has been deprecated and should no longer be used.
+</p>
 
 #### History:
 
 * `v2.0.0`: Introduced.
+* `v2.37.0`: Deprecated.
 
-#### Parameters:
+<!-- *********************************************************************** -->
 
-* **`options`:** (optional, *null* | *object*) The options object.  See [`Dialog.open()`](#dialog-api-method-open) for more information.
-* **`closeFn`:** (optional, *null* | *function*) The function to execute whenever the dialog is closed.
+### <span class="deprecated">`UI.share([options [, closeFn]])`</span> {#ui-api-method-share}
 
-#### Examples:
+<p role="note" class="warning"><b>Deprecated:</b>
+This method has been deprecated and should no longer be used.
+</p>
 
-```
-UI.share();
-```
+#### History:
+
+* `v2.0.0`: Introduced.
+* `v2.37.0`: Deprecated.

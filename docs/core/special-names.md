@@ -193,22 +193,8 @@ The story menu only displays links—specifically, anything that creates an anch
 ### `StorySettings` {#special-passage-storysettings}
 
 <p role="note" class="warning"><b>Warning:</b>
-Unused by SugarCube.  The <a href="#config-api"><code>Config</code> API</a> serves the same basic purpose.
+Twine&nbsp;1.4 special passage unused by SugarCube.  The <a href="#config-api"><code>Config</code> API</a> serves the same basic purpose.
 </p>
-
-<!-- *********************************************************************** -->
-
-### `StoryShare` {#special-passage-storyshare}
-
-Used to populate the contents of the Share dialog.  Intended for social media links.
-
-<p role="note"><b>Note:</b>
-The Share dialog only displays links—specifically, anything that creates an anchor element (<code>&lt;a&gt;</code>).  While it renders content just as any other passage does, instead of displaying the rendered output as-is, it sifts through the output and builds its contents from the generated links contained therein.
-</p>
-
-#### History:
-
-* `v2.0.0`: Introduced.
 
 <!-- *********************************************************************** -->
 
@@ -239,6 +225,19 @@ If you want to set a title for display that contains code, markup, or macros, se
 #### History:
 
 * `v2.0.0`: Introduced.
+
+<!-- *********************************************************************** -->
+
+### <span class="deprecated">`StoryShare`</span> {#special-passage-storyshare}
+
+<p role="note" class="warning"><b>Deprecated:</b>
+This special passage has been deprecated and should no longer be used.
+</p>
+
+#### History:
+
+* `v2.0.0`: Introduced.
+* `v2.37.0`: Deprecated.
 
 
 <!-- ***************************************************************************

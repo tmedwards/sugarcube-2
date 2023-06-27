@@ -202,7 +202,6 @@
 	* [`StoryInterface`](#special-passage-storyinterface)
 	* [`StoryMenu`](#special-passage-storymenu)
 	* [`StorySettings`](#special-passage-storysettings)
-	* [`StoryShare`](#special-passage-storyshare)
 	* [`StorySubtitle`](#special-passage-storysubtitle)
 	* [`StoryTitle`](#special-passage-storytitle)
 * [Tag Names](#special-tags)
@@ -616,11 +615,9 @@
 ## [`UI` API](#ui-api)
 
 * [`UI.alert()`](#ui-api-method-alert)
-* [`UI.jumpto()`](#ui-api-method-jumpto)
 * [`UI.restart()`](#ui-api-method-restart)
 * [`UI.saves()`](#ui-api-method-saves)
 * [`UI.settings()`](#ui-api-method-settings)
-* [`UI.share()`](#ui-api-method-share)
 
 ## [`UIBar` API](#uibar-api)
 
