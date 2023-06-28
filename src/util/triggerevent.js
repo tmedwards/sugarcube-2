@@ -94,18 +94,8 @@ var triggerEvent = (() => { // eslint-disable-line no-unused-vars, no-var
 		}
 	})();
 
-	function hasHandlerAttr(elem, name) {
-		const attrName = `on${name}`;
-		return typeof document[attrName] !== 'undefined' && typeof elem[attrName] === 'function';
-	}
-
 	function triggerEvent(elem, name, options) {
 		const event = createEvent(name, Object.assign({ bubbles : true, cancelable : true }, options));
-
-		if (hasHandlerAttr(elem, name)) {
-			return elem[`on${name}`](event);
-		}
-
 		return elem.dispatchEvent(event);
 	}
 
