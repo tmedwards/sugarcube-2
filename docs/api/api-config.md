@@ -27,7 +27,7 @@ Determines whether the audio subsystem automatically pauses tracks that have bee
 
 #### Examples:
 
-```
+```js
 Config.audio.pauseOnFadeToZero = false;
 ```
 
@@ -47,7 +47,7 @@ It is unlikely that you will ever want to disable this setting.
 
 #### Examples:
 
-```
+```js
 Config.audio.preloadMetadata = false;
 ```
 
@@ -69,7 +69,7 @@ Determines whether the story's history controls (Backward, Jump To, & Forward bu
 
 #### Examples:
 
-```
+```js
 Config.history.controls = false;
 ```
 
@@ -90,12 +90,12 @@ For game-oriented projects, as opposed to more story-oriented interactive fictio
 
 #### Examples:
 
-```
+```js
 // Limit the history to a single state (recommended for games)
 Config.history.maxStates = 1;
 
-// Limit the history to 80 states
-Config.history.maxStates = 80;
+// Limit the history to 25 states
+Config.history.maxStates = 25;
 ```
 
 
@@ -120,7 +120,7 @@ This setting exists because it's unlikely that you'll ever want to actually perf
 
 #### Examples:
 
-```
+```js
 // No error is returned when = is used within an <<if>> or <<elseif>> conditional
 Config.macros.ifAssignmentError = false;
 ```
@@ -141,7 +141,7 @@ This setting exists to prevent a misconfigured loop from making the browser unre
 
 #### Examples:
 
-```
+```js
 // Allow only 5000 iterations
 Config.macros.maxLoopIterations = 5000;
 ```
@@ -158,7 +158,7 @@ Sets the default [`KeyboardEvent.key`](https://developer.mozilla.org/en-US/docs/
 
 #### Examples:
 
-```
+```js
 // Change the default skip key to Control (CTRL)
 Config.macros.typeSkipKey = "Control";
 ```
@@ -175,7 +175,7 @@ Determines whether the [`<<type>>` macro](#macros-macro-type) types out content 
 
 #### Examples:
 
-```
+```js
 // Do not type on previously visited passages
 Config.macros.typeVisitedPassages = false;
 ```
@@ -198,15 +198,15 @@ Allows the destination of passage navigation to be overridden.  The callback is 
 
 #### Examples:
 
-```
+```js
 Config.navigation.override = function (destinationPassage) {
-	/* code */
+	/* code that returns a passage name or a falsy value */
 };
 ```
 
 ##### Based upon a story variable
 
-```
+```js
 // Force the player to the "You Died" passage if they let $health get too low.
 Config.navigation.override = function (dest) {
 	var sv = State.variables;
@@ -236,7 +236,7 @@ Determines whether passage titles are combined with the story title, within the 
 
 #### Examples:
 
-```
+```js
 Config.passages.displayTitles = true;
 ```
 
@@ -256,7 +256,7 @@ Does not affect <code>script</code> or <code>stylesheet</code> tagged passages, 
 
 #### Examples:
 
-```
+```js
 Config.passages.nobr = true;
 ```
 
@@ -280,10 +280,10 @@ The function will be called just before the built-in no-break passage processing
 
 #### Examples:
 
-```
-/* Change instancess of "cat" to "dog". */
+```js
+// Change instancess of "cat" to "dog"
 Config.passages.onProcess = function (p) {
-	return p.text.replace(/\bcat(s?)\b/g, 'dog$1');
+	return p.text.replace(/\bcat(s?)\b/g, "dog$1");
 };
 ```
 
@@ -299,7 +299,7 @@ Sets the starting passage, the very first passage that will be displayed.
 
 #### Examples:
 
-```
+```js
 Config.passages.start = "That Other Starting Passage";
 ```
 
@@ -319,7 +319,7 @@ If using an integer delay, ideally, it should probably be slightly longer than t
 
 #### Examples:
 
-```
+```js
 // Remove outgoing elements when their opacity animation ends
 Config.passages.transitionOut = "opacity";
 
@@ -331,7 +331,7 @@ Config.passages.transitionOut = 1010;
 
 At the very least you will need to specify a `.passage-out` style that defines the transition's end state.  For example:
 
-```
+```css
 .passage-out {
 	opacity: 0;
 }
@@ -339,7 +339,7 @@ At the very least you will need to specify a `.passage-out` style that defines t
 
 That probably won't be very pleasing to the eye, however, so you will likely need several styles to make something that looks half-decent.  For example, the following will give you a basic crossfade:
 
-```
+```css
 #passages {
 	position: relative;
 }
@@ -389,7 +389,7 @@ If the autosave cannot be loaded, for any reason, then the start passage is load
 
 #### Examples:
 
-```
+```js
 // Automatically loads the autosave
 Config.saves.autoload = true;
 
@@ -398,7 +398,7 @@ Config.saves.autoload = "prompt";
 
 // Loads the autosave if it returns a truthy value
 Config.saves.autoload = function () {
-	/* code */
+	/* code that returns a boolean value */
 };
 ```
 
@@ -406,7 +406,7 @@ Config.saves.autoload = function () {
 
 ### `Config.saves.descriptions` ↔ *function* (default: *none*) {#config-api-property-saves-descriptions}
 
-Sets browser saves descriptions—by default an excerpt from the current passage is used.  The callback is passed one parameter, the type of save being attempted.  If its return value is falsy, the default description is used.  If its return value is truthy, the returned description is used.
+Sets browser saves descriptions—by default a brief description of the current turn is used.  The callback is passed one parameter, the type of save being attempted.  If its return value is falsy, the default description is used.  If its return value is truthy, the returned description is used.
 
 #### History:
 
@@ -414,15 +414,17 @@ Sets browser saves descriptions—by default an excerpt from the current passage
 
 #### Examples:
 
-```
-// Uses passages' titles
+##### Using passages' names
+
+```js
 Config.saves.descriptions = function (saveType) {
 	return passage();
 };
 ```
 
-```
-// Uses the description mapped by passages' titles
+##### Using descriptions mapped by passages' names
+
+```js
 var saveDescriptions = {
 	"passage_title_a" : "description text a…",
 	"passage_title_b" : "description text b…",
@@ -432,6 +434,26 @@ Config.saves.descriptions = function (saveType) {
 	return saveDescriptions[passage()];
 };
 ```
+
+##### Using the provided save type
+
+```js
+Config.saves.descriptions = function (saveType) {
+	const base = `(${L10n.get("turn")} ${State.turns})`;
+
+	switch (saveType) {
+		case Save.Type.Auto:
+			return `${base} A browser-based auto save…`;
+		case Save.Type.Disk:
+			return `${base} A local disk save…`;
+		case Save.Type.Serialize:
+			return `${base} A base64 serialization save…`;
+		case Save.Type.Slot:
+			return `${base} A browser-based slot save…`;
+	}
+};
+```
+
 
 <!-- *********************************************************************** -->
 
@@ -445,7 +467,7 @@ Sets the story ID associated with saves.
 
 #### Examples:
 
-```
+```js
 Config.saves.id = "a-big-huge-story-part-1";
 ```
 
@@ -465,17 +487,19 @@ Determines whether saving is allowed within the current context.  The callback i
 
 #### Examples:
 
-##### Basic
+##### Basic usage
 
-```
-// Allows saves on passages if it returns a truthy value
+Allows saves on passages if it returns a truthy value.
+
+```js
 Config.saves.isAllowed = function (saveType) {
-	/* code */
+	/* code returning a boolean value */
 };
 ```
 
-```
-// Deny all saves on passages tagged wtih `menu`.
+Disallow saving on passages tagged wtih `menu`.
+
+```js
 Config.saves.isAllowed = function (saveType) {
 	return !tags().includes("menu");
 };
@@ -483,11 +507,25 @@ Config.saves.isAllowed = function (saveType) {
 
 ##### Using the save type parameter
 
-```
-// Allow auto saves only on passages tagged wtih `cansave` or `autosave`.
+Create new auto saves only on passages tagged wtih `autosave`.
+
+```js
 Config.saves.isAllowed = function (saveType) {
 	if (saveType === Save.Type.Auto) {
-		return tags().includesAny("cansave", "autosave");
+		return tags().includes("autosave");
+	}
+};
+```
+
+Create new auto saves only on every third passage and allow all other saves only on passages tagged wtih `cansave`.
+
+```js
+Config.saves.isAllowed = function (saveType) {
+	switch (saveType) {
+		case Save.Type.Auto:
+			return turns() % 3 === 0;
+		default:
+			return tags().includes("cansave");
 	}
 };
 ```
@@ -504,7 +542,7 @@ Sets the maximum number of available auto saves.
 
 #### Examples:
 
-```
+```js
 Config.saves.maxAutoSaves = 3;
 ```
 
@@ -520,7 +558,7 @@ Sets the maximum number of available slot saves.
 
 #### Examples:
 
-```
+```js
 Config.saves.maxSlotSaves = 4;
 ```
 
@@ -540,11 +578,11 @@ This setting is only used to set the <code>version</code> property of saves.  Th
 
 #### Examples:
 
-```
+```js
 // As an integer (recommended)
 Config.saves.version = 3;
 
-// As a string (not recommended)
+// As a string (strongly not recommended)
 Config.saves.version = "v3";
 ```
 
@@ -553,7 +591,7 @@ Config.saves.version = "v3";
 ### <span class="deprecated">`Config.saves.autosave` ↔ *boolean* | *Array&lt;string&gt;* | *function* (default: *none*)</span> {#config-api-property-saves-autosave}
 
 <p role="note" class="warning"><b>Deprecated:</b>
-This setting has been deprecated and should no longer be used.  See the <a href="#config-api-property-saves-isallowed"><code>Config.saves.isAllowed</code></a> setting to replace its functionality.
+This setting has been deprecated and should no longer be used.  See the <a href="#config-api-property-saves-maxautosaves"><code>Config.saves.maxAutoSaves</code></a> setting to set the number of available auto saves and the <a href="#config-api-property-saves-isallowed"><code>Config.saves.isAllowed</code></a> setting to control whether new auto saves are created.
 </p>
 
 #### History:
@@ -633,7 +671,7 @@ Determines whether the UI bar (sidebar) starts in the stowed (shut) state initia
 
 #### Examples:
 
-```
+```js
 // As a boolean; always start stowed
 Config.ui.stowBarInitially = true;
 
@@ -660,7 +698,7 @@ The story title is not included in updates because SugarCube uses it as the basi
 
 #### Examples:
 
-```
+```js
 // If you don't need those elements to update
 Config.ui.updateStoryElements = false;
 ```
@@ -687,7 +725,7 @@ You <em>must</em> provide your own styling for the <code>link-visited</code> cla
 
 #### Examples:
 
-```
+```js
 Config.addVisitedLinkClass = true;
 ```
 
@@ -695,7 +733,7 @@ Config.addVisitedLinkClass = true;
 
 You will also need to specify a `.link-visited` style that defines the properties visited links should have. For example:
 
-```
+```css
 .link-visited {
 	color: purple;
 }
@@ -713,7 +751,7 @@ Determines whether the output of the Wikifier is post-processed into more sane m
 
 #### Examples:
 
-```
+```js
 Config.cleanupWikifierOutput = true;
 ```
 
@@ -733,16 +771,24 @@ This property is automatically set based on whether you're using a testing mode 
 
 #### Examples:
 
-```
+##### Forcibly enabling test mode
+
+```js
 // Forcibly enable test mode
 Config.debug = true;
+```
 
-// Check if test mode is enabled in JavaScript
+##### Check if test mode is enabled via JavaScript
+
+```js
 if (Config.debug) {
 	/* do something debug related */
 }
+```
 
-// Check if test mode is enabled via the <<if>> macro
+##### Check if test mode is enabled via macros
+
+```
 <<if Config.debug>>
 	/* do something debug related */
 <</if>>
@@ -760,7 +806,7 @@ Sets the integer delay (in milliseconds) before the loading screen is dismissed,
 
 #### Examples:
 
-```
+```js
 // Delay the dismissal of the loading screen by 2000ms (2s)
 Config.loadDelay = 2000;
 ```
