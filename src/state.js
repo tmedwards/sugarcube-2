@@ -809,14 +809,6 @@ var State = (() => { // eslint-disable-line no-unused-vars, no-var
 				set     : { value : metadataSet },
 				size    : { get : metadataSize }
 			}))
-		},
-
-		// Legacy Aliases.
-		restart  : { value : () => Engine.restart() },
-		backward : { value : () => Engine.backward() },
-		forward  : { value : () => Engine.forward() },
-		display  : { value : (...args) => Engine.display(...args) },
-		show     : { value : (...args) => Engine.show(...args) },
-		play     : { value : (...args) => Engine.play(...args) }
+		}
 	}));
 })();
