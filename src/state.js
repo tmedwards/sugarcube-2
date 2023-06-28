@@ -6,7 +6,7 @@
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* global Config, Diff, Engine, Scripting, clone session, storage */
+/* global Config, Diff, Scripting, clone session, storage */
 
 var State = (() => { // eslint-disable-line no-unused-vars, no-var
 	// History moment stack.
