@@ -167,6 +167,7 @@ var UIBar = (() => { // eslint-disable-line no-unused-vars, no-var
 					label : L10n.get('uiBarBackward')
 				}, () => Engine.backward());
 
+			/* [DEPRECATED] */
 			if (Story.lookup('tags', 'bookmark').length > 0) {
 				jQuery('#history-jumpto')
 					.ariaClick({
@@ -176,6 +177,7 @@ var UIBar = (() => { // eslint-disable-line no-unused-vars, no-var
 			else {
 				jQuery('#history-jumpto').remove();
 			}
+			/* /[DEPRECATED] */
 
 			jQuery('#history-forward')
 				.ariaDisabled(State.length === State.size)
