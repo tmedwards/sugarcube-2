@@ -118,22 +118,23 @@ var Dialog = (() => { // eslint-disable-line no-unused-vars, no-var
 	*******************************************************************************/
 
 	/*
-		Calculate the inset values required to fit the dialog within the viewport
-		based on the size of its contents and the current viewport dimentions.
+		Calculate the inset values, in pixels, required to fit the dialog within
+		the current viewport based on the size of its contents and the viewport's
+		dimentions.
 	*/
 	function calcInset(top) {
 		const $window = jQuery(window);
 		const inset   = { left : '', right : '', top : '', bottom : '' };
 		const minPos  = 10;
 
-		// Unset the dialog's inset values, so the browser can resize it
-		// based on its content, before checking its new dimensions.
+		// Unset the dialog's inset values, so the browser can resize it based on
+		// its content.
 		$dialog.css(inset);
 
-		// Based on the dialog's new dimensions calculate its inset values.
+		// Calculate the dialog's new inset values based on its current dimensions.
 		//
-		// NOTE: We subtract `1` from both space values to address a Firefox
-		// issue.
+		// NOTE: Subtract `1` from both space values to address a Firefox issue.
+		// QUESTION: Is this still necessary?
 		let horzSpace = $window.width() - $dialog.outerWidth(true) - 1;
 		let vertSpace = $window.height() - $dialog.outerHeight(true) - 1;
 
@@ -145,6 +146,7 @@ var Dialog = (() => { // eslint-disable-line no-unused-vars, no-var
 			horzSpace -= scrollbarWidth;
 		}
 
+		/* eslint-disable prefer-template */
 		// Calculate the horizontal inset values in pixels.
 		if (horzSpace <= minPos * 2) {
 			inset.left = inset.right = minPos + 'px';
@@ -167,6 +169,7 @@ var Dialog = (() => { // eslint-disable-line no-unused-vars, no-var
 				inset.top = inset.bottom = vertPos + 'px';
 			}
 		}
+		/* eslint-enable prefer-template */
 
 		return inset;
 	}
