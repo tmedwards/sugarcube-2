@@ -65,49 +65,6 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 		return list;
 	}
 
-	function buildAutoload() {
-		if (DEBUG) { console.log('[UI/uiBuildAutoload()]'); }
-
-		console.warn('[DEPRECATED] UI.buildAutoload() is deprecated.');
-
-		Dialog
-			.create(L10n.get('autoloadTitle'), 'autoload')
-			.append(
-				/* eslint-disable max-len */
-				  `<p>${L10n.get('autoloadPrompt')}</p><ul class="buttons">`
-				+ `<li><button id="autoload-ok" class="ui-close">${L10n.get(['autoloadOk', 'ok'])}</button></li>`
-				+ `<li><button id="autoload-cancel" class="ui-close">${L10n.get(['autoloadCancel', 'cancel'])}</button></li>`
-				+ '</ul>'
-				/* eslint-enable max-len */
-			);
-
-		// Add an additional delegated click handler for the `.ui-close` elements to handle autoloading.
-		jQuery(document).one('click.autoload', '.ui-close', ev => {
-			const isAutoloadOk = ev.target.id === 'autoload-ok';
-			jQuery(document).one(':dialogclosed', () => {
-				new Promise((resolve, reject) => {
-					if (isAutoloadOk) {
-						resolve();
-					}
-
-					reject(); // eslint-disable-line prefer-promise-reject-errors
-				})
-					.then(() => {
-						if (DEBUG) { console.log('\tattempting autoload of browser continue'); }
-
-						return Save.browser.continue();
-					})
-					.catch(() => {
-						if (DEBUG) { console.log(`\tstarting passage: "${Config.passages.start}"`); }
-
-						Engine.play(Config.passages.start);
-					});
-			});
-		});
-
-		return true;
-	}
-
 	function buildRestart() {
 		if (BUILD_DEBUG) { console.log('[UI/buildRestart()]'); }
 
@@ -764,6 +721,50 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 	*******************************************************************************/
 
 	// [DEPRECATED]
+	function buildAutoload() {
+		if (BUILD_DEBUG) { console.log('[UI/buildAutoload()]'); }
+
+		console.warn('[DEPRECATED] UI.buildAutoload() is deprecated.');
+
+		Dialog
+			.create(L10n.get('autoloadTitle'), 'autoload')
+			.append(
+				/* eslint-disable max-len */
+				  `<p>${L10n.get('autoloadPrompt')}</p><ul class="buttons">`
+				+ `<li><button id="autoload-ok" class="ui-close">${L10n.get(['autoloadOk', 'ok'])}</button></li>`
+				+ `<li><button id="autoload-cancel" class="ui-close">${L10n.get(['autoloadCancel', 'cancel'])}</button></li>`
+				+ '</ul>'
+				/* eslint-enable max-len */
+			);
+
+		// Add an additional delegated click handler for the `.ui-close` elements to handle autoloading.
+		jQuery(document).one('click.autoload', '.ui-close', ev => {
+			const isAutoloadOk = ev.target.id === 'autoload-ok';
+			jQuery(document).one(':dialogclosed', () => {
+				new Promise((resolve, reject) => {
+					if (isAutoloadOk) {
+						resolve();
+					}
+
+					reject(); // eslint-disable-line prefer-promise-reject-errors
+				})
+					.then(() => {
+						if (BUILD_DEBUG) { console.log('\tattempting autoload of browser continue'); }
+
+						return Save.browser.continue();
+					})
+					.catch(() => {
+						if (BUILD_DEBUG) { console.log(`\tstarting passage: "${Config.passages.start}"`); }
+
+						Engine.play(Config.passages.start);
+					});
+			});
+		});
+
+		return true;
+	}
+
+	// [DEPRECATED]
 	function buildJumpto() {
 		if (BUILD_DEBUG) { console.log('[UI/buildJumpto()]'); }
 
@@ -843,7 +844,6 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 	return Object.preventExtensions(Object.create(null, {
 		// Utility Functions.
 		assembleLinkList : { value : assembleLinkList },
-		buildAutoload    : { value : buildAutoload },
 		buildRestart     : { value : buildRestart },
 		buildSaves       : { value : buildSaves },
 		buildSettings    : { value : buildSettings },
@@ -855,32 +855,10 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 		settings : { value : openSettings },
 
 		// Deprecated Functions.
-		buildJumpto : { value : buildJumpto },
-		buildShare  : { value : buildShare },
-		jumpto      : { value : openJumpto },
-		share       : { value : openShare },
-
-		// Legacy Aliases.
-		// `UIBar` methods.
-		/* global UIBar */
-		stow                     : { value : () => UIBar.stow() },
-		unstow                   : { value : () => UIBar.unstow() },
-		setStoryElements         : { value : () => UIBar.update() },
-		// `Dialog` methods.
-		isOpen                   : { value : (...args) => Dialog.isOpen(...args) },
-		body                     : { value : () => Dialog.body() },
-		setup                    : { value : (...args) => Dialog.setup(...args) },
-		addClickHandler          : { value : (...args) => Dialog.addClickHandler(...args) },
-		open                     : { value : (...args) => Dialog.open(...args) },
-		close                    : { value : (...args) => Dialog.close(...args) },
-		resize                   : { value : () => Dialog.resize() },
-		// Deprecated method names.
-		buildDialogAutoload      : { value : buildAutoload },
-		buildDialogJumpto        : { value : buildJumpto },
-		buildDialogRestart       : { value : buildRestart },
-		buildDialogSaves         : { value : buildSaves },
-		buildDialogSettings      : { value : buildSettings },
-		buildDialogShare         : { value : buildShare },
-		buildLinkListFromPassage : { value : assembleLinkList }
+		buildAutoload : { value : buildAutoload },
+		buildJumpto   : { value : buildJumpto },
+		buildShare    : { value : buildShare },
+		jumpto        : { value : openJumpto },
+		share         : { value : openShare }
 	}));
 })();
