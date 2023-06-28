@@ -57,8 +57,6 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 		Error Constants.
 	*******************************************************************************/
 
-	const _errHistoryModeDeprecated          = 'Config.history.mode has been deprecated and is no longer used by SugarCube, please remove it from your code';
-	const _errHistoryTrackingDeprecated      = 'Config.history.tracking has been deprecated, use Config.history.maxStates instead';
 	const _errPassagesDescriptionsDeprecated = 'Config.passages.descriptions has been deprecated, use Config.saves.descriptions instead';
 	const _errSavesAutosaveDeprecated        = 'Config.saves.autosave has been deprecated, use Config.saves.isAllowed instead';
 	const _errSavesOnLoadDeprecated          = 'Config.saves.onLoad has been deprecated, use the Save.onLoad API instead';
@@ -132,15 +130,7 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 				if (_historyControls && value === 1) {
 					_historyControls = false;
 				}
-			},
-
-			// legacy
-			// Die if deprecated state history settings are accessed.
-			get mode()  { throw new Error(_errHistoryModeDeprecated); },
-			set mode(_) { throw new Error(_errHistoryModeDeprecated); },
-			get tracking()  { throw new Error(_errHistoryTrackingDeprecated); },
-			set tracking(_) { throw new Error(_errHistoryTrackingDeprecated); }
-			// /legacy
+			}
 		}),
 
 		/*
