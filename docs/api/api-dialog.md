@@ -254,19 +254,6 @@ Dialog.wikiPassage("Inventory");
 
 <!-- *********************************************************************** -->
 
-### <span class="deprecated">`Dialog.addClickHandler(targets [, options [, startFn [, doneFn [, closeFn]]]])`</span> {#dialog-api-method-addclickhandler}
-
-<p role="note" class="warning"><b>Deprecated:</b>
-This method has been deprecated and should no longer be used.  The core of what it does is simply to wrap a call to <a href="#dialog-api-method-open"><code>Dialog.open()</code></a> within a call to <a href="#methods-jquery-prototype-method-ariaclick"><code>&lt;jQuery&gt;.ariaClick()</code></a>, which can be done directly and with greater flexibility.
-</p>
-
-#### History:
-
-* `v2.0.0`: Introduced.
-* `v2.29.0`: Deprecated.
-
-<!-- *********************************************************************** -->
-
 ### <span class="deprecated">`Dialog.setup([title [, classNames]])` → *`HTMLElement` object*</span> {#dialog-api-method-setup}
 
 <p role="note" class="warning"><b>Deprecated:</b>

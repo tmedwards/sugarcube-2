@@ -462,30 +462,6 @@ var Dialog = (() => { // eslint-disable-line no-unused-vars, no-var
 	*******************************************************************************/
 
 	/*
-		[DEPRECATED] Adds a click hander to the target element(s) which opens the dialog modal.
-	*/
-	function addClickHandler(targets, options, startFn, doneFn, onClose) {
-		console.warn('[DEPRECATED] Dialog.addClickHandler() is deprecated.');
-
-		return jQuery(targets).ariaClick(ev => {
-			ev.preventDefault();
-
-			// Call the start function.
-			if (typeof startFn === 'function') {
-				startFn(ev);
-			}
-
-			// Open the dialog.
-			open(options, onClose);
-
-			// Call the done function.
-			if (typeof doneFn === 'function') {
-				doneFn(ev);
-			}
-		});
-	}
-
-	/*
 		[DEPRECATED] Prepares the dialog for use.
 		Returns the dialog's body container.
 	*/
@@ -515,7 +491,6 @@ var Dialog = (() => { // eslint-disable-line no-unused-vars, no-var
 		wikiPassage : { value : wikiPassage },
 
 		// Deprecated Functions.
-		addClickHandler : { value : addClickHandler },
-		setup           : { value : setup }
+		setup : { value : setup }
 	}));
 })();
