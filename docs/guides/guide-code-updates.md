@@ -33,23 +33,23 @@ Some changes within this version are <strong>breaking changes</strong> that you 
 	<tbody>
 		<tr>
 			<td><code>Array.random()</code></td>
-			<td><b>BREAKING:</b> This deprecated static method has been removed.  Instead, use the <a href="#methods-array-prototype-method-random"><code>&lt;Array&gt;.random()</code></a> instance method.</td>
+			<td><b>BREAKING:</b> This deprecated static method has been removed.  See the <a href="#methods-array-prototype-method-random"><code>&lt;Array&gt;.random()</code></a> instance method.</td>
 		</tr>
 		<tr>
 			<td><code>&lt;Array&gt;.contains()</code></td>
-			<td>This instance method has been removed.  Instead, use the <a href="#methods-array-prototype-method-includes"><code>&lt;Array&gt;.includes()</code></a> instance method.</td>
+			<td>This instance method has been removed.  See the <a href="#methods-array-prototype-method-includes"><code>&lt;Array&gt;.includes()</code></a> instance method.</td>
 		</tr>
 		<tr>
 			<td><code>&lt;Array&gt;.containsAll()</code></td>
-			<td><b>BREAKING:</b> This instance method has been removed.  Instead, use the <a href="#methods-array-prototype-method-includesall"><code>&lt;Array&gt;.includesAll()</code></a> instance method.</td>
+			<td><b>BREAKING:</b> This instance method has been removed.  See the <a href="#methods-array-prototype-method-includesall"><code>&lt;Array&gt;.includesAll()</code></a> instance method.</td>
 		</tr>
 		<tr>
 			<td><code>&lt;Array&gt;.containsAny()</code></td>
-			<td><b>BREAKING:</b> This instance method has been removed.  Instead, use the <a href="#methods-array-prototype-method-includesany"><code>&lt;Array&gt;.includesAny()</code></a> instance method.</td>
+			<td><b>BREAKING:</b> This instance method has been removed.  See the <a href="#methods-array-prototype-method-includesany"><code>&lt;Array&gt;.includesAny()</code></a> instance method.</td>
 		</tr>
 		<tr>
 			<td><code>&lt;Array&gt;.flatten()</code></td>
-			<td><b>BREAKING:</b> This instance method has been removed.  Instead, use the <a href="#methods-array-prototype-method-flat"><code>&lt;Array&gt;.flat()</code></a> instance method while providing a <code>depth</code> parameter of <code>Infinity</code>.</td>
+			<td><b>BREAKING:</b> This instance method has been removed.  See the <a href="#methods-array-prototype-method-flat"><code>&lt;Array&gt;.flat()</code></a> instance method while providing a <code>depth</code> parameter of <code>Infinity</code>.</td>
 		</tr>
 	</tbody>
 </table>
@@ -64,6 +64,11 @@ Some changes within this version are <strong>breaking changes</strong> that you 
 		</tr>
 	</thead>
 	<tbody>
+		<tr>
+			<td><code>?</code></td>
+			<td>?</td>
+		</tr>
+
 		<tr>
 			<td><code>Config.saves.autosave</code></td>
 			<td>
@@ -101,8 +106,6 @@ Some changes within this version are <strong>breaking changes</strong> that you 
 
 ### `JSON` API
 
-RECHECK THE `Serial.createReviver()` LINK AFTER ITS DOCUMENTATION IS ADDED
-
 <table>
 	<thead>
 		<tr>
@@ -120,17 +123,48 @@ RECHECK THE `Serial.createReviver()` LINK AFTER ITS DOCUMENTATION IS ADDED
 
 ### Macro library
 
-NEWLY DEPRECATED MACROS
-	<<actions>>
-	<<choice>>
-
-PURGED DEPRECATED MACROS
-	<<click>>
-	<<display>>
-	<<forget>>
-	<<remember>>
-	<<setplaylist>>
-	<<stopallaudio>>
+<table>
+	<thead>
+		<tr>
+			<th>Macro</th>
+			<th>Change</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><code>&lt;&lt;actions&gt;&gt;</code></td>
+			<td>This macro has been deprecated.</td>
+		</tr>
+		<tr>
+			<td><code>&lt;&lt;choice&gt;&gt;</code></td>
+			<td>This macro has been deprecated.</td>
+		</tr>
+		<tr>
+			<td><code>&lt;&lt;click&gt;&gt;</code></td>
+			<td><b>BREAKING:</b> This deprecated macro has been removed.  See the <a href="#macros-macro-link"><code>&lt;&lt;link&gt;&gt;</code></a> macro.</td>
+		</tr>
+		<tr>
+			<td><code>&lt;&lt;display&gt;&gt;</code></td>
+			<td><b>BREAKING:</b> This deprecated macro has been removed.  See the <a href="#macros-macro-include"><code>&lt;&lt;include&gt;&gt;</code></a> macro.</td>
+		</tr>
+		<tr>
+			<td><code>&lt;&lt;forget&gt;&gt;</code></td>
+			<td><b>BREAKING:</b> This deprecated macro has been removed.  See the <a href="#functions-function-forget"><code>forget()</code></a> function.</td>
+		</tr>
+		<tr>
+			<td><code>&lt;&lt;remember&gt;&gt;</code></td>
+			<td><b>BREAKING:</b> This deprecated macro has been removed.  See the <a href="#functions-function-memorize"><code>memorize()</code></a> and <a href="#functions-function-recall"><code>recall()</code></a> functions.</td>
+		</tr>
+		<tr>
+			<td><code>&lt;&lt;setplaylist&gt;&gt;</code></td>
+			<td><b>BREAKING:</b> This deprecated macro has been removed.  See the <a href="#macros-macro-createplaylist"><code>&lt;&lt;createplaylist&gt;&gt;</code></a> macro.</td>
+		</tr>
+		<tr>
+			<td><code>&lt;&lt;stopallaudio&gt;&gt;</code></td>
+			<td><b>BREAKING:</b> This deprecated macro has been removed.  See the <a href="#macros-macro-masteraudio"><code>&lt;&lt;masteraudio&gt;&gt;</code></a> macro.</td>
+		</tr>
+	</tbody>
+</table>
 
 ### `MacroContext` API
 
@@ -144,15 +178,15 @@ PURGED DEPRECATED MACROS
 	<tbody>
 		<tr>
 			<td><code>&lt;MacroContext&gt;.contextHas()</code></td>
-			<td>This method has been deprecated in favor of the <a href="#macrocontext-api-prototype-method-contextsome"><code>&lt;MacroContext&gt;.contextSome()</code></a> method.</td>
+			<td>This instance method has been deprecated in favor of the <a href="#macrocontext-api-prototype-method-contextsome"><code>&lt;MacroContext&gt;.contextSome()</code></a> instance method.</td>
 		</tr>
 		<tr>
 			<td><code>&lt;MacroContext&gt;.contextSelect()</code></td>
-			<td>This method has been deprecated in favor of the <a href="#macrocontext-api-prototype-method-contextfind"><code>&lt;MacroContext&gt;.contextFind()</code></a> method.</td>
+			<td>This instance method has been deprecated in favor of the <a href="#macrocontext-api-prototype-method-contextfind"><code>&lt;MacroContext&gt;.contextFind()</code></a> instance method.</td>
 		</tr>
 		<tr>
 			<td><code>&lt;MacroContext&gt;.contextSelectAll()</code></td>
-			<td>This method has been deprecated in favor of the <a href="#macrocontext-api-prototype-method-contextfilter"><code>&lt;MacroContext&gt;.contextFilter()</code></a> method.</td>
+			<td>This instance method has been deprecated in favor of the <a href="#macrocontext-api-prototype-method-contextfilter"><code>&lt;MacroContext&gt;.contextFilter()</code></a> instance method.</td>
 		</tr>
 	</tbody>
 </table>
@@ -169,7 +203,7 @@ PURGED DEPRECATED MACROS
 	<tbody>
 		<tr>
 			<td><code>&lt;Number&gt;.clamp()</code></td>
-			<td>This instance methos has been deprecated.  Instead, use the <a href="#methods-math-method-clamp"><code>Math.clamp()</code></a> static method.</td>
+			<td>This instance method has been deprecated.  See the <a href="#methods-math-method-clamp"><code>Math.clamp()</code></a> static method.</td>
 		</tr>
 	</tbody>
 </table>
@@ -186,11 +220,11 @@ PURGED DEPRECATED MACROS
 	<tbody>
 		<tr>
 			<td><code>&lt;Passage&gt;.domId</code></td>
-			<td>This property has been deprecated in favor of the <a href="#passage-api-prototype-getter-id"><code>&lt;Passage&gt;.id</code></a> property.</td>
+			<td>This instance property has been deprecated in favor of the <a href="#passage-api-prototype-getter-id"><code>&lt;Passage&gt;.id</code></a> instance property.</td>
 		</tr>
 		<tr>
 			<td><code>&lt;Passage&gt;.title</code></td>
-			<td>This property has been deprecated in favor of the <a href="#passage-api-prototype-getter-name"><code>&lt;Passage&gt;.name</code></a> property.</td>
+			<td>This instance property has been deprecated in favor of the <a href="#passage-api-prototype-getter-name"><code>&lt;Passage&gt;.name</code></a> instance property.</td>
 		</tr>
 		<tr>
 			<td><code>&lt;Passage&gt;.description()</code></td>
@@ -218,15 +252,6 @@ PURGED DEPRECATED MACROS
 
 ### `State` API
 
-PURGED DEPRECATED METHODS
-	State.backward()
-	State.display()
-	State.forward()
-	State.initPRNG()
-	State.play()
-	State.restart()
-	State.show()
-
 <table>
 	<thead>
 		<tr>
@@ -236,8 +261,32 @@ PURGED DEPRECATED METHODS
 	</thead>
 	<tbody>
 		<tr>
-			<td><code>?</code></td>
-			<td>?</td>
+			<td><code>State.backward()</code></td>
+			<td><b>BREAKING:</b> This deprecated static method has been removed.</td>
+		</tr>
+		<tr>
+			<td><code>State.display()</code></td>
+			<td><b>BREAKING:</b> This deprecated static method has been removed.</td>
+		</tr>
+		<tr>
+			<td><code>State.forward()</code></td>
+			<td><b>BREAKING:</b> This deprecated static method has been removed.</td>
+		</tr>
+		<tr>
+			<td><code>State.initPRNG()</code></td>
+			<td><b>BREAKING:</b> This deprecated static method has been removed.</td>
+		</tr>
+		<tr>
+			<td><code>State.play()</code></td>
+			<td><b>BREAKING:</b> This deprecated static method has been removed.</td>
+		</tr>
+		<tr>
+			<td><code>State.restart()</code></td>
+			<td><b>BREAKING:</b> This deprecated static method has been removed.</td>
+		</tr>
+		<tr>
+			<td><code>State.show()</code></td>
+			<td><b>BREAKING:</b> This deprecated static method has been removed.</td>
 		</tr>
 	</tbody>
 </table>
@@ -254,11 +303,11 @@ PURGED DEPRECATED METHODS
 	<tbody>
 		<tr>
 			<td><code>Story.domId</code></td>
-			<td>This property has been deprecated in favor of the <a href="#story-api-getter-id"><code>Story.id</code></a> property.</td>
+			<td>This static property has been deprecated in favor of the <a href="#story-api-getter-id"><code>Story.id</code></a> static property.</td>
 		</tr>
 		<tr>
 			<td><code>Story.title</code></td>
-			<td>This property has been deprecated in favor of the <a href="#story-api-getter-name"><code>Story.name</code></a> property.</td>
+			<td>This static property has been deprecated in favor of the <a href="#story-api-getter-name"><code>Story.name</code></a> static property.</td>
 		</tr>
 	</tbody>
 </table>
@@ -282,20 +331,60 @@ PURGED DEPRECATED METHODS
 
 ### `UI` API
 
-NEWLY DEPRECATED METHODS
-	UI.buildAutoload()
-
-PURGED DEPRECATED METHODS
-	UI.addClickHandler()
-	UI.body()
-	UI.close()
-	UI.isOpen()
-	UI.open()
-	UI.resize()
-	UI.setStoryElements()
-	UI.setup()
-	UI.stow()
-	UI.unstow()
+<table>
+	<thead>
+		<tr>
+			<th>Method</th>
+			<th>Change</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><code>UI.buildAutoload()</code></td>
+			<td>This static method has been deprecated.</td>
+		</tr>
+		<tr>
+			<td><code>UI.addClickHandler()</code></td>
+			<td><b>BREAKING:</b> This deprecated static method has been removed.</td>
+		</tr>
+		<tr>
+			<td><code>UI.body()</code></td>
+			<td><b>BREAKING:</b> This deprecated static method has been removed.</td>
+		</tr>
+		<tr>
+			<td><code>UI.close()</code></td>
+			<td><b>BREAKING:</b> This deprecated static method has been removed.</td>
+		</tr>
+		<tr>
+			<td><code>UI.isOpen()</code></td>
+			<td><b>BREAKING:</b> This deprecated static method has been removed.</td>
+		</tr>
+		<tr>
+			<td><code>UI.open()</code></td>
+			<td><b>BREAKING:</b> This deprecated static method has been removed.</td>
+		</tr>
+		<tr>
+			<td><code>UI.resize()</code></td>
+			<td><b>BREAKING:</b> This deprecated static method has been removed.</td>
+		</tr>
+		<tr>
+			<td><code>UI.setStoryElements()</code></td>
+			<td><b>BREAKING:</b> This deprecated static method has been removed.</td>
+		</tr>
+		<tr>
+			<td><code>UI.setup()</code></td>
+			<td><b>BREAKING:</b> This deprecated static method has been removed.</td>
+		</tr>
+		<tr>
+			<td><code>UI.stow()</code></td>
+			<td><b>BREAKING:</b> This deprecated static method has been removed.</td>
+		</tr>
+		<tr>
+			<td><code>UI.unstow()</code></td>
+			<td><b>BREAKING:</b> This deprecated static method has been removed.</td>
+		</tr>
+	</tbody>
+</table>
 
 
 <!-- ***************************************************************************
@@ -759,11 +848,11 @@ The HTML &amp; CSS have undergone ***significant*** changes.  See the [`HTML`](#
 		</tr>
 		<tr>
 			<td><code>MenuShare</code></td>
-			<td>The <code>MenuShare</code> special passage has been removed.  Instead, use the <a href="#special-passage-storyshare"><code>StoryShare</code> special passage</a>.</td>
+			<td>The <code>MenuShare</code> special passage has been removed.  See the <a href="#special-passage-storyshare"><code>StoryShare</code> special passage</a>.</td>
 		</tr>
 		<tr>
 			<td><code>MenuStory</code></td>
-			<td>The <code>MenuStory</code> special passage has been removed.  Instead, use the <a href="#special-passage-storymenu"><code>StoryMenu</code> special passage</a>.</td>
+			<td>The <code>MenuStory</code> special passage has been removed.  See the <a href="#special-passage-storymenu"><code>StoryMenu</code> special passage</a>.</td>
 		</tr>
 	</tbody>
 </table>
@@ -823,13 +912,13 @@ The `config` object has been renamed to `Config` and some of its properties have
 
 The `History` API object has been renamed to `State` and some of its methods have also changed.  Furthermore, it is no longer instantiated into the legacy `state` object—which still exists, so legacy code will continue to work.  See the [`State` API](#state-api) docs for more information.
 
-The `State.display()` method—formerly `state.display()`—is no longer overridable, meaning it cannot be wrapped—e.g., the "StoryRegions" 3rd-party add-ons do this.  Instead, use [Navigation Events or Tasks](#navigation-events-tasks).
+The `State.display()` method—formerly `state.display()`—is no longer overridable, meaning it cannot be wrapped—e.g., the "StoryRegions" 3rd-party add-ons do this.  See [Navigation Events or Tasks](#navigation-events-tasks).
 
 Calling the [`State.prng.init()` method](#state-api-method-prng-init)—formerly `History.initPRNG()`—outside of story initialization will now throw an error.  It has always been required that the call happen during story initialization, the only change is the throwing of the error.
 
 ### Seedable pseudo-random number generator (PRNG)
 
-`Math.random()` is no longer replaced by the integrated seedable PRNG when `State.prng.init()` is called.  Instead, use either the built-in functions [`random()`](#functions-function-random) &amp; [`randomFloat()`](#functions-function-randomfloat) or the [`State.random()` method](#state-api-method-random), if you need direct access to the PRNG—since it returns a call to either `Math.random()` or the seedable PRNG, as appropriate.
+`Math.random()` is no longer replaced by the integrated seedable PRNG when `State.prng.init()` is called.  See either the built-in functions [`random()`](#functions-function-random) &amp; [`randomFloat()`](#functions-function-randomfloat) or the [`State.random()` method](#state-api-method-random), if you need direct access to the PRNG—since it returns a call to either `Math.random()` or the seedable PRNG, as appropriate.
 
 ### Macro system
 
