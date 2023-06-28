@@ -11,6 +11,294 @@ The majority of newer SugarCube versions do not have any changes that would requ
 
 
 <!-- ***************************************************************************
+	Updating to any version ≥2.37.0 from a lesser version
+**************************************************************************** -->
+## Updating to any version ≥2.37.0 from a lesser version {#guide-code-updates-2.37.0}
+
+<p role="note" class="warning"><b>Warning:</b>
+Some changes within this version are <strong>breaking changes</strong> that you <strong><em>must</em></strong> address immediately, while others are elective changes that you may address at your leisure.  All breaking changes will be so noted.
+</p>
+
+**NOTE(tme): FINISH THIS — FINISH THIS — FINISH THIS — FINISH THIS — FINISH THIS — FINISH THIS**
+
+### `Array` API
+
+<table>
+	<thead>
+		<tr>
+			<th>Method</th>
+			<th>Change</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><code>Array.random()</code></td>
+			<td><b>BREAKING:</b> This deprecated static method has been removed.  Instead, use the <a href="#methods-array-prototype-method-random"><code>&lt;Array&gt;.random()</code></a> instance method.</td>
+		</tr>
+		<tr>
+			<td><code>&lt;Array&gt;.contains()</code></td>
+			<td>This instance method has been removed.  Instead, use the <a href="#methods-array-prototype-method-includes"><code>&lt;Array&gt;.includes()</code></a> instance method.</td>
+		</tr>
+		<tr>
+			<td><code>&lt;Array&gt;.containsAll()</code></td>
+			<td><b>BREAKING:</b> This instance method has been removed.  Instead, use the <a href="#methods-array-prototype-method-includesall"><code>&lt;Array&gt;.includesAll()</code></a> instance method.</td>
+		</tr>
+		<tr>
+			<td><code>&lt;Array&gt;.containsAny()</code></td>
+			<td><b>BREAKING:</b> This instance method has been removed.  Instead, use the <a href="#methods-array-prototype-method-includesany"><code>&lt;Array&gt;.includesAny()</code></a> instance method.</td>
+		</tr>
+		<tr>
+			<td><code>&lt;Array&gt;.flatten()</code></td>
+			<td><b>BREAKING:</b> This instance method has been removed.  Instead, use the <a href="#methods-array-prototype-method-flat"><code>&lt;Array&gt;.flat()</code></a> instance method while providing a <code>depth</code> parameter of <code>Infinity</code>.</td>
+		</tr>
+	</tbody>
+</table>
+
+### `Config` API
+
+<table>
+	<thead>
+		<tr>
+			<th>Property</th>
+			<th>Change</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><code>Config.saves.autosave</code></td>
+			<td>
+
+				FIX THIS!
+
+				<p>This setting property has been has been deprecated.</p>
+				<p>This setting property has been updated to accept function values and its acceptance of string values has been deprecated.  String values will still be accepted for further releases of v2, however, switching to an array is recommended—e.g., the string value <code>"autosave"</code> would become the array <code>["autosave"]</code>.  See the <a href="#config-api-property-saves-autosave"><code>Config.saves.autosave</code> property</a> for more information.</p>
+
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+### `Dialog` API
+
+<table>
+	<thead>
+		<tr>
+			<th>Method</th>
+			<th>Change</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><code>Dialog.addClickHandler()</code></td>
+			<td><b>BREAKING:</b> This deprecated static method has been removed.</td>
+		</tr>
+		<tr>
+			<td><code>Dialog.setup()</code></td>
+			<td>This static method has been deprecated in favor of the <a href="#dialog-api-method-create"><code>Dialog.create()</code></a> static method.</td>
+		</tr>
+	</tbody>
+</table>
+
+### `JSON` API
+
+RECHECK THE `Serial.createReviveString()` LINK AFTER ITS DOCUMENTATION IS ADDED
+
+<table>
+	<thead>
+		<tr>
+			<th>Method</th>
+			<th>Change</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><code>JSON.reviveWrapper()</code></td>
+			<td>This static method has been deprecated in favor of the <a href="#serial-api-method-createrevivestring"><code>Serial.createReviveString()</code></a> static method.</td>
+		</tr>
+	</tbody>
+</table>
+
+### Macro library
+
+NEWLY DEPRECATED MACROS
+	<<actions>>
+	<<choice>>
+
+PURGED DEPRECATED MACROS
+	<<click>>
+	<<display>>
+	<<forget>>
+	<<remember>>
+	<<setplaylist>>
+	<<stopallaudio>>
+
+### `MacroContext` API
+
+<table>
+	<thead>
+		<tr>
+			<th>Member</th>
+			<th>Change</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><code>&lt;MacroContext&gt;.contextHas()</code></td>
+			<td>This method has been deprecated in favor of the <a href="#macrocontext-api-prototype-method-contextsome"><code>&lt;MacroContext&gt;.contextSome()</code></a> method.</td>
+		</tr>
+		<tr>
+			<td><code>&lt;MacroContext&gt;.contextSelect()</code></td>
+			<td>This method has been deprecated in favor of the <a href="#macrocontext-api-prototype-method-contextfind"><code>&lt;MacroContext&gt;.contextFind()</code></a> method.</td>
+		</tr>
+		<tr>
+			<td><code>&lt;MacroContext&gt;.contextSelectAll()</code></td>
+			<td>This method has been deprecated in favor of the <a href="#macrocontext-api-prototype-method-contextfilter"><code>&lt;MacroContext&gt;.contextFilter()</code></a> method.</td>
+		</tr>
+	</tbody>
+</table>
+
+### `Number` API
+
+<table>
+	<thead>
+		<tr>
+			<th>Method</th>
+			<th>Change</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><code>&lt;Number&gt;.clamp()</code></td>
+			<td>This instance methos has been deprecated.  Instead, use the <a href="#methods-math-method-clamp"><code>Math.clamp()</code></a> static method.</td>
+		</tr>
+	</tbody>
+</table>
+
+### `Passage` API
+
+<table>
+	<thead>
+		<tr>
+			<th>Member</th>
+			<th>Change</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><code>&lt;Passage&gt;.domId</code></td>
+			<td>This property has been deprecated in favor of the <a href="#passage-api-prototype-getter-id"><code>&lt;Passage&gt;.id</code></a> property.</td>
+		</tr>
+		<tr>
+			<td><code>&lt;Passage&gt;.title</code></td>
+			<td>This property has been deprecated in favor of the <a href="#passage-api-prototype-getter-name"><code>&lt;Passage&gt;.name</code></a> property.</td>
+		</tr>
+		<tr>
+			<td><code>&lt;Passage&gt;.description()</code></td>
+			<td>This instance method has been deprecated.</td>
+		</tr>
+	</tbody>
+</table>
+
+### `Save` API
+
+<table>
+	<thead>
+		<tr>
+			<th>Method</th>
+			<th>Change</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><code>?</code></td>
+			<td>?</td>
+		</tr>
+	</tbody>
+</table>
+
+### `State` API
+
+PURGED DEPRECATED METHODS
+	State.backward()
+	State.display()
+	State.forward()
+	State.initPRNG()
+	State.play()
+	State.restart()
+	State.show()
+
+<table>
+	<thead>
+		<tr>
+			<th>Method</th>
+			<th>Change</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><code>?</code></td>
+			<td>?</td>
+		</tr>
+	</tbody>
+</table>
+
+### `Story` API
+
+<table>
+	<thead>
+		<tr>
+			<th>Member</th>
+			<th>Change</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><code>Story.domId</code></td>
+			<td>This property has been deprecated in favor of the <a href="#story-api-getter-id"><code>Story.id</code></a> property.</td>
+		</tr>
+		<tr>
+			<td><code>Story.title</code></td>
+			<td>This property has been deprecated in favor of the <a href="#story-api-getter-name"><code>Story.name</code></a> property.</td>
+		</tr>
+	</tbody>
+</table>
+
+### `String` API
+
+<table>
+	<thead>
+		<tr>
+			<th>Method</th>
+			<th>Change</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><code>&lt;String&gt;.readBracketedList()</code></td>
+			<td><b>BREAKING:</b> This deprecated instance method has been removed.</td>
+		</tr>
+	</tbody>
+</table>
+
+### `UI` API
+
+NEWLY DEPRECATED METHODS
+	UI.buildAutoload()
+
+PURGED DEPRECATED METHODS
+	UI.addClickHandler()
+	UI.body()
+	UI.close()
+	UI.isOpen()
+	UI.open()
+	UI.resize()
+	UI.setStoryElements()
+	UI.setup()
+	UI.stow()
+	UI.unstow()
+
+
+<!-- ***************************************************************************
 	Updating to any version ≥2.36.0 from a lesser version
 **************************************************************************** -->
 ## Updating to any version ≥2.36.0 from a lesser version {#guide-code-updates-2.36.0}

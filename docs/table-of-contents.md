@@ -668,6 +668,7 @@
 
 ## [Guide: Code Updates](#guide-code-updates)
 
+* [Upgrading to ≥2.37.0](#guide-code-updates-2.37.0)
 * [Upgrading to ≥2.36.0](#guide-code-updates-2.36.0)
 * [Upgrading to ≥2.31.0](#guide-code-updates-2.31.0)
 * [Upgrading to ≥2.30.0](#guide-code-updates-2.30.0)
