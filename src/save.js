@@ -197,7 +197,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 
 		// Try the `Config.saves.descriptions` description.
 		if (!desc && typeof Config.saves.descriptions === 'function') {
-			desc =  String(Config.saves.descriptions(saveType)).trim();
+			desc = String(Config.saves.descriptions(saveType)).trim();
 		}
 
 		if (desc) {
