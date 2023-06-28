@@ -60,9 +60,9 @@ Due to how the Twine&nbsp;2 automatic passage creation feature currently works, 
 
 <!-- *********************************************************************** -->
 
-### Non-generic object types (a.k.a. classes) {#guide-tips-non-generic-object-types}
+### Non-generic object types (classes) {#guide-tips-non-generic-object-types}
 
-As a basic working definition, non-generic object types—a.k.a. classes—are instantiable objects whose own prototype is not `Object`—e.g., `Array` is a native non-generic object type.
+As a basic working definition, non-generic object types—i.e., classes—are instantiable objects whose own prototype is not `Object`—e.g., `Array` is a native non-generic object type.
 
 Many of the commonly used native non-generic object types are already fully compatible with and supported for use within story variables—e.g., `Array`, `Date`, `Map`, and `Set`.  All other non-generic object types, on the other hand, must be made compatible to be successfully stored within story variables.
 
@@ -74,7 +74,7 @@ Making custom non-generic object types fully compatible requires that two method
 In both cases, since the end goal is roughly the same, this means creating a new instance of the base object type and populating it with clones of the original instance's data.  There is no one size fits all example for either of these methods because an instance's properties, and the data contained therein, are what determine what you need to do.
 
 <p role="note" class="see"><b>See Also:</b>
-The <a href="#methods-json-method-revivewrapper"><code>JSON.reviveWrapper()</code> method</a> for additional information on implementing the <code>.toJSON()</code> method.
+The <a href="#methods-serial-method-createreviver"><code>Serial.createReviver()</code> method</a> for additional information on implementing the <code>.toJSON()</code> method.
 </p>
 
 #### Examples: *(not an exhaustive list)*
@@ -110,13 +110,13 @@ ContactInfo.prototype.toJSON = function () {
 	// own data.
 	//
 	// NOTE: Supplying `this` directly as the `reviveData` parameter to the
-	// `JSON.reviveWrapper()` call will trigger out of control recursion in
+	// `Serial.createReviver()` call will trigger out of control recursion in
 	// the serializer, so we must pass it a clone of our own data instead.
 	var ownData = {};
 	Object.keys(this).forEach(function (pn) {
 		ownData[pn] = clone(this[pn]);
 	}, this);
-	return JSON.reviveWrapper('new ContactInfo($ReviveData$)', ownData);
+	return Serial.createReviver('new ContactInfo($ReviveData$)', ownData);
 };
 ```
 
@@ -156,7 +156,7 @@ ContactInfo.prototype.clone = function () {
 ContactInfo.prototype.toJSON = function () {
 	// Return a code string that will create a new instance containing our
 	// own data.
-	return JSON.reviveWrapper(String.format(
+	return Serial.createReviver(String.format(
 		'new ContactInfo({0},{1},{2},{3})',
 		JSON.stringify(this.name),
 		JSON.stringify(this.address),
@@ -210,13 +210,13 @@ ContactInfo.prototype.toJSON = function () {
 	// own data.
 	//
 	// NOTE: Supplying `this` directly as the `reviveData` parameter to the
-	// `JSON.reviveWrapper()` call will trigger out of control recursion in
+	// `Serial.createReviver()` call will trigger out of control recursion in
 	// the serializer, so we must pass it a clone of our own data instead.
 	var ownData = {};
 	Object.keys(this).forEach(function (pn) {
 		ownData[pn] = clone(this[pn]);
 	}, this);
-	return JSON.reviveWrapper('(new ContactInfo())._init($ReviveData$)', ownData);
+	return Serial.createReviver('(new ContactInfo())._init($ReviveData$)', ownData);
 };
 ```
 

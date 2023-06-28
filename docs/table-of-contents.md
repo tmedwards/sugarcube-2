@@ -171,6 +171,8 @@
 	* [`Math.trunc()`](#methods-math-method-trunc)
 * [RegExp Methods](#methods-regexp)
 	* [`RegExp.escape()`](#methods-regexp-method-escape)
+* [Serial Methods](#methods-serial)
+	* [`Serial.createReviver()`](#methods-serial-method-createreviver)
 * [String Methods](#methods-string)
 	* [`<String>.count()`](#methods-string-prototype-method-count)
 	* [`<String>.first()`](#methods-string-prototype-method-first)

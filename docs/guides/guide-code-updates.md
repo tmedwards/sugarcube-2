@@ -101,7 +101,7 @@ Some changes within this version are <strong>breaking changes</strong> that you 
 
 ### `JSON` API
 
-RECHECK THE `Serial.createReviveString()` LINK AFTER ITS DOCUMENTATION IS ADDED
+RECHECK THE `Serial.createReviver()` LINK AFTER ITS DOCUMENTATION IS ADDED
 
 <table>
 	<thead>
@@ -113,7 +113,7 @@ RECHECK THE `Serial.createReviveString()` LINK AFTER ITS DOCUMENTATION IS ADDED
 	<tbody>
 		<tr>
 			<td><code>JSON.reviveWrapper()</code></td>
-			<td>This static method has been deprecated in favor of the <a href="#serial-api-method-createrevivestring"><code>Serial.createReviveString()</code></a> static method.</td>
+			<td>This static method has been deprecated in favor of the <a href="#methods-serial-method-createreviver"><code>Serial.createReviver()</code></a> static method.</td>
 		</tr>
 	</tbody>
 </table>

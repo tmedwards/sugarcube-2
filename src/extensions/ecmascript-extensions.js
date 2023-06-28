@@ -1182,7 +1182,7 @@
 				throw new TypeError('JSON.reviveWrapper code parameter must be a string');
 			}
 
-			return Serial.createReviveString(code, data);
+			return Serial.createReviver(code, data);
 		}
 	});
 

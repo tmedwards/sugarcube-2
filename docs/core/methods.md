@@ -609,46 +609,6 @@ $fruits.unshiftUnique("Apples", "Apples")  → Returns 3; $fruits ["Apples", "Or
 
 
 <!-- ***************************************************************************
-	JSON
-**************************************************************************** -->
-## JSON Methods {#methods-json}
-
-<!-- *********************************************************************** -->
-
-### `JSON.reviveWrapper(codeString [, reviveData])` → *array* {#methods-json-method-revivewrapper}
-
-Returns the given code string, and optional data chunk, wrapped within the JSON deserialization revive wrapper.  Intended to allow authors to easily wrap their custom object types (a.k.a. classes) revival code and associated data within the revive wrapper, which should be returned from an object instance's `.toJSON()` method, so that the instance may be properly revived upon deserialization.
-
-<p role="note" class="see"><b>See:</b>
-The <a href="#guide-tips-non-generic-object-types"><em>Non-generic object types (a.k.a. classes)</em> guide</a> for more detailed information.
-</p>
-
-#### History:
-
-* `v2.0.0`: Introduced.
-* `v2.9.0`: Added `reviveData` parameter.
-
-#### Parameters:
-
-* **`codeString`:** (*string*) The revival code string to wrap.
-* **`reviveData`:** (optional, *any*) The data that should be made available to the evaluated revival code during deserialization via the special `$ReviveData$` variable.  **WARNING:** Attempting to pass the value of an object instance's `this` directly as the `reviveData` parameter will trigger out of control recursion in the serializer, so a clone of the instance's own data must be passed instead.
-
-#### Examples:
-
-```
-JSON.reviveWrapper( /* valid JavaScript code string */ );             → Without data chunk
-JSON.reviveWrapper( /* valid JavaScript code string */ , myOwnData);  → With data chunk
-
-// E.g., Assume that you're attempting to revive an instance of a custom class named
-//       `Character`, which is assigned to a story variable named `$pc`.  The call
-//       to `JSON.reviveWrapper()` might look something like the following.
-var ownData = {};
-Object.keys(this).forEach(function (pn) { ownData[pn] = clone(this[pn]); }, this);
-return JSON.reviveWrapper('new Character($ReviveData$)', ownData);
-```
-
-
-<!-- ***************************************************************************
 	jQuery
 **************************************************************************** -->
 ## jQuery Methods {#methods-jquery}
@@ -850,6 +810,26 @@ $('#notebook').wikiPassage('Notes');  → Appends the rendered passage to the ta
 
 
 <!-- ***************************************************************************
+	JSON
+**************************************************************************** -->
+## JSON Methods {#methods-json}
+
+<!-- *********************************************************************** -->
+
+### <span class="deprecated">`JSON.reviveWrapper(code [, data])` → *array*</span> {#methods-json-method-revivewrapper}
+
+<p role="note" class="warning"><b>Deprecated:</b>
+This static method has been deprecated and should no longer be used.  See the <a href="#methods-serial-method-createreviver"><code>Serial.createReviver()</code></a> static method.
+</p>
+
+#### History:
+
+* `v2.0.0`: Introduced.
+* `v2.9.0`: Added `data` parameter.
+* `v2.37.0`: Deprecated in favor of `Serial.createReviver()`.
+
+
+<!-- ***************************************************************************
 	Math
 **************************************************************************** -->
 ## Math Methods {#methods-math}
@@ -904,25 +884,16 @@ Math.trunc(-12.7)  → Returns -12
 
 <!-- *********************************************************************** -->
 
-### `<Number>.clamp(min , max)` → *number* {#methods-number-prototype-method-clamp}
+### <span class="deprecated">`<Number>.clamp(min , max)` → *number*</span> {#methods-number-prototype-method-clamp}
 
-Returns the number clamped to the specified bounds.  Does not modify the original.
+<p role="note" class="warning"><b>Deprecated:</b>
+This static method has been deprecated and should no longer be used.  See the <a href="#methods-math-method-clamp"><code>Math.clamp()</code></a> static method.
+</p>
 
 #### History:
 
 * `v2.0.0`: Introduced.
-
-#### Parameters:
-
-* **`min`:** (*number*) The lower bound of the number.
-* **`max`:** (*number*) The upper bound of the number.
-
-#### Examples:
-
-```
-$stat.clamp(0, 200)  → Clamps $stat to the bounds 0–200 and returns the new value
-$stat.clamp(1, 6.6)  → Clamps $stat to the bounds 1–6.6 and returns the new value
-```
+* `v2.37.0`: Deprecated.
 
 
 <!-- ***************************************************************************
@@ -948,6 +919,45 @@ Returns the given string with all regular expression metacharacters escaped.  Do
 
 ```
 RegExp.escape('That will be $5 (cash only)')   → Returns 'That will be \$5 \(cash only\)'
+```
+
+
+<!-- ***************************************************************************
+	Serial
+**************************************************************************** -->
+## `Serial` Methods {#methods-serial}
+
+<!-- *********************************************************************** -->
+
+### `Serial.createReviver(code [, data])` → *Array<any>* {#methods-serial-method-createreviver}
+
+Returns the given code string, and optional data, wrapped within the deserialization reviver.  Intended to allow authors to easily create the reviver required to revive their custom object types (classes).  The reviver should be returned from an object instance's `.toJSON()` method, so that the instance may be properly revived upon deserialization.
+
+<p role="note" class="see"><b>See:</b>
+The <a href="#guide-tips-non-generic-object-types"><em>Non-generic object types (classes)</em> guide</a> for more detailed information.
+</p>
+
+#### History:
+
+* `v2.37.0`: Introduced.
+
+#### Parameters:
+
+* **`code`:** (*string*) The revival code string.
+* **`data`:** (optional, *any*) The data that should be made available to the evaluated revival code during deserialization via the special `$ReviveData$` variable.  **WARNING:** Attempting to pass the value of an object instance's `this` directly as the `reviveData` parameter will trigger out of control recursion in the serializer, so a clone of the instance's own data must be passed instead.
+
+#### Examples:
+
+```
+Serial.createReviver( /* valid JavaScript code string */ );             → Without data chunk
+Serial.createReviver( /* valid JavaScript code string */ , myOwnData);  → With data chunk
+
+// E.g., Assume that you're attempting to revive an instance of a custom class named
+//       `Character`, which is assigned to a story variable named `$pc`.  The call
+//       to `Serial.createReviver()` might look something like the following.
+var ownData = {};
+Object.keys(this).forEach(function (pn) { ownData[pn] = clone(this[pn]); }, this);
+return Serial.createReviver('new Character($ReviveData$)', ownData);
 ```
 
 

@@ -62,9 +62,9 @@ var Serial = (() => { // eslint-disable-line no-unused-vars, no-var
 	*******************************************************************************/
 
 	// Allow users to easily prepare their class code for revival.
-	function createReviveString(code, data) {
+	function createReviver(code, data) {
 		if (typeof code !== 'string') {
-			throw new TypeError('Serial.createReviveString code parameter must be a string');
+			throw new TypeError('Serial.createReviver code parameter must be a string');
 		}
 
 		return ['(revive:eval)', [code, data]];
@@ -189,8 +189,8 @@ var Serial = (() => { // eslint-disable-line no-unused-vars, no-var
 	*******************************************************************************/
 
 	return Object.preventExtensions(Object.create(null, {
-		createReviveString : { value : createReviveString },
-		parse              : { value : parse },
-		stringify          : { value : stringify }
+		createReviver : { value : createReviver },
+		parse         : { value : parse },
+		stringify     : { value : stringify }
 	}));
 })();
