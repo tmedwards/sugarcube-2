@@ -484,10 +484,10 @@ Config.saves.isAllowed = function (saveType) {
 ##### Using the save type parameter
 
 ```
-// Allow auto saves only on passages tagged wtih `bookmark` or `autosave`.
+// Allow auto saves only on passages tagged wtih `cansave` or `autosave`.
 Config.saves.isAllowed = function (saveType) {
 	if (saveType === Save.Type.Auto) {
-		return tags().includesAny("bookmark", "autosave");
+		return tags().includesAny("cansave", "autosave");
 	}
 };
 ```
