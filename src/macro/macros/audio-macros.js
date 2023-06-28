@@ -277,29 +277,7 @@
 					return this.error(`no ${errors.join(' or ')} specified`);
 				}
 
-				const id       = String(this.args[0]).trim();
-				const oldFmtRe = /^format:\s*([\w-]+)\s*;\s*/i;
-
-				try {
-					SimpleAudio.tracks.add(id, this.args.slice(1).map(source => {
-						/* legacy */
-						// Transform an old format specifier into the new style.
-						if (oldFmtRe.test(source)) {
-							// If in Test Mode, return an error.
-							if (Config.debug) {
-								return this.error(`track ID "${id}": format specifier migration required, "format:formatId;" \u2192 "formatId|"`);
-							}
-
-							source = source.replace(oldFmtRe, '$1|'); // eslint-disable-line no-param-reassign
-						}
-
-						return source;
-						/* /legacy */
-					}));
-				}
-				catch (ex) {
-					return this.error(ex.message);
-				}
+				const id = String(this.args[0]).trim();
 
 				// If in Test Mode and no supported sources were specified, return an error.
 				if (Config.debug && !SimpleAudio.tracks.get(id).hasSource()) {
@@ -431,9 +409,6 @@
 						let parsed;
 
 						switch (arg) {
-							case 'copy': /* [DEPRECATED] */
-								console.warn('[DEPRECATED] <<track>> macro "copy" argument is deprecated.');
-								/* fallthrough */
 							case 'own':
 								trackObj.own = true;
 								break;
@@ -619,48 +594,25 @@
 		});
 
 		/*
-			<<playlist list_id action_list>>  ← <<createplaylist>> syntax
-			<<playlist action_list>>          ← <<setplaylist>> syntax
+			<<playlist list_id action_list>>
 		*/
 		Macro.add('playlist', {
-			from : null,
-
 			handler() {
-				const from = this.self.from;
-
-				if (from === null) {
-					return this.error('no playlists have been created');
+				if (this.args.length < 2) {
+					const errors = [];
+					if (this.args.length < 1) { errors.push('list ID'); }
+					if (this.args.length < 2) { errors.push('actions'); }
+					return this.error(`no ${errors.join(' or ')} specified`);
 				}
 
-				let list;
-				let args;
+				const id = String(this.args[0]).trim();
 
-				if (from === 'createplaylist') {
-					if (this.args.length < 2) {
-						const errors = [];
-						if (this.args.length < 1) { errors.push('list ID'); }
-						if (this.args.length < 2) { errors.push('actions'); }
-						return this.error(`no ${errors.join(' or ')} specified`);
-					}
-
-					const id = String(this.args[0]).trim();
-
-					if (!SimpleAudio.lists.has(id)) {
-						return this.error(`playlist "${id}" does not exist`);
-					}
-
-					list = SimpleAudio.lists.get(id);
-					args = this.args.slice(1);
-				}
-				else {
-					if (this.args.length === 0) {
-						return this.error('no actions specified');
-					}
-
-					list = SimpleAudio.lists.get('setplaylist');
-					args = this.args.slice(0);
+				if (!SimpleAudio.lists.has(id)) {
+					return this.error(`playlist "${id}" does not exist`);
 				}
 
+				const list = SimpleAudio.lists.get(id);
+				const args = this.args.slice(1);
 				let action;
 				let fadeOver = 5;
 				let fadeTo;

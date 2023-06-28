@@ -182,37 +182,6 @@
 	*******************************************************************************/
 
 	/*
-		Randomly selects an element from the given array, or array-like object, and returns it.
-		[DEPRECATED] Optionally, from within the given bounds.
-	*/
-	Object.defineProperty(Array, 'random', {
-		configurable : true,
-		writable     : true,
-
-		value(array /* DEPRECATED: [, [min ,] max] */) {
-			if (
-				typeof array !== 'object'
-				|| array === null
-				|| !Object.hasOwn(array, 'length')
-			) {
-				throw new TypeError('Array.random array parameter must be an array or array-lke object');
-			}
-
-			const length = array.length >>> 0;
-
-			if (length === 0) {
-				return;
-			}
-
-			const index = arguments.length === 0
-				? _random(0, length - 1)
-				: _randomIndex(length, Array.prototype.slice.call(arguments, 1));
-
-			return array[index];
-		}
-	});
-
-	/*
 		Concatenates one or more unique elements to the end of the base array
 		and returns the result as a new array.  Elements which are arrays will
 		be merged—i.e. their elements will be concatenated, rather than the
@@ -894,38 +863,6 @@
 
 
 	/*******************************************************************************
-		`Number` Extensions.
-	*******************************************************************************/
-
-	/*
-		Returns the number clamped to the specified bounds.
-	*/
-	Object.defineProperty(Number.prototype, 'clamp', {
-		configurable : true,
-		writable     : true,
-
-		value(/* min, max */) {
-			if (this == null) { // lazy equality for null
-				throw new TypeError('Number.prototype.clamp called on null or undefined');
-			}
-
-			if (arguments.length !== 2) {
-				throw new Error('Number.prototype.clamp called with an incorrect number of parameters');
-			}
-
-			let min = Number(arguments[0]);
-			let max = Number(arguments[1]);
-
-			if (min > max) {
-				[min, max] = [max, min];
-			}
-
-			return Math.min(Math.max(this, min), max);
-		}
-	});
-
-
-	/*******************************************************************************
 		`RegExp` Extensions.
 	*******************************************************************************/
 
@@ -1232,79 +1169,7 @@
 	*******************************************************************************/
 
 	/*
-		[DEPRECATED] Returns whether the given element was found within the array.
-	*/
-	Object.defineProperty(Array.prototype, 'contains', {
-		configurable : true,
-		writable     : true,
-
-		value(/* needle [, fromIndex] */) {
-			console.warn('[DEPRECATED] <Array>.contains() is deprecated.');
-
-			if (this == null) { // lazy equality for null
-				throw new TypeError('Array.prototype.contains called on null or undefined');
-			}
-
-			return Array.prototype.includes.apply(this, arguments);
-		}
-	});
-
-	/*
-		[DEPRECATED] Returns whether all of the given elements were found within the array.
-	*/
-	Object.defineProperty(Array.prototype, 'containsAll', {
-		configurable : true,
-		writable     : true,
-
-		value(/* needle [, fromIndex] */) {
-			console.warn('[DEPRECATED] <Array>.containsAll() is deprecated.');
-
-			if (this == null) { // lazy equality for null
-				throw new TypeError('Array.prototype.containsAll called on null or undefined');
-			}
-
-			return Array.prototype.includesAll.apply(this, arguments);
-		}
-	});
-
-	/*
-		[DEPRECATED] Returns whether any of the given elements were found within the array.
-	*/
-	Object.defineProperty(Array.prototype, 'containsAny', {
-		configurable : true,
-		writable     : true,
-
-		value(/* needle [, fromIndex] */) {
-			console.warn('[DEPRECATED] <Array>.containsAny() is deprecated.');
-
-			if (this == null) { // lazy equality for null
-				throw new TypeError('Array.prototype.containsAny called on null or undefined');
-			}
-
-			return Array.prototype.includesAny.apply(this, arguments);
-		}
-	});
-
-	/*
-		[DEPRECATED] Returns a new array consisting of the flattened source array.
-	*/
-	Object.defineProperty(Array.prototype, 'flatten', {
-		configurable : true,
-		writable     : true,
-
-		value() {
-			console.warn('[DEPRECATED] <Array>.flatten() is deprecated.');
-
-			if (this == null) { // lazy equality for null
-				throw new TypeError('Array.prototype.flatten called on null or undefined');
-			}
-
-			return Array.prototype.flat.call(this, Infinity);
-		}
-	});
-
-	/*
-		[DEPRECATED] Utility method to allow users to easily wrap their code in the revive wrapper.
+		[DEPRECATED] Allow users to easily wrap their code in the revive wrapper.
 	*/
 	Object.defineProperty(JSON, 'reviveWrapper', {
 		configurable : true,
@@ -1322,20 +1187,31 @@
 	});
 
 	/*
-		[DEPRECATED] Returns whether the given string was found within the string.
+		[DEPRECATED] Returns the number clamped to the specified bounds.
 	*/
-	Object.defineProperty(String.prototype, 'contains', {
+	Object.defineProperty(Number.prototype, 'clamp', {
 		configurable : true,
 		writable     : true,
 
-		value(/* needle [, fromIndex] */) {
-			console.warn('[DEPRECATED] <String>.contains() is deprecated.');
+		value(/* min, max */) {
+			console.warn('[DEPRECATED] <Number>.clamp() is deprecated.');
 
 			if (this == null) { // lazy equality for null
-				throw new TypeError('String.prototype.contains called on null or undefined');
+				throw new TypeError('Number.prototype.clamp called on null or undefined');
 			}
 
-			return String.prototype.indexOf.apply(this, arguments) !== -1;
+			if (arguments.length !== 2) {
+				throw new Error('Number.prototype.clamp called with an incorrect number of parameters');
+			}
+
+			let min = Number(arguments[0]);
+			let max = Number(arguments[1]);
+
+			if (min > max) {
+				[min, max] = [max, min];
+			}
+
+			return Math.min(Math.max(this, min), max);
 		}
 	});
 })();

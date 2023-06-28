@@ -21,7 +21,7 @@ var Serial = (() => { // eslint-disable-line no-unused-vars, no-var
 			}
 		},
 		{
-			// TODO: This should be deprecated!
+			// TODO: Deprecate this!
 			id : 'Function',
 			get reference() { return Function.prototype; },
 			method() {
@@ -61,7 +61,7 @@ var Serial = (() => { // eslint-disable-line no-unused-vars, no-var
 		API Functions.
 	*******************************************************************************/
 
-	// Method to allow users to easily prepare their classes code for revival.
+	// Allow users to easily prepare their class code for revival.
 	function createReviveString(code, data) {
 		if (typeof code !== 'string') {
 			throw new TypeError('Serial.createReviveString code parameter must be a string');

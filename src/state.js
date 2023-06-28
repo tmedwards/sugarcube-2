@@ -812,7 +812,6 @@ var State = (() => { // eslint-disable-line no-unused-vars, no-var
 		},
 
 		// Legacy Aliases.
-		initPRNG : { value : prngInit },
 		restart  : { value : () => Engine.restart() },
 		backward : { value : () => Engine.backward() },
 		forward  : { value : () => Engine.forward() },

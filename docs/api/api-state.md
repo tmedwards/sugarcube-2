@@ -657,16 +657,3 @@ Sets the value of the story or temporary variable by the given name.  Returns wh
 ```
 State.setVar("$charName", "Jane Doe")  → Assigns the string "Jane Doe" to $charName
 ```
-
-<!-- *********************************************************************** -->
-
-### <span class="deprecated">`State.initPRNG([seed [, useEntropy]])`</span> {#state-api-method-initprng}
-
-<p role="note" class="warning"><b>Deprecated:</b>
-This method has been deprecated and should no longer be used.  See the <a href="#state-api-method-prng-init"><code>State.prng.init()</code></a> method for its replacement.
-</p>
-
-#### History:
-
-* `v2.0.0`: Introduced.
-* `v2.29.0`: Deprecated in favor of `State.prng.init()`.

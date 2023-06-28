@@ -165,32 +165,6 @@ Unsetting object properties.
 <<unset _choices.b, $towns['port ulster'].rumors, $pc.notes, _park.rides['wheel of death']>>
 ```
 
-<!-- *********************************************************************** -->
-
-### <span class="deprecated">`<<remember expression>>`</span> {#macros-macro-remember}
-
-<p role="note" class="warning"><b>Deprecated:</b>
-This macro has been deprecated and should no longer be used.  See the <a href="#functions-function-memorize"><code>memorize()</code></a> and <a href="#functions-function-recall"><code>recall()</code></a> functions for its replacement.
-</p>
-
-#### History:
-
-* `v2.0.0`: Introduced.
-* `v2.29.0`: Deprecated in favor of `memorize()` and `recall()`.
-
-<!-- *********************************************************************** -->
-
-### <span class="deprecated">`<<forget variableList>>`</span> {#macros-macro-forget}
-
-<p role="note" class="warning"><b>Deprecated:</b>
-This macro has been deprecated and should no longer be used.  See the <a href="#functions-function-forget"><code>forget()</code></a> function for its replacement.
-</p>
-
-#### History:
-
-* `v2.0.0`: Introduced.
-* `v2.29.0`: Deprecated in favor of `forget()`.
-
 
 <!-- ***************************************************************************
 	Scripting Macros
@@ -594,19 +568,6 @@ The default cursor is the block element character **Right Half Block (U+2590)** 
 	font-family: monospace, monospace;
 }
 ```
-
-<!-- *********************************************************************** -->
-
-### <span class="deprecated">`<<display passageName [elementName]>>`<br>`<<display linkMarkup [elementName]>>`</span> {#macros-macro-display}
-
-<p role="note" class="warning"><b>Deprecated:</b>
-This macro has been deprecated and should no longer be used.  See the <a href="#macros-macro-include"><code>&lt;&lt;include&gt;&gt;</code></a> macro for its replacement.
-</p>
-
-#### History:
-
-* `v2.0.0`: Introduced.
-* `v2.15.0`: Deprecated in favor of `<<include>>`.
 
 <!-- *********************************************************************** -->
 
@@ -1489,19 +1450,6 @@ What's your favorite pie? <<textbox "$pie" "Blueberry" "Cakes">>
 What's your favorite pie? <<textbox "$pie" "Blueberry" "Cakes" autofocus>>
 ```
 
-<!-- *********************************************************************** -->
-
-### <span class="deprecated">`<<click linkText [passageName]>> … <</click>>`<br>`<<click linkMarkup>>`<br>`<<click imageMarkup>>`</span> {#macros-macro-click}
-
-<p role="note" class="warning"><b>Deprecated:</b>
-This macro has been deprecated and should no longer be used.  See the <a href="#macros-macro-link"><code>&lt;&lt;link&gt;&gt;</code></a> macro for its replacement.
-</p>
-
-#### History:
-
-* `v2.0.0`: Introduced.
-* `v2.8.0`: Deprecated in favor of `<<link>>`.
-
 
 <!-- ***************************************************************************
 	Links Macros
@@ -2091,7 +2039,7 @@ Controls the playback of audio tracks, which must be set up via [`<<cacheaudio>>
 </p>
 
 <p role="note"><b>Note:</b>
-The <code>&lt;&lt;audio&gt;&gt;</code> macro cannot affect playlist tracks that have been copied into their respective playlist—meaning those set up via <a href="#macros-macro-createplaylist"><code>&lt;&lt;createplaylist&gt;&gt;</code></a> with its <code>copy</code> action or all tracks set up via, the deprecated, <a href="#macros-macro-setplaylist"><code>&lt;&lt;setplaylist&gt;&gt;</code></a>—as playlist copies are solely under the control of their playlist.
+The <code>&lt;&lt;audio&gt;&gt;</code> macro cannot affect playlist tracks whose ownership has been transferred to their respective playlist.  Meaning those set up via <a href="#macros-macro-createplaylist"><code>&lt;&lt;createplaylist&gt;&gt;</code></a> with its <code>own</code> action, as owned playlist tracks are solely under the control of their playlist.
 </p>
 
 <p role="note"><b>Note:</b>
@@ -2235,7 +2183,6 @@ The <a href="#special-passage-storyinit"><code>StoryInit</code> special passage<
 #### History:
 
 * `v2.0.0`: Introduced.
-* `v2.28.0`: Deprecated the old optional format specifier syntax in favor of a new syntax (`formatId|`).
 
 #### Arguments:
 
@@ -2311,7 +2258,6 @@ The <a href="#special-passage-storyinit"><code>StoryInit</code> special passage<
 #### History:
 
 * `v2.8.0`: Introduced.
-* `v2.29.0`: Deprecated `<<track>>` `copy` keyword in favor of `own`.
 
 #### Arguments:
 
@@ -2412,9 +2358,9 @@ blazing fast internet with unlimited data—especially true for mobile users.  P
 
 <!-- *********************************************************************** -->
 
-### `<<playlist listId actionList>>`<br><span class="deprecated">`<<playlist actionList>>`</span> {#macros-macro-playlist}
+### `<<playlist listId actionList>>` {#macros-macro-playlist}
 
-Controls the playback of the playlist, which must be set up via [`<<createplaylist>>`](#macros-macro-createplaylist)—the deprecated [`<<setplaylist>>`](#macros-macro-setplaylist) may be used instead, though it is not recommended.
+Controls the playback of the playlist, which must be set up via [`<<createplaylist>>`](#macros-macro-createplaylist).
 
 <p role="note" class="see"><b>See:</b>
 <a href="#macros-audio-limitations">Audio macro limitations</a>.
@@ -2428,7 +2374,7 @@ The <a href="#config-api-property-audio-pauseonfadetozero"><code>Config.audio.pa
 
 * `v2.0.0`: Introduced, compatible with `<<setplaylist>>`.
 * `v2.1.0`: Added `fadeoverto` action.
-* `v2.8.0`: Added `listId` argument, compatible with `<<createplaylist>>`.  Deprecated `<<setplaylist>>` compatible form.
+* `v2.8.0`: Added `listId` argument, compatible with `<<createplaylist>>`.
 * `v2.28.0`: Added `load` and `unload` actions.
 
 #### Arguments:
@@ -2622,32 +2568,6 @@ This macro should be invoked <strong><em>once</em></strong> following any invoca
 <<cacheaudio "c" "c_track.…">>
 <<cacheaudio "d" "d_track.…">>
 ```
-
-<!-- *********************************************************************** -->
-
-### <span class="deprecated">`<<setplaylist trackIdList>>`</span> {#macros-macro-setplaylist}
-
-<p role="note" class="warning"><b>Deprecated:</b>
-This macro has been deprecated and should no longer be used.  See the <a href="#macros-macro-createplaylist"><code>&lt;&lt;createplaylist&gt;&gt;</code></a> macro for its replacement.
-</p>
-
-#### History:
-
-* `v2.0.0`: Introduced.
-* `v2.8.0`: Deprecated in favor of `<<createplaylist>>`.
-
-<!-- *********************************************************************** -->
-
-### <span class="deprecated">`<<stopallaudio>>`</span> {#macros-macro-stopallaudio}
-
-<p role="note" class="warning"><b>Deprecated:</b>
-This macro has been deprecated and should no longer be used.  See the <a href="#macros-macro-audio"><code>&lt;&lt;audio&gt;&gt;</code></a> macro for its replacement.
-</p>
-
-#### History:
-
-* `v2.0.0`: Introduced.
-* `v2.8.0`: Deprecated in favor of `<<audio ":all" stop>>`.
 
 
 <!-- ***************************************************************************
