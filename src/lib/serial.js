@@ -30,7 +30,7 @@ var Serial = (() => { // eslint-disable-line no-unused-vars, no-var
 				// revival.  Without them, the function expression, which may be nameless, will be
 				// evaluated as a function definition—which will throw a syntax error exception, since
 				// function definitions must have a name.
-				return ['(revive:eval)', [`(${this.toString()})`]];
+				return ['(revive:)', [`(${this.toString()})`]];
 			}
 		},
 		{
@@ -44,7 +44,7 @@ var Serial = (() => { // eslint-disable-line no-unused-vars, no-var
 			id : 'RegExp',
 			get reference() { return RegExp.prototype; },
 			method() {
-				return ['(revive:eval)', [this.toString()]];
+				return ['(revive:)', [this.toString()]];
 			}
 		},
 		{
@@ -67,7 +67,7 @@ var Serial = (() => { // eslint-disable-line no-unused-vars, no-var
 			throw new TypeError('Serial.createReviver code parameter must be a string');
 		}
 
-		return ['(revive:eval)', [code, data]];
+		return ['(revive:)', [code, data]];
 	}
 
 	function parse(text, reviver) {
@@ -89,25 +89,16 @@ var Serial = (() => { // eslint-disable-line no-unused-vars, no-var
 						value = new Date(value[1]);
 						break;
 
-					case '(revive:eval)':
+					case '(revive:eval)': /* legacy */
+					case '(revive:)': {
 						try {
-							/* eslint-disable no-eval */
-							/* legacy */
-							if (value[1] instanceof Array) {
-								/* /legacy */
-								const $ReviveData$ = value[1][1]; // eslint-disable-line no-unused-vars
-								value = eval(value[1][0]);
-								/* legacy */
-							}
-							else {
-								value = eval(value[1]);
-							}
-							/* /legacy */
-							/* eslint-enable no-eval */
+							const $ReviveData$ = value[1][1]; // eslint-disable-line no-unused-vars
+							value = eval(value[1][0]); // eslint-disable-line no-eval
 						}
 						catch (ex) { /* no-op; though, perhaps we should handle this somehow */ }
 
 						break;
+					}
 				}
 			}
 
@@ -154,11 +145,11 @@ var Serial = (() => { // eslint-disable-line no-unused-vars, no-var
 			// Handle supported primitive values unsupported by JSON.
 			switch (typeof value) {
 				case 'undefined':
-					value = ['(revive:eval)', 'undefined'];
+					value = ['(revive:)', 'undefined'];
 					break;
 
 				case 'Infinity':
-					value = ['(revive:eval)', 'Infinity'];
+					value = ['(revive:)', 'Infinity'];
 					break;
 			}
 
