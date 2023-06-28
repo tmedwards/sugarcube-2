@@ -1239,6 +1239,8 @@
 		writable     : true,
 
 		value(/* needle [, fromIndex] */) {
+			console.warn('[DEPRECATED] <Array>.contains() is deprecated.');
+
 			if (this == null) { // lazy equality for null
 				throw new TypeError('Array.prototype.contains called on null or undefined');
 			}
@@ -1255,6 +1257,8 @@
 		writable     : true,
 
 		value(/* needle [, fromIndex] */) {
+			console.warn('[DEPRECATED] <Array>.containsAll() is deprecated.');
+
 			if (this == null) { // lazy equality for null
 				throw new TypeError('Array.prototype.containsAll called on null or undefined');
 			}
@@ -1271,6 +1275,8 @@
 		writable     : true,
 
 		value(/* needle [, fromIndex] */) {
+			console.warn('[DEPRECATED] <Array>.containsAny() is deprecated.');
+
 			if (this == null) { // lazy equality for null
 				throw new TypeError('Array.prototype.containsAny called on null or undefined');
 			}
@@ -1287,6 +1293,8 @@
 		writable     : true,
 
 		value() {
+			console.warn('[DEPRECATED] <Array>.flatten() is deprecated.');
+
 			if (this == null) { // lazy equality for null
 				throw new TypeError('Array.prototype.flatten called on null or undefined');
 			}
@@ -1303,6 +1311,8 @@
 		writable     : true,
 
 		value(code, data) {
+			console.warn('[DEPRECATED] JSON.reviveWrapper() is deprecated.');
+
 			if (typeof code !== 'string') {
 				throw new TypeError('JSON.reviveWrapper code parameter must be a string');
 			}
@@ -1319,6 +1329,8 @@
 		writable     : true,
 
 		value(/* needle [, fromIndex] */) {
+			console.warn('[DEPRECATED] <String>.contains() is deprecated.');
+
 			if (this == null) { // lazy equality for null
 				throw new TypeError('String.prototype.contains called on null or undefined');
 			}

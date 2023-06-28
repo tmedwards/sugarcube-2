@@ -199,6 +199,8 @@
 								[DEPRECATED] Old-style/legacy macros.
 							*/
 							else {
+								console.warn(`[DEPRECATED] The legacy macro API, used by <<${name}>>, is deprecated.`);
+
 								/*
 									Set up the raw arguments string.
 								*/

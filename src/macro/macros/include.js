@@ -13,6 +13,8 @@
 */
 Macro.add('include', {
 	handler() {
+		if (this.name === 'display') { console.warn(`[DEPRECATED] <<${this.name}>> macro is deprecated.`); }
+
 		if (this.args.length === 0) {
 			return this.error('no passage specified');
 		}

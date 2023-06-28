@@ -16,6 +16,8 @@ Macro.add('silent', {
 	tags     : null,
 
 	handler() {
+		if (this.name === 'silently') { console.warn(`[DEPRECATED] <<${this.name}>> macro is deprecated.`); }
+
 		const frag = document.createDocumentFragment();
 		new Wikifier(frag, this.payload[0].contents.trim());
 

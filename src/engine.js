@@ -793,6 +793,8 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 	function engineDisplay(title, link, option) {
 		if (BUILD_DEBUG) { console.log('[Engine/engineDisplay()]'); }
 
+		console.warn('[DEPRECATED] Engine.display() is deprecated.');
+
 		let noHistory = false;
 
 		// Process the option parameter.

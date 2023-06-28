@@ -20,6 +20,8 @@ Macro.add('remember', {
 	jsVarRe  : new RegExp(`State\\.variables\\.(${Patterns.identifier})`, 'g'),
 
 	handler() {
+		console.warn(`[DEPRECATED] <<${this.name}>> macro is deprecated.`);
+
 		if (this.args.full.length === 0) {
 			return this.error('no expression specified');
 		}
@@ -67,6 +69,8 @@ Macro.add('forget', {
 	jsVarRe  : new RegExp(`State\\.variables\\.(${Patterns.identifier})`, 'g'),
 
 	handler() {
+		console.warn(`[DEPRECATED] <<${this.name}>> macro is deprecated.`);
+
 		if (this.args.full.length === 0) {
 			return this.error('no story variable list specified');
 		}
@@ -142,6 +146,8 @@ Macro.add('click', 'link');
 */
 Macro.add('actions', {
 	handler() {
+		console.warn(`[DEPRECATED] <<${this.name}>> macro is deprecated.`);
+
 		const $list = jQuery(document.createElement('ul'))
 			.addClass(this.name)
 			.appendTo(this.output);
@@ -224,6 +230,8 @@ Macro.add('actions', {
 */
 Macro.add('choice', {
 	handler() {
+		console.warn(`[DEPRECATED] <<${this.name}>> macro is deprecated.`);
+
 		if (this.args.length === 0) {
 			return this.error('no passage specified');
 		}
@@ -326,6 +334,8 @@ Macro.add('choice', {
 		*/
 		Macro.add('setplaylist', {
 			handler() {
+				console.warn(`[DEPRECATED] <<${this.name}>> macro is deprecated.`);
+
 				if (this.args.length === 0) {
 					return this.error('no track ID(s) specified');
 				}
@@ -363,6 +373,8 @@ Macro.add('choice', {
 			skipArgs : true,
 
 			handler() {
+				console.warn(`[DEPRECATED] <<${this.name}>> macro is deprecated.`);
+
 				SimpleAudio.select(':all').stop();
 
 				// Custom debug view setup.
@@ -378,6 +390,8 @@ Macro.add('choice', {
 			skipArgs : true,
 
 			handler() {
+				console.warn(`[DEPRECATED] <<${this.name}>> macro is deprecated.`);
+
 				/* no-op */
 
 				// Custom debug view setup.

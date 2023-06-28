@@ -237,6 +237,8 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 			text given to the currently executing macro.
 		*/
 		rawArgs() {
+			console.warn('[DEPRECATED] Wikifier.rawArgs() is deprecated.');
+
 			return this._rawArgs;
 		}
 
@@ -245,6 +247,8 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 			the currently executing macro after doing TwineScript to JavaScript desugaring.
 		*/
 		fullArgs() {
+			console.warn('[DEPRECATED] Wikifier.fullArgs() is deprecated.');
+
 			return Scripting.desugar(this._rawArgs);
 		}
 

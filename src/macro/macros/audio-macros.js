@@ -432,6 +432,8 @@
 
 						switch (arg) {
 							case 'copy': /* [DEPRECATED] */
+								console.warn('[DEPRECATED] <<track>> macro "copy" argument is deprecated.');
+								/* fallthrough */
 							case 'own':
 								trackObj.own = true;
 								break;

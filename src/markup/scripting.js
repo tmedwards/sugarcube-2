@@ -231,6 +231,8 @@ var Scripting = (() => { // eslint-disable-line no-unused-vars, no-var
 		NOTE: Unused, included only for compatibility.
 	*/
 	function toStringOrDefault(value /* , defValue */) {
+		console.warn('[DEPRECATED] toStringOrDefault() is deprecated.');
+
 		return stringFrom(value);
 	}
 
