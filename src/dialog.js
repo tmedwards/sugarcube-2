@@ -145,31 +145,28 @@ var Dialog = (() => { // eslint-disable-line no-unused-vars, no-var
 			horzSpace -= scrollbarWidth;
 		}
 
-		// Calculate the horizontal inset values.
+		// Calculate the horizontal inset values in pixels.
 		if (horzSpace <= minPos * 2) {
-			inset.left = inset.right = minPos;
+			inset.left = inset.right = minPos + 'px';
 		}
 		else {
-			inset.left = inset.right = horzSpace / 2 >> 0;
+			inset.left = inset.right = (horzSpace / 2 >> 0) + 'px';
 		}
 
-		// Calculate the vertical inset values.
+		// Calculate the vertical inset values in pixels.
 		if (vertSpace <= minPos * 2) {
-			inset.top = inset.bottom = minPos;
+			inset.top = inset.bottom = minPos + 'px';
 		}
 		else {
 			const vertPos = vertSpace / 2 >> 0;
 
 			if (vertPos > top) {
-				inset.top = top;
+				inset.top = top + 'px';
 			}
 			else {
-				inset.top = inset.bottom = vertPos;
+				inset.top = inset.bottom = vertPos + 'px';
 			}
 		}
-
-		// Add the pixel unit to the inset values.
-		Object.keys(inset).forEach(key => inset[key] += 'px');
 
 		return inset;
 	}
