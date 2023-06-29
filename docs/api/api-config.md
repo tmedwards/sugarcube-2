@@ -377,7 +377,7 @@ This setting has been deprecated and should no longer be used.  See the <a href=
 
 ### `Config.saves.descriptions` ↔ *function* (default: *none*) {#config-api-property-saves-descriptions}
 
-Sets browser saves descriptions—by default a brief description of the current turn is used.  The callback is passed one parameter, the type of save being attempted.  If its return value is falsy, the default description is used.  If its return value is truthy, the returned description is used.
+Sets browser saves descriptions.  If unset, a brief description of the current turn is used.  If a callback function is assigned, it is passed one parameter, the type of save being attempted.  If its return value is truthy, the returned description is used, elsewise the default description is used.
 
 #### History:
 
@@ -424,7 +424,6 @@ Config.saves.descriptions = function (saveType) {
 	}
 };
 ```
-
 
 <!-- *********************************************************************** -->
 
