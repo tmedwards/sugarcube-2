@@ -1458,44 +1458,6 @@ What's your favorite pie? <<textbox "$pie" "Blueberry" "Cakes" autofocus>>
 
 <!-- *********************************************************************** -->
 
-### `<<actions passageList>>`<br>`<<actions linkMarkupList>>`<br>`<<actions imageMarkupList>>` {#macros-macro-actions}
-
-Creates a list of single-use passage links.  Each link removes itself and all other `<<actions>>` links to the same passage after being activated.  May be called either with a list of passages, with a list of link markup, or with a list of image markup.
-
-#### History:
-
-* `v2.0.0`: Introduced.
-
-#### Arguments:
-
-##### Passage list form
-
-* **`passageList`:** A space separated list of passage names.
-
-##### Link markup list form
-
-* **`linkMarkupList`:** A space separated list of link markup to use (full syntax supported, including setters).
-
-##### Image markup list form
-
-* **`imageMarkupList`:** A space separated list of image markup to use (full syntax supported, including setters).
-
-#### Examples:
-
-```
-→ Passage list form
-<<actions "Look at the pie" "Smell the pie" "Taste the pie">>
-
-→ Link markup list form
-<<actions [[Look at the pie]] [[Smell the pie]] [[Taste the pie]]>>
-<<actions [[Look|Look at the pie]] [[Smell|Smell the pie]] [[Taste|Taste the pie]]>>
-
-→ Image markup list form
-<<actions [img[look.png][Look at the pie]] [img[smell.png][Smell the pie]] [img[taste.png][Taste the pie]]>>
-```
-
-<!-- *********************************************************************** -->
-
 ### `<<back [linkText [passageName]]>>`<br>`<<back linkMarkup>>`<br>`<<back imageMarkup>>` {#macros-macro-back}
 
 Creates a link that undoes past moments within the story history.  May be called with, optional, the link text and passage name as separate arguments, a link markup, or an image markup.
@@ -1561,57 +1523,6 @@ If you want to return to a previously visited passage, rather than undo a moment
 
 → Creates a link that undoes past moments until the most recent "HQ" moment is reached, with image "home.png"
 <<back [img[home.png][HQ]]>>
-```
-
-<!-- *********************************************************************** -->
-
-### `<<choice passageName [linkText]>>`<br>`<<choice linkMarkup>>`<br>`<<choice imageMarkup>>` {#macros-macro-choice}
-
-Creates a single-use passage link that deactivates itself and all other `<<choice>>` links within the originating passage when activated.  May be called either with the passage name and link text as separate arguments, with a link markup, or with a image markup.
-
-<p role="note" class="warning"><b>Warning:</b>
-Normally, when both link and text arguments are accepted, the order is text then link.  However, due to a historical artifact, the arguments for the separate argument form of <code>&lt;&lt;choice&gt;&gt;</code> are in the reverse order (link then text).
-</p>
-
-#### History:
-
-* `v2.0.0`: Introduced.
-
-#### Arguments:
-
-##### Separate argument form
-
-* **`passageName`:** The name of the passage to go to.
-* **`linkText`:** (optional) The text of the link.  If omitted, the `passageName` will be used instead.
-
-##### Link markup form
-
-* **`linkMarkup`:** The link markup to use (full syntax supported, including setters).
-
-##### Image markup form
-
-* **`imageMarkup`:** The image markup to use (full syntax supported, including setters).
-
-#### Examples:
-
-```
-→ Separate argument form
-<<choice "Take the red pill">>
-<<choice $someAction>>
-<<choice "Entered magic mirror" "Touch the strange mirror.">>
-<<choice $go $show>>
-
-→ Link markup form
-<<choice [[Take the red pill]]>>
-<<choice [[$someAction]]>>
-<<choice [[Touch the strange mirror.|Entered magic mirror]]>>
-<<choice [[$show|$go]]>>
-
-→ Image markup form
-<<choice [img[redpill.png][Take the red pill]]>>
-<<choice [img[some-image.jpg][$someAction]]>>
-<<choice [img[mirror.jpg][Entered magic mirror]]>>
-<<choice [img[$show][$go]]>>
 ```
 
 <!-- *********************************************************************** -->
@@ -1686,6 +1597,32 @@ The versions that forward to a specific passage are largely unnecessary, as you 
 → Creates a link that forwards to the "HQ" passage, with image "home.png"
 <<return [img[home.png][HQ]]>>
 ```
+
+<!-- *********************************************************************** -->
+
+### <span class="deprecated">`<<actions passageList>>`<br>`<<actions linkMarkupList>>`<br>`<<actions imageMarkupList>>`</span> {#macros-macro-actions}
+
+<p role="note" class="warning"><b>Deprecated:</b>
+This macro has been deprecated and should no longer be used.
+</p>
+
+#### History:
+
+* `v2.0.0`: Introduced.
+* `v2.37.0`: Deprecated.
+
+<!-- *********************************************************************** -->
+
+### <span class="deprecated">`<<choice passageName [linkText]>>`<br>`<<choice linkMarkup>>`<br>`<<choice imageMarkup>>`</span> {#macros-macro-choice}
+
+<p role="note" class="warning"><b>Deprecated:</b>
+This macro has been deprecated and should no longer be used.
+</p>
+
+#### History:
+
+* `v2.0.0`: Introduced.
+* `v2.37.0`: Deprecated.
 
 
 <!-- ***************************************************************************
