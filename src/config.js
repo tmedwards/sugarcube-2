@@ -323,19 +323,13 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 				throw new Error(`${_baseSavesAutosaveDeprecated}, see Config.saves.maxAutoSaves and Config.saves.isAllowed instead`);
 			},
 			// If the deprecated saves autosave setter is assigned to, then either
-			// throw or warn, possibly setting either `Config.saves.maxAutoSaves`
-			// or `Config.saves.isAllowed` for compatibilities sake.
+			// throw or warn, while setting `Config.saves.maxAutoSaves` and possibly
+			// `Config.saves.isAllowed` for compatibilities sake.
 			set autosave(value) {
 				switch (typeof value) {
-					case 'boolean': {
+					case 'boolean':
 						console.warn(`${_baseSavesAutosaveDeprecated}, for boolean usage see Config.saves.maxAutoSaves instead`);
-
-						if (Config.saves.maxAutoSaves === 0) {
-							Config.saves.maxAutoSaves = 1;
-						}
-
 						break;
-					}
 
 					case 'function': {
 						console.warn(`${_baseSavesAutosaveDeprecated}, for function usage see Config.saves.isAllowed instead`);
@@ -351,30 +345,33 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 						break;
 					}
 
-					case 'object': {
+					default: {
 						const errMesg = `${_baseSavesAutosaveDeprecated}, for tag usage see Config.saves.isAllowed instead`;
 						console.warn(errMesg);
 
 						if (
-							value instanceof Array
-							&& value.length > 0
-							&& value.every(tag => typeof tag === 'string')
+							!(value instanceof Array)
+							|| value.length === 0
+							|| value.some(tag => typeof tag !== 'string')
 						) {
-							if (!Config.saves.isAllowed) {
-								const tags = value;
-								Config.saves.isAllowed = function (saveType) {
-									// Allow all other types while testing auto saves.
-									return saveType !== Save.Type.Auto || tags.includesAny(tags());
-								};
-							}
-						}
-						else if (value !== null) {
 							const valueType = getTypeOf(value);
 							throw new TypeError(`${errMesg}; Config.saves.autosave must be a boolean, Array<string>, function, or null/undefined (received: ${valueType}${valueType === 'Array' ? '<any>' : ''})`);
 						}
 
+						if (!Config.saves.isAllowed) {
+							const tags = value;
+							Config.saves.isAllowed = function (saveType) {
+								// Allow all other types while testing auto saves.
+								return saveType !== Save.Type.Auto || tags.includesAny(tags());
+							};
+						}
+
 						break;
 					}
+				}
+
+				if (Config.saves.maxAutoSaves === 0) {
+					Config.saves.maxAutoSaves = 1;
 				}
 			},
 
