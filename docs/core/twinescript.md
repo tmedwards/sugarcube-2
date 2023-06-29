@@ -111,20 +111,30 @@ Unsupported object types, either native or custom, can be made compatible by imp
 
 Expressions are simply units of code that yield values when evaluated.  For example:
 
-```
-true       // Yields: true
-turns()    // Yields: 1 (assuming that it is the first turn)
-2 + 2      // Yields: 4
-"2" + "2"  // Yields: "22"
+```js
+// Yields: true
+true
+
+// Yields: 1 (assuming that it is the first turn)
+turns()
+
+// Yields: 4
+2 + 2
+
+// Yields: "22"
+"2" + "2"
 ```
 
 Basic expressions simply consist of identifiers and literals—e.g., `$a`, `69`, and `"hello"`.  Complex expressions consist of basic expressions joined together by [operators](#twinescript-operators)—e.g., `=` and `+`.
 
 While every valid expression—even those you might not expect—yields a value, there are essentially two types of expressions: those with side effects and those without.  A side effect simply means that the evaluation of the expression modifies some state.  For example:
 
-```
-$a = 5   // Yields: 5; Side effect: assigns 5 to the story variable $a
-$x + 10  // Yields: 25 (assuming $x is 15); No side effects
+```js
+// Yields: 5; Side effect: assigns 5 to the story variable $a
+$a = 5
+
+// Yields: 25 (assuming $x is 15); No side effects
+$x + 10
 ```
 
 In general, you can group expressions into categories based on what kind of value they yield and/or what side effects they cause.  For example: *(not an exhaustive list)*
@@ -146,15 +156,25 @@ You will, in all likelihood, use expressions most often within macros—e.g., [`
 
 Operators join together operands, which are formed from either basic or complex expressions.
 
-In both TwineScript and JavaScript there are *binary* and *unary* operators—n.b., Javascript also includes a *ternary* operator, the conditional operator.  Binary operators require two operands, one before and one after the operator, while unary operators only require one operand, either before or after the operator.  For example:
+In both TwineScript and JavaScript there are *binary* and *unary* operators—n.b., Javascript also includes a *ternary* operator, the conditional operator.  Binary operators require two operands, one before and one after the operator, while unary operators only require one operand, either before or after the operator.
 
+Binary examples:
+
+```js
+// operand1 OPERATOR operand2
+2 + 2
+$a = 5
 ```
-// Binary
-operand1 OPERATOR operand2
 
-// Unary
-operand OPERATOR
-OPERATOR operand
+Unary examples:
+
+```js
+// operand OPERATOR
+$i++
+
+// OPERATOR operand
+++$x
+not $hasKey
 ```
 
 ### Assignment operators
