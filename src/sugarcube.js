@@ -50,24 +50,6 @@ var version = Object.freeze({
 // Temporary state object.
 var TempState = {};
 
-// Legacy macros object.
-var macros = {};
-
-// Post-display task callbacks object.
-var postdisplay = {};
-
-// Post-render task callbacks object.
-var postrender = {};
-
-// Pre-display task callbacks object.
-var predisplay = {};
-
-// Pre-history task callbacks object.
-var prehistory = {};
-
-// Pre-render task callbacks object.
-var prerender = {};
-
 // Session storage manager object.
 var session = null;
 
@@ -81,15 +63,14 @@ var setup = {};
 var storage = null;
 
 /*
-	Legacy aliases.
+	Legacy variables.
 */
-var browser       = Browser;
-var config        = Config;
-var has           = Has;
-var History       = State;
-var state         = State;
-var tale          = Story;
-var TempVariables = State.temporary;
+var macros = {};      // Legacy macros object.
+var postdisplay = {}; // Post-display task callbacks object.
+var postrender = {};  // Post-render task callbacks object.
+var predisplay = {};  // Pre-display task callbacks object.
+var prehistory = {};  // Pre-history task callbacks object.
+var prerender = {};   // Pre-render task callbacks object.
 /* eslint-enable no-unused-vars */
 
 /*
@@ -157,9 +138,13 @@ jQuery(() => {
 		Story.load();
 
 		// Initialize the databases.
-		// NOTE: `SimpleStore.create(storageId, persistent)`
-		SugarCube.storage = storage = SimpleStore.create(Story.id, true); // eslint-disable-line no-undef
-		SugarCube.session = session = SimpleStore.create(Story.id, false); // eslint-disable-line no-undef
+		try {
+			SugarCube.storage = storage = SimpleStore.create(Story.id, true); // eslint-disable-line no-undef
+			SugarCube.session = session = SimpleStore.create(Story.id, false); // eslint-disable-line no-undef
+		}
+		catch (ex) {
+			throw new Error(L10n.get('warningStorage'));
+		}
 
 		// Initialize the user interfaces.
 		//
