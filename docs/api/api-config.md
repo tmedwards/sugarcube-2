@@ -375,35 +375,6 @@ This setting has been deprecated and should no longer be used.  See the <a href=
 
 <!-- *********************************************************************** -->
 
-### `Config.saves.autoload` ↔ *boolean* | *string* | *function* (default: *none*) {#config-api-property-saves-autoload}
-
-Determines whether the autosave, if it exists, is automatically loaded upon story startup.  Valid values are boolean `true`, which simply causes the autosave to be loaded, the string `"prompt"`, which prompts the player via a dialog to load the autosave, or a function, which causes the autosave to be loaded if its return value is truthy.
-
-<p role="note"><b>Note:</b>
-If the autosave cannot be loaded, for any reason, then the start passage is loaded instead.
-</p>
-
-#### History:
-
-* `v2.0.0`: Introduced.
-
-#### Examples:
-
-```js
-// Automatically loads the autosave
-Config.saves.autoload = true;
-
-// Prompts the player about loading the autosave
-Config.saves.autoload = "prompt";
-
-// Loads the autosave if it returns a truthy value
-Config.saves.autoload = function () {
-	/* code that returns a boolean value */
-};
-```
-
-<!-- *********************************************************************** -->
-
 ### `Config.saves.descriptions` ↔ *function* (default: *none*) {#config-api-property-saves-descriptions}
 
 Sets browser saves descriptions—by default a brief description of the current turn is used.  The callback is passed one parameter, the type of save being attempted.  If its return value is falsy, the default description is used.  If its return value is truthy, the returned description is used.
@@ -620,6 +591,19 @@ Config.saves.version = 3;
 // As a string (strongly not recommended)
 Config.saves.version = "v3";
 ```
+
+<!-- *********************************************************************** -->
+
+### <span class="deprecated">`Config.saves.autoload` ↔ *boolean* | *string* | *function* (default: *none*)</span> {#config-api-property-saves-autoload}
+
+<p role="note" class="warning"><b>Deprecated:</b>
+This setting has been deprecated and should no longer be used.  The default UI now includes a <i>Continue</i> button, which loads the latest save.  If disabling or replacing the default UI, see the <a href="#save-api-browser-method-continue"><code>Save.browser.continue()</code> method</a> to replicate the functionality.
+</p>
+
+#### History:
+
+* `v2.0.0`: Introduced.
+* `v2.37.0`: Deprecated.
 
 <!-- *********************************************************************** -->
 
