@@ -39,6 +39,7 @@ var l10nStrings = { // eslint-disable-line no-unused-vars, no-var
 	*/
 	_warningIntroLacking  : 'Your browser either lacks or has disabled',
 	_warningOutroDegraded : ', so this {identity} is running in a degraded mode. You may be able to continue, however, some parts may not work properly.',
+	warningNoStorage   : '{_warningIntroLacking} all usable storage APIs. Possible causes are a disabled third-party cookie setting, which also affects Web Storage, or a private browsing mode.',
 	warningNoWebStorage   : '{_warningIntroLacking} the Web Storage API{_warningOutroDegraded}',
 	warningDegraded       : '{_warningIntroLacking} some of the capabilities required by this {identity}{_warningOutroDegraded}',
 	warningNoSaves        : '{_warningIntroLacking} the capabilities required to support saves, so saves have been disabled for this session.', // was: savesIncapable
