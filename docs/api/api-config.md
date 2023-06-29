@@ -534,7 +534,11 @@ Config.saves.isAllowed = function (saveType) {
 
 ### `Config.saves.maxAutoSaves` *integer* (default: `1`) {#config-api-property-saves-maxautosaves}
 
-Sets the maximum number of available auto saves.
+Sets the maximum number of available auto saves.  Using a value of `0` disables auto saves.
+
+<p role="note" class="warning"><b>Warning:</b>
+As each used browser-based save consumes limited storage space, it is <strong><em>strongly recommended</em></strong> that the number of available saves not be set too high.  A range of `1`–`10` is suggested.
+</p>
 
 #### History:
 
@@ -550,7 +554,11 @@ Config.saves.maxAutoSaves = 3;
 
 ### `Config.saves.maxSlotSaves` *integer* (default: `8`) {#config-api-property-saves-maxslotsaves}
 
-Sets the maximum number of available slot saves.
+Sets the maximum number of available slot saves.  Using a value of `0` disables slot saves.
+
+<p role="note" class="warning"><b>Warning:</b>
+As each used browser-based save consumes limited storage space, it is <strong><em>strongly recommended</em></strong> that the number of available saves not be set too high.  A range of `1`–`10` is suggested.
+</p>
 
 #### History:
 
