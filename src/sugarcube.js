@@ -24,9 +24,6 @@ var version = Object.freeze({
 	prerelease : '{{BUILD_VERSION_PRERELEASE}}',
 	build      : '{{BUILD_VERSION_BUILD}}',
 	date       : new Date('{{BUILD_VERSION_DATE}}'),
-	/* legacy */
-	extensions : {},
-	/* /legacy */
 
 	toString() {
 		const prerelease = this.prerelease ? `-${this.prerelease}` : '';
@@ -143,7 +140,7 @@ jQuery(() => {
 			SugarCube.session = session = SimpleStore.create(Story.id, false); // eslint-disable-line no-undef
 		}
 		catch (ex) {
-			throw new Error(L10n.get('warningStorage'));
+			throw new Error(L10n.get('warningNoStorage'));
 		}
 
 		// Initialize the user interfaces.
