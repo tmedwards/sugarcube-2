@@ -32,7 +32,7 @@ var SimpleStore = (() => { // eslint-disable-line no-unused-vars, no-var
 			}
 		}
 
-		throw new Error('no valid storage adapters found');
+		throw new Error('No valid storage adapters found');
 	}
 
 
