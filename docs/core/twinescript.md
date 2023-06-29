@@ -33,7 +33,7 @@ Subsequent, optional, characters have the same set as the second with the additi
 
 A few examples of valid names:
 
-```
+```js
 /* Story variables */
 $cash
 $hasKeyCard5
