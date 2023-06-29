@@ -475,7 +475,7 @@ Config.saves.id = "a-big-huge-story-part-1";
 
 ### `Config.saves.isAllowed` ↔ *function* (default: *none*) {#config-api-property-saves-isallowed}
 
-Determines whether saving is allowed within the current context.  The callback is passed one parameter, the type of save being attempted.  If its return value is falsy, the save is disallowed.  If its return value is truthy, the save is allowed to continue unperturbed.
+Determines whether saving is allowed within the current context.  If unset, saves are always allowed.  If a callback function is assigned, it is passed one parameter, the type of save being attempted.  If its return value is truthy, the save is allowed, elsewise it is disallowed.
 
 <p role="note" class="see"><b>See:</b>
 <a href="#save-api-constant-type"><code>Save.Type</code> pseudo-enumeration</a> for more information on save types.
@@ -507,37 +507,64 @@ Config.saves.isAllowed = function (saveType) {
 
 ##### Using the save type parameter
 
-Create new auto saves only on passages tagged wtih `autosave`.
+Attempt a new auto save only on passages tagged wtih `autosave`.  Other save types are not limited.
 
 ```js
 Config.saves.isAllowed = function (saveType) {
 	if (saveType === Save.Type.Auto) {
 		return tags().includes("autosave");
 	}
+
+	return true;
 };
 ```
 
-Create new auto saves only on every third passage and allow all other saves only on passages tagged wtih `cansave`.
+Attempt a new auto save only on every eighth turn and limit all other save types to passages tagged wtih `cansave`.
+
+```js
+// Using an `if` statement
+Config.saves.isAllowed = function (saveType) {
+	if (saveType === Save.Type.Auto) {
+		return turns() % 8 === 0;
+	}
+
+	return tags().includes("cansave");
+};
+```
+
+Different logic for most save types.  **NOTE:** For example purposes, not really recommended.
 
 ```js
 Config.saves.isAllowed = function (saveType) {
 	switch (saveType) {
 		case Save.Type.Auto:
-			return turns() % 3 === 0;
-		default:
+			// Only every tenth turn
+			return turns() % 10 === 0;
+
+		case Save.Type.Disk:
+		case Save.Type.Slot:
+			// Only on passages tagged `cansave`
 			return tags().includes("cansave");
+
+		case Save.Type.Serialize:
+			// Always
+			return true;
 	}
 };
 ```
 
 <!-- *********************************************************************** -->
 
-### `Config.saves.maxAutoSaves` *integer* (default: `1`) {#config-api-property-saves-maxautosaves}
+### `Config.saves.maxAutoSaves` *integer* (default: `0`) {#config-api-property-saves-maxautosaves}
 
 Sets the maximum number of available auto saves.  Using a value of `0` disables auto saves.
 
+<p role="note"><b>Note:</b>
+When enabled, an auto save is attempted each turn by default.  Thus, it is recommended that the <a href="#config-api-property-saves-isallowed"><code>Config.saves.isAllowed</code> setting</a> be used to limit the frequency.
+</p>
+
 <p role="note" class="warning"><b>Warning:</b>
-As each used browser-based save consumes limited storage space, it is <strong><em>strongly recommended</em></strong> that the number of available saves not be set too high.  A range of `1`–`10` is suggested.
+As each used browser-based save consumes very limited storage space, it is <strong><em>strongly recommended</em></strong> that the number of available saves not be set too high.  A range of <code>1</code>–<code>10</code> is suggested.
 </p>
 
 #### History:
@@ -557,7 +584,7 @@ Config.saves.maxAutoSaves = 3;
 Sets the maximum number of available slot saves.  Using a value of `0` disables slot saves.
 
 <p role="note" class="warning"><b>Warning:</b>
-As each used browser-based save consumes limited storage space, it is <strong><em>strongly recommended</em></strong> that the number of available saves not be set too high.  A range of `1`–`10` is suggested.
+As each used browser-based save consumes very limited storage space, it is <strong><em>strongly recommended</em></strong> that the number of available saves not be set too high.  A range of <code>1</code>–<code>10</code> is suggested.
 </p>
 
 #### History:
@@ -599,7 +626,7 @@ Config.saves.version = "v3";
 ### <span class="deprecated">`Config.saves.autosave` ↔ *boolean* | *Array&lt;string&gt;* | *function* (default: *none*)</span> {#config-api-property-saves-autosave}
 
 <p role="note" class="warning"><b>Deprecated:</b>
-This setting has been deprecated and should no longer be used.  See the <a href="#config-api-property-saves-maxautosaves"><code>Config.saves.maxAutoSaves</code></a> setting to set the number of available auto saves and the <a href="#config-api-property-saves-isallowed"><code>Config.saves.isAllowed</code></a> setting to control whether new auto saves are created.
+This setting has been deprecated and should no longer be used.  See the <a href="#config-api-property-saves-maxautosaves"><code>Config.saves.maxAutoSaves</code></a> setting to set the number of available auto saves and the <a href="#config-api-property-saves-isallowed"><code>Config.saves.isAllowed</code></a> setting to control when new auto saves are created.
 </p>
 
 #### History:
