@@ -10,10 +10,10 @@ The hierarchy of the document body, including associated HTML IDs and class name
 * Periods of ellipsis (`…`) signify data that is dynamically generated at run time.
 * The `#story-title-separator` element is normally unused.
 * The story menu, `#menu-story`, will only exist if the [`StoryMenu` special passage](#special-passage-storymenu) is used.
+* The core menu item for the Continue button, `#menu-item-continue`, will only exist if a browser save (auto or slot) exists.
 * The core menu item for the Settings dialog, `#menu-item-settings`, will only exist if the [`Setting` API](#setting-api) is used.
-* The core menu item for the Share dialog, `#menu-item-share`, will only exist if the [`StoryShare` special passage](#special-passage-storyshare) is used.
 
-```
+```html
 <body class="…">
 	<div id="init-screen"></div>
 	<div id="ui-overlay" class="ui-close"></div>
@@ -45,10 +45,10 @@ The hierarchy of the document body, including associated HTML IDs and class name
 			<nav id="menu" role="navigation">
 				<ul id="menu-story">…<ul>
 				<ul id="menu-core">
+					<li id="menu-item-continue"><a tabindex="0">…</a></li>
 					<li id="menu-item-saves"><a tabindex="0">…</a></li>
 					<li id="menu-item-settings"><a tabindex="0">…</a></li>
 					<li id="menu-item-restart"><a tabindex="0">…</a></li>
-					<li id="menu-item-share"><a tabindex="0">…</a></li>
 				</ul>
 			</nav>
 		</div>
@@ -71,7 +71,7 @@ Periods of ellipsis (`…`) signify data that is generated at compile time.
 
 ##### Twine 2 style data chunk
 
-```
+```html
 <tw-storydata name="…" startnode="…" creator="…" creator-version="…"
 	ifid="…" zoom="…" format="…" format-version="…" options="…" hidden>
 	<!-- Passage data nodes… -->
@@ -80,7 +80,7 @@ Periods of ellipsis (`…`) signify data that is generated at compile time.
 
 ##### Twine 1 style data chunk
 
-```
+```html
 <div id="store-area" data-size="…" hidden>
 	<!-- Passage data nodes… -->
 </div>
