@@ -2672,7 +2672,7 @@ Passage navigation terminates all pending timed executions.
 → A countdown timer
 <<set $seconds to 10>>\
 Countdown: <span id="countdown">$seconds seconds remaining</span>!\
-<<silently>>
+<<silent>>
 	<<repeat 1s>>
 		<<set $seconds to $seconds - 1>>
 		<<if $seconds gt 0>>
@@ -2683,7 +2683,7 @@ Countdown: <span id="countdown">$seconds seconds remaining</span>!\
 			<<stop>>
 		<</if>>
 	<</repeat>>
-<</silently>>
+<</silent>>
 ```
 
 <!-- *********************************************************************** -->
@@ -2744,7 +2744,7 @@ I like green <span id="eggs">eggs</span> and ham!\
 <</timed>>
 
 → Set a $variable after 4 seconds, 3 seconds, 2 seconds, and 1 second
-<<silently>>
+<<silent>>
 <<set $choice to 0>>
 <<timed 4s>>
 	<<set $choice to 1>>
@@ -2755,7 +2755,7 @@ I like green <span id="eggs">eggs</span> and ham!\
 <<next 1s>>
 	<<set $choice to 4>>
 <</timed>>
-<</silently>>
+<</silent>>
 
 → Replace some text with a variable interval
 → Given: _delay is "2s" the interval will be 2 seconds
