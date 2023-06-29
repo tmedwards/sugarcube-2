@@ -292,7 +292,6 @@
 	* [`Config.passages.start`](#config-api-property-passages-start)
 	* [`Config.passages.transitionOut`](#config-api-property-passages-transitionout)
 * [Saves Settings](#config-api-saves)
-	* [`Config.saves.autoload`](#config-api-property-saves-autoload)
 	* [`Config.saves.descriptions`](#config-api-property-saves-descriptions)
 	* [`Config.saves.id`](#config-api-property-saves-id)
 	* [`Config.saves.isAllowed`](#config-api-property-saves-isallowed)
