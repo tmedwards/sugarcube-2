@@ -67,25 +67,25 @@ Save types pseudo-enumeration.  Passed to various saves related callbacks to den
 <thead>
 	<tr>
 		<th>Type</th>
-		<th>Value</th>
+		<th>Description</th>
 	</tr>
 </thead>
 <tbody>
 	<tr>
 		<th><code>Save.Type.Auto</code></th>
-		<td><code>auto</code></td>
+		<td>Browser-based auto save.</td>
 	</tr>
 	<tr>
 		<th><code>Save.Type.Disk</code></th>
-		<td><code>disk</code></td>
+		<td>Disk-based save.</td>
 	</tr>
 	<tr>
 		<th><code>Save.Type.Serialize</code></th>
-		<td><code>serialize</code></td>
+		<td>Serialized save string (base64).</td>
 	</tr>
 	<tr>
 		<th><code>Save.Type.Slot</code></th>
-		<td><code>slot</code></td>
+		<td>Browser-based slot save.</td>
 	</tr>
 </tbody>
 </table>
@@ -94,7 +94,7 @@ Save types pseudo-enumeration.  Passed to various saves related callbacks to den
 
 ### `Save.MAX_IDX` {#save-api-constant-max_idx}
 
-Maximum save index.
+Maximum index for browser-based saves.
 
 #### History:
 
