@@ -25,18 +25,18 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 		/* /legacy */
 	});
 
-	// Save index maximum value (`0`-based).
-	const MAX_IDX = 15;
+	// Save index maximum value constant (`0`-based).
+	const MAX_INDEX = 15;
 
 	// Browser save key constants.
-	const IDX_DELIMITER    = ':';
+	const INDEX_DELIMITER  = ':';
 	const SAVE_SUBKEY      = 'save.';
 	const AUTO_SUBKEY      = `${SAVE_SUBKEY}auto.`;
-	const AUTO_DATA_SUBKEY = `${AUTO_SUBKEY}data${IDX_DELIMITER}`;
-	const AUTO_INFO_SUBKEY = `${AUTO_SUBKEY}info${IDX_DELIMITER}`;
+	const AUTO_DATA_SUBKEY = `${AUTO_SUBKEY}data${INDEX_DELIMITER}`;
+	const AUTO_INFO_SUBKEY = `${AUTO_SUBKEY}info${INDEX_DELIMITER}`;
 	const SLOT_SUBKEY      = `${SAVE_SUBKEY}slot.`;
-	const SLOT_DATA_SUBKEY = `${SLOT_SUBKEY}data${IDX_DELIMITER}`;
-	const SLOT_INFO_SUBKEY = `${SLOT_SUBKEY}info${IDX_DELIMITER}`;
+	const SLOT_DATA_SUBKEY = `${SLOT_SUBKEY}data${INDEX_DELIMITER}`;
+	const SLOT_INFO_SUBKEY = `${SLOT_SUBKEY}info${INDEX_DELIMITER}`;
 
 	// Save handler sets.
 	const onLoadHandlers = new Set();
@@ -213,7 +213,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 	function getIdxFromKey(key) {
-		const pos = key.lastIndexOf(IDX_DELIMITER);
+		const pos = key.lastIndexOf(INDEX_DELIMITER);
 
 		if (pos === -1) {
 			throw new Error(`unable to get index from save key (received: ${key})`);
@@ -301,8 +301,8 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			throw new TypeError('auto save index must be an integer');
 		}
 
-		if (idx < 0 || idx > MAX_IDX) {
-			throw new RangeError(`auto save index out of bounds (range: 0–${MAX_IDX}; received: ${idx})`);
+		if (idx < 0 || idx > MAX_INDEX) {
+			throw new RangeError(`auto save index out of bounds (range: 0–${MAX_INDEX}; received: ${idx})`);
 		}
 
 		storage.delete(getAutoInfoKeyFromIdx(idx));
@@ -325,8 +325,8 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			throw new TypeError('auto save index must be an integer');
 		}
 
-		if (idx < 0 || idx > MAX_IDX) {
-			throw new RangeError(`auto save index out of bounds (range: 0–${MAX_IDX}; received: ${idx})`);
+		if (idx < 0 || idx > MAX_INDEX) {
+			throw new RangeError(`auto save index out of bounds (range: 0–${MAX_INDEX}; received: ${idx})`);
 		}
 
 		return storage.get(getAutoInfoKeyFromIdx(idx));
@@ -337,8 +337,8 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			throw new TypeError('auto save index must be an integer');
 		}
 
-		if (idx < 0 || idx > MAX_IDX) {
-			throw new RangeError(`auto save index out of bounds (range: 0–${MAX_IDX}; received: ${idx})`);
+		if (idx < 0 || idx > MAX_INDEX) {
+			throw new RangeError(`auto save index out of bounds (range: 0–${MAX_INDEX}; received: ${idx})`);
 		}
 
 		return storage.has(getAutoInfoKeyFromIdx(idx));
@@ -354,8 +354,8 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 				throw new TypeError('auto save index must be an integer');
 			}
 
-			if (idx < 0 || idx > MAX_IDX) {
-				throw new RangeError(`auto save index out of bounds (range: 0–${MAX_IDX}; received: ${idx})`);
+			if (idx < 0 || idx > MAX_INDEX) {
+				throw new RangeError(`auto save index out of bounds (range: 0–${MAX_INDEX}; received: ${idx})`);
 			}
 
 			const info = storage.get(getAutoInfoKeyFromIdx(idx));
@@ -426,8 +426,8 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			throw new TypeError('slot save index must be an integer');
 		}
 
-		if (idx < 0 || idx > MAX_IDX) {
-			throw new RangeError(`slot save index out of bounds (range: 0–${MAX_IDX}; received: ${idx})`);
+		if (idx < 0 || idx > MAX_INDEX) {
+			throw new RangeError(`slot save index out of bounds (range: 0–${MAX_INDEX}; received: ${idx})`);
 		}
 
 		storage.delete(getSlotInfoKeyFromIdx(idx));
@@ -450,8 +450,8 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			throw new TypeError('slot save index must be an integer');
 		}
 
-		if (idx < 0 || idx > MAX_IDX) {
-			throw new RangeError(`slot save index out of bounds (range: 0–${MAX_IDX}; received: ${idx})`);
+		if (idx < 0 || idx > MAX_INDEX) {
+			throw new RangeError(`slot save index out of bounds (range: 0–${MAX_INDEX}; received: ${idx})`);
 		}
 
 		return storage.get(getSlotInfoKeyFromIdx(idx));
@@ -462,8 +462,8 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			throw new TypeError('slot save index must be an integer');
 		}
 
-		if (idx < 0 || idx > MAX_IDX) {
-			throw new RangeError(`slot save index out of bounds (range: 0–${MAX_IDX}; received: ${idx})`);
+		if (idx < 0 || idx > MAX_INDEX) {
+			throw new RangeError(`slot save index out of bounds (range: 0–${MAX_INDEX}; received: ${idx})`);
 		}
 
 		return storage.has(getSlotInfoKeyFromIdx(idx));
@@ -479,8 +479,8 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 				throw new TypeError('slot save index must be an integer');
 			}
 
-			if (idx < 0 || idx > MAX_IDX) {
-				throw new RangeError(`slot save index out of bounds (range: 0–${MAX_IDX}; received: ${idx})`);
+			if (idx < 0 || idx > MAX_INDEX) {
+				throw new RangeError(`slot save index out of bounds (range: 0–${MAX_INDEX}; received: ${idx})`);
 			}
 
 			const info = storage.get(getSlotInfoKeyFromIdx(idx));
@@ -923,8 +923,8 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 
 	return Object.preventExtensions(Object.create(null, {
 		// General Save Constants.
-		Type    : { value : Type },
-		MAX_IDX : { get : () => MAX_IDX },
+		Type      : { value : Type },
+		MAX_INDEX : { get : () => MAX_INDEX },
 
 		// General Save Functions.
 		init : { value : init },
