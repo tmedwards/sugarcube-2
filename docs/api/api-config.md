@@ -379,6 +379,10 @@ This setting has been deprecated and should no longer be used.  See the <a href=
 
 Sets browser saves descriptions.  If unset, a brief description of the current turn is used.  If a callback function is assigned, it is passed one parameter, the type of save being attempted.  If its return value is truthy, the returned description is used, elsewise the default description is used.
 
+<p role="note" class="see"><b>See:</b>
+<a href="#save-api-constant-type"><code>Save.Type</code> pseudo-enumeration</a> for more information on save types.
+</p>
+
 #### History:
 
 * `v2.37.0`: Introduced.
@@ -414,13 +418,13 @@ Config.saves.descriptions = function (saveType) {
 
 	switch (saveType) {
 		case Save.Type.Auto:
-			return `${base} A browser-based auto save…`;
+			return `${base} A browser auto save…`;
+		case Save.Type.Base64:
+			return `${base} A base64 save…`;
 		case Save.Type.Disk:
 			return `${base} A local disk save…`;
-		case Save.Type.Serialize:
-			return `${base} A base64 serialization save…`;
 		case Save.Type.Slot:
-			return `${base} A browser-based slot save…`;
+			return `${base} A browser slot save…`;
 	}
 };
 ```
@@ -516,7 +520,7 @@ Config.saves.isAllowed = function (saveType) {
 			// Only on passages tagged `cansave`
 			return tags().includes("cansave");
 
-		case Save.Type.Serialize:
+		case Save.Type.Base64:
 			// Always
 			return true;
 	}
