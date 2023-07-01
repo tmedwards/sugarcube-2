@@ -14,10 +14,15 @@
 var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 	// Save type pseudo-enumeration.
 	const Type = enumFrom({
-		Auto      : 'auto',
-		Disk      : 'disk',
-		Serialize : 'serialize',
-		Slot      : 'slot'
+		Auto   : 'auto',
+		Base64 : 'base64',
+		Disk   : 'disk',
+		Slot   : 'slot',
+
+		/* legacy */
+		// Duplicate `Base64`.
+		Serialize : 'base64' // Originally: `'serialize'`
+		/* /legacy */
 	});
 
 	// Save index maximum value (`0`-based).
@@ -584,9 +589,12 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 
 			return { idx, info, data };
 		});
-		const bundle = LZString.compressToBase64(Serial.stringify({ auto, slot }));
 
-		saveBlobToDiskAs(bundle, filename, 'savesexport');
+		saveBlobToDiskAs(
+			LZString.compressToBase64(Serial.stringify({ auto, slot })),
+			filename,
+			'savesexport'
+		);
 	}
 
 	function browserImport(event) {
@@ -683,28 +691,6 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 		Disk Saves Functions.
 	*******************************************************************************/
 
-	function diskSave(filename, metadata) {
-		if (
-			typeof Config.saves.isAllowed === 'function'
-			&& !Config.saves.isAllowed(Type.Disk)
-		) {
-			throw new Error(L10n.get('savesDisallowed'));
-		}
-
-		const details = {
-			desc : getDesc(filename, Type.Disk),
-			type : Type.Disk
-		};
-
-		if (metadata != null) { // lazy equality for null
-			details.metadata = metadata;
-		}
-
-		const b64Save = LZString.compressToBase64(Serial.stringify(marshal(details)));
-
-		saveBlobToDiskAs(b64Save, filename, 'save');
-	}
-
 	function diskLoad(event) {
 		return new Promise((resolve, reject) => {
 			const reader = new FileReader();
@@ -741,22 +727,71 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 		});
 	}
 
-
-	/*******************************************************************************
-		Serialization Saves Functions.
-	*******************************************************************************/
-
-	function serialize(metadata) {
+	function diskSave(filename, metadata) {
 		if (
 			typeof Config.saves.isAllowed === 'function'
-			&& !Config.saves.isAllowed(Type.Serialize)
+			&& !Config.saves.isAllowed(Type.Disk)
 		) {
 			throw new Error(L10n.get('savesDisallowed'));
 		}
 
 		const details = {
-			desc : getDesc(null, Type.Serialize),
-			type : Type.Serialize
+			desc : getDesc(filename, Type.Disk),
+			type : Type.Disk
+		};
+
+		if (metadata != null) { // lazy equality for null
+			details.metadata = metadata;
+		}
+
+		saveBlobToDiskAs(
+			LZString.compressToBase64(Serial.stringify(marshal(details))),
+			filename,
+			'save'
+		);
+	}
+
+
+	/*******************************************************************************
+		Base64 Saves Functions.
+	*******************************************************************************/
+
+	function base64Load(base64) {
+		return new Promise(resolve => {
+			let save;
+
+			try {
+				save = Serial.parse(LZString.decompressFromBase64(base64));
+			}
+			catch (ex) {
+				throw new Error(L10n.get('saveErrorDecodeFail'));
+			}
+
+			/* legacy */
+			// Convert legacy `Type.Serialize` value to `Type.Base64`.
+			if (save.type === 'serialize') {
+				save.type = Type.Save.Base64;
+			}
+			/* /legacy */
+
+			// NOTE: May also throw exceptions.
+			unmarshal(save);
+
+			resolve(true);
+		});
+	}
+
+	function base64Save(metadata) {
+		if (
+			typeof Config.saves.isAllowed === 'function'
+			&& !Config.saves.isAllowed(Type.Base64)
+		) {
+			throw new Error(L10n.get('savesDisallowed'));
+		}
+
+		const details = {
+			desc : getDesc(null, Type.Base64),
+			type : Type.Base64
 		};
 
 		if (metadata != null) { // lazy equality for null
@@ -764,24 +799,6 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 		}
 
 		return LZString.compressToBase64(Serial.stringify(marshal(details)));
-	}
-
-	function deserialize(b64Save) {
-		return new Promise(resolve => {
-			let save;
-
-			try {
-				save = Serial.parse(LZString.decompressFromBase64(b64Save));
-			}
-			catch (ex) {
-				throw new Error(L10n.get('saveErrorDecodeFail'));
-			}
-
-			// NOTE: May also throw exceptions.
-			unmarshal(save);
-
-			resolve(true);
-		});
 	}
 
 
@@ -963,9 +980,13 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			}))
 		},
 
-		// Serialization Saves Functions.
-		serialize   : { value : serialize },
-		deserialize : { value : deserialize },
+		// Base64 Saves Functions.
+		base64 : {
+			value : Object.preventExtensions(Object.create(null, {
+				load : { value : base64Load },
+				save : { value : base64Save }
+			}))
+		},
 
 		// Event Functions.
 		onLoad : {
@@ -1021,6 +1042,10 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 
 		// Disk Import/Export Functions.
 		export : { value : diskSave },
-		import : { value : diskLoad }
+		import : { value : diskLoad },
+
+		// Serialization Saves Functions.
+		serialize   : { value : base64Save },
+		deserialize : { value : base64Load }
 	}));
 })();
