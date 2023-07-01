@@ -46,6 +46,7 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 	let _savesIsAllowed;
 	let _savesMaxAuto      = 0;
 	let _savesMaxSlot      = 8;
+	let _savesMetadata;
 	let _savesVersion;
 
 	// UI settings.
@@ -312,6 +313,15 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 				}
 
 				_savesMaxSlot = value;
+			},
+
+			get metadata() { return _savesMetadata; },
+			set metadata(value) {
+				if (!(value == null || value instanceof Function)) { // lazy equality for null
+					throw new TypeError(`Config.saves.metadata must be a function or null/undefined (received: ${getTypeOf(value)})`);
+				}
+
+				_savesMetadata = value;
 			},
 
 			get version() { return _savesVersion; },
