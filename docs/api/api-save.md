@@ -15,34 +15,50 @@ Browser saves—i.e., auto and slot saves—are largely incompatible with privat
 <!-- ***************************************************************************
 	Save Objects
 **************************************************************************** -->
-## Save Objects {#save-api-save-objects}
+## Save Objects {#save-api-objects}
+
+<!-- *********************************************************************** -->
+
+### Save Data <!-- legacy --><span id="save-api-save-objects"></span><!-- /legacy --> {#save-api-objects-data}
 
 <p role="note"><b>Note:</b>
-Adding additional properties directly to save objects is not recommended.  Instead, use the <code>metadata</code> property.
+Adding additional properties directly to save data objects is not recommended.  Instead, use the <code>metadata</code> property.
 </p>
 
-Save objects have some of the following properties:
+#### Save Data Object
 
-* **`date`:** (*integer*) The save's creation date (in milliseconds elapsed since epoch).
-* **`desc`:** (*string*) The save's description.
-* **`id`:** (*string*) The save ID.
-* **`metadata`:** (optional, *any*) The save's metadata (end-user specified; must be JSON-serializable).  Exists only if specified.
-* **`state`:** (*object*) The marshaled story history (see below for details).
-* **`type`:** (*`Save.Type`*) The save's type.
-* **`version`:** (optional, *any*) The save's version (end-user specified via [`Config.saves.version`](#config-api-property-saves-version)).  Exists only if specified.
+A save data object has the following properties:
 
-The **`state`** object has some of the following properties:
+* **`date`:** (`integer`) The save's creation date (in milliseconds elapsed since epoch).
+* **`desc`:** (`string`) The save's description.
+* **`id`:** (`string`) The save ID.  See the [`Config.saves.id`](#config-api-property-saves-id) for details.
+* **`metadata`:** (optional, `any`) The save's metadata, which *must* be JSON-serializable.  Exists only if specified.  See the appropriate save API or [`Config.saves.metadata`](#config-api-property-saves-metadata) for details.
+* **`state`:** (`object`) The marshaled story state.  See below for details.
+* **`type`:** (`Save.Type`) The save's type.  See [`Save.Type`](#save-api-constant-type) for details.
+* **`version`:** (optional, `any`) The save's version.  Exists only if specified.  See [`Config.saves.version`](#config-api-property-saves-version) for details.
 
-* **`expired`:** (optional, *Array&lt;string&gt;*) The array of expired moment passage titles, exists only if any moments have expired.
-* **`history`:** (*Array&lt;object&gt;*) The array of moment objects (see below for details).
-* **`index`:** (*integer*) The index of the active moment.
-* **`seed`:** (optional, *string*) The seed of SugarCube's seedable PRNG.  Exists only if enabled.
+#### Save State Object
 
-Each **`moment`** object has some of the following properties:
+The marshaled story state object, from the **`state`** property, has the following properties:
 
-* **`pull`:** (optional, *integer*) The current pull count of SugarCube's seedable PRNG.  Exists only if enabled.
-* **`title`:** (*string*) The title of the associated passage.
-* **`variables`:** (*object*) The current variable store object, which contains sigil-less name &#x21D2; value pairs—e.g., `$foo` exists as `foo`.
+* **`expired`:** (optional, `Array<string>`) The array of expired moment passage titles.  Exists only if any moments have expired.
+* **`history`:** (`Array<object>`) The array of moment objects.  See below for details.
+* **`index`:** (`integer`) The index of the active moment.
+* **`seed`:** (optional, `string`) The seed of the seedable PRNG.  Exists only if enabled.
+
+#### Save History Moment Objects
+
+Each moment object, from the **`history`** property's array, has the following properties:
+
+* **`pull`:** (optional, `integer`) The current pull count of the seedable PRNG.  Exists only if enabled.
+* **`title`:** (`string`) The name of the associated passage.
+* **`variables`:** (`object`) The current variable store object, which contains sigil-less name &#x21D2; value pairs—e.g., `$foo` exists as the property `foo`.
+
+<!-- *********************************************************************** -->
+
+### Save Descriptor {#save-api-objects-descriptor}
+
+Save descriptor objects are only provided for browser saves and are identical to [save data objects](#save-api-objects-data) save that they do not include a `state` property
 
 
 <!-- ***************************************************************************
@@ -61,7 +77,12 @@ Save types pseudo-enumeration.  Passed to various saves related callbacks to den
 * `v2.33.0`: Introduced.
 * `v2.37.0`: Changed into a public API.
 
-#### Save type values:
+#### Values:
+
+* **`Save.Type.Auto`:** Denotes browser auto saves.
+* **`Save.Type.Base64`:** Denotes Base64 saves.
+* **`Save.Type.Disk`:** Denotes disk saves.
+* **`Save.Type.Slot`:** Denotes browser slot saves.
 
 <table>
 <thead>
@@ -73,134 +94,61 @@ Save types pseudo-enumeration.  Passed to various saves related callbacks to den
 <tbody>
 	<tr>
 		<th><code>Save.Type.Auto</code></th>
-		<td>Browser-based auto save.</td>
+		<td>Denotes browser auto saves.</td>
+	</tr>
+	<tr>
+		<th><code>Save.Type.Base64</code></th>
+		<td>Denotes Base64 saves.</td>
 	</tr>
 	<tr>
 		<th><code>Save.Type.Disk</code></th>
-		<td>Disk-based save.</td>
-	</tr>
-	<tr>
-		<th><code>Save.Type.Serialize</code></th>
-		<td>Serialized save string (base64).</td>
+		<td>Denotes disk saves.</td>
 	</tr>
 	<tr>
 		<th><code>Save.Type.Slot</code></th>
-		<td>Browser-based slot save.</td>
+		<td>Denotes browser slot saves.</td>
 	</tr>
 </tbody>
 </table>
 
 <!-- *********************************************************************** -->
 
-### `Save.MAX_IDX` {#save-api-constant-max_idx}
+### `Save.MAX_INDEX` {#save-api-constant-max_index}
 
-Maximum index for browser-based saves.
+The maximum numeric index for browser saves.
 
 #### History:
 
 * `v2.37.0`: Introduced.
 
+#### Value:
 
-<!-- ***************************************************************************
-	Save Serialization
-**************************************************************************** -->
-## Serialization {#save-api-serialization}
-
-<!-- *********************************************************************** -->
-
-### `Save.serialize([metadata])` → *string* | *null* {#save-api-method-serialize}
-
-Returns a save as a serialized (base64) string, or `null` if saving is not allowed within the current context.
-
-#### History:
-
-* `v2.21.0`: Introduced.
-
-#### Parameters:
-
-* **`metadata`:** (optional, *any*) The data to be stored as metadata.  Must be JSON-serializable.
-
-#### Examples:
-
-Serialize a save with no metadata.
-
-```js
-const myGameState = Save.serialize();
-if (myGameState === null) {
-	/* Failure.  You've disallowed saving. */
-}
-```
-
-Serialize a save with metadata.
-
-```js
-const ff6SaveMetadata = {
-	chars : ['Celes', 'Locke', 'Edward'],
-	gold  : '2345g'
-};
-const myGameState  = Save.serialize(ff6SaveMetadata);
-if (myGameState === null) {
-	/* Failure.  You've disallowed saving. */
-}
-```
-
-<!-- *********************************************************************** -->
-
-### `Save.deserialize(saveStr)` → *any* | *null* {#save-api-method-deserialize}
-
-Deserializes the given (base64) save string, created via [`Save.serialize()`](#save-api-method-serialize), and loads the save.  Returns the bundled metadata, if any, or `null` if the given save could not be deserialized and loaded.
-
-#### History:
-
-* `v2.21.0`: Introduced.
-
-#### Parameters:
-
-* **`saveStr`:** (*string*) The serialized save string.
-
-#### Examples:
-
-Deserialize a save with no metadata.
-
-```js
-const loadResult = Save.deserialize(myGameState);
-if (loadResult === null) {
-	/* Failure.  An error was displayed to the player. */
-}
-```
-
-Deserialize a save with metadata.
-
-```js
-const loadResult = Save.deserialize(myGameState);
-if (loadResult !== null) {
-	/* Success.  Do something with loadResult, which contains the metadata. */
-}
-else {
-	/* Failure.  An error was displayed to the player. */
-}
-```
+`15`.
 
 
 <!-- ***************************************************************************
-	Save Browser, General
+	Browser Saves
 **************************************************************************** -->
-## General {#save-api-browser-general}
+## Browser Saves {#save-api-browser}
 
 <!-- *********************************************************************** -->
 
-### `Save.browser.size` → *integer* {#save-api-browser-getter-size}
+### `Save.browser.size` → `integer` {#save-api-browser-getter-size}
 
-Returns the total number of existing browser saves, both auto and slot.
+The total number of existing browser saves, both auto and slot.
 
 #### History:
 
-* `v2.0.0`: Introduced.
+* `v2.37.0`: Introduced.
+
+#### Value:
+
+The `integer` count of existing browser saves.
 
 #### Examples:
 
 ```js
-console.log(`There are ${Save.browser.size} browser saves`);
+console.log(`There are currently ${Save.browser.size} browser saves`);
 ```
 
 ```js
@@ -213,13 +161,15 @@ if (Save.browser.size > 0) {
 
 ### `Save.browser.clear()` {#save-api-browser-method-clear}
 
-Deletes all exisring browser saves, auto and slot.
+Deletes all exisring browser saves, both auto and slot.
 
 #### History:
 
 * `v2.37.0`: Introduced.
 
 #### Parameters: *none*
+
+#### Return: *none*
 
 #### Examples:
 
@@ -229,19 +179,23 @@ Save.browser.clear()
 
 <!-- *********************************************************************** -->
 
-### `Save.browser.continue()` → *Promise* {#save-api-browser-method-continue}
+### `Save.browser.continue()` → `Promise` {#save-api-browser-method-continue}
 
-Load the most recent browser save, auto or slot.  Returns a `Promise` that either resolves or rejects with an error describing the failure.
+Loads the most recent browser save, either auto or slot.
 
 #### History:
 
 * `v2.37.0`: Introduced.
 
-#### Parameters:
+#### Parameters: *none*
+
+#### Return:
+
+A `Promise` that simply resolves, or rejects with an error if the save could not be loaded.
 
 #### Examples:
 
-Attempt to load the most recent browser save after verifing any exist while ignoring any errors.
+Load the most recent browser save after verifing that any exist while ignoring errors.
 
 ```js
 if (Save.browser.size > 0) {
@@ -249,7 +203,7 @@ if (Save.browser.size > 0) {
 }
 ```
 
-Attempt to load the most recent browser save after verifing any exist and logging any errors.
+Load the most recent browser save after verifing that any exist and logging errors.
 
 ```js
 if (Save.browser.size > 0) {
@@ -262,7 +216,7 @@ if (Save.browser.size > 0) {
 
 ### `Save.browser.export(filename)` {#save-api-browser-method-export}
 
-Exports all browser saves, both auto and slot, as a bundle.
+Exports all existing browser saves, both auto and slot, as a bundle, which may be restored via [`Save.browser.import()`](#save-api-browser-method-import).
 
 #### History:
 
@@ -270,7 +224,9 @@ Exports all browser saves, both auto and slot, as a bundle.
 
 #### Parameters:
 
-* **`filename`:** (*string*) The base filename of the browser save export, which gets slugified to remove most symbols.  Appended to this is a datestamp (format: `YYYMMDD-hhmmss`) and the file extension `.savesexport`—e.g., `"The Scooby Chronicles"` would result in the full filename: `the-scooby-chronicles-{datestamp}.savesexport`.
+* **`filename`:** (`string`) The base filename of the browser save export, which gets slugified to remove most symbols.  Appended to this is a datestamp (format: `YYYMMDD-hhmmss`) and the file extension `.savesexport`—e.g., `"The Scooby Chronicles"` would result in the full filename: `the-scooby-chronicles-{datestamp}.savesexport`.
+
+#### Return: *none*
 
 #### Examples:
 
@@ -282,16 +238,16 @@ Save.browser.export(Story.name);
 
 <!-- *********************************************************************** -->
 
-### `Save.browser.import(event)` → *Promise* {#save-api-browser-method-import}
+### `Save.browser.import(event)` → `Promise` {#save-api-browser-method-import}
 
-Attempts to restore browser saves from an exported bundle.  Returns a `Promise` that either resolves or rejects with an error describing the failure.
+Restores browser saves, both auto and slot, from an exported save bundle, created via [`Save.browser.export()`](#save-api-browser-method-export).
 
 <p role="note"><b>Note:</b>
 This method <em>must</em> be used as, or be called by, the <code>change</code> event handler of an <code>&lt;input type="file"&gt;</code> element.
 </p>
 
 <p role="note" class="warning"><b>Warning:</b>
-All existing browser saves will be deleted as part of restoring the exported bundle.
+All existing browser saves will be deleted as part of restoring the exported save bundle.
 </p>
 
 #### History:
@@ -300,13 +256,15 @@ All existing browser saves will be deleted as part of restoring the exported bun
 
 #### Parameters:
 
-* **`event`:** (*event object*) The event object that was passed to the `change` event handler of the associated `<input type="file">` element.
+* **`event`:** (`Event`) The event object that was passed to the `change` event handler of the associated `<input type="file">` element.
+
+#### Return:
+
+A `Promise` that simply resolves, or rejects with an error if the save could not be loaded.
 
 #### Examples:
 
-Most common basic usage.
-
-Use the method as the event handler for an `<input type="file">` element.
+Most common usage, with the method provided as the event handler for an `<input type="file">` element.
 
 ```js
 jQuery(document.createElement('input'))
@@ -318,7 +276,7 @@ jQuery(document.createElement('input'))
 	.on('change', Save.browser.import);
 ```
 
-In case you need to do more than simply restoring the exported bundle, you may call the method from the event handler of an `<input type="file">` element.
+In case you need to do more than simply restoring the exported bundle, you may manually call the method from the event handler of an `<input type="file">` element.
 
 ```js
 jQuery(document.createElement('input'))
@@ -339,15 +297,19 @@ jQuery(document.createElement('input'))
 
 <!-- *********************************************************************** -->
 
-### `Save.browser.isEnabled()` → *boolean* {#save-api-browser-method-isenabled}
+### `Save.browser.isEnabled()` → `boolean` {#save-api-browser-method-isenabled}
 
-Returns whether any browser saves are enabled—either auto, slot, or both.
+Deermines whether any browser saves are enabled, either auto, slot, or both.
 
 #### History:
 
 * `v2.37.0`: Introduced.
 
 #### Parameters: *none*
+
+#### Return:
+
+Boolean `true` if any browser saves are enabled, elsewise `false`.
 
 #### Examples:
 
@@ -359,29 +321,49 @@ if (Save.browser.isEnabled()) {
 
 
 <!-- ***************************************************************************
-	Save Browser, Auto
+	Browser Auto Saves
 **************************************************************************** -->
-## Autosave {#save-api-browser-auto}
+## Browser Auto Saves {#save-api-browser-auto}
 
-	entries   : { value : autoEntries },
-	get       : { value : autoGet },
-	has       : { value : autoHas },
-	isEnabled : { value : autoIsEnabled },
-	load      : { value : autoLoad },
-	save      : { value : autoSave },
-	size      : { get : autoSize }
+<!-- *********************************************************************** -->
+
+### `Save.browser.auto.size` → `integer` {#save-api-browser-auto-getter-size}
+
+The total number of existing browser auto saves.
+
+#### History:
+
+* `v2.37.0`: Introduced.
+
+#### Value:
+
+The `integer` count of existing browser auto saves.
+
+#### Examples:
+
+```js
+console.log(`There are currently ${Save.browser.auto.size} browser auto saves`);
+```
+
+```js
+if (Save.browser.auto.size > 0) {
+	/* Browser auto saves exist. */
+}
+```
 
 <!-- *********************************************************************** -->
 
 ### `Save.browser.auto.clear()` {#save-api-browser-auto-method-clear}
 
-Deletes all exisring auto saves.
+Deletes all existing auto saves.
 
 #### History:
 
 * `v2.37.0`: Introduced.
 
 #### Parameters: *none*
+
+#### Return: *none*
 
 #### Examples:
 
@@ -393,7 +375,7 @@ Save.browser.auto.clear()
 
 ### `Save.browser.auto.delete(index)` {#save-api-browser-auto-method-delete}
 
-Deletes the existing auto save with the provided id.
+Deletes the auto save at the given index.
 
 #### History:
 
@@ -401,96 +383,73 @@ Deletes the existing auto save with the provided id.
 
 #### Parameters:
 
-* **`index`:** (*integer*) Auto save index (`0`-based).
+* **`index`:** (`integer`) Auto save index (`0`-based).
+
+#### Return: *none*
 
 #### Examples:
 
 ```js
-// Attempt to deletes the auto save at index `0`
+// Delete the auto save at index `0`
 Save.browser.auto.delete(0)
 ```
 
 <!-- *********************************************************************** -->
 
-### `Save.autosave.get()` → *object* {#save-api-method-autosave-get}
+### `Save.browser.auto.entries()` → `Array<object>` {#save-api-browser-auto-method-entries}
 
-Returns the save object from the autosave or `null`, if there was no autosave.
+Provides an array of details about all auto saves.
 
 #### History:
 
-* `v2.0.0`: Introduced.
+* `v2.37.0`: Introduced.
 
 #### Parameters: *none*
 
+#### Return:
+
+An `Array` of `{ index, info }` objects, or an empty `Array` if no auto saves exist.
+
+* **`index`:** (`integer`) The index of the auto save.
+* **`info`:** (`object`) The [save's descriptor object](#save-api-objects-descriptor).
+
 #### Examples:
 
-```
-Save.autosave.get()  → Returns the autosave
+```js
+Save.browser.auto.entries().forEach(function (entry) {
+	console.log(`Descriptor of the auto save at index ${entry.index}:`, entry.info);
+});
 ```
 
 <!-- *********************************************************************** -->
 
-### `Save.autosave.has()` → *boolean* {#save-api-method-autosave-has}
+### `Save.browser.auto.get(index)` → `object` {#save-api-browser-auto-method-get}
 
-Returns whether the autosave is filled.
+Details the auto save at the given index.
 
 #### History:
 
-* `v2.0.0`: Introduced.
+* `v2.37.0`: Introduced.
 
-#### Parameters: *none*
+#### Parameters:
+
+* **`index`:** (`integer`) Auto save index (`0`-based).
+
+#### Return:
+
+The [descriptor object](#save-api-objects-descriptor) for the auto save if it exists, elsewise `null`.
 
 #### Examples:
 
-```
-if (Save.autosave.has()) {
-	/* Code to manipulate the autosave. */
-}
+```js
+console.log(`Descriptor of the auto save at index ${index}:`, Save.browser.auto.get(index));
 ```
 
 <!-- *********************************************************************** -->
 
-### `Save.autosave.load()` {#save-api-method-autosave-load}
+### `Save.browser.auto.has(index)` → `boolean` {#save-api-method-autosave-has}
 
-Loads the autosave.
-
-#### History:
-
-* `v2.0.0`: Introduced.
-
-#### Parameters: *none*
-
-#### Examples:
-
-```
-Save.autosave.load()  → Load the autosave
-```
-
-<!-- *********************************************************************** -->
-
-### `Save.autosave.ok()` → *boolean* {#save-api-method-autosave-ok}
-
-Returns whether the autosave is available and ready.
-
-#### History:
-
-* `v2.0.0`: Introduced.
-
-#### Parameters: *none*
-
-#### Examples:
-
-```
-if (Save.autosave.ok()) {
-	/* Code to manipulate the autosave. */
-}
-```
-
-<!-- *********************************************************************** -->
-
-### `Save.autosave.save([title [, metadata]])` {#save-api-method-autosave-save}
-
-Saves to the autosave.
+Determines whether the auto save at the given index exists.
 
 #### History:
 
@@ -498,34 +457,129 @@ Saves to the autosave.
 
 #### Parameters:
 
-* **`title`:** (optional, *string*) The title of the save.  If omitted or `null`, defaults to the passage's description.
-* **`metadata`:** (optional, *any*) The data to be stored in the save object's `metadata` property.  Must be JSON-serializable.
+* **`index`:** (`integer`) Auto save index (`0`-based).
+
+#### Return:
+
+Boolean `true` if the auto save exists, elsewise `false`.
 
 #### Examples:
 
+```js
+if (Save.browser.auto.has(index)) {
+	/* The auto save at the given index exists. */
+}
 ```
-→ Save to the autosave with the default title and no metadata
-Save.autosave.save()
 
-→ Save to the autosave with the title "Midgar" and no metadata
-Save.autosave.save("Midgar")
+<!-- *********************************************************************** -->
 
-→ Save to the autosave with the default title and metadata someMetadata
-Save.autosave.save(null, someMetadata)
+### `Save.browser.auto.isEnabled()` → `boolean` {#save-api-method-autosave-isenabled}
 
-→ Save to the autosave with the title "Midgar" and metadata someMetadata
-Save.autosave.save("Midgar", someMetadata)
+Determines whether auto saves are enabled.
+
+#### History:
+
+* `v2.37.0`: Introduced.
+
+#### Parameters: *none*
+
+#### Return:
+
+Boolean `true` if auto saves are anabled, elsewise `false`.
+
+#### Examples:
+
+```js
+if (Save.browser.auto.isEnabled()) {
+	/* Auto saves afe enabled. */
+}
+```
+
+<!-- *********************************************************************** -->
+
+### `Save.browser.auto.load(index)` → `Promise` {#save-api-method-autosave-load}
+
+Loads the auto save at the given index.
+
+#### History:
+
+* `v2.37.0`: Introduced.
+
+#### Parameters:
+
+* **`index`:** (`integer`) Auto save index (`0`-based).
+
+#### Return: *none*
+
+A `Promise` that simply resolves, or rejects with an error if the save could not be loaded.
+
+#### Examples:
+
+Load the auto save at the given index while ignoring errors.
+
+```js
+Save.browser.auto.load(index);
+```
+
+Load the auto save at the given index while logging errors.
+
+```js
+Save.browser.auto.load(index)
+	.catch(err => console.warn(err));
+```
+
+<!-- *********************************************************************** -->
+
+### `Save.browser.auto.save([desc [, metadata]])` {#save-api-method-autosave-save}
+
+Saves an auto save.  If all auto save positions are full, replaces the oldest auto save.
+
+#### History:
+
+* `v2.37.0`: Introduced.
+
+#### Parameters:
+
+* **`desc`:** (optional, `string`) The description of the auto save.  If omitted or `null`, defaults to the active passage's description.
+* **`metadata`:** (optional, `any`) The data to be stored in the save object's `metadata` property.  *Must* be JSON-serializable.
+
+#### Return: *none*
+
+#### Examples:
+
+Save an auto save with the default description and no metadata.
+
+```js
+Save.browser.auto.save();
+```
+
+Save an auto save with the description "Midgar" and no metadata
+
+```js
+Save.browser.auto.save("Midgar");
+```
+
+Save an auto save with the default description and metadata someMetadata
+
+```js
+Save.browser.auto.save(null, someMetadata);
+```
+
+Save an auto save with the description "Midgar" and metadata someMetadata
+
+```js
+Save.browser.auto.save("Midgar", someMetadata);
 ```
 
 
 <!-- ***************************************************************************
-	Save Slots
+	Browser Save, Slots
 **************************************************************************** -->
-## Slots {#save-api-slots}
+## Slots {#save-api-browser-slots}
 
 <!-- *********************************************************************** -->
 
-### `Save.slots.length` → *integer* {#save-api-getter-slots-length}
+### `Save.browser.slots.length` → `integer` {#save-api-getter-slots-length}
 
 Returns the total number of available slots.
 
@@ -541,7 +595,7 @@ Save.slots.length
 
 <!-- *********************************************************************** -->
 
-### `Save.slots.count()` → *integer* {#save-api-method-slots-count}
+### `Save.slots.count()` → `integer` {#save-api-method-slots-count}
 
 Returns the total number of filled slots.
 
@@ -569,7 +623,7 @@ Deletes a save from the given slot.
 
 #### Parameters:
 
-* **`slot`:** (*integer*) Save slot index (0-based).
+* **`slot`:** (`integer`) Save slot index (0-based).
 
 #### Examples:
 
@@ -579,7 +633,7 @@ Save.slots.delete(5)  → Deletes the sixth slot save
 
 <!-- *********************************************************************** -->
 
-### `Save.slots.get(slot)` → *object* {#save-api-method-slots-get}
+### `Save.slots.get(slot)` → `object` {#save-api-method-slots-get}
 
 Returns a save object from the given slot or `null`, if there was no save in the given slot.
 
@@ -589,7 +643,7 @@ Returns a save object from the given slot or `null`, if there was no save in the
 
 #### Parameters:
 
-* **`slot`:** (*integer*) Save slot index (0-based).
+* **`slot`:** (`integer`) Save slot index (0-based).
 
 #### Examples:
 
@@ -599,7 +653,7 @@ Save.slots.get(5)  → Returns the sixth slot save
 
 <!-- *********************************************************************** -->
 
-### `Save.slots.has(slot)` → *boolean* {#save-api-method-slots-has}
+### `Save.slots.has(slot)` → `boolean` {#save-api-method-slots-has}
 
 Returns whether the given slot is filled.
 
@@ -609,7 +663,7 @@ Returns whether the given slot is filled.
 
 #### Parameters:
 
-* **`slot`:** (*integer*) Save slot index (0-based).
+* **`slot`:** (`integer`) Save slot index (0-based).
 
 #### Examples:
 
@@ -621,7 +675,7 @@ if (Save.slots.has(5)) {
 
 <!-- *********************************************************************** -->
 
-### `Save.slots.isEmpty()` → *boolean* {#save-api-method-slots-isempty}
+### `Save.slots.isEmpty()` → `boolean` {#save-api-method-slots-isempty}
 
 Returns whether there are any filled slots.
 
@@ -649,7 +703,7 @@ Loads a save from the given slot.
 
 #### Parameters:
 
-* **`slot`:** (*integer*) Save slot index (0-based).
+* **`slot`:** (`integer`) Save slot index (0-based).
 
 #### Examples:
 
@@ -659,7 +713,7 @@ Save.slots.load(5)  → Load the sixth slot save
 
 <!-- *********************************************************************** -->
 
-### `Save.slots.ok()` → *boolean* {#save-api-method-slots-ok}
+### `Save.slots.ok()` → `boolean` {#save-api-method-slots-ok}
 
 Returns whether the slot saves are available and ready.
 
@@ -689,9 +743,9 @@ Saves to the given slot.
 
 #### Parameters:
 
-* **`slot`:** (*integer*) Save slot index (0-based).
-* **`title`:** (optional, *string*) The title of the save.  If omitted or `null`, defaults to the passage's description.
-* **`metadata`:** (optional, *any*) The data to be stored in the save object's `metadata` property.  Must be JSON-serializable.
+* **`slot`:** (`integer`) Save slot index (0-based).
+* **`title`:** (optional, `string`) The title of the save.  If omitted or `null`, defaults to the passage's description.
+* **`metadata`:** (optional, `any`) The data to be stored in the save object's `metadata` property.  Must be JSON-serializable.
 
 #### Examples:
 
@@ -728,8 +782,8 @@ Saves to disk.
 
 #### Parameters:
 
-* **`filename`:** (optional, *string*) The base filename of the save, which gets slugified to remove most symbols.  Appended to this is a datestamp (format: `YYYMMDD-hhmmss`) and the file extension `.save`—e.g., `"The Scooby Chronicles"` would result in the full filename: `the-scooby-chronicles-{datestamp}.save`.  If omitted or `null`, defaults to the story's title.
-* **`metadata`:** (optional, *any*) The data to be stored in the save object's `metadata` property.  Must be JSON-serializable.
+* **`filename`:** (optional, `string`) The base filename of the save, which gets slugified to remove most symbols.  Appended to this is a datestamp (format: `YYYMMDD-hhmmss`) and the file extension `.save`—e.g., `"The Scooby Chronicles"` would result in the full filename: `the-scooby-chronicles-{datestamp}.save`.  If omitted or `null`, defaults to the story's title.
+* **`metadata`:** (optional, `any`) The data to be stored in the save object's `metadata` property.  Must be JSON-serializable.
 
 #### Examples:
 
@@ -761,7 +815,7 @@ Loads a save from disk.
 
 #### Parameters:
 
-* **`event`:** (*event object*) The event object that was passed to the `change` event handler of the associated `<input type="file">` element.
+* **`event`:** (`Event`) The event object that was passed to the `change` event handler of the associated `<input type="file">` element.
 
 #### Examples:
 
@@ -810,7 +864,92 @@ jQuery(input).on('change', function (ev) {
 ```
 
 
+<!-- ***************************************************************************
+	Base64 Saves
+**************************************************************************** -->
+## Base64 Saves {#save-api-base64}
 
+<!-- *********************************************************************** -->
+
+### `Save.base64.load(save)` → `any` | `null` <!-- legacy --><span id="save-api-method-deserialize"></span><!-- /legacy --> {#save-api-base64-method-load}
+
+Loads the given Base64 save string, created via [`Save.base64.save()`](#save-api-base64-method-save).
+
+#### History:
+
+* `v2.37.0`: Introduced.
+
+#### Parameters:
+
+* **`save`:** (`string`) The serialized (base64) save string.
+
+#### Return:
+
+The save's metadata (`any`), if it exists, or `null` if the given save could not be loaded.
+
+#### Examples:
+
+Load a Base64 save with no metadata.
+
+```js
+if (Save.base64.load(base64Save) === null) {
+	/* Failure.  An error has already been displayed to the player. */
+}
+```
+
+Load a Base64 save with metadata.
+
+```js
+const result = Save.base64.load(base64Save);
+if (result !== null) {
+	/* Success.  Do something with `result`, which contains the metadata. */
+}
+else {
+	/* Failure.  An error has already been displayed to the player. */
+}
+```
+
+<!-- *********************************************************************** -->
+
+### `Save.base64.save([metadata])` → `string` | `null` <!-- legacy --><span id="save-api-method-serialize"></span><!-- /legacy --> {#save-api-base64-method-save}
+
+Saves the current story state as a Base64 string.
+
+#### History:
+
+* `v2.37.0`: Introduced.
+
+#### Parameters:
+
+* **`metadata`:** (optional, `any`) The save's metadata, which *must* be JSON-serializable.
+
+#### Return:
+
+A Base64 save `string`, or `null` if saving is not allowed within the current context.
+
+#### Examples:
+
+Save without metadata.
+
+```js
+const base64Save = Save.base64.save();
+if (base64Save === null) {
+	/* Failure.  You've disallowed saving. */
+}
+```
+
+Save with metadata.
+
+```js
+const ff6SaveMetadata = {
+	chars : ['Celes', 'Locke', 'Edward'],
+	gold  : '2345g'
+};
+const base64Save = Save.base64.save(ff6SaveMetadata);
+if (base64Save === null) {
+	/* Failure.  You've disallowed saving. */
+}
+```
 
 
 <!-- ***************************************************************************
@@ -834,7 +973,7 @@ Performs any required processing before the save data is loaded—e.g., upgradin
 
 #### Handler parameters:
 
-* **`save`:** (*object*) The [save object](#save-api-save-objects) to be processed.
+* **`save`:** (`object`) The [save object](#save-api-save-objects) to be processed.
 
 #### Examples:
 
@@ -864,7 +1003,7 @@ Save.onLoad.clear();
 
 <!-- *********************************************************************** -->
 
-### `Save.onLoad.delete(handler)` → *boolean* {#save-api-method-onload-delete}
+### `Save.onLoad.delete(handler)` → `boolean` {#save-api-method-onload-delete}
 
 Deletes the specified on-load handler, returning `true` if the handler existed or `false` if not.
 
@@ -890,7 +1029,7 @@ Save.onLoad.delete(myOnLoadHandler);
 
 <!-- *********************************************************************** -->
 
-### `Save.onLoad.size` → *integer* {#save-api-getter-onload-size}
+### `Save.onLoad.size` → `integer` {#save-api-getter-onload-size}
 
 Returns the number of currently registered on-load handlers.
 
@@ -922,14 +1061,14 @@ Performs any required processing before the save data is saved.  The handlers is
 
 #### Handler parameters:
 
-* **`save`:** (*object*) The [save object](#save-api-save-objects) to be processed.
-* **`details`:** (*object*) The save operation details object.
+* **`save`:** (`object`) The [save object](#save-api-save-objects) to be processed.
+* **`details`:** (`object`) The save operation details object.
 
 #### Save operation details object:
 
 A save operation details object will have the following properties:
 
-* **`type`:** (*string*) A string representing what caused the save operation.  Possible values are: `'autosave'`, `'disk'`, `'serialize'`, `'slot'`.
+* **`type`:** (`string`) A string representing what caused the save operation.  Possible values are: `'autosave'`, `'disk'`, `'serialize'`, `'slot'`.
 
 #### Examples:
 
@@ -989,7 +1128,7 @@ Save.onSave.clear();
 
 <!-- *********************************************************************** -->
 
-### `Save.onSave.delete(handler)` → *boolean* {#save-api-method-onsave-delete}
+### `Save.onSave.delete(handler)` → `boolean` {#save-api-method-onsave-delete}
 
 Deletes the specified on-save handler, returning `true` if the handler existed or `false` if not.
 
@@ -1015,7 +1154,7 @@ Save.onSave.delete(myOnSaveHandler);
 
 <!-- *********************************************************************** -->
 
-### `Save.onSave.size` → *integer* {#save-api-getter-onsave-size}
+### `Save.onSave.size` → `integer` {#save-api-getter-onsave-size}
 
 Returns the number of currently registered on-save handlers.
 
@@ -1172,7 +1311,7 @@ Save.get()
 
 <!-- *********************************************************************** -->
 
-### `Save.ok()` → *boolean* {#save-api-method-ok}
+### `Save.ok()` → `boolean` {#save-api-method-ok}
 
 Returns whether both the slot saves and autosave are available and ready.
 
@@ -1216,7 +1355,7 @@ Save.autosave.delete()  → Deletes the autosave
 
 <!-- *********************************************************************** -->
 
-### `Save.autosave.get()` → *object* {#save-api-method-autosave-get}
+### `Save.autosave.get()` → `object` {#save-api-method-autosave-get}
 
 Returns the save object from the autosave or `null`, if there was no autosave.
 
@@ -1234,7 +1373,7 @@ Save.autosave.get()  → Returns the autosave
 
 <!-- *********************************************************************** -->
 
-### `Save.autosave.has()` → *boolean* {#save-api-method-autosave-has}
+### `Save.autosave.has()` → `boolean` {#save-api-method-autosave-has}
 
 Returns whether the autosave is filled.
 
@@ -1272,7 +1411,7 @@ Save.autosave.load()  → Load the autosave
 
 <!-- *********************************************************************** -->
 
-### `Save.autosave.ok()` → *boolean* {#save-api-method-autosave-ok}
+### `Save.autosave.ok()` → `boolean` {#save-api-method-autosave-ok}
 
 Returns whether the autosave is available and ready.
 
@@ -1302,8 +1441,8 @@ Saves to the autosave.
 
 #### Parameters:
 
-* **`title`:** (optional, *string*) The title of the save.  If omitted or `null`, defaults to the passage's description.
-* **`metadata`:** (optional, *any*) The data to be stored in the save object's `metadata` property.  Must be JSON-serializable.
+* **`title`:** (optional, `string`) The title of the save.  If omitted or `null`, defaults to the passage's description.
+* **`metadata`:** (optional, `any`) The data to be stored in the save object's `metadata` property.  Must be JSON-serializable.
 
 #### Examples:
 
@@ -1329,7 +1468,7 @@ Save.autosave.save("Midgar", someMetadata)
 
 <!-- *********************************************************************** -->
 
-### `Save.slots.length` → *integer* {#save-api-getter-slots-length}
+### `Save.slots.length` → `integer` {#save-api-getter-slots-length}
 
 Returns the total number of available slots.
 
@@ -1345,7 +1484,7 @@ Save.slots.length
 
 <!-- *********************************************************************** -->
 
-### `Save.slots.count()` → *integer* {#save-api-method-slots-count}
+### `Save.slots.count()` → `integer` {#save-api-method-slots-count}
 
 Returns the total number of filled slots.
 
@@ -1373,7 +1512,7 @@ Deletes a save from the given slot.
 
 #### Parameters:
 
-* **`slot`:** (*integer*) Save slot index (0-based).
+* **`slot`:** (`integer`) Save slot index (0-based).
 
 #### Examples:
 
@@ -1383,7 +1522,7 @@ Save.slots.delete(5)  → Deletes the sixth slot save
 
 <!-- *********************************************************************** -->
 
-### `Save.slots.get(slot)` → *object* {#save-api-method-slots-get}
+### `Save.slots.get(slot)` → `object` {#save-api-method-slots-get}
 
 Returns a save object from the given slot or `null`, if there was no save in the given slot.
 
@@ -1393,7 +1532,7 @@ Returns a save object from the given slot or `null`, if there was no save in the
 
 #### Parameters:
 
-* **`slot`:** (*integer*) Save slot index (0-based).
+* **`slot`:** (`integer`) Save slot index (0-based).
 
 #### Examples:
 
@@ -1403,7 +1542,7 @@ Save.slots.get(5)  → Returns the sixth slot save
 
 <!-- *********************************************************************** -->
 
-### `Save.slots.has(slot)` → *boolean* {#save-api-method-slots-has}
+### `Save.slots.has(slot)` → `boolean` {#save-api-method-slots-has}
 
 Returns whether the given slot is filled.
 
@@ -1413,7 +1552,7 @@ Returns whether the given slot is filled.
 
 #### Parameters:
 
-* **`slot`:** (*integer*) Save slot index (0-based).
+* **`slot`:** (`integer`) Save slot index (0-based).
 
 #### Examples:
 
@@ -1425,7 +1564,7 @@ if (Save.slots.has(5)) {
 
 <!-- *********************************************************************** -->
 
-### `Save.slots.isEmpty()` → *boolean* {#save-api-method-slots-isempty}
+### `Save.slots.isEmpty()` → `boolean` {#save-api-method-slots-isempty}
 
 Returns whether there are any filled slots.
 
@@ -1453,7 +1592,7 @@ Loads a save from the given slot.
 
 #### Parameters:
 
-* **`slot`:** (*integer*) Save slot index (0-based).
+* **`slot`:** (`integer`) Save slot index (0-based).
 
 #### Examples:
 
@@ -1463,7 +1602,7 @@ Save.slots.load(5)  → Load the sixth slot save
 
 <!-- *********************************************************************** -->
 
-### `Save.slots.ok()` → *boolean* {#save-api-method-slots-ok}
+### `Save.slots.ok()` → `boolean` {#save-api-method-slots-ok}
 
 Returns whether the slot saves are available and ready.
 
@@ -1493,9 +1632,9 @@ Saves to the given slot.
 
 #### Parameters:
 
-* **`slot`:** (*integer*) Save slot index (0-based).
-* **`title`:** (optional, *string*) The title of the save.  If omitted or `null`, defaults to the passage's description.
-* **`metadata`:** (optional, *any*) The data to be stored in the save object's `metadata` property.  Must be JSON-serializable.
+* **`slot`:** (`integer`) Save slot index (0-based).
+* **`title`:** (optional, `string`) The title of the save.  If omitted or `null`, defaults to the passage's description.
+* **`metadata`:** (optional, `any`) The data to be stored in the save object's `metadata` property.  Must be JSON-serializable.
 
 #### Examples:
 
@@ -1532,8 +1671,8 @@ Saves to disk.
 
 #### Parameters:
 
-* **`filename`:** (optional, *string*) The base filename of the save, which gets slugified to remove most symbols.  Appended to this is a datestamp (format: `YYYMMDD-hhmmss`) and the file extension `.save`—e.g., `"The Scooby Chronicles"` would result in the full filename: `the-scooby-chronicles-{datestamp}.save`.  If omitted or `null`, defaults to the story's title.
-* **`metadata`:** (optional, *any*) The data to be stored in the save object's `metadata` property.  Must be JSON-serializable.
+* **`filename`:** (optional, `string`) The base filename of the save, which gets slugified to remove most symbols.  Appended to this is a datestamp (format: `YYYMMDD-hhmmss`) and the file extension `.save`—e.g., `"The Scooby Chronicles"` would result in the full filename: `the-scooby-chronicles-{datestamp}.save`.  If omitted or `null`, defaults to the story's title.
+* **`metadata`:** (optional, `any`) The data to be stored in the save object's `metadata` property.  Must be JSON-serializable.
 
 #### Examples:
 
@@ -1565,7 +1704,7 @@ Loads a save from disk.
 
 #### Parameters:
 
-* **`event`:** (*event object*) The event object that was passed to the `change` event handler of the associated `<input type="file">` element.
+* **`event`:** (`Event`) The event object that was passed to the `change` event handler of the associated `<input type="file">` element.
 
 #### Examples:
 
@@ -1621,7 +1760,7 @@ jQuery(input).on('change', function (ev) {
 
 <!-- *********************************************************************** -->
 
-### `Save.serialize([metadata])` → *string* | *null* {#save-api-method-serialize}
+### `Save.base64.saveave([metadata])` → `string` | `null` {#save-api-method-serialize}
 
 Returns a save as a serialized string, or `null` if saving is not allowed within the current context.
 
@@ -1631,19 +1770,19 @@ Returns a save as a serialized string, or `null` if saving is not allowed within
 
 #### Parameters:
 
-* **`metadata`:** (optional, *any*) The data to be stored as metadata.  Must be JSON-serializable.
+* **`metadata`:** (optional, `any`) The data to be stored as metadata.  Must be JSON-serializable.
 
 #### Examples:
 
 ```
 → Serialize a save with no metadata
-const myGameState = Save.serialize();
+const myGameState = Save.base64.save();
 if (myGameState === null) {
 	/* Failure.  You've disallowed saving. */
 }
 
 → Serialize a save with metadata someMetadata
-const myGameState = Save.serialize(someMetadata);
+const myGameState = Save.base64.save(someMetadata);
 if (myGameState === null) {
 	/* Failure.  You've disallowed saving. */
 }
@@ -1651,9 +1790,9 @@ if (myGameState === null) {
 
 <!-- *********************************************************************** -->
 
-### `Save.deserialize(saveStr)` → *any* | *null* {#save-api-method-deserialize}
+### `Save.base64.load(saveStr)` → `any` | `null` {#save-api-method-deserialize}
 
-Deserializes the given save string, created via [`Save.serialize()`](#save-api-method-serialize), and loads the save.  Returns the bundled metadata, if any, or `null` if the given save could not be deserialized and loaded.
+Deserializes the given save string, created via [`Save.base64.save()`](#save-api-method-serialize), and loads the save.  Returns the bundled metadata, if any, or `null` if the given save could not be deserialized and loaded.
 
 #### History:
 
@@ -1661,19 +1800,19 @@ Deserializes the given save string, created via [`Save.serialize()`](#save-api-m
 
 #### Parameters:
 
-* **`saveStr`:** (*string*) The serialized save string.
+* **`saveStr`:** (`string`) The serialized save string.
 
 #### Examples:
 
 ```
 → Deserialize a save with no metadata
-const loadResult = Save.deserialize(myGameState);
+const loadResult = Save.base64.load(myGameState);
 if (loadResult === null) {
 	/* Failure.  An error was displayed to the player. */
 }
 
 → Deserialize a save with metadata
-const loadResult = Save.deserialize(myGameState);
+const loadResult = Save.base64.load(myGameState);
 if (loadResult !== null) {
 	/* Success.  Do something with loadResult, which contains the metadata. */
 }
