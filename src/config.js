@@ -58,12 +58,13 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 		Error Constants.
 	*******************************************************************************/
 
-	const errPassagesDescriptionsDeprecated = 'Config.passages.descriptions has been deprecated, see Config.saves.descriptions instead';
-	const _baseSavesAutosaveDeprecated      = 'Config.saves.autosave has been deprecated';
-	const errSavesOnLoadDeprecated          = 'Config.saves.onLoad has been deprecated, see the Save.onLoad API instead';
-	const errSavesOnSaveDeprecated          = 'Config.saves.onSave has been deprecated, see the Save.onSave API instead';
-	const errSavesSlotsDeprecated           = 'Config.saves.slots has been deprecated, see Config.saves.maxSlotSaves instead';
-	const errSavesTryDiskOnMobileDeprecated = 'Config.saves.tryDiskOnMobile has been deprecated';
+	const errPassagesDescriptionsDeprecated = '[DEPRECATED] Config.passages.descriptions has been deprecated, see Config.saves.descriptions instead';
+	const errSavesAutoloadDeprecated        = '[DEPRECATED] Config.saves.autoload has been deprecated, see the Save.browser.continue API instead';
+	const _baseSavesAutosaveDeprecated      = '[DEPRECATED] Config.saves.autosave has been deprecated';
+	const errSavesOnLoadDeprecated          = '[DEPRECATED] Config.saves.onLoad has been deprecated, see the Save.onLoad API instead';
+	const errSavesOnSaveDeprecated          = '[DEPRECATED] Config.saves.onSave has been deprecated, see the Save.onSave API instead';
+	const errSavesSlotsDeprecated           = '[DEPRECATED] Config.saves.slots has been deprecated, see Config.saves.maxSlotSaves instead';
+	const errSavesTryDiskOnMobileDeprecated = '[DEPRECATED] Config.saves.tryDiskOnMobile has been deprecated';
 
 
 	/*******************************************************************************
@@ -243,23 +244,6 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 			Saves settings.
 		*/
 		saves : Object.freeze({
-			get autoload() { return _savesAutoload; },
-			set autoload(value) {
-				if (value != null) { // lazy equality for null
-					const valueType = getTypeOf(value);
-
-					if (
-						valueType !== 'boolean'
-						&& (valueType !== 'string' || value !== 'prompt')
-						&& valueType !== 'function'
-					) {
-						throw new TypeError(`Config.saves.autoload must be a boolean, string ('prompt'), function, or null/undefined (received: ${valueType})`);
-					}
-				}
-
-				_savesAutoload = value;
-			},
-
 			get descriptions() { return _savesDescriptions; },
 			set descriptions(value) {
 				if (value != null) { // lazy equality for null
@@ -328,6 +312,28 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 			set version(value) { _savesVersion = value; },
 
 			/* legacy */
+			get autoload() {
+				console.warn(errSavesAutoloadDeprecated);
+				return _savesAutoload;
+			},
+			set autoload(value) {
+				console.warn(errSavesAutoloadDeprecated);
+
+				if (value != null) { // lazy equality for null
+					const valueType = getTypeOf(value);
+
+					if (
+						valueType !== 'boolean'
+						&& (valueType !== 'string' || value !== 'prompt')
+						&& valueType !== 'function'
+					) {
+						throw new TypeError(`Config.saves.autoload must be a boolean, string ('prompt'), function, or null/undefined (received: ${valueType})`);
+					}
+				}
+
+				_savesAutoload = value;
+			},
+
 			// Die if deprecated saves autosave getter is accessed.
 			get autosave() {
 				throw new Error(`${_baseSavesAutosaveDeprecated}, see Config.saves.maxAutoSaves and Config.saves.isAllowed instead`);
