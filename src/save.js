@@ -192,12 +192,12 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			.value;
 	}
 
-	function getDesc(userDesc, saveType) {
+	function getDesc(description, saveType) {
 		let desc;
 
 		// Try the given description.
-		if (userDesc != null) { // lazy equality for null
-			desc = String(userDesc).trim();
+		if (description != null) { // lazy equality for null
+			desc = String(description).trim();
 		}
 
 		// Try the `Config.saves.descriptions` description.
@@ -205,21 +205,17 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			desc = String(Config.saves.descriptions(saveType)).trim();
 		}
 
-		if (desc) {
-			return desc;
-		}
-
-		return `${L10n.get('turn')} ${State.turns}`;
+		return desc ? desc : `${L10n.get('turn')} ${State.turns}`;
 	}
 
-	function addMetadata(O, metadata) {
+	function addMetadata(O, metadata, saveType) {
 		const metadataType = typeof metadata;
 
 		if (metadataType !== 'object' && metadataType !== 'undefined') {
 			throw new TypeError('metadata parameter must be an object or null/undefined');
 		}
 
-		const cfgMetadata     = Config.saves.metadata ? Config.saves.metadata() : undefined;
+		const cfgMetadata     = Config.saves.metadata ? Config.saves.metadata(saveType) : undefined;
 		const cfgMetadataType = typeof cfgMetadata;
 
 		if (cfgMetadataType !== 'object' && cfgMetadataType !== 'undefined') {
@@ -411,7 +407,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			type : Type.Auto
 		};
 
-		addMetadata(details, metadata);
+		addMetadata(details, metadata, Type.Auto);
 
 		const idx            = (findNewest(Type.Auto).idx + 1) % Config.saves.maxAutoSaves;
 		const { info, data } = splitSave(marshal(details));
@@ -542,7 +538,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			type : Type.Slot
 		};
 
-		addMetadata(details, metadata);
+		addMetadata(details, metadata, Type.Slot);
 
 		const { info, data } = splitSave(marshal(details));
 		const infoKey        = getSlotInfoKeyFromIdx(idx);
@@ -761,7 +757,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			type : Type.Disk
 		};
 
-		addMetadata(details, metadata);
+		addMetadata(details, metadata, Type.Disk);
 
 		saveBlobToDiskAs(
 			LZString.compressToBase64(Serial.stringify(marshal(details))),
@@ -813,7 +809,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			type : Type.Base64
 		};
 
-		addMetadata(details, metadata);
+		addMetadata(details, metadata, Type.Base64);
 
 		return LZString.compressToBase64(Serial.stringify(marshal(details)));
 	}
