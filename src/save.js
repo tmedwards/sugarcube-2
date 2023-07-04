@@ -212,6 +212,31 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 		return `${L10n.get('turn')} ${State.turns}`;
 	}
 
+	function addMetadata(O, metadata) {
+		const metadataType = typeof metadata;
+
+		if (metadataType !== 'object' && metadataType !== 'undefined') {
+			throw new TypeError('metadata parameter must be an object or null/undefined');
+		}
+
+		const cfgMetadata     = Config.saves.metadata ? Config.saves.metadata() : undefined;
+		const cfgMetadataType = typeof cfgMetadata;
+
+		if (cfgMetadataType !== 'object' && cfgMetadataType !== 'undefined') {
+			throw new TypeError('Config.saves.metadata function must return an object or null/undefined');
+		}
+
+		const merged = Object.assign(
+			{},
+			cfgMetadata,
+			metadata
+		);
+
+		if (Object.keys(merged).length > 0) {
+			O.metadata = merged;
+		}
+	}
+
 	function getIdxFromKey(key) {
 		const pos = key.lastIndexOf(INDEX_DELIMITER);
 
@@ -386,9 +411,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			type : Type.Auto
 		};
 
-		if (metadata != null) { // lazy equality for null
-			details.metadata = metadata;
-		}
+		addMetadata(details, metadata);
 
 		const idx            = (findNewest(Type.Auto).idx + 1) % Config.saves.maxAutoSaves;
 		const { info, data } = splitSave(marshal(details));
@@ -519,9 +542,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			type : Type.Slot
 		};
 
-		if (metadata != null) { // lazy equality for null
-			details.metadata = metadata;
-		}
+		addMetadata(details, metadata);
 
 		const { info, data } = splitSave(marshal(details));
 		const infoKey        = getSlotInfoKeyFromIdx(idx);
@@ -740,9 +761,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			type : Type.Disk
 		};
 
-		if (metadata != null) { // lazy equality for null
-			details.metadata = metadata;
-		}
+		addMetadata(details, metadata);
 
 		saveBlobToDiskAs(
 			LZString.compressToBase64(Serial.stringify(marshal(details))),
@@ -794,9 +813,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			type : Type.Base64
 		};
 
-		if (metadata != null) { // lazy equality for null
-			details.metadata = metadata;
-		}
+		addMetadata(details, metadata);
 
 		return LZString.compressToBase64(Serial.stringify(marshal(details)));
 	}
