@@ -6,7 +6,7 @@
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* global Save, getTypeOf */
+/* global Save, State, getTypeOf */
 
 var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 	// General settings.
@@ -235,7 +235,41 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 			// compatibilities sake.
 			set descriptions(value) {
 				console.warn(errPassagesDescriptionsDeprecated);
-				Config.saves.descriptions = value;
+
+				switch (typeof value) {
+					case 'boolean': {
+						if (value && !Config.saves.descriptions) {
+							Config.saves.descriptions = function () {
+								return State.passage;
+							};
+						}
+
+						break;
+					}
+
+					case 'function': {
+						if (!Config.saves.descriptions) {
+							Config.saves.descriptions = value;
+						}
+
+						break;
+					}
+
+					case 'undefined':
+					case 'object': {
+						if (value && !Config.saves.descriptions) {
+							const dict = value;
+							Config.saves.descriptions = function () {
+								return Object.hasOwn(dict, State.passage) && dict[State.passage];
+							};
+						}
+
+						break;
+					}
+
+					default:
+						throw new TypeError(`Config.passages.descriptions must be a boolean, object, function, or null/undefined (received: ${getTypeOf(value)})`);
+				}
 			}
 			/* /legacy */
 		}),
@@ -246,12 +280,8 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 		saves : Object.freeze({
 			get descriptions() { return _savesDescriptions; },
 			set descriptions(value) {
-				if (value != null) { // lazy equality for null
-					const valueType = getTypeOf(value);
-
-					if (valueType !== 'boolean' && valueType !== 'Object' && valueType !== 'function') {
-						throw new TypeError(`Config.saves.descriptions must be a boolean, object, function, or null/undefined (received: ${valueType})`);
-					}
+				if (!(value == null || value instanceof Function)) { // lazy equality for null
+					throw new TypeError(`Config.saves.descriptions must be a function or null/undefined (received: ${getTypeOf(value)})`);
 				}
 
 				_savesDescriptions = value;
@@ -312,10 +342,12 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 			set version(value) { _savesVersion = value; },
 
 			/* legacy */
+			// Warn if deprecated autoload getter is accessed.
 			get autoload() {
 				console.warn(errSavesAutoloadDeprecated);
 				return _savesAutoload;
 			},
+			// Warn if deprecated autoload setter is assigned to.
 			set autoload(value) {
 				console.warn(errSavesAutoloadDeprecated);
 
@@ -338,8 +370,8 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 			get autosave() {
 				throw new Error(`${_baseSavesAutosaveDeprecated}, see Config.saves.maxAutoSaves and Config.saves.isAllowed instead`);
 			},
-			// If the deprecated saves autosave setter is assigned to, then either
-			// throw or warn, while setting `Config.saves.maxAutoSaves` and possibly
+			// Die or warn if the deprecated saves autosave setter is assigned to,
+			// while also setting `Config.saves.maxAutoSaves` and, possibly,
 			// `Config.saves.isAllowed` for compatibilities sake.
 			set autosave(value) {
 				switch (typeof value) {
@@ -362,8 +394,7 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 					}
 
 					default: {
-						const errMesg = `${_baseSavesAutosaveDeprecated}, for tag usage see Config.saves.isAllowed instead`;
-						console.warn(errMesg);
+						console.warn(`${_baseSavesAutosaveDeprecated}, for tag usage see Config.saves.isAllowed instead`);
 
 						if (
 							!(value instanceof Array)
@@ -371,7 +402,7 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 							|| value.some(tag => typeof tag !== 'string')
 						) {
 							const valueType = getTypeOf(value);
-							throw new TypeError(`${errMesg}; Config.saves.autosave must be a boolean, Array<string>, function, or null/undefined (received: ${valueType}${valueType === 'Array' ? '<any>' : ''})`);
+							throw new TypeError(`Config.saves.autosave must be a boolean, Array<string>, function, or null/undefined (received: ${valueType}${valueType === 'Array' ? '<any>' : ''})`);
 						}
 
 						if (!Config.saves.isAllowed) {
