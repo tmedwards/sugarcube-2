@@ -1049,11 +1049,12 @@ console.log('There are %d onLoad handlers registered.', Save.onLoad.size);
 
 ### `Save.onSave.add(handler)` {#save-api-method-onsave-add}
 
-Performs any required processing before the save data is saved.  The handlers is passed two parameters, the save object to be processed and save operation details object.
+Performs any required processing before the save data is saved.  The handler is passed one parameter, the save object to be processed.
 
 #### History:
 
 * `v2.36.0`: Introduced.
+* `v2.37.0`: Deprecated the second parameter, `details`.
 
 #### Parameters:
 
@@ -1062,17 +1063,10 @@ Performs any required processing before the save data is saved.  The handlers is
 #### Handler parameters:
 
 * **`save`:** (`object`) The [save object](#save-api-save-objects) to be processed.
-* **`details`:** (`object`) The save operation details object.
-
-#### Save operation details object:
-
-A save operation details object will have the following properties:
-
-* **`type`:** (`string`) A string representing what caused the save operation.  Possible values are: `'autosave'`, `'disk'`, `'serialize'`, `'slot'`.
 
 #### Examples:
 
-##### Using only the save object parameter
+##### Basic usage
 
 ```js
 Save.onSave.add(function (save) {
@@ -1080,28 +1074,28 @@ Save.onSave.add(function (save) {
 });
 ```
 
-##### Using both the save object and operation details parameters
+##### Using save objects' `type` property
 
 ```js
-Save.onSave.add(function (save, details) {
-	switch (details.type) {
-		case 'autosave': {
-			/* code to process the save object from autosaves before it's saved */
+Save.onSave.add(function (save) {
+	switch (save.type) {
+		case Type.Auto: {
+			/* code to process an auto save object before it's saved */
 			break;
 		}
 
-		case 'disk': {
-			/* code to process the save object from disk saves before it's saved */
+		case Type.Disk: {
+			/* code to process a disk save object before it's saved */
 			break;
 		}
 
-		case 'serialize': {
-			/* code to process the save object from serialize saves before it's saved */
+		case Type.Base64: {
+			/* code to process a base64 save object before it's saved */
 			break;
 		}
 
-		default: { /* slot */
-			/* code to process the save object from slot saves before it's saved */
+		default: { /* Tyoe.Slot */
+			/* code to process a slot save object before it's saved */
 			break;
 		}
 	}
