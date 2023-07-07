@@ -1054,7 +1054,7 @@ Performs any required processing before the save data is saved.  The handler is 
 #### History:
 
 * `v2.36.0`: Introduced.
-* `v2.37.0`: Deprecated the second parameter, `details`.
+* `v2.37.0`: Deprecated handlers' `details` parameter.
 
 #### Parameters:
 
@@ -1084,17 +1084,17 @@ Save.onSave.add(function (save) {
 			break;
 		}
 
-		case Type.Disk: {
-			/* code to process a disk save object before it's saved */
-			break;
-		}
-
 		case Type.Base64: {
 			/* code to process a base64 save object before it's saved */
 			break;
 		}
 
-		default: { /* Tyoe.Slot */
+		case Type.Disk: {
+			/* code to process a disk save object before it's saved */
+			break;
+		}
+
+		case Type.Slot: {
 			/* code to process a slot save object before it's saved */
 			break;
 		}
