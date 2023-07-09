@@ -1266,7 +1266,7 @@ Saves the current story state as a Base64 string.
 
 #### Parameters:
 
-* **`metadata`:** (optional, `any`) The save's metadata, which *must* be JSON-serializable.
+* **`metadata`:** (optional, `any`) The data to be stored in the save object's `metadata` property.  *Must* be JSON-serializable.
 
 #### Returns:
 
@@ -1562,41 +1562,8 @@ console.log('There are %d onSave handlers registered.', Save.onSave.size);
 ```
 
 
-
-
-
-
-
-
-
-
-
-
-<hr>
-<p>
-DEPRECATED DEPRECATED DEPRECATED DEPRECATED DEPRECATED DEPRECATED DEPRECATED DEPRECATED DEPRECATED DEPRECATED DEPRECATED DEPRECATED
-</p>
-<p>
-FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME
-</p>
-<p>
-DEPRECATED DEPRECATED DEPRECATED DEPRECATED DEPRECATED DEPRECATED DEPRECATED DEPRECATED DEPRECATED DEPRECATED DEPRECATED DEPRECATED
-</p>
-<hr>
-
-
-
-
-
-
-
-
-
-
-
-
 <!-- ***************************************************************************
-	Save Legacy
+	Deprecated APIs
 **************************************************************************** -->
 ## Deprecated APIs {#save-api-deprecated}
 
@@ -1605,7 +1572,7 @@ DEPRECATED DEPRECATED DEPRECATED DEPRECATED DEPRECATED DEPRECATED DEPRECATED DEP
 ### <span class="deprecated">`Save.clear()`</span> {#save-api-method-clear}
 
 <p role="note" class="warning"><b>Deprecated:</b>
-This method has been deprecated and should no longer be used.  See the <a href="#save-api-method-browser-clear"><code>Save.browser.clear()</code></a> method for its replacement.
+This method has been deprecated and should no longer be used.  See the <a href="#save-api-browser-method-clear"><code>Save.browser.clear()</code></a> method for its replacement.
 </p>
 
 #### History:
@@ -1613,15 +1580,42 @@ This method has been deprecated and should no longer be used.  See the <a href="
 * `v2.0.0`: Introduced.
 * `v2.37.0`: Deprecated in favor of the `Save.browser.clear()` method.
 
+
+
+
+
+
+
+
+
+
+
+
+<hr>
+<p style="font-size: 250%; font-weight: 900;">
+Unconverted deprecated APIs follow this line.
+</p>
+<p style="font-size: 250%; font-weight: 900;">
+There be dragons here!
+</p>
+<hr>
+
+
+
+
+
+
+
+
+
+
+
+
 <!-- *********************************************************************** -->
 
 ### `Save.get()` {#save-api-method-get}
 
 Returns the saves object.
-<!--
-
-**NOTE:** Using `storage.get("saves")` to retrieve the saves object could return `null`, since an empty saves object does not get stored.  This method, which guarantees the return of a saves object, should be used instead.
--->
 
 #### History:
 
@@ -1768,7 +1762,7 @@ Saves to the autosave.
 #### Parameters:
 
 * **`title`:** (optional, `string`) The title of the save.  If omitted or `null`, defaults to the passage's description.
-* **`metadata`:** (optional, `any`) The data to be stored in the save object's `metadata` property.  Must be JSON-serializable.
+* **`metadata`:** (optional, `any`) The data to be stored in the save object's `metadata` property.  *Must* be JSON-serializable.
 
 #### Examples:
 
