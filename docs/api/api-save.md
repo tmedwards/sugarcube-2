@@ -1216,11 +1216,11 @@ Save with the default filename and metadata, handling failure.
 
 ```js
 try {
-	const ff6SaveMetadata = {
+	const saveMetadata = {
 		chars : ['Celes', 'Locke', 'Edward'],
 		gold  : 2345
 	};
-	Save.disk.save(null, ff6SaveMetadata);
+	Save.disk.save(null, saveMetadata);
 }
 catch (error) {
 	/* Failure.  Handle the error. */
@@ -1233,11 +1233,11 @@ Save with a base filename and metadata, handling failure.
 
 ```js
 try {
-	const ff6SaveMetadata = {
+	const saveMetadata = {
 		chars : ['Celes', 'Locke', 'Edward'],
 		gold  : 2345
 	};
-	Save.disk.save("The 6th Fantasy", ff6SaveMetadata);
+	Save.disk.save("The 6th Fantasy", saveMetadata);
 }
 catch (error) {
 	/* Failure.  Handle the error. */
@@ -1343,11 +1343,11 @@ Save with metadata, handling failure.
 
 ```js
 try {
-	const ff6SaveMetadata = {
+	const saveMetadata = {
 		chars : ['Celes', 'Locke', 'Edward'],
 		gold  : '2345g'
 	};
-	const base64Save = Save.base64.save(ff6SaveMetadata);
+	const base64Save = Save.base64.save(saveMetadata);
 	/* Do something with the save. */
 }
 catch (error) {
@@ -1615,82 +1615,17 @@ console.log('There are %d onSave handlers registered.', Save.onSave.size);
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<hr>
+<p>
+DEPRECATED DEPRECATED DEPRECATED DEPRECATED DEPRECATED DEPRECATED DEPRECATED DEPRECATED DEPRECATED DEPRECATED DEPRECATED DEPRECATED
+</p>
+<p>
+FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME
+</p>
+<p>
+DEPRECATED DEPRECATED DEPRECATED DEPRECATED DEPRECATED DEPRECATED DEPRECATED DEPRECATED DEPRECATED DEPRECATED DEPRECATED DEPRECATED
+</p>
+<hr>
 
 
 
@@ -1706,7 +1641,7 @@ console.log('There are %d onSave handlers registered.', Save.onSave.size);
 <!-- ***************************************************************************
 	Save Legacy
 **************************************************************************** -->
-## General {#save-api-general}
+## Deprecated APIs {#save-api-deprecated}
 
 <!-- *********************************************************************** -->
 
