@@ -1050,7 +1050,7 @@ Export a save with the default filename and metadata `someMetadata`.
 Save.disk.save(null, someMetadata);
 ```
 
-→ Export a save with the filename "the-7th-fantasy-{datestamp}.save" and metadata `someMetadata`.
+Export a save with the filename "the-7th-fantasy-{datestamp}.save" and metadata `someMetadata`.
 
 ```js
 Save.disk.save("The 7th Fantasy", someMetadata);
@@ -1113,7 +1113,7 @@ Save.base64.load(base64Save)
 
 <!-- *********************************************************************** -->
 
-### `Save.base64.save([metadata])` → `string` | `null` {#save-api-base64-method-save}
+### `Save.base64.save([metadata])` → `string` {#save-api-base64-method-save}
 
 Saves the current story state as a Base64 string.
 
@@ -1127,7 +1127,7 @@ Saves the current story state as a Base64 string.
 
 #### Returns:
 
-A Base64 save `string`, or `null` if saving is not allowed within the current context.
+A Base64 save `string`.
 
 #### Throws:
 
@@ -1135,25 +1135,31 @@ An `Error` instance.
 
 #### Examples:
 
-Save without metadata.
+Save without metadata, handling failure.
 
 ```js
-const base64Save = Save.base64.save();
-if (base64Save === null) {
-	/* Failure.  You've disallowed saving. */
+try {
+	const base64Save = Save.base64.save();
+	/* Do something with the save. */
+}
+catch (error) {
+	/* Failure.  Handle the error. */
 }
 ```
 
-Save with metadata.
+Save with metadata, handling failure.
 
 ```js
-const ff6SaveMetadata = {
-	chars : ['Celes', 'Locke', 'Edward'],
-	gold  : '2345g'
-};
-const base64Save = Save.base64.save(ff6SaveMetadata);
-if (base64Save === null) {
-	/* Failure.  You've disallowed saving. */
+try {
+	const ff6SaveMetadata = {
+		chars : ['Celes', 'Locke', 'Edward'],
+		gold  : '2345g'
+	};
+	const base64Save = Save.base64.save(ff6SaveMetadata);
+	/* Do something with the save. */
+}
+catch (error) {
+	/* Failure.  Handle the error. */
 }
 ```
 
