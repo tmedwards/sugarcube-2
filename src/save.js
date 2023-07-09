@@ -584,6 +584,10 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 	function browserExport(filename) {
+		if (filename == null) { // lazy equality for null
+			throw new Error('Save.browser.export filename parameter is required');
+		}
+
 		const auto = getKeys(isAutoInfoKey).map(infoKey => {
 			const idx  = getIdxFromKey(infoKey);
 			const info = storage.get(infoKey);
@@ -745,6 +749,10 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 	function diskSave(filename, metadata) {
+		if (filename == null) { // lazy equality for null
+			throw new Error('Save.disk.save filename parameter is required');
+		}
+
 		if (
 			typeof Config.saves.isAllowed === 'function'
 			&& !Config.saves.isAllowed(Type.Disk)
