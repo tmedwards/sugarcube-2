@@ -1233,7 +1233,7 @@ Deletes the specified on-load handler.
 
 #### Returns:
 
-Boolean `true` if the handler existed or `false` if not.
+Boolean `true` if the handler existed, elsewise `false`.
 
 #### Throws: *none*
 
@@ -1370,7 +1370,7 @@ Deletes the specified on-save handler.
 
 #### Returns:
 
-Boolean `true` if the handler existed or `false` if not.
+Boolean `true` if the handler existed, elsewise `false`.
 
 #### Throws: *none*
 
