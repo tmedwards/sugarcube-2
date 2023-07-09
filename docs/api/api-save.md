@@ -34,7 +34,7 @@ A save data object has the following properties:
 * **`id`:** (`string`) The save ID.  See the [`Config.saves.id`](#config-api-property-saves-id) for details.
 * **`metadata`:** (optional, `any`) The save's metadata, which *must* be JSON-serializable.  Exists only if specified.  See the appropriate save API or [`Config.saves.metadata`](#config-api-property-saves-metadata) for details.
 * **`state`:** (`object`) The marshaled story state.  See below for details.
-* **`type`:** (`Save.Type`) The save's type.  See [`Save.Type`](#save-api-constant-type) for details.
+* **`type`:** (`Save.Type`) The save's type.  See [`Save.Type`](#save-api-constants-type) for details.
 * **`version`:** (optional, `any`) The save's version.  Exists only if specified.  See [`Config.saves.version`](#config-api-property-saves-version) for details.
 
 #### Save State Object
@@ -68,7 +68,7 @@ Save descriptor objects are only provided for browser saves and are identical to
 
 <!-- *********************************************************************** -->
 
-### `Save.Type` {#save-api-constant-type}
+### `Save.Type` {#save-api-constants-type}
 
 Save types pseudo-enumeration.  Passed to various saves related callbacks to denote the type of save being attempted.
 
@@ -113,7 +113,7 @@ Save types pseudo-enumeration.  Passed to various saves related callbacks to den
 
 <!-- *********************************************************************** -->
 
-### `Save.MAX_INDEX` {#save-api-constant-max_index}
+### `Save.MAX_INDEX` {#save-api-constants-max_index}
 
 The maximum numeric index for browser saves.
 
@@ -260,7 +260,7 @@ All existing browser saves will be deleted as part of restoring the exported sav
 
 #### Return:
 
-A `Promise` that simply resolves, or rejects with an error if the save could not be loaded.
+A `Promise` that simply resolves, or rejects with an error if the browser save bundle could not be loaded.
 
 #### Examples:
 
@@ -383,7 +383,7 @@ Deletes the auto save at the given index.
 
 #### Parameters:
 
-* **`index`:** (`integer`) Auto save index (`0`-based).
+* **`index`:** (`integer`) Auto save index (`0`-based).  Must be in the range `0`–`Config.saves.maxAutoSaves`.
 
 #### Return: *none*
 
@@ -410,7 +410,7 @@ Provides an array of details about all auto saves.
 
 An `Array` of `{ index, info }` objects, or an empty `Array` if no auto saves exist.
 
-* **`index`:** (`integer`) The index of the auto save.
+* **`index`:** (`integer`) The auto save's index (`0`-based).
 * **`info`:** (`object`) The [save's descriptor object](#save-api-objects-descriptor).
 
 #### Examples:
@@ -433,7 +433,7 @@ Details the auto save at the given index.
 
 #### Parameters:
 
-* **`index`:** (`integer`) Auto save index (`0`-based).
+* **`index`:** (`integer`) Auto save index (`0`-based).  Must be in the range `0`–`Config.saves.maxAutoSaves`.
 
 #### Return:
 
@@ -447,17 +447,17 @@ console.log(`Descriptor of the auto save at index ${index}:`, Save.browser.auto.
 
 <!-- *********************************************************************** -->
 
-### `Save.browser.auto.has(index)` → `boolean` {#save-api-method-autosave-has}
+### `Save.browser.auto.has(index)` → `boolean` {#save-api-browser-auto-method-has}
 
 Determines whether the auto save at the given index exists.
 
 #### History:
 
-* `v2.0.0`: Introduced.
+* `v2.37.0`: Introduced.
 
 #### Parameters:
 
-* **`index`:** (`integer`) Auto save index (`0`-based).
+* **`index`:** (`integer`) Auto save index (`0`-based).  Must be in the range `0`–`Config.saves.maxAutoSaves`.
 
 #### Return:
 
@@ -473,7 +473,7 @@ if (Save.browser.auto.has(index)) {
 
 <!-- *********************************************************************** -->
 
-### `Save.browser.auto.isEnabled()` → `boolean` {#save-api-method-autosave-isenabled}
+### `Save.browser.auto.isEnabled()` → `boolean` {#save-api-browser-auto-method-isenabled}
 
 Determines whether auto saves are enabled.
 
@@ -491,13 +491,13 @@ Boolean `true` if auto saves are anabled, elsewise `false`.
 
 ```js
 if (Save.browser.auto.isEnabled()) {
-	/* Auto saves afe enabled. */
+	/* Auto saves are enabled. */
 }
 ```
 
 <!-- *********************************************************************** -->
 
-### `Save.browser.auto.load(index)` → `Promise` {#save-api-method-autosave-load}
+### `Save.browser.auto.load(index)` → `Promise` {#save-api-browser-auto-method-load}
 
 Loads the auto save at the given index.
 
@@ -507,7 +507,7 @@ Loads the auto save at the given index.
 
 #### Parameters:
 
-* **`index`:** (`integer`) Auto save index (`0`-based).
+* **`index`:** (`integer`) Auto save index (`0`-based).  Must be in the range `0`–`Config.saves.maxAutoSaves`.
 
 #### Return: *none*
 
@@ -530,7 +530,7 @@ Save.browser.auto.load(index)
 
 <!-- *********************************************************************** -->
 
-### `Save.browser.auto.save([desc [, metadata]])` {#save-api-method-autosave-save}
+### `Save.browser.auto.save([desc [, metadata]])` {#save-api-browser-auto-method-save}
 
 Saves an auto save.  If all auto save positions are full, replaces the oldest auto save.
 
@@ -553,19 +553,19 @@ Save an auto save with the default description and no metadata.
 Save.browser.auto.save();
 ```
 
-Save an auto save with the description "Midgar" and no metadata
+Save an auto save with the description "Midgar" and no metadata.
 
 ```js
 Save.browser.auto.save("Midgar");
 ```
 
-Save an auto save with the default description and metadata someMetadata
+Save an auto save with the default description and metadata `someMetadata`.
 
 ```js
 Save.browser.auto.save(null, someMetadata);
 ```
 
-Save an auto save with the description "Midgar" and metadata someMetadata
+Save an auto save with the description "Midgar" and metadata `someMetadata`.
 
 ```js
 Save.browser.auto.save("Midgar", someMetadata);
@@ -573,294 +573,372 @@ Save.browser.auto.save("Midgar", someMetadata);
 
 
 <!-- ***************************************************************************
-	Browser Save, Slots
+	Browser Slot Saves
 **************************************************************************** -->
-## Slots {#save-api-browser-slots}
+## Browser Slot Saves {#save-api-browser-slot}
 
 <!-- *********************************************************************** -->
 
-### `Save.browser.slots.length` → `integer` {#save-api-getter-slots-length}
+### `Save.browser.slot.size` → `integer` {#save-api-browser-slot-getter-size}
 
-Returns the total number of available slots.
-
-#### History:
-
-* `v2.0.0`: Introduced.
-
-#### Examples:
-
-```
-Save.slots.length
-```
-
-<!-- *********************************************************************** -->
-
-### `Save.slots.count()` → `integer` {#save-api-method-slots-count}
-
-Returns the total number of filled slots.
+The total number of existing browser slot saves.
 
 #### History:
 
-* `v2.0.0`: Introduced.
+* `v2.37.0`: Introduced.
 
-#### Parameters: *none*
+#### Value:
 
-#### Examples:
-
-```
-Save.slots.count()
-```
-
-<!-- *********************************************************************** -->
-
-### `Save.slots.delete(slot)` {#save-api-method-slots-delete}
-
-Deletes a save from the given slot.
-
-#### History:
-
-* `v2.0.0`: Introduced.
-
-#### Parameters:
-
-* **`slot`:** (`integer`) Save slot index (0-based).
+The `integer` count of existing browser slot saves.
 
 #### Examples:
 
-```
-Save.slots.delete(5)  → Deletes the sixth slot save
-```
-
-<!-- *********************************************************************** -->
-
-### `Save.slots.get(slot)` → `object` {#save-api-method-slots-get}
-
-Returns a save object from the given slot or `null`, if there was no save in the given slot.
-
-#### History:
-
-* `v2.0.0`: Introduced.
-
-#### Parameters:
-
-* **`slot`:** (`integer`) Save slot index (0-based).
-
-#### Examples:
-
-```
-Save.slots.get(5)  → Returns the sixth slot save
+```js
+console.log(`There are currently ${Save.browser.slot.size} browser slot saves`);
 ```
 
-<!-- *********************************************************************** -->
-
-### `Save.slots.has(slot)` → `boolean` {#save-api-method-slots-has}
-
-Returns whether the given slot is filled.
-
-#### History:
-
-* `v2.0.0`: Introduced.
-
-#### Parameters:
-
-* **`slot`:** (`integer`) Save slot index (0-based).
-
-#### Examples:
-
-```
-if (Save.slots.has(5)) {
-	/* Code to manipulate the sixth slot save. */
+```js
+if (Save.browser.slot.size > 0) {
+	/* Browser slot saves exist. */
 }
 ```
 
 <!-- *********************************************************************** -->
 
-### `Save.slots.isEmpty()` → `boolean` {#save-api-method-slots-isempty}
+### `Save.browser.slot.clear()` {#save-api-browser-slot-method-clear}
 
-Returns whether there are any filled slots.
+Deletes all existing slot saves.
 
 #### History:
 
-* `v2.0.0`: Introduced.
+* `v2.37.0`: Introduced.
 
 #### Parameters: *none*
 
+#### Return: *none*
+
 #### Examples:
 
-```
-Save.slots.isEmpty()  → Effectively returns: Save.slots.count() === 0
+```js
+Save.browser.slot.clear()
 ```
 
 <!-- *********************************************************************** -->
 
-### `Save.slots.load(slot)` {#save-api-method-slots-load}
+### `Save.browser.slot.delete(index)` {#save-api-browser-slot-method-delete}
 
-Loads a save from the given slot.
+Deletes the slot save at the given index.
 
 #### History:
 
-* `v2.0.0`: Introduced.
+* `v2.37.0`: Introduced.
 
 #### Parameters:
 
-* **`slot`:** (`integer`) Save slot index (0-based).
+* **`index`:** (`integer`) Slot save index (`0`-based).  Must be in the range `0`–`Config.saves.maxSlotSaves`.
+
+#### Return: *none*
 
 #### Examples:
 
-```
-Save.slots.load(5)  → Load the sixth slot save
+```js
+// Delete the slot save at index `0`
+Save.browser.slot.delete(0)
 ```
 
 <!-- *********************************************************************** -->
 
-### `Save.slots.ok()` → `boolean` {#save-api-method-slots-ok}
+### `Save.browser.slot.entries()` → `Array<object>` {#save-api-browser-slot-method-entries}
 
-Returns whether the slot saves are available and ready.
+Provides an array of details about all slot saves.
 
 #### History:
 
-* `v2.0.0`: Introduced.
+* `v2.37.0`: Introduced.
 
 #### Parameters: *none*
 
+#### Return:
+
+An `Array` of `{ index, info }` objects, or an empty `Array` if no slot saves exist.
+
+* **`index`:** (`integer`) The slot save's index (`0`-based).
+* **`info`:** (`object`) The [save's descriptor object](#save-api-objects-descriptor).
+
 #### Examples:
 
+```js
+Save.browser.slot.entries().forEach(function (entry) {
+	console.log(`Descriptor of the slot save at index ${entry.index}:`, entry.info);
+});
 ```
-if (Save.slots.ok()) {
-	/* Code to manipulate slot saves. */
+
+<!-- *********************************************************************** -->
+
+### `Save.browser.slot.get(index)` → `object` {#save-api-browser-slot-method-get}
+
+Details the slot save at the given index.
+
+#### History:
+
+* `v2.37.0`: Introduced.
+
+#### Parameters:
+
+* **`index`:** (`integer`) Slot save index (`0`-based).  Must be in the range `0`–`Config.saves.maxSlotSaves`.
+
+#### Return:
+
+The [descriptor object](#save-api-objects-descriptor) for the slot save if it exists, elsewise `null`.
+
+#### Examples:
+
+```js
+console.log(`Descriptor of the slot save at index ${index}:`, Save.browser.slot.get(index));
+```
+
+<!-- *********************************************************************** -->
+
+### `Save.browser.slot.has(index)` → `boolean` {#save-api-browser-slot-method-has}
+
+Determines whether the slot save at the given index exists.
+
+#### History:
+
+* `v2.37.0`: Introduced.
+
+#### Parameters:
+
+* **`index`:** (`integer`) Slot save index (`0`-based).  Must be in the range `0`–`Config.saves.maxSlotSaves`.
+
+#### Return:
+
+Boolean `true` if the slot save exists, elsewise `false`.
+
+#### Examples:
+
+```js
+if (Save.browser.slot.has(index)) {
+	/* The slot save at the given index exists. */
 }
 ```
 
 <!-- *********************************************************************** -->
 
-### `Save.slots.save(slot [, title [, metadata]])` {#save-api-method-slots-save}
+### `Save.browser.slot.isEnabled()` → `boolean` {#save-api-browser-slot-method-isenabled}
 
-Saves to the given slot.
+Determines whether slot saves are enabled.
 
 #### History:
 
-* `v2.0.0`: Introduced.
+* `v2.37.0`: Introduced.
 
-#### Parameters:
+#### Parameters: *none*
 
-* **`slot`:** (`integer`) Save slot index (0-based).
-* **`title`:** (optional, `string`) The title of the save.  If omitted or `null`, defaults to the passage's description.
-* **`metadata`:** (optional, `any`) The data to be stored in the save object's `metadata` property.  Must be JSON-serializable.
+#### Return:
+
+Boolean `true` if slot saves are anabled, elsewise `false`.
 
 #### Examples:
 
+```js
+if (Save.browser.slot.isEnabled()) {
+	/* Slot saves are enabled. */
+}
 ```
-→ Save to the sixth slot save with the default title and no metadata
-Save.slots.save(5)
 
-→ Save to the sixth slot save with the title "Midgar" and no metadata
-Save.slots.save(5, "Midgar")
+<!-- *********************************************************************** -->
 
-→ Save to the sixth slot save with the default title and metadata someMetadata
-Save.slots.save(5, null, someMetadata)
+### `Save.browser.slot.load(index)` → `Promise` {#save-api-browser-slot-method-load}
 
-→ Save to the sixth slot save with the title "Midgar" and metadata someMetadata
-Save.slots.save(5, "Midgar", someMetadata)
+Loads the slot save at the given index.
+
+#### History:
+
+* `v2.37.0`: Introduced.
+
+#### Parameters:
+
+* **`index`:** (`integer`) Slot save index (`0`-based).  Must be in the range `0`–`Config.saves.maxSlotSaves`.
+
+#### Return: *none*
+
+A `Promise` that simply resolves, or rejects with an error if the save could not be loaded.
+
+#### Examples:
+
+Load the slot save at the given index while ignoring errors.
+
+```js
+Save.browser.slot.load(index);
+```
+
+Load the slot save at the given index while logging errors.
+
+```js
+Save.browser.slot.load(index)
+	.catch(err => console.warn(err));
+```
+
+<!-- *********************************************************************** -->
+
+### `Save.browser.slot.save(index, [desc [, metadata]])` {#save-api-browser-slot-method-save}
+
+Saves a slot save to the given index.
+
+#### History:
+
+* `v2.37.0`: Introduced.
+
+#### Parameters:
+
+* **`index`:** (`integer`) Slot save index (`0`-based).  Must be in the range `0`–`Config.saves.maxSlotSaves`.
+* **`desc`:** (optional, `string`) The description of the slot save.  If omitted or `null`, defaults to the active passage's description.
+* **`metadata`:** (optional, `any`) The data to be stored in the save object's `metadata` property.  *Must* be JSON-serializable.
+
+#### Return: *none*
+
+#### Examples:
+
+Save a slot save to index `0` with the default description and no metadata.
+
+```js
+Save.browser.slot.save(0);
+```
+
+Save a slot save to index `0` with the description "Midgar" and no metadata.
+
+```js
+Save.browser.slot.save(0, "Midgar");
+```
+
+Save a slot save to index `0` with the default description and metadata `someMetadata`.
+
+```js
+Save.browser.slot.save(0, null, someMetadata);
+```
+
+Save a slot save to index `0` with the description "Midgar" and metadata `someMetadata`.
+
+```js
+Save.browser.slot.save(0, "Midgar", someMetadata);
 ```
 
 
 <!-- ***************************************************************************
-	Save Disk
+	Disk Saves
 **************************************************************************** -->
-## Disk {#save-api-disk}
+## Disk Saves {#save-api-disk}
 
 <!-- *********************************************************************** -->
 
-### `Save.export([filename [, metadata]])` {#save-api-method-export}
+### `Save.disk.load(event)` → `Promise` {#save-api-disk-method-load}
 
-Saves to disk.
+Loads a save, created via [`Save.disk.save()`](#save-api-disk-method-save), from disk.
 
-#### History:
-
-* `v2.0.0`: Introduced.
-* `v2.8.0`: Added `metadata` parameter.
-
-#### Parameters:
-
-* **`filename`:** (optional, `string`) The base filename of the save, which gets slugified to remove most symbols.  Appended to this is a datestamp (format: `YYYMMDD-hhmmss`) and the file extension `.save`—e.g., `"The Scooby Chronicles"` would result in the full filename: `the-scooby-chronicles-{datestamp}.save`.  If omitted or `null`, defaults to the story's title.
-* **`metadata`:** (optional, `any`) The data to be stored in the save object's `metadata` property.  Must be JSON-serializable.
-
-#### Examples:
-
-```
-→ Export a save with the default filename and no metadata
-Save.export()
-
-→ Export a save with the filename "the-7th-fantasy-{datestamp}.save" and no metadata
-Save.export("The 7th Fantasy")
-
-→ Export a save with the default filename and metadata someMetadata
-Save.export(null, someMetadata)
-
-→ Export a save with the filename "the-7th-fantasy-{datestamp}.save" and metadata someMetadata
-Save.export("The 7th Fantasy", someMetadata)
-```
-
-<!-- *********************************************************************** -->
-
-### `Save.import(event)` {#save-api-method-import}
-
-Loads a save from disk.
-
-**NOTE:** You do not call this manually, it *must* be called by the `change` event handler of an `<input type="file">` element.
+<p role="note"><b>Note:</b>
+This method <em>must</em> be used as, or be called by, the <code>change</code> event handler of an <code>&lt;input type="file"&gt;</code> element.
+</p>
 
 #### History:
 
-* `v2.0.0`: Introduced.
+* `v2.37.0`: Introduced.
 
 #### Parameters:
 
 * **`event`:** (`Event`) The event object that was passed to the `change` event handler of the associated `<input type="file">` element.
 
+#### Return:
+
+A `Promise` that simply resolves, or rejects with an error if the save could not be loaded.
+
 #### Examples:
 
-##### Basic usage
+Most common usage, with the method provided as the event handler for an `<input type="file">` element.
 
+```js
+jQuery(document.createElement('input'))
+	.prop({
+		id   : 'saves-disk-load-file',
+		name : 'saves-disk-load-file',
+		type : 'file'
+	})
+	.on('change', Save.disk.load);
 ```
-// Assuming you're creating a file input something like the following
-var input  = document.createElement('input');
-input.type = 'file';
-input.id   = 'saves-import-file';
-input.name = 'saves-import-file';
 
-// Set up Save.import() as the event handler for when a file has been chosen
-jQuery(input).on('change', Save.import);
-```
+In case you need to do more than simply restoring the exported bundle, you may manually call the method from the event handler of an `<input type="file">` element.
 
-In case you needed to do more than simply load the save, you may do something like the following:
+```js
+jQuery(document.createElement('input'))
+	.prop({
+		id   : 'saves-disk-load-file',
+		name : 'saves-disk-load-file',
+		type : 'file'
+	})
+	.on('change', function (ev) {
+		// Anything you need to do before loading the save
 
-```
-// Assuming you're creating a file input something like the following
-var input  = document.createElement('input');
-input.type = 'file';
-input.id   = 'saves-import-file';
-input.name = 'saves-import-file';
+		// You must pass in the event when calling Save.disk.load() manually
+		Save.disk.load(ev);
 
-// Set up a custom event handler for when a file has been chosen, which will call Save.import()
-jQuery(input).on('change', function (ev) {
-	// You must pass in the event when calling Save.import() manually
-	Save.import(ev);
-
-	// Put anything else you needed to do here
-});
+		// Anything you need to do after loading the save
+	});
 ```
 
 ##### As a self-contained link/button using macros
 
 ```
-<<link "Load From Disk">>
+<<button "Load From Disk">>
 	<<script>>
 	jQuery(document.createElement('input'))
 		.prop('type', 'file')
-		.on('change', Save.import)
+		.on('change', Save.disk.load)
 		.trigger('click');
 	<</script>>
-<</link>>
+<</button>>
+```
+
+<!-- *********************************************************************** -->
+
+### `Save.disk.save([filename [, metadata]])` {#save-api-disk-method-save}
+
+Saves to disk, which may be restored via [`Save.disk.load()`](#save-api-disk-method-load).
+
+#### History:
+
+* `v2.37.0`: Introduced.
+
+#### Parameters:
+
+* **`filename`:** (optional, `string`) The base filename of the disk save, which gets slugified to remove most symbols.  Appended to this is a datestamp (format: `YYYMMDD-hhmmss`) and the file extension `.save`—e.g., `"The Scooby Chronicles"` would result in the full filename: `the-scooby-chronicles-{datestamp}.save`.  If omitted or `null`, defaults to the story's name.
+* **`metadata`:** (optional, `any`) The data to be stored in the save object's `metadata` property.  *Must* be JSON-serializable.
+
+#### Return: *none*
+
+#### Examples:
+
+Export a save with the default filename and no metadata.
+
+```js
+Save.disk.save();
+```
+
+Export a save with the filename "the-7th-fantasy-{datestamp}.save" and no metadata.
+
+```js
+Save.disk.save("The 7th Fantasy");
+```
+
+Export a save with the default filename and metadata `someMetadata`.
+
+```js
+Save.disk.save(null, someMetadata);
+```
+
+→ Export a save with the filename "the-7th-fantasy-{datestamp}.save" and metadata `someMetadata`.
+
+```js
+Save.disk.save("The 7th Fantasy", someMetadata);
 ```
 
 
@@ -871,7 +949,7 @@ jQuery(input).on('change', function (ev) {
 
 <!-- *********************************************************************** -->
 
-### `Save.base64.load(save)` → `any` | `null` <!-- legacy --><span id="save-api-method-deserialize"></span><!-- /legacy --> {#save-api-base64-method-load}
+### `Save.base64.load(save)` → `Promise` {#save-api-base64-method-load}
 
 Loads the given Base64 save string, created via [`Save.base64.save()`](#save-api-base64-method-save).
 
@@ -885,33 +963,27 @@ Loads the given Base64 save string, created via [`Save.base64.save()`](#save-api
 
 #### Return:
 
-The save's metadata (`any`), if it exists, or `null` if the given save could not be loaded.
+A `Promise` that resolves with the save's metadata (`any` | `undefined`), or rejects with an error if the save could not be loaded.
 
 #### Examples:
 
-Load a Base64 save with no metadata.
+##### Basic usage
 
 ```js
-if (Save.base64.load(base64Save) === null) {
-	/* Failure.  An error has already been displayed to the player. */
-}
-```
-
-Load a Base64 save with metadata.
-
-```js
-const result = Save.base64.load(base64Save);
-if (result !== null) {
-	/* Success.  Do something with `result`, which contains the metadata. */
-}
-else {
-	/* Failure.  An error has already been displayed to the player. */
-}
+Save.base64.load(base64Save)
+	.then(metadata => {
+		/* Success. */
+		/* Do something, if necessary. */
+	})
+	.catch(error => {
+		/* Failure.  An error has already been displayed to the player. */
+		/* Do something, if necessary. */
+	});
 ```
 
 <!-- *********************************************************************** -->
 
-### `Save.base64.save([metadata])` → `string` | `null` <!-- legacy --><span id="save-api-method-serialize"></span><!-- /legacy --> {#save-api-base64-method-save}
+### `Save.base64.save([metadata])` → `string` | `null` {#save-api-base64-method-save}
 
 Saves the current story state as a Base64 string.
 
