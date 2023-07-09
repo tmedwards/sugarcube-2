@@ -138,6 +138,12 @@ if (Save.browser.size > 0) {
 }
 ```
 
+```js
+if (Save.browser.size === 0) {
+	/* No browser saves exist. */
+}
+```
+
 <!-- *********************************************************************** -->
 
 ### `Save.browser.clear()` {#save-api-browser-method-clear}
@@ -157,7 +163,7 @@ Deletes all exisring browser saves, both auto and slot.
 #### Examples:
 
 ```js
-Save.browser.clear()
+Save.browser.clear();
 ```
 
 <!-- *********************************************************************** -->
@@ -180,26 +186,46 @@ A `Promise` that simply resolves, or rejects with an error if the save could not
 
 #### Examples:
 
-Load the most recent browser save after verifing that any exist while ignoring errors.
+##### Bssic usage
 
-```js
-if (Save.browser.size > 0) {
-	Save.browser.continue();
-}
-```
-
-Load the most recent browser save after verifing that any exist and logging errors.
+Load the most recent browser save, only handling failure.  This should be sufficient in the majority of cases.
 
 ```js
 if (Save.browser.size > 0) {
 	Save.browser.continue()
-		.catch(err => console.warn(err));
+		.catch(error => {
+			/* Failure.  Handle the error. */
+			console.error(error);
+			UI.alert(error);
+		});
+}
+else {
+	/* No browser saves exist. */
+}
+```
+
+Load the most recent browser save, handling both success and failure.
+
+```js
+if (Save.browser.size > 0) {
+	Save.browser.continue()
+		.then(metadata => {
+			/* Success.  Do something special. */
+		})
+		.catch(error => {
+			/* Failure.  Handle the error. */
+			console.error(error);
+			UI.alert(error);
+		});
+}
+else {
+	/* No browser saves exist. */
 }
 ```
 
 <!-- *********************************************************************** -->
 
-### `Save.browser.export(filename)` {#save-api-browser-method-export}
+### `Save.browser.export([filename])` {#save-api-browser-method-export}
 
 Exports all existing browser saves, both auto and slot, as a bundle, which may be restored via [`Save.browser.import()`](#save-api-browser-method-import).
 
@@ -209,7 +235,7 @@ Exports all existing browser saves, both auto and slot, as a bundle, which may b
 
 #### Parameters:
 
-* **`filename`:** (`string`) The base filename of the browser save export, which gets slugified to remove most symbols.  Appended to this is a datestamp (format: `YYYMMDD-hhmmss`) and the file extension `.savesexport`—e.g., `"The Scooby Chronicles"` would result in the full filename: `the-scooby-chronicles-{datestamp}.savesexport`.
+* **`filename`:** (optional, `string`) The base filename of the browser save export, which gets slugified to remove most symbols.  Appended to this is a datestamp (format: `YYYMMDD-hhmmss`) and the file extension `.savesexport`—e.g., `"The Scooby Chronicles"` would result in the full filename: `the-scooby-chronicles-{datestamp}.savesexport`.  If omitted or `null`, defaults to the story's name.
 
 #### Returns: *none*
 
@@ -219,10 +245,32 @@ An `Error` instance.
 
 #### Examples:
 
-Attempt to export all browser saves using the story's name as the base filename.
+##### Basic usage
+
+Export all browser saves with the default filename, handling failure.
 
 ```js
-Save.browser.export(Story.name);
+try {
+	Save.browser.export();
+}
+catch (error) {
+	/* Failure.  Handle the error. */
+	console.error(error);
+	UI.alert(error);
+}
+```
+
+Export all browser saves with a base filename, handling failure.
+
+```js
+try {
+	Save.browser.export("The 6th Fantasy");
+}
+catch (error) {
+	/* Failure.  Handle the error. */
+	console.error(error);
+	UI.alert(error);
+}
 ```
 
 <!-- *********************************************************************** -->
@@ -277,7 +325,7 @@ jQuery(document.createElement('input'))
 	});
 ```
 
-Import the browser saves bundle, while handling both success and failure.
+Import the browser saves bundle, handling both success and failure.
 
 ```js
 jQuery(document.createElement('input'))
@@ -290,7 +338,7 @@ jQuery(document.createElement('input'))
 		// You must provide the event to Save.browser.import()
 		Save.browser.import(ev)
 			.then(() => {
-				/* Success.  Do something. */
+				/* Success.  Do something special. */
 			})
 			.catch(error => {
 				/* Failure.  Handle the error. */
@@ -358,6 +406,12 @@ if (Save.browser.auto.size > 0) {
 }
 ```
 
+```js
+if (Save.browser.auto.size === 0) {
+	/* No browser auto saves exist. */
+}
+```
+
 <!-- *********************************************************************** -->
 
 ### `Save.browser.auto.clear()` {#save-api-browser-auto-method-clear}
@@ -377,7 +431,7 @@ Deletes all existing auto saves.
 #### Examples:
 
 ```js
-Save.browser.auto.clear()
+Save.browser.auto.clear();
 ```
 
 <!-- *********************************************************************** -->
@@ -402,9 +456,17 @@ An `Error` instance.
 
 #### Examples:
 
+Delete the auto save at the given index, handling failure.
+
 ```js
-// Delete the auto save at index `0`
-Save.browser.auto.delete(0)
+try {
+	Save.browser.auto.delete(index);
+}
+catch (error) {
+	/* Failure.  Handle the error. */
+	console.error(error);
+	UI.alert(error);
+}
 ```
 
 <!-- *********************************************************************** -->
@@ -557,12 +619,12 @@ Save.browser.auto.load(index)
 	});
 ```
 
-Load the auto save at the given index, while handling both success and failure.
+Load the auto save at the given index, handling both success and failure.
 
 ```js
 Save.browser.auto.load(index)
 	.then(() => {
-		/* Success.  Do something here. */
+		/* Success.  Do something special. */
 	})
 	.catch(error => {
 		/* Failure.  Handle the error. */
@@ -594,28 +656,66 @@ An `Error` instance.
 
 #### Examples:
 
-Save an auto save with the default description and no metadata.
+##### Basic usage
+
+Save an auto save with the default description and no metadata, handling failure.
 
 ```js
-Save.browser.auto.save();
+try {
+	Save.browser.auto.save();
+}
+catch (error) {
+	/* Failure.  Handle the error. */
+	console.error(error);
+	UI.alert(error);
+}
 ```
 
-Save an auto save with the description "Midgar" and no metadata.
+Save an auto save with a description and no metadata, handling failure.
 
 ```js
-Save.browser.auto.save("Midgar");
+try {
+	Save.browser.auto.save("In the wilds");
+}
+catch (error) {
+	/* Failure.  Handle the error. */
+	console.error(error);
+	UI.alert(error);
+}
 ```
 
-Save an auto save with the default description and metadata `someMetadata`.
+Save an auto save with the default description and metadata, handling failure.
 
 ```js
-Save.browser.auto.save(null, someMetadata);
+try {
+	const saveMetadata = {
+		chars : ['Celes', 'Locke', 'Edward'],
+		gold  : 2345
+	};
+	Save.browser.auto.save(null, saveMetadata);
+}
+catch (error) {
+	/* Failure.  Handle the error. */
+	console.error(error);
+	UI.alert(error);
+}
 ```
 
-Save an auto save with the description "Midgar" and metadata `someMetadata`.
+Save an auto save with a description and metadata, handling failure.
 
 ```js
-Save.browser.auto.save("Midgar", someMetadata);
+try {
+	const saveMetadata = {
+		chars : ['Celes', 'Locke', 'Edward'],
+		gold  : 2345
+	};
+	Save.browser.auto.save("In the wilds", saveMetadata);
+}
+catch (error) {
+	/* Failure.  Handle the error. */
+	console.error(error);
+	UI.alert(error);
+}
 ```
 
 
@@ -650,6 +750,12 @@ if (Save.browser.slot.size > 0) {
 }
 ```
 
+```js
+if (Save.browser.slot.size === 0) {
+	/* No browser slot saves exist. */
+}
+```
+
 <!-- *********************************************************************** -->
 
 ### `Save.browser.slot.clear()` {#save-api-browser-slot-method-clear}
@@ -669,7 +775,7 @@ Deletes all existing slot saves.
 #### Examples:
 
 ```js
-Save.browser.slot.clear()
+Save.browser.slot.clear();
 ```
 
 <!-- *********************************************************************** -->
@@ -694,9 +800,17 @@ An `Error` instance.
 
 #### Examples:
 
+Delete the slot save at the given index, handling failure.
+
 ```js
-// Delete the slot save at index `0`
-Save.browser.slot.delete(0)
+try {
+	Save.browser.slot.delete(index);
+}
+catch (error) {
+	/* Failure.  Handle the error. */
+	console.error(error);
+	UI.alert(error);
+}
 ```
 
 <!-- *********************************************************************** -->
@@ -849,12 +963,12 @@ Save.browser.slot.load(index)
 	});
 ```
 
-Load the slot save at the given index, while handling both success and failure.
+Load the slot save at the given index, handling both success and failure.
 
 ```js
 Save.browser.slot.load(index)
 	.then(() => {
-		/* Success.  Do something. */
+		/* Success.  Do something special. */
 	})
 	.catch(error => {
 		/* Failure.  Handle the error. */
@@ -887,28 +1001,66 @@ An `Error` instance.
 
 #### Examples:
 
-Save a slot save to index `0` with the default description and no metadata.
+##### Basic usage
+
+Save to slot save index `0` with the default description and no metadata, handling failure.
 
 ```js
-Save.browser.slot.save(0);
+try {
+	Save.browser.slot.save(0);
+}
+catch (error) {
+	/* Failure.  Handle the error. */
+	console.error(error);
+	UI.alert(error);
+}
 ```
 
-Save a slot save to index `0` with the description "Midgar" and no metadata.
+Save to slot save index `0` with a description and no metadata, handling failure.
 
 ```js
-Save.browser.slot.save(0, "Midgar");
+try {
+	Save.browser.slot.save(0, "In the wilds");
+}
+catch (error) {
+	/* Failure.  Handle the error. */
+	console.error(error);
+	UI.alert(error);
+}
 ```
 
-Save a slot save to index `0` with the default description and metadata `someMetadata`.
+Save to slot save index `0` with the default description and metadata, handling failure.
 
 ```js
-Save.browser.slot.save(0, null, someMetadata);
+try {
+	const saveMetadata = {
+		chars : ['Celes', 'Locke', 'Edward'],
+		gold  : 2345
+	};
+	Save.browser.slot.save(0, null, saveMetadata);
+}
+catch (error) {
+	/* Failure.  Handle the error. */
+	console.error(error);
+	UI.alert(error);
+}
 ```
 
-Save a slot save to index `0` with the description "Midgar" and metadata `someMetadata`.
+Save to slot save index `0` with a description and metadata, handling failure.
 
 ```js
-Save.browser.slot.save(0, "Midgar", someMetadata);
+try {
+	const saveMetadata = {
+		chars : ['Celes', 'Locke', 'Edward'],
+		gold  : 2345
+	};
+	Save.browser.slot.save(0, "In the wilds", saveMetadata);
+}
+catch (error) {
+	/* Failure.  Handle the error. */
+	console.error(error);
+	UI.alert(error);
+}
 ```
 
 
@@ -965,7 +1117,7 @@ jQuery(document.createElement('input'))
 	});
 ```
 
-Load the disk save, while handling both success and failure.
+Load the disk save, handling both success and failure.
 
 ```js
 jQuery(document.createElement('input'))
@@ -978,7 +1130,7 @@ jQuery(document.createElement('input'))
 		// You must provide the event to Save.disk.load()
 		Save.disk.load(ev)
 			.then(() => {
-				/* Success.  Do something. */
+				/* Success.  Do something special. */
 			})
 			.catch(error => {
 				/* Failure.  Handle the error. */
@@ -1032,28 +1184,66 @@ An `Error` instance.
 
 #### Examples:
 
-Export a save with the default filename and no metadata.
+##### Basic usage
+
+Save with the default filename and no metadata, handling failure.
 
 ```js
-Save.disk.save();
+try {
+	Save.disk.save();
+}
+catch (error) {
+	/* Failure.  Handle the error. */
+	console.error(error);
+	UI.alert(error);
+}
 ```
 
-Export a save with the filename "the-7th-fantasy-{datestamp}.save" and no metadata.
+Save with a base filename and no metadata, handling failure.
 
 ```js
-Save.disk.save("The 7th Fantasy");
+try {
+	Save.disk.save("The 6th Fantasy");
+}
+catch (error) {
+	/* Failure.  Handle the error. */
+	console.error(error);
+	UI.alert(error);
+}
 ```
 
-Export a save with the default filename and metadata `someMetadata`.
+Save with the default filename and metadata, handling failure.
 
 ```js
-Save.disk.save(null, someMetadata);
+try {
+	const ff6SaveMetadata = {
+		chars : ['Celes', 'Locke', 'Edward'],
+		gold  : 2345
+	};
+	Save.disk.save(null, ff6SaveMetadata);
+}
+catch (error) {
+	/* Failure.  Handle the error. */
+	console.error(error);
+	UI.alert(error);
+}
 ```
 
-Export a save with the filename "the-7th-fantasy-{datestamp}.save" and metadata `someMetadata`.
+Save with a base filename and metadata, handling failure.
 
 ```js
-Save.disk.save("The 7th Fantasy", someMetadata);
+try {
+	const ff6SaveMetadata = {
+		chars : ['Celes', 'Locke', 'Edward'],
+		gold  : 2345
+	};
+	Save.disk.save("The 6th Fantasy", ff6SaveMetadata);
+}
+catch (error) {
+	/* Failure.  Handle the error. */
+	console.error(error);
+	UI.alert(error);
+}
 ```
 
 
@@ -1097,12 +1287,12 @@ Save.base64.load(base64Save)
 	});
 ```
 
-Load the save string, while handling both success and failure.
+Load the save string, handling both success and failure.
 
 ```js
 Save.base64.load(base64Save)
 	.then(metadata => {
-		/* Success.  Do something. */
+		/* Success.  Do something special. */
 	})
 	.catch(error => {
 		/* Failure.  Handle the error. */
@@ -1134,6 +1324,8 @@ A Base64 save `string`.
 An `Error` instance.
 
 #### Examples:
+
+##### Basic usage
 
 Save without metadata, handling failure.
 
@@ -2056,7 +2248,7 @@ if (loadResult === null) {
 → Deserialize a save with metadata
 const loadResult = Save.base64.load(myGameState);
 if (loadResult !== null) {
-	/* Success.  Do something with loadResult, which contains the metadata. */
+	/* Success.  Do something special.with loadResult, which contains the metadata. */
 }
 else {
 	/* Failure.  An error was displayed to the player. */
