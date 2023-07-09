@@ -225,7 +225,7 @@ else {
 
 <!-- *********************************************************************** -->
 
-### `Save.browser.export([filename])` {#save-api-browser-method-export}
+### `Save.browser.export(filename)` {#save-api-browser-method-export}
 
 Exports all existing browser saves, both auto and slot, as a bundle, which may be restored via [`Save.browser.import()`](#save-api-browser-method-import).
 
@@ -235,7 +235,7 @@ Exports all existing browser saves, both auto and slot, as a bundle, which may b
 
 #### Parameters:
 
-* **`filename`:** (optional, `string`) The base filename of the browser save export, which gets slugified to remove most symbols.  Appended to this is a datestamp (format: `YYYMMDD-hhmmss`) and the file extension `.savesexport`—e.g., `"The Scooby Chronicles"` would result in the full filename: `the-scooby-chronicles-{datestamp}.savesexport`.  If omitted or `null`, defaults to the story's name.
+* **`filename`:** (`string`) The base filename of the browser save export, which gets slugified to remove most symbols.  Appended to this is a datestamp (format: `YYYMMDD-hhmmss`) and the file extension `.savesexport`—e.g., `"The Scooby Chronicles"` would result in the full filename: `the-scooby-chronicles-{datestamp}.savesexport`.
 
 #### Returns: *none*
 
@@ -244,21 +244,6 @@ Exports all existing browser saves, both auto and slot, as a bundle, which may b
 An `Error` instance.
 
 #### Examples:
-
-##### Basic usage
-
-Export all browser saves with the default filename, handling failure.
-
-```js
-try {
-	Save.browser.export();
-}
-catch (error) {
-	/* Failure.  Handle the error. */
-	console.error(error);
-	UI.alert(error);
-}
-```
 
 Export all browser saves with a base filename, handling failure.
 
@@ -1163,7 +1148,7 @@ jQuery(document.createElement('input'))
 
 <!-- *********************************************************************** -->
 
-### `Save.disk.save([filename [, metadata]])` {#save-api-disk-method-save}
+### `Save.disk.save(filename [, metadata])` {#save-api-disk-method-save}
 
 Saves to disk, which may be restored via [`Save.disk.load()`](#save-api-disk-method-load).
 
@@ -1173,7 +1158,7 @@ Saves to disk, which may be restored via [`Save.disk.load()`](#save-api-disk-met
 
 #### Parameters:
 
-* **`filename`:** (optional, `string`) The base filename of the disk save, which gets slugified to remove most symbols.  Appended to this is a datestamp (format: `YYYMMDD-hhmmss`) and the file extension `.save`—e.g., `"The Scooby Chronicles"` would result in the full filename: `the-scooby-chronicles-{datestamp}.save`.  If omitted or `null`, defaults to the story's name.
+* **`filename`:** (`string`) The base filename of the disk save, which gets slugified to remove most symbols.  Appended to this is a datestamp (format: `YYYMMDD-hhmmss`) and the file extension `.save`—e.g., `"The Scooby Chronicles"` would result in the full filename: `the-scooby-chronicles-{datestamp}.save`.
 * **`metadata`:** (optional, `any`) The data to be stored in the save object's `metadata` property.  *Must* be JSON-serializable.
 
 #### Returns: *none*
@@ -1184,43 +1169,11 @@ An `Error` instance.
 
 #### Examples:
 
-##### Basic usage
-
-Save with the default filename and no metadata, handling failure.
-
-```js
-try {
-	Save.disk.save();
-}
-catch (error) {
-	/* Failure.  Handle the error. */
-	console.error(error);
-	UI.alert(error);
-}
-```
-
 Save with a base filename and no metadata, handling failure.
 
 ```js
 try {
 	Save.disk.save("The 6th Fantasy");
-}
-catch (error) {
-	/* Failure.  Handle the error. */
-	console.error(error);
-	UI.alert(error);
-}
-```
-
-Save with the default filename and metadata, handling failure.
-
-```js
-try {
-	const saveMetadata = {
-		chars : ['Celes', 'Locke', 'Edward'],
-		gold  : 2345
-	};
-	Save.disk.save(null, saveMetadata);
 }
 catch (error) {
 	/* Failure.  Handle the error. */
@@ -1336,6 +1289,8 @@ try {
 }
 catch (error) {
 	/* Failure.  Handle the error. */
+	console.error(error);
+	UI.alert(error);
 }
 ```
 
@@ -1345,13 +1300,15 @@ Save with metadata, handling failure.
 try {
 	const saveMetadata = {
 		chars : ['Celes', 'Locke', 'Edward'],
-		gold  : '2345g'
+		gold  : 2345
 	};
 	const base64Save = Save.base64.save(saveMetadata);
 	/* Do something with the save. */
 }
 catch (error) {
 	/* Failure.  Handle the error. */
+	console.error(error);
+	UI.alert(error);
 }
 ```
 
