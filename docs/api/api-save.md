@@ -108,9 +108,9 @@ Save types pseudo-enumeration.  Used to denote the type of save.
 
 
 <!-- ***************************************************************************
-	Browser Saves
+	Browser Saves, General
 **************************************************************************** -->
-## Browser Saves {#save-api-browser}
+## Browser Saves, General {#save-api-browser}
 
 <!-- *********************************************************************** -->
 
@@ -361,9 +361,9 @@ if (Save.browser.isEnabled()) {
 
 
 <!-- ***************************************************************************
-	Browser Auto Saves
+	Browser Saves, Auto
 **************************************************************************** -->
-## Browser Auto Saves<!-- legacy --><span id="save-api-autosave"></span><!-- /legacy --> {#save-api-browser-auto}
+## Browser Saves, Auto<!-- legacy --><span id="save-api-autosave"></span><!-- /legacy --> {#save-api-browser-auto}
 
 <!-- *********************************************************************** -->
 
@@ -705,9 +705,9 @@ catch (error) {
 
 
 <!-- ***************************************************************************
-	Browser Slot Saves
+	Browser Saves, Slot
 **************************************************************************** -->
-## Browser Slot Saves<!-- legacy --><span id="save-api-slots"></span><!-- /legacy --> {#save-api-browser-slot}
+## Browser Saves, Slot<!-- legacy --><span id="save-api-slots"></span><!-- /legacy --> {#save-api-browser-slot}
 
 <!-- *********************************************************************** -->
 
@@ -1316,11 +1316,31 @@ catch (error) {
 <!-- ***************************************************************************
 	Save Events
 **************************************************************************** -->
-## Events {#save-api-events}
+## Save Events {#save-api-events}
 
 <!-- *********************************************************************** -->
 
-### `Save.onLoad.add(handler)` {#save-api-method-onload-add}
+### `Save.onLoad.size` → `integer`<!-- legacy --><span id="save-api-getter-onload-size"></span><!-- /legacy --> {#save-api-onload-getter-size}
+
+The total number of currently registered on-load handlers.
+
+#### History:
+
+* `v2.36.0`: Introduced.
+
+#### Value:
+
+The `integer` count of currently registered on-load handlers.
+
+#### Examples:
+
+```js
+console.log('There are %d onLoad handlers registered.', Save.onLoad.size);
+```
+
+<!-- *********************************************************************** -->
+
+### `Save.onLoad.add(handler)`<!-- legacy --><span id="save-api-method-onload-add"></span><!-- /legacy --> {#save-api-onload-method-add}
 
 Performs any required processing before the save data is loaded—e.g., upgrading out-of-date save data.  The handler is passed one parameter, the save object to be processed.  If it encounters an unrecoverable problem during its processing, it may throw an exception containing an error message; the message will be displayed to the player and loading of the save will be terminated.
 
@@ -1352,7 +1372,7 @@ Save.onLoad.add(function (save) {
 
 <!-- *********************************************************************** -->
 
-### `Save.onLoad.clear()` {#save-api-method-onload-clear}
+### `Save.onLoad.clear()`<!-- legacy --><span id="save-api-method-onload-clear"></span><!-- /legacy --> {#save-api-onload-method-clear}
 
 Deletes all currently registered on-load handlers.
 
@@ -1374,7 +1394,7 @@ Save.onLoad.clear();
 
 <!-- *********************************************************************** -->
 
-### `Save.onLoad.delete(handler)` → `boolean` {#save-api-method-onload-delete}
+### `Save.onLoad.delete(handler)` → `boolean`<!-- legacy --><span id="save-api-method-onload-delete"></span><!-- /legacy --> {#save-api-onload-method-delete}
 
 Deletes the specified on-load handler.
 
@@ -1406,9 +1426,9 @@ Save.onLoad.delete(myOnLoadHandler);
 
 <!-- *********************************************************************** -->
 
-### `Save.onLoad.size` → `integer` {#save-api-getter-onload-size}
+### `Save.onSave.size` → `integer`<!-- legacy --><span id="save-api-getter-onsave-size"></span><!-- /legacy --> {#save-api-onsave-getter-size}
 
-The total number of currently registered on-load handlers.
+The total number of currently registered on-save handlers.
 
 #### History:
 
@@ -1416,17 +1436,17 @@ The total number of currently registered on-load handlers.
 
 #### Value:
 
-The `integer` count of currently registered on-load handlers.
+The `integer` count of currently registered on-save handlers.
 
 #### Examples:
 
 ```js
-console.log('There are %d onLoad handlers registered.', Save.onLoad.size);
+console.log('There are %d onSave handlers registered.', Save.onSave.size);
 ```
 
 <!-- *********************************************************************** -->
 
-### `Save.onSave.add(handler)` {#save-api-method-onsave-add}
+### `Save.onSave.add(handler)`<!-- legacy --><span id="save-api-method-onsave-add"></span><!-- /legacy --> {#save-api-onsave-method-add}
 
 Performs any required processing before the save data is saved.  The handler is passed one parameter, the save object to be processed.
 
@@ -1489,7 +1509,7 @@ Save.onSave.add(function (save) {
 
 <!-- *********************************************************************** -->
 
-### `Save.onSave.clear()` {#save-api-method-onsave-clear}
+### `Save.onSave.clear()`<!-- legacy --><span id="save-api-method-onsave-clear"></span><!-- /legacy --> {#save-api-onsave-method-clear}
 
 Deletes all currently registered on-save handlers.
 
@@ -1511,7 +1531,7 @@ Save.onSave.clear();
 
 <!-- *********************************************************************** -->
 
-### `Save.onSave.delete(handler)` → `boolean` {#save-api-method-onsave-delete}
+### `Save.onSave.delete(handler)` → `boolean`<!-- legacy --><span id="save-api-method-onsave-delete"></span><!-- /legacy --> {#save-api-onsave-method-delete}
 
 Deletes the specified on-save handler.
 
@@ -1539,26 +1559,6 @@ Boolean `true` if the handler existed, elsewise `false`.
 // 	Save.onSave.add(myOnSaveHandler);
 
 Save.onSave.delete(myOnSaveHandler);
-```
-
-<!-- *********************************************************************** -->
-
-### `Save.onSave.size` → `integer` {#save-api-getter-onsave-size}
-
-The total number of currently registered on-save handlers.
-
-#### History:
-
-* `v2.36.0`: Introduced.
-
-#### Value:
-
-The `integer` count of currently registered on-save handlers.
-
-#### Examples:
-
-```js
-console.log('There are %d onSave handlers registered.', Save.onSave.size);
 ```
 
 
