@@ -659,7 +659,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 					autoClear();
 					slotClear();
 
-					// QUESTION: Should failures throw exceptions?
+					// QUESTION: Should failures here throw exceptions?
 					bundle.auto.forEach(save => {
 						const { idx, info, data } = save;
 						const infoKey             = getAutoInfoKeyFromIdx(idx);
@@ -733,10 +733,10 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 						throw new Error(L10n.get('saveErrorDecodeFail'));
 					}
 
-					// NOTE: May also throw exceptions.
+					// NOTE: May throw exceptions.
 					unmarshal(save);
 
-					resolve(true);
+					resolve(save.metadata);
 				}
 				catch (ex) {
 					reject(ex);
@@ -797,10 +797,10 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			}
 			/* /legacy */
 
-			// NOTE: May also throw exceptions.
+			// NOTE: May throw exceptions.
 			unmarshal(save);
 
-			resolve(true);
+			resolve(save.metadata);
 		});
 	}
 
