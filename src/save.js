@@ -1051,8 +1051,8 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			value : Object.preventExtensions(Object.create(null, {
 				ok      : { value : slotIsEnabled },
 				length  : { get : slotSize },
-				isEmpty : { value() { return slotSize() === 0; } },
-				count   : { value : slotSize },
+				isEmpty : { value() { return slotEntries().length === 0; } },
+				count   : { value() { return slotEntries().length; } },
 				has     : { value : slotHas },
 				get     : { value : slotGet },
 				load    : { value : slotLoad },
