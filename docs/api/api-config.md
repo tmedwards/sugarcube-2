@@ -627,7 +627,7 @@ This setting has been deprecated and should no longer be used.  See the <a href=
 ### <span class="deprecated">`Config.saves.onLoad` ↔ *function* (default: *none*)</span> {#config-api-property-saves-onload}
 
 <p role="note" class="warning"><b>Deprecated:</b>
-This setting has been deprecated and should no longer be used.  See the <a href="#save-api-method-onload-add"><code>Save.onLoad.add()</code></a> method for its replacement.
+This setting has been deprecated and should no longer be used.  See the <a href="#save-api-onload-method-add"><code>Save.onLoad.add()</code></a> method for its replacement.
 </p>
 
 #### History:
@@ -640,7 +640,7 @@ This setting has been deprecated and should no longer be used.  See the <a href=
 ### <span class="deprecated">`Config.saves.onSave` ↔ *function* (default: *none*)</span> {#config-api-property-saves-onsave}
 
 <p role="note" class="warning"><b>Deprecated:</b>
-This setting has been deprecated and should no longer be used.  See the <a href="#save-api-method-onsave-add"><code>Save.onSave.add()</code></a> method for its replacement.
+This setting has been deprecated and should no longer be used.  See the <a href="#save-api-onsave-method-add"><code>Save.onSave.add()</code></a> method for its replacement.
 </p>
 
 #### History:
