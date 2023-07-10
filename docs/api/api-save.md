@@ -1114,7 +1114,7 @@ jQuery(document.createElement('input'))
 	.on('change', function (ev) {
 		// You must provide the event to Save.disk.load()
 		Save.disk.load(ev)
-			.then(() => {
+			.then(metadata => {
 				/* Success.  Do something special. */
 			})
 			.catch(error => {
