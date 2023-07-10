@@ -93,7 +93,7 @@ var Dialog = (() => { // eslint-disable-line no-unused-vars, no-var
 				+         '<h1 id="ui-dialog-title"></h1>'
 				+         `<button id="ui-dialog-close" class="ui-close" tabindex="0" aria-label="${L10n.get('close')}">\uE804</button>`
 				+     '</div>'
-				+     '<div id="ui-dialog-body" ></div>'
+				+     '<div id="ui-dialog-body"></div>'
 				+ '</div>'
 				/* eslint-enable max-len */
 			);
