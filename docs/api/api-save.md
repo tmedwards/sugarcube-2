@@ -1074,7 +1074,7 @@ This method <em>must</em> be used as, or be called by, the <code>change</code> e
 
 #### Returns:
 
-A `Promise` that simply resolves, or rejects with an error if the save could not be loaded.
+A `Promise` that resolves with the save's metadata (`any`), or rejects with an error if the save could not be loaded.
 
 #### Throws: *none*
 
@@ -1221,7 +1221,7 @@ Loads the given Base64 save string, created via [`Save.base64.save()`](#save-api
 
 #### Returns:
 
-A `Promise` that resolves with the save's metadata (`any` | `undefined`), or rejects with an error if the save could not be loaded.
+A `Promise` that resolves with the save's metadata (`any`), or rejects with an error if the save could not be loaded.
 
 #### Throws: *none*
 
