@@ -53,14 +53,14 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 	function init() {
 		if (BUILD_DEBUG) { console.log('[Save/init()]'); }
 
-		// Migrate saves from the old monolithic v2 save object to the
-		// new v3 style with separate entries for each save.
-		migrateV2Saves();
+		// Migrate browser saves from the old monolithic v2 save object
+		// to the new v3 style with separate entries for each save.
+		migrateV2BrowserSaves();
 
 		return true;
 	}
 
-	function migrateV2Saves() {
+	function migrateV2BrowserSaves() {
 		const oldSaves = storage.get('saves');
 
 		// Bail out if no old saves object exists.
@@ -161,6 +161,42 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 		return `${date.getFullYear()}${MM}${DD}-${hh}${mm}${ss}`;
 	}
 
+	function createDetails(saveType, description, metadata) {
+		const metadataType = typeof metadata;
+
+		if (metadataType !== 'object' && metadataType !== 'undefined') {
+			throw new TypeError('metadata parameter must be an object or null/undefined');
+		}
+
+		const cfgMetadata     = Config.saves.metadata ? Config.saves.metadata(saveType) : undefined;
+		const cfgMetadataType = typeof cfgMetadata;
+
+		if (cfgMetadataType !== 'object' && cfgMetadataType !== 'undefined') {
+			throw new TypeError('Config.saves.metadata function must return an object or null/undefined');
+		}
+
+		const details = { type : saveType };
+		let desc;
+
+		if (description != null) { // lazy equality for null
+			desc = String(description).trim();
+		}
+
+		if (!desc && typeof Config.saves.descriptions === 'function') {
+			desc = String(Config.saves.descriptions(saveType)).trim();
+		}
+
+		details.desc = desc || `${L10n.get('turn')} ${State.turns}`;
+
+		const fullMetadata = Object.assign({}, cfgMetadata, metadata);
+
+		if (Object.keys(fullMetadata).length > 0) {
+			details.metadata = fullMetadata;
+		}
+
+		return details;
+	}
+
 	// Find the most recent index, ordered by date (descending).
 	function findNewest(saveType) {
 		let keys;
@@ -190,47 +226,6 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			.sort((a, b) => b.date - a.date)
 			.first()
 			.value;
-	}
-
-	function getDesc(description, saveType) {
-		let desc;
-
-		// Try the given description.
-		if (description != null) { // lazy equality for null
-			desc = String(description).trim();
-		}
-
-		// Try the `Config.saves.descriptions` description.
-		if (!desc && typeof Config.saves.descriptions === 'function') {
-			desc = String(Config.saves.descriptions(saveType)).trim();
-		}
-
-		return desc ? desc : `${L10n.get('turn')} ${State.turns}`;
-	}
-
-	function addMetadata(O, metadata, saveType) {
-		const metadataType = typeof metadata;
-
-		if (metadataType !== 'object' && metadataType !== 'undefined') {
-			throw new TypeError('metadata parameter must be an object or null/undefined');
-		}
-
-		const cfgMetadata     = Config.saves.metadata ? Config.saves.metadata(saveType) : undefined;
-		const cfgMetadataType = typeof cfgMetadata;
-
-		if (cfgMetadataType !== 'object' && cfgMetadataType !== 'undefined') {
-			throw new TypeError('Config.saves.metadata function must return an object or null/undefined');
-		}
-
-		const merged = Object.assign(
-			{},
-			cfgMetadata,
-			metadata
-		);
-
-		if (Object.keys(merged).length > 0) {
-			O.metadata = merged;
-		}
 	}
 
 	function getIdxFromKey(key) {
@@ -402,13 +397,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			return false;
 		}
 
-		const details = {
-			desc : getDesc(desc, Type.Auto),
-			type : Type.Auto
-		};
-
-		addMetadata(details, metadata, Type.Auto);
-
+		const details        = createDetails(Type.Auto, desc, metadata);
 		const idx            = (findNewest(Type.Auto).idx + 1) % Config.saves.maxAutoSaves;
 		const { info, data } = splitSave(marshal(details));
 		const infoKey        = getAutoInfoKeyFromIdx(idx);
@@ -533,13 +522,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			throw new Error(L10n.get('savesDisallowed'));
 		}
 
-		const details = {
-			desc : getDesc(desc, Type.Slot),
-			type : Type.Slot
-		};
-
-		addMetadata(details, metadata, Type.Slot);
-
+		const details        = createDetails(Type.Slot, desc, metadata);
 		const { info, data } = splitSave(marshal(details));
 		const infoKey        = getSlotInfoKeyFromIdx(idx);
 		const dataKey        = getSlotDataKeyFromIdx(idx);
@@ -760,12 +743,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			throw new Error(L10n.get('savesDisallowed'));
 		}
 
-		const details = {
-			desc : getDesc(filename, Type.Disk),
-			type : Type.Disk
-		};
-
-		addMetadata(details, metadata, Type.Disk);
+		const details = createDetails(Type.Disk, filename, metadata);
 
 		saveBlobToDiskAs(
 			LZString.compressToBase64(Serial.stringify(marshal(details))),
@@ -812,12 +790,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			throw new Error(L10n.get('savesDisallowed'));
 		}
 
-		const details = {
-			desc : getDesc(null, Type.Base64),
-			type : Type.Base64
-		};
-
-		addMetadata(details, metadata, Type.Base64);
+		const details = createDetails(Type.Base64, null, metadata);
 
 		return LZString.compressToBase64(Serial.stringify(marshal(details)));
 	}
