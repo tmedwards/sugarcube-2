@@ -10,7 +10,7 @@
 
 var Dialog = (() => { // eslint-disable-line no-unused-vars, no-var
 	// Default top position.
-	const DEFAULT_TOP = 50; // in pixels, sans unit
+	const DEFAULT_TOP = 50; // in pixels w/o unit
 
 	// jQuery-wrapped dialog elements.
 	let $overlay = null;
@@ -88,12 +88,12 @@ var Dialog = (() => { // eslint-disable-line no-unused-vars, no-var
 			.append(
 				/* eslint-disable max-len */
 				  '<div id="ui-overlay" class="ui-close"></div>'
-				+ '<div id="ui-dialog" tabindex="0" role="dialog" aria-labelledby="ui-dialog-title">'
+				+ '<div id="ui-dialog" tabindex="0" role="dialog" aria-labelledby="ui-dialog-title" aria-modal="true">'
 				+     '<div id="ui-dialog-titlebar">'
 				+         '<h1 id="ui-dialog-title"></h1>'
 				+         `<button id="ui-dialog-close" class="ui-close" tabindex="0" aria-label="${L10n.get('close')}">\uE804</button>`
 				+     '</div>'
-				+     '<div id="ui-dialog-body"></div>'
+				+     '<div id="ui-dialog-body" ></div>'
 				+ '</div>'
 				/* eslint-enable max-len */
 			);
