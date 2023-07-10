@@ -363,7 +363,7 @@ if (Save.browser.isEnabled()) {
 <!-- ***************************************************************************
 	Browser Auto Saves
 **************************************************************************** -->
-## Browser Auto Saves {#save-api-browser-auto}
+## Browser Auto Saves<!-- legacy --><span id="save-api-autosave"></span><!-- /legacy --> {#save-api-browser-auto}
 
 <!-- *********************************************************************** -->
 
@@ -707,7 +707,7 @@ catch (error) {
 <!-- ***************************************************************************
 	Browser Slot Saves
 **************************************************************************** -->
-## Browser Slot Saves {#save-api-browser-slot}
+## Browser Slot Saves<!-- legacy --><span id="save-api-slots"></span><!-- /legacy --> {#save-api-browser-slot}
 
 <!-- *********************************************************************** -->
 
@@ -1203,7 +1203,7 @@ catch (error) {
 <!-- ***************************************************************************
 	Base64 Saves
 **************************************************************************** -->
-## Base64 Saves {#save-api-base64}
+## Base64 Saves<!-- legacy --><span id="save-api-serialization"></span><!-- /legacy --> {#save-api-base64}
 
 <!-- *********************************************************************** -->
 
@@ -1580,588 +1580,296 @@ This method has been deprecated and should no longer be used.  See the <a href="
 * `v2.0.0`: Introduced.
 * `v2.37.0`: Deprecated in favor of the `Save.browser.clear()` method.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- *********************************************************************** -->
-<hr>
-<hr>
-<hr>
-<hr>
-<h1>
-Unconverted deprecated APIs follow this point.
-</h1>
-<h2>
-There be dragons here!
-</h2>
-<hr>
-<hr>
-<hr>
-<hr>
 <!-- *********************************************************************** -->
 
+### <span class="deprecated">`Save.get()`</span> {#save-api-method-get}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- *********************************************************************** -->
-
-### `Save.get()` {#save-api-method-get}
-
-Returns the saves object.
+<p role="note" class="warning"><b>Deprecated:</b>
+This method has been deprecated and should no longer be used.
+</p>
 
 #### History:
 
 * `v2.0.0`: Introduced.
-
-#### Parameters: *none*
-
-#### Examples:
-
-```
-Save.get()
-```
+* `v2.37.0`: Deprecated.
 
 <!-- *********************************************************************** -->
 
-### `Save.ok()` → `boolean` {#save-api-method-ok}
+### <span class="deprecated">`Save.ok()` → `boolean`</span> {#save-api-method-ok}
 
-Returns whether both the slot saves and autosave are available and ready.
+<p role="note" class="warning"><b>Deprecated:</b>
+This method has been deprecated and should no longer be used.  See the <a href="#save-api-browser-method-isenabled"><code>Save.browser.isEnabled()</code></a> method for its replacement.
+</p>
 
 #### History:
 
 * `v2.0.0`: Introduced.
-
-#### Parameters: *none*
-
-#### Examples:
-
-```
-if (Save.ok()) {
-	/* Code to manipulate saves. */
-}
-```
+* `v2.37.0`: Deprecated in favor of the `Save.browser.isEnabled()` method.
 
 
 <!-- ***************************************************************************
 	Save Autosave
 **************************************************************************** -->
-## Autosave {#save-api-autosave}
 
 <!-- *********************************************************************** -->
 
-### `Save.autosave.delete()` {#save-api-method-autosave-delete}
+### <span class="deprecated">`Save.autosave.delete()`</span> {#save-api-method-autosave-delete}
 
-Deletes the autosave.
+<p role="note" class="warning"><b>Deprecated:</b>
+This method has been deprecated and should no longer be used.  See the <a href="#save-api-browser-auto-method-delete"><code>Save.browser.auto.delete()</code></a> method for its replacement.
+</p>
 
 #### History:
 
 * `v2.0.0`: Introduced.
-
-#### Parameters: *none*
-
-#### Examples:
-
-```
-Save.autosave.delete()  → Deletes the autosave
-```
+* `v2.37.0`: Deprecated in favor of the `Save.browser.auto.delete()` method.
 
 <!-- *********************************************************************** -->
 
-### `Save.autosave.get()` → `object` {#save-api-method-autosave-get}
+### <span class="deprecated">`Save.autosave.get()` → `object`</span> {#save-api-method-autosave-get}
 
-Returns the save object from the autosave or `null`, if there was no autosave.
+<p role="note" class="warning"><b>Deprecated:</b>
+This method has been deprecated and should no longer be used.  See the <a href="#save-api-browser-auto-method-get"><code>Save.browser.auto.get()</code></a> method for its replacement.
+</p>
 
 #### History:
 
 * `v2.0.0`: Introduced.
-
-#### Parameters: *none*
-
-#### Examples:
-
-```
-Save.autosave.get()  → Returns the autosave
-```
+* `v2.37.0`: Deprecated in favor of the `Save.browser.auto.get()` method.
 
 <!-- *********************************************************************** -->
 
-### `Save.autosave.has()` → `boolean` {#save-api-method-autosave-has}
+### <span class="deprecated">`Save.autosave.has()` → `boolean`</span> {#save-api-method-autosave-has}
 
-Returns whether the autosave is filled.
+<p role="note" class="warning"><b>Deprecated:</b>
+This method has been deprecated and should no longer be used.  See the <a href="#save-api-browser-auto-method-has"><code>Save.browser.auto.has()</code></a> method for its replacement.
+</p>
 
 #### History:
 
 * `v2.0.0`: Introduced.
-
-#### Parameters: *none*
-
-#### Examples:
-
-```
-if (Save.autosave.has()) {
-	/* Code to manipulate the autosave. */
-}
-```
+* `v2.37.0`: Deprecated in favor of the `Save.browser.auto.has()` method.
 
 <!-- *********************************************************************** -->
 
-### `Save.autosave.load()` {#save-api-method-autosave-load}
+### <span class="deprecated">`Save.autosave.load()`</span> {#save-api-method-autosave-load}
 
-Loads the autosave.
+<p role="note" class="warning"><b>Deprecated:</b>
+This method has been deprecated and should no longer be used.  See the <a href="#save-api-browser-auto-method-load"><code>Save.browser.auto.load()</code></a> method for its replacement.
+</p>
 
 #### History:
 
 * `v2.0.0`: Introduced.
-
-#### Parameters: *none*
-
-#### Examples:
-
-```
-Save.autosave.load()  → Load the autosave
-```
+* `v2.37.0`: Deprecated in favor of the `Save.browser.auto.load()` method.
 
 <!-- *********************************************************************** -->
 
-### `Save.autosave.ok()` → `boolean` {#save-api-method-autosave-ok}
+### <span class="deprecated">`Save.autosave.ok()` → `boolean`</span> {#save-api-method-autosave-ok}
 
-Returns whether the autosave is available and ready.
+<p role="note" class="warning"><b>Deprecated:</b>
+This method has been deprecated and should no longer be used.  See the <a href="#save-api-browser-auto-method-isenabled"><code>Save.browser.auto.isEnabled()</code></a> method for its replacement.
+</p>
 
 #### History:
 
 * `v2.0.0`: Introduced.
-
-#### Parameters: *none*
-
-#### Examples:
-
-```
-if (Save.autosave.ok()) {
-	/* Code to manipulate the autosave. */
-}
-```
+* `v2.37.0`: Deprecated in favor of the `Save.browser.auto.isEnabled()` method.
 
 <!-- *********************************************************************** -->
 
-### `Save.autosave.save([title [, metadata]])` {#save-api-method-autosave-save}
+### <span class="deprecated">`Save.autosave.save([title [, metadata]])`</span> {#save-api-method-autosave-save}
 
-Saves to the autosave.
+<p role="note" class="warning"><b>Deprecated:</b>
+This method has been deprecated and should no longer be used.  See the <a href="#save-api-browser-auto-method-save"><code>Save.browser.auto.save()</code></a> method for its replacement.
+</p>
 
 #### History:
 
 * `v2.0.0`: Introduced.
-
-#### Parameters:
-
-* **`title`:** (optional, `string`) The title of the save.  If omitted or `null`, defaults to the passage's description.
-* **`metadata`:** (optional, `any`) The data to be stored in the save object's `metadata` property.  *Must* be JSON-serializable.
-
-#### Examples:
-
-```
-→ Save to the autosave with the default title and no metadata
-Save.autosave.save()
-
-→ Save to the autosave with the title "Midgar" and no metadata
-Save.autosave.save("Midgar")
-
-→ Save to the autosave with the default title and metadata someMetadata
-Save.autosave.save(null, someMetadata)
-
-→ Save to the autosave with the title "Midgar" and metadata someMetadata
-Save.autosave.save("Midgar", someMetadata)
-```
+* `v2.37.0`: Deprecated in favor of the `Save.browser.auto.save()` method.
 
 
 <!-- ***************************************************************************
 	Save Slots
 **************************************************************************** -->
-## Slots {#save-api-slots}
 
 <!-- *********************************************************************** -->
 
-### `Save.slots.length` → `integer` {#save-api-getter-slots-length}
+### <span class="deprecated">`Save.slots.length` → `integer`</span> {#save-api-getter-slots-length}
 
-Returns the total number of available slots.
+<p role="note" class="warning"><b>Deprecated:</b>
+This method has been deprecated and should no longer be used.  See the <a href="#save-api-browser-slot-getter-size"><code>Save.browser.slot.size</code></a> property for its replacement.
+</p>
 
 #### History:
 
 * `v2.0.0`: Introduced.
-
-#### Examples:
-
-```
-Save.slots.length
-```
+* `v2.37.0`: Deprecated in favor of the `Save.browser.slot.size` property.
 
 <!-- *********************************************************************** -->
 
-### `Save.slots.count()` → `integer` {#save-api-method-slots-count}
+### <span class="deprecated">`Save.slots.count()` → `integer`</span> {#save-api-method-slots-count}
 
-Returns the total number of filled slots.
+<p role="note" class="warning"><b>Deprecated:</b>
+This method has been deprecated and should no longer be used.
+</p>
 
 #### History:
 
 * `v2.0.0`: Introduced.
-
-#### Parameters: *none*
-
-#### Examples:
-
-```
-Save.slots.count()
-```
+* `v2.37.0`: Deprecated.
 
 <!-- *********************************************************************** -->
 
-### `Save.slots.delete(slot)` {#save-api-method-slots-delete}
+### <span class="deprecated">`Save.slots.delete(slot)`</span> {#save-api-method-slots-delete}
 
-Deletes a save from the given slot.
+<p role="note" class="warning"><b>Deprecated:</b>
+This method has been deprecated and should no longer be used.  See the <a href="#save-api-browser-slot-method-delete"><code>Save.browser.slot.delete()</code></a> method for its replacement.
+</p>
 
 #### History:
 
 * `v2.0.0`: Introduced.
-
-#### Parameters:
-
-* **`slot`:** (`integer`) Save slot index (0-based).
-
-#### Examples:
-
-```
-Save.slots.delete(5)  → Deletes the sixth slot save
-```
+* `v2.37.0`: Deprecated in favor of the `Save.browser.slot.delete()` method.
 
 <!-- *********************************************************************** -->
 
-### `Save.slots.get(slot)` → `object` {#save-api-method-slots-get}
+### <span class="deprecated">`Save.slots.get(slot)` → `object`</span> {#save-api-method-slots-get}
 
-Returns a save object from the given slot or `null`, if there was no save in the given slot.
+<p role="note" class="warning"><b>Deprecated:</b>
+This method has been deprecated and should no longer be used.  See the <a href="#save-api-browser-slot-method-get"><code>Save.browser.slot.get()</code></a> method for its replacement.
+</p>
 
 #### History:
 
 * `v2.0.0`: Introduced.
-
-#### Parameters:
-
-* **`slot`:** (`integer`) Save slot index (0-based).
-
-#### Examples:
-
-```
-Save.slots.get(5)  → Returns the sixth slot save
-```
+* `v2.37.0`: Deprecated in favor of the `Save.browser.slot.get()` method.
 
 <!-- *********************************************************************** -->
 
-### `Save.slots.has(slot)` → `boolean` {#save-api-method-slots-has}
+### <span class="deprecated">`Save.slots.has(slot)` → `boolean`</span> {#save-api-method-slots-has}
 
-Returns whether the given slot is filled.
+<p role="note" class="warning"><b>Deprecated:</b>
+This method has been deprecated and should no longer be used.  See the <a href="#save-api-browser-slot-method-has"><code>Save.browser.slot.has()</code></a> method for its replacement.
+</p>
 
 #### History:
 
 * `v2.0.0`: Introduced.
-
-#### Parameters:
-
-* **`slot`:** (`integer`) Save slot index (0-based).
-
-#### Examples:
-
-```
-if (Save.slots.has(5)) {
-	/* Code to manipulate the sixth slot save. */
-}
-```
+* `v2.37.0`: Deprecated in favor of the `Save.browser.slot.has()` method.
 
 <!-- *********************************************************************** -->
 
-### `Save.slots.isEmpty()` → `boolean` {#save-api-method-slots-isempty}
+### <span class="deprecated">`Save.slots.isEmpty()` → `boolean`</span> {#save-api-method-slots-isempty}
 
-Returns whether there are any filled slots.
+<p role="note" class="warning"><b>Deprecated:</b>
+This method has been deprecated and should no longer be used.
+</p>
 
 #### History:
 
 * `v2.0.0`: Introduced.
-
-#### Parameters: *none*
-
-#### Examples:
-
-```
-Save.slots.isEmpty()  → Effectively returns: Save.slots.count() === 0
-```
+* `v2.37.0`: Deprecated.
 
 <!-- *********************************************************************** -->
 
-### `Save.slots.load(slot)` {#save-api-method-slots-load}
+### <span class="deprecated">`Save.slots.load(slot)`</span> {#save-api-method-slots-load}
 
-Loads a save from the given slot.
+<p role="note" class="warning"><b>Deprecated:</b>
+This method has been deprecated and should no longer be used.  See the <a href="#save-api-browser-slot-method-load"><code>Save.browser.slot.load()</code></a> method for its replacement.
+</p>
 
 #### History:
 
 * `v2.0.0`: Introduced.
-
-#### Parameters:
-
-* **`slot`:** (`integer`) Save slot index (0-based).
-
-#### Examples:
-
-```
-Save.slots.load(5)  → Load the sixth slot save
-```
+* `v2.37.0`: Deprecated in favor of the `Save.browser.slot.load()` method.
 
 <!-- *********************************************************************** -->
 
-### `Save.slots.ok()` → `boolean` {#save-api-method-slots-ok}
+### <span class="deprecated">`Save.slots.ok()` → `boolean`</span> {#save-api-method-slots-ok}
 
-Returns whether the slot saves are available and ready.
+<p role="note" class="warning"><b>Deprecated:</b>
+This method has been deprecated and should no longer be used.  See the <a href="#save-api-browser-slot-method-isenabled"><code>Save.browser.slot.isEnabled()</code></a> method for its replacement.
+</p>
 
 #### History:
 
 * `v2.0.0`: Introduced.
-
-#### Parameters: *none*
-
-#### Examples:
-
-```
-if (Save.slots.ok()) {
-	/* Code to manipulate slot saves. */
-}
-```
+* `v2.37.0`: Deprecated in favor of the `Save.browser.slot.isEnabled()` method.
 
 <!-- *********************************************************************** -->
 
-### `Save.slots.save(slot [, title [, metadata]])` {#save-api-method-slots-save}
+### <span class="deprecated">`Save.slots.save(slot [, title [, metadata]])`</span> {#save-api-method-slots-save}
 
-Saves to the given slot.
+<p role="note" class="warning"><b>Deprecated:</b>
+This method has been deprecated and should no longer be used.  See the <a href="#save-api-browser-slot-method-save"><code>Save.browser.slot.save()</code></a> method for its replacement.
+</p>
 
 #### History:
 
 * `v2.0.0`: Introduced.
-
-#### Parameters:
-
-* **`slot`:** (`integer`) Save slot index (0-based).
-* **`title`:** (optional, `string`) The title of the save.  If omitted or `null`, defaults to the passage's description.
-* **`metadata`:** (optional, `any`) The data to be stored in the save object's `metadata` property.  Must be JSON-serializable.
-
-#### Examples:
-
-```
-→ Save to the sixth slot save with the default title and no metadata
-Save.slots.save(5)
-
-→ Save to the sixth slot save with the title "Midgar" and no metadata
-Save.slots.save(5, "Midgar")
-
-→ Save to the sixth slot save with the default title and metadata someMetadata
-Save.slots.save(5, null, someMetadata)
-
-→ Save to the sixth slot save with the title "Midgar" and metadata someMetadata
-Save.slots.save(5, "Midgar", someMetadata)
-```
+* `v2.37.0`: Deprecated in favor of the `Save.browser.slot.save()` method.
 
 
 <!-- ***************************************************************************
 	Save Disk
 **************************************************************************** -->
-## Disk {#save-api-disk}
 
 <!-- *********************************************************************** -->
 
-### `Save.export([filename [, metadata]])` {#save-api-method-export}
+### <span class="deprecated">`Save.import(event)`</span> {#save-api-method-import}
 
-Saves to disk.
+<p role="note" class="warning"><b>Deprecated:</b>
+This method has been deprecated and should no longer be used.  See the <a href="#save-api-disk-method-load"><code>Save.disk.load()</code></a> method for its replacement.
+</p>
+
+#### History:
+
+* `v2.0.0`: Introduced.
+* `v2.37.0`: Deprecated in favor of the `Save.disk.load()` method.
+
+<!-- *********************************************************************** -->
+
+### <span class="deprecated">`Save.export([filename [, metadata]])`</span> {#save-api-method-export}
+
+<p role="note" class="warning"><b>Deprecated:</b>
+This method has been deprecated and should no longer be used.  See the <a href="#save-api-disk-method-save"><code>Save.disk.save()</code></a> method for its replacement.
+</p>
 
 #### History:
 
 * `v2.0.0`: Introduced.
 * `v2.8.0`: Added `metadata` parameter.
-
-#### Parameters:
-
-* **`filename`:** (optional, `string`) The base filename of the save, which gets slugified to remove most symbols.  Appended to this is a datestamp (format: `YYYMMDD-hhmmss`) and the file extension `.save`—e.g., `"The Scooby Chronicles"` would result in the full filename: `the-scooby-chronicles-{datestamp}.save`.  If omitted or `null`, defaults to the story's title.
-* **`metadata`:** (optional, `any`) The data to be stored in the save object's `metadata` property.  Must be JSON-serializable.
-
-#### Examples:
-
-```
-→ Export a save with the default filename and no metadata
-Save.export()
-
-→ Export a save with the filename "the-7th-fantasy-{datestamp}.save" and no metadata
-Save.export("The 7th Fantasy")
-
-→ Export a save with the default filename and metadata someMetadata
-Save.export(null, someMetadata)
-
-→ Export a save with the filename "the-7th-fantasy-{datestamp}.save" and metadata someMetadata
-Save.export("The 7th Fantasy", someMetadata)
-```
-
-<!-- *********************************************************************** -->
-
-### `Save.import(event)` {#save-api-method-import}
-
-Loads a save from disk.
-
-**NOTE:** You do not call this manually, it *must* be called by the `change` event handler of an `<input type="file">` element.
-
-#### History:
-
-* `v2.0.0`: Introduced.
-
-#### Parameters:
-
-* **`event`:** (`Event`) The event object that was passed to the `change` event handler of the associated `<input type="file">` element.
-
-#### Examples:
-
-##### Basic usage
-
-```
-// Assuming you're creating a file input something like the following
-var input  = document.createElement('input');
-input.type = 'file';
-input.id   = 'saves-import-file';
-input.name = 'saves-import-file';
-
-// Set up Save.import() as the event handler for when a file has been chosen
-jQuery(input).on('change', Save.import);
-```
-
-In case you needed to do more than simply load the save, you may do something like the following:
-
-```
-// Assuming you're creating a file input something like the following
-var input  = document.createElement('input');
-input.type = 'file';
-input.id   = 'saves-import-file';
-input.name = 'saves-import-file';
-
-// Set up a custom event handler for when a file has been chosen, which will call Save.import()
-jQuery(input).on('change', function (ev) {
-	// You must pass in the event when calling Save.import() manually
-	Save.import(ev);
-
-	// Put anything else you needed to do here
-});
-```
-
-##### As a self-contained link/button using macros
-
-```
-<<link "Load From Disk">>
-	<<script>>
-	jQuery(document.createElement('input'))
-		.prop('type', 'file')
-		.on('change', Save.import)
-		.trigger('click');
-	<</script>>
-<</link>>
-```
+* `v2.37.0`: Deprecated in favor of the `Save.disk.save()` method.
 
 
 <!-- ***************************************************************************
 	Save Serialization
 **************************************************************************** -->
-## Serialization {#save-api-serialization}
 
 <!-- *********************************************************************** -->
 
-### `Save.base64.saveave([metadata])` → `string` | `null` {#save-api-method-serialize}
+### <span class="deprecated">`Save.deserialize(saveStr)` → `any` | `null`</span> {#save-api-method-deserialize}
 
-Returns a save as a serialized string, or `null` if saving is not allowed within the current context.
+<p role="note" class="warning"><b>Deprecated:</b>
+This method has been deprecated and should no longer be used.  See the <a href="#save-api-base64-method-load"><code>Save.base64.load()</code></a> method for its replacement.
+</p>
 
 #### History:
 
 * `v2.21.0`: Introduced.
-
-#### Parameters:
-
-* **`metadata`:** (optional, `any`) The data to be stored as metadata.  Must be JSON-serializable.
-
-#### Examples:
-
-```
-→ Serialize a save with no metadata
-const myGameState = Save.base64.save();
-if (myGameState === null) {
-	/* Failure.  You've disallowed saving. */
-}
-
-→ Serialize a save with metadata someMetadata
-const myGameState = Save.base64.save(someMetadata);
-if (myGameState === null) {
-	/* Failure.  You've disallowed saving. */
-}
-```
+* `v2.37.0`: Deprecated in favor of the `Save.base64.load()` method.
 
 <!-- *********************************************************************** -->
 
-### `Save.base64.load(saveStr)` → `any` | `null` {#save-api-method-deserialize}
+### <span class="deprecated">`Save.serialize([metadata])` → `string` | `null`</span> {#save-api-method-serialize}
 
-Deserializes the given save string, created via [`Save.base64.save()`](#save-api-method-serialize), and loads the save.  Returns the bundled metadata, if any, or `null` if the given save could not be deserialized and loaded.
+<p role="note" class="warning"><b>Deprecated:</b>
+This method has been deprecated and should no longer be used.  See the <a href="#save-api-base64-method-save"><code>Save.base64.save()</code></a> method for its replacement.
+</p>
 
 #### History:
 
 * `v2.21.0`: Introduced.
-
-#### Parameters:
-
-* **`saveStr`:** (`string`) The serialized save string.
-
-#### Examples:
-
-```
-→ Deserialize a save with no metadata
-const loadResult = Save.base64.load(myGameState);
-if (loadResult === null) {
-	/* Failure.  An error was displayed to the player. */
-}
-
-→ Deserialize a save with metadata
-const loadResult = Save.base64.load(myGameState);
-if (loadResult !== null) {
-	/* Success.  Do something special.with loadResult, which contains the metadata. */
-}
-else {
-	/* Failure.  An error was displayed to the player. */
-}
-```
+* `v2.37.0`: Deprecated in favor of the `Save.base64.save()` method.
