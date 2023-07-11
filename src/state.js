@@ -621,10 +621,6 @@ var State = (() => { // eslint-disable-line no-unused-vars, no-var
 		if (BUILD_DEBUG) { console.log('[State/tempVariablesClear()]'); }
 
 		_temporary = Object.create(null);
-
-		/* legacy */
-		TempVariables = _temporary; // eslint-disable-line no-undef
-		/* /legacy */
 	}
 
 	/*
