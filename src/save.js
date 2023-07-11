@@ -1075,19 +1075,19 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 				length : {
 					get() {
 						console.warn('[DEPRECATED] Save.slots.length is deprecated.');
-						return slotSize();
+						return Config.saves.maxSlotSaves;
 					}
 				},
 				isEmpty : {
 					value() {
 						console.warn('[DEPRECATED] Save.slots.isEmpty() is deprecated.');
-						return slotEntries().length === 0;
+						return slotSize() === 0;
 					}
 				},
 				count : {
 					value() {
 						console.warn('[DEPRECATED] Save.slots.count() is deprecated.');
-						return slotEntries().length;
+						return slotSize();
 					}
 				},
 				has : {
