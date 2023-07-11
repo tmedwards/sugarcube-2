@@ -358,8 +358,8 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 				_optionsStack = [];
 			}
 
-			function optionGet(idx) {
-				return _optionsStack[idx];
+			function optionGet(index) {
+				return _optionsStack[index];
 			}
 
 			function optionPop() {

@@ -38,7 +38,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 	const SLOT_DATA_SUBKEY = `${SLOT_SUBKEY}data${INDEX_DELIMITER}`;
 	const SLOT_INFO_SUBKEY = `${SLOT_SUBKEY}info${INDEX_DELIMITER}`;
 
-	// Save handler sets.
+	// Save event handler sets.
 	const onLoadHandlers = new Set();
 	const onSaveHandlers = new Set();
 
@@ -96,8 +96,8 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			info.desc = info.title;
 			delete info.title;
 
-			const infoKey = getAutoInfoKeyFromIdx(0);
-			const dataKey = getAutoDataKeyFromIdx(0);
+			const infoKey = getAutoInfoKeyFromIndex(0);
+			const dataKey = getAutoDataKeyFromIndex(0);
 
 			// If storing either chunk is going to fail, it's more likely
 			// to be the data chunk, so we attempt to store it first.
@@ -109,7 +109,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 		}
 
 		// Migrate the slot saves.
-		oldSaves.slots.forEach((save, idx) => {
+		oldSaves.slots.forEach((save, index) => {
 			if (!save) {
 				return;
 			}
@@ -120,8 +120,8 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			info.desc = info.title;
 			delete info.title;
 
-			const infoKey = getSlotInfoKeyFromIdx(idx);
-			const dataKey = getSlotDataKeyFromIdx(idx);
+			const infoKey = getSlotInfoKeyFromIndex(index);
+			const dataKey = getSlotDataKeyFromIndex(index);
 
 			// If storing either chunk is going to fail, it's more likely
 			// to be the data chunk, so we attempt to store it first.
@@ -208,18 +208,18 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 		}
 
 		switch (keys.length) {
-			case 0: return { idx : -1 };
+			case 0: return { index : -1 };
 			case 1: return {
-				idx  : getIdxFromKey(keys[0]),
-				type : getTypeFromKey(keys[0])
+				index : getIndexFromKey(keys[0]),
+				type  : getTypeFromKey(keys[0])
 			};
 		}
 
 		return keys
 			.map(key => ({
 				value : {
-					idx  : getIdxFromKey(key),
-					type : getTypeFromKey(key)
+					index : getIndexFromKey(key),
+					type  : getTypeFromKey(key)
 				},
 				date : storage.get(key).date
 			}))
@@ -228,7 +228,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			.value;
 	}
 
-	function getIdxFromKey(key) {
+	function getIndexFromKey(key) {
 		const pos = key.lastIndexOf(INDEX_DELIMITER);
 
 		if (pos === -1) {
@@ -238,20 +238,20 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 		return Number(key.slice(pos + 1));
 	}
 
-	function getAutoInfoKeyFromIdx(idx) {
-		return `${AUTO_INFO_SUBKEY}${idx}`;
+	function getAutoInfoKeyFromIndex(index) {
+		return `${AUTO_INFO_SUBKEY}${index}`;
 	}
 
-	function getAutoDataKeyFromIdx(idx) {
-		return `${AUTO_DATA_SUBKEY}${idx}`;
+	function getAutoDataKeyFromIndex(index) {
+		return `${AUTO_DATA_SUBKEY}${index}`;
 	}
 
-	function getSlotInfoKeyFromIdx(idx) {
-		return `${SLOT_INFO_SUBKEY}${idx}`;
+	function getSlotInfoKeyFromIndex(index) {
+		return `${SLOT_INFO_SUBKEY}${index}`;
 	}
 
-	function getSlotDataKeyFromIdx(idx) {
-		return `${SLOT_DATA_SUBKEY}${idx}`;
+	function getSlotDataKeyFromIndex(index) {
+		return `${SLOT_DATA_SUBKEY}${index}`;
 	}
 
 	function getKeys(predicate) {
@@ -312,17 +312,17 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 		return true;
 	}
 
-	function autoDelete(idx) {
-		if (!Number.isInteger(idx)) {
+	function autoDelete(index) {
+		if (!Number.isInteger(index)) {
 			throw new TypeError('auto save index must be an integer');
 		}
 
-		if (idx < 0 || idx > MAX_INDEX) {
-			throw new RangeError(`auto save index out of bounds (range: 0–${MAX_INDEX}; received: ${idx})`);
+		if (index < 0 || index > MAX_INDEX) {
+			throw new RangeError(`auto save index out of bounds (range: 0–${MAX_INDEX}; received: ${index})`);
 		}
 
-		storage.delete(getAutoInfoKeyFromIdx(idx));
-		storage.delete(getAutoDataKeyFromIdx(idx));
+		storage.delete(getAutoInfoKeyFromIndex(index));
+		storage.delete(getAutoDataKeyFromIndex(index));
 		return true;
 	}
 
@@ -330,52 +330,52 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 		// NOTE: Order by date (descending).
 		return getKeys(isAutoInfoKey)
 			.map(key => ({
-				idx  : getIdxFromKey(key),
-				info : storage.get(key)
+				index : getIndexFromKey(key),
+				info  : storage.get(key)
 			}))
 			.sort((a, b) => b.info.date - a.info.date);
 	}
 
-	function autoGet(idx) {
-		if (!Number.isInteger(idx)) {
+	function autoGet(index) {
+		if (!Number.isInteger(index)) {
 			throw new TypeError('auto save index must be an integer');
 		}
 
-		if (idx < 0 || idx > MAX_INDEX) {
-			throw new RangeError(`auto save index out of bounds (range: 0–${MAX_INDEX}; received: ${idx})`);
+		if (index < 0 || index > MAX_INDEX) {
+			throw new RangeError(`auto save index out of bounds (range: 0–${MAX_INDEX}; received: ${index})`);
 		}
 
-		return storage.get(getAutoInfoKeyFromIdx(idx));
+		return storage.get(getAutoInfoKeyFromIndex(index));
 	}
 
-	function autoHas(idx) {
-		if (!Number.isInteger(idx)) {
+	function autoHas(index) {
+		if (!Number.isInteger(index)) {
 			throw new TypeError('auto save index must be an integer');
 		}
 
-		if (idx < 0 || idx > MAX_INDEX) {
-			throw new RangeError(`auto save index out of bounds (range: 0–${MAX_INDEX}; received: ${idx})`);
+		if (index < 0 || index > MAX_INDEX) {
+			throw new RangeError(`auto save index out of bounds (range: 0–${MAX_INDEX}; received: ${index})`);
 		}
 
-		return storage.has(getAutoInfoKeyFromIdx(idx));
+		return storage.has(getAutoInfoKeyFromIndex(index));
 	}
 
 	function autoIsEnabled() {
 		return storage.name !== 'cookie' && Config.saves.maxAutoSaves > 0;
 	}
 
-	function autoLoad(idx) {
+	function autoLoad(index) {
 		return new Promise(resolve => {
-			if (!Number.isInteger(idx)) {
+			if (!Number.isInteger(index)) {
 				throw new TypeError('auto save index must be an integer');
 			}
 
-			if (idx < 0 || idx > MAX_INDEX) {
-				throw new RangeError(`auto save index out of bounds (range: 0–${MAX_INDEX}; received: ${idx})`);
+			if (index < 0 || index > MAX_INDEX) {
+				throw new RangeError(`auto save index out of bounds (range: 0–${MAX_INDEX}; received: ${index})`);
 			}
 
-			const info = storage.get(getAutoInfoKeyFromIdx(idx));
-			const data = storage.get(getAutoDataKeyFromIdx(idx));
+			const info = storage.get(getAutoInfoKeyFromIndex(index));
+			const data = storage.get(getAutoDataKeyFromIndex(index));
 
 			if (!info || !data) {
 				throw new Error(L10n.get('saveErrorNonexistent'));
@@ -397,11 +397,14 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			return false;
 		}
 
-		const details        = createDetails(Type.Auto, desc, metadata);
-		const idx            = (findNewest(Type.Auto).idx + 1) % Config.saves.maxAutoSaves;
-		const { info, data } = splitSave(marshal(details));
-		const infoKey        = getAutoInfoKeyFromIdx(idx);
-		const dataKey        = getAutoDataKeyFromIdx(idx);
+		const index   = (findNewest(Type.Auto).index + 1) % Config.saves.maxAutoSaves;
+		const infoKey = getAutoInfoKeyFromIndex(index);
+		const dataKey = getAutoDataKeyFromIndex(index);
+		const details = createDetails(Type.Auto, desc, metadata);
+		const {
+			info,
+			data
+		} = splitSave(marshal(details));
 
 		// If storing either chunk is going to fail, it's more likely
 		// to be the data chunk, so we attempt to store it first.
@@ -429,17 +432,17 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 		return true;
 	}
 
-	function slotDelete(idx) {
-		if (!Number.isInteger(idx)) {
+	function slotDelete(index) {
+		if (!Number.isInteger(index)) {
 			throw new TypeError('slot save index must be an integer');
 		}
 
-		if (idx < 0 || idx > MAX_INDEX) {
-			throw new RangeError(`slot save index out of bounds (range: 0–${MAX_INDEX}; received: ${idx})`);
+		if (index < 0 || index > MAX_INDEX) {
+			throw new RangeError(`slot save index out of bounds (range: 0–${MAX_INDEX}; received: ${index})`);
 		}
 
-		storage.delete(getSlotInfoKeyFromIdx(idx));
-		storage.delete(getSlotDataKeyFromIdx(idx));
+		storage.delete(getSlotInfoKeyFromIndex(index));
+		storage.delete(getSlotDataKeyFromIndex(index));
 		return true;
 	}
 
@@ -447,52 +450,52 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 		// NOTE: Order by ID (ascending).
 		return getKeys(isSlotInfoKey)
 			.map(key => ({
-				idx  : getIdxFromKey(key),
-				info : storage.get(key)
+				index : getIndexFromKey(key),
+				info  : storage.get(key)
 			}))
-			.sort((a, b) => a.idx - b.idx);
+			.sort((a, b) => a.index - b.index);
 	}
 
-	function slotGet(idx) {
-		if (!Number.isInteger(idx)) {
+	function slotGet(index) {
+		if (!Number.isInteger(index)) {
 			throw new TypeError('slot save index must be an integer');
 		}
 
-		if (idx < 0 || idx > MAX_INDEX) {
-			throw new RangeError(`slot save index out of bounds (range: 0–${MAX_INDEX}; received: ${idx})`);
+		if (index < 0 || index > MAX_INDEX) {
+			throw new RangeError(`slot save index out of bounds (range: 0–${MAX_INDEX}; received: ${index})`);
 		}
 
-		return storage.get(getSlotInfoKeyFromIdx(idx));
+		return storage.get(getSlotInfoKeyFromIndex(index));
 	}
 
-	function slotHas(idx) {
-		if (!Number.isInteger(idx)) {
+	function slotHas(index) {
+		if (!Number.isInteger(index)) {
 			throw new TypeError('slot save index must be an integer');
 		}
 
-		if (idx < 0 || idx > MAX_INDEX) {
-			throw new RangeError(`slot save index out of bounds (range: 0–${MAX_INDEX}; received: ${idx})`);
+		if (index < 0 || index > MAX_INDEX) {
+			throw new RangeError(`slot save index out of bounds (range: 0–${MAX_INDEX}; received: ${index})`);
 		}
 
-		return storage.has(getSlotInfoKeyFromIdx(idx));
+		return storage.has(getSlotInfoKeyFromIndex(index));
 	}
 
 	function slotIsEnabled() {
 		return storage.name !== 'cookie' && Config.saves.maxSlotSaves > 0;
 	}
 
-	function slotLoad(idx) {
+	function slotLoad(index) {
 		return new Promise(resolve => {
-			if (!Number.isInteger(idx)) {
+			if (!Number.isInteger(index)) {
 				throw new TypeError('slot save index must be an integer');
 			}
 
-			if (idx < 0 || idx > MAX_INDEX) {
-				throw new RangeError(`slot save index out of bounds (range: 0–${MAX_INDEX}; received: ${idx})`);
+			if (index < 0 || index > MAX_INDEX) {
+				throw new RangeError(`slot save index out of bounds (range: 0–${MAX_INDEX}; received: ${index})`);
 			}
 
-			const info = storage.get(getSlotInfoKeyFromIdx(idx));
-			const data = storage.get(getSlotDataKeyFromIdx(idx));
+			const info = storage.get(getSlotInfoKeyFromIndex(index));
+			const data = storage.get(getSlotDataKeyFromIndex(index));
 
 			if (!info || !data) {
 				throw new Error(L10n.get('saveErrorNonexistent'));
@@ -505,13 +508,13 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 		});
 	}
 
-	function slotSave(idx, desc, metadata) {
-		if (!Number.isInteger(idx)) {
+	function slotSave(index, desc, metadata) {
+		if (!Number.isInteger(index)) {
 			throw new TypeError('slot save index must be an integer');
 		}
 
-		if (idx < 0 || idx >= Config.saves.maxSlotSaves) {
-			throw new RangeError(`slot save index out of bounds (range: 0–${Config.saves.maxSlotSaves - 1}; received: ${idx})`);
+		if (index < 0 || index >= Config.saves.maxSlotSaves) {
+			throw new RangeError(`slot save index out of bounds (range: 0–${Config.saves.maxSlotSaves - 1}; received: ${index})`);
 		}
 
 		if (
@@ -522,10 +525,13 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			throw new Error(L10n.get('savesDisallowed'));
 		}
 
-		const details        = createDetails(Type.Slot, desc, metadata);
-		const { info, data } = splitSave(marshal(details));
-		const infoKey        = getSlotInfoKeyFromIdx(idx);
-		const dataKey        = getSlotDataKeyFromIdx(idx);
+		const infoKey = getSlotInfoKeyFromIndex(index);
+		const dataKey = getSlotDataKeyFromIndex(index);
+		const details = createDetails(Type.Slot, desc, metadata);
+		const {
+			info,
+			data
+		} = splitSave(marshal(details));
 
 		// If storing either chunk is going to fail, it's more likely
 		// to be the data chunk, so we attempt to store it first.
@@ -557,13 +563,13 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 	function browserContinue() {
 		const newest = findNewest();
 
-		if (newest.idx === -1) {
+		if (newest.index === -1) {
 			return Promise.reject(new Error(L10n.get('saveErrorNonexistent')));
 		}
 
 		return newest.type === Type.Auto
-			? autoLoad(newest.idx)
-			: slotLoad(newest.idx);
+			? autoLoad(newest.index)
+			: slotLoad(newest.index);
 	}
 
 	function browserExport(filename) {
@@ -572,26 +578,26 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 		}
 
 		const auto = getKeys(isAutoInfoKey).map(infoKey => {
-			const idx  = getIdxFromKey(infoKey);
-			const info = storage.get(infoKey);
-			const data = storage.get(getAutoDataKeyFromIdx(idx));
+			const index = getIndexFromKey(infoKey);
+			const info  = storage.get(infoKey);
+			const data  = storage.get(getAutoDataKeyFromIndex(index));
 
 			if (!info || !data) {
 				throw new Error('during saves export auto save info or data nonexistent');
 			}
 
-			return { idx, info, data };
+			return { index, info, data };
 		});
 		const slot = getKeys(isSlotInfoKey).map(infoKey => {
-			const idx  = getIdxFromKey(infoKey);
-			const info = storage.get(infoKey);
-			const data = storage.get(getSlotDataKeyFromIdx(idx));
+			const index = getIndexFromKey(infoKey);
+			const info  = storage.get(infoKey);
+			const data  = storage.get(getSlotDataKeyFromIndex(index));
 
 			if (!info || !data) {
 				throw new Error('during saves export slot save info or data nonexistent');
 			}
 
-			return { idx, info, data };
+			return { index, info, data };
 		});
 
 		saveBlobToDiskAs(
@@ -613,7 +619,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 						// throw reader.error;
 					}
 
-					const badSave = O => !Object.hasOwn(O, 'idx')
+					const badSave = O => !Object.hasOwn(O, 'index')
 						|| !Object.hasOwn(O, 'info')
 						|| !Object.hasOwn(O, 'data');
 					let bundle;
@@ -644,9 +650,13 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 
 					// QUESTION: Should failures here throw exceptions?
 					bundle.auto.forEach(save => {
-						const { idx, info, data } = save;
-						const infoKey             = getAutoInfoKeyFromIdx(idx);
-						const dataKey             = getAutoDataKeyFromIdx(idx);
+						const {
+							index,
+							info,
+							data
+						} = save;
+						const infoKey = getAutoInfoKeyFromIndex(index);
+						const dataKey = getAutoDataKeyFromIndex(index);
 
 						// If storing either chunk is going to fail, it's more likely
 						// to be the data chunk, so we attempt to store it first.
@@ -657,9 +667,13 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 						}
 					});
 					bundle.slot.forEach(save => {
-						const { idx, info, data } = save;
-						const infoKey             = getSlotInfoKeyFromIdx(idx);
-						const dataKey             = getSlotDataKeyFromIdx(idx);
+						const {
+							index,
+							info,
+							data
+						} = save;
+						const infoKey = getSlotInfoKeyFromIndex(index);
+						const dataKey = getSlotDataKeyFromIndex(index);
 
 						// If storing either chunk is going to fail, it's more likely
 						// to be the data chunk, so we attempt to store it first.

@@ -1149,10 +1149,10 @@ var SimpleAudio = (() => { // eslint-disable-line no-unused-vars, no-var
 
 				// Try not to immediately replay the last track when not shuffling.
 				if (!this._shuffle && this.current !== null && this.queue.length > 1) {
-					const firstIdx = this.queue.findIndex(trackObj => trackObj === this.current);
+					const firstIndex = this.queue.findIndex(trackObj => trackObj === this.current);
 
-					if (firstIdx !== -1) {
-						this.queue.push(...this.queue.splice(0, firstIdx + 1));
+					if (firstIndex !== -1) {
+						this.queue.push(...this.queue.splice(0, firstIndex + 1));
 					}
 				}
 			}

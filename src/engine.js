@@ -406,8 +406,8 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 	/*
 		Activate the moment at the given index within the state history and show it.
 	*/
-	function engineGoTo(idx) {
-		const succeded = State.goTo(idx);
+	function engineGoTo(index) {
+		const succeded = State.goTo(index);
 
 		if (succeded) {
 			engineShow();

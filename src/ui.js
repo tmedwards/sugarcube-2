@@ -145,7 +145,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 		}
 
 		function createSaveList() {
-			function createButton(id, classNames, typeLabel, idx, callback) {
+			function createButton(id, classNames, typeLabel, index, callback) {
 				let btnText;
 
 				switch (id) {
@@ -156,7 +156,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 				}
 
 				const $btn = jQuery(document.createElement('button'))
-					.attr('id', `saves-${id}-${idx}`)
+					.attr('id', `saves-${id}-${index}`)
 					.addClass(id)
 					.text(btnText);
 
@@ -166,10 +166,10 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 
 				if (callback) {
 					$btn.ariaClick({
-						label : `${btnText} ${typeLabel} ${idx + 1}`
+						label : `${btnText} ${typeLabel} ${index + 1}`
 					}, () => {
 						try {
-							callback(idx);
+							callback(index);
 						}
 						catch (ex) {
 							showAlert(ex.message);
@@ -186,7 +186,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 			const $tbody = jQuery(document.createElement('tbody'));
 
 			// Create auto save UI entries.
-			Save.browser.auto.entries().forEach(({ idx, info }) => {
+			Save.browser.auto.entries().forEach(({ index, info }) => {
 				/* legacy */
 				const $tdSlot = jQuery(document.createElement('td'));
 				/* /legacy */
@@ -197,10 +197,10 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 				// // Add the slot ID.
 				// $tdSlot
 				// 	.attr({
-				// 		title        : `${L10n.get('savesLabelAuto')} ${idx + 1}`,
-				// 		'aria-label' : `${L10n.get('savesLabelAuto')} ${idx + 1}`
+				// 		title        : `${L10n.get('savesLabelAuto')} ${index + 1}`,
+				// 		'aria-label' : `${L10n.get('savesLabelAuto')} ${index + 1}`
 				// 	})
-				// 	.text(`A${idx + 1}`);
+				// 	.text(`A${index + 1}`);
 
 				// Add the description and details.
 				jQuery(document.createElement('div'))
@@ -211,7 +211,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 					/* legacy */
 					.addClass('datestamp')
 					/* /legacy */
-					.text(`${L10n.get('savesLabelAuto')}\u00a0${idx + 1}\u00a0\u00a0\u2022\u00a0\u00a0`)
+					.text(`${L10n.get('savesLabelAuto')}\u00a0${index + 1}\u00a0\u00a0\u2022\u00a0\u00a0`)
 					.append(
 						info.date
 							? `${new Date(info.date).toLocaleString()}`
@@ -224,10 +224,10 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 					'load',
 					'ui-close',
 					L10n.get('savesLabelAuto'),
-					idx,
-					idx => {
+					index,
+					index => {
 						jQuery(document).one(':dialogclosed', () => {
-							Save.browser.auto.load(idx)
+							Save.browser.auto.load(index)
 								.then(
 									Engine.show,
 									ex => showAlert(`${ex.message.toUpperFirst()}.</p><p>${L10n.get('aborting')}.`)
@@ -241,9 +241,9 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 					'delete',
 					null,
 					L10n.get('savesLabelAuto'),
-					idx,
-					idx => {
-						Save.browser.auto.delete(idx);
+					index,
+					index => {
+						Save.browser.auto.delete(index);
 						buildSaves();
 					}
 				));
@@ -266,12 +266,12 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 			Save.browser.slot.entries().reduce(
 				// Add slot entries.
 				(slots, entry) => {
-					slots[entry.idx] = entry; // eslint-disable-line no-param-reassign
+					slots[entry.index] = entry; // eslint-disable-line no-param-reassign
 					return slots;
 				},
 				// Fill configured slots with empty entries.
-				Array.from({ length : Config.saves.maxSlotSaves }, (_, i) => ({ idx : i }))
-			).forEach(({ idx, info }) => {
+				Array.from({ length : Config.saves.maxSlotSaves }, (_, i) => ({ index : i }))
+			).forEach(({ index, info }) => {
 				/* legacy */
 				const $tdSlot = jQuery(document.createElement('td'));
 				/* /legacy */
@@ -282,10 +282,10 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 				// // Add the slot ID.
 				// $tdSlot
 				// 	.attr({
-				// 		title        : `${L10n.get('savesLabelSlot')} ${idx + 1}`,
-				// 		'aria-label' : `${L10n.get('savesLabelSlot')} ${idx + 1}`
+				// 		title        : `${L10n.get('savesLabelSlot')} ${index + 1}`,
+				// 		'aria-label' : `${L10n.get('savesLabelSlot')} ${index + 1}`
 				// 	})
-				// 	.text(idx + 1);
+				// 	.text(index + 1);
 
 				if (info) {
 					// Add the description and details.
@@ -297,7 +297,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 						/* legacy */
 						.addClass('datestamp')
 						/* /legacy */
-						.text(`${L10n.get('savesLabelSlot')}\u00a0${idx + 1}\u00a0\u00a0\u2022\u00a0\u00a0`)
+						.text(`${L10n.get('savesLabelSlot')}\u00a0${index + 1}\u00a0\u00a0\u2022\u00a0\u00a0`)
 						.append(
 							info.date
 								? `${new Date(info.date).toLocaleString()}`
@@ -310,10 +310,10 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 						'load',
 						'ui-close',
 						L10n.get('savesLabelSlot'),
-						idx,
-						idx => {
+						index,
+						index => {
 							jQuery(document).one(':dialogclosed', () => {
-								Save.browser.slot.load(idx)
+								Save.browser.slot.load(index)
 									.then(
 										Engine.show,
 										ex => showAlert(`${ex.message.toUpperFirst()}.</p><p>${L10n.get('aborting')}.`)
@@ -327,9 +327,9 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 						'delete',
 						null,
 						L10n.get('savesLabelSlot'),
-						idx,
-						idx => {
-							Save.browser.slot.delete(idx);
+						index,
+						index => {
+							Save.browser.slot.delete(index);
 							buildSaves();
 						}
 					));
@@ -344,8 +344,8 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 						'save',
 						'ui-close',
 						L10n.get('savesLabelSlot'),
-						idx,
-						idx < Config.saves.maxSlotSaves && slotAllowed
+						index,
+						index < Config.saves.maxSlotSaves && slotAllowed
 							? Save.browser.slot.save
 							: null
 					));
@@ -355,7 +355,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 						'delete',
 						null,
 						L10n.get('savesLabelSlot'),
-						idx
+						index
 					));
 				}
 
@@ -789,8 +789,8 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 				jQuery(document.createElement('li'))
 					.append(
 						jQuery(document.createElement('a'))
-							.ariaClick({ one : true }, (function (idx) {
-								return () => jQuery(document).one(':dialogclosed', () => Engine.goTo(idx));
+							.ariaClick({ one : true }, (function (index) {
+								return () => jQuery(document).one(':dialogclosed', () => Engine.goTo(index));
 							})(i))
 							.addClass('ui-close')
 							.text(`${L10n.get('jumptoTurn')} ${expired + i + 1}`)

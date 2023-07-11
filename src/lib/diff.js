@@ -141,7 +141,7 @@ var Diff = (() => { // eslint-disable-line no-unused-vars, no-var
 				// Key exists only in `a`.
 				else {
 					if (aIsArray && isNumeric(key)) {
-						const idx = Number(key);
+						const index = Number(key);
 
 						if (!aOpKey) {
 							aOpKey = '';
@@ -150,15 +150,15 @@ var Diff = (() => { // eslint-disable-line no-unused-vars, no-var
 								aOpKey += '~';
 							} while (keys.some(isAOpKey));
 
-							delta[aOpKey] = [Op.SpliceArray, idx, idx];
+							delta[aOpKey] = [Op.SpliceArray, index, index];
 						}
 
-						if (idx < delta[aOpKey][1]) {
-							delta[aOpKey][1] = idx;
+						if (index < delta[aOpKey][1]) {
+							delta[aOpKey][1] = index;
 						}
 
-						if (idx > delta[aOpKey][2]) {
-							delta[aOpKey][2] = idx;
+						if (index > delta[aOpKey][2]) {
+							delta[aOpKey][2] = index;
 						}
 					}
 					else {

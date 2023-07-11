@@ -56,9 +56,9 @@ Macro.add(['cycle', 'listbox'], {
 			}
 		}
 
-		const options    = [];
-		const tagCount   = { option : 0, optionsfrom : 0 };
-		let selectedIdx = -1;
+		const options  = [];
+		const tagCount = { option : 0, optionsfrom : 0 };
+		let index = -1;
 
 		// Get the options and selected index, if any.
 		for (let i = 1; i < len; ++i) {
@@ -110,11 +110,11 @@ Macro.add(['cycle', 'listbox'], {
 					if (config.autoselect) {
 						return this.error('cannot specify both the autoselect and selected keywords');
 					}
-					else if (selectedIdx !== -1) {
-						return this.error(`multiple selected keywords specified for <<${payload.name}>> (#${selectedIdx + 1} & #${tagCount.option})`);
+					else if (index !== -1) {
+						return this.error(`multiple selected keywords specified for <<${payload.name}>> (#${index + 1} & #${tagCount.option})`);
 					}
 
-					selectedIdx = options.length - 1;
+					index = options.length - 1;
 				}
 			}
 
@@ -165,33 +165,33 @@ Macro.add(['cycle', 'listbox'], {
 		}
 
 		// No options were selected by the user, so we must select one.
-		if (selectedIdx === -1) {
+		if (index === -1) {
 			// Attempt to automatically select an option by matching the variable's current value.
 			if (config.autoselect) {
 				// NOTE: This will usually fail for objects due to a variety of reasons.
-				const curValue    = State.getVar(varName);
-				const curValueIdx = options.findIndex(opt => sameValueZero(opt.value, curValue));
-				selectedIdx = curValueIdx === -1 ? 0 : curValueIdx;
+				const curValue      = State.getVar(varName);
+				const curValueIndex = options.findIndex(opt => sameValueZero(opt.value, curValue));
+				index = curValueIndex === -1 ? 0 : curValueIndex;
 			}
 
 			// Simply select the first option.
 			else {
-				selectedIdx = 0;
+				index = 0;
 			}
 		}
 
 		// Set up and append the appropriate element to the output buffer.
 		if (this.name === 'cycle') {
-			const lastIdx = options.length - 1;
+			const lastIndex = options.length - 1;
 
-			if (config.once && selectedIdx === lastIdx) {
+			if (config.once && index === lastIndex) {
 				jQuery(this.output)
-					.wikiWithOptions({ cleanup : false, profile : 'core' }, options[selectedIdx].label);
+					.wikiWithOptions({ cleanup : false, profile : 'core' }, options[index].label);
 			}
 			else {
-				let cycleIdx = selectedIdx;
+				let cycleIndex = index;
 				jQuery(document.createElement('a'))
-					.wikiWithOptions({ cleanup : false, profile : 'core' }, options[selectedIdx].label)
+					.wikiWithOptions({ cleanup : false, profile : 'core' }, options[index].label)
 					.attr('id', `${this.name}-${varId}`)
 					.addClass(`macro-${this.name}`)
 					.ariaClick({
@@ -199,11 +199,11 @@ Macro.add(['cycle', 'listbox'], {
 						role      : 'button'
 					}, this.shadowHandler(function () {
 						const $this = $(this);
-						cycleIdx = (cycleIdx + 1) % options.length;
-						State.setVar(varName, options[cycleIdx].value);
-						$this.empty().wikiWithOptions({ cleanup : false, profile : 'core' }, options[cycleIdx].label);
+						cycleIndex = (cycleIndex + 1) % options.length;
+						State.setVar(varName, options[cycleIndex].value);
+						$this.empty().wikiWithOptions({ cleanup : false, profile : 'core' }, options[cycleIndex].label);
 
-						if (config.once && cycleIdx === lastIdx) {
+						if (config.once && cycleIndex === lastIndex) {
 							$this.off().contents().unwrap();
 						}
 					}))
@@ -227,7 +227,7 @@ Macro.add(['cycle', 'listbox'], {
 					tabindex : 0 // for accessiblity
 				})
 				.addClass(`macro-${this.name}`)
-				.val(selectedIdx)
+				.val(index)
 				.on('change.macros', this.shadowHandler(function () {
 					State.setVar(varName, options[Number(this.value)].value);
 				}))
@@ -235,6 +235,6 @@ Macro.add(['cycle', 'listbox'], {
 		}
 
 		// Set the variable to the appropriate value, as requested.
-		State.setVar(varName, options[selectedIdx].value);
+		State.setVar(varName, options[index].value);
 	}
 });
