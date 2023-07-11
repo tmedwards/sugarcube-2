@@ -282,6 +282,32 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 		return key.startsWith(SLOT_INFO_SUBKEY);
 	}
 
+	function saveToBrowserStorage(saveData) {
+		const {
+			data,
+			dataKey,
+			info,
+			infoKey
+		} = saveData;
+
+		try {
+			// If storing either chunk is going to fail, it's more likely
+			// to be the data chunk, so we attempt to store it first.
+			if (storage.set(dataKey, data)) {
+				if (!storage.set(infoKey, info)) {
+					storage.delete(dataKey);
+				}
+			}
+		}
+		catch (ex) {
+			// If the storage subsystem throws, attempt to clean up the mess
+			// and then rethrow the exception.
+			storage.delete(dataKey);
+			storage.delete(infoKey);
+			throw ex;
+		}
+	}
+
 	function saveBlobToDiskAs(data, filename, extension) {
 		if (typeof filename !== 'string') {
 			throw new Error('filename parameter must be a string');
@@ -400,22 +426,12 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 		const index   = (findNewest(Type.Auto).index + 1) % Config.saves.maxAutoSaves;
 		const infoKey = getAutoInfoKeyFromIndex(index);
 		const dataKey = getAutoDataKeyFromIndex(index);
-		const details = createDetails(Type.Auto, desc, metadata);
 		const {
 			info,
 			data
-		} = splitSave(marshal(details));
+		} = splitSave(marshal(createDetails(Type.Auto, desc, metadata)));
 
-		// If storing either chunk is going to fail, it's more likely
-		// to be the data chunk, so we attempt to store it first.
-		if (storage.set(dataKey, data)) {
-			if (!storage.set(infoKey, info)) {
-				storage.delete(dataKey);
-				return false;
-			}
-		}
-
-		return true;
+		saveToBrowserStorage({ data, dataKey, info, infoKey });
 	}
 
 	function autoSize() {
@@ -522,27 +538,17 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			|| typeof Config.saves.isAllowed === 'function'
 			&& !Config.saves.isAllowed(Type.Slot)
 		) {
-			throw new Error(L10n.get('savesDisallowed'));
+			throw new Error(L10n.get('saveErrorDisallowed'));
 		}
 
 		const infoKey = getSlotInfoKeyFromIndex(index);
 		const dataKey = getSlotDataKeyFromIndex(index);
-		const details = createDetails(Type.Slot, desc, metadata);
 		const {
 			info,
 			data
-		} = splitSave(marshal(details));
+		} = splitSave(marshal(createDetails(Type.Slot, desc, metadata)));
 
-		// If storing either chunk is going to fail, it's more likely
-		// to be the data chunk, so we attempt to store it first.
-		if (storage.set(dataKey, data)) {
-			if (!storage.set(infoKey, info)) {
-				storage.delete(dataKey);
-				return false;
-			}
-		}
-
-		return true;
+		saveToBrowserStorage({ data, dataKey, info, infoKey });
 	}
 
 	function slotSize() {
@@ -644,45 +650,23 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 						throw new Error(L10n.get('saveErrorInvalidData'));
 					}
 
-					// Delete existing saves before storing the imports.
+					// Delete all existing saves before storing the imports.
 					autoClear();
 					slotClear();
 
-					// QUESTION: Should failures here throw exceptions?
-					bundle.auto.forEach(save => {
-						const {
-							index,
-							info,
-							data
-						} = save;
-						const infoKey = getAutoInfoKeyFromIndex(index);
-						const dataKey = getAutoDataKeyFromIndex(index);
-
-						// If storing either chunk is going to fail, it's more likely
-						// to be the data chunk, so we attempt to store it first.
-						if (storage.set(dataKey, data)) {
-							if (!storage.set(infoKey, info)) {
-								storage.delete(dataKey);
-							}
-						}
-					});
-					bundle.slot.forEach(save => {
-						const {
-							index,
-							info,
-							data
-						} = save;
-						const infoKey = getSlotInfoKeyFromIndex(index);
-						const dataKey = getSlotDataKeyFromIndex(index);
-
-						// If storing either chunk is going to fail, it's more likely
-						// to be the data chunk, so we attempt to store it first.
-						if (storage.set(dataKey, data)) {
-							if (!storage.set(infoKey, info)) {
-								storage.delete(dataKey);
-							}
-						}
-					});
+					// Attempt to store each of the imported browser saves.
+					bundle.auto.forEach(save => saveToBrowserStorage({
+						data    : save.data,
+						dataKey : getAutoDataKeyFromIndex(save.index),
+						info    : save.info,
+						infoKey : getAutoInfoKeyFromIndex(save.index)
+					}));
+					bundle.slot.forEach(save => saveToBrowserStorage({
+						data    : save.data,
+						dataKey : getSlotDataKeyFromIndex(save.index),
+						info    : save.info,
+						infoKey : getSlotInfoKeyFromIndex(save.index)
+					}));
 
 					resolve(true);
 				}
