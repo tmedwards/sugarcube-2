@@ -59,10 +59,10 @@ var UIBar = (() => { // eslint-disable-line no-unused-vars, no-var
 
 		// Generate the UI bar elements.
 		const $elems = (() => {
-			const toggleLabel   = L10n.get('uiBarToggle');
-			const backwardLabel = L10n.get('uiBarBackward');
-			const jumptoLabel   = L10n.get('uiBarJumpto');
-			const forwardLabel  = L10n.get('uiBarForward');
+			const toggleLabel   = L10n.get('uiBarLabelToggle');
+			const backwardLabel = L10n.get('uiBarLabelBackward');
+			const jumptoLabel   = L10n.get('uiBarLabelJumpto');
+			const forwardLabel  = L10n.get('uiBarLabelForward');
 
 			return jQuery(document.createDocumentFragment())
 				.append(
@@ -157,21 +157,21 @@ var UIBar = (() => { // eslint-disable-line no-unused-vars, no-var
 		// Set up the #ui-bar-toggle and #ui-bar-history widgets.
 		jQuery('#ui-bar-toggle')
 			.ariaClick({
-				label : L10n.get('uiBarToggle')
+				label : L10n.get('uiBarLabelToggle')
 			}, () => _$uiBar.toggleClass('stowed'));
 
 		if (Config.history.controls) {
 			jQuery('#history-backward')
 				.ariaDisabled(State.length < 2)
 				.ariaClick({
-					label : L10n.get('uiBarBackward')
+					label : L10n.get('uiBarLabelBackward')
 				}, () => Engine.backward());
 
 			/* [DEPRECATED] */
 			if (Story.lookup('tags', 'bookmark').length > 0) {
 				jQuery('#history-jumpto')
 					.ariaClick({
-						label : L10n.get('uiBarJumpto')
+						label : L10n.get('uiBarLabelJumpto')
 					}, () => UI.jumpto());
 			}
 			else {
@@ -182,7 +182,7 @@ var UIBar = (() => { // eslint-disable-line no-unused-vars, no-var
 			jQuery('#history-forward')
 				.ariaDisabled(State.length === State.size)
 				.ariaClick({
-					label : L10n.get('uiBarForward')
+					label : L10n.get('uiBarLabelForward')
 				}, () => Engine.forward());
 		}
 		else {
@@ -227,7 +227,7 @@ var UIBar = (() => { // eslint-disable-line no-unused-vars, no-var
 					Save.browser.continue()
 						.then(
 							Engine.show,
-							ex => UI.alert(`${ex.message.toUpperFirst()}.</p><p>${L10n.get('aborting')}.`)
+							ex => UI.alert(`${ex.message.toUpperFirst()}.</p><p>${L10n.get('textAborting')}.`)
 						);
 				})
 				.text(L10n.get('continueTitle'));

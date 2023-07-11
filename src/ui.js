@@ -72,9 +72,9 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 			.create(L10n.get('restartTitle'), 'restart')
 			.append(
 				/* eslint-disable max-len */
-				  `<p>${L10n.get('restartPrompt')}</p><ul class="buttons">`
-				+ `<li><button id="restart-ok">${L10n.get(['restartOk', 'ok'])}</button></li>`
-				+ `<li><button id="restart-cancel" class="ui-close">${L10n.get(['restartCancel', 'cancel'])}</button></li>`
+				  `<p>${L10n.get('restartMesgPrompt')}</p><ul class="buttons">`
+				+ `<li><button id="restart-ok">${L10n.get(['restartTextOk', 'textOk'])}</button></li>`
+				+ `<li><button id="restart-cancel" class="ui-close">${L10n.get(['restartTextCancel', 'textCancel'])}</button></li>`
 				+ '</ul>'
 				/* eslint-enable max-len */
 			);
@@ -124,10 +124,10 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 				.on('change', callback);
 		}
 
-		function createActionItem(id, classNames, label, callback) {
+		function createActionItem(id, classNames, text, label, callback) {
 			const $btn = jQuery(document.createElement('button'))
 				.attr('id', `saves-${id}`)
-				.text(label);
+				.text(text);
 
 			if (classNames) {
 				$btn.addClass(classNames);
@@ -149,9 +149,9 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 				let btnText;
 
 				switch (id) {
-					case 'delete': btnText = L10n.get('savesLabelDelete'); break;
-					case 'load':   btnText = L10n.get('savesLabelLoad'); break;
-					case 'save':   btnText = L10n.get('savesLabelSave'); break;
+					case 'delete': btnText = L10n.get('textDelete'); break;
+					case 'load':   btnText = L10n.get('textLoad'); break;
+					case 'save':   btnText = L10n.get('textSave'); break;
 					default:       throw new Error(`buildSaves unknown ID "${id}"`);
 				}
 
@@ -197,8 +197,8 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 				// // Add the slot ID.
 				// $tdSlot
 				// 	.attr({
-				// 		title        : `${L10n.get('savesLabelAuto')} ${index + 1}`,
-				// 		'aria-label' : `${L10n.get('savesLabelAuto')} ${index + 1}`
+				// 		title        : `${L10n.get('savesTextBrowserAuto')} ${index + 1}`,
+				// 		'aria-label' : `${L10n.get('savesTextBrowserAuto')} ${index + 1}`
 				// 	})
 				// 	.text(`A${index + 1}`);
 
@@ -211,11 +211,11 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 					/* legacy */
 					.addClass('datestamp')
 					/* /legacy */
-					.text(`${L10n.get('savesLabelAuto')}\u00a0${index + 1}\u00a0\u00a0\u2022\u00a0\u00a0`)
+					.text(`${L10n.get('savesTextBrowserAuto')}\u00a0${index + 1}\u00a0\u00a0\u2022\u00a0\u00a0`)
 					.append(
 						info.date
 							? `${new Date(info.date).toLocaleString()}`
-							: `<em>${L10n.get('savesUnknownDate')}</em>`
+							: `<em>${L10n.get('savesTextNoDate')}</em>`
 					)
 					.appendTo($tdDesc);
 
@@ -223,14 +223,14 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 				$tdLoad.append(createButton(
 					'load',
 					'ui-close',
-					L10n.get('savesLabelAuto'),
+					L10n.get('savesTextBrowserAuto'),
 					index,
 					index => {
 						jQuery(document).one(':dialogclosed', () => {
 							Save.browser.auto.load(index)
 								.then(
 									Engine.show,
-									ex => showAlert(`${ex.message.toUpperFirst()}.</p><p>${L10n.get('aborting')}.`)
+									ex => showAlert(`${ex.message.toUpperFirst()}.</p><p>${L10n.get('textAborting')}.`)
 								);
 						});
 					}
@@ -240,7 +240,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 				$tdDele.append(createButton(
 					'delete',
 					null,
-					L10n.get('savesLabelAuto'),
+					L10n.get('savesTextBrowserAuto'),
 					index,
 					index => {
 						Save.browser.auto.delete(index);
@@ -282,8 +282,8 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 				// // Add the slot ID.
 				// $tdSlot
 				// 	.attr({
-				// 		title        : `${L10n.get('savesLabelSlot')} ${index + 1}`,
-				// 		'aria-label' : `${L10n.get('savesLabelSlot')} ${index + 1}`
+				// 		title        : `${L10n.get('savesTextBrowserSlot')} ${index + 1}`,
+				// 		'aria-label' : `${L10n.get('savesTextBrowserSlot')} ${index + 1}`
 				// 	})
 				// 	.text(index + 1);
 
@@ -297,11 +297,11 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 						/* legacy */
 						.addClass('datestamp')
 						/* /legacy */
-						.text(`${L10n.get('savesLabelSlot')}\u00a0${index + 1}\u00a0\u00a0\u2022\u00a0\u00a0`)
+						.text(`${L10n.get('savesTextBrowserSlot')}\u00a0${index + 1}\u00a0\u00a0\u2022\u00a0\u00a0`)
 						.append(
 							info.date
 								? `${new Date(info.date).toLocaleString()}`
-								: `<em>${L10n.get('savesUnknownDate')}</em>`
+								: `<em>${L10n.get('savesTextNoDate')}</em>`
 						)
 						.appendTo($tdDesc);
 
@@ -309,14 +309,14 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 					$tdLoad.append(createButton(
 						'load',
 						'ui-close',
-						L10n.get('savesLabelSlot'),
+						L10n.get('savesTextBrowserSlot'),
 						index,
 						index => {
 							jQuery(document).one(':dialogclosed', () => {
 								Save.browser.slot.load(index)
 									.then(
 										Engine.show,
-										ex => showAlert(`${ex.message.toUpperFirst()}.</p><p>${L10n.get('aborting')}.`)
+										ex => showAlert(`${ex.message.toUpperFirst()}.</p><p>${L10n.get('textAborting')}.`)
 									);
 							});
 						}
@@ -326,7 +326,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 					$tdDele.append(createButton(
 						'delete',
 						null,
-						L10n.get('savesLabelSlot'),
+						L10n.get('savesTextBrowserSlot'),
 						index,
 						index => {
 							Save.browser.slot.delete(index);
@@ -335,15 +335,27 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 					));
 				}
 				else {
-					// Add the description.
-					// $tdDesc.addClass('empty').text('\u2022\u00a0\u00a0\u2022\u00a0\u00a0\u2022');
+					// Add the, mostly empty, description and details.
+					//
+					// QUESTION: Should `$tdDesc` also get `aria-hidden="true"`?  The
+					// `empty` class has `speak: none`, but that may be insufficient.
 					$tdDesc.addClass('empty');
+					jQuery(document.createElement('div'))
+						.text('\u00a0')
+						.appendTo($tdDesc);
+					jQuery(document.createElement('div'))
+						.addClass('details')
+						/* legacy */
+						.addClass('datestamp')
+						/* /legacy */
+						.text(`${L10n.get('savesTextBrowserSlot')}\u00a0${index + 1}`)
+						.appendTo($tdDesc);
 
 					// Add the save button, possibly disabled.
 					$tdLoad.append(createButton(
 						'save',
 						'ui-close',
-						L10n.get('savesLabelSlot'),
+						L10n.get('savesTextBrowserSlot'),
 						index,
 						index < Config.saves.maxSlotSaves && slotAllowed
 							? Save.browser.slot.save
@@ -354,7 +366,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 					$tdDele.append(createButton(
 						'delete',
 						null,
-						L10n.get('savesLabelSlot'),
+						L10n.get('savesTextBrowserSlot'),
 						index
 					));
 				}
@@ -408,7 +420,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 							buildSaves,
 							ex => {
 								Dialog.close();
-								showAlert(`${ex.message.toUpperFirst()}.</p><p>${L10n.get('aborting')}.`);
+								showAlert(`${ex.message.toUpperFirst()}.</p><p>${L10n.get('textAborting')}.`);
 							}
 						);
 				});
@@ -417,13 +429,15 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 					.append(createActionItem(
 						'export',
 						null,
-						L10n.get('savesLabelExport'),
+						`${L10n.get('textExport')}\u2026`,
+						L10n.get('savesLabelBrowserExport'),
 						() => Save.browser.export(`saves-export-${Story.name}`)
 					))
 					.append(createActionItem(
 						'import',
 						null,
-						L10n.get('savesLabelImport'),
+						`${L10n.get('textImport')}\u2026`,
+						L10n.get('savesLabelBrowserImport'),
 						() => $slotImportInput.trigger('click')
 					));
 
@@ -434,7 +448,8 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 			$slotButtons.append(createActionItem(
 				'clear',
 				null,
-				L10n.get('savesLabelClear'),
+				L10n.get('textClear'),
+				L10n.get('savesLabelBrowserClear'),
 				Save.browser.size > 0
 					? () => {
 						Save.browser.clear();
@@ -463,7 +478,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 							Engine.show,
 							ex => {
 								Dialog.close();
-								showAlert(`${ex.message.toUpperFirst()}.</p><p>${L10n.get('aborting')}.`);
+								showAlert(`${ex.message.toUpperFirst()}.</p><p>${L10n.get('textAborting')}.`);
 							}
 						);
 				});
@@ -474,6 +489,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 				.append(createActionItem(
 					'disk-save',
 					null,
+					`${L10n.get('textSave')}\u2026`,
 					L10n.get('savesLabelDiskSave'),
 					typeof Config.saves.isAllowed !== 'function' || Config.saves.isAllowed(Save.Type.Disk)
 						? () => Save.disk.save(Story.name)
@@ -482,6 +498,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 				.append(createActionItem(
 					'disk-load',
 					null,
+					`${L10n.get('textLoad')}\u2026`,
 					L10n.get('savesLabelDiskLoad'),
 					() => $diskLoadInput.trigger('click')
 				));
@@ -620,11 +637,11 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 					if (Setting.getValue(name)) {
 						$control
 							.addClass('enabled')
-							.text(L10n.get('settingsOn'));
+							.text(L10n.get('textOn'));
 					}
 					else {
 						$control
-							.text(L10n.get('settingsOff'));
+							.text(L10n.get('textOff'));
 					}
 
 					$control.ariaClick(function () {
@@ -633,12 +650,12 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 						if (status) {
 							jQuery(this)
 								.removeClass('enabled')
-								.text(L10n.get('settingsOff'));
+								.text(L10n.get('textOff'));
 						}
 						else {
 							jQuery(this)
 								.addClass('enabled')
-								.text(L10n.get('settingsOn'));
+								.text(L10n.get('textOn'));
 						}
 
 						Setting.setValue(name, !status);
@@ -661,8 +678,8 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 		$dialogBody
 			.append(
 				  '<ul class="buttons">'
-				+     `<li><button id="settings-ok" class="ui-close">${L10n.get(['settingsOk', 'ok'])}</button></li>`
-				+     `<li><button id="settings-reset">${L10n.get('settingsReset')}</button></li>`
+				+     `<li><button id="settings-ok" class="ui-close">${L10n.get(['settingsTextOk', 'textOk'])}</button></li>`
+				+     `<li><button id="settings-reset">${L10n.get('settingsTextReset')}</button></li>`
 				+ '</ul>'
 			)
 			.find('#settings-reset')
@@ -694,7 +711,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 			.create(L10n.get('alertTitle'), 'alert')
 			.append(
 				  `<p>${message}</p><ul class="buttons">`
-				+ `<li><button id="alert-ok" class="ui-close">${L10n.get(['alertOk', 'ok'])}</button></li>`
+				+ `<li><button id="alert-ok" class="ui-close">${L10n.get(['alertTextOk', 'textOk'])}</button></li>`
 				+ '</ul>'
 			)
 			.open(...args);
@@ -730,9 +747,9 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 			.create(L10n.get('autoloadTitle'), 'autoload')
 			.append(
 				/* eslint-disable max-len */
-				  `<p>${L10n.get('autoloadPrompt')}</p><ul class="buttons">`
-				+ `<li><button id="autoload-ok" class="ui-close">${L10n.get(['autoloadOk', 'ok'])}</button></li>`
-				+ `<li><button id="autoload-cancel" class="ui-close">${L10n.get(['autoloadCancel', 'cancel'])}</button></li>`
+				  `<p>${L10n.get('autoloadMesgPrompt')}</p><ul class="buttons">`
+				+ `<li><button id="autoload-ok" class="ui-close">${L10n.get(['autoloadTextOk', 'textOk'])}</button></li>`
+				+ `<li><button id="autoload-cancel" class="ui-close">${L10n.get(['autoloadTextCancel', 'textCancel'])}</button></li>`
 				+ '</ul>'
 				/* eslint-enable max-len */
 			);
@@ -793,14 +810,14 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 								return () => jQuery(document).one(':dialogclosed', () => Engine.goTo(index));
 							})(i))
 							.addClass('ui-close')
-							.text(`${L10n.get('jumptoTurn')} ${expired + i + 1}`)
+							.text(`${L10n.get('textTurn')} ${expired + i + 1}`)
 					)
 					.appendTo(list);
 			}
 		}
 
 		if (!list.hasChildNodes()) {
-			jQuery(list).append(`<li><a><em>${L10n.get('jumptoUnavailable')}</em></a></li>`);
+			jQuery(list).append(`<li><a><em>${L10n.get('jumptoMesgUnavailable')}</em></a></li>`);
 		}
 	}
 

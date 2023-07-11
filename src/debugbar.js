@@ -31,32 +31,32 @@ var DebugBar = (() => { // eslint-disable-line no-unused-vars, no-var
 		/*
 			Generate the debug bar elements and append them to the `<body>`.
 		*/
-		const barToggleLabel   = L10n.get('debugBarToggle');
-		const watchAddLabel    = L10n.get('debugBarAddWatch');
-		const watchAllLabel    = L10n.get('debugBarWatchAll');
-		const watchNoneLabel   = L10n.get('debugBarWatchNone');
-		const watchToggleLabel = L10n.get('debugBarWatchToggle');
-		const viewsToggleLabel = L10n.get('debugBarViewsToggle');
+		const barToggleLabel   = L10n.get('debugBarLabelToggle');
+		const watchAddLabel    = L10n.get('debugBarLabelWatchAdd');
+		const watchAllLabel    = L10n.get('debugBarLabelWatchAll');
+		const watchClearLabel  = L10n.get('debugBarLabelWatchClear');
+		const watchToggleLabel = L10n.get('debugBarLabelWatchToggle');
+		const viewsToggleLabel = L10n.get('debugBarLabelViewsToggle');
 
 		jQuery(document.createDocumentFragment())
 			.append(
 				/* eslint-disable max-len */
 				  '<div id="debug-bar">'
 				+     '<div id="debug-bar-watch">'
-				+         `<div>${L10n.get('debugBarNoWatches')}</div>>`
+				+         `<div>\u2014 ${L10n.get('debugBarMesgNoWatches')} \u2014</div>>`
 				+     '</div>'
 				+     '<div>'
-				+         `<button id="debug-bar-watch-toggle" tabindex="0" title="${watchToggleLabel}" aria-label="${watchToggleLabel}">${L10n.get('debugBarLabelWatch')}</button>`
-				+         `<label id="debug-bar-watch-label" for="debug-bar-watch-input">${L10n.get('debugBarLabelAdd')}</label>`
-				+         '<input id="debug-bar-watch-input" name="debug-bar-watch-input" type="text" list="debug-bar-watch-list" tabindex="0">'
+				+         `<button id="debug-bar-watch-toggle" tabindex="0" title="${watchToggleLabel}" aria-label="${watchToggleLabel}">${L10n.get('debugBarTextWatch')}</button>`
+				+         `<label id="debug-bar-watch-label" for="debug-bar-watch-input">${L10n.get('debugBarTextAdd')}</label>`
+				+         `<input id="debug-bar-watch-input" name="debug-bar-watch-input" type="text" placeholder="${L10n.get('debugBarLabelWatchPlaceholder')}" list="debug-bar-watch-list" tabindex="0">`
 				+         '<datalist id="debug-bar-watch-list" aria-hidden="true" hidden="hidden"></datalist>'
 				+         `<button id="debug-bar-watch-add" tabindex="0" title="${watchAddLabel}" aria-label="${watchAddLabel}"></button>`
 				+         `<button id="debug-bar-watch-all" tabindex="0" title="${watchAllLabel}" aria-label="${watchAllLabel}"></button>`
-				+         `<button id="debug-bar-watch-none" tabindex="0" title="${watchNoneLabel}" aria-label="${watchNoneLabel}"></button>`
+				+         `<button id="debug-bar-watch-clear" tabindex="0" title="${watchClearLabel}" aria-label="${watchClearLabel}"></button>`
 				+     '</div>'
 				+     '<div>'
-				+         `<button id="debug-bar-views-toggle" tabindex="0" title="${viewsToggleLabel}" aria-label="${viewsToggleLabel}">${L10n.get('debugBarLabelViews')}</button>`
-				+         `<label id="debug-bar-turn-label" for="debug-bar-turn-select">${L10n.get('debugBarLabelTurn')}</label>`
+				+         `<button id="debug-bar-views-toggle" tabindex="0" title="${viewsToggleLabel}" aria-label="${viewsToggleLabel}">${L10n.get('debugBarTextViews')}</button>`
+				+         `<label id="debug-bar-turn-label" for="debug-bar-turn-select">${L10n.get('textTurn')}</label>`
 				+         '<select id="debug-bar-turn-select" tabindex="0"></select>'
 				+     '</div>'
 				+     `<button id="debug-bar-toggle" tabindex="0" title="${barToggleLabel}" aria-label="${barToggleLabel}"></button>`
@@ -83,7 +83,7 @@ var DebugBar = (() => { // eslint-disable-line no-unused-vars, no-var
 		const $watchInput  = jQuery(_$debugBar.find('#debug-bar-watch-input').get(0));
 		const $watchAdd    = jQuery(_$debugBar.find('#debug-bar-watch-add').get(0));
 		const $watchAll    = jQuery(_$debugBar.find('#debug-bar-watch-all').get(0));
-		const $watchNone   = jQuery(_$debugBar.find('#debug-bar-watch-none').get(0));
+		const $watchClear  = jQuery(_$debugBar.find('#debug-bar-watch-clear').get(0));
 		const $viewsToggle = jQuery(_$debugBar.find('#debug-bar-views-toggle').get(0));
 
 		/*
@@ -108,7 +108,7 @@ var DebugBar = (() => { // eslint-disable-line no-unused-vars, no-var
 			.ariaClick(() => $watchInput.trigger(':addwatch'));
 		$watchAll
 			.ariaClick(debugBarWatchAddAll);
-		$watchNone
+		$watchClear
 			.ariaClick(debugBarWatchClear);
 		_$turnSelect
 			.on('change', function () {
@@ -324,11 +324,11 @@ var DebugBar = (() => { // eslint-disable-line no-unused-vars, no-var
 		if (_watchList.length === 0) {
 			_$watchBody
 				.empty()
-				.append(`<div>${L10n.get('debugBarNoWatches')}</div>`);
+				.append(`<div>\u2014 ${L10n.get('debugBarMesgNoWatches')} \u2014</div>`);
 			return;
 		}
 
-		const delLabel = L10n.get('debugBarDeleteWatch');
+		const delLabel = L10n.get('debugBarLabelWatchDelete');
 		const $table   = jQuery(document.createElement('table'));
 		const $tbody   = jQuery(document.createElement('tbody'));
 

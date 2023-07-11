@@ -49,7 +49,6 @@
 #ui-dialog-body.saves .empty {
 	color: #999;
 	speak: none;
-	text-align: center;
 	user-select: none;
 }
 #ui-dialog-body.saves .details {

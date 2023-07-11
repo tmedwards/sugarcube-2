@@ -128,7 +128,7 @@ var Passage = (() => { // eslint-disable-line no-unused-vars, no-var
 		get text() {
 			if (this.element == null) { // lazy equality for null
 				const passage = encodeMarkup(this.name);
-				const mesg    = `${L10n.get('errorTitle')}: ${L10n.get('errorNonexistentPassage', { passage })}`;
+				const mesg    = `${L10n.get('errorViewTitle')}: ${L10n.get('errorNonexistentPassage', { passage })}`;
 				return `<div class="error-view"><span class="error">${mesg}</span></div>`;
 			}
 
@@ -182,7 +182,7 @@ var Passage = (() => { // eslint-disable-line no-unused-vars, no-var
 
 		/* legacy */
 		description() { // eslint-disable-line class-methods-use-this
-			return `${L10n.get('turn')} ${State.turns}`;
+			return `${L10n.get('textTurn')} ${State.turns}`;
 		}
 		/* /legacy */
 	}

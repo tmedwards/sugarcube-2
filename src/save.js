@@ -186,7 +186,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			desc = String(Config.saves.descriptions(saveType)).trim();
 		}
 
-		details.desc = desc || `${L10n.get('turn')} ${State.turns}`;
+		details.desc = desc || `${L10n.get('textTurn')} ${State.turns}`;
 
 		const fullMetadata = Object.assign({}, cfgMetadata, metadata);
 
@@ -754,7 +754,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			typeof Config.saves.isAllowed === 'function'
 			&& !Config.saves.isAllowed(Type.Disk)
 		) {
-			throw new Error(L10n.get('savesDisallowed'));
+			throw new Error(L10n.get('saveErrorDisallowed'));
 		}
 
 		const details = createDetails(Type.Disk, filename, metadata);
@@ -801,7 +801,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			typeof Config.saves.isAllowed === 'function'
 			&& !Config.saves.isAllowed(Type.Base64)
 		) {
-			throw new Error(L10n.get('savesDisallowed'));
+			throw new Error(L10n.get('saveErrorDisallowed'));
 		}
 
 		const details = createDetails(Type.Base64, null, metadata);

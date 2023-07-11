@@ -104,7 +104,7 @@
 	color: #c00;
 }
 #debug-bar-watch-all,
-#debug-bar-watch-none {
+#debug-bar-watch-clear {
 	margin-left: 0.5em;
 }
 #debug-bar-watch-toggle,
@@ -136,7 +136,7 @@ html[data-debug-view] #debug-bar-views-toggle:hover {
 #debug-bar-watch .watch-delete::before,
 #debug-bar-watch-add::before,
 #debug-bar-watch-all::before,
-#debug-bar-watch-none::before,
+#debug-bar-watch-clear::before,
 #debug-bar-watch-toggle::after,
 #debug-bar-views-toggle::after {
 	@mixin tme-fa-icons-properties;
@@ -156,7 +156,7 @@ html[data-debug-view] #debug-bar-views-toggle:hover {
 #debug-bar-watch-all::before {
 	content: "\e83a";
 }
-#debug-bar-watch-none::before {
+#debug-bar-watch-clear::before {
 	content: "\e827";
 }
 #debug-bar-watch-toggle::after,
