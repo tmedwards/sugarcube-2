@@ -19,109 +19,109 @@ var Util = Object.preventExtensions(Object.create(null, { // eslint-disable-line
 	charAndPosAt : {
 		value(...args) {
 			console.warn('[DEPRECATED] Util.charAndPosAt() is deprecated.');
-			charAndPosAt(...args);
+			return charAndPosAt(...args);
 		}
 	},
 	escape : {
 		value(...args) {
 			console.warn('[DEPRECATED] Util.escape() is deprecated.');
-			encodeEntities(...args);
+			return encodeEntities(...args);
 		}
 	},
 	escapeMarkup : {
 		value(...args) {
 			console.warn('[DEPRECATED] Util.escapeMarkup() is deprecated.');
-			encodeMarkup(...args);
+			return encodeMarkup(...args);
 		}
 	},
 	fromCssProperty : {
 		value(...args) {
 			console.warn('[DEPRECATED] Util.fromCssProperty() is deprecated.');
-			cssPropToDOMProp(...args);
+			return cssPropToDOMProp(...args);
 		}
 	},
 	fromCssTime : {
 		value(...args) {
 			console.warn('[DEPRECATED] Util.fromCssTime() is deprecated.');
-			cssTimeToMS(...args);
+			return cssTimeToMS(...args);
 		}
 	},
 	getType : {
 		value(...args) {
 			console.warn('[DEPRECATED] Util.getType() is deprecated.');
-			getTypeOf(...args);
+			return getTypeOf(...args);
 		}
 	},
 	hasMediaQuery : {
 		value(...args) {
 			console.warn('[DEPRECATED] Util.hasMediaQuery() is deprecated.');
-			hasMediaQuery(...args);
+			return hasMediaQuery(...args);
 		}
 	},
 	newExceptionFrom : {
 		value(...args) {
 			console.warn('[DEPRECATED] Util.newExceptionFrom() is deprecated.');
-			exceptionFrom(...args);
+			return exceptionFrom(...args);
 		}
 	},
 	now : {
 		value(...args) {
 			console.warn('[DEPRECATED] Util.now() is deprecated.');
-			now(...args);
+			return now(...args);
 		}
 	},
 	parseUrl : {
 		value(...args) {
 			console.warn('[DEPRECATED] Util.parseUrl() is deprecated.');
-			parseURL(...args);
+			return parseURL(...args);
 		}
 	},
 	sameValueZero : {
 		value(...args) {
 			console.warn('[DEPRECATED] Util.sameValueZero() is deprecated.');
-			sameValueZero(...args);
+			return sameValueZero(...args);
 		}
 	},
 	sanitizeFilename : {
 		value(...args) {
 			console.warn('[DEPRECATED] Util.sanitizeFilename() is deprecated.');
-			createFilename(...args);
+			return createFilename(...args);
 		}
 	},
 	scrubEventKey : {
 		value(...args) {
 			console.warn('[DEPRECATED] Util.scrubEventKey() is deprecated.');
-			scrubEventKey(...args);
+			return scrubEventKey(...args);
 		}
 	},
 	slugify : {
 		value(...args) {
 			console.warn('[DEPRECATED] Util.slugify() is deprecated.');
-			createSlug(...args);
+			return createSlug(...args);
 		}
 	},
 	toCssTime : {
 		value(...args) {
 			console.warn('[DEPRECATED] Util.toCssTime() is deprecated.');
-			msToCSSTime(...args);
+			return msToCSSTime(...args);
 		}
 	},
 	toEnum : {
 		value(...args) {
 			console.warn('[DEPRECATED] Util.toEnum() is deprecated.');
-			enumFrom(...args);
+			return enumFrom(...args);
 		}
 	},
 	toStringTag : {
 		value(...args) {
 			console.warn('[DEPRECATED] Util.toStringTag() is deprecated.');
-			getToStringTag(...args);
+			return getToStringTag(...args);
 		}
 	},
 	unescape : {
 		value(...args) {
 			console.warn('[DEPRECATED] Util.unescape() is deprecated.');
-			decodeEntities(...args);
+			return decodeEntities(...args);
 		}
 	}
 }));
