@@ -37,7 +37,7 @@ Some changes within this version are <strong>breaking changes</strong> that you 
 		</tr>
 		<tr>
 			<td><code>&lt;Array&gt;.contains()</code></td>
-			<td>This instance method has been removed.  See the <a href="#methods-array-prototype-method-includes"><code>&lt;Array&gt;.includes()</code></a> instance method.</td>
+			<td>The polyfill for this instance method has been removed.  See the <a href="#methods-array-prototype-method-includes"><code>&lt;Array&gt;.includes()</code></a> instance method.</td>
 		</tr>
 		<tr>
 			<td><code>&lt;Array&gt;.containsAll()</code></td>
@@ -59,26 +59,34 @@ Some changes within this version are <strong>breaking changes</strong> that you 
 <table>
 	<thead>
 		<tr>
-			<th>Property</th>
+			<th>Setting</th>
 			<th>Change</th>
 		</tr>
 	</thead>
 	<tbody>
 		<tr>
-			<td><code>?</code></td>
-			<td>?</td>
+			<td><code>Config.passages.descriptions</code></td>
+			<td>This setting has been deprecated and should no longer be used.  See the <a href="#config-api-property-saves-descriptions"><code>Config.saves.descriptions</code></a> setting for its replacement.</td>
 		</tr>
-
+		<tr>
+			<td><code>Config.saves.autoload</code></td>
+			<td>This setting has been deprecated and should no longer be used.  The default UI now includes a <i>Continue</i> button, which loads the latest save.  If disabling or replacing the default UI, see the <a href="#save-api-browser-method-continue"><code>Save.browser.continue()</code> method</a> to replicate the functionality.</td>
+		</tr>
 		<tr>
 			<td><code>Config.saves.autosave</code></td>
-			<td>
-
-				FIX THIS!
-
-				<p>This setting property has been has been deprecated.</p>
-				<p>This setting property has been updated to accept function values and its acceptance of string values has been deprecated.  String values will still be accepted for further releases of v2, however, switching to an array is recommended—e.g., the string value <code>"autosave"</code> would become the array <code>["autosave"]</code>.  See the <a href="#config-api-property-saves-autosave"><code>Config.saves.autosave</code> property</a> for more information.</p>
-
-			</td>
+			<td>This setting has been deprecated and should no longer be used.  See the <a href="#config-api-property-saves-maxautosaves"><code>Config.saves.maxAutoSaves</code></a> setting to set the number of available auto saves and the <a href="#config-api-property-saves-isallowed"><code>Config.saves.isAllowed</code></a> setting to control when new auto saves are created.</td>
+		</tr>
+		<tr>
+			<td><code>Config.saves.isAllowed</code></td>
+			<td>This setting, to which you assign a function, has had the parameters provided to the assigned function changed.  See <a href="#config-api-property-saves-isallowed">its documentation entry</a> for details.</td>
+		</tr>
+		<tr>
+			<td><code>Config.saves.slots</code></td>
+			<td>This setting has been deprecated and should no longer be used.  See the <a href="#config-api-property-saves-maxslotsaves"><code>Config.saves.maxSlotSaves</code></a> setting for its replacement.</td>
+		</tr>
+		<tr>
+			<td><code>Config.saves.tryDiskOnMobile</code></td>
+			<td>This setting has been deprecated and should no longer be used.  Saving to disk on mobile devices is now unconditionally enabled.</td>
 		</tr>
 	</tbody>
 </table>

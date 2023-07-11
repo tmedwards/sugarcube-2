@@ -108,9 +108,9 @@ Save types pseudo-enumeration.  Used to denote the type of save.
 
 
 <!-- ***************************************************************************
-	Browser Saves, General
+	Browser Saves: General
 **************************************************************************** -->
-## Browser Saves, General {#save-api-browser}
+## Browser Saves: General {#save-api-browser}
 
 <!-- *********************************************************************** -->
 
@@ -171,6 +171,10 @@ Save.browser.clear();
 ### `Save.browser.continue()` → `Promise` {#save-api-browser-method-continue}
 
 Loads the most recent browser save, either auto or slot.
+
+<p role="note"><b>Note:</b>
+The default UI includes a <i>Continue</i> button that makes use of this API.  Thus, unless you disable or replace the default UI, players already have access to this functionality.</td>
+</p>
 
 #### History:
 
@@ -361,9 +365,9 @@ if (Save.browser.isEnabled()) {
 
 
 <!-- ***************************************************************************
-	Browser Saves, Auto
+	Browser Saves: Auto
 **************************************************************************** -->
-## Browser Saves, Auto<!-- legacy --><span id="save-api-autosave"></span><!-- /legacy --> {#save-api-browser-auto}
+## Browser Saves: Auto<!-- legacy --><span id="save-api-autosave"></span><!-- /legacy --> {#save-api-browser-auto}
 
 <!-- *********************************************************************** -->
 
@@ -705,9 +709,9 @@ catch (error) {
 
 
 <!-- ***************************************************************************
-	Browser Saves, Slot
+	Browser Saves: Slot
 **************************************************************************** -->
-## Browser Saves, Slot<!-- legacy --><span id="save-api-slots"></span><!-- /legacy --> {#save-api-browser-slot}
+## Browser Saves: Slot<!-- legacy --><span id="save-api-slots"></span><!-- /legacy --> {#save-api-browser-slot}
 
 <!-- *********************************************************************** -->
 
