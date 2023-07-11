@@ -1003,43 +1003,152 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 		/*
 			Legacy API.
 		*/
-		// get   : { value : savesObjGet },
-		clear : { value : browserClear },
-		ok    : { value : browserIsEnabled },
+		get : {
+			value() {
+				throw new Error('[REMOVED] Save.get() has been removed.');
+			}
+		},
+		clear : {
+			value() {
+				console.warn('[DEPRECATED] Save.clear() is deprecated.');
+				return browserClear();
+			}
+		},
+		ok : {
+			value() {
+				console.warn('[DEPRECATED] Save.ok() is deprecated.');
+				return browserIsEnabled();
+			}
+		},
 
 		// Autosave Functions.
 		autosave : {
 			value : Object.preventExtensions(Object.create(null, {
-				ok     : { value : autoIsEnabled },
-				has    : { value() { autoHas(0); } },
-				get    : { value() { autoGet(0); } },
-				load   : { value() { autoLoad(0); } },
-				save   : { value : autoSave },
-				delete : { value() { autoDelete(0); } }
+				ok : {
+					value() {
+						console.warn('[DEPRECATED] Save.autosave.ok() is deprecated.');
+						return autoIsEnabled();
+					}
+				},
+				has : {
+					value() {
+						console.warn('[DEPRECATED] Save.autosave.has() is deprecated.');
+						return autoHas(0);
+					}
+				},
+				get : {
+					value() {
+						console.warn('[DEPRECATED] Save.autosave.get() is deprecated.');
+						return autoGet(0);
+					}
+				},
+				load : {
+					value() {
+						console.warn('[DEPRECATED] Save.autosave.load() is deprecated.');
+						return autoLoad(0);
+					}
+				},
+				save : {
+					value(...args) {
+						console.warn('[DEPRECATED] Save.autosave.save() is deprecated.');
+						return autoSave(...args);
+					}
+				},
+				delete : {
+					value() {
+						console.warn('[DEPRECATED] Save.autosave.delete() is deprecated.');
+						return autoDelete(0);
+					}
+				}
 			}))
 		},
 
 		// Slots Functions.
 		slots : {
 			value : Object.preventExtensions(Object.create(null, {
-				ok      : { value : slotIsEnabled },
-				length  : { get : slotSize },
-				isEmpty : { value() { return slotEntries().length === 0; } },
-				count   : { value() { return slotEntries().length; } },
-				has     : { value : slotHas },
-				get     : { value : slotGet },
-				load    : { value : slotLoad },
-				save    : { value : slotSave },
-				delete  : { value : slotDelete }
+				ok : {
+					value() {
+						console.warn('[DEPRECATED] Save.slots.ok() is deprecated.');
+						return slotIsEnabled();
+					}
+				},
+				length : {
+					get() {
+						console.warn('[DEPRECATED] Save.slots.length is deprecated.');
+						return slotSize();
+					}
+				},
+				isEmpty : {
+					value() {
+						console.warn('[DEPRECATED] Save.slots.isEmpty() is deprecated.');
+						return slotEntries().length === 0;
+					}
+				},
+				count : {
+					value() {
+						console.warn('[DEPRECATED] Save.slots.count() is deprecated.');
+						return slotEntries().length;
+					}
+				},
+				has : {
+					value(...args) {
+						console.warn('[DEPRECATED] Save.slots.has() is deprecated.');
+						return slotHas(...args);
+					}
+				},
+				get : {
+					value(...args) {
+						console.warn('[DEPRECATED] Save.slots.get() is deprecated.');
+						return slotGet(...args);
+					}
+				},
+				load : {
+					value(...args) {
+						console.warn('[DEPRECATED] Save.slots.load() is deprecated.');
+						return slotLoad(...args);
+					}
+				},
+				save : {
+					value(...args) {
+						console.warn('[DEPRECATED] Save.slots.save() is deprecated.');
+						return slotSave(...args);
+					}
+				},
+				delete : {
+					value(...args) {
+						console.warn('[DEPRECATED] Save.slots.delete() is deprecated.');
+						return slotDelete(...args);
+					}
+				}
 			}))
 		},
 
 		// Disk Import/Export Functions.
-		export : { value : diskSave },
-		import : { value : diskLoad },
+		export : {
+			value(...args) {
+				console.warn('[DEPRECATED] Save.export() is deprecated.');
+				return diskSave(...args);
+			}
+		},
+		import : {
+			value(...args) {
+				console.warn('[DEPRECATED] Save.import() is deprecated.');
+				return diskLoad(...args);
+			}
+		},
 
 		// Serialization Saves Functions.
-		serialize   : { value : base64Save },
-		deserialize : { value : base64Load }
+		serialize : {
+			value(...args) {
+				console.warn('[DEPRECATED] Save.serialize() is deprecated.');
+				return base64Save(...args);
+			}
+		},
+		deserialize : {
+			value(...args) {
+				console.warn('[DEPRECATED] Save.deserialize() is deprecated.');
+				return base64Load(...args);
+			}
+		}
 	}));
 })();
