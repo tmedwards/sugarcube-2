@@ -213,7 +213,7 @@ Load the most recent browser save, handling both success and failure.
 ```js
 if (Save.browser.size > 0) {
 	Save.browser.continue()
-		.then(metadata => {
+		.then(() => {
 			/* Success.  Do something special. */
 		})
 		.catch(error => {
