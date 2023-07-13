@@ -643,10 +643,11 @@
 * [What Happens When a Save is Loaded?](#guide-state-sessions-and-saving-what-happens-when-a-save-is-loaded)
 * [Refreshing and Restarting](#guide-state-sessions-and-saving-refreshing-and-restarting)
 
+## [Guide: Non-generic object types (classes)](#guide-non-generic-object-types)
+
 ## [Guide: Tips](#guide-tips)
 
 * [Arbitrarily long return](#guide-tips-arbitrarily-long-return)
-* [Non-generic object types (a.k.a. classes)](#guide-tips-non-generic-object-types)
 
 ## [Guide: Media Passages](#guide-media-passages)
 
