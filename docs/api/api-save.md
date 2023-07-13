@@ -148,7 +148,7 @@ if (Save.browser.size === 0) {
 
 ### `Save.browser.clear()` {#save-api-browser-method-clear}
 
-Deletes all exisring browser saves, both auto and slot.
+Deletes all existing browser saves, both auto and slot.
 
 #### History:
 
@@ -341,7 +341,7 @@ jQuery(document.createElement('input'))
 
 ### `Save.browser.isEnabled()` → `boolean` {#save-api-browser-method-isenabled}
 
-Deermines whether any browser saves are enabled, either auto, slot, or both.
+Determines whether any browser saves are enabled, either auto, slot, or both.
 
 #### History:
 
