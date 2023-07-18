@@ -271,12 +271,12 @@ Comparison operators compare their operands and return a boolean value based on 
 </tr>
 <tr>
 <th><code>eq</code></th>
-<td>Evaluates to <code>true</code> if both sides are <span title="Both sides have the same value or coerce into the same value." class="info">equivalent</span>.  Not recommended, use the `is` operator instead.</td>
+<td>Evaluates to <code>true</code> if both sides are <span title="Both sides have the same value or coerce into the same value." class="info">equivalent</span>.  Not recommended, use the <code>is</code> operator.</td>
 <td><pre><code>$bullets eq 6</code></pre></td>
 </tr>
 <tr>
 <th><code>neq</code></th>
-<td>Evaluates to <code>true</code> if both sides are <span title="Both sides do not have the same value nor do they coerce into the same value." class="info">not equivalent</span>.  Not recommended, use the `isnot` operator instead.</td>
+<td>Evaluates to <code>true</code> if both sides are <span title="Both sides do not have the same value nor do they coerce into the same value." class="info">not equivalent</span>.  Not recommended, use the <code>isnot</code> operator.</td>
 <td><pre><code>$pie neq "cherry"</code></pre></td>
 </tr>
 <tr>
@@ -354,12 +354,12 @@ The <code>def</code> and <code>ndef</code> operators have very low precedence, s
 </tr>
 <tr>
 <th><code>==</code></th>
-<td>Evaluates to <code>true</code> if both sides are <span title="Both sides have the same value or coerce into the same value." class="info">equivalent</span>.  Not recommended, use the `===` operator instead.</td>
+<td>Evaluates to <code>true</code> if both sides are <span title="Both sides have the same value or coerce into the same value." class="info">equivalent</span>.  Not recommended, use the <code>===</code> operator.</td>
 <td><pre><code>$bullets == 6</code></pre></td>
 </tr>
 <tr>
 <th><code>!=</code></th>
-<td>Evaluates to <code>true</code> if both sides are <span title="Both sides do not have the same value nor do they coerce into the same value." class="info">not equivalent</span>.  Not recommended, use the `!==` operator instead.</td>
+<td>Evaluates to <code>true</code> if both sides are <span title="Both sides do not have the same value nor do they coerce into the same value." class="info">not equivalent</span>.  Not recommended, use the <code>!==</code> operator.</td>
 <td><pre><code>$pie != "cherry"</code></pre></td>
 </tr>
 <tr>
