@@ -85,7 +85,7 @@ The following types of values are natively supported by SugarCube and may be saf
 
 Any supported object type may itself contain any supported primitive or object type.
 
-Unsupported object types, either native or custom, can be made compatible by implementing `.clone()` and `.toJSON()` methods for them—see the [*Non-generic object types (a.k.a. classes)* guide](#guide-tips-non-generic-object-types) for more information.
+Unsupported object types, either native or custom, can be made compatible by implementing `.clone()` and `.toJSON()` methods for them—see the [*Non-generic object types (classes)* guide](#guide-non-generic-object-types) for more information.
 
 <div role="note" class="warning"><b>Warning:</b>
 <p>Due to how SugarCube stores the state history a few constructs are <strong><em>not supported</em></strong> within story variables.</p>
@@ -158,7 +158,7 @@ Operators join together operands, which are formed from either basic or complex 
 
 In both TwineScript and JavaScript there are *binary* and *unary* operators—n.b., Javascript also includes a *ternary* operator, the conditional operator.  Binary operators require two operands, one before and one after the operator, while unary operators only require one operand, either before or after the operator.
 
-Binary examples:
+Binary operator examples:
 
 ```js
 // operand1 OPERATOR operand2
@@ -166,7 +166,7 @@ Binary examples:
 $a = 5
 ```
 
-Unary examples:
+Unary operator examples:
 
 ```js
 // operand OPERATOR
@@ -271,12 +271,12 @@ Comparison operators compare their operands and return a boolean value based on 
 </tr>
 <tr>
 <th><code>eq</code></th>
-<td>Evaluates to <code>true</code> if both sides are <span title="Both sides have the same value or coerce into the same value." class="info">equivalent</span>.</td>
+<td>Evaluates to <code>true</code> if both sides are <span title="Both sides have the same value or coerce into the same value." class="info">equivalent</span>.  Not recommended, use the `is` operator instead.</td>
 <td><pre><code>$bullets eq 6</code></pre></td>
 </tr>
 <tr>
 <th><code>neq</code></th>
-<td>Evaluates to <code>true</code> if both sides are <span title="Both sides do not have the same value nor do they coerce into the same value." class="info">not equivalent</span>.</td>
+<td>Evaluates to <code>true</code> if both sides are <span title="Both sides do not have the same value nor do they coerce into the same value." class="info">not equivalent</span>.  Not recommended, use the `isnot` operator instead.</td>
 <td><pre><code>$pie neq "cherry"</code></pre></td>
 </tr>
 <tr>
@@ -316,12 +316,12 @@ Comparison operators compare their operands and return a boolean value based on 
 </tr>
 <tr>
 <th><code>def</code></th>
-<td>Evaluates to <code>true</code> if the right side is defined.</td>
+<td>Evaluates to <code>true</code> if the right side is defined.  See the precedence warning below.</td>
 <td><pre><code>def $mushrooms</code></pre></td>
 </tr>
 <tr>
 <th><code>ndef</code></th>
-<td>Evaluates to <code>true</code> if the right side is not defined.</td>
+<td>Evaluates to <code>true</code> if the right side is not defined.  See the precedence warning below.</td>
 <td><pre><code>ndef $bottlecaps</code></pre></td>
 </tr>
 </tbody>
@@ -354,12 +354,12 @@ The <code>def</code> and <code>ndef</code> operators have very low precedence, s
 </tr>
 <tr>
 <th><code>==</code></th>
-<td>Evaluates to <code>true</code> if both sides are <span title="Both sides have the same value or coerce into the same value." class="info">equivalent</span>.</td>
+<td>Evaluates to <code>true</code> if both sides are <span title="Both sides have the same value or coerce into the same value." class="info">equivalent</span>.  Not recommended, use the `===` operator instead.</td>
 <td><pre><code>$bullets == 6</code></pre></td>
 </tr>
 <tr>
 <th><code>!=</code></th>
-<td>Evaluates to <code>true</code> if both sides are <span title="Both sides do not have the same value nor do they coerce into the same value." class="info">not equivalent</span>.</td>
+<td>Evaluates to <code>true</code> if both sides are <span title="Both sides do not have the same value nor do they coerce into the same value." class="info">not equivalent</span>.  Not recommended, use the `!==` operator instead.</td>
 <td><pre><code>$pie != "cherry"</code></pre></td>
 </tr>
 <tr>
