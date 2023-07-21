@@ -526,7 +526,7 @@ var Scripting = (() => { // eslint-disable-line no-unused-vars, no-var
 			'(?:"(?:\\\\.|[^"\\\\])+")',                          //   Double quoted, non-empty
 			"(?:'(?:\\\\.|[^'\\\\])+')",                          //   Single quoted, non-empty
 			'(`(?:\\\\.|[^`\\\\])+`)',                            // 1=Template literal, non-empty
-			'(?:[=+\\-*\\/%<>&\\|\\^~!?:,;\\(\\)\\[\\]{}]+)',     //   Operator delimiters
+			'(?:[=+\\-*\\/%<>&\\|\\^~!?:,;\\(\\)\\[\\]{}]+)',     //   Operator characters
 			'(?:\\.{3})',                                         //   Spread/rest syntax
 			'([^"\'=+\\-*\\/%<>&\\|\\^~!?:,;\\(\\)\\[\\]{}\\s]+)' // 2=Barewords
 		].join('|'), 'g');
@@ -540,11 +540,12 @@ var Scripting = (() => { // eslint-disable-line no-unused-vars, no-var
 				throw new RangeError('Scripting.desugar last index is non-zero at start');
 			}
 
-			let code  = rawCodeString;
+			let code      = rawCodeString;
+			let lastMatch = '';
 			let match;
 
 			while ((match = desugarRE.exec(code)) !== null) {
-				// no-op: Empty quotes, Double quoted, Single quoted, Operator delimiters, Spread/rest syntax
+				// no-op: Empty quotes, Double quoted, Single quoted, Operator characters, Spread/rest syntax
 
 				// Template literal, non-empty.
 				if (match[1]) {
@@ -592,14 +593,10 @@ var Scripting = (() => { // eslint-disable-line no-unused-vars, no-var
 						}
 					}
 
-					// If the token is followed by a colon, then it's likely to be an object
-					// property, so skip it.
-					else {
-						const ahead = code.slice(desugarRE.lastIndex);
-
-						if (withColonTestRE.test(ahead)) {
-							continue;
-						}
+					// If the token is followed by a colon and not preceeded by a question
+					// mark, then it's likely to be an object property, so skip it.
+					if (withColonTestRE.test(code.slice(desugarRE.lastIndex)) && !lastMatch.endsWith('?')) {
+						continue;
 					}
 
 					// If the finalized token has a mapping, replace it within the code string
@@ -613,6 +610,8 @@ var Scripting = (() => { // eslint-disable-line no-unused-vars, no-var
 						desugarRE.lastIndex += tokenTable[token].length - token.length;
 					}
 				}
+
+				lastMatch = match[0];
 			}
 
 			return code;
