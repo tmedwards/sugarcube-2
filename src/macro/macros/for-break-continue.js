@@ -8,7 +8,7 @@
 ***********************************************************************************************************************/
 /*
 	global Config, Macro, Patterns, Scripting, State, TempState, Wikifier, charAndPosAt, getErrorMessage,
-	       getToStringTag
+	       getToStringTag, stringFrom
 */
 
 /*
@@ -228,6 +228,31 @@ Macro.add('for', {
 		let list;
 
 		switch (typeof value) {
+			case 'number': {
+				if (Number.isNaN(value) || !Number.isFinite(value)) {
+					throw new Error(`unsupported range expression type: ${stringFrom(value)}`);
+				}
+				if (!Number.isInteger(value)) {
+					throw new Error('unsupported range expression type: floating-point number');
+				}
+				if (!Number.isSafeInteger(value)) {
+					throw new Error('unsupported range expression type: unsafe integer');
+				}
+
+				if (value <= 0) {
+					list = [];
+					break;
+				}
+
+				list = new Array(value);
+
+				for (let i = 0; i < value; ++i) {
+					list[i] = i;
+				}
+
+				break;
+			}
+
 			case 'string': {
 				list = [];
 
