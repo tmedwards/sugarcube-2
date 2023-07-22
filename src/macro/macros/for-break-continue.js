@@ -247,7 +247,7 @@ Macro.add('for', {
 				list = new Array(value);
 
 				for (let i = 0; i < value; ++i) {
-					list[i] = i;
+					list[i] = [i, i];
 				}
 
 				break;
@@ -266,7 +266,7 @@ Macro.add('for', {
 			}
 
 			case 'object': {
-				if (Array.isArray(value)) {
+				if (value instanceof Array) {
 					list = value.map((val, i) => [i, val]);
 				}
 				else if (value instanceof Set) {
