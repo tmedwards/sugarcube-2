@@ -653,6 +653,7 @@ Repeatedly executes its contents. There are three forms: a conditional-only form
 
 * `v2.0.0`: Introduced.
 * `v2.20.0`: Added range form.
+* `v2.37.0`: Added range over integer.
 
 #### Notes
 
@@ -696,7 +697,7 @@ The maximum number of loop iterations in the conditional forms is not unlimited 
 
 #### Range form
 
-Iterates through all enumerable entries of the given collection.  For each iteration, it assigns the key/value pair of the associated entry in the collection to the iteration variables and then executes its contents.  Valid collection types are: arrays, generic objects, maps, sets, and strings.
+Iterates through all enumerable entries of the given collection.  For each iteration, it assigns the key/value pair of the associated entry in the collection to the iteration variables and then executes its contents.  Valid collection types are: arrays, generic objects, integers, maps, sets, and strings.
 
 ##### Arguments:
 
@@ -714,7 +715,7 @@ Iterates through all enumerable entries of the given collection.  For each itera
 		<th>Iteration: key, value</th>
 	</tr>
 	<tr>
-		<td>Arrays &amp; Sets</td>
+		<td>Arrays, Integers, &amp; Sets</td>
 		<td style="text-align: center;">Member: index, value</td>
 	</tr>
 	<tr>
@@ -738,6 +739,8 @@ Strings are iterated by Unicode code point, however, due to historic reasons the
 
 ##### Examples:
 
+###### Range over array
+
 ```
 → Example setup
 <<set $dwarves to ["Doc", "Dopey", "Bashful", "Grumpy", "Sneezy", "Sleepy", "Happy"]>>
@@ -755,6 +758,22 @@ Strings are iterated by Unicode code point, however, due to historic reasons the
 5. Sneezy
 6. Sleepy
 7. Happy
+```
+
+###### Range over integer
+
+```
+→ Loop
+<<for _value range 5>>
+<<print _i + 1>>. _name
+<</for>>
+
+→ Result
+1.
+2.
+3.
+4.
+5.
 ```
 
 <!-- *********************************************************************** -->
