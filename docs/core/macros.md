@@ -653,7 +653,7 @@ Repeatedly executes its contents. There are three forms: a conditional-only form
 
 * `v2.0.0`: Introduced.
 * `v2.20.0`: Added range form.
-* `v2.37.0`: Added range over integer.
+* `v2.37.0`: Added range over integers.
 
 #### Notes
 
@@ -764,8 +764,8 @@ Strings are iterated by Unicode code point, however, due to historic reasons the
 
 ```
 → Loop
-<<for _value range 5>>
-<<print _i + 1>>. _name
+<<for _value range 7>>
+<<print _value + 1>>.
 <</for>>
 
 → Result
@@ -774,6 +774,8 @@ Strings are iterated by Unicode code point, however, due to historic reasons the
 3.
 4.
 5.
+6.
+7.
 ```
 
 <!-- *********************************************************************** -->
