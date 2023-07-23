@@ -18,8 +18,11 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 	// Story name.
 	let _name = '';
 
-	// Map of normal passages.
-	const _passages = {};
+	// Mapping of navigable passages.
+	const _passages = createPassagesObject();
+
+	// Mapping of special passages.
+	const _specials = createPassagesObject();
 
 	// List of init passages.
 	const _inits = [];
@@ -35,45 +38,55 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 
 
 	/*******************************************************************************
-		Story Utility Functions.
+		Utility Functions.
 	*******************************************************************************/
 
-	function _storySetTitle(rawTitle) {
-		if (rawTitle == null) { // lazy equality for null
-			throw new Error('story title must not be null or undefined');
-		}
+	function createPassagesObject(passages) {
+		return passages
+			? Object.assign(Object.create(null), passages)
+			: Object.create(null);
+	}
 
-		const title = decodeEntities(String(rawTitle)).trim();
+	function generateId(name) {
+		// TODO: In v3 the ID should be created from a combination of the
+		// name slug and the IFID, if available, to avoid collisions between
+		// stories whose names generate identical slugs.
+		let id = createSlug(name);
 
-		if (title === '') { // lazy equality for null
-			throw new Error('story title must not be empty or consist solely of whitespace');
-		}
-
-		document.title = _name = title;
-
-		// TODO: In v3 the `_domId` should be created from a combination of the
-		// `_title` slug and the IFID, if available, to avoid collisions between
-		// stories whose titles generate identical slugs.
-		_id = createSlug(_name);
-
-		// [v2] Protect the `_domId` against being an empty string.
+		// [v2] Protect the ID against being an empty string.
 		//
-		// If `_domId` is empty, attempt a failover.
-		if (_id === '') {
+		// If `id` is empty, attempt a failover.
+		if (id === '') {
 			// If `_ifId` is not empty, then use it.
 			if (_ifId !== '') {
-				_id = _ifId;
+				id = _ifId;
 			}
 
-			// Elsewise generate a string from the `_title`'s code points (in hexadecimal).
+			// Elsewise generate a string from the `name`'s code points (in hexadecimal).
 			else {
-				for (let i = 0, len = _name.length; i < len; ++i) {
-					const { char, start, end } = charAndPosAt(_name, i);
-					_id += char.codePointAt(0).toString(16);
+				for (let i = 0; i < name.length; ++i) {
+					const { char, start, end } = charAndPosAt(name, i);
+					id += char.codePointAt(0).toString(16);
 					i += end - start;
 				}
 			}
 		}
+
+		return id;
+	}
+
+	function generateName(rawName) {
+		if (rawName == null) { // lazy equality for null
+			throw new Error('story name must not be null or undefined');
+		}
+
+		const name = decodeEntities(String(rawName)).trim();
+
+		if (name === '') { // lazy equality for null
+			throw new Error('story name must not be empty or consist solely of whitespace');
+		}
+
+		return name;
 	}
 
 
@@ -81,22 +94,18 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 		Story Functions.
 	*******************************************************************************/
 
-	function storyId() {
+	function getId() {
 		return _id;
 	}
 
-	function storyIfId() {
+	function getIfId() {
 		return _ifId;
 	}
 
-	function storyLoad() {
-		if (BUILD_DEBUG) { console.log('[Story/storyLoad()]'); }
+	function load() {
+		if (BUILD_DEBUG) { console.log('[Story/load()]'); }
 
-		const validationCodeTags = [
-			'init',
-			'widget'
-		];
-		const validationNoCodeTagPassages = [
+		const specialPassageNames = [
 			'PassageDone',
 			'PassageFooter',
 			'PassageHeader',
@@ -104,24 +113,32 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 			'StoryAuthor',
 			'StoryBanner',
 			'StoryCaption',
+			'StoryDisplayTitle',
 			'StoryInit',
+			'StoryInterface',
 			'StoryMenu',
+			'StorySettings',
 			'StoryShare',
 			'StorySubtitle'
 		];
+		const codeTagNames = [
+			'init',
+			'widget'
+		];
 
 		function validateStartingPassage(passage) {
-			if (passage.tags.includesAny(validationCodeTags)) {
-				throw new Error(`starting passage "${passage.name}" contains special tags; invalid: "${passage.tags.filter(tag => validationCodeTags.includes(tag)).sort().join('", "')}"`);
+			if (passage.tags.includesAny(codeTagNames)) {
+				throw new Error(`starting passage "${passage.name}" contains special tags; invalid: "${passage.tags.filter(tag => codeTagNames.includes(tag)).sort().join('", "')}"`);
 			}
 		}
 
 		function validateSpecialPassages(passage, ...tags) {
-			if (validationNoCodeTagPassages.includes(passage.name)) {
+			// TODO: What the fuck is this?
+			if (specialPassageNames.includes(passage.name)) {
 				throw new Error(`special passage "${passage.name}" contains special tags; invalid: "${tags.sort().join('", "')}"`);
 			}
 
-			const codeTags  = Array.from(validationCodeTags);
+			const codeTags  = Array.from(codeTagNames);
 			const foundTags = [];
 
 			passage.tags.forEach(tag => {
@@ -137,26 +154,19 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 
 		// For Twine 1.
 		if (BUILD_TWINE1) {
-			/*
-				Additional Twine 1 validation setup.
-			*/
-			validationCodeTags.unshift('script', 'stylesheet');
-			validationNoCodeTagPassages.push('StoryTitle');
+			// Additional Twine 1 validation setup.
+			codeTagNames.push('script', 'stylesheet');
+			specialPassageNames.push('StoryTitle');
 
-			/*
-				Set the default starting passage.
-			*/
+			// Set the default starting passage.
 			Config.passages.start = (() => {
-				/*
-					Handle the Twine 1.4+ Test Play From Here feature.
-
-					WARNING: Do not remove the `String()` wrapper from or change the quote
-					style of the `"START_AT"` replacement target.  The former is there to
-					keep UglifyJS from pruning the code into oblivion—i.e. minifying the
-					code into something broken.  The latter is there because the Twine 1
-					pattern that matches it depends upon the double quotes.
-
-				*/
+				// Handle the Twine 1.4+ Test Play From Here feature.
+				//
+				// WARNING: Do not remove the `String()` wrapper from or change the quote
+				// style of the `"START_AT"` replacement target.  The former is there to
+				// keep Terser from pruning the code into oblivion—i.e. minifying the
+				// code into something broken.  The latter is there because the Twine 1
+				// pattern that matches it depends upon the double quotes.
 				const testPlay = String("START_AT"); // eslint-disable-line quotes
 
 				if (testPlay !== '') {
@@ -170,9 +180,7 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 				return 'Start';
 			})();
 
-			/*
-				Process the passages, excluding any tagged 'Twine.private' or 'annotation'.
-			*/
+			// Process the passages, excluding any tagged 'Twine.private' or 'annotation'.
 			jQuery('#store-area')
 				.children(':not([tags~="Twine.private"],[tags~="annotation"])')
 				.each(function () {
@@ -200,6 +208,11 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 						validateSpecialPassages(passage, 'widget');
 						_widgets.push(passage);
 					}
+					else if (specialPassageNames.includes(passage.name)) {
+						// TODO: Do some kind of validation here.
+						_specials[passage.name] = passage;
+					}
+
 
 					// All other passages.
 					else {
@@ -207,17 +220,18 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 					}
 				});
 
-			/*
-				Set the story title or throw an exception.
-			*/
-			if (Object.hasOwn(_passages, 'StoryTitle')) {
+			// Get the story's name.
+			if (Object.hasOwn(_specials, 'StoryTitle')) {
 				const buf = document.createDocumentFragment();
-				new Wikifier(buf, _passages.StoryTitle.processText().trim());
-				_storySetTitle(buf.textContent);
+				new Wikifier(buf, _specials.StoryTitle.processText().trim());
+				_name = generateName(buf.textContent);
 			}
 			else {
 				throw new Error('cannot find the "StoryTitle" special passage');
 			}
+
+			// Get the story's ID.
+			_id = generateId(_name);
 		}
 
 		// For Twine 2.
@@ -225,40 +239,30 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 			const $storydata = jQuery('tw-storydata');
 			const startNode  = $storydata.attr('startnode') || '';
 
-			/*
-				Set the default starting passage.
-			*/
+			// Set the default starting passage.
 			Config.passages.start = null; // no default in Twine 2
 
-			/*
-				Process story options.
-
-				NOTE: Currently, the only option of interest is 'debug', so we
-				simply use a regular expression to check for it.
-			*/
+			// Process story options.
+			//
+			// NOTE: Currently, the only option of interest is 'debug', so we
+			// simply use a regular expression to check for it.
 			Config.debug = /\bdebug\b/.test($storydata.attr('options'));
 
-			/*
-				Process stylesheet passages.
-			*/
+			// Process stylesheet passages.
 			$storydata
 				.children('style') // alternatively: '[type="text/twine-css"]' or '#twine-user-stylesheet'
 				.each(function (i) {
 					_styles.push(new Passage(`tw-user-style-${i}`, this));
 				});
 
-			/*
-				Process script passages.
-			*/
+			// Process script passages.
 			$storydata
 				.children('script') // alternatively: '[type="text/twine-javascript"]' or '#twine-user-script'
 				.each(function (i) {
 					_scripts.push(new Passage(`tw-user-script-${i}`, this));
 				});
 
-			/*
-				Process normal passages, excluding any tagged 'Twine.private' or 'annotation'.
-			*/
+			// Process normal passages, excluding any tagged 'Twine.private' or 'annotation'.
 			$storydata
 				.children('tw-passagedata:not([tags~="Twine.private"],[tags~="annotation"])')
 				.each(function () {
@@ -280,6 +284,10 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 						validateSpecialPassages(passage, 'widget');
 						_widgets.push(passage);
 					}
+					else if (specialPassageNames.includes(passage.name)) {
+						// TODO: Do some kind of validation here.
+						_specials[passage.name] = passage;
+					}
 
 					// All other passages.
 					else {
@@ -287,29 +295,27 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 					}
 				});
 
-			/*
-				Get the story IFID.
-			*/
+			// Get the story's IFID.
 			_ifId = $storydata.attr('ifid');
 
-			/*
-				Set the story title.
+			// Get the story's name.
+			//
+			// FIXME: Maybe `$storydata.attr('name')` should be used instead of `'{{STORY_NAME}}'`?
+			// _name = generateName($storydata.attr('name'));
+			_name = generateName('{{STORY_NAME}}');
 
-				FIXME: Maybe `$storydata.attr('name')` should be used instead of `'{{STORY_NAME}}'`?
-			*/
-			// _storySetTitle($storydata.attr('name'));
-			_storySetTitle('{{STORY_NAME}}');
+			// Get the story's ID.
+			_id = generateId(_name);
 		}
 
-		/*
-			Set the default saves ID to the story's ID.
+		// Set the document's title to the story's name.
+		document.title = _name;
 
-			NOTE: Must be done after the call to `_storySetTitle()`.
-		*/
+		// Set the default saves ID to the story's ID.
 		Config.saves.id = _id;
 	}
 
-	function storyName() {
+	function getName() {
 		return _name;
 	}
 
@@ -323,50 +329,56 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 			throw new TypeError('Story.add passage parameter must be an instance of Passage');
 		}
 
-		const title = passage.name;
+		const name = passage.name;
 
-		if (!Object.hasOwn(_passages, title)) {
-			_passages[title] = passage;
-			return true;
+		if (Object.hasOwn(_passages, name)) {
+			return false;
 		}
 
-		return false;
+		_passages[name] = passage;
+		return true;
 	}
 
-	function passagesHas(title) {
-		let type = typeof title;
-
-		switch (type) {
-		// Valid types.
-			case 'number':
-			case 'string':
-				return Object.hasOwn(_passages, String(title));
-
-			// Invalid types.  We do the extra processing just to make a nicer error.
-			case 'undefined':
-				/* no-op */
-				break;
-
-			case 'object':
-				type = title === null ? 'null' : 'an object';
-				break;
-
-			default: // 'bigint', 'boolean', 'function', 'symbol'
-				type = `a ${type}`;
-				break;
+	function passagesFilter(predicate, thisArg) {
+		if (typeof predicate !== 'function') {
+			throw new TypeError('Story.filter predicate parameter must be a function');
 		}
 
-		throw new TypeError(`Story.has title parameter cannot be ${type}`);
+		const results = [];
+
+		for (let i = 0, keys = Object.keys(_passages); i < keys.length; ++i) {
+			const passage = _passages[keys[i]];
+
+			if (predicate.call(Object(thisArg), passage)) {
+				results.push(passage);
+			}
+		}
+
+		return results;
 	}
 
-	function passagesGet(title) {
-		let type = typeof title;
+	function passagesFind(predicate, thisArg) {
+		if (typeof predicate !== 'function') {
+			throw new TypeError('Story.find predicate parameter must be a function');
+		}
+
+		for (let i = 0, keys = Object.keys(_passages); i < keys.length; ++i) {
+			const passage = _passages[keys[i]];
+
+			if (predicate.call(Object(thisArg), passage)) {
+				return passage;
+			}
+		}
+	}
+
+	function passagesGet(name) {
+		let type = typeof name;
 
 		switch (type) {
 			// Valid types.
 			case 'number':
 			case 'string': {
-				const id = String(title);
+				const id = String(name);
 				return Object.hasOwn(_passages, id) ? _passages[id] : new Passage(id || '(unknown)');
 			}
 
@@ -376,7 +388,7 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 				break;
 
 			case 'object':
-				type = title === null ? 'null' : 'an object';
+				type = name === null ? 'null' : 'an object';
 				break;
 
 			default: // 'bigint', 'boolean', 'function', 'symbol'
@@ -384,99 +396,97 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 				break;
 		}
 
-		throw new TypeError(`Story.get title parameter cannot be ${type}`);
+		throw new TypeError(`Story.get name parameter cannot be ${type}`);
 	}
 
-	function passagesGetAllInit() {
+	function passagesGetInits() {
 		// NOTE: Return an immutable copy, rather than the internal mutable original.
 		return Object.freeze(Array.from(_inits));
 	}
 
-	function passagesGetAllRegular() {
+	function passagesGetNormals() {
 		// NOTE: Return an immutable copy, rather than the internal mutable original.
-		return Object.freeze(Object.assign({}, _passages));
+		return Object.freeze(createPassagesObject(_passages));
 	}
 
-	function passagesGetAllScript() {
+	function passagesGetScripts() {
 		// NOTE: Return an immutable copy, rather than the internal mutable original.
 		return Object.freeze(Array.from(_scripts));
 	}
 
-	function passagesGetAllStylesheet() {
+	function passagesGetSpecials() {
+		// NOTE: Return an immutable copy, rather than the internal mutable original.
+		return Object.freeze(createPassagesObject(_specials));
+	}
+
+	function passagesGetStylesheets() {
 		// NOTE: Return an immutable copy, rather than the internal mutable original.
 		return Object.freeze(Array.from(_styles));
 	}
 
-	function passagesGetAllWidget() {
+	function passagesGetWidgets() {
 		// NOTE: Return an immutable copy, rather than the internal mutable original.
 		return Object.freeze(Array.from(_widgets));
 	}
 
-	function passagesLookup(key, value  /* legacy */, sortKey = 'title'/* /legacy */) {
-		const results = [];
+	function passagesHas(name) {
+		let type = typeof name;
 
-		Object.keys(_passages).forEach(name => {
-			const passage = _passages[name];
+		switch (type) {
+		// Valid types.
+			case 'number':
+			case 'string':
+				return Object.hasOwn(_passages, String(name));
 
+			// Invalid types.  We do the extra processing just to make a nicer error.
+			case 'undefined':
+				/* no-op */
+				break;
+
+			case 'object':
+				type = name === null ? 'null' : 'an object';
+				break;
+
+			default: // 'bigint', 'boolean', 'function', 'symbol'
+				type = `a ${type}`;
+				break;
+		}
+
+		throw new TypeError(`Story.has name parameter cannot be ${type}`);
+	}
+
+
+	/*******************************************************************************
+		Deprecated Functions.
+	*******************************************************************************/
+
+	function passagesLookup(key, value  /* legacy */, sortKey = 'name'/* /legacy */) {
+		return passagesFilter(passage => {
 			// Objects (sans `null`).
 			if (typeof passage[key] === 'object' && passage[key] !== null) {
 				// The only object type currently supported is `Array`, since the
 				// non-method `Passage` object properties currently yield only either
 				// primitives or arrays.
-				if (passage[key] instanceof Array && passage[key].some(m => sameValueZero(m, value))) {
-					results.push(passage);
-				}
+				return passage[key] instanceof Array && passage[key].some(m => sameValueZero(m, value));
 			}
 
 			// All other types (incl. `null`).
-			else if (sameValueZero(passage[key], value)) {
-				results.push(passage);
-			}
-		});
-
-		// For v3.
-		// /* eslint-disable no-nested-ternary */
-		// // QUESTION: Do we really need to sort the list?
-		// results.sort((a, b) => a.name === b.name ? 0 : a.name < b.name ? -1 : +1);
-		// /* eslint-enable no-nested-ternary */
-
-		/* legacy */
-		/* eslint-disable eqeqeq, no-nested-ternary, max-len */
-		results.sort((a, b) => a[sortKey] == b[sortKey] ? 0 : a[sortKey] < b[sortKey] ? -1 : +1); // lazy equality for null
-		/* eslint-enable eqeqeq, no-nested-ternary, max-len */
-		/* /legacy */
-
-		return results;
+			return sameValueZero(passage[key], value);
+		})
+			/* eslint-disable eqeqeq, no-nested-ternary, max-len */
+			.sort((a, b) => a[sortKey] == b[sortKey] ? 0 : a[sortKey] < b[sortKey] ? -1 : +1); // lazy equality for null
+			/* eslint-enable eqeqeq, no-nested-ternary, max-len */
 	}
 
-	function passagesLookupWith(predicate /* legacy */, sortKey = 'title'/* /legacy */) {
+	function passagesLookupWith(predicate /* legacy */, sortKey = 'name'/* /legacy */) {
 		if (typeof predicate !== 'function') {
 			throw new TypeError('Story.lookupWith predicate parameter must be a function');
 		}
 
-		const results = [];
-
-		Object.keys(_passages).forEach(name => {
-			const passage = _passages[name];
-
-			if (predicate(passage)) {
-				results.push(passage);
-			}
-		});
-
-		// For v3.
-		// /* eslint-disable no-nested-ternary */
-		// // QUESTION: Do we really need to sort the list?
-		// results.sort((a, b) => a.name === b.name ? 0 : a.name < b.name ? -1 : +1);
-		// /* eslint-enable no-nested-ternary */
-
-		/* legacy */
-		/* eslint-disable eqeqeq, no-nested-ternary, max-len */
-		results.sort((a, b) => a[sortKey] == b[sortKey] ? 0 : a[sortKey] < b[sortKey] ? -1 : +1); // lazy equality for null
-		/* eslint-enable eqeqeq, no-nested-ternary, max-len */
-		/* /legacy */
-
-		return results;
+		return passagesFilter(predicate)
+			/* eslint-disable eqeqeq, no-nested-ternary, max-len */
+			.sort((a, b) => a[sortKey] == b[sortKey] ? 0 : a[sortKey] < b[sortKey] ? -1 : +1); // lazy equality for null
+			/* eslint-enable eqeqeq, no-nested-ternary, max-len */
 	}
 
 
@@ -486,26 +496,29 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 
 	return Object.preventExtensions(Object.create(null, {
 		// Story Functions.
-		id   : { get : storyId },
-		ifId : { get : storyIfId },
-		load : { value : storyLoad },
-		name : { get : storyName },
+		id   : { get : getId },
+		ifId : { get : getIfId },
+		load : { value : load },
+		name : { get : getName },
 
 		// Passage Functions.
 		add              : { value : passagesAdd },
-		has              : { value : passagesHas },
+		filter           : { value : passagesFilter },
+		find             : { value : passagesFind },
 		get              : { value : passagesGet },
-		getAllInit       : { value : passagesGetAllInit },
-		getAllRegular    : { value : passagesGetAllRegular },
-		getAllScript     : { value : passagesGetAllScript },
-		getAllStylesheet : { value : passagesGetAllStylesheet },
-		getAllWidget     : { value : passagesGetAllWidget },
-		lookup           : { value : passagesLookup },
-		lookupWith       : { value : passagesLookupWith },
+		getAllInit       : { value : passagesGetInits },
+		getAllRegular    : { value : passagesGetNormals },
+		getAllScript     : { value : passagesGetScripts },
+		getSpecials      : { value : passagesGetSpecials },
+		getAllStylesheet : { value : passagesGetStylesheets },
+		getAllWidget     : { value : passagesGetWidgets },
+		has              : { value : passagesHas },
 
 		/* legacy */
-		domId : { get : storyId },
-		title : { get : storyName }
+		domId      : { get : getId },
+		title      : { get : getName },
+		lookup     : { value : passagesLookup },
+		lookupWith : { value : passagesLookupWith }
 		/* /legacy */
 	}));
 })();
