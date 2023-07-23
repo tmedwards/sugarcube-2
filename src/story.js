@@ -36,6 +36,27 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 	// List of widget passages.
 	const _widgets = [];
 
+	// List of code passages and tags.
+	const codePassageNames = [
+		'PassageDone',
+		'PassageFooter',
+		'PassageHeader',
+		'PassageReady',
+		'StoryAuthor',
+		'StoryBanner',
+		'StoryCaption',
+		'StoryDisplayTitle',
+		'StoryInit',
+		'StoryInterface',
+		'StoryMenu',
+		'StorySettings',
+		'StoryShare',
+		'StorySubtitle'
+	];
+	const codeTagNames = [
+		'init',
+		'widget'
+	];
 
 	/*******************************************************************************
 		Utility Functions.
@@ -105,27 +126,6 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 	function load() {
 		if (BUILD_DEBUG) { console.log('[Story/load()]'); }
 
-		const specialPassageNames = [
-			'PassageDone',
-			'PassageFooter',
-			'PassageHeader',
-			'PassageReady',
-			'StoryAuthor',
-			'StoryBanner',
-			'StoryCaption',
-			'StoryDisplayTitle',
-			'StoryInit',
-			'StoryInterface',
-			'StoryMenu',
-			'StorySettings',
-			'StoryShare',
-			'StorySubtitle'
-		];
-		const codeTagNames = [
-			'init',
-			'widget'
-		];
-
 		function validateStartingPassage(passage) {
 			if (passage.tags.includesAny(codeTagNames)) {
 				throw new Error(`starting passage "${passage.name}" contains special tags; invalid: "${passage.tags.filter(tag => codeTagNames.includes(tag)).sort().join('", "')}"`);
@@ -134,7 +134,7 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 
 		function validateSpecialPassages(passage, ...tags) {
 			// TODO: What the fuck is this?
-			if (specialPassageNames.includes(passage.name)) {
+			if (codePassageNames.includes(passage.name)) {
 				throw new Error(`special passage "${passage.name}" contains special tags; invalid: "${tags.sort().join('", "')}"`);
 			}
 
@@ -155,8 +155,9 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 		// For Twine 1.
 		if (BUILD_TWINE1) {
 			// Additional Twine 1 validation setup.
+			codePassageNames.push('StoryTitle');
 			codeTagNames.push('script', 'stylesheet');
-			specialPassageNames.push('StoryTitle');
+
 
 			// Set the default starting passage.
 			Config.passages.start = (() => {
@@ -208,7 +209,7 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 						validateSpecialPassages(passage, 'widget');
 						_widgets.push(passage);
 					}
-					else if (specialPassageNames.includes(passage.name)) {
+					else if (codePassageNames.includes(passage.name)) {
 						// TODO: Do some kind of validation here.
 						_specials[passage.name] = passage;
 					}
@@ -284,7 +285,7 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 						validateSpecialPassages(passage, 'widget');
 						_widgets.push(passage);
 					}
-					else if (specialPassageNames.includes(passage.name)) {
+					else if (codePassageNames.includes(passage.name)) {
 						// TODO: Do some kind of validation here.
 						_specials[passage.name] = passage;
 					}
@@ -327,6 +328,14 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 	function passagesAdd(passage) {
 		if (!(passage instanceof Passage)) {
 			throw new TypeError('Story.add passage parameter must be an instance of Passage');
+		}
+
+		if (codePassageNames.includes(passage)) {
+			throw new Error('Story.add passage instance must not be a code passage');
+		}
+
+		if (passage.tags.includesAny(codeTags)) {
+			throw new Error('Story.add passage instance must not be tagged with code tags');
 		}
 
 		const name = passage.name;
