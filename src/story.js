@@ -49,7 +49,6 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 		'StoryInit',
 		'StoryInterface',
 		'StoryMenu',
-		'StorySettings',
 		'StoryShare',
 		'StorySubtitle'
 	];
@@ -155,9 +154,8 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 		// For Twine 1.
 		if (BUILD_TWINE1) {
 			// Additional Twine 1 validation setup.
-			codePassageNames.push('StoryTitle');
+			codePassageNames.push('StorySettings', 'StoryTitle');
 			codeTagNames.push('script', 'stylesheet');
-
 
 			// Set the default starting passage.
 			Config.passages.start = (() => {
