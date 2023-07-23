@@ -1509,6 +1509,20 @@ If you want to return to a previously visited passage, rather than undo a moment
 
 #### Examples:
 
+##### Visual aid
+
+Assume your story history consists of three moments:
+```
+A, B, [C]
+```
+N.b., the square brackets there denote the active moment.
+
+Using `<<back>>` once upon that history will change it to be thus:
+```
+A, [B], C
+```
+I.e., the history was rolled back to the previous moment.
+
 ##### Basic usage
 
 ```
@@ -1581,6 +1595,20 @@ If you want to undo previous moments within the history, rather than return to a
 <p role="note"><b>Note:</b>
 The versions that forward to a specific passage are largely unnecessary, as you could simply use a normal link, and exist solely for compatibility with the <a href="#macros-macro-back"><code>&lt;&lt;back&gt;&gt;</code> macro</a>.
 </p>
+
+##### Visual aid
+
+Assume your story history consists of three moments:
+```
+A, B, [C]
+```
+N.b., the square brackets there denote the active moment.
+
+Using `<<return>>` once upon that history will change it to be thus:
+```
+A, B, C, [B]
+```
+I.e., a new moment, to the same passage as the previous moment, was added to the history.
 
 ##### Basic usage
 
