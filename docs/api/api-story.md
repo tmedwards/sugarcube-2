@@ -17,11 +17,27 @@ The DOM-compatible ID of the story, created from the slugified story name.
 
 ### `Story.ifId` → *string* {#story-api-getter-ifid}
 
-The IFID (Interactive Fiction IDentifier) of the story, if any.
+The IFID (Interactive Fiction IDentifier) of the story.
 
 #### History:
 
 * `v2.5.0`: Introduced.
+
+#### Value:
+
+The IFID of the story, or an empty string if no IFID exists.  Twine 2 IFID's are v4 random 
+
+#### Examples:
+
+```js
+console.log(`There are currently ${Save.browser.slot.size} browser slot saves`);
+```
+
+```js
+if (Save.browser.slot.size > 0) {
+	/* Browser slot saves exist. */
+}
+```
 
 <!-- *********************************************************************** -->
 
@@ -35,12 +51,42 @@ The name of the story.
 
 <!-- *********************************************************************** -->
 
-### `Story.get(title)` → *`Passage` object* {#story-api-method-get}
+### `Story.get(name)` → *`Passage` instance* {#story-api-method-get}
 
-Returns the `Passage` object referenced by the given title, or an empty `Passage` object on failure.
+Gets the `Passage` instance with the given name.
 
 <p role="note"><b>Note:</b>
-This method will not return &quot;code&quot; passages—i.e., script, stylesheet, and widget passages.
+This method cannot not retrieve <em>code</em> passages.  Meaning passages listed under [code passages](#code-passages) or tagged with [code tags](#code-tags).
+</p>
+
+#### History:
+
+* `v2.0.0`: Introduced.
+* `v2.37.0`: .
+
+#### Parameters:
+
+* **`name`:** (*string*) The name of the `Passage` instance.
+
+#### Returns:
+
+The `Passage` instance with the given name, or a new empty `Passage` instance if no such passage exists.
+
+#### Examples:
+
+```
+// Get the Passage instance with the name "The Ducky"
+const theDucky = Story.get("The Ducky");
+```
+
+<!-- *********************************************************************** -->
+
+### `Story.has(name)` → *boolean* {#story-api-method-has}
+
+Determines whether a `Passage` instance with the given name exists.
+
+<p role="note"><b>Note:</b>
+This method does not check <em>code</em> passages.  Meaning passages listed under [code passages](#code-passages) or including [code tags](#code-tags).
 </p>
 
 #### History:
@@ -49,96 +95,94 @@ This method will not return &quot;code&quot; passages—i.e., script, stylesheet
 
 #### Parameters:
 
-* **`title`:** (*string*) The title of the `Passage` object to return.
+* **`name`:** (*string*) The name of the `Passage` instance.
+
+#### Returns:
+
+Returns whether a `Passage` instance with the given name exists.
 
 #### Examples:
 
-```
-Story.get("The Ducky")  → Returns the Passage object matching "The Ducky"
+```js
+// Returns whether a "The Ducky" Passage instance exists
+if (Story.has("The Ducky")) {
+	/* The "The Ducky" passage exists. */
+}
 ```
 
 <!-- *********************************************************************** -->
 
-### `Story.has(title)` → *boolean* {#story-api-method-has}
+### `Story.filter(predicate [, thisArg])` → *Array&lt;`Passage`&gt;* {#story-api-method-filter}
 
-Returns whether a `Passage` object referenced by the given title exists.
+Searches all `Passage` instances for those that pass the test implemented by the given predicate function.
 
 <p role="note"><b>Note:</b>
-This method will not detect &quot;code&quot; passages—i.e., script, stylesheet, and widget passages.
+This method cannot not retrieve <em>code</em> passages.  Meaning passages listed under [code passages](#code-passages) or tagged with [code tags](#code-tags).
 </p>
 
 #### History:
 
-* `v2.0.0`: Introduced.
+* `v2.37.0`: Introduced.
 
 #### Parameters:
 
-* **`title`:** (*string*) The title of the `Passage` object whose existence will be verified.
+* **`predicate`:** (*function*) The function used to test each `Passage` instance, which is passed into the function as its sole parameter.  If the function returns `true`, then the `Passage` instance is added to the results.
+* **`thisArg`:** (optional, *any*) The value to use as `this` when executing the `predicate` function.
+
+#### Returns:
+
+A new array filled with all `Passage` instances that pass the test implemented by the given predicate function, or an empty array if no instances pass.
 
 #### Examples:
 
-```
-Story.has("The Ducky")  → Returns whether a Passage object matching "The Ducky" exists
-```
-
-<!-- *********************************************************************** -->
-
-### `Story.lookup(propertyName , searchValue [, sortProperty])` → *`Passage` object array* {#story-api-method-lookup}
-
-Returns a new array filled with all `Passage` objects that contain the given property, whose value matches the given search value, or an empty array, if no matches are made.
-
-<p role="note"><b>Note:</b>
-This method will not return &quot;code&quot; passages—i.e., script, stylesheet, and widget passages.
-</p>
-
-#### History:
-
-* `v2.0.0`: Introduced.
-
-#### Parameters:
-
-* **`propertyName`:** (*string*) The name of property whose value will be compared to the search value.
-* **`searchValue`:** (*string* | *number*) The value to search for within the matched property.  The type of the property determines how the search occurs—non-arrays are directly compared, while arrays are searched.  If the property's value, for non-arrays, or any of its members, for arrays, match, then the `Passage` object is added to the results.
-* **`sortProperty`:** (optional, *string*) The property whose value will be used to lexicographically sort the returned array.  If not given, the `Passage` object's `title` property is used.
-
-#### Examples:
-
-```
-→ Returns all 'forest'-tagged Passage objects, sorted by their titles
-Story.lookup("tags", "forest");
-```
-
-<!-- *********************************************************************** -->
-
-### `Story.lookupWith(predicate [, sortProperty])` → *`Passage` object array* {#story-api-method-lookupwith}
-
-Returns a new array filled with all `Passage` objects that pass the test implemented by the given predicate function or an empty array, if no objects pass.
-
-<p role="note"><b>Note:</b>
-This method will not return &quot;code&quot; passages—i.e., script, stylesheet, and widget passages.
-</p>
-
-#### History:
-
-* `v2.11.0`: Introduced.
-
-#### Parameters:
-
-* **`predicate`:** (*function*) The function used to test each `Passage` object, which is passed into the function as its sole parameter.  If the function returns `true`, then the `Passage` object is added to the results.
-* **`sortProperty`:** (optional, *string*) The property whose value will be used to lexicographically sort the returned array.  If not given, the `Passage` object's `title` property is used.
-
-#### Examples:
-
-```
-→ Returns all 'forest'-tagged Passage objects, sorted by their titles
-Story.lookupWith(function (p) {
+```js
+// Returns all 'forest'-tagged Passage instances
+Story.filter(function (p) {
 	return p.tags.includes("forest");
 });
 
-→ Returns all Passage objects whose titles contain whitespace, sorted by their titles
+// Returns all Passage instances whose names include whitespace
 var hasWhitespaceRegExp = /\s/;
-Story.lookupWith(function (p) {
-	return hasWhitespaceRegExp.test(p.title);
+Story.filter(function (p) {
+	return hasWhitespaceRegExp.test(p.name);
+});
+```
+
+<!-- *********************************************************************** -->
+
+### `Story.find(predicate [, thisArg])` → *`Passage`* {#story-api-method-find}
+
+Searches all `Passage` instances for the first that passes the test implemented by the given predicate function.
+
+<p role="note"><b>Note:</b>
+This method cannot not retrieve <em>code</em> passages.  Meaning passages listed under [code passages](#code-passages) or tagged with [code tags](#code-tags).
+</p>
+
+#### History:
+
+* `v2.37.0`: Introduced.
+
+#### Parameters:
+
+* **`predicate`:** (*function*) The function used to test each `Passage` object, which is passed into the function as its sole parameter.  If the function returns `true`, then the `Passage` instance is added to the results.
+* **`thisArg`:** (optional, *any*) The value to use as `this` when executing the `predicate` function.
+
+#### Returns:
+
+The first `Passage` instance that passed the test implemented by the given predicate function, or `undefined` if no instance passes.
+
+#### Examples:
+
+```
+// Returns the first 'forest'-tagged Passage instance
+Story.find(function (p) {
+	return p.tags.includes("forest");
+});
+
+// Returns the first Passage instance whose name includes whitespace
+var hasWhitespaceRegExp = /\s/;
+Story.find(function (p) {
+	return hasWhitespaceRegExp.test(p.name);
 });
 ```
 
@@ -167,3 +211,29 @@ This setting has been deprecated and should no longer be used.  See the <a href=
 
 * `v2.0.0`: Introduced.
 * `v2.37.0`: Deprecated in favor of `Story.name`.
+
+<!-- *********************************************************************** -->
+
+### <span class="deprecated">`Story.lookup(propertyName , searchValue [, sortProperty])` → *Array&lt;`Passage`&gt;*</span> {#story-api-method-lookup}
+
+<p role="note" class="warning"><b>Deprecated:</b>
+This static method has been deprecated and should no longer be used.  See the <a href="#story-api-method-filter"><code>Story.filter()</code> static method</a> for its replacement.
+</p>
+
+#### History:
+
+* `v2.0.0`: Introduced.
+* `v2.37.0`: Deprecated in favor of `Story.filter()`.
+
+<!-- *********************************************************************** -->
+
+### <span class="deprecated">`Story.lookupWith(predicate [, sortProperty])` → *Array&lt;`Passage`&gt;*</span> {#story-api-method-lookupwith}
+
+<p role="note" class="warning"><b>Deprecated:</b>
+This static method has been deprecated and should no longer be used.  See the <a href="#story-api-method-filter"><code>Story.filter()</code> static method</a> for its replacement.
+</p>
+
+#### History:
+
+* `v2.11.0`: Introduced.
+* `v2.37.0`: Deprecated in favor of `Story.filter()`.
