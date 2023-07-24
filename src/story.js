@@ -36,7 +36,7 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 	// List of widget passages.
 	const _widgets = [];
 
-	// List of code passages and tags.
+	// List of code passages for sanity checks.
 	const codePassageNames = [
 		'PassageDone',
 		'PassageFooter',
@@ -52,10 +52,13 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 		'StoryShare',
 		'StorySubtitle'
 	];
+
+	// List of code tags for sanity checks.
 	const codeTagNames = [
 		'init',
 		'widget'
 	];
+
 
 	/*******************************************************************************
 		Utility Functions.
@@ -125,35 +128,25 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 	function load() {
 		if (BUILD_DEBUG) { console.log('[Story/load()]'); }
 
-		function validateStartingPassage(passage) {
+		function assertNoCodeTags(passage, desc) {
+			// Code tags are completely disallowed.
 			if (passage.tags.includesAny(codeTagNames)) {
-				throw new Error(`starting passage "${passage.name}" contains special tags; invalid: "${passage.tags.filter(tag => codeTagNames.includes(tag)).sort().join('", "')}"`);
+				throw new Error(`${desc} passage "${passage.name}" includes code tags; invalid: "${passage.tags.filter(tag => codeTagNames.includes(tag)).sort().join('", "')}"`);
 			}
 		}
 
-		function validateSpecialPassages(passage, ...tags) {
-			// TODO: What the fuck is this?
-			if (codePassageNames.includes(passage.name)) {
-				throw new Error(`special passage "${passage.name}" contains special tags; invalid: "${tags.sort().join('", "')}"`);
-			}
+		function assertValidCodeTagUsage(passage) {
+			const found = passage.tags.filter(tag => codeTagNames.includes(tag)).sort();
 
-			const codeTags  = Array.from(codeTagNames);
-			const foundTags = [];
-
-			passage.tags.forEach(tag => {
-				if (codeTags.includes(tag)) {
-					foundTags.push(...codeTags.delete(tag));
-				}
-			});
-
-			if (foundTags.length > 1) {
-				throw new Error(`passage "${passage.name}" contains multiple special tags; invalid: "${foundTags.sort().join('", "')}"`);
+			// Multiple code tags are disallowed.
+			if (found.length > 1) {
+				throw new Error(`passage "${passage.name}" includes multiple code tags; invalid: "${found.join('", "')}"`);
 			}
 		}
 
 		// For Twine 1.
 		if (BUILD_TWINE1) {
-			// Additional Twine 1 validation setup.
+			// Additional Twine 1 assertion setup.
 			codePassageNames.push('StorySettings', 'StoryTitle');
 			codeTagNames.push('script', 'stylesheet');
 
@@ -179,39 +172,50 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 				return 'Start';
 			})();
 
-			// Process the passages, excluding any tagged 'Twine.private' or 'annotation'.
+			// Process passages, excluding any tagged 'Twine.private' or 'annotation'.
 			jQuery('#store-area')
 				.children(':not([tags~="Twine.private"],[tags~="annotation"])')
 				.each(function () {
 					const $this   = jQuery(this);
 					const passage = new Passage($this.attr('tiddler'), this);
 
-					// Special cases.
+					// WARNING: The ordering of the following `if` statements is important!
+
+					// Special case: starting passage.
 					if (passage.name === Config.passages.start) {
-						validateStartingPassage(passage);
+						assertNoCodeTags(passage, 'starting');
 						_passages[passage.name] = passage;
 					}
-					else if (passage.tags.includes('init')) {
-						validateSpecialPassages(passage, 'init');
-						_inits.push(passage);
-					}
-					else if (passage.tags.includes('stylesheet')) {
-						validateSpecialPassages(passage, 'stylesheet');
-						_styles.push(passage);
-					}
-					else if (passage.tags.includes('script')) {
-						validateSpecialPassages(passage, 'script');
-						_scripts.push(passage);
-					}
-					else if (passage.tags.includes('widget')) {
-						validateSpecialPassages(passage, 'widget');
-						_widgets.push(passage);
-					}
+
+					// Special case: code passages.
 					else if (codePassageNames.includes(passage.name)) {
-						// TODO: Do some kind of validation here.
+						assertNoCodeTags(passage, 'code');
 						_specials[passage.name] = passage;
 					}
 
+					// Special case: init passages.
+					else if (passage.tags.includes('init')) {
+						assertValidCodeTagUsage(passage);
+						_inits.push(passage);
+					}
+
+					// Special case: script passages.
+					else if (passage.tags.includes('script')) {
+						assertValidCodeTagUsage(passage);
+						_scripts.push(passage);
+					}
+
+					// Special case: stylesheet passages.
+					else if (passage.tags.includes('stylesheet')) {
+						assertValidCodeTagUsage(passage);
+						_styles.push(passage);
+					}
+
+					// Special case: widget passages.
+					else if (passage.tags.includes('widget')) {
+						assertValidCodeTagUsage(passage);
+						_widgets.push(passage);
+					}
 
 					// All other passages.
 					else {
@@ -247,21 +251,21 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 			// simply use a regular expression to check for it.
 			Config.debug = /\bdebug\b/.test($storydata.attr('options'));
 
-			// Process stylesheet passages.
+			// Process stylesheets.
 			$storydata
-				.children('style') // alternatively: '[type="text/twine-css"]' or '#twine-user-stylesheet'
+				.children('style') // alternatively: '[type="text/twine-css"]'
 				.each(function (i) {
 					_styles.push(new Passage(`tw-user-style-${i}`, this));
 				});
 
-			// Process script passages.
+			// Process scripts.
 			$storydata
-				.children('script') // alternatively: '[type="text/twine-javascript"]' or '#twine-user-script'
+				.children('script') // alternatively: '[type="text/twine-javascript"]'
 				.each(function (i) {
 					_scripts.push(new Passage(`tw-user-script-${i}`, this));
 				});
 
-			// Process normal passages, excluding any tagged 'Twine.private' or 'annotation'.
+			// Process passages, excluding any tagged 'Twine.private' or 'annotation'.
 			$storydata
 				.children('tw-passagedata:not([tags~="Twine.private"],[tags~="annotation"])')
 				.each(function () {
@@ -269,23 +273,31 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 					const pid     = $this.attr('pid') || '';
 					const passage = new Passage($this.attr('name'), this);
 
-					// Special cases.
+					// WARNING: The ordering of the following `if` statements is important!
+
+					// Special case: starting passage.
 					if (pid === startNode && startNode !== '') {
 						Config.passages.start = passage.name;
-						validateStartingPassage(passage);
+						assertNoCodeTags(passage, 'starting');
 						_passages[passage.name] = passage;
 					}
+
+					// Special case: code passages.
+					else if (codePassageNames.includes(passage.name)) {
+						assertNoCodeTags(passage, 'code');
+						_specials[passage.name] = passage;
+					}
+
+					// Special case: init passages.
 					else if (passage.tags.includes('init')) {
-						validateSpecialPassages(passage, 'init');
+						assertValidCodeTagUsage(passage);
 						_inits.push(passage);
 					}
+
+					// Special case: widget passages.
 					else if (passage.tags.includes('widget')) {
-						validateSpecialPassages(passage, 'widget');
+						assertValidCodeTagUsage(passage);
 						_widgets.push(passage);
-					}
-					else if (codePassageNames.includes(passage.name)) {
-						// TODO: Do some kind of validation here.
-						_specials[passage.name] = passage;
 					}
 
 					// All other passages.
@@ -299,7 +311,7 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 
 			// Get the story's name.
 			//
-			// FIXME: Maybe `$storydata.attr('name')` should be used instead of `'{{STORY_NAME}}'`?
+			// QUESTION: Maybe `$storydata.attr('name')` should be used instead of `'{{STORY_NAME}}'`?
 			// _name = generateName($storydata.attr('name'));
 			_name = generateName('{{STORY_NAME}}');
 
@@ -328,21 +340,19 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 			throw new TypeError('Story.add passage parameter must be an instance of Passage');
 		}
 
-		if (codePassageNames.includes(passage)) {
-			throw new Error('Story.add passage instance must not be a code passage');
+		if (codePassageNames.includes(passage.name)) {
+			throw new Error(`Story.add passage instance "${passage.name}" must not be a code passage`);
 		}
 
 		if (passage.tags.includesAny(codeTags)) {
-			throw new Error('Story.add passage instance must not be tagged with code tags');
+			throw new Error(`Story.add passage instance "${passage.name}" must not include code tags`);
 		}
 
-		const name = passage.name;
-
-		if (Object.hasOwn(_passages, name)) {
+		if (Object.hasOwn(_passages, passage.name)) {
 			return false;
 		}
 
-		_passages[name] = passage;
+		_passages[passage.name] = passage;
 		return true;
 	}
 
