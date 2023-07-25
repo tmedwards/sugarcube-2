@@ -530,10 +530,8 @@ var Scripting = (() => { // eslint-disable-line no-unused-vars, no-var
 			'(?:\\.{3})',                                         //   Spread/rest syntax
 			'([^"\'=+\\-*\\/%<>&\\|\\^~!?:,;\\(\\)\\[\\]{}\\s]+)' // 2=Barewords
 		].join('|'), 'g');
-		const notSpaceRE      = new RegExp(`${Patterns.notSpace}`);
 		const varTest         = new RegExp(`^${Patterns.variable}`);
 		const withColonTestRE = new RegExp(`^${Patterns.space}*:`);
-		const withNotTestRE   = new RegExp(`^${Patterns.space}+not\b`);
 
 		function desugar(rawCodeString) {
 			if (desugarRE.lastIndex !== 0) {
@@ -572,31 +570,16 @@ var Scripting = (() => { // eslint-disable-line no-unused-vars, no-var
 						continue;
 					}
 
-					// If the token is a story $variable or temporary _variable, reset it
-					// to just its sigil—for later mapping.
-					else if (varTest.test(token)) {
-						token = token[0];
-					}
-
-					// If the token is `is`, check to see if it's followed by `not`, if so,
-					// convert them into the `isnot` operator.
-					//
-					// NOTE: This is a safety feature, since `$a is not $b` probably sounds
-					// reasonable to most users.
-					else if (token === 'is') {
-						const start = desugarRE.lastIndex;
-						const ahead = code.slice(start);
-
-						if (withNotTestRE.test(ahead)) {
-							code = code.splice(start, ahead.search(notSpaceRE));
-							token = 'isnot';
-						}
-					}
-
 					// If the token is followed by a colon and not preceeded by a question
 					// mark, then it's likely to be an object property, so skip it.
 					if (withColonTestRE.test(code.slice(desugarRE.lastIndex)) && !lastMatch.endsWith('?')) {
 						continue;
+					}
+
+					// If the token is a story $variable or temporary _variable, then reset
+					// it to just its sigil for replacement.
+					if (varTest.test(token)) {
+						token = token[0];
 					}
 
 					// If the finalized token has a mapping, replace it within the code string

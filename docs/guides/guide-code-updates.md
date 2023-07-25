@@ -258,6 +258,27 @@ Some changes within this version are <strong>breaking changes</strong> that you 
 	</tbody>
 </table>
 
+### `Scripting` API
+
+<table>
+	<thead>
+		<tr>
+			<th>Method</th>
+			<th>Change</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><code>Scripting.desugar()</code></td>
+			<td><b>BREAKING:</b> The undocumented <code>is not</code> to <code>isnot</code> operator mapping has been removed.</td>
+		</tr>
+		<tr>
+			<td><code>Scripting.parse()</code></td>
+			<td>This static method has been deprecated in favor of the <code>Scripting.desugar()</code> static method.</td>
+		</tr>
+	</tbody>
+</table>
+
 ### `State` API
 
 <table>
