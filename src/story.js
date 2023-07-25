@@ -19,10 +19,10 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 	let _name = '';
 
 	// Mapping of normal passages.
-	const _passages = createPassagesObject();
+	const _passages = createPassageStore();
 
 	// Mapping of code passages.
-	const _codes = createPassagesObject();
+	const _codes = createPassageStore();
 
 	// List of init passages.
 	const _inits = [];
@@ -64,10 +64,11 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 		Utility Functions.
 	*******************************************************************************/
 
-	function createPassagesObject(passages) {
+	function createPassageStore(passages) {
+		const store = Object.create(null);
 		return passages
-			? Object.assign(Object.create(null), passages)
-			: Object.create(null);
+			? Object.assign(store, passages)
+			: store;
 	}
 
 	function generateId(name) {
@@ -118,8 +119,6 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 	*******************************************************************************/
 
 	function init() {
-		if (BUILD_DEBUG) { console.log('[Story/init()]'); }
-
 		function assertNoCodeTags(passage, desc) {
 			// Code tags are completely disallowed.
 			if (passage.tags.includesAny(codeTagNames)) {
@@ -135,6 +134,8 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 				throw new Error(`passage "${passage.name}" includes multiple code tags; invalid: "${found.join('", "')}"`);
 			}
 		}
+
+		if (BUILD_DEBUG) { console.log('[Story/init()]'); }
 
 		// For Twine 1.
 		if (BUILD_TWINE1) {
@@ -224,9 +225,6 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 			else {
 				throw new Error('cannot find the "StoryTitle" special passage');
 			}
-
-			// Get the story's ID.
-			_id = generateId(_name);
 		}
 
 		// For Twine 2.
@@ -306,16 +304,16 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 			// QUESTION: Maybe `$storydata.attr('name')` should be used instead of `'{{STORY_NAME}}'`?
 			// _name = generateName($storydata.attr('name'));
 			_name = generateName('{{STORY_NAME}}');
-
-			// Get the story's ID.
-			_id = generateId(_name);
 		}
 
-		// Set the document's title to the story's name.
-		document.title = _name;
+		// Get the story's ID.
+		_id = generateId(_name);
 
 		// Set the default saves ID to the story's ID.
 		Config.saves.id = _id;
+
+		// Set the document's title to the story's name.
+		document.title = _name;
 	}
 
 
@@ -423,7 +421,7 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 
 	function getCodes() {
 		// NOTE: Return an immutable copy, rather than the internal mutable original.
-		return Object.freeze(createPassagesObject(_codes));
+		return Object.freeze(createPassageStore(_codes));
 	}
 
 	function getInits() {
@@ -433,7 +431,7 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 
 	function getNormals() {
 		// NOTE: Return an immutable copy, rather than the internal mutable original.
-		return Object.freeze(createPassagesObject(_passages));
+		return Object.freeze(createPassageStore(_passages));
 	}
 
 	function getScripts() {
