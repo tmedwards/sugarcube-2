@@ -169,7 +169,7 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 			const storyStyle = document.createElement('style');
 
 			new StyleWrapper(storyStyle)
-				.add(Story.getAllStylesheet().map(style => style.text.trim()).join('\n'));
+				.add(Story.getStyles().map(style => style.text.trim()).join('\n'));
 
 			jQuery(storyStyle)
 				.appendTo(document.head)
@@ -180,7 +180,7 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 		})();
 
 		// Load the user scripts.
-		Story.getAllScript().forEach(script => {
+		Story.getScripts().forEach(script => {
 			try {
 				Scripting.evalJavaScript(script.text);
 			}
@@ -191,7 +191,7 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 		});
 
 		// Load the user widgets.
-		Story.getAllWidget().forEach(widget => {
+		Story.getWidgets().forEach(widget => {
 			try {
 				Wikifier.wikifyEval(widget.processText());
 			}
@@ -215,7 +215,7 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 		/*
 			Execute `init`-tagged special passages.
 		*/
-		Story.getAllInit().forEach(passage => {
+		Story.getInits().forEach(passage => {
 			try {
 				const debugBuffer = Wikifier.wikifyEval(passage.text);
 
