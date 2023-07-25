@@ -16,7 +16,7 @@ Passage, tag, and variable names that have special meaning to SugarCube.
 **************************************************************************** -->
 ## Code Passages {#code-passages}
 
-Passages that are used only as code and ***cannot*** be navigated to.  They exist simply to fill in parts of the UI—e.g., `StoryCaption`—or execute code at specific times—e.g., `PassageReady`—or both—e.g., `PassageHeader`.
+Passages that are used only as code and ***should not*** be navigated to.  They exist simply to fill in parts of the UI—e.g., `StoryCaption`—or execute code at specific times—e.g., `PassageReady`—or both—e.g., `PassageHeader`.
 
 <!-- *********************************************************************** -->
 

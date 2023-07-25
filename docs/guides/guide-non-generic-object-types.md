@@ -91,9 +91,9 @@ Here's a simple example whose constructor takes multiple discrete parameters:
 ```js
 window.Character = class Character {
 	constructor(
-		name, 
+		name,
 		race,
-		st, 
+		st,
 		dx,
 		iq,
 		ht,
@@ -222,9 +222,9 @@ Here's a simple example whose constructor takes multiple discrete parameters:
 
 ```js
 window.Character = function (
-	name, 
+	name,
 	race,
-	st, 
+	st,
 	dx,
 	iq,
 	ht,

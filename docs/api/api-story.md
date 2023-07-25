@@ -47,7 +47,7 @@ The `string` name of the story.
 
 <!-- *********************************************************************** -->
 
-### `Story.get(name)` → *`Passage` instance* {#story-api-method-get}
+### `Story.get(name)` → *`Passage`* {#story-api-method-get}
 
 Gets the `Passage` instance with the given name.
 
@@ -107,7 +107,7 @@ if (Story.has("The Ducky")) {
 
 <!-- *********************************************************************** -->
 
-### `Story.filter(predicate [, thisArg])` → *Array&lt;`Passage`&gt;* {#story-api-method-filter}
+### `Story.filter(predicate [, thisArg])` → *`Array<Passage>`* {#story-api-method-filter}
 
 Searches all `Passage` instances for those that pass the test implemented by the given predicate function.
 
@@ -209,7 +209,7 @@ This setting has been deprecated and should no longer be used.  See the <a href=
 
 <!-- *********************************************************************** -->
 
-### <span class="deprecated">`Story.lookup(propertyName , searchValue [, sortProperty])` → *Array&lt;`Passage`&gt;*</span> {#story-api-method-lookup}
+### <span class="deprecated">`Story.lookup(propertyName , searchValue [, sortProperty])` → *`Array<Passage>`*</span> {#story-api-method-lookup}
 
 <p role="note" class="warning"><b>Deprecated:</b>
 This static method has been deprecated and should no longer be used.  See the <a href="#story-api-method-filter"><code>Story.filter()</code> static method</a> for its replacement.
@@ -222,7 +222,7 @@ This static method has been deprecated and should no longer be used.  See the <a
 
 <!-- *********************************************************************** -->
 
-### <span class="deprecated">`Story.lookupWith(predicate [, sortProperty])` → *Array&lt;`Passage`&gt;*</span> {#story-api-method-lookupwith}
+### <span class="deprecated">`Story.lookupWith(predicate [, sortProperty])` → *`Array<Passage>`*</span> {#story-api-method-lookupwith}
 
 <p role="note" class="warning"><b>Deprecated:</b>
 This static method has been deprecated and should no longer be used.  See the <a href="#story-api-method-filter"><code>Story.filter()</code> static method</a> for its replacement.

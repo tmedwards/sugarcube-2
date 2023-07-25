@@ -188,7 +188,7 @@ var Setting = (() => { // eslint-disable-line no-unused-vars, no-var
 				desc      →  (all)   → string
 				default
 					(if defined)
- 						  →  Toggle  → boolean
+						  →  Toggle  → boolean
 						  →  List    → Array
 						  →  Range   → number
 						  →  Value   → any
