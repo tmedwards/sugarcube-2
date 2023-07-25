@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 /***********************************************************************************************************************
 
-	build-docs.js (v1.3.1, 2022-10-06)
+	build-docs.js (v1.3.2, 2023-07-25)
 		A Node.js-hosted build script for SugarCube's documentation.
 
-	Copyright © 2020–2021 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
+	Copyright © 2020–2023 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
@@ -61,6 +61,7 @@ const CONFIG = {
 
 			// Guides
 			'guides/guide-state-sessions-and-saving.md',
+			'guides/guide-non-generic-object-types.md',
 			'guides/guide-tips.md',
 			'guides/guide-media-passages.md',
 			'guides/guide-harlowe-to-sugarcube.md',
