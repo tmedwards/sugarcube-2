@@ -180,6 +180,7 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 					// Special case: code passages.
 					else if (codePassageNames.includes(passage.name)) {
 						assertNoCodeTags(passage, 'code');
+						// NOTE: Ideally, these should be going into their own store, rather than `_passages`.
 						_passages[passage.name] = passage;
 					}
 
@@ -272,6 +273,7 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 					// Special case: code passages.
 					else if (codePassageNames.includes(passage.name)) {
 						assertNoCodeTags(passage, 'code');
+						// NOTE: Ideally, these should be going into their own store, rather than `_passages`.
 						_passages[passage.name] = passage;
 					}
 
