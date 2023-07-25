@@ -131,8 +131,8 @@ jQuery(() => {
 
 	// From this point on it's promises all the way down.
 	new Promise(resolve => {
-		// Load the story data.
-		Story.load();
+		// Initialize the story.
+		Story.init();
 
 		// Initialize the databases.
 		try {

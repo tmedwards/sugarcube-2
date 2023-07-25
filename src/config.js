@@ -35,14 +35,14 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 	// Passages settings.
 	let _passagesDisplayTitles = false;
 	let _passagesNobr          = false;
-	let _passagesStart; // set by `Story.load()`
+	let _passagesStart; // Set by `Story.init()`
 	let _passagesOnProcess;
 	let _passagesTransitionOut;
 
 	// Saves settings.
 	let _savesAutoload; // QUESTION: Deprecate this?
 	let _savesDescriptions;
-	let _savesId; // NOTE: Initially set by `Story.load()`.
+	let _savesId; // NOTE: Initially set by `Story.init()`.
 	let _savesIsAllowed;
 	let _savesMaxAuto      = 0;
 	let _savesMaxSlot      = 8;

@@ -8,17 +8,19 @@ Passage, tag, and variable names that have special meaning to SugarCube.
 #### Warning {#special-names-warning}
 
 1. All special names listed herein are case sensitive, so their spelling and capitalization must be ***exactly*** as shown.
-2. ***Never*** combine special passages with special tags.  By doing so, you will probably break things in subtle and hard to detect ways.
+2. ***Never*** combine special or code passages with code tags.  By doing so, you will probably break things in subtle and hard to detect ways.
 
 
 <!-- ***************************************************************************
-	Special Passages
+	Code Passages
 **************************************************************************** -->
-## Passage Names {#special-passages}
+## Code Passages {#code-passages}
+
+Passages that are used only as code and ***cannot*** be navigated to.  They exist simply to fill in parts of the UI—e.g., `StoryCaption`—or execute code at specific times—e.g., `PassageReady`—or both—e.g., `PassageHeader`.
 
 <!-- *********************************************************************** -->
 
-### `PassageDone` {#special-passage-passagedone}
+### `PassageDone`<!-- legacy --><span id="special-passage-passagedone"></span><!-- /legacy --> {#code-passage-passagedone}
 
 Used for post-passage-display tasks, like redoing dynamic changes (happens after the rendering and display of each passage).  Generates no output.
 
@@ -30,7 +32,7 @@ Roughly equivalent to the [`:passagedisplay` event](#events-navigation-event-pas
 
 <!-- *********************************************************************** -->
 
-### `PassageFooter` {#special-passage-passagefooter}
+### `PassageFooter`<!-- legacy --><span id="special-passage-passagefooter"></span><!-- /legacy --> {#code-passage-passagefooter}
 
 Appended to each rendered passage.
 
@@ -42,7 +44,7 @@ Roughly equivalent to the [`:passagerender` event](#events-navigation-event-pass
 
 <!-- *********************************************************************** -->
 
-### `PassageHeader` {#special-passage-passageheader}
+### `PassageHeader`<!-- legacy --><span id="special-passage-passageheader"></span><!-- /legacy --> {#code-passage-passageheader}
 
 Prepended to each rendered passage.
 
@@ -54,7 +56,7 @@ Roughly equivalent to the [`:passagestart` event](#events-navigation-event-passa
 
 <!-- *********************************************************************** -->
 
-### `PassageReady` {#special-passage-passageready}
+### `PassageReady`<!-- legacy --><span id="special-passage-passageready"></span><!-- /legacy --> {#code-passage-passageready}
 
 Used for pre-passage-display tasks, like redoing dynamic changes (happens before the rendering of each passage).  Generates no output.
 
@@ -66,19 +68,7 @@ Roughly equivalent to the [`:passagestart` event](#events-navigation-event-passa
 
 <!-- *********************************************************************** -->
 
-### `Start` {#special-passage-start}
-
-**Twine&nbsp;2:**  *Not special.*  Any passage may be chosen as the starting passage by selecting it via the *Start Story Here* passage context-menu item—n.b. older versions of Twine&nbsp;2 used a <i class="icon rocket" title="rocket ship" aria-label="rocket ship"></i> icon for the same purpose.
-
-**Twine&nbsp;1/Twee:**  *Required.*  The starting passage, the first passage displayed.  Configurable, see [`Config.passages.start`](#config-api-property-passages-start) for more information.
-
-#### History:
-
-* `v2.0.0`: Introduced.
-
-<!-- *********************************************************************** -->
-
-### `StoryAuthor` {#special-passage-storyauthor}
+### `StoryAuthor`<!-- legacy --><span id="special-passage-storyauthor"></span><!-- /legacy --> {#code-passage-storyauthor}
 
 Used to populate the authorial byline area in the UI bar (element ID: `story-author`).
 
@@ -88,7 +78,7 @@ Used to populate the authorial byline area in the UI bar (element ID: `story-aut
 
 <!-- *********************************************************************** -->
 
-### `StoryBanner` {#special-passage-storybanner}
+### `StoryBanner`<!-- legacy --><span id="special-passage-storybanner"></span><!-- /legacy --> {#code-passage-storybanner}
 
 Used to populate the story's banner area in the UI bar (element ID: `story-banner`).
 
@@ -98,7 +88,7 @@ Used to populate the story's banner area in the UI bar (element ID: `story-banne
 
 <!-- *********************************************************************** -->
 
-### `StoryCaption` {#special-passage-storycaption}
+### `StoryCaption`<!-- legacy --><span id="special-passage-storycaption"></span><!-- /legacy --> {#code-passage-storycaption}
 
 Used to populate the story's caption area in the UI bar (element ID: `story-caption`).  May also be, and often is, used to add additional story UI elements and content to the UI bar.
 
@@ -108,7 +98,7 @@ Used to populate the story's caption area in the UI bar (element ID: `story-capt
 
 <!-- *********************************************************************** -->
 
-### `StoryDisplayTitle` {#special-passage-storydisplaytitle}
+### `StoryDisplayTitle`<!-- legacy --><span id="special-passage-storydisplaytitle"></span><!-- /legacy --> {#code-passage-storydisplaytitle}
 
 Sets the story's display title in the browser's titlebar and the UI bar (element ID: `story-title`).  If omitted, the story title will be used instead.
 
@@ -118,7 +108,7 @@ Sets the story's display title in the browser's titlebar and the UI bar (element
 
 <!-- *********************************************************************** -->
 
-### `StoryInit` {#special-passage-storyinit}
+### `StoryInit`<!-- legacy --><span id="special-passage-storyinit"></span><!-- /legacy --> {#code-passage-storyinit}
 
 Used for pre-story-start initialization tasks, like variable initialization (happens at the beginning of story initialization).  Generates no output.
 
@@ -128,7 +118,7 @@ Used for pre-story-start initialization tasks, like variable initialization (hap
 
 <!-- *********************************************************************** -->
 
-### `StoryInterface` {#special-passage-storyinterface}
+### `StoryInterface`<!-- legacy --><span id="special-passage-storyinterface"></span><!-- /legacy --> {#code-passage-storyinterface}
 
 Used to replace SugarCube's default UI.  Its contents are treated as raw HTML markup—i.e., *none* of SugarCube's special HTML processing is performed.  The markup is contained within a `<div id="story" role="main">` element and must itself contain, at least, an element with the ID `passages` that will be the main passage display area.  For example:
 
@@ -159,6 +149,14 @@ Elements that include either a <code>data-init-passage</code> or <code>data-pass
 <div id="passages"></div>
 ```
 
+Combined with the built-in wrapper:
+
+```
+<div id="story" role="main">
+	<div id="passages"></div>
+</div>
+```
+
 ##### With `data-init-passage` and `data-passage` content attributes
 
 ```
@@ -167,9 +165,19 @@ Elements that include either a <code>data-init-passage</code> or <code>data-pass
 <div id="passages"></div>
 ```
 
+Combined with the built-in wrapper:
+
+```
+<div id="story" role="main">
+	<div id="menu" data-init-passage="Menu"></div>
+	<div id="notifications" data-passage="Notifications"></div>
+	<div id="passages"></div>
+</div>
+```
+
 <!-- *********************************************************************** -->
 
-### `StoryMenu` {#special-passage-storymenu}
+### `StoryMenu`<!-- legacy --><span id="special-passage-storymenu"></span><!-- /legacy --> {#code-passage-storymenu}
 
 Used to populate the story's menu items in the UI bar (element ID: `menu-story`).
 
@@ -190,15 +198,15 @@ The story menu only displays links—specifically, anything that creates an anch
 
 <!-- *********************************************************************** -->
 
-### `StorySettings` {#special-passage-storysettings}
+### `StorySettings`<!-- legacy --><span id="special-passage-storysettings"></span><!-- /legacy --> {#code-passage-storysettings}
 
 <p role="note" class="warning"><b>Warning:</b>
-Twine&nbsp;1.4 special passage unused by SugarCube.  The <a href="#config-api"><code>Config</code> API</a> serves the same basic purpose.
+Twine&nbsp;1.4 code passage unused by SugarCube.  The <a href="#config-api"><code>Config</code> API</a> serves the same basic purpose.
 </p>
 
 <!-- *********************************************************************** -->
 
-### `StorySubtitle` {#special-passage-storysubtitle}
+### `StorySubtitle`<!-- legacy --><span id="special-passage-storysubtitle"></span><!-- /legacy --> {#code-passage-storysubtitle}
 
 Sets the story's subtitle in the UI bar (element ID: `story-subtitle`).
 
@@ -208,17 +216,17 @@ Sets the story's subtitle in the UI bar (element ID: `story-subtitle`).
 
 <!-- *********************************************************************** -->
 
-### `StoryTitle` {#special-passage-storytitle}
+### `StoryTitle`<!-- legacy --><span id="special-passage-storytitle"></span><!-- /legacy --> {#code-passage-storytitle}
 
 <p role="note" class="warning"><b>Warning:</b>
 The story title is used to create the storage ID that is used to store all player data, both temporary and persistent.  It should be plain text, containing no code, markup, or macros of any kind.
 </p>
 
 <p role="note" class="tip"><b>Tip:</b>
-If you want to set a title for display that contains code, markup, or macros, see the <a href="#special-passage-storydisplaytitle"><code>StoryDisplayTitle</code> special passage</a>.
+If you want to set a title for display that contains code, markup, or macros, see the <a href="#code-passage-storydisplaytitle"><code>StoryDisplayTitle</code> code passage</a>.
 </p>
 
-**Twine&nbsp;2:**  *Unused.*  The story's title is part of the story project.
+**Twine&nbsp;2:**  *Unused, not a code passage.*  The story's title is part of the story project.
 
 **Twine&nbsp;1/Twee:**  *Required.*  Sets the story's title.
 
@@ -241,9 +249,133 @@ This special passage has been deprecated and should no longer be used.
 
 
 <!-- ***************************************************************************
+	Special Passages
+**************************************************************************** -->
+## Special Passages {#special-passages}
+
+Passages that receive *some* kind of special treatment from the engine.
+
+<p role="note"><b>Note:</b>
+Some special passages are conditional and may not always be special passages.  The conditions will be noted within each such passsge's entry.
+</p>
+
+<!-- *********************************************************************** -->
+
+### `Start` {#special-passage-start}
+
+**Twine&nbsp;2:**  *Not a special passage.*  Any passage may be chosen as the starting passage by selecting it via the *Start Story Here* passage context-menu item—n.b. older versions of Twine&nbsp;2 used a <i class="icon rocket" title="rocket ship" aria-label="rocket ship"></i> icon for the same purpose.
+
+**Twine&nbsp;1/Twee:**  *Required.*  The starting passage, the first passage displayed.  Configurable, see [`Config.passages.start`](#config-api-property-passages-start) for more information.
+
+#### History:
+
+* `v2.0.0`: Introduced.
+
+
+<!-- ***************************************************************************
+	Code Tags
+**************************************************************************** -->
+## Code Tags {#code-tags}
+
+Passages tagged with code tags are used only as code or data and ***cannot*** be navigated to.
+
+<p role="note"><b>Note:</b>
+Some code tags are conditional and may not always act as code tags.  The conditions will be noted within each such tag's entry.
+</p>
+
+<!-- *********************************************************************** -->
+
+### `init`<!-- legacy --><span id="special-tag-init"></span><!-- /legacy --> {#code-tag-init}
+
+Registers the passage as an initialization passage.  Used for pre-story-start initialization tasks, like variable initialization (happens at the beginning of story initialization).  Generates no output.
+
+<p role="note"><b>Note:</b>
+This is chiefly intended for use by add-ons/libraries.  For normal projects, authors are <strong>strongly</strong> encouraged to continue to use the <a href="#special-passage-storyinit"><code>StoryInit</code> special named passage</a>.
+</p>
+
+#### History:
+
+* `v2.36.0`: Introduced.
+
+<!-- *********************************************************************** -->
+
+### `script`<!-- legacy --><span id="special-tag-script"></span><!-- /legacy --> {#code-tag-script}
+
+**Twine&nbsp;2:**  *Unused, not a code tag.*  Use the *Edit Story JavaScript* story editor menu item for scripts.
+
+**Twine&nbsp;1/Twee:**  Registers the passage as JavaScript code, which is executed during startup.
+
+#### History:
+
+* `v2.0.0`: Introduced.
+
+<!-- *********************************************************************** -->
+
+### `stylesheet`<!-- legacy --><span id="special-tag-stylesheet"></span><!-- /legacy --> {#code-tag-stylesheet}
+
+**Twine&nbsp;2:**  *Unused, not a code tag.*  Use the *Edit Story Stylesheet* story editor menu item for styles.
+
+**Twine&nbsp;1/Twee:**  Registers the passage as a CSS stylesheet, which is loaded during startup.  It is ***strongly*** recommended that you use only one stylesheet passage.  Additionally, see the [tagged stylesheet warning](#css-warnings).
+
+#### History:
+
+* `v2.0.0`: Introduced.
+
+<!-- *********************************************************************** -->
+
+### `Twine.audio`<!-- legacy --><span id="special-tag-twine-audio"></span><!-- /legacy --> {#code-tag-twine-audio}
+
+Registers the passage as an audio passage.  See [Guide: Media Passages](#guide-media-passages) for more information.
+
+#### History:
+
+* `v2.24.0`: Introduced.
+
+<!-- *********************************************************************** -->
+
+### `Twine.image`<!-- legacy --><span id="special-tag-twine-image"></span><!-- /legacy --> {#code-tag-twine-image}
+
+Registers the passage as an image passage.  See [Guide: Media Passages](#guide-media-passages) for more information.
+
+#### History:
+
+* `v2.0.0`: Introduced.
+
+<!-- *********************************************************************** -->
+
+### `Twine.video`<!-- legacy --><span id="special-tag-twine-video"></span><!-- /legacy --> {#code-tag-twine-video}
+
+Registers the passage as a video passage.  See [Guide: Media Passages](#guide-media-passages) for more information.
+
+#### History:
+
+* `v2.24.0`: Introduced.
+
+<!-- *********************************************************************** -->
+
+### `Twine.vtt`<!-- legacy --><span id="special-tag-twine-vtt"></span><!-- /legacy --> {#code-tag-twine-vtt}
+
+Registers the passage as a <abbr title="Video Text Track">VTT</abbr> passage.  See [Guide: Media Passages](#guide-media-passages) for more information.
+
+#### History:
+
+* `v2.24.0`: Introduced.
+
+<!-- *********************************************************************** -->
+
+### `widget`<!-- legacy --><span id="special-tag-widget"></span><!-- /legacy --> {#code-tag-widget}
+
+Registers the passage as [`<<widget>>` macro](#macros-macro-widget) definitions, which are loaded during startup.
+
+#### History:
+
+* `v2.0.0`: Introduced.
+
+
+<!-- ***************************************************************************
 	Special Tags
 **************************************************************************** -->
-## Tag Names {#special-tags}
+## Special Tags {#special-tags}
 
 <!-- *********************************************************************** -->
 
@@ -259,93 +391,6 @@ Does not affect <code>script</code> or <code>stylesheet</code> tagged passages, 
 
 * `v2.0.0`: Introduced.
 
-<!-- *********************************************************************** -->
-
-### `init` {#special-tag-init}
-
-Registers the passage as an initialization passage.  Used for pre-story-start initialization tasks, like variable initialization (happens at the beginning of story initialization).  Generates no output.
-
-<p role="note"><b>Note:</b>
-This is chiefly intended for use by add-ons/libraries.  For normal projects, authors are <strong>strongly</strong> encouraged to continue to use the <a href="#special-passage-storyinit"><code>StoryInit</code> special named passage</a>.
-</p>
-
-#### History:
-
-* `v2.36.0`: Introduced.
-
-<!-- *********************************************************************** -->
-
-### `script` {#special-tag-script}
-
-**Twine&nbsp;2:**  *Not special.*  Use the *Edit Story JavaScript* story editor menu item for scripts.
-
-**Twine&nbsp;1/Twee:**  Registers the passage as JavaScript code, which is executed during startup.
-
-#### History:
-
-* `v2.0.0`: Introduced.
-
-<!-- *********************************************************************** -->
-
-### `stylesheet` {#special-tag-stylesheet}
-
-**Twine&nbsp;2:**  *Not special.*  Use the *Edit Story Stylesheet* story editor menu item for styles.
-
-**Twine&nbsp;1/Twee:**  Registers the passage as a CSS stylesheet, which is loaded during startup.  It is ***strongly*** recommended that you use only one stylesheet passage.  Additionally, see the [tagged stylesheet warning](#css-warnings).
-
-#### History:
-
-* `v2.0.0`: Introduced.
-
-<!-- *********************************************************************** -->
-
-### `Twine.audio` {#special-tag-twine-audio}
-
-Registers the passage as an audio passage.  See [Guide: Media Passages](#guide-media-passages) for more information.
-
-#### History:
-
-* `v2.24.0`: Introduced.
-
-<!-- *********************************************************************** -->
-
-### `Twine.image` {#special-tag-twine-image}
-
-Registers the passage as an image passage.  See [Guide: Media Passages](#guide-media-passages) for more information.
-
-#### History:
-
-* `v2.0.0`: Introduced.
-
-<!-- *********************************************************************** -->
-
-### `Twine.video` {#special-tag-twine-video}
-
-Registers the passage as a video passage.  See [Guide: Media Passages](#guide-media-passages) for more information.
-
-#### History:
-
-* `v2.24.0`: Introduced.
-
-<!-- *********************************************************************** -->
-
-### `Twine.vtt` {#special-tag-twine-vtt}
-
-Registers the passage as a <abbr title="Video Text Track">VTT</abbr> passage.  See [Guide: Media Passages](#guide-media-passages) for more information.
-
-#### History:
-
-* `v2.24.0`: Introduced.
-
-<!-- *********************************************************************** -->
-
-### `widget` {#special-tag-widget}
-
-Registers the passage as [`<<widget>>` macro](#macros-macro-widget) definitions, which are loaded during startup.
-
-#### History:
-
-* `v2.0.0`: Introduced.
 
 <!-- *********************************************************************** -->
 
@@ -364,7 +409,7 @@ This special tag has been deprecated and should no longer be used.
 <!-- ***************************************************************************
 	Special Variables
 **************************************************************************** -->
-## Variable Names {#special-variables}
+## Special Variables {#special-variables}
 
 <!-- *********************************************************************** -->
 
