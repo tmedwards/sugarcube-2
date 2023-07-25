@@ -7,11 +7,15 @@
 
 ### `Story.id` → *string* {#story-api-getter-id}
 
-The DOM-compatible ID of the story, created from the slugified story name.
+The DOM-compatible ID of the story.
 
 #### History:
 
 * `v2.37.0`: Introduced.
+
+#### Value:
+
+The `string` DOM-compatible ID of the story, created from the slugified story name.
 
 <!-- *********************************************************************** -->
 
@@ -25,19 +29,7 @@ The IFID (Interactive Fiction IDentifier) of the story.
 
 #### Value:
 
-The IFID of the story, or an empty string if no IFID exists.  Twine 2 IFID's are v4 random 
-
-#### Examples:
-
-```js
-console.log(`There are currently ${Save.browser.slot.size} browser slot saves`);
-```
-
-```js
-if (Save.browser.slot.size > 0) {
-	/* Browser slot saves exist. */
-}
-```
+The `string` IFID of the story, or an empty string if no IFID exists.  The Twine 2 ecosystem's IFIDs are v4 random UUIDs.
 
 <!-- *********************************************************************** -->
 
@@ -49,6 +41,10 @@ The name of the story.
 
 * `v2.37.0`: Introduced.
 
+#### Value:
+
+The `string` name of the story.
+
 <!-- *********************************************************************** -->
 
 ### `Story.get(name)` → *`Passage` instance* {#story-api-method-get}
@@ -56,13 +52,12 @@ The name of the story.
 Gets the `Passage` instance with the given name.
 
 <p role="note"><b>Note:</b>
-This method cannot not retrieve <em>code</em> passages.  Meaning passages listed under [code passages](#code-passages) or tagged with [code tags](#code-tags).
+This method cannot retrieve passages tagged with <a href="#code-tags">code tags</a>.
 </p>
 
 #### History:
 
 * `v2.0.0`: Introduced.
-* `v2.37.0`: .
 
 #### Parameters:
 
@@ -74,7 +69,7 @@ The `Passage` instance with the given name, or a new empty `Passage` instance if
 
 #### Examples:
 
-```
+```js
 // Get the Passage instance with the name "The Ducky"
 const theDucky = Story.get("The Ducky");
 ```
@@ -86,7 +81,7 @@ const theDucky = Story.get("The Ducky");
 Determines whether a `Passage` instance with the given name exists.
 
 <p role="note"><b>Note:</b>
-This method does not check <em>code</em> passages.  Meaning passages listed under [code passages](#code-passages) or including [code tags](#code-tags).
+This method does not check passages tagged with <a href="#code-tags">code tags</a>.
 </p>
 
 #### History:
@@ -99,7 +94,7 @@ This method does not check <em>code</em> passages.  Meaning passages listed unde
 
 #### Returns:
 
-Returns whether a `Passage` instance with the given name exists.
+Boolean `true` if a `Passage` instance with the given name exists, elsewise `false`.
 
 #### Examples:
 
@@ -117,7 +112,7 @@ if (Story.has("The Ducky")) {
 Searches all `Passage` instances for those that pass the test implemented by the given predicate function.
 
 <p role="note"><b>Note:</b>
-This method cannot not retrieve <em>code</em> passages.  Meaning passages listed under [code passages](#code-passages) or tagged with [code tags](#code-tags).
+This method cannot retrieve passages tagged with <a href="#code-tags">code tags</a>.
 </p>
 
 #### History:
@@ -131,7 +126,7 @@ This method cannot not retrieve <em>code</em> passages.  Meaning passages listed
 
 #### Returns:
 
-A new array filled with all `Passage` instances that pass the test implemented by the given predicate function, or an empty array if no instances pass.
+A new `Array<Passage>` filled with all instances that pass the test implemented by the given predicate function, or an empty `Array` if no instances pass.
 
 #### Examples:
 
@@ -155,7 +150,7 @@ Story.filter(function (p) {
 Searches all `Passage` instances for the first that passes the test implemented by the given predicate function.
 
 <p role="note"><b>Note:</b>
-This method cannot not retrieve <em>code</em> passages.  Meaning passages listed under [code passages](#code-passages) or tagged with [code tags](#code-tags).
+This method cannot retrieve passages tagged with <a href="#code-tags">code tags</a>.
 </p>
 
 #### History:
@@ -173,7 +168,7 @@ The first `Passage` instance that passed the test implemented by the given predi
 
 #### Examples:
 
-```
+```js
 // Returns the first 'forest'-tagged Passage instance
 Story.find(function (p) {
 	return p.tags.includes("forest");
