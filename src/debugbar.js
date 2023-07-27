@@ -43,7 +43,7 @@ var DebugBar = (() => { // eslint-disable-line no-unused-vars, no-var
 				/* eslint-disable max-len */
 				  '<div id="debug-bar">'
 				+     '<div id="debug-bar-watch">'
-				+         `<div>\u2014 ${L10n.get('debugBarMesgNoWatches')} \u2014</div>>`
+				+         `<div>\u2014\u00A0${L10n.get('debugBarMesgNoWatches')}\u00A0\u2014</div>>`
 				+     '</div>'
 				+     '<div>'
 				+         `<button id="debug-bar-watch-toggle" tabindex="0" title="${watchToggleLabel}" aria-label="${watchToggleLabel}">${L10n.get('debugBarTextWatch')}</button>`
@@ -324,7 +324,7 @@ var DebugBar = (() => { // eslint-disable-line no-unused-vars, no-var
 		if (_watchList.length === 0) {
 			_$watchBody
 				.empty()
-				.append(`<div>\u2014 ${L10n.get('debugBarMesgNoWatches')} \u2014</div>`);
+				.append(`<div>\u2014\u00A0${L10n.get('debugBarMesgNoWatches')}\u00A0\u2014</div>`);
 			return;
 		}
 
