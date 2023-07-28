@@ -394,9 +394,7 @@ var UIBar = (() => { // eslint-disable-line no-unused-vars, no-var
 		Legacy Functions.
 	*******************************************************************************/
 
-	/*
-		[DEPRECATED].
-	*/
+	// [DEPRECATED]
 	function update() {
 		if (BUILD_DEBUG) { console.log('[UIBar/update()]'); }
 
