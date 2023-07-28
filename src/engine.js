@@ -33,8 +33,8 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 	// Last time `enginePlay()` was called (in milliseconds).
 	let _lastPlay = null;
 
-	// List of objects describing `StoryInterface` elements to update via passages during navigation.
-	let _updating = null;
+	// jQuery event namespace.
+	const EVENT_NS = '.engine';
 
 
 	/*******************************************************************************
@@ -78,7 +78,7 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 					throw new Error('no element with ID "passages" found within "StoryInterface" special passage');
 				}
 
-				// Empty `#passages` and set the `aria-live` content attribute to `'polite'` if necessary.
+				// Empty `#passages` and, if necessary, add an `aria-live="polite"` content attribute.
 				$passages
 					.empty()
 
@@ -90,9 +90,6 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 				// Cache the data passage elements now to prevent recursive processing.
 				const $dataInitPassages = $elems.find('[data-init-passage]');
 				const $dataPassages     = $elems.find('[data-passage]');
-
-				// Array of updating passage/element objects.
-				const updating = [];
 
 				// Data passage elements updated once during initialization.
 				$dataInitPassages.each((i, el) => {
@@ -111,10 +108,10 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 					}
 
 					if (Story.has(passage)) {
-						updating.push({
-							passage,
-							element : el,
-							once    : true
+						jQuery(document).one(`:uiupdate${EVENT_NS}`, () => {
+							const frag = document.createDocumentFragment();
+							new Wikifier(frag, Story.get(passage).processText().trim());
+							jQuery(el).empty().append(frag);
 						});
 					}
 				});
@@ -132,16 +129,13 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 					}
 
 					if (Story.has(passage)) {
-						updating.push({
-							passage,
-							element : el
+						jQuery(document).on(`:uiupdate${EVENT_NS}`, () => {
+							const frag = document.createDocumentFragment();
+							new Wikifier(frag, Story.get(passage).processText().trim());
+							jQuery(el).empty().append(frag);
 						});
 					}
 				});
-
-				if (updating.length > 0) {
-					_updating = updating;
-				}
 
 				Config.ui.updateStoryElements = false;
 			}
@@ -659,17 +653,6 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 		jQuery(passageEl).appendTo(containerEl);
 		setTimeout(() => jQuery(passageEl).removeClass('passage-in'), DOM_DELAY / 2);
 
-		// Update the story display title, if necessary.
-		if (Story.has('StoryDisplayTitle')) {
-			// NOTE: We don't have an `else` here because that case will be handled later (below).
-			if (_updating !== null || !Config.ui.updateStoryElements) {
-				setDisplayTitle(Story.get('StoryDisplayTitle').processText());
-			}
-		}
-		else if (Config.passages.displayTitles && passage.name !== Config.passages.start) {
-			document.title = `${passage.name} | ${Story.name}`;
-		}
-
 		// Scroll the window to the top.
 		window.scroll(0, 0);
 
@@ -698,24 +681,8 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 			}
 		});
 
-		// Update the other interface elements, if necessary.
-		if (_updating !== null) {
-			for (let i = 0; i < _updating.length; /* empty */) {
-				const { element, passage, once } = _updating[i];
-
-				jQuery(element).empty().wiki(Story.get(passage).processText().trim());
-
-				if (once) {
-					_updating.deleteAt(i);
-				}
-				else {
-					++i;
-				}
-			}
-		}
-		else if (Config.ui.updateStoryElements) {
-			UIBar.update();
-		}
+		// Execute UI update events.
+		UI.update();
 
 		// Add the completed debug views for `StoryInit`, `PassageReady`, and `PassageDone`
 		// to the incoming passage element.
@@ -851,6 +818,6 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 			Legacy Functions.
 		*/
 		display           : { value : engineDisplay },
-		minDomActionDelay : { value : DOM_DELAY }
+		minDomActionDelay : { get : () => DOM_DELAY }
 	}));
 })();
