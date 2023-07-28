@@ -701,6 +701,10 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 		return true;
 	}
 
+	function update() {
+		jQuery.event.trigger({ type : ':uiupdate' });
+	}
+
 
 	/*******************************************************************************
 		Built-in Dialog Functions.
@@ -864,6 +868,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 		buildRestart     : { value : buildRestart },
 		buildSaves       : { value : buildSaves },
 		buildSettings    : { value : buildSettings },
+		update           : { value : update },
 
 		// Built-in Dialog Functions.
 		alert    : { value : openAlert },

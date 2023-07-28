@@ -11,48 +11,21 @@
 */
 
 var UIBar = (() => { // eslint-disable-line no-unused-vars, no-var
-	// UI bar element cache.
+	// jQuery-wrapped UI bar element.
 	let _$uiBar = null;
+
+	// jQuery event namespace.
+	const EVENT_NS = '.ui-bar';
 
 
 	/*******************************************************************************
-		UI Bar Functions.
+		Initialization Functions.
 	*******************************************************************************/
 
-	function uiBarDestroy() {
-		if (BUILD_DEBUG) { console.log('[UIBar/uiBarDestroy()]'); }
+	function init() {
+		if (BUILD_DEBUG) { console.log('[UIBar/init()]'); }
 
-		if (!_$uiBar) {
-			return;
-		}
-
-		// Hide the UI bar.
-		_$uiBar.hide();
-
-		// Remove its namespaced events.
-		jQuery(document).off('.ui-bar');
-
-		// Remove its styles.
-		jQuery(document.head).find('#style-ui-bar').remove();
-
-		// Remove it from the DOM.
-		_$uiBar.remove();
-
-		// Drop the reference to the element.
-		_$uiBar = null;
-	}
-
-	function uiBarHide() {
-		if (_$uiBar) {
-			_$uiBar.hide();
-		}
-
-		return this;
-	}
-
-	function uiBarInit() {
-		if (BUILD_DEBUG) { console.log('[UIBar/uiBarInit()]'); }
-
+		// UI bar already exists, so bail out.
 		if (document.getElementById('ui-bar')) {
 			return;
 		}
@@ -105,8 +78,8 @@ var UIBar = (() => { // eslint-disable-line no-unused-vars, no-var
 			Cache the UI bar element, since its going to be used often.
 
 			NOTE: We rewrap the element itself, rather than simply using the result
-			of `find()`, so that we cache an uncluttered jQuery-wrapper (i.e. `context`
-			refers to the element and there is no `prevObject`).
+			of `find()`, so that we cache an uncluttered jQuery-wrapper—i.e., `context`
+			refers to the element and there is no `prevObject`.
 		*/
 		_$uiBar = jQuery($elems.find('#ui-bar').get(0));
 
@@ -116,30 +89,66 @@ var UIBar = (() => { // eslint-disable-line no-unused-vars, no-var
 		// Set up the UI bar's global event handlers.
 		jQuery(document)
 			// Set up a handler for the history-backward/-forward buttons.
-			.on(':historyupdate.ui-bar', (($backward, $forward) => () => {
+			.on(`:historyupdate${EVENT_NS}`, (($backward, $forward) => () => {
 				$backward.ariaDisabled(State.length < 2);
 				$forward.ariaDisabled(State.length === State.size);
 			})(jQuery('#history-backward'), jQuery('#history-forward')));
 	}
 
-	function uiBarIsHidden() {
+
+	/*******************************************************************************
+		Core Functions.
+	*******************************************************************************/
+
+	function destroy() {
+		if (BUILD_DEBUG) { console.log('[UIBar/destroy()]'); }
+
+		if (!_$uiBar) {
+			return;
+		}
+
+		// Hide the UI bar.
+		_$uiBar.hide();
+
+		// Remove its namespaced events.
+		jQuery(document).off(EVENT_NS);
+
+		// Remove its styles.
+		jQuery(document.head).find('#style-ui-bar').remove();
+
+		// Remove it from the DOM.
+		_$uiBar.remove();
+
+		// Drop the reference to the element.
+		_$uiBar = null;
+	}
+
+	function hide() {
+		if (_$uiBar) {
+			_$uiBar.hide();
+		}
+
+		return UIBar;
+	}
+
+	function isHidden() {
 		return _$uiBar && _$uiBar.css('display') === 'none';
 	}
 
-	function uiBarIsStowed() {
+	function isStowed() {
 		return _$uiBar && _$uiBar.hasClass('stowed');
 	}
 
-	function uiBarShow() {
+	function show() {
 		if (_$uiBar) {
 			_$uiBar.show();
 		}
 
-		return this;
+		return UIBar;
 	}
 
-	function uiBarStart() {
-		if (BUILD_DEBUG) { console.log('[UIBar/uiBarStart()]'); }
+	function start() {
+		if (BUILD_DEBUG) { console.log('[UIBar/start()]'); }
 
 		if (!_$uiBar) {
 			return;
@@ -151,7 +160,7 @@ var UIBar = (() => { // eslint-disable-line no-unused-vars, no-var
 				? Config.ui.stowBarInitially
 				: jQuery(window).width() <= Config.ui.stowBarInitially
 		) {
-			uiBarStow(true);
+			stow(true);
 		}
 
 		// Set up the #ui-bar-toggle and #ui-bar-history widgets.
@@ -189,32 +198,69 @@ var UIBar = (() => { // eslint-disable-line no-unused-vars, no-var
 			jQuery('#ui-bar-history').remove();
 		}
 
+		// Create a few `:uiupdate` event helpers.
+		const addUiUpdateHandler = handler => jQuery(document)[
+			Config.ui.updateStoryElements ? 'on' : 'one'
+		](`:uiupdate${EVENT_NS}`, handler);
+		const addUpdaterOrRemove = (selector, passageName) => {
+			const $el = jQuery(selector);
+
+			if (Story.has(passageName)) {
+				addUiUpdateHandler(() => {
+					const frag = document.createDocumentFragment();
+					new Wikifier(frag, Story.get(passageName).processText().trim());
+					$el.empty().append(frag);
+				});
+			}
+			else {
+				$el.remove();
+			}
+		};
+
 		// Set up the story display title.
-		if (Story.has('StoryDisplayTitle')) {
-			setDisplayTitle(Story.get('StoryDisplayTitle').processText());
+		{
+			let storyTitleHandler;
+
+			if (Story.has('StoryDisplayTitle')) {
+				storyTitleHandler = () => setDisplayTitle(Story.get('StoryDisplayTitle').processText());
+			}
+			else {
+				// For Twine 1.
+				if (BUILD_TWINE1) { // for Twine 1
+					storyTitleHandler = () => setDisplayTitle(Story.get('StoryTitle').processText());
+				}
+
+				// For Twine 2.
+				else {
+					storyTitleHandler = () => setDisplayTitle(Story.name, true);
+				}
+			}
+
+			addUiUpdateHandler(storyTitleHandler);
+		}
+
+		// Set up our dynamic elements.
+		addUpdaterOrRemove('#story-banner', 'StoryBanner');
+		addUpdaterOrRemove('#story-subtitle', 'StorySubtitle');
+		addUpdaterOrRemove('#story-author', 'StoryAuthor');
+		addUpdaterOrRemove('#story-caption', 'StoryCaption');
+
+		if (Story.has('StoryMenu')) {
+			const $menuStory = jQuery('#menu-story');
+
+			jQuery(document).on(':uiupdate${EVENT_NS}', () => {
+				try {
+					const list = UI.assembleLinkList('StoryMenu');
+					$menuStory.empty().append(list);
+				}
+				catch (ex) {
+					console.error(ex);
+					Alert.error('StoryMenu', ex.message);
+				}
+			});
 		}
 		else {
-			if (BUILD_TWINE1) { // for Twine 1
-				setPageElement('story-title', 'StoryTitle', Story.name);
-			}
-			else { // for Twine 2
-				jQuery('#story-title').text(Story.name);
-			}
-		}
-
-		// Set up the dynamic page elements.
-		if (!Story.has('StoryCaption')) {
-			jQuery('#story-caption').remove();
-		}
-
-		if (!Story.has('StoryMenu')) {
 			jQuery('#menu-story').remove();
-		}
-
-		if (!Config.ui.updateStoryElements) {
-			// We only need to set the story elements here if `Config.ui.updateStoryElements`
-			// is falsy, since otherwise they will be set by `Engine.play()`.
-			uiBarUpdate();
 		}
 
 		// Set up the Continue menu item.
@@ -297,7 +343,7 @@ var UIBar = (() => { // eslint-disable-line no-unused-vars, no-var
 		}
 	}
 
-	function uiBarStow(noAnimation) {
+	function stow(noAnimation) {
 		if (_$uiBar && !_$uiBar.hasClass('stowed')) {
 			let $story;
 
@@ -317,10 +363,10 @@ var UIBar = (() => { // eslint-disable-line no-unused-vars, no-var
 			}
 		}
 
-		return this;
+		return UIBar;
 	}
 
-	function uiBarUnstow(noAnimation) {
+	function unstow(noAnimation) {
 		if (_$uiBar && _$uiBar.hasClass('stowed')) {
 			let $story;
 
@@ -340,43 +386,27 @@ var UIBar = (() => { // eslint-disable-line no-unused-vars, no-var
 			}
 		}
 
-		return this;
+		return UIBar;
 	}
 
-	function uiBarUpdate() {
-		if (BUILD_DEBUG) { console.log('[UIBar/uiBarUpdate()]'); }
 
-		// Set up the display title, both the document title and page element.
-		if (Story.has('StoryDisplayTitle')) {
-			setDisplayTitle(Story.get('StoryDisplayTitle').processText());
-		}
+	/*******************************************************************************
+		Deprecated Functions.
+	*******************************************************************************/
+
+	// [DEPRECATED]
+	function update() {
+		if (BUILD_DEBUG) { console.log('[UIBar/update()]'); }
+
+		console.warn('[DEPRECATED] UIBar.update() is deprecated.');
 
 		if (!_$uiBar) {
 			return;
 		}
 
-		// Set up the (non-navigation) dynamic page elements.
-		setPageElement('story-banner', 'StoryBanner');
-		setPageElement('story-subtitle', 'StorySubtitle');
-		setPageElement('story-author', 'StoryAuthor');
-		setPageElement('story-caption', 'StoryCaption');
+		UI.update();
 
-		// Set up the #menu-story items.
-		const menuStory = document.getElementById('menu-story');
-
-		if (menuStory !== null) {
-			jQuery(menuStory).empty();
-
-			if (Story.has('StoryMenu')) {
-				try {
-					UI.assembleLinkList('StoryMenu', menuStory);
-				}
-				catch (ex) {
-					console.error(ex);
-					Alert.error('StoryMenu', ex.message);
-				}
-			}
-		}
+		return UIBar;
 	}
 
 
@@ -385,18 +415,21 @@ var UIBar = (() => { // eslint-disable-line no-unused-vars, no-var
 	*******************************************************************************/
 
 	return Object.preventExtensions(Object.create(null, {
-		destroy  : { value : uiBarDestroy },
-		hide     : { value : uiBarHide },
-		init     : { value : uiBarInit },
-		isHidden : { value : uiBarIsHidden },
-		isStowed : { value : uiBarIsStowed },
-		show     : { value : uiBarShow },
-		start    : { value : uiBarStart },
-		stow     : { value : uiBarStow },
-		unstow   : { value : uiBarUnstow },
-		update   : { value : uiBarUpdate },
+		// Initialization Functions.
+		init : { value : init },
 
-		// Legacy Functions.
-		setStoryElements : { value : uiBarUpdate }
+		// Core Functions.
+		destroy  : { value : destroy },
+		hide     : { value : hide },
+		isHidden : { value : isHidden },
+		isStowed : { value : isStowed },
+		show     : { value : show },
+		start    : { value : start },
+		stow     : { value : stow },
+		unstow   : { value : unstow },
+
+		// Deprecated Functions.
+		setStoryElements : { value : update },
+		update           : { value : update }
 	}));
 })();
