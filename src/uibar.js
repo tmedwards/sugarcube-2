@@ -391,7 +391,7 @@ var UIBar = (() => { // eslint-disable-line no-unused-vars, no-var
 
 
 	/*******************************************************************************
-		Legacy Functions.
+		Deprecated Functions.
 	*******************************************************************************/
 
 	// [DEPRECATED]
@@ -428,7 +428,7 @@ var UIBar = (() => { // eslint-disable-line no-unused-vars, no-var
 		stow     : { value : stow },
 		unstow   : { value : unstow },
 
-		// Legacy Functions.
+		// Deprecated Functions.
 		setStoryElements : { value : update },
 		update           : { value : update }
 	}));
