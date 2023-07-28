@@ -751,7 +751,7 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 
 
 	/*******************************************************************************
-		Legacy Functions.
+		Deprecated Functions.
 	*******************************************************************************/
 
 	/*
@@ -788,15 +788,11 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 	*******************************************************************************/
 
 	return Object.preventExtensions(Object.create(null, {
-		/*
-			Constants.
-		*/
+		// Constants.
 		States    : { value : States },
 		DOM_DELAY : { get : () => DOM_DELAY },
 
-		/*
-			Core Functions.
-		*/
+		// Core Functions.
 		init           : { value : engineInit },
 		runUserScripts : { value : engineRunUserScripts },
 		runUserInit    : { value : engineRunUserInit },
@@ -814,9 +810,7 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 		show           : { value : engineShow },
 		play           : { value : enginePlay },
 
-		/*
-			Legacy Functions.
-		*/
+		// Deprecated Functions.
 		display           : { value : engineDisplay },
 		minDomActionDelay : { get : () => DOM_DELAY }
 	}));
