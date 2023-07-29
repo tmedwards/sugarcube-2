@@ -21,7 +21,7 @@ Acquire a loading screen lock and, if necessary, display the loading screen.
 
 #### Returns:
 
-The (`number`) lock ID.
+The (*integer*) lock ID.
 
 #### Examples:
 
