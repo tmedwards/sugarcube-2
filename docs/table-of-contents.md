@@ -263,8 +263,9 @@
 	* [`:fading`](#events-simpleaudio-event-fading)
 	* [`:stopped`](#events-simpleaudio-event-stopped)
 * [System Events](#events-system)
-	* [`:storyready`](#events-system-event-storyready)
 	* [`:enginerestart`](#events-system-event-enginerestart)
+	* [`:storyready`](#events-system-event-storyready)
+	* [`:uiupdate`](#events-system-event-uiupdate)
 * [`<<type>>` Events](#events-type-macro)
 	* [`:typingcomplete`](#events-type-macro-event-typingcomplete)
 	* [`:typingstart`](#events-type-macro-event-typingstart)
@@ -624,6 +625,7 @@
 * [`UI.restart()`](#ui-api-method-restart)
 * [`UI.saves()`](#ui-api-method-saves)
 * [`UI.settings()`](#ui-api-method-settings)
+* [`UI.update()`](#ui-api-method-update)
 
 ## [`UIBar` API](#uibar-api)
 
@@ -634,7 +636,6 @@
 * [`UIBar.show()`](#uibar-api-method-show)
 * [`UIBar.stow()`](#uibar-api-method-stow)
 * [`UIBar.unstow()`](#uibar-api-method-unstow)
-* [`UIBar.update()`](#uibar-api-method-update)
 
 ----
 

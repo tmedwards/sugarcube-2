@@ -17,7 +17,7 @@ Completely removes the UI bar and all of its associated styles and event handler
 
 #### Examples:
 
-```
+```js
 UIBar.destroy();
 ```
 
@@ -41,13 +41,13 @@ This does not reclaim the space reserved for the UI bar.  Thus, a call to <a hre
 
 ##### Basic usage
 
-```
+```js
 UIBar.hide();
 ```
 
 ##### With stow
 
-```
+```js
 UIBar.hide().stow();
 ```
 
@@ -65,7 +65,7 @@ Returns whether the UI bar is currently hidden.
 
 #### Examples:
 
-```
+```js
 if (UIBar.isHidden()) {
 	/* code to execute if the UI bar is hidden… */
 }
@@ -89,7 +89,7 @@ Returns whether the UI bar is currently stowed.
 
 #### Examples:
 
-```
+```js
 if (UIBar.isStowed()) {
 	/* code to execute if the UI bar is stowed… */
 }
@@ -115,13 +115,13 @@ Shows the UI bar.  Returns a reference to the `UIBar` object for chaining.
 
 ##### Basic usage
 
-```
+```js
 UIBar.show();
 ```
 
 ##### With unstow
 
-```
+```js
 UIBar.unstow().show();
 ```
 
@@ -144,13 +144,13 @@ Stows the UI bar, so that it takes up less space.  Returns a reference to the `U
 
 ##### Basic usage
 
-```
+```js
 UIBar.stow();
 ```
 
 ##### With no animation
 
-```
+```js
 UIBar.stow(true);
 ```
 
@@ -173,34 +173,25 @@ Unstows the UI bar, so that it is fully accessible again.  Returns a reference t
 
 ##### Basic usage
 
-```
+```js
 UIBar.unstow();
 ```
 
 ##### With no animation
 
-```
+```js
 UIBar.unstow(true);
 ```
 
 <!-- *********************************************************************** -->
 
-### `UIBar.update()` {#uibar-api-method-update}
+### <span class="deprecated">`UIBar.update()`</span> {#uibar-api-method-update}
 
-Updates all sections of the UI bar that are populated by special passages—e.g., `StoryBanner`, `StoryCaption`, `StoryMenu`, etc.
-
-<p role="note" class="warning"><b>Warning:</b>
-As <em>all</em> special passage populated sections are updated it is recommended that <code>UIBar.update()</code> be used sparingly.  Ideally, if you need to update UI bar content outside of the normal passage navigation update, then you should update only the specific areas you need to rather than the entire UI bar.
+<p role="note" class="warning"><b>Deprecated:</b>
+This method has been deprecated and should no longer be used.  See the <a href="#ui-api-method-update"><code>UI.update()</code> static method</a> for its replacement.
 </p>
 
 #### History:
 
 * `v2.29.0`: Introduced.
-
-#### Parameters: *none*
-
-#### Examples:
-
-```
-UIBar.update();
-```
+* `v2.37.0`: Deprecated in favor of `UI.update()`.

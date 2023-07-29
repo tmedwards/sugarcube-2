@@ -45,7 +45,7 @@ While there are no custom properties, the event is fired from the dialog's body,
 
 #### Examples:
 
-```
+```js
 /* Execute the handler function when the event triggers. */
 $(document).on(':dialogclosed', function (ev) {
 	/* JavaScript code */
@@ -75,7 +75,7 @@ While there are no custom properties, the event is fired from the dialog's body,
 
 #### Examples:
 
-```
+```js
 /* Execute the handler function when the event triggers. */
 $(document).on(':dialogclosing', function (ev) {
 	/* JavaScript code */
@@ -105,7 +105,7 @@ While there are no custom properties, the event is fired from the dialog's body,
 
 #### Examples:
 
-```
+```js
 /* Execute the handler function when the event triggers. */
 $(document).on(':dialogopened', function (ev) {
 	/* JavaScript code */
@@ -135,7 +135,7 @@ While there are no custom properties, the event is fired from the dialog's body,
 
 #### Examples:
 
-```
+```js
 /* Execute the handler function when the event triggers. */
 $(document).on(':dialogopening', function (ev) {
 	/* JavaScript code */
@@ -159,21 +159,16 @@ In order of processing: *(for reference, this also shows tasks and various speci
 
 1. Passage init.  Happens before the modification of the state history.
 	1. `:passageinit` event.
-	2. <span class="deprecated">`prehistory` tasks.</span> *(deprecated)*
 2. Passage start. Happens before the rendering of the incoming passage.
-	1. <span class="deprecated">`predisplay` tasks.</span> *(deprecated)*
-	2. [`PassageReady` special passage](#special-passage-passageready).
-	3. `:passagestart` event.
-	4. <span class="deprecated">`prerender` tasks.</span> *(deprecated)*
-	5. [`PassageHeader` special passage](#special-passage-passageheader).
+	1. [`PassageReady` special passage](#special-passage-passageready).
+	2. `:passagestart` event.
+	3. [`PassageHeader` special passage](#special-passage-passageheader).
 3. Passage render.  Happens after the rendering of the incoming passage.
 	1. [`PassageFooter` special passage](#special-passage-passagefooter).
 	2. `:passagerender` event.
-	3. <span class="deprecated">`postrender` tasks.</span> *(deprecated)*
 4. Passage display.  Happens after the display—i.e., output—of the incoming passage.
 	1. [`PassageDone` special passage](#special-passage-passagedone).
 	2. `:passagedisplay` event.
-	3. <span class="deprecated">`postdisplay` tasks.</span> *(deprecated)*
 5. UI bar special passages update.  Happens before the end of passage navigation.
 	1. [`StoryBanner` special passage](#special-passage-storybanner).
 	2. [`StoryDisplayTitle` special passage](#special-passage-storydisplaytitle).
@@ -200,7 +195,7 @@ Triggered before the modification of the state history.
 
 #### Examples:
 
-```
+```js
 /* Execute the handler function each time the event triggers. */
 $(document).on(':passageinit', function (ev) {
 	/* JavaScript code */
@@ -231,7 +226,7 @@ Triggered before the rendering of the incoming passage.
 
 ##### Basic usage
 
-```
+```js
 /* Execute the handler function each time the event triggers. */
 $(document).on(':passagestart', function (ev) {
 	/* JavaScript code */
@@ -245,7 +240,7 @@ $(document).one(':passagestart', function (ev) {
 
 ##### Modifying the content buffer
 
-```
+```js
 /*
 	Process the markup "In the //beginning//." and append the result
 	to the incoming passage's element.
@@ -274,7 +269,7 @@ Triggered after the rendering of the incoming passage.
 
 ##### Basic usage
 
-```
+```js
 /* Execute the handler function each time the event triggers. */
 $(document).on(':passagerender', function (ev) {
 	/* JavaScript code */
@@ -288,7 +283,7 @@ $(document).one(':passagerender', function (ev) {
 
 ##### Modifying the content buffer
 
-```
+```js
 /*
 	Process the markup "At the //end// of some renderings." and append the result
 	to the incoming passage's element.
@@ -318,7 +313,7 @@ Triggered after the display—i.e., output—of the incoming passage.
 
 ##### Basic usage
 
-```
+```js
 /* Execute the handler function each time the event triggers. */
 $(document).on(':passagedisplay', function (ev) {
 	/* JavaScript code */
@@ -332,7 +327,7 @@ $(document).one(':passagedisplay', function (ev) {
 
 ##### Modifying the content buffer
 
-```
+```js
 /*
 	Process the markup "It's //showtime//!" and append the result
 	to the incoming passage's element.
@@ -362,7 +357,7 @@ Triggered at the end of passage navigation.
 
 ##### Basic usage
 
-```
+```js
 /* Execute the handler function each time the event triggers. */
 $(document).on(':passageend', function (ev) {
 	/* JavaScript code */
@@ -376,7 +371,7 @@ $(document).one(':passageend', function (ev) {
 
 ##### Modifying the content buffer
 
-```
+```js
 /*
 	Process the markup "So long and //thanks for all the fish//!" and append the result
 	to the incoming passage's element.
@@ -481,7 +476,7 @@ Track event triggered when a fade completes normally.
 
 #### Examples:
 
-```
+```js
 /* Execute the handler function when the event triggers for one track via <AudioTrack>. */
 aTrack.on(':faded', function (ev) {
 	/* JavaScript code */
@@ -507,7 +502,7 @@ Track event triggered when a fade starts.
 
 #### Examples:
 
-```
+```js
 /* Execute the handler function when the event triggers for one track via <AudioTrack>. */
 aTrack.on(':fading', function (ev) {
 	/* JavaScript code */
@@ -537,7 +532,7 @@ Track event triggered when playback is stopped after [`<AudioTrack>.stop()`](#au
 
 #### Examples:
 
-```
+```js
 /* Execute the handler function when the event triggers for one track via <AudioTrack>. */
 aTrack.on(':stopped', function (ev) {
 	/* JavaScript code */
@@ -559,27 +554,6 @@ System events allow the execution of JavaScript code at specific points during s
 
 <!-- *********************************************************************** -->
 
-### `:storyready` event {#events-system-event-storyready}
-
-Global event triggered once just before the dismissal of the loading screen at startup.
-
-#### History:
-
-* `v2.31.0`: Introduced.
-
-#### Event object properties: *none*
-
-#### Examples:
-
-```
-/* Execute the handler function exactly once, since it's only fired once. */
-$(document).one(':storyready', function (ev) {
-	/* JavaScript code */
-});
-```
-
-<!-- *********************************************************************** -->
-
 ### `:enginerestart` event<!-- legacy --><span id="engine-api-event-enginerestart"></span><!-- /legacy --> {#events-system-event-enginerestart}
 
 Global event triggered once just before the page is reloaded when [`Engine.restart()`](#engine-api-method-restart) is called.
@@ -592,9 +566,51 @@ Global event triggered once just before the page is reloaded when [`Engine.resta
 
 #### Examples:
 
-```
+```js
 /* Execute the handler function when the event triggers. */
 $(document).one(':enginerestart', function (ev) {
+	/* JavaScript code */
+});
+```
+
+<!-- *********************************************************************** -->
+
+### `:storyready` event {#events-system-event-storyready}
+
+Global event triggered once just before the dismissal of the loading screen at startup.
+
+#### History:
+
+* `v2.31.0`: Introduced.
+
+#### Event object properties: *none*
+
+#### Examples:
+
+```js
+/* Execute the handler function exactly once, since it's only fired once. */
+$(document).one(':storyready', function (ev) {
+	/* JavaScript code */
+});
+```
+
+<!-- *********************************************************************** -->
+
+### `:uiupdate` event {#events-system-event-uiupdate}
+
+Global event triggered to cause the update of the built-in user interface.
+
+#### History:
+
+* `v2.37.0`: Introduced.
+
+#### Event object properties: *none*
+
+#### Examples:
+
+```js
+/* Execute the handler function when the event triggers. */
+$(document).on(':uiupdate', function (ev) {
 	/* JavaScript code */
 });
 ```
@@ -625,7 +641,7 @@ Injecting additional <code>&lt;&lt;type&gt;&gt;</code> macro invocations <em>aft
 
 #### Examples:
 
-```
+```js
 /* Execute the handler function when the event triggers. */
 $(document).on(':typingcomplete', function (ev) {
 	/* JavaScript code */
@@ -647,7 +663,7 @@ Local event triggered on the typing wrapper when the typing of a section starts.
 
 #### Examples:
 
-```
+```js
 /* Execute the handler function when the event triggers. */
 $(document).on(':typingstart', function (ev) {
 	/* JavaScript code */
@@ -669,7 +685,7 @@ Local event triggered on the typing wrapper when the typing of a section stops.
 
 #### Examples:
 
-```
+```js
 /* Execute the handler function when the event triggers. */
 $(document).on(':typingstop', function (ev) {
 	/* JavaScript code */
