@@ -14,17 +14,36 @@ tw-storydata {
 	z-index: 0;
 }
 
-/* Special no transition styling. */
-.no-transition {
-	transition: none !important;
+/* Scrollbar styles. */
+*::-webkit-scrollbar {
+	/* background-color: #111; */
+	/* For horizontal scrollbars. */
+	height: 8px; /* Maybe: `0.5rem` */
+	/* For vertical scrollbars. */
+	width: 8px; /* Maybe: `0.5rem` */
+}
+*::-webkit-scrollbar-corner,
+*::-webkit-scrollbar-track {
+	background-color: #111;
+}
+*::-webkit-scrollbar-thumb {
+	background-color: #333;
+	border: 1px solid #111;
+}
+* { /* stylelint-disable-line no-descending-specificity */
+	/* -ms-overflow-style: auto; */
+	scrollbar-color: #333 #111;
+	scrollbar-width: thin;
 }
 
 /* Fullscreen styles. */
-*:fullscreen { /* Cause Blink/WebKit to behave like Gecko. */
+*:fullscreen {
+	/* Cause Blink/WebKit to behave like Gecko. */
 	height: 100%;
 	width: 100%;
 }
-body::-ms-backdrop { /* Prevent IE 11 from hiding the `body` element's background. */
+body::-ms-backdrop {
+	/* Prevent IE 11 from hiding the `body` element's background. */
 	background: none;
 }
 
@@ -36,11 +55,39 @@ body::-ms-backdrop { /* Prevent IE 11 from hiding the `body` element's backgroun
 	cursor: not-allowed !important;
 }
 html {
+	/* stylelint-disable value-keyword-case */
+	font-family:
+		/* iOS & macOS Safari, macOS Firefox */
+		-apple-system,
+		/* macOS & Windows Chrome */
+		system-ui,
+		/* macOS Chrome */
+		BlinkMacSystemFont,
+		/* Windows ≥6 (Vista) */
+		"Segoe UI",
+		/* Android, Chrome OS */
+		Roboto,
+		/* KDE */
+		Oxygen-Sans,
+		/* GNOME */
+		Cantarell,
+		/* Ubuntu */
+		Ubuntu,
+		/* macOS <10.11 */
+		"Helvetica Neue",
+		/* Older fallbacks */
+		Helvetica, Arial, sans-serif,
+		/* Color Emoji */
+		color-emoji;
+	/* stylelint-enable value-keyword-case */
+
 	/*
-		We define the base font size and line height here as they affect the layout
-		of the base page elements (i.e. `#ui-bar`, `#ui-dialog`, and `#story`).
+		We define the base font size and line height here as they affect the
+		layout of the core page elements—i.e., `#ui-bar`, `#ui-dialog`, and
+		`#story`.
 	*/
-	font: 16px/1 Helmet, Freesans, sans-serif;
+	font-size: 16px;
+	line-height: 1;
 }
 body {
 	color: #eee;
@@ -53,6 +100,7 @@ a {
 	text-decoration: none;
 	transition-duration: 200ms;
 }
+html[data-outlines] a:focus,
 a:hover {
 	color: #8af;
 	text-decoration: underline;
@@ -60,6 +108,7 @@ a:hover {
 a.link-broken {
 	color: #c22;
 }
+html[data-outlines] a.link-broken:focus,
 a.link-broken:hover {
 	color: #e44;
 }
@@ -75,6 +124,9 @@ span.link-disabled {
 	*/
 	text-decoration: none;
 }
+a.link-internal {
+	-webkit-touch-callout: none;
+}
 area {
 	cursor: pointer;
 }
@@ -88,6 +140,7 @@ button {
 	transition-duration: 200ms;
 	user-select: none;
 }
+html[data-outlines] button:focus,
 button:hover {
 	background-color: #57c;
 	border-color: #79e;
@@ -95,6 +148,43 @@ button:hover {
 button:disabled {
 	background-color: #444;
 	border: 1px solid #666;
+}
+code,
+kbd,
+pre,
+samp,
+var {
+	/* stylelint-disable value-keyword-case */
+	font-family:
+		SFMono-Regular,
+		Menlo,
+		Monaco,
+		Consolas,
+		"Liberation Mono",
+		"Lucida Console",
+		"Courier New",
+		Courier,
+		/* 2× to fix a bug in ancient browsers. */
+		monospace, monospace;
+	/* stylelint-enable value-keyword-case */
+
+	/* font-size: 16px;
+	line-height: 1; */
+}
+code,
+kbd,
+samp,
+var {
+	margin: 0;
+	padding: 0;
+	white-space: nowrap;
+}
+pre {
+	/* line-height: 19px; */
+	/* margin: 0 15px; */
+	/* margin: 15px 0; */
+	overflow: auto;
+	/* padding: 6px 10px; */
 }
 input,
 select,
@@ -144,10 +234,11 @@ input[type="range"]::-webkit-slider-thumb {
 	cursor: pointer;
 	height: 18px;
 	/*
-		NOTE: Ideally, `margin-top` should be `0` for Edge/Spartan (ca. v17), but
-		real WebKit/Blink-based browsers need it.  Since there's more of them and
-		Edge is co-opting the prefix anyway, we cater to them.  Edge will simply
-		have to look ever so slightly off.
+		NOTE: Ideally, `margin-top` should be `0` for Edge (EdgeHTML)—ca. v17—but
+		real Blink/WebKit-based browsers need it.  Since there's more of them and
+		Edge (EdgeHTML) is co-opting the prefix, we cater to them.  Edge (EdgeHTML)
+		will simply have to look ever so slightly off.  This will likely cease to
+		be an issue for Edge users when it switches from EdgeHTML to Blink anyway.
 	*/
 	margin-top: -5px;
 	width: 33px;
@@ -198,14 +289,21 @@ input[type="range"]::-ms-thumb {
 	width: 33px;
 }
 /* END: input[type="range"] */
-input:not(:disabled):focus,
-input:not(:disabled):hover,
-select:not(:disabled):focus,
-select:not(:disabled):hover,
-textarea:not(:disabled):focus,
-textarea:not(:disabled):hover {
+html[data-outlines] input:focus,
+input:hover,
+html[data-outlines] select:focus,
+select:hover,
+html[data-outlines] textarea:focus,
+textarea:hover {
 	background-color: #333;
 	border-color: #eee;
+}
+input:disabled,
+select:disabled,
+textarea:disabled {
+	color: #333;
+	background-color: transparent;
+	border-color: #111;
 }
 hr {
 	display: block;
@@ -221,6 +319,11 @@ progress,
 video {
 	max-width: 100%;
 	vertical-align: middle;
+}
+
+/* Special no transition styling. */
+.no-transition {
+	transition: none !important;
 }
 
 .error-view {
@@ -241,6 +344,14 @@ video {
 	position: absolute;
 	top: 0;
 	width: 1.75em;
+}
+html[data-outlines] .error-view > .error-toggle:focus,
+.error-view > .error-toggle:hover {
+	/*
+		This could also be achieved by simply adding `!important` to the base
+		`background-color` property above.
+	*/
+	background-color: transparent;
 }
 .error-view > .error {
 	display: inline-block;
