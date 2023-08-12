@@ -248,10 +248,10 @@ var UIBar = (() => { // eslint-disable-line no-unused-vars, no-var
 		if (Story.has('StoryMenu')) {
 			const $menuStory = jQuery('#menu-story');
 
-			jQuery(document).on(':uiupdate${EVENT_NS}', () => {
+			jQuery(document).on(`:uiupdate${EVENT_NS}`, () => {
 				try {
-					const list = UI.assembleLinkList('StoryMenu');
-					$menuStory.empty().append(list);
+					const frag = UI.assembleLinkList('StoryMenu', document.createDocumentFragment());
+					$menuStory.empty().append(frag);
 				}
 				catch (ex) {
 					console.error(ex);
