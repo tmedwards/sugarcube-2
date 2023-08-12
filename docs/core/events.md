@@ -598,7 +598,7 @@ $(document).one(':storyready', function (ev) {
 
 ### `:uiupdate` event {#events-system-event-uiupdate}
 
-Global event triggered to cause the update of the built-in user interface.
+Global event triggered when the built-in user interface is being updated.
 
 #### History:
 
