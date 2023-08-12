@@ -2787,6 +2787,19 @@ The `_contents` special variable is used internally, by container widgets, to st
 
 When a widget is called, any existing `_args` variable, and for container widgets `_contents`, is stored for the duration of the call and restored after.  This means that non-widget uses of these special variable are completely safe, though this does have the effect that uses external to widgets are inaccessible within them unless passed in as arguments.
 
+<div role="note" class="warning"><b>Warning:</b>
+<p>When calling one container widget directly from within another container widget, the <code>_contents</code> special variable of the outer widget <strong><em>must not</em></strong> be included within the body of the call of the inner widget.  Doing so will cause uncontrolled recursion.  E.g.,</p>
+<pre><code>&lt;&lt;widget "inner" container&gt;&gt;
+_contents
+&lt;&lt;/widget&gt;&gt;
+
+&lt;&lt;widget "outer" container&gt;&gt;
+&lt;&lt;inner&gt;&gt;_contents&lt;&lt;/inner&gt;&gt;
+&lt;&lt;/widget&gt;&gt;
+
+&lt;&lt;outer&gt;&gt;ford&lt;&lt;/outer&gt;&gt;</code></pre>
+</div>
+
 <p role="note" class="warning"><b>Warning:</b>
 Unless localized by use of the <a href="#macros-macro-capture"><code>&lt;&lt;capture&gt;&gt;</code> macro</a>, any story or other temporary variables used within widgets are part of a story's normal variable store, so care <em>must be</em> taken not to accidentally either overwrite or pick up an existing value.
 </p>
