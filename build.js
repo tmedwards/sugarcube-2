@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 /***********************************************************************************************************************
 
-	build.js (v1.8.7, 2023-03-22)
+	build.js (v1.8.8, 2023-08-13)
 		A Node.js-hosted build script for SugarCube.
 
-	Copyright © 2013–2022 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
+	Copyright © 2013–2023 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
@@ -78,7 +78,8 @@ const CONFIG = {
 			// The ordering herein is significant.
 			'vendor/normalize.css',
 			'src/css/init-screen.css',
-			'src/css/font.css',
+			'src/css/font-icons.css',
+			'src/css/font-emoji.css',
 			'src/css/core.css',
 			'src/css/core-display.css',
 			'src/css/core-passage.css',
