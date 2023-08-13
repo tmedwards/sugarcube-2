@@ -29,20 +29,6 @@ var Setting = (() => { // eslint-disable-line no-unused-vars, no-var
 	function init() {
 		if (BUILD_DEBUG) { console.log('[Setting/init()]'); }
 
-		/* legacy */
-		// Attempt to migrate an existing `options` store to `settings`.
-		if (storage.has('options')) {
-			const old = storage.get('options');
-
-			if (old !== null) {
-				updateSettingsObject(Object.assign(create(), old));
-			}
-
-			save();
-			storage.delete('options');
-		}
-		/* /legacy */
-
 		// Load existing settings.
 		load();
 
@@ -427,7 +413,7 @@ var Setting = (() => { // eslint-disable-line no-unused-vars, no-var
 
 		settings[name] = value;
 
-		// QUESTION: Should we something on failure?
+		// QUESTION: Should we do something here upon failure?
 		save();
 
 		const def = get(name);
@@ -446,14 +432,10 @@ var Setting = (() => { // eslint-disable-line no-unused-vars, no-var
 	*******************************************************************************/
 
 	return Object.preventExtensions(Object.create(null, {
-		/*
-			Enumerations.
-		*/
+		// Enumerations.
 		Types : { value : Types },
 
-		/*
-			Settings Functions.
-		*/
+		// Settings Functions.
 		init   : { value : init },
 		create : { value : create },
 		save   : { value : save },
@@ -461,9 +443,7 @@ var Setting = (() => { // eslint-disable-line no-unused-vars, no-var
 		clear  : { value : clear },
 		reset  : { value : reset },
 
-		/*
-			Definitions Functions.
-		*/
+		// Definitions Functions.
 		forEach   : { value : forEach },
 		add       : { value : add },
 		addHeader : { value : addHeader },
@@ -476,9 +456,7 @@ var Setting = (() => { // eslint-disable-line no-unused-vars, no-var
 		get       : { value : get },
 		delete    : { value : delete$ },
 
-		/*
-			Values Functions.
-		*/
+		// Values Functions.
 		getValue : { value : getValue },
 		setValue : { value : setValue }
 	}));
