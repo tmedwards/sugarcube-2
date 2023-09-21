@@ -123,6 +123,7 @@
 				selector  : undefined,
 				data      : undefined,
 				role      : undefined,
+				tabindex  : 0,
 				controls  : undefined,
 				pressed   : undefined,
 				label     : undefined
@@ -169,8 +170,8 @@
 					.end();
 			}
 
-			// Set `tabindex` to `0` to make them focusable (unnecessary on <button> elements, but it doesn't hurt).
-			this.attr('tabindex', 0);
+			// Set `tabindex`.  Default `0` to make them focusable (unnecessary on <button> elements, but it doesn't hurt).
+			this.attr('tabindex', opts.tabindex);
 
 			// Set `aria-controls`.
 			if (opts.controls != null) { // lazy equality for null
