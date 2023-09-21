@@ -622,6 +622,7 @@ Makes the target element(s) WAI-ARIA-compatible clickables—meaning that variou
 #### History:
 
 * `v2.0.0`: Introduced.
+* `v2.37.0`: Add `tabindex` option.
 
 #### Parameters:
 
@@ -636,6 +637,7 @@ An options object should have some of the following properties:
 * **`one`:** (*boolean*) Whether the clickables are single-use—i.e., the handler callback runs only once and then removes itself.  If omitted, defaults to `false`.
 * **`selector`:** (*string*) A selector applied to the target element(s) to filter the descendants that triggered the event. If omitted or `null`, the event is always handled when it reaches the target element(s).
 * **`data`:** (*any*) Data to be passed to the handler in [`event.data`](http://api.jquery.com/event.data/) when an event is triggered.
+* **`tabindex`:** (*integer*) Value for the `tabindex` attribute.  If omitted, defaults to `0`.
 * **`controls`:** (*string*) Value for the `aria-controls` attribute.
 * **`pressed`:** (*string*) Value for the `aria-pressed` attribute (valid values: `"true"`, `"false"`).
 * **`label`:** (*string*) Value for the `aria-label` and `title` attributes.
