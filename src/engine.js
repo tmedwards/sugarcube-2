@@ -51,101 +51,103 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 			return;
 		}
 
-		/*
-			Remove #init-no-js & #init-lacking from #init-screen.
-		*/
+		// Remove #init-no-js & #init-lacking from #init-screen.
 		jQuery('#init-no-js,#init-lacking').remove();
 
-		/*
-			Generate the core story elements and insert them into the page before the store area.
-		*/
-		(() => {
-			const $elems = jQuery(document.createDocumentFragment());
-			const markup = Story.has('StoryInterface') && Story.get('StoryInterface').text.trim();
+		// Generate the main UI container.
+		const $main = jQuery('<div id="story" role="main"></div>');
 
-			if (markup) {
-				// Remove the UI bar, its styles, and events.
-				UIBar.destroy();
+		// Get the user's UI markup, if any.
+		const markup = Story.has('StoryInterface') && Story.get('StoryInterface').text.trim();
 
-				// Remove the core display area styles.
-				jQuery(document.head).find('#style-core-display').remove();
+		// If user markup exists, remove unnecessay default UI and process the markup.
+		if (markup) {
+			// Disable updates on default UI elements.
+			Config.ui.updateStoryElements = false;
 
-				$elems.append(`<div id="story" role="main">${markup}</div>`);
+			// Remove the default UI bar, including its styles and events.
+			UIBar.destroy();
 
-				const $passages = $elems.find('#passages');
+			// Remove the default passage display area styles.
+			jQuery(document.head).find('#style-core-display').remove();
 
-				if ($passages.length === 0) {
-					throw new Error('no element with ID "passages" found within "StoryInterface" special passage');
+			// Append the user's UI elements to the main UI container.
+			$main.append(markup);
+
+			// Cache the `#passages` element.
+			const $passages = $main.find('#passages');
+
+			// Bail out if `#passages` is nonexistent.
+			if ($passages.length === 0) {
+				throw new Error('no element with ID "passages" found within "StoryInterface" special passage');
+			}
+
+			// Empty `#passages` and, if necessary, add an `aria-live="polite"` content attribute.
+			$passages
+				.empty()
+				// Without an existing `aria-live`.
+				.not('[aria-live]')
+				.attr('aria-live', 'polite')
+				.end();
+
+			// Cache the data passage elements now to prevent recursive processing.
+			const $dataInitPassages = $main.find('[data-init-passage]');
+			const $dataPassages     = $main.find('[data-passage]');
+
+			// Data passage elements updated once during initialization.
+			$dataInitPassages.each((i, el) => {
+				if (el.id === 'passages') {
+					throw new Error(`"StoryInterface" element <${el.nodeName.toLowerCase()} id="passages"> must not contain a "data-init-passage" content attribute`);
 				}
 
-				// Empty `#passages` and, if necessary, add an `aria-live="polite"` content attribute.
-				$passages
-					.empty()
+				const passage = el.getAttribute('data-init-passage').trim();
 
-					// Without an existing `aria-live`.
-					.not('[aria-live]')
-					.attr('aria-live', 'polite')
-					.end();
+				if (el.hasAttribute('data-passage')) {
+					throw new Error(`"StoryInterface" element <${el.nodeName.toLowerCase()} data-init-passage="${passage}"> must not contain a "data-passage" content attribute`);
+				}
 
-				// Cache the data passage elements now to prevent recursive processing.
-				const $dataInitPassages = $elems.find('[data-init-passage]');
-				const $dataPassages     = $elems.find('[data-passage]');
+				if (el.firstElementChild !== null) {
+					throw new Error(`"StoryInterface" element <${el.nodeName.toLowerCase()} data-init-passage="${passage}"> contains child elements`);
+				}
 
-				// Data passage elements updated once during initialization.
-				$dataInitPassages.each((i, el) => {
-					if (el.id === 'passages') {
-						throw new Error(`"StoryInterface" element <${el.nodeName.toLowerCase()} id="passages"> must not contain a "data-init-passage" content attribute`);
-					}
+				if (Story.has(passage)) {
+					jQuery(document).one(`:uiupdate${EVENT_NS}`, () => {
+						const frag = document.createDocumentFragment();
+						new Wikifier(frag, Story.get(passage).processText().trim());
+						jQuery(el).empty().append(frag);
+					});
+				}
+			});
 
-					const passage = el.getAttribute('data-init-passage').trim();
+			// Data passage elements updated upon navigation.
+			$dataPassages.each((i, el) => {
+				if (el.id === 'passages') {
+					throw new Error(`"StoryInterface" element <${el.nodeName.toLowerCase()} id="passages"> must not contain a "data-passage" content attribute`);
+				}
 
-					if (el.hasAttribute('data-passage')) {
-						throw new Error(`"StoryInterface" element <${el.nodeName.toLowerCase()} data-init-passage="${passage}"> must not contain a "data-passage" content attribute`);
-					}
+				const passage = el.getAttribute('data-passage').trim();
 
-					if (el.firstElementChild !== null) {
-						throw new Error(`"StoryInterface" element <${el.nodeName.toLowerCase()} data-init-passage="${passage}"> contains child elements`);
-					}
+				if (el.firstElementChild !== null) {
+					throw new Error(`"StoryInterface" element <${el.nodeName.toLowerCase()} data-passage="${passage}"> contains child elements`);
+				}
 
-					if (Story.has(passage)) {
-						jQuery(document).one(`:uiupdate${EVENT_NS}`, () => {
-							const frag = document.createDocumentFragment();
-							new Wikifier(frag, Story.get(passage).processText().trim());
-							jQuery(el).empty().append(frag);
-						});
-					}
-				});
+				if (Story.has(passage)) {
+					jQuery(document).on(`:uiupdate${EVENT_NS}`, () => {
+						const frag = document.createDocumentFragment();
+						new Wikifier(frag, Story.get(passage).processText().trim());
+						jQuery(el).empty().append(frag);
+					});
+				}
+			});
+		}
 
-				// Data passage elements updated upon navigation.
-				$dataPassages.each((i, el) => {
-					if (el.id === 'passages') {
-						throw new Error(`"StoryInterface" element <${el.nodeName.toLowerCase()} id="passages"> must not contain a "data-passage" content attribute`);
-					}
+		// Elsewise, generate the default passage display area UI elements.
+		else {
+			$main.append('<div id="passages" aria-live="polite"></div>');
+		}
 
-					const passage = el.getAttribute('data-passage').trim();
-
-					if (el.firstElementChild !== null) {
-						throw new Error(`"StoryInterface" element <${el.nodeName.toLowerCase()} data-passage="${passage}"> contains child elements`);
-					}
-
-					if (Story.has(passage)) {
-						jQuery(document).on(`:uiupdate${EVENT_NS}`, () => {
-							const frag = document.createDocumentFragment();
-							new Wikifier(frag, Story.get(passage).processText().trim());
-							jQuery(el).empty().append(frag);
-						});
-					}
-				});
-
-				Config.ui.updateStoryElements = false;
-			}
-			else {
-				$elems.append('<div id="story" role="main"><div id="passages" aria-live="polite"></div></div>');
-			}
-
-			// Insert the core UI elements into the page before the main script.
-			$elems.insertBefore('body>script#script-sugarcube');
-		})();
+		// Insert the main UI into the page before the main script.
+		$main.insertBefore('body>script#script-sugarcube');
 	}
 
 	/*
