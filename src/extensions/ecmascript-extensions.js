@@ -391,6 +391,8 @@
 	/*
 		Removes and returns the first instance of all of the given elements
 		from the array.
+
+		TODO: (v3) This should be → `delete`.
 	*/
 	Object.defineProperty(Array.prototype, 'deleteFirst', {
 		configurable : true,
