@@ -285,15 +285,16 @@
 	});
 
 	/*
-		Removes and returns all of the given elements from the array.
+		Removes and returns all instances of the given elements from
+		the array.
 	*/
-	Object.defineProperty(Array.prototype, 'delete', {
+	Object.defineProperty(Array.prototype, 'deleteAll', {
 		configurable : true,
 		writable     : true,
 
 		value(/* needles */) {
 			if (this == null) { // lazy equality for null
-				throw new TypeError('Array.prototype.delete called on null or undefined');
+				throw new TypeError('Array.prototype.deleteAll called on null or undefined');
 			}
 
 			if (arguments.length === 0) {
@@ -342,7 +343,8 @@
 	});
 
 	/*
-		Removes and returns all of the elements at the given indices from the array.
+		Removes and returns all instances of the elements at the given
+		indices from the array.
 	*/
 	Object.defineProperty(Array.prototype, 'deleteAt', {
 		configurable : true,
@@ -380,6 +382,102 @@
 			// Delete the elements (in descending numeric order).
 			for (let i = 0, iend = delIndices.length; i < iend; ++i) {
 				splice.call(this, delIndices[i], 1);
+			}
+
+			return result;
+		}
+	});
+
+	/*
+		Removes and returns the first instance of all of the given elements
+		from the array.
+
+		TODO: (v3) This should be → `delete`.
+	*/
+	Object.defineProperty(Array.prototype, 'deleteFirst', {
+		configurable : true,
+		writable     : true,
+
+		value(/* needles */) {
+			if (this == null) { // lazy equality for null
+				throw new TypeError('Array.prototype.deleteFirst called on null or undefined');
+			}
+
+			if (arguments.length === 0) {
+				return;
+			}
+
+			const length = this.length >>> 0;
+
+			if (length === 0) {
+				return;
+			}
+
+			const splice  = Array.prototype.splice;
+			const needles = Array.prototype.concat.apply([], arguments);
+			const result  = [];
+
+			// Find and remove the first instance of each needle.
+			for (let i = 0; i < length && needles.length > 0; ++i) {
+				const value = this[i];
+
+				for (let j = 0; j < needles.length; ++j) {
+					const needle = needles[j];
+
+					if (value === needle || value !== value && needle !== needle) {
+						result.push(value);
+						splice.call(this, i--, 1);
+						needles.splice(j--, 1);
+						break;
+					}
+				}
+			}
+
+			return result;
+		}
+	});
+
+	/*
+		Removes and returns the last instance of all of the given elements
+		from the array.
+	*/
+	Object.defineProperty(Array.prototype, 'deleteLast', {
+		configurable : true,
+		writable     : true,
+
+		value(/* needles */) {
+			if (this == null) { // lazy equality for null
+				throw new TypeError('Array.prototype.deleteLast called on null or undefined');
+			}
+
+			if (arguments.length === 0) {
+				return;
+			}
+
+			const length = this.length >>> 0;
+
+			if (length === 0) {
+				return;
+			}
+
+			const splice  = Array.prototype.splice;
+			const needles = Array.prototype.concat.apply([], arguments);
+			const result  = [];
+
+			// Find and remove the last instance of each needle.
+			for (let i = length - 1; i >= 0 && needles.length > 0; --i) {
+				const value = this[i];
+
+				for (let j = 0; j < needles.length; ++j) {
+					const needle = needles[j];
+
+					if (value === needle || value !== value && needle !== needle) {
+						result.push(value);
+						splice.call(this, i++, 1);
+						needles.splice(j--, 1);
+						break;
+					}
+				}
 			}
 
 			return result;
@@ -847,20 +945,6 @@
 		}
 	});
 
-	/*
-		Returns a decimal number eased from 0 to 1.
-
-		NOTE: The magnitude of the returned value decreases if num < 0.5 or increases if num > 0.5.
-	*/
-	Object.defineProperty(Math, 'easeInOut', {
-		configurable : true,
-		writable     : true,
-
-		value(num) {
-			return 1 - (Math.cos(Number(num) * Math.PI) + 1) / 2;
-		}
-	});
-
 
 	/*******************************************************************************
 		`RegExp` Extensions.
@@ -1169,6 +1253,24 @@
 	*******************************************************************************/
 
 	/*
+		[DEPRECATED] Removes and returns all instances of the given elements from the array.
+		*/
+	Object.defineProperty(Array.prototype, 'delete', {
+		configurable : true,
+		writable     : true,
+
+		value(/* needles */) {
+			console.warn('[DEPRECATED] <Array>.delete() is deprecated.');
+
+			if (this == null) { // lazy equality for null
+				throw new TypeError('Array.prototype.delete called on null or undefined');
+			}
+
+			return Array.prototype.deleteAll.apply(this, arguments);
+		}
+	});
+
+	/*
 		[DEPRECATED] Allow users to easily wrap their code in the revive wrapper.
 	*/
 	Object.defineProperty(JSON, 'reviveWrapper', {
@@ -1183,6 +1285,22 @@
 			}
 
 			return Serial.createReviver(code, data);
+		}
+	});
+
+	/*
+		[DEPRECATED] Returns a decimal number eased from 0 to 1.
+
+		NOTE: The magnitude of the returned value decreases if num < 0.5 or increases if num > 0.5.
+	*/
+	Object.defineProperty(Math, 'easeInOut', {
+		configurable : true,
+		writable     : true,
+
+		value(num) {
+			console.warn('[DEPRECATED] Math.easeInOut() is deprecated.');
+
+			return 1 - (Math.cos(Number(num) * Math.PI) + 1) / 2;
 		}
 	});
 

@@ -133,13 +133,13 @@ $items.countWith(function (item) { return item.kind === 'junk'; })  → Returns 
 
 <!-- *********************************************************************** -->
 
-### `<Array>.delete(needles…)` → *Array&lt;any&gt;* {#methods-array-prototype-method-delete}
+### `<Array>.deleteAll(needles…)` → *Array&lt;any&gt;* {#methods-array-prototype-method-deleteall}
 
 Removes all instances of the given members from the array and returns a new array containing the removed members.
 
 #### History:
 
-* `v2.5.0`: Introduced.
+* `v2.37.0`: Introduced.
 
 #### Parameters:
 
@@ -149,8 +149,8 @@ Removes all instances of the given members from the array and returns a new arra
 
 ```
 // Given: $fruits = ["Apples", "Oranges", "Plums", "Oranges"]
-$fruits.delete("Oranges")          → Returns ["Oranges", "Oranges"]; $fruits ["Apples", "Plums"]
-$fruits.delete("Apples", "Plums")  → Returns ["Apples", "Plums"]; $fruits ["Oranges", "Oranges"]
+$fruits.deleteAll("Oranges")          → Returns ["Oranges", "Oranges"]; $fruits ["Apples", "Plums"]
+$fruits.deleteAll("Apples", "Plums")  → Returns ["Apples", "Plums"]; $fruits ["Oranges", "Oranges"]
 ```
 
 <!-- *********************************************************************** -->
@@ -174,6 +174,50 @@ Removes all of the members at the given indices from the array and returns a new
 $fruits.deleteAt(2)     → Returns ["Plums"]; $fruits ["Apples", "Oranges", "Oranges"]
 $fruits.deleteAt(1, 3)  → Returns ["Oranges", "Oranges"]; $fruits ["Apples", "Plums"]
 $fruits.deleteAt(0, 2)  → Returns ["Apples", "Plums"]; $fruits ["Oranges", "Oranges"]
+```
+
+<!-- *********************************************************************** -->
+
+### `<Array>.deleteFirst(needles…)` → *Array&lt;any&gt;* {#methods-array-prototype-method-deletefirst}
+
+Removes the first instance of the given members from the array and returns a new array containing the removed members.
+
+#### History:
+
+* `v2.37.0`: Introduced.
+
+#### Parameters:
+
+* **`needles`:** (*any*… | *Array&lt;any&gt;*) The members to remove.  May be a list of members or an array.
+
+#### Examples:
+
+```
+// Given: $fruits = ["Apples", "Oranges", "Plums", "Oranges"]
+$fruits.deleteFirst("Oranges")          → Returns ["Oranges"]; $fruits ["Apples", "Plums", "Oranges"]
+$fruits.deleteFirst("Apples", "Plums")  → Returns ["Apples", "Plums"]; $fruits ["Oranges", "Oranges"]
+```
+
+<!-- *********************************************************************** -->
+
+### `<Array>.deleteLast(needles…)` → *Array&lt;any&gt;* {#methods-array-prototype-method-deletelast}
+
+Removes the last instance of the given members from the array and returns a new array containing the removed members.
+
+#### History:
+
+* `v2.37.0`: Introduced.
+
+#### Parameters:
+
+* **`needles`:** (*any*… | *Array&lt;any&gt;*) The members to remove.  May be a list of members or an array.
+
+#### Examples:
+
+```
+// Given: $fruits = ["Apples", "Oranges", "Plums", "Oranges"]
+$fruits.deleteLast("Oranges")          → Returns ["Oranges"]; $fruits ["Apples", "Oranges", "Plums"]
+$fruits.deleteLast("Apples", "Plums")  → Returns ["Apples", "Plums"]; $fruits ["Oranges", "Oranges"]
 ```
 
 <!-- *********************************************************************** -->
@@ -606,6 +650,19 @@ $fruits.unshiftUnique("Oranges")  → Returns 2; $fruits ["Oranges", "Plums"]
 // Given: $fruits = ["Oranges", "Plums"]
 $fruits.unshiftUnique("Apples", "Apples")  → Returns 3; $fruits ["Apples", "Oranges", "Plums"]
 ```
+
+<!-- *********************************************************************** -->
+
+### <span class="deprecated">`<Array>.delete(needles…)` → *Array&lt;any&gt;* {#methods-array-prototype-method-delete}
+
+<p role="note" class="warning"><b>Deprecated:</b>
+This instance method has been deprecated and should no longer be used.  See the <a href="#methods-array-prototype-method-deleteall"><code>&lt;Array&gt;.deleteAll()</code></a> instance method.
+</p>
+
+#### History:
+
+* `v2.5.0`: Introduced.
+* `v2.37.0`: Deprecated in favor of `<Array>.deleteAll()`.
 
 
 <!-- ***************************************************************************
