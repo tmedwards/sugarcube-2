@@ -16,8 +16,6 @@ Macro.add(['button', 'link'], {
 	tags    : null,
 
 	handler() {
-		if (this.name === 'click') { console.warn(`[DEPRECATED] <<${this.name}>> macro is deprecated.`); }
-
 		if (this.args.length === 0) {
 			return this.error(`no ${this.name === 'button' ? 'button' : 'link'} text specified`);
 		}
