@@ -380,7 +380,7 @@ This setting has been deprecated and should no longer be used.  See the <a href=
 Sets browser saves descriptions.  If unset, a brief description of the current turn is used.  If a callback function is assigned, it is passed one parameter, the type of save being attempted.  If its return value is truthy, the returned description is used, elsewise the default description is used.
 
 <p role="note" class="see"><b>See:</b>
-<a href="#save-api-constant-type"><code>Save.Type</code> pseudo-enumeration</a> for more information on save types.
+<a href="#save-api-constants-type"><code>Save.Type</code> pseudo-enumeration</a> for more information on save types.
 </p>
 
 #### History:
@@ -452,7 +452,7 @@ Config.saves.id = "a-big-huge-story-part-1";
 Determines whether saving is allowed within the current context.  If unset, saves are always allowed.  If a callback function is assigned, it is passed one parameter, the type of save being attempted.  If its return value is truthy, the save is allowed, elsewise it is disallowed.
 
 <p role="note" class="see"><b>See:</b>
-<a href="#save-api-constant-type"><code>Save.Type</code> pseudo-enumeration</a> for more information on save types.
+<a href="#save-api-constants-type"><code>Save.Type</code> pseudo-enumeration</a> for more information on save types.
 </p>
 
 #### History:
