@@ -22,7 +22,7 @@ The <a href="#methods-serial-method-createreviver"><code>Serial.createReviver()<
 
 <!-- *********************************************************************** -->
 
-### `class` statement syntax (newer, preferred)
+### `class`-based syntax (newer, preferred) {#guide-non-generic-object-types-class-syntax}
 
 #### Configuration object parameter constructor (w/ automatic copying of own data)
 
@@ -156,7 +156,7 @@ Creating a new instance of this `Character` example would be something like:
 
 <!-- *********************************************************************** -->
 
-### `function` statement syntax (classic, not recommended)
+### `function`-based syntax (classic, not recommended) {#guide-non-generic-object-types-function-syntax}
 
 #### Configuration object parameter constructor (w/ automatic copying of own data)
 

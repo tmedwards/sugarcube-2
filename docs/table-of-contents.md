@@ -651,6 +651,9 @@
 
 ## [Guide: Non-generic object types (classes)](#guide-non-generic-object-types)
 
+* [`class`-based syntax](#guide-non-generic-object-types-class-syntax)
+* [`function`-based syntax](#guide-non-generic-object-types-function-syntax)
+
 ## [Guide: Tips](#guide-tips)
 
 * [Arbitrarily long return](#guide-tips-arbitrarily-long-return)
