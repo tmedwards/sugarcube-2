@@ -19,7 +19,46 @@ The majority of newer SugarCube versions do not have any changes that would requ
 Some changes within this version are <strong>breaking changes</strong> that you <strong><em>must</em></strong> address immediately, while others are elective changes that you may address at your leisure.  All breaking changes will be so noted.
 </p>
 
-**NOTE(tme): FINISH THIS — FINISH THIS — FINISH THIS — FINISH THIS — FINISH THIS — FINISH THIS**
+### Deprecated legacy APIs
+
+<table>
+	<thead>
+		<tr>
+			<th>API</th>
+			<th>Change</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><code>browser</code></td>
+			<td><b>BREAKING:</b> This deprecated legacy API has been removed.  Its replacement is <code>Browser</code>.</td>
+		</tr>
+		<tr>
+			<td><code>config</code></td>
+			<td><b>BREAKING:</b> This deprecated legacy API has been removed.  Its replacement is <code>Config</code>.</td>
+		</tr>
+		<tr>
+			<td><code>has</code></td>
+			<td><b>BREAKING:</b> This deprecated legacy API has been removed.  Its replacement is <code>Has</code>.</td>
+		</tr>
+		<tr>
+			<td><code>History</code></td>
+			<td><b>BREAKING:</b> This deprecated legacy API has been removed.  Its replacement is <code>State</code>.</td>
+		</tr>
+		<tr>
+			<td><code>state</code></td>
+			<td><b>BREAKING:</b> This deprecated legacy API has been removed.  Its replacement is <code>State</code>.</td>
+		</tr>
+		<tr>
+			<td><code>tale</code></td>
+			<td><b>BREAKING:</b> This deprecated legacy API has been removed.  Its replacement is <code>Story</code>.</td>
+		</tr>
+		<tr>
+			<td><code>TempVariables</code></td>
+			<td><b>BREAKING:</b> This deprecated legacy API has been removed.  Its replacement is <code>State.temporary</code>.</td>
+		</tr>
+	</tbody>
+</table>
 
 ### `Array` API
 
@@ -252,8 +291,92 @@ Some changes within this version are <strong>breaking changes</strong> that you 
 	</thead>
 	<tbody>
 		<tr>
-			<td><code>?</code></td>
-			<td>?</td>
+			<td><code>Save.get()</code></td>
+			<td><b>BREAKING:</b> This static method has been removed.  See the <a href="#save-api-browser-auto-method-entries"><code>Save.browser.auto.entries()</code></a> and <a href="#save-api-browser-slot-method-entries"><code>Save.browser.slot.entries()</code></a> static methods for its closest replacements.</td>
+		</tr>
+		<tr>
+			<td><code>Save.clear()</code></td>
+			<td>This static method has been deprecated in favor of the <a href="#save-api-browser-method-clear"><code>Save.browser.clear()</code></a> static method.</td>
+		</tr>
+		<tr>
+			<td><code>Save.ok()</code></td>
+			<td>This static method has been deprecated in favor of the <a href="#save-api-browser-method-isenabled"><code>Save.browser.isEnabled()</code></a> static method.</td>
+		</tr>
+		<tr>
+			<td><code>Save.autosave.delete()</code></td>
+			<td>This static method has been deprecated in favor of the <a href="#save-api-browser-auto-method-delete"><code>Save.browser.auto.delete()</code></a> static method.</td>
+		</tr>
+		<tr>
+			<td><code>Save.autosave.get()</code></td>
+			<td>This static method has been deprecated in favor of the <a href="#save-api-browser-auto-method-get"><code>Save.browser.auto.get()</code></a> static method.</td>
+		</tr>
+		<tr>
+			<td><code>Save.autosave.has()</code></td>
+			<td>This static method has been deprecated in favor of the <a href="#save-api-browser-auto-method-has"><code>Save.browser.auto.has()</code></a> static method.</td>
+		</tr>
+		<tr>
+			<td><code>Save.autosave.load()</code></td>
+			<td>This static method has been deprecated in favor of the <a href="#save-api-browser-auto-method-load"><code>Save.browser.auto.load()</code></a> static method.</td>
+		</tr>
+		<tr>
+			<td><code>Save.autosave.ok()</code></td>
+			<td>This static method has been deprecated in favor of the <a href="#save-api-browser-auto-method-isenabled"><code>Save.browser.auto.isEnabled()</code></a> static method.</td>
+		</tr>
+		<tr>
+			<td><code>Save.autosave.save()</code></td>
+			<td>This static method has been deprecated in favor of the <a href="#save-api-browser-auto-method-save"><code>Save.browser.auto.save()</code></a> static method.</td>
+		</tr>
+		<tr>
+			<td><code>Save.slots.length</code></td>
+			<td>This static property has been deprecated in favor of the <a href="#config-api-property-saves-maxslotsaves"><code>Config.saves.maxSlotSaves</code></a> setting.</td>
+		</tr>
+		<tr>
+			<td><code>Save.slots.count()</code></td>
+			<td>This static method has been deprecated in favor of the <a href="#save-api-browser-slot-getter-size"><code>Save.browser.slot.size</code></a> static getter.</td>
+		</tr>
+		<tr>
+			<td><code>Save.slots.delete()</code></td>
+			<td>This static method has been deprecated in favor of the <a href="#save-api-browser-slot-method-delete"><code>Save.browser.slot.delete()</code></a> static method.</td>
+		</tr>
+		<tr>
+			<td><code>Save.slots.get()</code></td>
+			<td>This static method has been deprecated in favor of the <a href="#save-api-browser-slot-method-get"><code>Save.browser.slot.get()</code></a> static method.</td>
+		</tr>
+		<tr>
+			<td><code>Save.slots.has()</code></td>
+			<td>This static method has been deprecated in favor of the <a href="#save-api-browser-slot-method-has"><code>Save.browser.slot.has()</code></a> static method.</td>
+		</tr>
+		<tr>
+			<td><code>Save.slots.isEmpty()</code></td>
+			<td>This static method has been deprecated in favor of the <a href="#save-api-browser-slot-getter-size"><code>Save.browser.slot.size</code></a> static getter.</td>
+		</tr>
+		<tr>
+			<td><code>Save.slots.load()</code></td>
+			<td>This static method has been deprecated in favor of the <a href="#save-api-browser-slot-method-load"><code>Save.browser.slot.load()</code></a> static method.</td>
+		</tr>
+		<tr>
+			<td><code>Save.slots.ok()</code></td>
+			<td>This static method has been deprecated in favor of the <a href="#save-api-browser-slot-method-isenabled"><code>Save.browser.slot.isEnabled()</code></a> static method.</td>
+		</tr>
+		<tr>
+			<td><code>Save.slots.save()</code></td>
+			<td>This static method has been deprecated in favor of the <a href="#save-api-browser-slot-method-save"><code>Save.browser.slot.save()</code></a> static method.</td>
+		</tr>
+		<tr>
+			<td><code>Save.export()</code></td>
+			<td>This static method has been deprecated in favor of the <a href="#save-api-disk-method-save"><code>Save.disk.save()</code></a> static method.</td>
+		</tr>
+		<tr>
+			<td><code>Save.import()</code></td>
+			<td>This static method has been deprecated in favor of the <a href="#save-api-disk-method-load"><code>Save.disk.load()</code></a> static method.</td>
+		</tr>
+		<tr>
+			<td><code>Save.deserialize()</code></td>
+			<td>This static method has been deprecated in favor of the <a href="#save-api-base64-method-load"><code>Save.base64.load()</code></a> static method.</td>
+		</tr>
+		<tr>
+			<td><code>Save.serialize()</code></td>
+			<td>This static method has been deprecated in favor of the <a href="#save-api-base64-method-save"><code>Save.base64.save()</code></a> static method.</td>
 		</tr>
 	</tbody>
 </table>
