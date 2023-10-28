@@ -104,6 +104,10 @@ Some changes within this version are <strong>breaking changes</strong> that you 
 	</thead>
 	<tbody>
 		<tr>
+			<td><code>Config.macros.ifAssignError</code></td>
+			<td>This setting has been deprecated and should no longer be used.  See the <a href="#config-api-property-enableoptionaldebugging"><code>Config.enableOptionalDebugging</code></a> setting for its replacement.</td>
+		</tr>
+		<tr>
 			<td><code>Config.passages.descriptions</code></td>
 			<td>This setting has been deprecated and should no longer be used.  See the <a href="#config-api-property-saves-descriptions"><code>Config.saves.descriptions</code></a> setting for its replacement.</td>
 		</tr>
