@@ -10,9 +10,9 @@
 
 var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 	// General settings.
-	let _debug                   = false;
 	let _addVisitedLinkClass     = false;
 	let _cleanupWikifierOutput   = false;
+	let _debug                   = false;
 	let _enableOptionalDebugging = false;
 	let _loadDelay               = 0;
 
@@ -76,14 +76,14 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 		/*
 			General settings.
 		*/
-		get debug() { return _debug; },
-		set debug(value) { _debug = Boolean(value); },
-
 		get addVisitedLinkClass() { return _addVisitedLinkClass; },
 		set addVisitedLinkClass(value) { _addVisitedLinkClass = Boolean(value); },
 
 		get cleanupWikifierOutput() { return _cleanupWikifierOutput; },
 		set cleanupWikifierOutput(value) { _cleanupWikifierOutput = Boolean(value); },
+
+		get debug() { return _debug; },
+		set debug(value) { _debug = Boolean(value); },
 
 		get enableOptionalDebugging() { return _enableOptionalDebugging; },
 		set enableOptionalDebugging(value) { _enableOptionalDebugging = Boolean(value); },
