@@ -63,7 +63,7 @@ Macro.add('if', {
 							return this.error(`no conditional expression specified for <<${this.payload[i].name}>> clause${i > 0 ? ` (#${i})` : ''}`);
 						}
 						else if (
-							(Config.debug || Config.macros.ifAssignmentError)
+							(Config.debug || Config.enableOptionalDebugging)
 							&& isAssignRE.test(this.payload[i].args.full.replace(isLiteralRE, ''))
 						) {
 							return this.error(`assignment operator found within <<${this.payload[i].name}>> clause${i > 0 ? ` (#${i})` : ''} (perhaps you meant to use an equality operator: ==, ===, eq, is), invalid: ${this.payload[i].args.raw}`);
