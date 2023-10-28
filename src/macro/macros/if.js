@@ -12,10 +12,22 @@
 	<<if>>, <<elseif>>, & <<else>>
 */
 Macro.add('if', {
-	skipArgs   : true,
-	tags       : ['elseif', 'else'],
-	elseifWsRe : /^\s*if\b/i,
-	ifAssignRe : /[^!=&^|<>*/%+-]=[^=>]/,
+	skipArgs : true,
+	tags     : ['elseif', 'else'],
+
+	// Sanity check regular expressions.
+	isElseifWsRE : /^\s*if\b/i,
+	isAssignRE   : /[^!%&*+\-/<=>?^|]=[^=>]/,
+	isLiteralRE  : new RegExp([
+		// Empty string & template literals
+		'(?:""|\'\'|``)',
+		// Double quoted string literal
+		'(?:"(?:\\\\.|[^"\\\\])+")',
+		// Single quoted string literal
+		"(?:'(?:\\\\.|[^'\\\\])+')",
+		// Template literal
+		'(?:`(?:\\\\.|[^`\\\\])+`)'
+	].join('|'), 'g'),
 
 	handler() {
 		let i;
@@ -24,14 +36,15 @@ Macro.add('if', {
 			const len = this.payload.length;
 
 			// Sanity checks.
-			const elseifWsRe = this.self.elseifWsRe;
-			const ifAssignRe = this.self.ifAssignRe;
+			const isElseifWsRE = this.self.isElseifWsRE;
+			const isAssignRE   = this.self.isAssignRE;
+			const isLiteralRE  = this.self.isLiteralRE;
 
 			for (/* declared previously */ i = 0; i < len; ++i) {
 				switch (this.payload[i].name) {
 					case 'else': {
 						if (this.payload[i].args.raw.length > 0) {
-							if (elseifWsRe.test(this.payload[i].args.raw)) {
+							if (isElseifWsRE.test(this.payload[i].args.raw)) {
 								return this.error(`whitespace is not allowed between the "else" and "if" in <<elseif>> clause${i > 0 ? ` (#${i})` : ''}`);
 							}
 
@@ -50,8 +63,8 @@ Macro.add('if', {
 							return this.error(`no conditional expression specified for <<${this.payload[i].name}>> clause${i > 0 ? ` (#${i})` : ''}`);
 						}
 						else if (
-							Config.macros.ifAssignmentError
-							&& ifAssignRe.test(this.payload[i].args.full)
+							(Config.debug || Config.macros.ifAssignmentError)
+							&& isAssignRE.test(this.payload[i].args.full.replace(isLiteralRE, ''))
 						) {
 							return this.error(`assignment operator found within <<${this.payload[i].name}>> clause${i > 0 ? ` (#${i})` : ''} (perhaps you meant to use an equality operator: ==, ===, eq, is), invalid: ${this.payload[i].args.raw}`);
 						}
@@ -90,7 +103,7 @@ Macro.add('if', {
 
 			// Custom debug view setup for the remaining clauses.
 			if (Config.debug) {
-				for (++i; i < len; ++i) {
+				for (/* declared previously */ ++i; i < len; ++i) {
 					this
 						.createDebugView(this.payload[i].name, this.payload[i].source)
 						.modes({
