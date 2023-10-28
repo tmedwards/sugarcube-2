@@ -87,6 +87,7 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 
 		get enableOptionalDebugging() { return _enableOptionalDebugging; },
 		set enableOptionalDebugging(value) { _enableOptionalDebugging = Boolean(value); },
+
 		get loadDelay() { return _loadDelay; },
 		set loadDelay(value) {
 			if (!Number.isSafeInteger(value) || value < 0) {
