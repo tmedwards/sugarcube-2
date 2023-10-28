@@ -277,6 +277,12 @@
 
 ## [`Config` API](#config-api)
 
+* [General Settings](#config-api-general)
+	* [`Config.addVisitedLinkClass`](#config-api-property-addvisitedlinkclass)
+	* [`Config.cleanupWikifierOutput`](#config-api-property-cleanupwikifieroutput)
+	* [`Config.debug`](#config-api-property-debug)
+ * [`Config.enableOptionalDebugging`](#config-api-property-enableoptionaldebugging)
+	* [`Config.loadDelay`](#config-api-property-loaddelay)
 * [Audio Settings](#config-api-audio)
 	* [`Config.audio.pauseOnFadeToZero`](#config-api-property-audio-pauseonfadetozero)
 	* [`Config.audio.preloadMetadata`](#config-api-property-audio-preloadmetadata)
@@ -284,7 +290,6 @@
 	* [`Config.history.controls`](#config-api-property-history-controls)
 	* [`Config.history.maxStates`](#config-api-property-history-maxstates)
 * [Macros Settings](#config-api-macros)
-	* [`Config.macros.ifAssignmentError`](#config-api-property-macros-ifassignmenterror)
 	* [`Config.macros.maxLoopIterations`](#config-api-property-macros-maxloopiterations)
 	* [`Config.macros.typeSkipKey`](#config-api-property-macros-typeskipkey)
 	* [`Config.macros.typeVisitedPassages`](#config-api-property-macros-typevisitedpassages)
@@ -306,11 +311,6 @@
 * [UI Settings](#config-api-ui)
 	* [`Config.ui.stowBarInitially`](#config-api-property-ui-stowbarinitially)
 	* [`Config.ui.updateStoryElements`](#config-api-property-ui-updatestoryelements)
-* [Miscellaneous Settings](#config-api-miscellaneous)
-	* [`Config.addVisitedLinkClass`](#config-api-property-addvisitedlinkclass)
-	* [`Config.cleanupWikifierOutput`](#config-api-property-cleanupwikifieroutput)
-	* [`Config.debug`](#config-api-property-debug)
-	* [`Config.loadDelay`](#config-api-property-loaddelay)
 
 ## [`Dialog` API](#dialog-api)
 
