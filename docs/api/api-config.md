@@ -11,6 +11,142 @@ The `Config` object controls various aspects of SugarCube's behavior.
 
 
 <!-- ***************************************************************************
+	General
+**************************************************************************** -->
+## General Settings<!-- legacy --><span id="config-api-miscellaneous"></span><!-- /legacy --> {#config-api-general}
+
+<!-- *********************************************************************** -->
+
+### `Config.addVisitedLinkClass` ↔ *boolean* (default: `false`) {#config-api-property-addvisitedlinkclass}
+
+Determines whether the `link-visited` class is added to internal passage links that go to previously visited passages—i.e., the passage already exists within the story history.
+
+<p role="note"><b>Note:</b>
+You <em>must</em> provide your own styling for the <code>link-visited</code> class as none is provided by default.
+</p>
+
+#### History:
+
+* `v2.0.0`: Introduced.
+
+#### Examples:
+
+```js
+Config.addVisitedLinkClass = true;
+```
+
+#### CSS styles:
+
+You will also need to specify a `.link-visited` style that defines the properties visited links should have. For example:
+
+```css
+.link-visited {
+	color: purple;
+}
+```
+
+<!-- *********************************************************************** -->
+
+### `Config.cleanupWikifierOutput` ↔ *boolean* (default: `false`) {#config-api-property-cleanupwikifieroutput}
+
+Determines whether the output of the Wikifier is post-processed into more sane markup—i.e., where appropriate, it tries to transition the plethora of `<br>` elements into `<p>` elements.
+
+#### History:
+
+* `v2.0.0`: Introduced.
+
+#### Examples:
+
+```js
+Config.cleanupWikifierOutput = true;
+```
+
+<!-- *********************************************************************** -->
+
+### `Config.debug` ↔ *boolean* (default: `false`) {#config-api-property-debug}
+
+Indicates whether SugarCube is running in test mode, which enables debug views and various optional debugging errors and warnings.  See the [*Test Mode* guide](#guide-test-mode) for more information.
+
+<p role="note"><b>Note:</b>
+This setting is automatically set based on whether you're using a testing mode in a Twine compiler—i.e., <em>Test</em> mode in Twine&nbsp;2, <em>Test Play From Here</em> in Twine&nbsp;1, or the test mode option (<code>-t</code>, <code>--test</code>) in Tweego.  You may, however, forcibly enable it if you need to for some reason—e.g., if you're using another compiler, which doesn't offer a way to enable test mode.
+</p>
+
+<p role="note" class="see"><b>See Also:</b>
+<a href="#config-api-property-enableoptionaldebugging"><code>Config.enableOptionalDebugging</code> setting</a>.
+</p>
+
+#### History:
+
+* `v2.2.0`: Introduced.
+
+#### Examples:
+
+##### Forcibly enabling test mode
+
+```js
+// Forcibly enable test mode
+Config.debug = true;
+```
+
+##### Check if test mode is enabled via JavaScript
+
+```js
+if (Config.debug) {
+	/* do something debug related */
+}
+```
+
+##### Check if test mode is enabled via macros
+
+```
+<<if Config.debug>>
+	/* do something debug related */
+<</if>>
+```
+
+<!-- *********************************************************************** -->
+
+### `Config.enableOptionalDebugging` ↔ *boolean* (default: `false`) {#config-api-property-enableoptionaldebugging}
+
+Determines whether various optional debugging errors and warnings are enabled outside of test mode.
+
+<p role="note" class="see"><b>See Also:</b>
+<a href="#config-api-property-debug"><code>Config.debug</code> setting</a>.
+</p>
+
+List of optional errors and warnings: *(not exhaustive)*
+
+* [`<<if>>` macro](#macros-macro-if) assignment error.  If enabled, returns an error when the `=` assignment operator is used within its conditional—e.g., `<<if $suspect = "Bob">>`.  Does not flag other assignment operators.
+
+#### History:
+
+* `v2.37.0`: Introduced.
+
+#### Examples:
+
+```js
+Config.enableOptionalDebugging = true;
+```
+
+<!-- *********************************************************************** -->
+
+### `Config.loadDelay` ↔ *integer* (default: `0`) {#config-api-property-loaddelay}
+
+Sets the integer delay (in milliseconds) before the loading screen is dismissed, once the document has signaled its readiness.  Not generally necessary, however, some browsers render slower than others and may need a little extra time to get a media-heavy page done.  This allows you to fine tune for those cases.
+
+#### History:
+
+* `v2.0.0`: Introduced.
+
+#### Examples:
+
+```js
+// Delay the dismissal of the loading screen by 2000ms (2s)
+Config.loadDelay = 2000;
+```
+
+
+<!-- ***************************************************************************
 	Audio
 **************************************************************************** -->
 ## Audio Settings {#config-api-audio}
@@ -106,27 +242,6 @@ Config.history.maxStates = 25;
 
 <!-- *********************************************************************** -->
 
-### `Config.macros.ifAssignmentError` ↔ *boolean* (default: `true`) {#config-api-property-macros-ifassignmenterror}
-
-Determines whether the [`<<if>>` macro](#macros-macro-if) returns an error when the `=` assignment operator is used within its conditional—e.g., `<<if $suspect = "Bob">>`.  Does not flag other assignment operators.
-
-<p role="note"><b>Note:</b>
-This setting exists because it's unlikely that you'll ever want to actually perform an assignment within a conditional expression and typing <code>=</code> when you meant <code>===</code> (or <code>==</code>) is a fairly easy mistake to make—either from a finger slip or because you just don't know the difference between the operators.
-</p>
-
-#### History:
-
-* `v2.0.0`: Introduced.
-
-#### Examples:
-
-```js
-// No error is returned when = is used within an <<if>> or <<elseif>> conditional
-Config.macros.ifAssignmentError = false;
-```
-
-<!-- *********************************************************************** -->
-
 ### `Config.macros.maxLoopIterations` ↔ *integer* (default: `1000`) {#config-api-property-macros-maxloopiterations}
 
 Sets the maximum number of iterations allowed before the [`<<for>>` macro](#macros-macro-for) conditional forms are terminated with an error.
@@ -179,6 +294,19 @@ Determines whether the [`<<type>>` macro](#macros-macro-type) types out content 
 // Do not type on previously visited passages
 Config.macros.typeVisitedPassages = false;
 ```
+
+<!-- *********************************************************************** -->
+
+### <span class="deprecated">`Config.macros.ifAssignmentError` ↔ *boolean* (default: `true`)</span> {#config-api-property-macros-ifassignmenterror}
+
+<p role="note" class="warning"><b>Deprecated:</b>
+This setting has been deprecated and should no longer be used.  See the <a href="#config-api-property-enableoptionaldebugging"><code>Config.enableOptionalDebugging</code></a> setting for its replacement.
+</p>
+
+#### History:
+
+* `v2.0.0`: Introduced.
+* `v2.37.0`: Deprecated in favor of the `Config.enableOptionalDebugging` setting.
 
 
 <!-- ***************************************************************************
@@ -723,112 +851,4 @@ The story title is not included in updates because SugarCube uses it as the basi
 ```js
 // If you don't need those elements to update
 Config.ui.updateStoryElements = false;
-```
-
-
-<!-- ***************************************************************************
-	Miscellaneous
-**************************************************************************** -->
-## Miscellaneous Settings {#config-api-miscellaneous}
-
-<!-- *********************************************************************** -->
-
-### `Config.addVisitedLinkClass` ↔ *boolean* (default: `false`) {#config-api-property-addvisitedlinkclass}
-
-Determines whether the `link-visited` class is added to internal passage links that go to previously visited passages—i.e., the passage already exists within the story history.
-
-<p role="note"><b>Note:</b>
-You <em>must</em> provide your own styling for the <code>link-visited</code> class as none is provided by default.
-</p>
-
-#### History:
-
-* `v2.0.0`: Introduced.
-
-#### Examples:
-
-```js
-Config.addVisitedLinkClass = true;
-```
-
-#### CSS styles:
-
-You will also need to specify a `.link-visited` style that defines the properties visited links should have. For example:
-
-```css
-.link-visited {
-	color: purple;
-}
-```
-
-<!-- *********************************************************************** -->
-
-### `Config.cleanupWikifierOutput` ↔ *boolean* (default: `false`) {#config-api-property-cleanupwikifieroutput}
-
-Determines whether the output of the Wikifier is post-processed into more sane markup—i.e., where appropriate, it tries to transition the plethora of `<br>` elements into `<p>` elements.
-
-#### History:
-
-* `v2.0.0`: Introduced.
-
-#### Examples:
-
-```js
-Config.cleanupWikifierOutput = true;
-```
-
-<!-- *********************************************************************** -->
-
-### `Config.debug` ↔ *boolean* (default: `false`) {#config-api-property-debug}
-
-Indicates whether SugarCube is running in test mode, which enables debug views.  See the [*Test Mode* guide](#guide-test-mode) for more information.
-
-<p role="note"><b>Note:</b>
-This property is automatically set based on whether you're using a testing mode in a Twine compiler—i.e., <em>Test</em> mode in Twine&nbsp;2, <em>Test Play From Here</em> in Twine&nbsp;1, or the test mode option (<code>-t</code>, <code>--test</code>) in Tweego.  You may, however, forcibly enable it if you need to for some reason—e.g., if you're using another compiler, which doesn't offer a way to enable test mode.
-</p>
-
-#### History:
-
-* `v2.2.0`: Introduced.
-
-#### Examples:
-
-##### Forcibly enabling test mode
-
-```js
-// Forcibly enable test mode
-Config.debug = true;
-```
-
-##### Check if test mode is enabled via JavaScript
-
-```js
-if (Config.debug) {
-	/* do something debug related */
-}
-```
-
-##### Check if test mode is enabled via macros
-
-```
-<<if Config.debug>>
-	/* do something debug related */
-<</if>>
-```
-
-<!-- *********************************************************************** -->
-
-### `Config.loadDelay` ↔ *integer* (default: `0`) {#config-api-property-loaddelay}
-
-Sets the integer delay (in milliseconds) before the loading screen is dismissed, once the document has signaled its readiness.  Not generally necessary, however, some browsers render slower than others and may need a little extra time to get a media-heavy page done.  This allows you to fine tune for those cases.
-
-#### History:
-
-* `v2.0.0`: Introduced.
-
-#### Examples:
-
-```js
-// Delay the dismissal of the loading screen by 2000ms (2s)
-Config.loadDelay = 2000;
 ```

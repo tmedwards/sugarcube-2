@@ -10,10 +10,11 @@
 
 var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 	// General settings.
-	let _debug                 = false;
-	let _addVisitedLinkClass   = false;
-	let _cleanupWikifierOutput = false;
-	let _loadDelay             = 0;
+	let _addVisitedLinkClass     = false;
+	let _cleanupWikifierOutput   = false;
+	let _debug                   = false;
+	let _enableOptionalDebugging = false;
+	let _loadDelay               = 0;
 
 	// Audio settings.
 	let _audioPauseOnFadeToZero = true;
@@ -24,7 +25,6 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 	let _historyMaxStates = 40;
 
 	// Macros settings.
-	let _macrosIfAssignmentError   = true;
 	let _macrosMaxLoopIterations   = 1000;
 	let _macrosTypeSkipKey         = '\x20'; // Space
 	let _macrosTypeVisitedPassages = true;
@@ -58,13 +58,14 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 		Error Constants.
 	*******************************************************************************/
 
-	const errPassagesDescriptionsDeprecated = '[DEPRECATED] Config.passages.descriptions has been deprecated, see Config.saves.descriptions instead';
-	const errSavesAutoloadDeprecated        = '[DEPRECATED] Config.saves.autoload has been deprecated, see the Save.browser.continue API instead';
-	const _baseSavesAutosaveDeprecated      = '[DEPRECATED] Config.saves.autosave has been deprecated';
-	const errSavesOnLoadDeprecated          = '[DEPRECATED] Config.saves.onLoad has been deprecated, see the Save.onLoad API instead';
-	const errSavesOnSaveDeprecated          = '[DEPRECATED] Config.saves.onSave has been deprecated, see the Save.onSave API instead';
-	const errSavesSlotsDeprecated           = '[DEPRECATED] Config.saves.slots has been deprecated, see Config.saves.maxSlotSaves instead';
-	const errSavesTryDiskOnMobileDeprecated = '[DEPRECATED] Config.saves.tryDiskOnMobile has been deprecated';
+	const errMacrosIfAssignmentErrorDeprecated = '[DEPRECATED] Config.macros.ifAssignmentError has been deprecated, see Config.enableOptionalDebugging instead';
+	const errPassagesDescriptionsDeprecated    = '[DEPRECATED] Config.passages.descriptions has been deprecated, see Config.saves.descriptions instead';
+	const errSavesAutoloadDeprecated           = '[DEPRECATED] Config.saves.autoload has been deprecated, see the Save.browser.continue API instead';
+	const _baseSavesAutosaveDeprecated         = '[DEPRECATED] Config.saves.autosave has been deprecated';
+	const errSavesOnLoadDeprecated             = '[DEPRECATED] Config.saves.onLoad has been deprecated, see the Save.onLoad API instead';
+	const errSavesOnSaveDeprecated             = '[DEPRECATED] Config.saves.onSave has been deprecated, see the Save.onSave API instead';
+	const errSavesSlotsDeprecated              = '[DEPRECATED] Config.saves.slots has been deprecated, see Config.saves.maxSlotSaves instead';
+	const errSavesTryDiskOnMobileDeprecated    = '[DEPRECATED] Config.saves.tryDiskOnMobile has been deprecated';
 
 
 	/*******************************************************************************
@@ -75,14 +76,17 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 		/*
 			General settings.
 		*/
-		get debug() { return _debug; },
-		set debug(value) { _debug = Boolean(value); },
-
 		get addVisitedLinkClass() { return _addVisitedLinkClass; },
 		set addVisitedLinkClass(value) { _addVisitedLinkClass = Boolean(value); },
 
 		get cleanupWikifierOutput() { return _cleanupWikifierOutput; },
 		set cleanupWikifierOutput(value) { _cleanupWikifierOutput = Boolean(value); },
+
+		get debug() { return _debug; },
+		set debug(value) { _debug = Boolean(value); },
+
+		get enableOptionalDebugging() { return _enableOptionalDebugging; },
+		set enableOptionalDebugging(value) { _enableOptionalDebugging = Boolean(value); },
 
 		get loadDelay() { return _loadDelay; },
 		set loadDelay(value) {
@@ -139,9 +143,6 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 			Macros settings.
 		*/
 		macros : Object.freeze({
-			get ifAssignmentError() { return _macrosIfAssignmentError; },
-			set ifAssignmentError(value) { _macrosIfAssignmentError = Boolean(value); },
-
 			get maxLoopIterations() { return _macrosMaxLoopIterations; },
 			set maxLoopIterations(value) {
 				if (!Number.isSafeInteger(value) || value < 1) {
@@ -156,6 +157,17 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 
 			get typeVisitedPassages() { return _macrosTypeVisitedPassages; },
 			set typeVisitedPassages(value) { _macrosTypeVisitedPassages = Boolean(value); }
+
+			/* legacy */
+			// Die if the deprecated macros if assignment error getter is accessed.
+			get ifAssignmentError() { throw new Error(errMacrosIfAssignmentErrorDeprecated); },
+			// Warn if the deprecated macros if assignment error setter is assigned to,
+			// while also setting `Config.enableOptionalDebugging` for compatibilities sake.
+			set ifAssignmentError(value) {
+				console.warn(errMacrosIfAssignmentErrorDeprecated);
+				Config.enableOptionalDebugging = value;
+			}
+			/* /legacy */
 		}),
 
 		/*
@@ -228,7 +240,7 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 			},
 
 			/* legacy */
-			// Die if deprecated passages descriptions getter is accessed.
+			// Die if the deprecated passages descriptions getter is accessed.
 			get descriptions() { throw new Error(errPassagesDescriptionsDeprecated); },
 			// Warn if deprecated passages descriptions setter is assigned to,
 			// then pass the value to the `Config.saves.descriptions` for
@@ -342,12 +354,12 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 			set version(value) { _savesVersion = value; },
 
 			/* legacy */
-			// Warn if deprecated autoload getter is accessed.
+			// Warn if the deprecated autoload getter is accessed.
 			get autoload() {
 				console.warn(errSavesAutoloadDeprecated);
 				return _savesAutoload;
 			},
-			// Warn if deprecated autoload setter is assigned to.
+			// Warn if the deprecated autoload setter is assigned to.
 			set autoload(value) {
 				console.warn(errSavesAutoloadDeprecated);
 
@@ -366,7 +378,7 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 				_savesAutoload = value;
 			},
 
-			// Die if deprecated saves autosave getter is accessed.
+			// Die if the deprecated saves autosave getter is accessed.
 			get autosave() {
 				throw new Error(`${_baseSavesAutosaveDeprecated}, see Config.saves.maxAutoSaves and Config.saves.isAllowed instead`);
 			},
@@ -422,27 +434,27 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 				}
 			},
 
-			// Die if deprecated saves onLoad handler getter is accessed.
+			// Die if the deprecated saves onLoad handler getter is accessed.
 			get onLoad() { throw new Error(errSavesOnLoadDeprecated); },
-			// Warn if deprecated saves onLoad handler setter is assigned to, then
+			// Warn if the deprecated saves onLoad handler setter is assigned to, then
 			// pass the handler to the `Save.onLoad` API for compatibilities sake.
 			set onLoad(value) {
 				console.warn(errSavesOnLoadDeprecated);
 				Save.onLoad.add(value);
 			},
 
-			// Die if deprecated saves onSave handler getter is accessed.
+			// Die if the deprecated saves onSave handler getter is accessed.
 			get onSave() { throw new Error(errSavesOnSaveDeprecated); },
-			// Warn if deprecated saves onSave handler setter is assigned to, then
+			// Warn if the deprecated saves onSave handler setter is assigned to, then
 			// pass the handler to the `Save.onSave` API for compatibilities sake.
 			set onSave(value) {
 				console.warn(errSavesOnSaveDeprecated);
 				Save.onSave.add(value);
 			},
 
-			// Die if deprecated saves slots getter is accessed.
+			// Die if the deprecated saves slots getter is accessed.
 			get slots() { throw new Error(errSavesSlotsDeprecated); },
-			// Warn if deprecated saves slots setter is assigned to, then pass
+			// Warn if the deprecated saves slots setter is assigned to, then pass
 			// the value to the `Config.saves.maxSlotSaves` for compatibilities
 			// sake.
 			set slots(value) {
@@ -450,13 +462,13 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 				Config.saves.maxSlotSaves = value;
 			},
 
-			// Warn if deprecated saves tryDiskOnMobile getter is accessed, then
+			// Warn if the deprecated saves tryDiskOnMobile getter is accessed, then
 			// return `true`.
 			get tryDiskOnMobile() {
 				console.warn(errSavesTryDiskOnMobileDeprecated);
 				return true;
 			},
-			// Warn if deprecated saves tryDiskOnMobile setter is assigned to.
+			// Warn if the deprecated saves tryDiskOnMobile setter is assigned to.
 			set tryDiskOnMobile(value) { console.warn(errSavesTryDiskOnMobileDeprecated); }
 			/* /legacy */
 		}),
