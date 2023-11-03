@@ -65,10 +65,14 @@ Config.cleanupWikifierOutput = true;
 
 ### `Config.debug` ↔ *boolean* (default: `false`) {#config-api-property-debug}
 
-Indicates whether SugarCube is running in test mode, which enables debug views.  See the [*Test Mode* guide](#guide-test-mode) for more information.
+Indicates whether SugarCube is running in test mode, which enables debug views and various optional debugging errors and warnings.  See the [*Test Mode* guide](#guide-test-mode) for more information.
 
 <p role="note"><b>Note:</b>
-This property is automatically set based on whether you're using a testing mode in a Twine compiler—i.e., <em>Test</em> mode in Twine&nbsp;2, <em>Test Play From Here</em> in Twine&nbsp;1, or the test mode option (<code>-t</code>, <code>--test</code>) in Tweego.  You may, however, forcibly enable it if you need to for some reason—e.g., if you're using another compiler, which doesn't offer a way to enable test mode.
+This setting is automatically set based on whether you're using a testing mode in a Twine compiler—i.e., <em>Test</em> mode in Twine&nbsp;2, <em>Test Play From Here</em> in Twine&nbsp;1, or the test mode option (<code>-t</code>, <code>--test</code>) in Tweego.  You may, however, forcibly enable it if you need to for some reason—e.g., if you're using another compiler, which doesn't offer a way to enable test mode.
+</p>
+
+<p role="note" class="see"><b>See Also:</b>
+<a href="#config-api-property-enableoptionaldebugging"><code>Config.enableOptionalDebugging</code> setting</a>.
 </p>
 
 #### History:
@@ -104,9 +108,13 @@ if (Config.debug) {
 
 ### `Config.enableOptionalDebugging` ↔ *boolean* (default: `false`) {#config-api-property-enableoptionaldebugging}
 
-Determines whether various optional debugging errors and warnings are enabled.
+Determines whether various optional debugging errors and warnings are enabled outside of test mode.
 
-List of errors and warnings: *(not exhaustive)*
+<p role="note" class="see"><b>See Also:</b>
+<a href="#config-api-property-debug"><code>Config.debug</code> setting</a>.
+</p>
+
+List of optional errors and warnings: *(not exhaustive)*
 
 * [`<<if>>` macro](#macros-macro-if) assignment error.  If enabled, returns an error when the `=` assignment operator is used within its conditional—e.g., `<<if $suspect = "Bob">>`.  Does not flag other assignment operators.
 
