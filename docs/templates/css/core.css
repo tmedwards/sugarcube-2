@@ -25,15 +25,46 @@ mark, time {
 	display: inline;
 }
 
+/* HTML
+=============================================================================*/
+
+html {
+	/* font-family: Frutiger, "Frutiger Linotype", Univers, "Segoe UI", "Myriad Pro", Myriad, "DejaVu Sans Condensed", "Liberation Sans", "Helvetica Neue", Helvetica, Arial, sans-serif; */
+	font-family:
+		/* iOS & macOS Safari, macOS Firefox */
+		-apple-system,
+		/* macOS & Windows Chrome */
+		system-ui,
+		/* macOS Chrome */
+		BlinkMacSystemFont,
+		/* Windows ≥6 (Vista) */
+		"Segoe UI",
+		/* Android, Chrome OS */
+		Roboto,
+		/* KDE */
+		Oxygen-Sans,
+		/* GNOME */
+		Cantarell,
+		/* Ubuntu */
+		Ubuntu,
+		/* macOS <10.11 */
+		"Helvetica Neue",
+		/* Older fallbacks */
+		Helvetica,
+		Arial,
+		sans-serif,
+		/* Color Emoji */
+		color-emoji;
+	font-size: 16px;
+	line-height: 1.6;
+}
+
 /* BODY
 =============================================================================*/
 
 body {
 	background-color: #fff;
 	color: #111;
-	font-family: Frutiger, "Frutiger Linotype", Univers, "Segoe UI", "Myriad Pro", Myriad, "DejaVu Sans Condensed", "Liberation Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-	font-size: 14px;
-	line-height: 1.6;
 	margin: 0 0 0 25.5em;
 	max-width: 69em;
 	padding: 20px;
@@ -336,7 +367,19 @@ dl.keys dd, dl.params dd {
 =============================================================================*/
 
 code, kbd, pre, samp, var {
-	font-family: Consolas, "Andale Mono WT", "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Liberation Mono", "Nimbus Mono L", Monaco, "Courier New", Courier, monospace;
+	/* font-family: Consolas, "Andale Mono WT", "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Liberation Mono", "Nimbus Mono L", Monaco, "Courier New", Courier, monospace; */
+	font-family:
+		SFMono-Regular,
+		Menlo,
+		Monaco,
+		Consolas,
+		"Liberation Mono",
+		"Lucida Console",
+		"Courier New",
+		Courier,
+		/* 2× to fix a bug in ancient browsers. */
+		monospace,
+		monospace;
 }
 
 code, kbd, samp, var {
@@ -530,7 +573,7 @@ nav.enhanced>header>#controls>a#lists-collapse::before,
 nav.enhanced>header>#controls>a#lists-expand::before,
 .icon {
 	display: inline-block;
-	font-family: "sc-doc-icons";
+	font-family: sc-doc-icons !important; /* stylelint-disable-line font-family-no-missing-generic-family-keyword */
 	font-style: normal;
 	font-variant: normal;
 	font-weight: normal;
@@ -593,6 +636,46 @@ nav.enhanced>header>#controls>a#lists-expand::before,
 }
 .icon.list::before {
 	content: "\e854";
+}
+
+/* CLASS MODIFIERS, ICONS
+=============================================================================*/
+
+#icon-font-view {
+	margin: 0 auto;
+}
+#icon-font-view > div {
+	border: 1px solid #ccc;
+	display: inline-block;
+	margin: 0.3rem 0.25rem;
+	padding: 0.5rem;
+	width: 5rem;
+}
+#icon-font-view > div > * {
+	display: block;
+	font-size: 14px;
+	text-align: center;
+}
+#icon-font-view > div > :first-child {
+	font-family: sc-icons !important; /* stylelint-disable-line font-family-no-missing-generic-family-keyword */
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	line-height: 1;
+	speak: never;
+	text-rendering: auto;
+	text-transform: none;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	/* Extra styles. */
+	cursor: pointer;
+	font-size: 4rem;
+}
+#icon-font-view > div > :last-child {
+	margin-top: 0.5rem;
+}
+#icon-font-view code {
+	font-size: 18px;
 }
 
 /* CLASS MODIFIERS, MARKUP
