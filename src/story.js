@@ -338,23 +338,23 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 	*******************************************************************************/
 
 	function add(passage) {
-		if (!(passage instanceof Passage)) {
-			throw new TypeError('Story.add passage parameter must be an instance of Passage');
+		if (getTypeOf(passage) !== 'Object')) {
+			throw new TypeError('Story.add passage parameter must be a generic object');
 		}
 
 		if (codePassageNames.includes(passage.name)) {
-			throw new Error(`Story.add passage instance "${passage.name}" must not be a code passage`);
+			throw new Error(`Story.add passage descriptor object "${passage.name}" must not be a code passage`);
 		}
 
 		if (passage.tags.includesAny(codeTagNames)) {
-			throw new Error(`Story.add passage instance "${passage.name}" must not include code tags`);
+			throw new Error(`Story.add passage descriptor object "${passage.name}" must not include code tags`);
 		}
 
 		if (Object.hasOwn(_passages, passage.name)) {
 			return false;
 		}
 
-		_passages[passage.name] = passage;
+		_passages[passage.name] = Passage.create(passage);
 		return true;
 	}
 
