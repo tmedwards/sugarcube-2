@@ -608,6 +608,7 @@
 * [`Story.ifId`](#story-api-getter-ifid)
 * [`Story.name`](#story-api-getter-name)
 * [`Story.add()`](#story-api-method-add)
+* [`Story.delete()`](#story-api-method-delete)
 * [`Story.filter()`](#story-api-method-filter)
 * [`Story.find()`](#story-api-method-find)
 * [`Story.get()`](#story-api-method-get)
