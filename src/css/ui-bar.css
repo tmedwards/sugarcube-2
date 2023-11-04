@@ -90,10 +90,10 @@
 	top: 0;
 	right: 0;
 	border-right: none;
-	padding: 0.3em 0.45em 0.25em;
+	padding: 0.25em 0.5em 0.35em;
 }
 #ui-bar.stowed #ui-bar-toggle {
-	padding: 0.3em 0.35em 0.25em 0.55em;
+	padding: 0.25em 0.45em 0.35em 0.55em;
 }
 #ui-bar-toggle:hover {
 	background-color: #444;
@@ -103,10 +103,10 @@
 	margin: 0 auto;
 }
 #ui-bar-history [id|="history"] {
-	padding: 0.2em 0.45em 0.35em;
+	padding: 0.26em 0.35em 0.32em;
 }
 #ui-bar-history #history-jumpto {
-	padding: 0.2em 0.665em 0.35em;
+	padding: 0.26em 0.5em 0.33em;
 }
 #ui-bar-history [id|="history"]:not(:first-child) {
 	margin-left: 1.2em;
@@ -177,24 +177,30 @@
 #ui-bar.stowed #ui-bar-toggle::before {
 	content: "\f054";
 }
+#menu-item-continue a::before,
+#menu-item-saves a::before,
+#menu-item-settings a::before,
+#menu-item-restart a::before {
+	margin-right: 0.35em;
+}
 #menu-item-continue a::before {
-	content: "\f2f9\00a0";
+	content: "\f2f9";
 }
 #menu-item-saves a::before {
-	content: "\f0c7\00a0";
+	content: "\f0c7";
 }
 #menu-item-settings a::before {
-	content: "\f013\00a0";
+	content: "\f013";
 }
 #menu-item-restart a::before {
-	content: "\f011\00a0";
+	content: "\f011";
 }
-
-/* [DEPRECATED] */
+/* legacy */
 #menu-item-share a::before {
-	content: "\f1e0\00a0";
+	content: "\f1e0";
+	margin-right: 0.35em;
 }
-/* [/DEPRECATED] */
+/* legacy */
 
 /* Accessibility styles. */
 @media (prefers-reduced-motion: reduce) {

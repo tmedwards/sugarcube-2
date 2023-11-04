@@ -72,18 +72,28 @@
 /* Font icon styles. */
 #ui-dialog-body.saves button[id="saves-export"]::before,
 #ui-dialog-body.saves button[id="saves-import"]::before,
-#ui-dialog-body.saves button[id="saves-clear"]::before {
+#ui-dialog-body.saves button[id="saves-clear"]::before,
+#ui-dialog-body.saves button[id="saves-disk-save"]::before,
+#ui-dialog-body.saves button[id="saves-disk-load"]::before {
 	@mixin sc-icons-properties;
+
+	margin-right: 0.35em;
 }
 #ui-dialog-body.saves button[id="saves-export"]::before {
-	content: "\f019\00a0";
+	content: "\f019";
 }
 #ui-dialog-body.saves button[id="saves-import"]::before {
-	content: "\f093\00a0";
+	content: "\f093";
 }
 #ui-dialog-body.saves button[id="saves-clear"]::before {
-	content: "\f2ed\00a0";
+	content: "\f2ed";
 }
-#ui-dialog-body.settings button[id|="setting-control"]::after {
-	content: "\00a0\00a0\f204";
+#ui-dialog-body.saves button[id="saves-clear"]:disabled::before {
+	content: "\f1f8";
+}
+#ui-dialog-body.saves button[id="saves-disk-save"]::before {
+	content: "\f019";
+}
+#ui-dialog-body.saves button[id="saves-disk-load"]::before {
+	content: "\f093";
 }

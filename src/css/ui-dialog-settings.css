@@ -81,10 +81,12 @@
 #ui-dialog-body.settings button[id|="setting-control"]::after,
 #ui-dialog-body.settings button[id|="setting-control"].enabled::after {
 	@mixin sc-icons-properties;
+
+	margin-left: 0.35em;
 }
 #ui-dialog-body.settings button[id|="setting-control"]::after {
-	content: "\00a0\00a0\f204";
+	content: "\f204";
 }
 #ui-dialog-body.settings button[id|="setting-control"].enabled::after {
-	content: "\00a0\00a0\f205";
+	content: "\f205";
 }
