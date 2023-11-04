@@ -392,10 +392,12 @@ a.link-external::after {
 	content: attr(data-icon);
 }
 [data-icon-before]::before {
-	content: attr(data-icon-before) "\00a0\00a0";
+	content: attr(data-icon-before);
+	margin-right: 0.35em;
 }
 [data-icon-after]::after {
-	content: "\00a0\00a0" attr(data-icon-after);
+	content: attr(data-icon-after);
+	margin-left: 0.35em;
 }
 .error-view > .error-toggle::before {
 	content: "\f0da";
@@ -404,8 +406,10 @@ a.link-external::after {
 	content: "\f0d7";
 }
 .error-view > .error::before {
-	content: "\f071\00a0\00a0";
+	content: "\f071";
+	margin-right: 0.35em;
 }
 a.link-external::after {
-	content: "\00a0\f35d";
+	content: "\f35d";
+	margin-left: 0.25em;
 }
