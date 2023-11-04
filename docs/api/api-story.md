@@ -47,7 +47,7 @@ The `string` name of the story.
 
 <!-- *********************************************************************** -->
 
-### `Story.add(passage)` → *boolean* {#story-api-method-add}
+### `Story.add(descriptor)` → *boolean* {#story-api-method-add}
 
 Adds the passage to the passage store.
 
@@ -61,14 +61,14 @@ This method cannot add passages tagged with <a href="#code-tags">code tags</a>.
 
 #### Parameters:
 
-* **`passage`:** (*`Object`*) The passage descriptor object.
+* **`descriptor`:** (*`Object`*) The passage descriptor object.
 
 #### Passage Descriptor:
 
 A passage descriptor object should have the following properties:
 
 * **`name`:** (*`string`*) The passage's name.
-* **`tags`:** (*`Array<string>`*) The passage's array of tags.
+* **`tags`:** (*`string`*) The passage's whitespace separated list of tags.
 * **`text`:** (*`string`*) The passage's text.
 
 #### Returns:
@@ -79,13 +79,13 @@ Boolean `true` if the passage was added, elsewise `false`.
 
 ```js
 // Add a passage
-const passage = {
+const descriptor = {
 	name : "Forest 4",
-	tags : ["forest"],
-	text : "😔 You see even more trees.",
+	tags : "forest heavy",
+	text : "You can barely see farther than arm's length for all the trees.",
 };
 
-if (Story.add(passage)) {
+if (Story.add(descriptor)) {
 	/* The "Forest 4" passage was added. */
 }
 ```
