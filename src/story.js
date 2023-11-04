@@ -6,7 +6,7 @@
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* global Config, Passage, Wikifier, charAndPosAt, createSlug, decodeEntities, sameValueZero */
+/* global Config, Passage, Wikifier, charAndPosAt, createSlug, decodeEntities, getTypeOf, sameValueZero */
 
 var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 	// Story IFID.
