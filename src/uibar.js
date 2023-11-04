@@ -7,7 +7,7 @@
 
 ***********************************************************************************************************************/
 /*
-	global Alert, Dialog, Engine, L10n, Save, Setting, State, Story, UI, Config, setDisplayTitle, setPageElement
+	global Alert, Config, Dialog, Engine, L10n, Save, Setting, State, Story, UI, Wikifier, setDisplayTitle
 */
 
 var UIBar = (() => { // eslint-disable-line no-unused-vars, no-var

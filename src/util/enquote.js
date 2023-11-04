@@ -8,10 +8,6 @@
 ***********************************************************************************************************************/
 
 /*
-	Returns a sanitized version of the given `KeyboardEvent.key` value from
-	previous incarnations of the specification that should better reflect the
-	current incarnation.
-
 	Returns the given string quoted by double or single quotes, as appropriate.
 	Preexisting unescaped quotes of same type are escaped.
 */
@@ -41,10 +37,9 @@ var enquote = (() => { // eslint-disable-line no-unused-vars, no-var
 		else if (sqCount === 0) {
 			return `'${string}'`;
 		}
-		else {
-			const quote = dqCount <= sqCount ? '"' : "'";
-			return `${quote}${string.replace(quote === '"' ? unescapedDQuoteRE : unescapedSQuoteRE, '$1\\$2')}${quote}`;
-		}
+
+		const quote = dqCount <= sqCount ? '"' : "'";
+		return `${quote}${string.replace(quote === '"' ? unescapedDQuoteRE : unescapedSQuoteRE, '$1\\$2')}${quote}`;
 	}
 
 	return enquote;
