@@ -358,6 +358,38 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 		return true;
 	}
 
+	function delete$(name) {
+		let type = typeof name;
+
+		switch (type) {
+			// Valid types.
+			case 'number':
+			case 'string': {
+				if (!Object.hasOwn(_passages, String(name))) {
+					return false;
+				}
+
+				delete _passages[name];
+				return true;
+			}
+
+			// Invalid types.  We do the extra processing just to make a nicer error.
+			case 'undefined':
+				/* no-op */
+				break;
+
+			case 'object':
+				type = name === null ? 'null' : 'an object';
+				break;
+
+			default: // 'bigint', 'boolean', 'function', 'symbol'
+				type = `a ${type}`;
+				break;
+		}
+
+		throw new TypeError(`Story.delete name parameter cannot be ${type}`);
+	}
+
 	function filter(predicate, thisArg) {
 		if (typeof predicate !== 'function') {
 			throw new TypeError('Story.filter predicate parameter must be a function');
@@ -519,6 +551,7 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 
 		// Passage Functions.
 		add        : { value : add },
+		delete     : { value : delete$ },
 		filter     : { value : filter },
 		find       : { value : find },
 		get        : { value : get },
