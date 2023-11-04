@@ -83,8 +83,8 @@
 	@mixin tme-fa-icons-properties;
 }
 #ui-dialog-body.settings button[id|="setting-control"]::after {
-	content: "\00a0\00a0\e830";
+	content: "\00a0\00a0\f204";
 }
 #ui-dialog-body.settings button[id|="setting-control"].enabled::after {
-	content: "\00a0\00a0\e831";
+	content: "\00a0\00a0\f205";
 }

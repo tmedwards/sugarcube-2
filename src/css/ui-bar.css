@@ -172,26 +172,29 @@
 	@mixin tme-fa-icons-properties;
 }
 #ui-bar-toggle::before {
-	content: "\e81d";
+	content: "\f053";
 }
 #ui-bar.stowed #ui-bar-toggle::before {
-	content: "\e81e";
+	content: "\f054";
 }
 #menu-item-continue a::before {
-	content: "\e817\00a0";
+	content: "\f2f9\00a0";
 }
 #menu-item-saves a::before {
-	content: "\e82b\00a0";
+	content: "\f0c7\00a0";
 }
 #menu-item-settings a::before {
-	content: "\e82d\00a0";
+	content: "\f013\00a0";
 }
 #menu-item-restart a::before {
-	content: "\e82c\00a0";
+	content: "\f011\00a0";
 }
+
+/* [DEPRECATED] */
 #menu-item-share a::before {
-	content: "\e82f\00a0";
+	content: "\f1e0\00a0";
 }
+/* [/DEPRECATED] */
 
 /* Accessibility styles. */
 @media (prefers-reduced-motion: reduce) {
