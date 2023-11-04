@@ -156,7 +156,7 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 			set typeSkipKey(value) { _macrosTypeSkipKey = String(value); },
 
 			get typeVisitedPassages() { return _macrosTypeVisitedPassages; },
-			set typeVisitedPassages(value) { _macrosTypeVisitedPassages = Boolean(value); }
+			set typeVisitedPassages(value) { _macrosTypeVisitedPassages = Boolean(value); },
 
 			/* legacy */
 			// Die if the deprecated macros if assignment error getter is accessed.
@@ -334,8 +334,8 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 				if (!Number.isInteger(value)) {
 					throw new TypeError('Config.saves.maxSlotSaves must be an integer');
 				}
-				else if (value < 0 || value > Save.MAX_INDEXEX + 1) {
-					throw new RangeError(`Config.saves.maxSlotSaves out of bounds (range: 0–${Save.MAX_INDEXEX + 1}; received: ${value})`);
+				else if (value < 0 || value > Save.MAX_INDEX + 1) {
+					throw new RangeError(`Config.saves.maxSlotSaves out of bounds (range: 0–${Save.MAX_INDEX + 1}; received: ${value})`);
 				}
 
 				_savesMaxSlot = value;
