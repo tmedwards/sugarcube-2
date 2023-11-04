@@ -139,33 +139,33 @@ html[data-debug-view] #debug-bar-views-toggle:hover {
 #debug-bar-watch-clear::before,
 #debug-bar-watch-toggle::after,
 #debug-bar-views-toggle::after {
-	@mixin tme-fa-icons-properties;
+	@mixin sc-icons-properties;
 }
 #debug-bar-toggle::before {
-	content: "\e838";
+	content: "\f188";
 }
 #debug-bar-hint::after {
-	content: "\e838\202f\e822";
+	content: "\f188\202f\f061";
 }
 #debug-bar-watch .watch-delete::before {
-	content: "\e804";
+	content: "\f00d";
 }
 #debug-bar-watch-add::before {
-	content: "\e805";
+	content: "\f067";
 }
 #debug-bar-watch-all::before {
-	content: "\e83a";
+	content: "\f0d0";
 }
 #debug-bar-watch-clear::before {
-	content: "\e827";
+	content: "\f2ed";
 }
 #debug-bar-watch-toggle::after,
 #debug-bar-views-toggle::after {
-	content: "\00a0\00a0\e830";
+	content: "\00a0\00a0\f204";
 }
 #debug-bar-watch:not([hidden]) ~ div #debug-bar-watch-toggle::after,
 html[data-debug-view] #debug-bar-views-toggle::after {
-	content: "\00a0\00a0\e831";
+	content: "\00a0\00a0\f205";
 }
 
 /* Debug view styles. */

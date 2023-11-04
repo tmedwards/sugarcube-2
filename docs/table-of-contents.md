@@ -662,6 +662,11 @@
 
 * [Creation](#guide-media-passages-creation)
 
+## [Guide: Icon Font](#guide-icon-font)
+
+* [Icon Styling](#guide-icon-font-styling)
+* [Icon Reference](#guide-icon-font-reference)
+
 ## [Guide: Harlowe to SugarCube](#guide-harlowe-to-sugarcube)
 
 * [Macro Overview](#guide-harlowe-to-sugarcube-macro-overview)

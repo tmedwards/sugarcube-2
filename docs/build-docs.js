@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /***********************************************************************************************************************
 
-	build-docs.js (v1.3.2, 2023-07-25)
+	build-docs.js (v1.3.3, 2023-07-25)
 		A Node.js-hosted build script for SugarCube's documentation.
 
 	Copyright © 2020–2023 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
@@ -64,6 +64,7 @@ const CONFIG = {
 			'guides/guide-non-generic-object-types.md',
 			'guides/guide-tips.md',
 			'guides/guide-media-passages.md',
+			'guides/guide-icon-font.md',
 			'guides/guide-harlowe-to-sugarcube.md',
 			'guides/guide-test-mode.md',
 			'guides/guide-typescript.md',

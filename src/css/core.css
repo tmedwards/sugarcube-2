@@ -30,7 +30,7 @@ tw-storydata {
 	background-color: #333;
 	border: 1px solid #111;
 }
-* { /* stylelint-disable-line no-descending-specificity */
+* {
 	/* -ms-overflow-style: auto; */
 	scrollbar-color: #333 #111;
 	scrollbar-width: thin;
@@ -55,7 +55,6 @@ body::-ms-backdrop {
 	cursor: not-allowed !important;
 }
 html {
-	/* stylelint-disable value-keyword-case */
 	font-family:
 		/* iOS & macOS Safari, macOS Firefox */
 		-apple-system,
@@ -76,10 +75,11 @@ html {
 		/* macOS <10.11 */
 		"Helvetica Neue",
 		/* Older fallbacks */
-		Helvetica, Arial, sans-serif,
+		Helvetica,
+		Arial,
+		sans-serif,
 		/* Color Emoji */
 		color-emoji;
-	/* stylelint-enable value-keyword-case */
 
 	/*
 		We define the base font size and line height here as they affect the
@@ -154,7 +154,6 @@ kbd,
 pre,
 samp,
 var {
-	/* stylelint-disable value-keyword-case */
 	font-family:
 		SFMono-Regular,
 		Menlo,
@@ -165,8 +164,8 @@ var {
 		"Courier New",
 		Courier,
 		/* 2× to fix a bug in ancient browsers. */
-		monospace, monospace;
-	/* stylelint-enable value-keyword-case */
+		monospace,
+		monospace;
 
 	/* font-size: 16px;
 	line-height: 1; */
@@ -387,26 +386,30 @@ html[data-outlines] .error-view > .error-toggle:focus,
 .error-view > .error-toggle::before,
 .error-view > .error::before,
 a.link-external::after {
-	@mixin tme-fa-icons-properties;
+	@mixin sc-icons-properties;
 }
 [data-icon]::before {
 	content: attr(data-icon);
 }
 [data-icon-before]::before {
-	content: attr(data-icon-before) "\00a0\00a0";
+	content: attr(data-icon-before);
+	margin-right: 0.35em;
 }
 [data-icon-after]::after {
-	content: "\00a0\00a0" attr(data-icon-after);
+	content: attr(data-icon-after);
+	margin-left: 0.35em;
 }
 .error-view > .error-toggle::before {
-	content: "\e81a";
+	content: "\f0da";
 }
 .error-view > .error-toggle.enabled::before {
-	content: "\e818";
+	content: "\f0d7";
 }
 .error-view > .error::before {
-	content: "\e80d\00a0\00a0";
+	content: "\f071";
+	margin-right: 0.35em;
 }
 a.link-external::after {
-	content: "\00a0\e80e";
+	content: "\f35d";
+	margin-left: 0.25em;
 }

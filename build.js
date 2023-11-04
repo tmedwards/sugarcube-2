@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /***********************************************************************************************************************
 
-	build.js (v1.8.8, 2023-08-13)
+	build.js (v1.8.9, 2023-11-04)
 		A Node.js-hosted build script for SugarCube.
 
 	Copyright © 2013–2023 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
@@ -87,7 +87,7 @@ const CONFIG = {
 			'src/css/ui-dialog.css',
 			'src/css/ui-dialog-saves.css',
 			'src/css/ui-dialog-settings.css',
-			'src/css/ui-legacy.css',
+			'src/css/ui-dialog-legacy.css',
 			'src/css/ui-bar.css',
 			'src/css/ui-debug.css'
 		]
