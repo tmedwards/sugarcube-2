@@ -139,7 +139,7 @@ html[data-debug-view] #debug-bar-views-toggle:hover {
 #debug-bar-watch-clear::before,
 #debug-bar-watch-toggle::after,
 #debug-bar-views-toggle::after {
-	@mixin tme-fa-icons-properties;
+	@mixin sc-icons-properties;
 }
 #debug-bar-toggle::before {
 	content: "\f188";

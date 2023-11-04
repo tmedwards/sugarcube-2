@@ -7,8 +7,8 @@
 
 ***********************************************************************************************************************/
 
-@define-mixin tme-fa-icons-properties {
-	font-family: tme-fa-icons !important; /* stylelint-disable-line font-family-no-missing-generic-family-keyword */
+@define-mixin sc-icons-properties {
+	font-family: sc-icons !important; /* stylelint-disable-line font-family-no-missing-generic-family-keyword */
 	/* font-style: normal;
 	font-weight: normal; */
 	font-variant: normal;

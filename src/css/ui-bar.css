@@ -169,7 +169,7 @@
 #ui-bar-toggle::before,
 #ui-bar-history [id|="history"],
 #menu-core li[id|="menu-item"] a::before {
-	@mixin tme-fa-icons-properties;
+	@mixin sc-icons-properties;
 }
 #ui-bar-toggle::before {
 	content: "\f053";

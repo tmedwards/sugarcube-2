@@ -387,7 +387,7 @@ html[data-outlines] .error-view > .error-toggle:focus,
 .error-view > .error-toggle::before,
 .error-view > .error::before,
 a.link-external::after {
-	@mixin tme-fa-icons-properties;
+	@mixin sc-icons-properties;
 }
 [data-icon]::before {
 	content: attr(data-icon);

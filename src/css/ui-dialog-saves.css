@@ -73,7 +73,7 @@
 #ui-dialog-body.saves button[id="saves-export"]::before,
 #ui-dialog-body.saves button[id="saves-import"]::before,
 #ui-dialog-body.saves button[id="saves-clear"]::before {
-	@mixin tme-fa-icons-properties;
+	@mixin sc-icons-properties;
 }
 #ui-dialog-body.saves button[id="saves-export"]::before {
 	content: "\f019\00a0";

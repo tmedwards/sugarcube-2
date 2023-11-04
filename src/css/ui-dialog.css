@@ -95,7 +95,7 @@ html[data-dialog] body {
 	width: 3.6em;
 
 	/* Font icon styles. */
-	@mixin tme-fa-icons-properties;
+	@mixin sc-icons-properties;
 }
 #ui-dialog-close:hover {
 	background-color: #b44;
