@@ -143,10 +143,6 @@ var Setting = (() => { // eslint-disable-line no-unused-vars, no-var
 		Definitions Functions.
 	*******************************************************************************/
 
-	function forEach(callback, thisArg) {
-		_definitions.forEach(callback, thisArg);
-	}
-
 	function add(type, name, def) {
 		if (arguments.length < 2) {
 			const errors = [];
@@ -372,16 +368,8 @@ var Setting = (() => { // eslint-disable-line no-unused-vars, no-var
 		add(Types.Value, ...args);
 	}
 
-	function isEmpty() {
-		return _definitions.length === 0;
-	}
-
-	function has(name) {
-		return _definitions.some(definition => definition.name === name);
-	}
-
-	function get(name) {
-		return _definitions.find(definition => definition.name === name);
+	function forEach(callback, thisArg) {
+		_definitions.forEach(callback, thisArg);
 	}
 
 	function delete$(name) {
@@ -395,6 +383,18 @@ var Setting = (() => { // eslint-disable-line no-unused-vars, no-var
 		if (Object.hasOwn(settings, name)) {
 			delete settings[name];
 		}
+	}
+
+	function get(name) {
+		return _definitions.find(definition => definition.name === name);
+	}
+
+	function has(name) {
+		return _definitions.some(definition => definition.name === name);
+	}
+
+	function isEmpty() {
+		return _definitions.length === 0;
 	}
 
 
@@ -435,26 +435,28 @@ var Setting = (() => { // eslint-disable-line no-unused-vars, no-var
 		// Enumerations.
 		Types : { value : Types },
 
+		// Initialization Functions.
+		init : { value : init },
+
 		// Settings Functions.
-		init   : { value : init },
-		create : { value : create },
-		save   : { value : save },
-		load   : { value : load },
 		clear  : { value : clear },
+		create : { value : create },
+		load   : { value : load },
 		reset  : { value : reset },
+		save   : { value : save },
 
 		// Definitions Functions.
-		forEach   : { value : forEach },
 		add       : { value : add },
 		addHeader : { value : addHeader },
-		addToggle : { value : addToggle },
 		addList   : { value : addList },
 		addRange  : { value : addRange },
+		addToggle : { value : addToggle },
 		addValue  : { value : addValue },
-		isEmpty   : { value : isEmpty },
-		has       : { value : has },
-		get       : { value : get },
 		delete    : { value : delete$ },
+		forEach   : { value : forEach },
+		get       : { value : get },
+		has       : { value : has },
+		isEmpty   : { value : isEmpty },
 
 		// Values Functions.
 		getValue : { value : getValue },
