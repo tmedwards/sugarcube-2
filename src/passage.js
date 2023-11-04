@@ -9,9 +9,6 @@
 /* global Config, L10n, State, Wikifier, createSlug, decodeEntities, encodeMarkup, enumFrom */
 
 var Passage = (() => { // eslint-disable-line no-unused-vars, no-var
-	let _tagsToSkip;
-	let _twine1Unescape;
-
 	/*
 		Tags which should not be transformed into classes:
 			debug      → special tag
@@ -22,40 +19,71 @@ var Passage = (() => { // eslint-disable-line no-unused-vars, no-var
 			twine.*    → special tag
 			widget     → special tag
 	*/
-	// For Twine 1
-	if (BUILD_TWINE1) {
-		_tagsToSkip = /^(?:debug|nobr|passage|script|stylesheet|widget|twine\..*)$/i;
-	}
-	// For Twine 2
-	else {
-		_tagsToSkip = /^(?:debug|nobr|passage|widget|twine\..*)$/i;
-	}
+	let tagsToSkip;
 
-	// For Twine 1
-	if (BUILD_TWINE1) {
-		/*
-			Returns a decoded version of the passed Twine 1 passage store encoded string.
-		*/
-		const _twine1EscapesRe    = /(?:\\n|\\t|\\s|\\|\r)/g;
-		const _hasTwine1EscapesRe = new RegExp(_twine1EscapesRe.source); // to drop the global flag
-		const _twine1EscapesMap   = enumFrom({
-			'\\n' : '\n',
-			'\\t' : '\t',
-			'\\s' : '\\',
-			'\\'  : '\\',
-			'\r'  : ''
-		});
+	// Passage store text content decoding function.
+	let decodePassageText;
 
-		_twine1Unescape = function (str) {
-			if (str == null) { // lazy equality for null
-				return '';
+	// For Twine 1.
+	if (BUILD_TWINE1) {
+		tagsToSkip = /^(?:debug|nobr|passage|script|stylesheet|widget|twine\..*)$/i;
+
+		decodePassageText = (() => {
+			const encodedMap   = enumFrom({
+				'\\n' : '\n',
+				'\\t' : '\t',
+				'\\s' : '\\',
+				'\\'  : '\\',
+				'\r'  : ''
+			});
+			const encodedRE    = new RegExp(`(?:${
+				Object.keys(encodedMap)
+					.map(ch => RegExp.escape(ch))
+					.join('|')
+			})`, 'g');
+			const hasEncodedRE = new RegExp(encodedRE.source); // to drop the global flag
+
+			/*
+				Returns a decoded version of the passed Twine 1 passage store encoded string.
+			*/
+			function decodePassageText(str) {
+				if (str == null) { // lazy equality for null
+					return '';
+				}
+
+				const val = String(str);
+				return val && hasEncodedRE.test(val)
+					? val.replace(encodedRE, esc => encodedMap[esc])
+					: val;
 			}
 
-			const val = String(str);
-			return val && _hasTwine1EscapesRe.test(val)
-				? val.replace(_twine1EscapesRe, esc => _twine1EscapesMap[esc])
-				: val;
-		};
+			return decodePassageText;
+		})();
+	}
+	// For Twine 2.
+	else {
+		tagsToSkip = /^(?:debug|nobr|passage|widget|twine\..*)$/i;
+
+		decodePassageText = (() => {
+			const encodedRE    = /\r/g;
+			const hasEncodedRE = new RegExp(encodedRE.source); // to drop the global flag
+
+			/*
+				Returns a decoded version of the passed Twine 2 passage store encoded string.
+			*/
+			function decodePassageText(str) {
+				if (str == null) { // lazy equality for null
+					return '';
+				}
+
+				const val = String(str);
+				return val && hasEncodedRE.test(val)
+					? val.replace(encodedRE, esc => '')
+					: val;
+			}
+
+			return decodePassageText;
+		})();
 	}
 
 
@@ -103,7 +131,7 @@ var Passage = (() => { // eslint-disable-line no-unused-vars, no-var
 							so we only need to filter and map here.
 						*/
 						this.tags
-							.filter(tag => !_tagsToSkip.test(tag))
+							.filter(tag => !tagsToSkip.test(tag))
 							.map(tag => createSlug(tag))
 					)())
 				},
@@ -132,14 +160,7 @@ var Passage = (() => { // eslint-disable-line no-unused-vars, no-var
 				return `<div class="error-view"><span class="error">${mesg}</span></div>`;
 			}
 
-			// For Twine 1
-			if (BUILD_TWINE1) {
-				return _twine1Unescape(this.element.textContent);
-			}
-			// For Twine 2
-			else { // eslint-disable-line no-else-return
-				return this.element.textContent.replace(/\r/g, '');
-			}
+			return decodePassageText(this.element.textContent);
 		}
 
 		// TODO: (v3) This should be → `get text`.
