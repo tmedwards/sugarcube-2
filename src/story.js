@@ -337,10 +337,21 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 		Passage Functions.
 	*******************************************************************************/
 
-	function add(passage) {
-		if (getTypeOf(passage) !== 'Object')) {
-			throw new TypeError('Story.add passage parameter must be a generic object');
+	function add(descriptor) {
+		if (getTypeOf(descriptor) !== 'Object')) {
+			throw new TypeError('Story.add descriptor parameter must be a generic object');
 		}
+
+		if (Object.hasOwn(_passages, descriptor.name)) {
+			return false;
+		}
+
+		const elem = document.createElement('div');
+		elem.setAttribute('name', descriptor.name);
+		elem.setAttribute('tags', descriptor.tags);
+		elem.textContent = descriptor.text;
+
+		const passage = new Passage(descriptor.name, elem);
 
 		if (codePassageNames.includes(passage.name)) {
 			throw new Error(`Story.add passage descriptor object "${passage.name}" must not be a code passage`);
@@ -350,11 +361,7 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 			throw new Error(`Story.add passage descriptor object "${passage.name}" must not include code tags`);
 		}
 
-		if (Object.hasOwn(_passages, passage.name)) {
-			return false;
-		}
-
-		_passages[passage.name] = Passage.create(passage);
+		_passages[passage.name] = passage;
 		return true;
 	}
 
