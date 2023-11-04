@@ -47,6 +47,82 @@ The `string` name of the story.
 
 <!-- *********************************************************************** -->
 
+### `Story.add(passage)` → *boolean* {#story-api-method-add}
+
+Adds the passage to the passage store.
+
+<p role="note"><b>Note:</b>
+This method cannot add passages tagged with <a href="#code-tags">code tags</a>.
+</p>
+
+#### History:
+
+* `v2.37.0`: Introduced.
+
+#### Parameters:
+
+* **`passage`:** (*`Object`*) The passage descriptor object.
+
+#### Passage Descriptor:
+
+A passage descriptor object should have the following properties:
+
+* **`name`:** (*`string`*) The passage's name.
+* **`tags`:** (*`Array<string>`*) The passage's array of tags.
+* **`text`:** (*`string`*) The passage's text.
+
+#### Returns:
+
+Boolean `true` if the passage was added, elsewise `false`.
+
+#### Examples:
+
+```js
+// Add a passage
+const passage = {
+	name : "Forest 4",
+	tags : ["forest"],
+	text : "😔 You see even more trees.",
+};
+
+if (Story.add(passage)) {
+	/* The "Forest 4" passage was added. */
+}
+```
+
+<!-- *********************************************************************** -->
+
+### `Story.delete(name)` → *boolean* {#story-api-method-delete}
+
+Deletes the `Passage` instance with the given name.
+
+<p role="note"><b>Note:</b>
+This method cannot delete passages tagged with <a href="#code-tags">code tags</a>.
+</p>
+
+#### History:
+
+* `v2.37.0`: Introduced.
+
+#### Parameters:
+
+* **`name`:** (*string*) The name of the `Passage` instance.
+
+#### Returns:
+
+Boolean `true` if a `Passage` instance with the given name was deleted, elsewise `false`.
+
+#### Examples:
+
+```js
+// Delete the Passage instance with the name "The Ducky"
+if (Story.delete("The Ducky")) {
+	/* The "The Ducky" passage was deleted. */
+}
+```
+
+<!-- *********************************************************************** -->
+
 ### `Story.get(name)` → *`Passage`* {#story-api-method-get}
 
 Gets the `Passage` instance with the given name.
