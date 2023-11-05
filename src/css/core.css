@@ -166,24 +166,9 @@ var {
 		/* 2× to fix a bug in ancient browsers. */
 		monospace,
 		monospace;
-
-	/* font-size: 16px;
-	line-height: 1; */
-}
-code,
-kbd,
-samp,
-var {
-	margin: 0;
-	padding: 0;
-	white-space: nowrap;
 }
 pre {
-	/* line-height: 19px; */
-	/* margin: 0 15px; */
-	/* margin: 15px 0; */
 	overflow: auto;
-	/* padding: 6px 10px; */
 }
 input,
 select,
