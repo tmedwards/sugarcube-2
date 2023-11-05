@@ -22,9 +22,9 @@ var version = (() => { // eslint-disable-line no-unused-vars, no-var
 
 	return Object.preventExtensions(Object.create(null, {
 		name       : { value : name },
-		major      : { value : {{BUILD_VERSION_MAJOR}} },
-		minor      : { value : {{BUILD_VERSION_MINOR}} },
-		patch      : { value : {{BUILD_VERSION_PATCH}} },
+		major      : { value : '{{BUILD_VERSION_MAJOR}}' },
+		minor      : { value : '{{BUILD_VERSION_MINOR}}' },
+		patch      : { value : '{{BUILD_VERSION_PATCH}}' },
 		prerelease : { value : '{{BUILD_VERSION_PRERELEASE}}' },
 		build      : { value : '{{BUILD_VERSION_BUILD}}' },
 		date       : { value : new Date('{{BUILD_VERSION_DATE}}') },
@@ -52,10 +52,11 @@ var version = (() => { // eslint-disable-line no-unused-vars, no-var
 				const patch = Number(match[3]) || 0;
 
 				return (
-					major === this.major &&
-					(
-						minor < this.minor ||
-						minor === this.minor && patch <= this.patch
+					major === this.major
+					&& (
+						minor < this.minor
+						|| minor === this.minor
+						&& patch <= this.patch
 					)
 				);
 			}
