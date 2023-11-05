@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /***********************************************************************************************************************
 
-	build.js (v1.8.9, 2023-11-04)
+	build.js (v1.9.0, 2023-11-05)
 		A Node.js-hosted build script for SugarCube.
 
 	Copyright © 2013–2023 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
@@ -205,20 +205,26 @@ if (_opts.build) {
 	const version = (() => {
 		const semver = require('semver');
 		const { name, version } = require('./package.json'); // relative path must be prefixed ('./')
-		const prerelease = semver.prerelease(version);
+		const parsed = semver.parse(version);
+		const build = Number(readFileContents('.build'));
+
+		if (!Number.isInteger(build)) {
+			throw new Error(`invalid build metadata (received: ${build})`);
+		}
 
 		return {
-			title      : name,
-			major      : semver.major(version),
-			minor      : semver.minor(version),
-			patch      : semver.patch(version),
-			prerelease : prerelease && prerelease.length > 0 ? prerelease.join('.') : null,
-			build      : Number(readFileContents('.build')) + 1,
+			name,
+			major      : parsed.major,
+			minor      : parsed.minor,
+			patch      : parsed.patch,
+			prerelease : parsed.prerelease.join('.'),
+			build      : build + 1,
 			date       : new Date().toISOString(),
 
 			toString() {
 				const prerelease = this.prerelease ? `-${this.prerelease}` : '';
-				return `${this.major}.${this.minor}.${this.patch}${prerelease}`;
+				const build = `+${this.build}`;
+				return `${this.major}.${this.minor}.${this.patch}${prerelease}${build}`;
 			}
 		};
 	})();
