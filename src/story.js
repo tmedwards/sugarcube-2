@@ -338,7 +338,7 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 	*******************************************************************************/
 
 	function add(descriptor) {
-		if (getTypeOf(descriptor) !== 'Object')) {
+		if (getTypeOf(descriptor) !== 'Object') {
 			throw new TypeError('Story.add descriptor parameter must be a generic object');
 		}
 
