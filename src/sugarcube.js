@@ -16,29 +16,75 @@
 /*
 	Version object.
 */
-var version = Object.freeze({
-	name       : 'SugarCube',
-	major      : '{{BUILD_VERSION_MAJOR}}',
-	minor      : '{{BUILD_VERSION_MINOR}}',
-	patch      : '{{BUILD_VERSION_PATCH}}',
-	prerelease : '{{BUILD_VERSION_PRERELEASE}}',
-	build      : '{{BUILD_VERSION_BUILD}}',
-	date       : new Date('{{BUILD_VERSION_DATE}}'),
+var version = (() => { // eslint-disable-line no-unused-vars, no-var
+	const name     = 'SugarCube';
+	const semVerRE = /^[Vv]?(\d+)(?:\.(\d+)(?:\.(\d+)(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?)?)?$/;
 
-	toString() {
-		const prerelease = this.prerelease ? `-${this.prerelease}` : '';
-		return `${this.major}.${this.minor}.${this.patch}${prerelease}+${this.build}`;
-	},
+	return Object.preventExtensions(Object.create(null, {
+		name       : { value : name },
+		major      : { value : {{BUILD_VERSION_MAJOR}} },
+		minor      : { value : {{BUILD_VERSION_MINOR}} },
+		patch      : { value : {{BUILD_VERSION_PATCH}} },
+		prerelease : { value : '{{BUILD_VERSION_PRERELEASE}}' },
+		build      : { value : '{{BUILD_VERSION_BUILD}}' },
+		date       : { value : new Date('{{BUILD_VERSION_DATE}}') },
 
-	short() {
-		const prerelease = this.prerelease ? `-${this.prerelease}` : '';
-		return `${this.name} (v${this.major}.${this.minor}.${this.patch}${prerelease})`;
-	},
+		isOk : {
+			value(semver) {
+				if (typeof semver !== 'string') {
+					throw new Error(`version.isOk semver parameter must be a string (received: ${typeof semver})`);
+				}
 
-	long() {
-		return `${this.name} v${this.toString()} (${this.date.toUTCString()})`;
-	}
-});
+				const trimmed = semver.trim();
+
+				if (trimmed === '') {
+					throw new Error('version.isOk semver parameter must not be empty');
+				}
+
+				const match = semVerRE.exec(trimmed);
+
+				if (!match) {
+					throw new Error(`version.isOk semver parameter is invalid (format: [v]MAJOR[.MINOR[.PATCH[-PRERELEASE][+BUILD]]]; received: ${trimmed}`);
+				}
+
+				const major = Number(match[1]);
+				const minor = Number(match[2]) || 0;
+				const patch = Number(match[3]) || 0;
+
+				return (
+					major === this.major &&
+					(
+						minor < this.minor ||
+						minor === this.minor && patch <= this.patch
+					)
+				);
+			}
+		},
+
+		long : {
+			value() {
+				return `${this.name} v${this.toString()} (${this.date.toUTCString()})`;
+			}
+		},
+
+		short : {
+			value() {
+				const prerelease = this.prerelease ? `-${this.prerelease}` : '';
+				return `${this.name} (v${this.major}.${this.minor}.${this.patch}${prerelease})`;
+			}
+		},
+
+		toString : {
+			value() {
+				const prerelease = this.prerelease ? `-${this.prerelease}` : '';
+				return `${this.major}.${this.minor}.${this.patch}${prerelease}+${this.build}`;
+			}
+		},
+
+		// Legacy.
+		title : { value : name }
+	}));
+})();
 
 /* eslint-disable no-unused-vars */
 /*
