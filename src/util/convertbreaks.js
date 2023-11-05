@@ -15,11 +15,9 @@
 
 	TODO: Update the list of default block-level elements (below) as necessary.
 	Last checked: Apr 2020.
-
-	FIXME: Controls are being processed.  Fix it!
 */
 var convertBreaks = (() => { // eslint-disable-line no-unused-vars, no-var
-	const isNotSpaceRE = new RegExp(`${Patterns.notSpace}`);
+	const isNotSpaceRE = new RegExp(Patterns.notSpace);
 
 	function isParagraphEmpty(para) {
 		if (!para.hasChildNodes()) {
