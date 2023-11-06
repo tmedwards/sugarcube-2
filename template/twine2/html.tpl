@@ -4,6 +4,8 @@
 <meta charset="UTF-8" />
 <title>{{STORY_NAME}}</title>
 <meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="application-name" content="SugarCube" />
+<meta name="application-version" content="v'{{BUILD_VERSION_VERSION}}'" />
 <!--
 
 SugarCube (v'{{BUILD_VERSION_VERSION}}'): A free (gratis and libre) story format.
