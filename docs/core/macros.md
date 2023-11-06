@@ -179,9 +179,9 @@ Unsetting object properties.
 
 <!-- *********************************************************************** -->
 
-### `<<script>> … <</script>>` {#macros-macro-script}
+### `<<script [language]>> … <</script>>` {#macros-macro-script}
 
-Silently executes its contents as *pure* JavaScript code—i.e., it performs no story or temporary variable substitution or TwineScript operator processing.  For instances where you need to run some pure JavaScript and don't want to waste time performing extra processing on code that has no story or temporary variables or TwineScript operators in it and/or worry about the parser possibly clobbering the code.
+Silently executes its contents as either JavaScript or [TwineScript](#twinescript) code (default: JavaScript).
 
 <p role="note"><b>Note:</b>
 The predefined variable <code>output</code>, which is a reference to a local content buffer, is available for use within the macro's code contents.  Once the code has been fully executed, the contents of the buffer, if any, will be output.
@@ -190,18 +190,66 @@ The predefined variable <code>output</code>, which is a reference to a local con
 #### History:
 
 * `v2.0.0`: Introduced.
+* `v2.37.0`: Added optional `language` argument.
 
-#### Arguments: *none*
+#### Arguments:
+
+* **`language`:** (optional) The language to evaluate the given code as; case-insensitive options: `JavaScript`, `TwineScript`.  If omitted, defaults to `JavaScript`.
 
 #### Examples:
 
-```
-→ Basic
-<<script>>
-	/* pure JavaScript code */
-<</script>>
+##### Basic usage
 
-→ Modifying the content buffer
+```
+<<script>>
+	/* JavaScript code */
+<</script>>
+```
+
+```
+<<script TwineScript>>
+	/* TwineScript code */
+<</script>>
+```
+
+##### Accessing managed variables
+
+```
+<<script>>
+	/*
+		When accessing managed variables in JavaScript, it's often a good idea
+		to cache references to whichever variable store you happen to be using.
+	*/
+	const svars = State.variables;
+	const tvars = State.temporary;
+
+	/* Access the `$items` story variable. */
+	if (svars.items.includes('bloody knife')) {
+		/* Has a bloody knife. */
+	}
+
+	/* Access the `_hit` temporary variable. */
+	tvars.hit += 1;
+<</script>>
+```
+
+```
+<<script TwineScript>>
+	/* Access the `$items` story variable. */
+	if ($items.includes('bloody knife')) {
+		/* Has a bloody knife. */
+	}
+
+	/* Access the `_hit` temporary variable. */
+	_hit += 1;
+<</script>>
+```
+
+##### Modifying the content buffer
+
+There's no difference between JavaScript and TwineScript here.
+
+```
 <<script>>
 	/* Parse some markup and append the result to the output buffer. */
 	$(output).wiki("Cry 'Havoc!', and let slip the //ponies// of ''friendship''.");
