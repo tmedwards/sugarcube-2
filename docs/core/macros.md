@@ -550,10 +550,11 @@ Interactions with macros or other code that inject content only after some exter
 * `v2.32.0`: Introduced.
 * `v2.33.0`: Added `class`, `element`, and `id` options and `macro-type-done` class.
 * `v2.33.1`: Added `skipkey` option.
+* `v2.37.0`: Updated `speed` argument so `0s` and `0ms` skip.
 
 #### Arguments:
 
-* **`speed`:** The rate at which characters are typed, as a valid [CSS time value](https://developer.mozilla.org/en-US/docs/Web/CSS/time)—e.g., `1s` and `40ms`.  Values in the range `20–60ms` are a good starting point.
+* **`speed`:** The rate at which characters are typed, as a valid [CSS time value](https://developer.mozilla.org/en-US/docs/Web/CSS/time)—e.g., `1s` and `40ms`.  Values in the range `20–60ms` are a good starting point.  Values of `0s` and `0ms` cause typing to finish immediately.
 * **`start` *`delay`*:** (optional) The amount of time to delay the start of typing, as a valid [CSS time value](https://developer.mozilla.org/en-US/docs/Web/CSS/time)—e.g., `5s` and `500ms`.  If omitted, defaults to `400ms`.
 * **`class` *`classes`*:** (optional) The space separated list of classes to be added to the typing container.
 * **`element` *`tag`*:** (optional) The element to use as the typing container—e.g., `div` and `span`.  If omitted, defaults to `div`.
