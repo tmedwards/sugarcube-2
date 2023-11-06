@@ -191,8 +191,11 @@ Macro.add('type', {
 
 				// Skip typing if….
 				if (
+					// …speed is zero
+					speed === 0
+
 					// …we've visited the passage before.
-					!Config.macros.typeVisitedPassages
+					|| !Config.macros.typeVisitedPassages
 					&& State.passages.slice(0, -1).some(title => title === passage)
 
 					// …there were any content errors.
