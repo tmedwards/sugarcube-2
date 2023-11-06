@@ -12,14 +12,24 @@
 	<<script>>
 */
 Macro.add('script', {
-	skipArgs : true,
-	tags     : null,
+	tags : null,
 
 	handler() {
+		const lang = this.args.length > 0
+			? String(this.args[0]).toLowerCase()
+			: 'javascript';
+		let evalScript;
+
+		switch (lang) {
+			case 'javascript':  evalScript = Scripting.evalJavaScript; break;
+			case 'twinescript': evalScript = Scripting.evalTwineScript; break;
+			default: return this.error(`unknown language "${this.args[0]}"`);
+		}
+
 		const output = document.createDocumentFragment();
 
 		try {
-			Scripting.evalJavaScript(this.payload[0].contents, output);
+			evalScript(this.payload[0].contents, output);
 		}
 		catch (ex) {
 			return this.error(`bad evaluation: ${getErrorMessage(ex)}`);
