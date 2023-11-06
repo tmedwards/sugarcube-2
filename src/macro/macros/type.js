@@ -189,9 +189,9 @@ Macro.add('type', {
 				const passage = State.passage;
 				const turn    = State.turns;
 
-				// Skip typing if….
+				// Skip typing if…
 				if (
-					// …speed is zero
+					// …speed is zero.
 					speed === 0
 
 					// …we've visited the passage before.
@@ -260,7 +260,7 @@ Macro.add('type', {
 				// Set up the typing interval and start/stop event firing.
 				const typeNode = function typeNode() {
 					const typeNodeMember = function typeNodeMember(typeIntervalId) {
-						// Stop typing if….
+						// Stop typing if…
 						if (
 							// …we've navigated away.
 							State.passage !== passage
