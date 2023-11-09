@@ -513,26 +513,26 @@ var State = (() => { // eslint-disable-line no-unused-vars, no-var
 		Returns a new PRNG wrapper object.
 	*/
 	function prngCreate(seed, mixEntropy) {
-		const newPrng = new Math.seedrandom(seed, { // eslint-disable-line new-cap
+		return new Math.seedrandom(seed, { // eslint-disable-line new-cap
 			entropy : Boolean(mixEntropy),
-			pass    : (prng, seed) => ({ prng, seed })
-		});
-
-		return Object.create(null, {
-			prng : {
-				value : newPrng.prng
-			},
-			seed : {
-				value : newPrng.seed
-			},
-			pull : {
-				writable : true,
-				value    : 0
-			},
-			random() {
-				++this.pull;
-				return this.prng();
-			}
+			pass    : (prng, seed) => Object.create(null, {
+				prng : {
+					value : prng
+				},
+				seed : {
+					value : seed
+				},
+				pull : {
+					writable : true,
+					value    : 0
+				},
+				random : {
+					value() {
+						++this.pull;
+						return this.prng();
+					}
+				}
+			})
 		});
 	}
 
