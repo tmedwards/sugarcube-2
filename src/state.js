@@ -512,15 +512,16 @@ var State = (() => { // eslint-disable-line no-unused-vars, no-var
 	/*
 		Returns a new PRNG wrapper object.
 	*/
-	function prngCreate(seed, mixEntropy) {
-		return new Math.seedrandom(seed, { // eslint-disable-line new-cap
+	function prngCreate(seedBase, mixEntropy) {
+		return new Math.seedrandom(seedBase, { // eslint-disable-line new-cap
 			entropy : Boolean(mixEntropy),
 			pass    : (prng, seed) => Object.create(null, {
 				prng : {
 					value : prng
 				},
 				seed : {
-					value : seed
+					writable : true,
+					value    : seed
 				},
 				pull : {
 					writable : true,
@@ -539,8 +540,8 @@ var State = (() => { // eslint-disable-line no-unused-vars, no-var
 	/*
 		Initializes the PRNG for use.
 	*/
-	function prngInit(seed, mixEntropy) {
-		if (BUILD_DEBUG) { console.log(`[State/prngInit(seed: ${seed}, useEntropy: ${Boolean(mixEntropy)})]`); }
+	function prngInit(seedBase, mixEntropy) {
+		if (BUILD_DEBUG) { console.log(`[State/prngInit(seedBase: ${seedBase}, mixEntropy: ${Boolean(mixEntropy)})]`); }
 
 		if (!historyIsEmpty()) {
 			let what;
@@ -551,13 +552,13 @@ var State = (() => { // eslint-disable-line no-unused-vars, no-var
 			}
 			// for Twine 2
 			else {
-				what = 'the Story JavaScript';
+				what = 'the story JavaScript section';
 			}
 
 			throw new Error(`State.prng.init must be called during initialization, within either ${what} or the StoryInit special passage`);
 		}
 
-		_prng = prngCreate(seed, Boolean(mixEntropy));
+		_prng = prngCreate(seedBase, Boolean(mixEntropy));
 		_active.pull = _prng.pull;
 	}
 
