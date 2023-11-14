@@ -774,11 +774,17 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 				function helperShadowHandler(code) {
 					const shadowStore = Object.create(null);
 
-					(macroParser || cacheMacroParser()).context.shadowView.forEach(varName => {
-						const varKey = varName.slice(1);
-						const store  = varName[0] === '$' ? State.variables : State.temporary;
-						shadowStore[varName] = store[varKey];
-					});
+					if (!macroParser) {
+						cacheMacroParser();
+					}
+
+					if (macroParser.context) {
+						macroParser.context.shadowView.forEach(varName => {
+							const varKey = varName.slice(1);
+							const store  = varName[0] === '$' ? State.variables : State.temporary;
+							shadowStore[varName] = store[varKey];
+						});
+					}
 
 					return function () {
 						const shadowNames = Object.keys(shadowStore);
