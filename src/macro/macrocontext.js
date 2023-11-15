@@ -297,25 +297,25 @@ var MacroContext = (() => { // eslint-disable-line no-unused-vars, no-var
 		contextHas : {
 			value(...args) {
 				console.warn('[DEPRECATED] <MacroContext>.contextHas() is deprecated.');
-				return MacroContext.prototype.contextSome.call(...args);
+				return MacroContext.prototype.contextSome.apply(this, args);
 			}
 		},
 		contextSelect : {
 			value(...args) {
 				console.warn('[DEPRECATED] <MacroContext>.contextSelect() is deprecated.');
-				return MacroContext.prototype.contextFind.call(...args);
+				return MacroContext.prototype.contextFind.apply(this, args);
 			}
 		},
 		contextSelectAll : {
 			value(...args) {
 				console.warn('[DEPRECATED] <MacroContext>.contextSelectAll() is deprecated.');
-				return MacroContext.prototype.contextFilter.call(...args);
+				return MacroContext.prototype.contextFilter.apply(this, args);
 			}
 		},
 		createShadowWrapper : {
 			value(...args) {
 				console.warn('[DEPRECATED] <MacroContext>.createShadowWrapper() is deprecated.');
-				return MacroContext.prototype.shadowHandler.call(...args);
+				return MacroContext.prototype.shadowHandler.apply(this, args);
 			}
 		}
 	});
