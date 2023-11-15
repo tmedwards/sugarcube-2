@@ -95,9 +95,9 @@ var MacroContext = (() => { // eslint-disable-line no-unused-vars, no-var
 		get shadowView() {
 			const view = new Set();
 
-			for (let ctx = this; ctx !== null; ctx = ctx.parent) {
-				if (ctx._shadows) {
-					ctx._shadows.forEach(name => view.add(name));
+			for (let context = this; context !== null; context = context.parent) {
+				if (context._shadows) {
+					context._shadows.forEach(name => view.add(name));
 				}
 			}
 
@@ -112,12 +112,15 @@ var MacroContext = (() => { // eslint-disable-line no-unused-vars, no-var
 			return null;
 		}
 
-		contextFilter(predicate) {
-			const result = [];
-			let context = this;
+		contextFilter(predicate, thisArg) {
+			if (typeof predicate !== 'function') {
+				throw new TypeError('<MacroContext>.contextFilter() predicate parameter must be a function');
+			}
 
-			while ((context = context.parent) !== null) {
-				if (predicate(context)) {
+			const result = [];
+
+			for (let context = this.parent; context !== null; context = context.parent) {
+				if (predicate.call(typeof thisArg === 'undefined' ? this : thisArg, context)) {
 					result.push(context);
 				}
 			}
@@ -125,21 +128,25 @@ var MacroContext = (() => { // eslint-disable-line no-unused-vars, no-var
 			return result;
 		}
 
-		contextFind(predicate) {
-			let context = this;
+		contextFind(predicate, thisArg) {
+			if (typeof predicate !== 'function') {
+				throw new TypeError('<MacroContext>.contextFind() predicate parameter must be a function');
+			}
 
-			while ((context = context.parent) !== null) {
-				if (predicate(context)) {
+			for (let context = this.parent; context !== null; context = context.parent) {
+				if (predicate.call(typeof thisArg === 'undefined' ? this : thisArg, context)) {
 					return context;
 				}
 			}
 		}
 
-		contextSome(predicate) {
-			let context = this;
+		contextSome(predicate, thisArg) {
+			if (typeof predicate !== 'function') {
+				throw new TypeError('<MacroContext>.contextSome() predicate parameter must be a function');
+			}
 
-			while ((context = context.parent) !== null) {
-				if (predicate(context)) {
+			for (let context = this.parent; context !== null; context = context.parent) {
+				if (predicate.call(typeof thisArg === 'undefined' ? this : thisArg, context)) {
 					return true;
 				}
 			}
@@ -288,16 +295,28 @@ var MacroContext = (() => { // eslint-disable-line no-unused-vars, no-var
 	// Attach legacy aliases.
 	Object.defineProperties(MacroContext.prototype, {
 		contextHas : {
-			value : MacroContext.prototype.contextSome
+			value(...args) {
+				console.warn('[DEPRECATED] <MacroContext>.contextHas() is deprecated.');
+				return MacroContext.prototype.contextSome.call(...args);
+			}
 		},
 		contextSelect : {
-			value : MacroContext.prototype.contextFind
+			value(...args) {
+				console.warn('[DEPRECATED] <MacroContext>.contextSelect() is deprecated.');
+				return MacroContext.prototype.contextFind.call(...args);
+			}
 		},
 		contextSelectAll : {
-			value : MacroContext.prototype.contextFilter
+			value(...args) {
+				console.warn('[DEPRECATED] <MacroContext>.contextSelectAll() is deprecated.');
+				return MacroContext.prototype.contextFilter.call(...args);
+			}
 		},
 		createShadowWrapper : {
-			value : MacroContext.prototype.shadowHandler
+			value(...args) {
+				console.warn('[DEPRECATED] <MacroContext>.createShadowWrapper() is deprecated.');
+				return MacroContext.prototype.shadowHandler.call(...args);
+			}
 		}
 	});
 	/* /legacy */
