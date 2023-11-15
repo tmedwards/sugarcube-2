@@ -339,7 +339,7 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 
 	function add(descriptor) {
 		if (getTypeOf(descriptor) !== 'Object') {
-			throw new TypeError('Story.add descriptor parameter must be a generic object');
+			throw new TypeError('Story.add() descriptor parameter must be a generic object');
 		}
 
 		if (Object.hasOwn(_passages, descriptor.name)) {
@@ -354,11 +354,11 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 		const passage = new Passage(descriptor.name, elem);
 
 		if (codePassageNames.includes(passage.name)) {
-			throw new Error(`Story.add passage descriptor object "${passage.name}" must not be a code passage`);
+			throw new Error(`Story.add() passage descriptor object "${passage.name}" must not be a code passage`);
 		}
 
 		if (passage.tags.includesAny(codeTagNames)) {
-			throw new Error(`Story.add passage descriptor object "${passage.name}" must not include code tags`);
+			throw new Error(`Story.add() passage descriptor object "${passage.name}" must not include code tags`);
 		}
 
 		_passages[passage.name] = passage;
@@ -372,11 +372,13 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 			// Valid types.
 			case 'number':
 			case 'string': {
-				if (!Object.hasOwn(_passages, String(name))) {
+				const key = String(name);
+
+				if (!Object.hasOwn(_passages, key)) {
 					return false;
 				}
 
-				delete _passages[name];
+				delete _passages[key];
 				return true;
 			}
 
@@ -394,12 +396,12 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 				break;
 		}
 
-		throw new TypeError(`Story.delete name parameter cannot be ${type}`);
+		throw new TypeError(`Story.delete() name parameter cannot be ${type}`);
 	}
 
 	function filter(predicate, thisArg) {
 		if (typeof predicate !== 'function') {
-			throw new TypeError('Story.filter predicate parameter must be a function');
+			throw new TypeError('Story.filter() predicate parameter must be a function');
 		}
 
 		const results = [];
@@ -407,7 +409,7 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 		for (let i = 0, keys = Object.keys(_passages); i < keys.length; ++i) {
 			const passage = _passages[keys[i]];
 
-			if (predicate.call(Object(thisArg), passage)) {
+			if (predicate.call(typeof thisArg === 'undefined' ? this : thisArg, passage)) {
 				results.push(passage);
 			}
 		}
@@ -417,13 +419,13 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 
 	function find(predicate, thisArg) {
 		if (typeof predicate !== 'function') {
-			throw new TypeError('Story.find predicate parameter must be a function');
+			throw new TypeError('Story.find() predicate parameter must be a function');
 		}
 
 		for (let i = 0, keys = Object.keys(_passages); i < keys.length; ++i) {
 			const passage = _passages[keys[i]];
 
-			if (predicate.call(Object(thisArg), passage)) {
+			if (predicate.call(typeof thisArg === 'undefined' ? this : thisArg, passage)) {
 				return passage;
 			}
 		}
@@ -436,8 +438,8 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 			// Valid types.
 			case 'number':
 			case 'string': {
-				const id = String(name);
-				return Object.hasOwn(_passages, id) ? _passages[id] : new Passage(id || '(unknown)');
+				const key = String(name);
+				return Object.hasOwn(_passages, key) ? _passages[key] : new Passage(key || '(unknown)');
 			}
 
 			// Invalid types.  We do the extra processing just to make a nicer error.
@@ -454,7 +456,7 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 				break;
 		}
 
-		throw new TypeError(`Story.get name parameter cannot be ${type}`);
+		throw new TypeError(`Story.get() name parameter cannot be ${type}`);
 	}
 
 	function getInits() {
@@ -518,6 +520,8 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 	*******************************************************************************/
 
 	function lookup(key, value  /* legacy */, sortKey = 'name'/* /legacy */) {
+		console.warn('[DEPRECATED] Story.lookup() is deprecated.');
+
 		/* eslint-disable eqeqeq, no-nested-ternary, max-len */
 		return filter(passage => {
 			// Objects (sans `null`).
@@ -536,8 +540,10 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 	function lookupWith(predicate /* legacy */, sortKey = 'name'/* /legacy */) {
+		console.warn('[DEPRECATED] Story.lookupWith() is deprecated.');
+
 		if (typeof predicate !== 'function') {
-			throw new TypeError('Story.lookupWith predicate parameter must be a function');
+			throw new TypeError('Story.lookupWith() predicate parameter must be a function');
 		}
 
 		/* eslint-disable eqeqeq, no-nested-ternary, max-len */
@@ -575,8 +581,18 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 		noCodes    : { value : noCodes },
 
 		/* legacy */
-		domId      : { get : getId },
-		title      : { get : getName },
+		domId : {
+			get() {
+				console.warn('[DEPRECATED] Story.domId is deprecated.');
+				return getId();
+			}
+		},
+		title : {
+			get() {
+				console.warn('[DEPRECATED] Story.title is deprecated.');
+				return getName();
+			}
+		},
 		lookup     : { value : lookup },
 		lookupWith : { value : lookupWith }
 		/* /legacy */
