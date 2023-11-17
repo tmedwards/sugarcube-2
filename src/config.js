@@ -40,7 +40,6 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 	let _passagesTransitionOut;
 
 	// Saves settings.
-	let _savesAutoload; // QUESTION: Deprecate this?
 	let _savesDescriptions;
 	let _savesId; // NOTE: Initially set by `Story.init()`.
 	let _savesIsAllowed;
@@ -48,6 +47,9 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 	let _savesMaxSlot      = 8;
 	let _savesMetadata;
 	let _savesVersion;
+	/* legacy */
+	let _savesAutoload; // [DEPRECATED]
+	/* /legacy */
 
 	// UI settings.
 	let _uiStowBarInitially    = 800;
