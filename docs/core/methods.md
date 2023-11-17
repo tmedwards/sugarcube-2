@@ -993,7 +993,7 @@ RegExp.escape('That will be $5 (cash only)')   → Returns 'That will be \$5 \(c
 Returns the given code string, and optional data, wrapped within the deserialization reviver.  Intended to allow authors to easily create the reviver required to revive their custom object types (classes).  The reviver should be returned from an object instance's `.toJSON()` method, so that the instance may be properly revived upon deserialization.
 
 <p role="note" class="see"><b>See:</b>
-The <a href="#guide-tips-non-generic-object-types"><em>Non-generic object types (classes)</em> guide</a> for more detailed information.
+The <a href="#guide-non-generic-object-types"><em>Non-generic object types (classes)</em> guide</a> for more detailed information.
 </p>
 
 #### History:
