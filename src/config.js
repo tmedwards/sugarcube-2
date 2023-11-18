@@ -356,6 +356,9 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 			set version(value) { _savesVersion = value; },
 
 			/* legacy */
+			get _internal_autoload_() {
+				return _savesAutoload;
+			},
 			// Warn if the deprecated autoload getter is accessed.
 			get autoload() {
 				console.warn(errSavesAutoloadDeprecated);
