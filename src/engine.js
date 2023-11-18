@@ -290,10 +290,10 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 			engineShow();
 		}
 		else {
-			const autoloadType = typeof Config.saves.autoload;
+			const autoloadType = typeof Config.saves._internal_autoload_;
 
 			if (autoloadType === 'string') {
-				if (Config.saves.autoload === 'prompt') {
+				if (Config.saves._internal_autoload_ === 'prompt') {
 					UI.buildAutoload();
 					Dialog.open();
 				}
@@ -303,8 +303,8 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 					if (
 						Save.browser.hasContinue()
 						&& (
-							autoloadType === 'boolean' && Config.saves.autoload
-							|| autoloadType === 'function' && Config.saves.autoload()
+							autoloadType === 'boolean' && Config.saves._internal_autoload_
+							|| autoloadType === 'function' && Config.saves._internal_autoload_()
 						)
 					) {
 						return resolve();
