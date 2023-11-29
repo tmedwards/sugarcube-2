@@ -18,8 +18,8 @@ Macro.add('for', {
 	/* eslint-disable max-len */
 	skipArgs    : true,
 	tags        : null,
-	hasRangeRe  : new RegExp(`^\\S${Patterns.anyChar}*?\\s+range\\s+\\S${Patterns.anyChar}*?$`),
-	rangeRe     : new RegExp(`^(?:State\\.(variables|temporary)\\.(${Patterns.identifier})\\s*,\\s*)?State\\.(variables|temporary)\\.(${Patterns.identifier})\\s+range\\s+(\\S${Patterns.anyChar}*?)$`),
+	isRangeRe   : new RegExp(`^(?:\\S${Patterns.anyChar}*?\\s+)?range\\s+\\S${Patterns.anyChar}*?$`);
+	rangeRe     : new RegExp(`^(?:(?:State\\.(variables|temporary)\\.(${Patterns.identifier})\\s*,\\s*)?State\\.(variables|temporary)\\.(${Patterns.identifier})\\s+)?range\\s+(\\S${Patterns.anyChar}*?)$`),
 	threePartRe : /^([^;]*?)\s*;\s*([^;]*?)\s*;\s*([^;]*?)$/,
 	forInRe     : /^\S+\s+in\s+\S+/i,
 	forOfRe     : /^\S+\s+of\s+\S+/i,
@@ -35,11 +35,11 @@ Macro.add('for', {
 		}
 
 		// Range form.
-		else if (this.self.hasRangeRe.test(argsStr)) {
+		else if (this.self.isRangeRe.test(argsStr)) {
 			const parts = argsStr.match(this.self.rangeRe);
 
 			if (parts === null) {
-				return this.error('invalid range form syntax, format: [index ,] value range collection');
+				return this.error('invalid range form syntax, format: [[index ,] value] range collection');
 			}
 
 			this.self.handleForRange.call(
@@ -152,12 +152,12 @@ Macro.add('for', {
 		}
 	},
 
-	handleForRange(payload, indexVar, valueVar, rangeExp) {
+	handleForRange(payload, keyVar, valueVar, rangeExp) {
 		let first     = true;
 		let rangeList;
 
 		try {
-			rangeList = this.self.toRangeList(rangeExp);
+			rangeList = this.self.toRangeList(rangeExp, Boolean(keyVar.name), Boolean(valueVar.name));
 		}
 		catch (ex) {
 			return this.error(ex.message);
@@ -172,11 +172,13 @@ Macro.add('for', {
 			TempState.break = null;
 
 			for (let i = 0; i < rangeList.length; ++i) {
-				if (indexVar.name) {
-					State[indexVar.type][indexVar.name] = rangeList[i][0];
+				if (keyVar.name) {
+					State[keyVar.type][keyVar.name] = rangeList[i].key;
 				}
 
-				State[valueVar.type][valueVar.name] = rangeList[i][1];
+				if (valueVar.name) {
+					State[valueVar.type][valueVar.name] = rangeList[i].val;
+				}
 
 				new Wikifier(this.output, first ? payload.replace(/^\n/, '') : payload);
 
@@ -203,9 +205,8 @@ Macro.add('for', {
 		}
 	},
 
-	toRangeList(rangeExp) {
-		const evalJavaScript = Scripting.evalJavaScript;
-		let value;
+	toRangeList(rangeExp, wantKey, wantValue) {
+		let collection;
 
 		try {
 			/*
@@ -214,7 +215,7 @@ Macro.add('for', {
 				parenthesis to ensure that it is not mistaken for a block
 				during evaluation—which would cause an error.
 			*/
-			value = evalJavaScript(rangeExp[0] === '{' ? `(${rangeExp})` : rangeExp);
+			collection = Scripting.evalJavaScript(rangeExp[0] === '{' ? `(${rangeExp})` : rangeExp);
 		}
 		catch (ex) {
 			if (typeof ex !== 'object') {
@@ -227,27 +228,39 @@ Macro.add('for', {
 
 		let list;
 
-		switch (typeof value) {
+		switch (typeof collection) {
 			case 'number': {
-				if (Number.isNaN(value) || !Number.isFinite(value)) {
-					throw new Error(`unsupported range expression type: ${stringFrom(value)}`);
+				if (Number.isNaN(collection) || !Number.isFinite(collection)) {
+					throw new Error(`unsupported range expression type: ${stringFrom(collection)}`);
 				}
-				if (!Number.isInteger(value)) {
+				if (!Number.isInteger(collection)) {
 					throw new Error('unsupported range expression type: floating-point number');
 				}
-				if (!Number.isSafeInteger(value)) {
+				if (!Number.isSafeInteger(collection)) {
 					throw new Error('unsupported range expression type: unsafe integer');
 				}
 
-				if (value <= 0) {
+				if (collection <= 0) {
 					list = [];
 					break;
 				}
 
-				list = new Array(value);
+				list = new Array(collection);
 
-				for (let i = 0; i < value; ++i) {
-					list[i] = [i, i];
+				if (wantKey || wantValue) {
+					for (let i = 0; i < collection; ++i) {
+						const entry = {};
+
+						if (wantKey) {
+							entry.key = i;
+						}
+
+						if (wantValue) {
+							entry.val = i;
+						}
+
+						list[i] = entry;
+					}
 				}
 
 				break;
@@ -256,37 +269,120 @@ Macro.add('for', {
 			case 'string': {
 				list = [];
 
-				for (let i = 0; i < value.length; /* empty */) {
-					const obj = charAndPosAt(value, i);
-					list.push([i, obj.char]);
-					i = 1 + obj.end;
+				for (let i = 0; i < collection.length; /* empty */) {
+					const O     = charAndPosAt(collection, i);
+					const entry = {};
+
+					if (wantKey) {
+						entry.key = i;
+					}
+
+					if (wantValue) {
+						entry.val = O.char;
+					}
+
+					list.push(entry);
+					i = 1 + O.end;
 				}
 
 				break;
 			}
 
 			case 'object': {
-				if (value instanceof Array) {
-					list = value.map((val, i) => [i, val]);
+				if (collection instanceof Array) {
+					list = new Array(collection.length);
+
+					if (wantKey || wantValue) {
+						// NOTE: We use a `for ()` statement here to properly handle sparse arrays,
+						// since `Array` methods skip empty slots.
+						for (let i = 0; i < collection.length; ++i) {
+							const entry = {};
+
+							if (wantKey) {
+								entry.key = i;
+							}
+
+							if (wantValue) {
+								entry.val = collection[i];
+							}
+
+							list[i] = entry;
+						}
+					}
 				}
-				else if (value instanceof Set) {
-					list = Array.from(value).map((val, i) => [i, val]);
+				else if (collection instanceof Set) {
+					list = new Array(collection.size);
+
+					if (wantKey || wantValue) {
+						let i = 0;
+
+						collection.forEach(val => {
+							const entry = {};
+
+							if (wantKey) {
+								entry.key = i;
+							}
+
+							if (wantValue) {
+								entry.val = val;
+							}
+
+							list[i] = entry;
+							++i;
+						});
+					}
 				}
-				else if (value instanceof Map) {
-					list = Array.from(value.entries());
+				else if (collection instanceof Map) {
+					list = new Array(collection.size);
+
+					if (wantKey || wantValue) {
+						let i = 0;
+
+						collection.forEach((val, key) => {
+							const entry = {};
+
+							if (wantKey) {
+								entry.key = key;
+							}
+
+							if (wantValue) {
+								entry.val = val;
+							}
+
+							list[i] = entry;
+							++i;
+						});
+					}
 				}
-				else if (getToStringTag(value) === 'Object') {
-					list = Object.keys(value).map(key => [key, value[key]]);
+				else if (getToStringTag(collection) === 'Object') {
+					const keys = Object.keys(collection);
+					list = new Array(keys.length);
+
+					if (wantKey || wantValue) {
+						keys.forEach((key, i) => {
+							const entry = {};
+
+							if (wantKey) {
+								entry.key = key;
+							}
+
+							if (wantValue) {
+								entry.val = collection[key];
+							}
+
+							list[i] = entry;
+						});
+					}
 				}
 				else {
-					throw new Error(`unsupported range expression type: ${getToStringTag(value)}`);
+					throw new Error(`unsupported range expression type: ${getToStringTag(collection)}`);
 				}
 
 				break;
 			}
 
 			default:
-				throw new Error(`unsupported range expression type: ${typeof value}`);
+				throw new Error(`unsupported range expression type: ${typeof collection}`);
 		}
 
 		return list;
