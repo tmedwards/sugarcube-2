@@ -18,7 +18,7 @@ Macro.add('for', {
 	/* eslint-disable max-len */
 	skipArgs    : true,
 	tags        : null,
-	isRangeRe   : new RegExp(`^(?:\\S${Patterns.anyChar}*?\\s+)?range\\s+\\S${Patterns.anyChar}*?$`);
+	isRangeRe   : new RegExp(`^(?:\\S${Patterns.anyChar}*?\\s+)?range\\s+\\S${Patterns.anyChar}*?$`),
 	rangeRe     : new RegExp(`^(?:(?:State\\.(variables|temporary)\\.(${Patterns.identifier})\\s*,\\s*)?State\\.(variables|temporary)\\.(${Patterns.identifier})\\s+)?range\\s+(\\S${Patterns.anyChar}*?)$`),
 	threePartRe : /^([^;]*?)\s*;\s*([^;]*?)\s*;\s*([^;]*?)$/,
 	forInRe     : /^\S+\s+in\s+\S+/i,
