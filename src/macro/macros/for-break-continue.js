@@ -318,6 +318,8 @@ Macro.add('for', {
 				else if (collection instanceof Set) {
 					/* legacy */
 					// Convert the `Set` to an `Array` to provide indicies.
+					//
+					// TODO: Check what the polyfill's `<Set>.values()` method returns.
 					collection = Array.from(collection);
 					return {
 						list : collection,
@@ -352,7 +354,7 @@ Macro.add('for', {
 								const key = this.keys[this.pos++];
 								return {
 									key,
-									value : this.list[key],
+									value : this.list.get(key),
 									done  : false
 								};
 							}
