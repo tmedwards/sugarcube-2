@@ -78,7 +78,7 @@ var Passage = (() => { // eslint-disable-line no-unused-vars, no-var
 
 				const val = String(str);
 				return val && hasEncodedRE.test(val)
-					? val.replace(encodedRE, esc => '')
+					? val.replace(encodedRE, '')
 					: val;
 			}
 
