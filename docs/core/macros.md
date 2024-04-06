@@ -690,7 +690,7 @@ SugarCube does not trim whitespace from the contents of <code>&lt;&lt;if&gt;&gt;
 
 <!-- *********************************************************************** -->
 
-### `<<for [conditional]>> … <</for>>`<br>`<<for [init] ; [conditional] ; [post]>> … <</for>>`<br>`<<for [keyVariable ,] valueVariable range collection>> … <</for>>` {#macros-macro-for}
+### `<<for [conditional]>> … <</for>>`<br>`<<for [init] ; [conditional] ; [post]>> … <</for>>`<br>`<<for [[keyVariable ,] valueVariable] range collection>> … <</for>>` {#macros-macro-for}
 
 Repeatedly executes its contents. There are three forms: a conditional-only form, a 3-part conditional form, and a range form.
 
@@ -702,7 +702,7 @@ Repeatedly executes its contents. There are three forms: a conditional-only form
 
 * `v2.0.0`: Introduced.
 * `v2.20.0`: Added range form.
-* `v2.37.0`: Added range over integers.
+* `v2.37.0`: Added range over integers and made range value variable optional.
 
 #### Notes
 
@@ -751,7 +751,7 @@ Iterates through all enumerable entries of the given collection.  For each itera
 ##### Arguments:
 
 * **`keyVariable`:** (optional) A story or temporary variable that will be set to the iteration key.
-* **`valueVariable`:** A story or temporary variable that will be set to the iteration value.
+* **`valueVariable`:** (optional) A story or temporary variable that will be set to the iteration value.
 * **`range`:** Keyword, used to signify that the loop is using the range form syntax.
 * **`collection`:** An expression that yields a valid collection type, evaluated once at loop initialization.
 
