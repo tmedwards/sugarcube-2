@@ -4,7 +4,7 @@
 	build-docs.js (v1.3.3, 2023-07-25)
 		A Node.js-hosted build script for SugarCube's documentation.
 
-	Copyright © 2020–2023 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
+	Copyright © 2020–2024 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
