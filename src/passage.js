@@ -138,10 +138,10 @@ var Passage = (() => { // eslint-disable-line no-unused-vars, no-var
 
 				/* legacy */
 				domId : {
-					get domId() { return this.id; }
+					get() { return this.id; }
 				},
 				title : {
-					get title() { return this.name; }
+					get() { return this.name; }
 				}
 				/* /legacy */
 			});
