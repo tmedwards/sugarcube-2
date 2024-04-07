@@ -6,7 +6,7 @@
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* global Config, Engine, Macro, Wikifier */
+/* global Config, Engine, Macro, Wikifier, triggerEvent */
 
 (() => {
 	// Set up our event class name.
@@ -16,18 +16,14 @@
 	// `:redo-internal` events to `<<do>>` macros matching the given
 	// selector.
 	jQuery(document).on(':redo', ev => {
-		const evTags = ev.detail && ev.detail.tags || [];
+		const evTags   = ev.detail && ev.detail.tags || [];
 		const selector = evTags.length === 0
 			? `.${eventClass}`
 			: evTags.map(tag => `.${eventClass}[data-do-tags~="${tag}"]`).join(', ');
 
-		// NOTE: Due to how `.triggerHandler()` works we have to call it
-		// for each element individually.
-		jQuery(selector).each((_, el) => {
-			jQuery(el).triggerHandler({
-				type   : ':redo-internal',
-				detail : ev.detail
-			});
+		triggerEvent(':redo-internal', jQuery(selector), {
+			bubbles : false,
+			detail  : ev.detail
 		});
 	});
 

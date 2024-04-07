@@ -9,7 +9,7 @@
 /*
 	global Alert, Config, DebugView, Dialog, Has, LoadScreen, Save, Scripting, State, Story, StyleWrapper, UI,
 	       UIBar, Wikifier, enumFrom, getErrorMessage, now, postdisplay, postrender, predisplay, prehistory,
-	       prerender
+	       prerender, triggerEvent
 */
 
 var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
@@ -356,7 +356,7 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 		/*
 			Trigger an ':enginerestart' event.
 		*/
-		jQuery.event.trigger(':enginerestart');
+		triggerEvent(':enginerestart');
 
 		/*
 			Reload the page.

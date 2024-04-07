@@ -7,7 +7,7 @@
 
 ***********************************************************************************************************************/
 /*
-	global DebugView, Engine, L10n, Patterns, State, encodeEntities, getToStringTag, session
+	global DebugView, Engine, L10n, Patterns, State, encodeEntities, getToStringTag, session, triggerEvent
 */
 
 var DebugBar = (() => { // eslint-disable-line no-unused-vars, no-var
@@ -101,11 +101,11 @@ var DebugBar = (() => { // eslint-disable-line no-unused-vars, no-var
 			.on('keypress', ev => {
 				if (ev.which === 13) { // 13 is Return/Enter
 					ev.preventDefault();
-					$watchInput.trigger(':addwatch');
+					triggerEvent(':addwatch', $watchInput);
 				}
 			});
 		$watchAdd
-			.ariaClick(() => $watchInput.trigger(':addwatch'));
+			.ariaClick(() => triggerEvent(':addwatch', $watchInput));
 		$watchAll
 			.ariaClick(debugBarWatchAddAll);
 		$watchClear

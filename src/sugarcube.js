@@ -9,7 +9,7 @@
 /*
 	global Alert, Browser, Config, Dialog, Engine, Fullscreen, Has, LoadScreen, SimpleStore, L10n, Macro,
 	       Outliner, Passage, Save, Scripting, Setting, SimpleAudio, State, Story, UI, UIBar, DebugBar,
-	       Util, Visibility, Wikifier
+	       Util, Visibility, Wikifier, triggerEvent
 */
 /* eslint-disable no-var */
 
@@ -253,7 +253,7 @@ jQuery(() => {
 			}
 
 			// Trigger the `:storyready` global synthetic event.
-			jQuery.event.trigger(':storyready');
+			triggerEvent(':storyready');
 
 			// Release our loading screen lock after a short delay.
 			setTimeout(() => LoadScreen.unlock(lockId), Engine.DOM_DELAY * 2);

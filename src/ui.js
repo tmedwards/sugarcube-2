@@ -8,7 +8,7 @@
 ***********************************************************************************************************************/
 /*
 	global Alert, Config, Dialog, Engine, Has, L10n, Save, Setting, State, Story, Wikifier,
-	       createSlug, errorPrologRegExp
+	       createSlug, errorPrologRegExp, triggerEvent
 */
 
 var UI = (() => { // eslint-disable-line no-unused-vars, no-var
@@ -438,7 +438,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 						null,
 						`${L10n.get('textImport')}\u2026`,
 						L10n.get('savesLabelBrowserImport'),
-						() => $slotImportInput.trigger('click')
+						() => triggerEvent('click', $slotImportInput)
 					));
 
 				$slotImportInput.appendTo($dialogBody);
@@ -500,7 +500,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 					null,
 					`${L10n.get('textLoad')}\u2026`,
 					L10n.get('savesLabelDiskLoad'),
-					() => $diskLoadInput.trigger('click')
+					() => triggerEvent('click', $diskLoadInput)
 				));
 
 			$diskLoadInput.appendTo($dialogBody);
@@ -624,7 +624,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 						.on('keypress', ev => {
 							if (ev.which === 13) {
 								ev.preventDefault();
-								$control.trigger('change');
+								triggerEvent('change', $control);
 							}
 						});
 
@@ -702,7 +702,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 	function update() {
-		jQuery.event.trigger({ type : ':uiupdate' });
+		triggerEvent(':uiupdate');
 	}
 
 

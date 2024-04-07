@@ -6,7 +6,7 @@
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* global Config, Engine, Macro, NodeTyper, State, TempState, Wikifier, cssTimeToMS, scrubEventKey */
+/* global Config, Engine, Macro, NodeTyper, State, TempState, Wikifier, cssTimeToMS, scrubEventKey, triggerEvent */
 
 /*
 	<<type speed [start delay] [class classes] [element tag] [id ID] [keep|none] [skipkey key]>>
@@ -248,7 +248,7 @@ Macro.add('type', {
 						if (TempState.macroTypeQueue) {
 							// If the queue is empty, fire the typing complete event.
 							if (TempState.macroTypeQueue.length === 0) {
-								jQuery.event.trigger(typingCompleteId);
+								triggerEvent(typingCompleteId);
 							}
 							// Elsewise, run the next typing handler in the queue.
 							else {
@@ -285,7 +285,7 @@ Macro.add('type', {
 							}
 
 							// Fire the typing stop event.
-							$wrapper.trigger(typingStopId);
+							triggerEvent(typingStopId, $wrapper);
 
 							// Add the done class to the wrapper.
 							$wrapper.addClass(`${className}-done`);
@@ -298,7 +298,7 @@ Macro.add('type', {
 					};
 
 					// Fire the typing start event.
-					$wrapper.trigger(typingStartId);
+					triggerEvent(typingStartId, $wrapper);
 
 					// Type the initial node member.
 					typeNodeMember();

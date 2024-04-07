@@ -6,7 +6,7 @@
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* global Config, Diff, Scripting, clone, session, storage */
+/* global Config, Diff, Scripting, clone, session, storage, triggerEvent */
 
 var State = (() => { // eslint-disable-line no-unused-vars, no-var
 	// History moment stack.
@@ -288,7 +288,7 @@ var State = (() => { // eslint-disable-line no-unused-vars, no-var
 		//
 		// NOTE: We do this here because setting a new active moment is a core component
 		// of, virtually, all history updates.
-		jQuery.event.trigger(':historyupdate');
+		triggerEvent(':historyupdate');
 
 		return _active;
 	}

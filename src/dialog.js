@@ -6,7 +6,7 @@
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* global Has, L10n, Story, getActiveElement, getTypeOf */
+/* global Has, L10n, Story, getActiveElement, getTypeOf, triggerEvent */
 
 var Dialog = (() => { // eslint-disable-line no-unused-vars, no-var
 	// Default top position.
@@ -203,7 +203,7 @@ var Dialog = (() => { // eslint-disable-line no-unused-vars, no-var
 	*/
 	function close(ev) {
 		// Trigger a `:dialogclosing` event on the dialog body.
-		$body.trigger(':dialogclosing');
+		triggerEvent(':dialogclosing', $body);
 
 		// Largely reverse the actions taken in `dialogOpen()`.
 		jQuery(document).off('.dialog-close');
@@ -263,9 +263,9 @@ var Dialog = (() => { // eslint-disable-line no-unused-vars, no-var
 
 		// Trigger a `:dialogclosed` event on the dialog body.
 		/* legacy */
-		$body.trigger(':dialogclose');
+		triggerEvent(':dialogclose', $body);
 		/* /legacy */
-		$body.trigger(':dialogclosed');
+		triggerEvent(':dialogclosed', $body);
 
 		return Dialog;
 	}
@@ -338,7 +338,7 @@ var Dialog = (() => { // eslint-disable-line no-unused-vars, no-var
 		}
 
 		// Trigger a `:dialogopening` event on the dialog body.
-		$body.trigger(':dialogopening');
+		triggerEvent(':dialogopening', $body);
 
 		// Record the last active/focused non-dialog element.
 		if (!isOpen()) {
@@ -419,15 +419,15 @@ var Dialog = (() => { // eslint-disable-line no-unused-vars, no-var
 			.one('keypress.dialog-close', '.ui-close', function (ev) {
 				// 13 is Enter/Return, 32 is Space.
 				if (ev.which === 13 || ev.which === 32) {
-					jQuery(this).trigger('click');
+					triggerEvent('click', this);
 				}
 			});
 
 		// Trigger a `:dialogopened` event on the dialog body.
 		/* legacy */
-		$body.trigger(':dialogopen');
+		triggerEvent(':dialogopen', $body);
 		/* /legacy */
-		$body.trigger(':dialogopened');
+		triggerEvent(':dialogopened', $body);
 
 		return Dialog;
 	}

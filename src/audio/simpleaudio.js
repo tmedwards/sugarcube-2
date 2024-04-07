@@ -6,7 +6,7 @@
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* global Config, Has, LoadScreen, Story, Visibility, clone, onUserActivation, parseURL */
+/* global Config, Has, LoadScreen, Story, Visibility, clone, onUserActivation, parseURL, triggerEvent */
 
 var SimpleAudio = (() => { // eslint-disable-line no-unused-vars, no-var
 	// Special group IDs.
@@ -336,8 +336,8 @@ var SimpleAudio = (() => { // eslint-disable-line no-unused-vars, no-var
 		}
 
 		_trigger(eventName) {
-			// Do not use `trigger()` here as we do not want these events to bubble.
-			jQuery(this.audio).triggerHandler(eventName);
+			// We do not want these events to bubble.
+			triggerEvent(eventName, this.audio, { bubbles : false });
 		}
 
 		_destroy() {

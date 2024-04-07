@@ -18,13 +18,15 @@
 		bubbles?: boolean
 		// Whether the event is cancelable (default: true).
 		cancelable?: boolean
+		// Whether the event triggers listeners outside of a shadow root (default: false).
+		composed?: boolean
 		// Custom data sent with the event (default: none).
 		detail?: any
 */
 var triggerEvent = (() => { // eslint-disable-line no-unused-vars, no-var
 	const createEvent = (() => {
 		try {
-			// Test if `CustomEvent` is supported.
+			// Test if the `CustomEvent` API is supported.
 			new CustomEvent('click', { bubbles : true });
 
 			// If the `CustomEvent` API is supported, then return a version of
@@ -75,6 +77,10 @@ var triggerEvent = (() => { // eslint-disable-line no-unused-vars, no-var
 
 			// Elsewise, return a version of the `createEvent()` function that
 			// uses the older, deprecated `document.createEvent()` API.
+			//
+			// NOTE: This version does not support the newer `composed` property
+			// for use with shadow DOMs because the browsers that require this
+			// do not support shadow DOMs.
 			return function createEvent(name, options) {
 				const {
 					bubbles,
@@ -94,9 +100,39 @@ var triggerEvent = (() => { // eslint-disable-line no-unused-vars, no-var
 		}
 	})();
 
-	function triggerEvent(elem, name, options) {
-		const event = createEvent(name, Object.assign({ bubbles : true, cancelable : true }, options));
-		return elem.dispatchEvent(event);
+	function triggerEvent(name, targets, options) {
+		const event = createEvent(name, Object.assign({
+			bubbles    : true,
+			cancelable : true,
+			composed   : false
+		}, options));
+		const elems = [];
+
+		// No target was specified, default to `document`.
+		if (!targets) {
+			elems.push(document);
+		}
+
+		// An element collection of some kind.
+		else if (
+			targets instanceof jQuery
+			|| targets instanceof NodeList
+			|| targets instanceof Array
+		) {
+			for (let i = 0; i < targets.length; ++i) {
+				elems.push(targets[i]);
+			}
+		}
+
+		// Anything else.
+		else {
+			elems.push(targets);
+		}
+
+		// Dispatch the event to all of the targets, in order.
+		for (let i = 0; i < elems.length; ++i) {
+			elems[i].dispatchEvent(event);
+		}
 	}
 
 	return triggerEvent;

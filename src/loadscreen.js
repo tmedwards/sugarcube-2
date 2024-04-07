@@ -6,7 +6,7 @@
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* global Config, Engine */
+/* global Config, Engine, triggerEvent */
 
 var LoadScreen = (() => { // eslint-disable-line no-unused-vars, no-var
 	// Locks collection.
@@ -123,7 +123,7 @@ var LoadScreen = (() => { // eslint-disable-line no-unused-vars, no-var
 		}
 
 		if (_locks.size === 0) {
-			jQuery(document).trigger('readystatechange');
+			triggerEvent('readystatechange');
 		}
 	}
 

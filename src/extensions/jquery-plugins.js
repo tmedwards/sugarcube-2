@@ -6,7 +6,7 @@
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* global Story, Wikifier, errorPrologRegExp, getActiveElement */
+/* global Story, Wikifier, errorPrologRegExp, getActiveElement, triggerEvent */
 
 /*
 	WAI-ARIA methods plugin.
@@ -33,7 +33,7 @@
 
 			// To allow delegation, attempt to trigger the event on `document.activeElement`,
 			// if possible, elsewise on `this`.
-			jQuery(getActiveElement() || this).trigger('click');
+			triggerEvent('click', getActiveElement() || this);
 		}
 	}
 
