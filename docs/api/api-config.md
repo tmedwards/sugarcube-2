@@ -666,7 +666,7 @@ When enabled, an auto save is attempted each turn by default.  Thus, it is recom
 </p>
 
 <p role="note" class="warning"><b>Warning:</b>
-As each used browser-based save consumes very limited storage space, it is <strong><em>strongly recommended</em></strong> that the number of available saves not be set too high.  A range of <code>1</code>–<code>10</code> is suggested.
+As available browser-based storage is very limited, it is <strong><em>strongly recommended</em></strong> that the number of available saves not be set too high.  A range of <code>1</code>–<code>10</code> is suggested.
 </p>
 
 #### History:
@@ -686,7 +686,7 @@ Config.saves.maxAutoSaves = 3;
 Sets the maximum number of available slot saves.  Using a value of `0` disables slot saves.
 
 <p role="note" class="warning"><b>Warning:</b>
-As each used browser-based save consumes very limited storage space, it is <strong><em>strongly recommended</em></strong> that the number of available saves not be set too high.  A range of <code>1</code>–<code>10</code> is suggested.
+As available browser-based storage is very limited, it is <strong><em>strongly recommended</em></strong> that the number of available saves not be set too high.  A range of <code>1</code>–<code>10</code> is suggested.
 </p>
 
 #### History:
