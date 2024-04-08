@@ -368,19 +368,20 @@ Displays its contents.  Listens for [`<<redo>>` macro](#macros-macro-redo) comma
 ##### Filtering updates
 
 ```
-<<set $foo to "—">>
-<<set $bar to "—">>
-
-''Foo:'' <<do tag "foo">>$foo<</do>>
-''Bar:'' <<do tag "bar">>$bar<</do>>
+''Foo:'' <<do tag "foo foobar">><<= ["fee", "fie", "foe", "fum"].random()>><</do>>
+''Bar:'' <<do tag "bar foobar">><<= ["alfa", "bravo", "charlie", "delta"].random()>><</do>>
 
 <<link "Update foo">>
-	<<set $foo to ["fee", "fie", "foe", "fum"].random()>>
 	<<redo "foo">>
 <</link>>
 <<link "Update bar">>
-	<<set $bar to ["alfa", "bravo", "charlie", "delta"].random()>>
 	<<redo "bar">>
+<</link>>
+<<link "Update foo & bar (1)">>
+	<<redo "foo bar">>
+<</link>>
+<<link "Update foo & bar (2)">>
+	<<redo "foobar">>
 <</link>>
 ```
 
