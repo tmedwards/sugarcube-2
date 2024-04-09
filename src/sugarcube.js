@@ -222,9 +222,7 @@ jQuery(() => {
 		Macro.init();
 
 		// Initialize the debug bar interface.
-		if (Config.debug) {
-			DebugBar.init();
-		}
+		DebugBar.init();
 
 		// Schedule the start of the engine and interfaces once both the DOM is
 		// reporting non-empty dimensions for the viewport and our loading screen
@@ -248,9 +246,7 @@ jQuery(() => {
 			Engine.start();
 
 			// Start the debug bar interface.
-			if (Config.debug) {
-				DebugBar.start();
-			}
+			DebugBar.start();
 
 			// Trigger the `:storyready` global synthetic event.
 			triggerEvent(':storyready');
