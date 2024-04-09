@@ -177,7 +177,7 @@ var UIBar = (() => { // eslint-disable-line no-unused-vars, no-var
 				}, () => Engine.backward());
 
 			/* [DEPRECATED] */
-			if (Story.lookup('tags', 'bookmark').length > 0) {
+			if (Story.filter(passage => passage.tags.includes('bookmark')).length > 0) {
 				jQuery('#history-jumpto')
 					.ariaClick({
 						label : L10n.get('uiBarLabelJumpto')
