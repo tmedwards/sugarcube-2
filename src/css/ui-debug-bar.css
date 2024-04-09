@@ -1,6 +1,6 @@
 /***********************************************************************************************************************
 
-	css/ui-debug.css
+	css/ui-debug-bar.css
 
 	Copyright © 2013–2024 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
@@ -15,8 +15,8 @@
 	bottom: 0;
 	margin: 0;
 	max-height: 75%;
-	/* max-width: 28em;
-	min-width: 22em; */
+	max-width: 66em;
+	min-width: 300px;
 	padding: 0.5em;
 	position: fixed;
 	right: 0;
@@ -29,11 +29,11 @@
 	margin-right: 0.5em;
 }
 #debug-bar > div > input[type="text"] {
-	min-width: 0;
-	width: 8em;
+	min-width: 8em;
+	width: 13em;
 }
 #debug-bar > div > select {
-	width: 15em;
+	width: 20em;
 }
 
 #debug-bar-toggle {
@@ -52,7 +52,7 @@
 }
 
 #debug-bar-hint {
-	bottom: 0.175em;
+	bottom: 0.45em;
 	font-size: 4.5em;
 	opacity: 0.33;
 	pointer-events: none;
@@ -161,64 +161,11 @@ html[data-debug-view] #debug-bar-views-toggle:hover {
 }
 #debug-bar-watch-toggle::after,
 #debug-bar-views-toggle::after {
-	content: "\00a0\00a0\f204";
+	content: "\f204";
+	margin-left: 0.35em;
 }
 #debug-bar-watch:not([hidden]) ~ div #debug-bar-watch-toggle::after,
 html[data-debug-view] #debug-bar-views-toggle::after {
-	content: "\00a0\00a0\f205";
-}
-
-/* Debug view styles. */
-html[data-debug-view] .debug {
-	padding: 0.25em;
-	background-color: #234; /* #541, #151 */
-}
-html[data-debug-view] .debug[title] {
-	cursor: help;
-}
-html[data-debug-view] .debug.block {
-	display: inline-block;
-	vertical-align: middle;
-}
-html[data-debug-view] .debug.invalid {
-	text-decoration: line-through;
-}
-html[data-debug-view] .debug.hidden,
-html[data-debug-view] .debug.hidden .debug {
-	background-color: #555;
-}
-html:not([data-debug-view]) .debug.hidden {
-	display: none;
-}
-
-html[data-debug-view] .debug[data-name][data-type]::before,
-html[data-debug-view] .debug[data-name][data-type].nonvoid::after {
-	background-color: rgba(0, 0, 0, 0.25);
-	font-family: monospace, monospace;
-	white-space: pre;
-}
-html[data-debug-view] .debug[data-name][data-type]::before {
-	content: attr(data-name);
-}
-html[data-debug-view] .debug[data-name][data-type|="macro"]::before {
-	content: "<<" attr(data-name) ">>";
-}
-html[data-debug-view] .debug[data-name][data-type|="macro"].nonvoid::after {
-	content: "<</" attr(data-name) ">>";
-}
-html[data-debug-view] .debug[data-name][data-type|="html"]::before {
-	content: "<" attr(data-name) ">";
-}
-html[data-debug-view] .debug[data-name][data-type|="html"].nonvoid::after {
-	content: "</" attr(data-name) ">";
-}
-html[data-debug-view] .debug[data-name][data-type]:not(:empty)::before {
-	margin-right: 0.25em;
-}
-html[data-debug-view] .debug[data-name][data-type].nonvoid:not(:empty)::after {
-	margin-left: 0.25em;
-}
-html[data-debug-view] .debug[data-name][data-type|="special"],
-html[data-debug-view] .debug[data-name][data-type|="special"]::before {
-	display: block;
+	content: "\f205";
+	/* margin-left: 0.35em; */
 }
