@@ -188,8 +188,11 @@ Triggered before the modification of the state history.
 #### History:
 
 * `v2.20.0`: Introduced.
+* `v2.37.0`: Moved custom properties into the event's `detail` object.
 
-#### Event object properties:
+#### Event `detail` object properties:
+
+`:passageinit` events have a `detail` property whose value is an object with the following properties:
 
 * **`passage`:** (*`Passage` object*) The incoming passage object.  See the [`Passage` API](#passage-api) for more information.
 
@@ -198,12 +201,18 @@ Triggered before the modification of the state history.
 ```js
 /* Execute the handler function each time the event triggers. */
 $(document).on(':passageinit', function (ev) {
-	/* JavaScript code */
+	/* Log details about the current moment. */
+	console.group('Details about the current moment');
+	console.log('passage name:', ev.detail.passage.name);
+	console.log('passage tags:', ev.detail.passage.tags);
+	console.groupEnd();
+
+	/* Do something useful here. */
 });
 
 /* Execute the handler function exactly once. */
 $(document).one(':passageinit', function (ev) {
-	/* JavaScript code */
+	/* Do something useful here. */
 });
 ```
 
@@ -216,8 +225,11 @@ Triggered before the rendering of the incoming passage.
 #### History:
 
 * `v2.20.0`: Introduced.
+* `v2.37.0`: Moved custom properties into the event's `detail` object.
 
-#### Event object properties:
+#### Event `detail` object properties:
+
+`:passagestart` events have a `detail` property whose value is an object with the following properties:
 
 * **`content`:** (*`HTMLElement` object*) The, currently, empty element that will eventually hold the rendered content of the incoming passage.
 * **`passage`:** (*`Passage` object*) The incoming passage object.  See the [`Passage` API](#passage-api) for more information.
@@ -229,12 +241,19 @@ Triggered before the rendering of the incoming passage.
 ```js
 /* Execute the handler function each time the event triggers. */
 $(document).on(':passagestart', function (ev) {
-	/* JavaScript code */
+	/* Log details about the current moment. */
+	console.group('Details about the current moment');
+	console.log('buffer:', ev.detail.content);
+	console.log('passage name:', ev.detail.passage.name);
+	console.log('passage tags:', ev.detail.passage.tags);
+	console.groupEnd();
+
+	/* Do something useful here. */
 });
 
 /* Execute the handler function exactly once. */
 $(document).one(':passagestart', function (ev) {
-	/* JavaScript code */
+	/* Do something useful here. */
 });
 ```
 
@@ -242,11 +261,11 @@ $(document).one(':passagestart', function (ev) {
 
 ```js
 /*
-	Process the markup "In the //beginning//." and append the result
-	to the incoming passage's element.
+	Process the given markup and append the result to the incoming
+	passage's element.
 */
 $(document).on(':passagestart', function (ev) {
-	$(ev.content).wiki("In the //beginning//.");
+	$(ev.detail.content).wiki("In the //beginning//.");
 });
 ```
 
@@ -259,8 +278,11 @@ Triggered after the rendering of the incoming passage.
 #### History:
 
 * `v2.20.0`: Introduced.
+* `v2.37.0`: Moved custom properties into the event's `detail` object.
 
-#### Event object properties:
+#### Event `detail` object properties:
+
+`:passagerender` events have a `detail` property whose value is an object with the following properties:
 
 * **`content`:** (*`HTMLElement` object*) The element holding the fully rendered content of the incoming passage.
 * **`passage`:** (*`Passage` object*) The incoming passage object.  See the [`Passage` API](#passage-api) for more information.
@@ -272,12 +294,19 @@ Triggered after the rendering of the incoming passage.
 ```js
 /* Execute the handler function each time the event triggers. */
 $(document).on(':passagerender', function (ev) {
-	/* JavaScript code */
+	/* Log details about the current moment. */
+	console.group('Details about the current moment');
+	console.log('buffer:', ev.detail.content);
+	console.log('passage name:', ev.detail.passage.name);
+	console.log('passage tags:', ev.detail.passage.tags);
+	console.groupEnd();
+
+	/* Do something useful here. */
 });
 
 /* Execute the handler function exactly once. */
 $(document).one(':passagerender', function (ev) {
-	/* JavaScript code */
+	/* Do something useful here. */
 });
 ```
 
@@ -285,11 +314,11 @@ $(document).one(':passagerender', function (ev) {
 
 ```js
 /*
-	Process the markup "At the //end// of some renderings." and append the result
-	to the incoming passage's element.
+	Process the given markup and append the result to the incoming
+	passage's element.
 */
 $(document).on(':passagerender', function (ev) {
-	$(ev.content).wiki("At the //end// of some renderings.");
+	$(ev.detail.content).wiki("At the //end// of some renderings.");
 });
 ```
 
@@ -303,8 +332,11 @@ Triggered after the display—i.e., output—of the incoming passage.
 
 * `v2.20.0`: Introduced.
 * `v2.31.0`: Added `content` property to event object.
+* `v2.37.0`: Moved custom properties into the event's `detail` object.
 
-#### Event object properties:
+#### Event `detail` object properties:
+
+`:passagedisplay` events have a `detail` property whose value is an object with the following properties:
 
 * **`content`:** (*`HTMLElement` object*) The element holding the fully rendered content of the incoming passage.
 * **`passage`:** (*`Passage` object*) The incoming passage object.  See the [`Passage` API](#passage-api) for more information.
@@ -316,12 +348,19 @@ Triggered after the display—i.e., output—of the incoming passage.
 ```js
 /* Execute the handler function each time the event triggers. */
 $(document).on(':passagedisplay', function (ev) {
-	/* JavaScript code */
+	/* Log details about the current moment. */
+	console.group('Details about the current moment');
+	console.log('buffer:', ev.detail.content);
+	console.log('passage name:', ev.detail.passage.name);
+	console.log('passage tags:', ev.detail.passage.tags);
+	console.groupEnd();
+
+	/* Do something useful here. */
 });
 
 /* Execute the handler function exactly once. */
 $(document).one(':passagedisplay', function (ev) {
-	/* JavaScript code */
+	/* Do something useful here. */
 });
 ```
 
@@ -329,11 +368,11 @@ $(document).one(':passagedisplay', function (ev) {
 
 ```js
 /*
-	Process the markup "It's //showtime//!" and append the result
-	to the incoming passage's element.
+	Process the given markup and append the result to the incoming
+	passage's element.
 */
 $(document).on(':passagedisplay', function (ev) {
-	$(ev.content).wiki("It's //showtime//!");
+	$(ev.detail.content).wiki("It's //showtime//!");
 });
 ```
 
@@ -347,8 +386,11 @@ Triggered at the end of passage navigation.
 
 * `v2.20.0`: Introduced.
 * `v2.31.0`: Added `content` property to event object.
+* `v2.37.0`: Moved custom properties into the event's `detail` object.
 
-#### Event object properties:
+#### Event `detail` object properties:
+
+`:passageend` events have a `detail` property whose value is an object with the following properties:
 
 * **`content`:** (*`HTMLElement` object*) The element holding the fully rendered content of the incoming passage.
 * **`passage`:** (*`Passage` object*) The incoming passage object.  See the [`Passage` API](#passage-api) for more information.
@@ -360,12 +402,19 @@ Triggered at the end of passage navigation.
 ```js
 /* Execute the handler function each time the event triggers. */
 $(document).on(':passageend', function (ev) {
-	/* JavaScript code */
+	/* Log details about the current moment. */
+	console.group('Details about the current moment');
+	console.log('buffer:', ev.detail.content);
+	console.log('passage name:', ev.detail.passage.name);
+	console.log('passage tags:', ev.detail.passage.tags);
+	console.groupEnd();
+
+	/* Do something useful here. */
 });
 
 /* Execute the handler function exactly once. */
 $(document).one(':passageend', function (ev) {
-	/* JavaScript code */
+	/* Do something useful here. */
 });
 ```
 
@@ -373,11 +422,11 @@ $(document).one(':passageend', function (ev) {
 
 ```js
 /*
-	Process the markup "So long and //thanks for all the fish//!" and append the result
-	to the incoming passage's element.
+	Process the given markup and append the result to the incoming
+	passage's element.
 */
 $(document).on(':passageend', function (ev) {
-	$(ev.content).wiki("So long and //thanks for all the fish//!");
+	$(ev.detail.content).wiki("So long and //thanks for all the fish//!");
 });
 ```
 
