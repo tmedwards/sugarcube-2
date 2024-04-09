@@ -83,8 +83,8 @@ Macro.add(['numberbox', 'textbox'], {
 				State.setVar(varName, asNumber ? Number(this.value) : this.value);
 			}))
 			.on('keypress.macros', this.shadowHandler(function (ev) {
-				// If Return/Enter is pressed, set the variable and, optionally, forward to another passage.
-				if (ev.which === 13) { // 13 is Return/Enter
+				// If Enter/Return is pressed, set the variable and, optionally, forward to another passage.
+				if (ev.which === 13) { // 13 is Enter/Return
 					ev.preventDefault();
 					State.setVar(varName, asNumber ? Number(this.value) : this.value);
 
