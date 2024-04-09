@@ -572,7 +572,7 @@ or [[stand your ground|Eaten by a grue]]?
 
 ### `triggerEvent(name [, targets [, options]])` {#functions-function-triggerevent}
 
-Triggers an event with the given name, optionally on the given elements with the given options.
+Dispatches a synthetic event with the given name, optionally on the given targets and with the given options.
 
 #### History:
 
@@ -581,20 +581,20 @@ Triggers an event with the given name, optionally on the given elements with the
 #### Parameters:
 
 <p role="note" class="tip"><b>Tip:</b>
-If creating custom events, it is recommended that you limit your custom event names to the following: letters, digits, periods (<kbd>.</kbd>), hyphens (<kbd>-</kbd>), underscores (<kbd>_</kbd>), and colons (<kbd>:</kbd>).
+If dispatching custom events, it is recommended that you limit your custom event names to the following characters: letters, digits, periods (<kbd>.</kbd>), hyphens (<kbd>-</kbd>), underscores (<kbd>_</kbd>), and colons (<kbd>:</kbd>).
 </p>
 
-* **`name`:** (*string*) The name of the event to trigger.  Both standard and custom events are supported.
+* **`name`:** (*string*) The name of the event to trigger.  Both native and custom events are supported.
 * **`targets`:** (optional, *`Document`|`HTMLElement`|`jQuery`|`NodeList`|`Array<HTMLElement>`*) The target(s) to trigger the event on.  If omitted, will default to `document`.
-* **`options`:** (optional, *object*) The event options object.  See below for details.
+* **`options`:** (optional, *object*) The options to be used when dispatching the event.  See below for details.
 
-#### Options Object:
+#### Options object:
 
-<p role="note"><b>Note:</b>
+<p role="note" class="warning"><b>Warning:</b>
 Adding additional properties directly to event options objects is not recommended.  Instead, use the <code>detail</code> property.
 </p>
 
-An event options object has some of the following properties:
+An event options object should have some of the following properties:
 
 * **`bubbles`:** (optional, *boolean*) Whether the event bubbles (default: `true`).
 * **`cancelable`:** (optional, *boolean*) Whether the event is cancelable (default: `true`).
@@ -603,33 +603,35 @@ An event options object has some of the following properties:
 
 #### Examples:
 
-##### Trigger a custom `fnord` event on `document`
+##### Dispatch a custom `fnord` event on `document`
 
 ```js
 triggerEvent('fnord');
 ```
 
-##### Trigger a `click` event on the element with the ID `some-menu`
+##### Dispatch a `click` event on the element bearing the ID `some-menu`
 
 ```js
 triggerEvent('click', document.getElementById('some-menu'));
 ```
 
-##### Trigger a custom `:redo` event on `document` while specifying some options
+##### Dispatch a custom `update-meter` event on `document` while specifying some options
 
 ```js
-triggerEvent(':redo', document, {
+triggerEvent('update-meter', document, {
 	detail : {
 		tags : ['health', 'magick']
 	}
 });
 ```
 
-##### Various ways to trigger a `mouseover` event on element(s) with the class `flippable`
+##### Various ways to dispatch a `mouseover` event on all elements bearing the class `flippable`
 
 ```js
 triggerEvent('mouseover', document.getElementsByClassName('flippable'));
+
 triggerEvent('mouseover', document.querySelectorAll('.flippable'));
+
 triggerEvent('mouseover', jQuery('.flippable'));
 ```
 
