@@ -7,18 +7,31 @@
 
 ***********************************************************************************************************************/
 /*
-	global DebugView, Engine, L10n, Patterns, State, encodeEntities, getToStringTag, session, triggerEvent
+	global Config, DebugView, Engine, L10n, Patterns, State, encodeEntities, getToStringTag, session, triggerEvent
 */
 
 var DebugBar = (() => { // eslint-disable-line no-unused-vars, no-var
-	const _variableRe   = new RegExp(`^${Patterns.variable}$`);
-	const _numericKeyRe = /^\d+$/;
-	const _watchList    = [];
-	let _$debugBar   = null;
-	let _$watchBody  = null;
-	let _$watchList  = null;
-	let _$turnSelect = null;
-	let _stowed      = true;
+	// The debug state storage key.
+	const STORAGE_KEY = 'debug.state';
+
+	// Update intervals.
+	const WATCH_LIST_DELAY = 200; // in milliseconds
+	const VAR_LIST_DELAY   = 500; // in milliseconds
+
+	const variableRE   = new RegExp(`^${Patterns.variable}$`);
+	const numericKeyRE = /^\d+$/;
+	const watchList    = [];
+	let varList      = [];
+	let watchTimerId = null;
+	let listTimerId  = null;
+	let stowed       = true;
+	let $debugBar    = null;
+	let $watchBody   = null;
+	let $varDataList = null;
+	let $turnSelect  = null;
+	// let $watchToggle   = null;
+	// let $turnValue     = null;
+	// let $jumpDatalist  = null;
 
 
 	/*******************************************************************************
@@ -28,9 +41,14 @@ var DebugBar = (() => { // eslint-disable-line no-unused-vars, no-var
 	function debugBarInit() {
 		if (BUILD_DEBUG) { console.log('[DebugBar/debugBarInit()]'); }
 
-		/*
-			Generate the debug bar elements and append them to the `<body>`.
-		*/
+		if (!Config.debug) {
+			// Remove its styles.
+			jQuery(document.head).find('[id|="style-ui-debug"]').remove();
+
+			return;
+		}
+
+		// Generate the debug bar elements and append them to <body>.
 		const barToggleLabel   = L10n.get('debugBarLabelToggle');
 		const watchAddLabel    = L10n.get('debugBarLabelWatchAdd');
 		const watchAllLabel    = L10n.get('debugBarLabelWatchAll');
@@ -43,21 +61,23 @@ var DebugBar = (() => { // eslint-disable-line no-unused-vars, no-var
 				/* eslint-disable max-len */
 				  '<div id="debug-bar">'
 				+     '<div id="debug-bar-watch">'
-				+         `<div>\u2014\u00A0${L10n.get('debugBarMesgNoWatches')}\u00A0\u2014</div>>`
+				+         `<div>\u2014\u00A0${L10n.get('debugBarMesgNoWatches')}\u00A0\u2014</div>`
 				+     '</div>'
 				+     '<div>'
-				+         `<button id="debug-bar-watch-toggle" tabindex="0" title="${watchToggleLabel}" aria-label="${watchToggleLabel}">${L10n.get('debugBarTextWatch')}</button>`
 				+         `<label id="debug-bar-watch-label" for="debug-bar-watch-input">${L10n.get('debugBarTextAdd')}</label>`
-				+         `<input id="debug-bar-watch-input" name="debug-bar-watch-input" type="text" placeholder="${L10n.get('debugBarLabelWatchPlaceholder')}" list="debug-bar-watch-list" tabindex="0">`
-				+         '<datalist id="debug-bar-watch-list" aria-hidden="true" hidden="hidden"></datalist>'
+				+         `<input id="debug-bar-watch-input" name="debug-bar-watch-input" type="text" placeholder="${L10n.get('debugBarLabelWatchPlaceholder')}" list="debug-bar-var-list" tabindex="0">`
+				+         '<datalist id="debug-bar-var-list" aria-hidden="true" hidden="hidden"></datalist>'
 				+         `<button id="debug-bar-watch-add" tabindex="0" title="${watchAddLabel}" aria-label="${watchAddLabel}"></button>`
 				+         `<button id="debug-bar-watch-all" tabindex="0" title="${watchAllLabel}" aria-label="${watchAllLabel}"></button>`
 				+         `<button id="debug-bar-watch-clear" tabindex="0" title="${watchClearLabel}" aria-label="${watchClearLabel}"></button>`
 				+     '</div>'
 				+     '<div>'
-				+         `<button id="debug-bar-views-toggle" tabindex="0" title="${viewsToggleLabel}" aria-label="${viewsToggleLabel}">${L10n.get('debugBarTextViews')}</button>`
 				+         `<label id="debug-bar-turn-label" for="debug-bar-turn-select">${L10n.get('textTurn')}</label>`
 				+         '<select id="debug-bar-turn-select" tabindex="0"></select>'
+				+     '</div>'
+				+     '<div>'
+				+         `<button id="debug-bar-views-toggle" tabindex="0" title="${viewsToggleLabel}" aria-label="${viewsToggleLabel}">${L10n.get('debugBarTextViews')}</button>`
+				+         `<button id="debug-bar-watch-toggle" tabindex="0" title="${watchToggleLabel}" aria-label="${watchToggleLabel}">${L10n.get('debugBarTextWatch')}</button>`
 				+     '</div>'
 				+     `<button id="debug-bar-toggle" tabindex="0" title="${barToggleLabel}" aria-label="${barToggleLabel}"></button>`
 				+ '</div>'
@@ -66,113 +86,116 @@ var DebugBar = (() => { // eslint-disable-line no-unused-vars, no-var
 			)
 			.appendTo('body');
 
-		/*
-			Cache various oft used elements.
+		// Cache the debug bar elements, since they're going to be used often.
+		//
+		// NOTE: We rewrap the elements themselves, rather than simply using
+		// the results of `find()`, so that we cache uncluttered jQuery-wrappers
+		// (i.e. `context` refers to the elements and there is no `prevObject`).
+		$debugBar    = jQuery('#debug-bar');
+		$watchBody   = jQuery($debugBar.find('#debug-bar-watch').get(0));
+		$varDataList = jQuery($debugBar.find('#debug-bar-var-list').get(0));
+		$turnSelect  = jQuery($debugBar.find('#debug-bar-turn-select').get(0));
 
-			NOTE: We rewrap the elements themselves, rather than simply using
-			the results of `find()`, so that we cache uncluttered jQuery-wrappers
-			(i.e. `context` refers to the elements and there is no `prevObject`).
-		*/
-		_$debugBar   = jQuery('#debug-bar');
-		_$watchBody  = jQuery(_$debugBar.find('#debug-bar-watch').get(0));
-		_$watchList  = jQuery(_$debugBar.find('#debug-bar-watch-list').get(0));
-		_$turnSelect = jQuery(_$debugBar.find('#debug-bar-turn-select').get(0));
+		const $watchInput  = jQuery($debugBar.find('#debug-bar-watch-input').get(0));
+		const $watchAdd    = jQuery($debugBar.find('#debug-bar-watch-add').get(0));
+		const $watchAll    = jQuery($debugBar.find('#debug-bar-watch-all').get(0));
+		const $watchClear  = jQuery($debugBar.find('#debug-bar-watch-clear').get(0));
+		const $viewsToggle = jQuery($debugBar.find('#debug-bar-views-toggle').get(0));
+		const $watchToggle = jQuery($debugBar.find('#debug-bar-watch-toggle').get(0));
+		const $barToggle   = jQuery($debugBar.find('#debug-bar-toggle').get(0));
 
-		const $barToggle   = jQuery(_$debugBar.find('#debug-bar-toggle').get(0));
-		const $watchToggle = jQuery(_$debugBar.find('#debug-bar-watch-toggle').get(0));
-		const $watchInput  = jQuery(_$debugBar.find('#debug-bar-watch-input').get(0));
-		const $watchAdd    = jQuery(_$debugBar.find('#debug-bar-watch-add').get(0));
-		const $watchAll    = jQuery(_$debugBar.find('#debug-bar-watch-all').get(0));
-		const $watchClear  = jQuery(_$debugBar.find('#debug-bar-watch-clear').get(0));
-		const $viewsToggle = jQuery(_$debugBar.find('#debug-bar-views-toggle').get(0));
-
-		/*
-			Set up the debug bar's local event handlers.
-		*/
-		$barToggle
-			.ariaClick(debugBarToggle);
-		$watchToggle
-			.ariaClick(debugBarWatchToggle);
+		// Set up the debug bar's local event handlers.
 		$watchInput
-			.on(':addwatch', function () {
+			.on('sc:debug-watch-add', function () {
 				debugBarWatchAdd(this.value.trim());
 				this.value = '';
 			})
 			.on('keypress', ev => {
-				if (ev.which === 13) { // 13 is Return/Enter
+				if (ev.which === 13) { // 13 is Enter/Return
 					ev.preventDefault();
-					triggerEvent(':addwatch', $watchInput);
+					triggerEvent('sc:debug-watch-add', $watchInput);
 				}
 			});
 		$watchAdd
-			.ariaClick(() => triggerEvent(':addwatch', $watchInput));
+			.ariaClick(() => triggerEvent('sc:debug-watch-add', $watchInput));
 		$watchAll
 			.ariaClick(debugBarWatchAddAll);
 		$watchClear
 			.ariaClick(debugBarWatchClear);
-		_$turnSelect
+		$turnSelect
 			.on('change', function () {
 				Engine.goTo(Number(this.value));
 			});
 		$viewsToggle
 			.ariaClick(() => {
 				DebugView.toggle();
-				_updateSession();
+				updateSession();
 			});
+		$watchToggle
+			.ariaClick(debugBarWatchToggle);
+		$barToggle
+			.ariaClick(debugBarToggle);
 
-		/*
-			Set up the debug bar's global event handlers.
-		*/
+		// Set up the debug bar's global event handlers.
 		jQuery(document)
-			// Set up a handler for the history select.
-			.on(':historyupdate.debug-bar', _updateTurnSelect)
 			// Set up a handler for the variables watch.
 			.on(':passageend.debug-bar', () => {
-				_updateWatchBody();
-				_updateWatchList();
+				updateWatchBody();
+				updateVarList();
 			})
+			// Set up a handler for the history select.
+			.on(':historyupdate.debug-bar', updateTurnSelect)
 			// Set up a handler for engine resets to clear the active debug session.
-			.on(':enginerestart.debug-bar', _clearSession);
-
-		/*
-			Initially enable debug views if there's no active debug session.
-		*/
-		if (!_hasSession()) {
-			DebugView.enable();
-		}
+			.on(':enginerestart.debug-bar', clearSession);
 	}
 
 	function debugBarStart() {
 		if (BUILD_DEBUG) { console.log('[DebugBar/debugBarStart()]'); }
 
+		if (!Config.debug) {
+			return;
+		}
+
 		// Attempt to restore an existing session.
-		_restoreSession();
+		if (!restoreSession()) {
+			// If there's no active debug session, then initially stow the debug bar,
+			// enable debug views, and enable variable watching.
+			debugBarStow();
+			DebugView.enable();
+			enableWatchUpdates();
+			enableWatch();
+		}
 
 		// Update the UI.
-		_updateBar();
-		_updateTurnSelect();
-		_updateWatchBody();
-		_updateWatchList();
+		updateTurnSelect();
+		updateVarList();
 	}
 
 	function debugBarIsStowed() {
-		return _stowed;
+		return stowed;
 	}
 
 	function debugBarStow() {
-		_debugBarStowNoUpdate();
-		_stowed = true;
-		_updateSession();
+		disableWatchUpdates();
+		disableVarListUpdates();
+		stowDebugBar();
+		stowed = true;
+		updateSession();
 	}
 
 	function debugBarUnstow() {
-		_debugBarUnstowNoUpdate();
-		_stowed = false;
-		_updateSession();
+		if (debugBarWatchIsEnabled()) {
+			enableWatchUpdates();
+		}
+
+		enableVarListUpdates();
+		unstowDebugBar();
+		stowed = false;
+		updateSession();
 	}
 
 	function debugBarToggle() {
-		if (_stowed) {
+		if (stowed) {
 			debugBarUnstow();
 		}
 		else {
@@ -181,60 +204,66 @@ var DebugBar = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 	function debugBarWatchAdd(varName) {
-		if (!_variableRe.test(varName)) {
+		if (!variableRE.test(varName)) {
 			return;
 		}
 
-		_watchList.pushUnique(varName);
-		_watchList.sort();
-		_updateWatchBody();
-		_updateWatchList();
-		_updateSession();
+		watchList.pushUnique(varName);
+		watchList.sort();
+
+		updateWatchBody();
+		updateVarList();
+		updateSession();
 	}
 
 	function debugBarWatchAddAll() {
-		Object.keys(State.variables).map(name => _watchList.pushUnique(`$${name}`));
-		Object.keys(State.temporary).map(name => _watchList.pushUnique(`_${name}`));
+		Object.keys(State.variables).map(name => watchList.pushUnique(`$${name}`));
+		Object.keys(State.temporary).map(name => watchList.pushUnique(`_${name}`));
+		watchList.sort();
 
-		_watchList.sort();
-		_updateWatchBody();
-		_updateWatchList();
-		_updateSession();
+		updateWatchBody();
+		updateVarList();
+		updateSession();
 	}
 
 	function debugBarWatchClear() {
-		for (let i = _watchList.length - 1; i >= 0; --i) {
-			_watchList.pop();
-		}
+		watchList.length = 0;
+		$watchBody
+			.empty()
+			.append(`<div>\u2014\u00A0${L10n.get('debugBarMesgNoWatches')}\u00A0\u2014</div>`);
 
-		_updateWatchBody();
-		_updateWatchList();
-		_updateSession();
+		updateWatchBody();
+		updateVarList();
+		updateSession();
 	}
 
 	function debugBarWatchDelete(varName) {
-		_watchList.delete(varName);
-		_updateWatchBody();
-		_updateWatchList();
-		_updateSession();
+		watchList.deleteFirst(varName);
+		$watchBody.find(`tr[data-name="${varName}"]`).remove();
+
+		updateWatchBody();
+		updateVarList();
+		updateSession();
 	}
 
 	function debugBarWatchDisable() {
-		_debugBarWatchDisableNoUpdate();
-		_updateSession();
+		disableWatchUpdates();
+		disableWatch();
+		updateSession();
 	}
 
 	function debugBarWatchEnable() {
-		_debugBarWatchEnableNoUpdate();
-		_updateSession();
+		enableWatchUpdates();
+		enableWatch();
+		updateSession();
 	}
 
 	function debugBarWatchIsEnabled() {
-		return !_$watchBody.attr('hidden');
+		return !$watchBody.attr('hidden');
 	}
 
 	function debugBarWatchToggle() {
-		if (_$watchBody.attr('hidden')) {
+		if ($watchBody.attr('hidden')) {
 			debugBarWatchEnable();
 		}
 		else {
@@ -247,49 +276,83 @@ var DebugBar = (() => { // eslint-disable-line no-unused-vars, no-var
 		Utility Functions.
 	*******************************************************************************/
 
-	function _debugBarStowNoUpdate() {
-		_$debugBar.css('right', `-${_$debugBar.outerWidth()}px`);
+	function stowDebugBar() {
+		$debugBar.css('right', `-${$debugBar.outerWidth()}px`);
 	}
 
-	function _debugBarUnstowNoUpdate() {
-		_$debugBar.css('right', 0);
+	function unstowDebugBar() {
+		$debugBar.css('right', 0);
 	}
 
-	function _debugBarWatchDisableNoUpdate() {
-		_$watchBody.attr({
+	function disableWatch() {
+		$watchBody.attr({
 			'aria-hidden' : true,
 			hidden        : 'hidden'
 		});
+		// DebugFlags.remove('watch');
 	}
 
-	function _debugBarWatchEnableNoUpdate() {
-		_$watchBody.removeAttr('aria-hidden hidden');
+	function disableWatchUpdates() {
+		if (watchTimerId !== null) {
+			clearInterval(watchTimerId);
+			watchTimerId = null;
+		}
 	}
 
-	function _clearSession() {
-		session.delete('debugState');
+	function enableWatch() {
+		// DebugFlags.add('watch');
+		$watchBody.removeAttr('aria-hidden hidden');
 	}
 
-	function _hasSession() {
-		return session.has('debugState');
+	function enableWatchUpdates() {
+		if (watchTimerId === null) {
+			watchTimerId = setInterval(() => updateWatchBody(), WATCH_LIST_DELAY);
+		}
 	}
 
-	function _restoreSession() {
-		if (!_hasSession()) {
+	function disableVarListUpdates() {
+		if (listTimerId !== null) {
+			clearInterval(listTimerId);
+			listTimerId = null;
+		}
+	}
+
+	function enableVarListUpdates() {
+		if (listTimerId === null) {
+			listTimerId = setInterval(() => updateVarList(), VAR_LIST_DELAY);
+		}
+	}
+
+	function clearSession() {
+		session.delete(STORAGE_KEY);
+	}
+
+	function hasSession() {
+		return session.has(STORAGE_KEY);
+	}
+
+	function restoreSession() {
+		if (!hasSession()) {
 			return false;
 		}
 
-		const debugState = session.get('debugState');
+		const debugState = session.get(STORAGE_KEY);
 
-		_stowed = debugState.stowed;
-
-		_watchList.push(...debugState.watchList);
+		watchList.push(...debugState.watchList);
 
 		if (debugState.watchEnabled) {
-			_debugBarWatchEnableNoUpdate();
+			if (stowed) {
+				disableWatchUpdates();
+			}
+			else {
+				enableWatchUpdates();
+			}
+
+			enableWatch();
 		}
 		else {
-			_debugBarWatchDisableNoUpdate();
+			disableWatchUpdates();
+			disableWatch();
 		}
 
 		if (debugState.viewsEnabled) {
@@ -299,57 +362,71 @@ var DebugBar = (() => { // eslint-disable-line no-unused-vars, no-var
 			DebugView.disable();
 		}
 
+		stowed = debugState.stowed;
+
+		if (stowed) {
+			disableVarListUpdates();
+			debugBarStow();
+		}
+		else {
+			enableVarListUpdates();
+			debugBarUnstow();
+		}
+
 		return true;
 	}
 
-	function _updateSession() {
-		session.set('debugState', {
-			stowed       : _stowed,
-			watchList    : _watchList,
+	function updateSession() {
+		session.set(STORAGE_KEY, {
+			stowed,
+			watchList,
 			watchEnabled : debugBarWatchIsEnabled(),
 			viewsEnabled : DebugView.isEnabled()
 		});
 	}
 
-	function _updateBar() {
-		if (_stowed) {
-			debugBarStow();
-		}
-		else {
-			debugBarUnstow();
-		}
-	}
-
-	function _updateWatchBody() {
-		if (_watchList.length === 0) {
-			_$watchBody
-				.empty()
-				.append(`<div>\u2014\u00A0${L10n.get('debugBarMesgNoWatches')}\u00A0\u2014</div>`);
+	function updateWatchBody() {
+		if (watchList.length === 0) {
 			return;
 		}
 
-		const delLabel = L10n.get('debugBarLabelWatchDelete');
-		const $table   = jQuery(document.createElement('table'));
-		const $tbody   = jQuery(document.createElement('tbody'));
+		const $rowMap = new Map();
+		let $table = jQuery($watchBody.children('table'));
+		let $tbody;
 
-		for (let i = 0, len = _watchList.length; i < len; ++i) {
-			const varName = _watchList[i];
-			const varKey  = varName.slice(1);
-			const store   = varName[0] === '$' ? State.variables : State.temporary;
+		// If there's an existing watches table, cache its elements.
+		if ($table.length > 0) {
+			$tbody = jQuery($table.children('tbody'));
+			$tbody.children('tr').each((_, el) => $rowMap.set(el.getAttribute('data-name'), jQuery(el)));
+		}
+		// Elsewise, create a new watches table.
+		else {
+			$table = jQuery(document.createElement('table'));
+			$tbody = jQuery(document.createElement('tbody'));
+			$table
+				.append($tbody);
+			$watchBody
+				.empty()
+				.append($table);
+		}
+
+		// Set up a function to add new watch rows.
+		const delLabel  = L10n.get('debugBarDeleteWatch');
+		const createRow = function (varName, value) {
 			const $row    = jQuery(document.createElement('tr'));
 			const $delBtn = jQuery(document.createElement('button'));
 			const $code   = jQuery(document.createElement('code'));
 
+			$row
+				.attr('data-name', varName);
 			$delBtn
 				.addClass('watch-delete')
-				.attr('data-name', varName)
 				.ariaClick({
 					one   : true,
 					label : delLabel
 				}, () => debugBarWatchDelete(varName));
 			$code
-				.text(_toWatchString(store[varKey]));
-
+				.text(value);
 			jQuery(document.createElement('td'))
 				.append($delBtn)
 				.appendTo($row);
@@ -359,43 +436,81 @@ var DebugBar = (() => { // eslint-disable-line no-unused-vars, no-var
 			jQuery(document.createElement('td'))
 				.append($code)
 				.appendTo($row);
-			$row
-				.appendTo($tbody);
-		}
 
-		$table
-			.append($tbody);
-		_$watchBody
-			.empty()
-			.append($table);
+			return $row;
+		};
+
+		let cursor = $rowMap.size > 0 ? $tbody.children('tr').get(0) : null;
+		watchList.forEach(varName => {
+			const varKey = varName.slice(1);
+			const store  = varName[0] === '$' ? State.variables : State.temporary;
+			const value  = toWatchString(store[varKey]);
+			let $row = $rowMap.get(varName);
+
+			// If a watch row exists, update its code element value.
+			if ($row) {
+				const $code = $row.children().children('code');
+
+				if (value !== $code.text()) {
+					$code.text(value);
+				}
+			}
+			// Elsewise, insert a new watch row.
+			else {
+				$row = createRow(varName, value);
+
+				if (cursor) {
+					$row.insertAfter(cursor);
+				}
+				else {
+					$row.appendTo($tbody);
+				}
+			}
+
+			cursor = $row.get(0);
+		});
 	}
 
-	function _updateWatchList() {
-		const svn = Object.keys(State.variables);
-		const tvn = Object.keys(State.temporary);
+	function updateVarList() {
+		const names = [].concat(
+			Object.keys(State.variables).map(name => `$${name}`),
+			Object.keys(State.temporary).map(name => `_${name}`)
+		);
 
-		if (svn.length === 0 && tvn.length === 0) {
-			_$watchList.empty();
+		// If there are no variable names, then bail out.
+		if (names.length === 0) {
+			varList.length = 0;
+			$varDataList.empty();
 			return;
 		}
 
-		const names   = [...svn.map(name => `$${name}`), ...tvn.map(name => `_${name}`)].sort();
-		const options = document.createDocumentFragment();
+		// Sort the variable names and remove those already being watched.
+		names.sort().deleteAll(watchList);
 
-		names.delete(_watchList);
-
-		for (let i = 0, len = names.length; i < len; ++i) {
-			jQuery(document.createElement('option'))
-				.val(names[i])
-				.appendTo(options);
+		// If the new and existing lists of variable names match, then bail out.
+		if (
+			names.length === varList.length
+			&& names.every((m, i) => m === varList[i])
+		) {
+			return;
 		}
 
-		_$watchList
+		// Update the variable names list.
+		varList = names;
+
+		// Update the datalist.
+		const options = document.createDocumentFragment();
+		varList.forEach(name => {
+			jQuery(document.createElement('option'))
+				.val(name)
+				.appendTo(options);
+		});
+		$varDataList
 			.empty()
 			.append(options);
 	}
 
-	function _updateTurnSelect() {
+	function updateTurnSelect() {
 		const histLen = State.size;
 		const expLen  = State.expired.length;
 		const options = document.createDocumentFragment();
@@ -403,116 +518,96 @@ var DebugBar = (() => { // eslint-disable-line no-unused-vars, no-var
 		for (let i = 0; i < histLen; ++i) {
 			jQuery(document.createElement('option'))
 				.val(i)
-				.text(`${expLen + i + 1}. ${encodeEntities(State.history[i].title)}`)
+				.text(`${expLen + i + 1}. ${State.history[i].title}`)
 				.appendTo(options);
 		}
 
-		_$turnSelect
+		$turnSelect
 			.empty()
 			.ariaDisabled(histLen < 2)
 			.append(options)
 			.val(State.activeIndex);
 	}
 
-	function _toWatchString(value) {
-		/*
-			Handle the `null` primitive.
-		*/
-		if (value === null) {
+	function toWatchString(O) {
+		// Handle the `null` primitive.
+		if (O === null) {
 			return 'null';
 		}
 
-		/*
-			Handle the rest of the primitives and functions.
-		*/
-		switch (typeof value) {
-			case 'number':
-				if (Number.isNaN(value)) {
-					return 'NaN';
-				}
-				else if (!Number.isFinite(value)) {
-					return 'Infinity';
-				}
-				/* falls through */
+		// Handle the rest of the primitives and functions.
+		switch (typeof O) {
+			case 'bigint':
 			case 'boolean':
+			case 'number':
 			case 'symbol':
 			case 'undefined':
-				return String(value);
+				return String(O);
 
 			case 'string':
-				return JSON.stringify(value);
+				return JSON.stringify(O);
 
 			case 'function':
 				return 'Function';
 		}
 
-		const objType = getToStringTag(value);
+		const objType = getToStringTag(O);
 
 		// /*
 		// 	Handle instances of the primitive exemplar objects (`Boolean`, `Number`, `String`).
 		// */
 		// if (objType === 'Boolean') {
-		// 	return `Boolean\u202F{${String(value)}}`;
+		// 	return `Boolean\u202F{${String(O)}}`;
 		// }
 		// if (objType === 'Number') {
-		// 	return `Number\u202F{${String(value)}}`;
+		// 	return `Number\u202F{${String(O)}}`;
 		// }
 		// if (objType === 'String') {
-		// 	return `String\u202F{"${String(value)}"}`;
+		// 	return `String\u202F{"${String(O)}"}`;
 		// }
 
-		/*
-			Handle `Date` objects.
-		*/
+		// Handle `Date` objects.
 		if (objType === 'Date') {
-			// return `Date\u202F${value.toISOString()}`;
-			return `Date\u202F{${value.toLocaleString()}}`;
+			// return `Date\u202F${O.toISOString()}`;
+			return `Date\u202F{${O.toLocaleString()}}`;
 		}
 
-		/*
-			Handle `RegExp` objects.
-		*/
+		// Handle `RegExp` objects.
 		if (objType === 'RegExp') {
-			return `RegExp\u202F${value.toString()}`;
+			return `RegExp\u202F${O.toString()}`;
 		}
 
 		const result = [];
 
-		/*
-			Handle `Array` & `Set` objects.
-		*/
-		if (value instanceof Array || value instanceof Set) {
-			const list = value instanceof Array ? value : Array.from(value);
+		// Handle `Array` & `Set` objects.
+		if (O instanceof Array || O instanceof Set) {
+			const list = O instanceof Array ? O : Array.from(O);
 
 			// own numeric properties
 			// NOTE: Do not use `<Array>.forEach()` here as it skips undefined members.
 			for (let i = 0, len = list.length; i < len; ++i) {
-				result.push(Object.hasOwn(list, i) ? _toWatchString(list[i]) : '<empty>');
+				result.push(Object.hasOwn(list, i) ? toWatchString(list[i]) : '<empty>');
 			}
 
 			// own enumerable non-numeric expando properties
 			Object.keys(list)
-				.filter(key => !_numericKeyRe.test(key))
-				.forEach(key => result.push(`${_toWatchString(key)}: ${_toWatchString(list[key])}`));
+				.filter(key => !numericKeyRE.test(key))
+				.forEach(key => result.push(`${toWatchString(key)}: ${toWatchString(list[key])}`));
 
 			return `${objType}(${list.length})\u202F[${result.join(', ')}]`;
 		}
 
-		/*
-			Handle `Map` objects.
-		*/
-		if (value instanceof Map) {
-			value.forEach((val, key) => result.push(`${_toWatchString(key)} \u2192 ${_toWatchString(val)}`));
+		// Handle `Map` objects.
+		if (O instanceof Map) {
+			O.forEach((val, key) => result.push(`${toWatchString(key)} \u2192 ${toWatchString(val)}`));
 
-			return `${objType}(${value.size})\u202F{${result.join(', ')}}`;
+			return `${objType}(${O.size})\u202F{${result.join(', ')}}`;
 		}
 
-		/*
-			General object handling.
-		*/
+		// General object handling.
 		// own enumerable properties
-		Object.keys(value)
-			.forEach(key => result.push(`${_toWatchString(key)}: ${_toWatchString(value[key])}`));
+		Object.keys(O)
+			.forEach(key => result.push(`${toWatchString(key)}: ${toWatchString(O[key])}`));
 
 		return `${objType}\u202F{${result.join(', ')}}`;
 	}
@@ -523,9 +618,7 @@ var DebugBar = (() => { // eslint-disable-line no-unused-vars, no-var
 	*******************************************************************************/
 
 	return Object.preventExtensions(Object.create(null, {
-		/*
-			Debug Bar Functions.
-		*/
+		// Debug Bar Functions.
 		init     : { value : debugBarInit },
 		isStowed : { value : debugBarIsStowed },
 		start    : { value : debugBarStart },
@@ -533,9 +626,7 @@ var DebugBar = (() => { // eslint-disable-line no-unused-vars, no-var
 		toggle   : { value : debugBarToggle },
 		unstow   : { value : debugBarUnstow },
 
-		/*
-			Watch Functions.
-		*/
+		// Watch Functions.
 		watch : {
 			value : Object.preventExtensions(Object.create(null, {
 				add       : { value : debugBarWatchAdd },
