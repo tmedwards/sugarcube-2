@@ -858,6 +858,23 @@
 	});
 
 	/*
+		Creates a copy of the base array where all elements are made unique
+		and returns the new array.
+	*/
+	Object.defineProperty(Array.prototype, 'toUnique', {
+		configurable : true,
+		writable     : true,
+
+		value() {
+			if (this == null) { // lazy equality for null
+				throw new TypeError('Array.prototype.toUnique called on null or undefined');
+			}
+
+			return Array.from(new Set(this));
+		}
+	});
+
+	/*
 		Prepends one or more unique elements to the beginning of the base array
 		and returns its new length.
 	*/
