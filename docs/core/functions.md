@@ -570,6 +570,71 @@ or [[stand your ground|Eaten by a grue]]?
 
 <!-- *********************************************************************** -->
 
+### `triggerEvent(name [, targets [, options]])` {#functions-function-triggerevent}
+
+Triggers an event with the given name, optionally on the given elements with the given options.
+
+#### History:
+
+* `v2.37.0`: Introduced.
+
+#### Parameters:
+
+<p role="note" class="tip"><b>Tip:</b>
+If creating custom events, it is recommended that you limit your custom event names to the following: letters, digits, periods (<kbd>.</kbd>), hyphens (<kbd>-</kbd>), underscores (<kbd>_</kbd>), and colons (<kbd>:</kbd>).
+</p>
+
+* **`name`:** (*string*) The name of the event to trigger.  Both standard and custom events are supported.
+* **`targets`:** (optional, *`Document`|`HTMLElement`|`jQuery`|`NodeList`|`Array<HTMLElement>`*) The target(s) to trigger the event on.  If omitted, will default to `document`.
+* **`options`:** (optional, *object*) The event options object.  See below for details.
+
+#### Options Object:
+
+<p role="note"><b>Note:</b>
+Adding additional properties directly to event options objects is not recommended.  Instead, use the <code>detail</code> property.
+</p>
+
+An event options object has some of the following properties:
+
+* **`bubbles`:** (optional, *boolean*) Whether the event bubbles (default: `true`).
+* **`cancelable`:** (optional, *boolean*) Whether the event is cancelable (default: `true`).
+* **`composed`:** (optional, *boolean*) Whether the event triggers listeners outside of a shadow root (default: `false`).
+* **`detail`:** (optional, *any*) Custom data sent with the event (default: `undefined`).  Although any type is allowable, an object is often the most practical.
+
+#### Examples:
+
+##### Trigger a custom `fnord` event on `document`
+
+```js
+triggerEvent('fnord');
+```
+
+##### Trigger a `click` event on the element with the ID `some-menu`
+
+```js
+triggerEvent('click', document.getElementById('some-menu'));
+```
+
+##### Trigger a custom `:redo` event on `document` while specifying some options
+
+```js
+triggerEvent(':redo', document, {
+	detail : {
+		tags : ['health', 'magick']
+	}
+});
+```
+
+##### Various ways to trigger a `mouseover` event on element(s) with the class `flippable`
+
+```js
+triggerEvent('mouseover', document.getElementsByClassName('flippable'));
+triggerEvent('mouseover', document.querySelectorAll('.flippable'));
+triggerEvent('mouseover', jQuery('.flippable'));
+```
+
+<!-- *********************************************************************** -->
+
 ### `turns()` → *integer* {#functions-function-turns}
 
 Returns the total number (count) of played turns currently in effect—i.e., the number of played moments up to the present moment; future (rewound/undone) moments are not included within the total.

@@ -125,6 +125,7 @@
 * [`tags()`](#functions-function-tags)
 * [`temporary()`](#functions-function-temporary)
 * [`time()`](#functions-function-time)
+* [`triggerEvent()`](#functions-function-triggerevent)
 * [`turns()`](#functions-function-turns)
 * [`variables()`](#functions-function-variables)
 * [`visited()`](#functions-function-visited)
