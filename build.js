@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /***********************************************************************************************************************
 
-	build.js (v1.9.0, 2023-11-05)
+	build.js (v1.9.1, 2024-04-09)
 		A Node.js-hosted build script for SugarCube.
 
 	Copyright © 2013–2024 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
@@ -25,7 +25,7 @@ const CONFIG = {
 			'src/lib/patterns.js',
 			'src/extensions/ecmascript-polyfills.js',
 			'src/extensions/ecmascript-extensions.js',
-			'src/extensions/jquery-plugins.js',
+			'src/extensions/jquery/',
 			'src/lib/browser.js',
 			'src/lib/has.js',
 			'src/lib/fullscreen.js',
