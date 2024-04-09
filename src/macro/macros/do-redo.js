@@ -131,10 +131,7 @@
 				: [];
 
 			// Trigger a redo, sending any tags along.
-			jQuery(document).trigger({
-				type   : ':redo',
-				detail : { tags }
-			});
+			triggerEvent(':redo', document, { detail : { tags } });
 		}
 	});
 })();
