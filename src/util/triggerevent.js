@@ -32,7 +32,25 @@ var triggerEvent = (() => { // eslint-disable-line no-unused-vars, no-var
 			// If the `CustomEvent` API is supported, then return a version of
 			// the `createEvent()` function that uses it.
 			return function createEvent(name, options) {
-				return new CustomEvent(name, options);
+				const {
+					bubbles,
+					cancelable,
+					composed,
+					detail,
+					...custom
+				} = Object.assign({ bubbles : true, cancelable : true, composed : false }, options);
+				const event = new CustomEvent(name, { bubbles, cancelable, composed, detail });
+
+				// Copy all custom options properties to the event object.
+				for (let i = 0, keys = Object.keys(custom); i < keys.length; ++i) {
+					const key = keys[i];
+
+					if (typeof custom[key] !== 'undefined') {
+						event[key] = options[key];
+					}
+				}
+
+				return event;
 			};
 		}
 		catch (ex) {
@@ -85,12 +103,17 @@ var triggerEvent = (() => { // eslint-disable-line no-unused-vars, no-var
 				const {
 					bubbles,
 					cancelable,
-					detail
-				} = options;
+					...custom
+				} = Object.assign({ bubbles : true, cancelable : true }, options);
 				const event = document.createEvent('Event');
 
-				if (typeof detail !== 'undefined') {
-					event.detail = detail;
+				// Copy all custom options properties to the event object.
+				for (let i = 0, keys = Object.keys(custom); i < keys.length; ++i) {
+					const key = keys[i];
+
+					if (typeof custom[key] !== 'undefined') {
+						event[key] = options[key];
+					}
 				}
 
 				event.initEvent(name, bubbles, cancelable);
@@ -101,11 +124,7 @@ var triggerEvent = (() => { // eslint-disable-line no-unused-vars, no-var
 	})();
 
 	function triggerEvent(name, targets, options) {
-		const event = createEvent(name, Object.assign({
-			bubbles    : true,
-			cancelable : true,
-			composed   : false
-		}, options));
+		const event = createEvent(name, options);
 		const elems = [];
 
 		// No target was specified, default to `document`.
