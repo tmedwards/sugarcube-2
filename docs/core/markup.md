@@ -249,9 +249,9 @@ body {
 
 
 <!-- ***************************************************************************
-	HTML Attribute
+	HTML &amp; SVG Attribute
 **************************************************************************** -->
-## HTML Attribute {#markup-html-attribute}
+## HTML &amp; SVG Attribute<!-- legacy --><span id="markup-html-attribute"></span><!-- /legacy --> {#markup-html-svg-attribute}
 
 <p role="note" class="warning"><b>Warning:</b>
 None of these features work within the <a href="#markup-verbatim-html">verbatim HTML markup</a>.
@@ -259,9 +259,9 @@ None of these features work within the <a href="#markup-verbatim-html">verbatim 
 
 <!-- *********************************************************************** -->
 
-### Special Attribute {#markup-html-attribute-special}
+### Special Attribute<!-- legacy --><span id="markup-html-attribute-special"></span><!-- /legacy --> {#markup-html-svg-attribute-special}
 
-SugarCube provides a few special HTML attributes, which you may add to HTML tags to enable special behaviors.  There are attributes for passage links, media passages, and setters.
+SugarCube provides a few special HTML &amp; SVG attributes, which you may add to tags to enable special behaviors.  There are attributes for passage links, media passages, and setters.
 
 <table>
 <thead>
@@ -289,7 +289,10 @@ SugarCube provides a few special HTML attributes, which you may add to HTML tags
 	<tr>
 		<td>Passage, Image</td>
 		<td><pre><code>data-passage</code></pre></td>
-		<td><pre><code>&lt;img data-passage=&quot;ImagePassageName&quot;&gt;</code></pre></td>
+		<td>
+			<pre><code>&lt;img data-passage=&quot;ImagePassageName&quot;&gt;</code></pre>
+			<pre><code>&lt;image data-passage=&quot;ImagePassageName&quot; /&gt;</code></pre>
+		</td>
 	</tr>
 	<tr>
 		<td>Passage, Source</td>
@@ -321,16 +324,16 @@ SugarCube provides a few special HTML attributes, which you may add to HTML tags
 
 <!-- *********************************************************************** -->
 
-### Attribute Directive {#markup-html-attribute-directive}
+### Attribute Directive<!-- legacy --><span id="markup-html-attribute-directive"></span><!-- /legacy --> {#markup-html-svg-attribute-directive}
 
-HTML attributes may be prefixed with directives, special text, which trigger special processing of such attributes.
+HTML &amp; SVG attributes may be prefixed with directives, special text, which trigger special processing of such attributes.
 
 <dl>
 <dt>Evaluation directive: <code>sc-eval:</code>, <code>@</code></dt>
 <dd>
 	<p>	The evaluation directive causes the attribute's value to be evaluated as TwineScript.  Post-evaluation, the directive will be removed from the attribute's name and the result of the evaluation will be used as the actual value of the attribute.</p>
 	<p role="note" class="warning"><b>Warning:</b>
-	The evaluation directive is not allowed on the <a href="#markup-html-attribute-special"><code>data-setter</code> attribute</a>—as its function is to evaluate its contents upon activation of its own element—and any such attempt will cause an error.
+	The evaluation directive is not allowed on the <a href="#markup-html-svg-attribute-special"><code>data-setter</code> attribute</a>—as its function is to evaluate its contents upon activation of its own element—and any such attempt will cause an error.
 	</p>
 	<table>
 	<caption>For the following examples assume: <code>_id</code> is <code>&quot;foo&quot;</code></caption>

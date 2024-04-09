@@ -16,7 +16,7 @@
 * [Naked Variable](#markup-naked-variable)
 * [Link](#markup-link)
 * [Image](#markup-image)
-* [HTML Attribute](#markup-html-attribute)
+* [HTML &amp; SVG Attribute](#markup-html-svg-attribute)
 * [Line Continuation](#markup-line-continuation)
 * [Heading](#markup-heading)
 * [Style](#markup-style)
