@@ -457,7 +457,7 @@ Randomly removes the given number of members from the base array and returns the
 
 #### Parameters:
 
-* **`want`:** (optional, *integer*) The number of members to pluck.  Cannot pluck more members than the base array contains.
+* **`want`:** (*integer*) The number of members to pluck.  Cannot pluck more members than the base array contains.
 
 #### Examples:
 
@@ -560,7 +560,7 @@ Randomly selects the given number of unique members from the base array and retu
 
 #### Parameters:
 
-* **`want`:** (optional, *integer*) The number of members to select.  Cannot select more members than the base array contains.
+* **`want`:** (*integer*) The number of members to select.  Cannot select more members than the base array contains.
 
 #### Examples:
 
@@ -683,7 +683,7 @@ Makes the target element(s) WAI-ARIA-compatible clickables—meaning that variou
 
 #### Parameters:
 
-* **`options`:** (optional, *object*) The options to be used when creating the clickables.
+* **`options`:** (optional, *object*) The options to be used when creating the clickables.  See below for details.
 * **`handler`:** (*function*) The callback to invoke when the target element(s) are activated.
 
 #### Options object:
