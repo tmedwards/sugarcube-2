@@ -494,8 +494,14 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 
 		// Execute the pre-history events and tasks.
 		jQuery.event.trigger({
-			type : ':passageinit',
-			passage
+			/* legacy */
+			passage,
+			/* /legacy */
+
+			type   : ':passageinit',
+			detail : {
+				passage
+			}
 		});
 		Object.keys(prehistory).forEach(task => {
 			if (typeof prehistory[task] === 'function') {
@@ -564,9 +570,16 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 
 		// Execute pre-render events and tasks.
 		jQuery.event.trigger({
-			type    : ':passagestart',
+			/* legacy */
 			content : passageEl,
-			passage
+			passage,
+			/* /legacy */
+
+			type   : ':passagestart',
+			detail : {
+				content : passageEl,
+				passage
+			}
 		});
 		Object.keys(prerender).forEach(task => {
 			if (typeof prerender[task] === 'function') {
@@ -589,9 +602,16 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 
 		// Execute post-render events and tasks.
 		jQuery.event.trigger({
-			type    : ':passagerender',
+			/* legacy */
 			content : passageEl,
-			passage
+			passage,
+			/* /legacy */
+
+			type   : ':passagerender',
+			detail : {
+				content : passageEl,
+				passage
+			}
 		});
 		Object.keys(postrender).forEach(task => {
 			if (typeof postrender[task] === 'function') {
@@ -673,9 +693,16 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 		}
 
 		jQuery.event.trigger({
-			type    : ':passagedisplay',
+			/* legacy */
 			content : passageEl,
-			passage
+			passage,
+			/* /legacy */
+
+			type   : ':passagedisplay',
+			detail : {
+				content : passageEl,
+				passage
+			}
 		});
 		Object.keys(postdisplay).forEach(task => {
 			if (typeof postdisplay[task] === 'function') {
@@ -737,9 +764,16 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 
 		// Execute post-play events.
 		jQuery.event.trigger({
-			type    : ':passageend',
+			/* legacy */
 			content : passageEl,
-			passage
+			passage,
+			/* /legacy */
+
+			type   : ':passageend',
+			detail : {
+				content : passageEl,
+				passage
+			}
 		});
 
 		// Reset the engine state.
