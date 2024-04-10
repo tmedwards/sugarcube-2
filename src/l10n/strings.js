@@ -190,11 +190,17 @@ var l10nStrings = { // eslint-disable-line no-unused-vars, no-var
 
 	debugBarLabelWatchPlaceholder : 'variable name',
 
+	debugBarLabelPassagePlaceholder : 'passage name',
+
+	debugBarLabelPassagePlay : 'Play passage',
+
 	debugBarLabelWatchToggle : 'Toggle the watch panel',
 
 	debugBarMesgNoWatches : 'No watches set',
 
 	debugBarTextAdd : 'Add',
+
+	debugBarTextPassage : 'Passage',
 
 	debugBarTextViews : 'Views',
 

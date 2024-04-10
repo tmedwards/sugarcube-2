@@ -14,7 +14,7 @@
 	border-top: 1px solid #444;
 	bottom: 0;
 	margin: 0;
-	max-height: 75%;
+	max-height: 95%;
 	max-width: 66em;
 	min-width: 300px;
 	padding: 0.5em;
@@ -30,10 +30,10 @@
 }
 #debug-bar > div > input[type="text"] {
 	min-width: 8em;
-	width: 13em;
+	width: 14em;
 }
 #debug-bar > div > select {
-	width: 20em;
+	width: 22em;
 }
 
 #debug-bar-toggle {
@@ -52,7 +52,7 @@
 }
 
 #debug-bar-hint {
-	bottom: 0.45em;
+	bottom: 0.75em;
 	font-size: 4.5em;
 	opacity: 0.33;
 	pointer-events: none;
@@ -69,8 +69,8 @@
 	bottom: calc(100% + 1px);
 	font-size: 0.9em;
 	left: -1px;
-	max-height: 650%; /* fallback for browsers without support for vh units */
-	max-height: 65vh;
+	max-height: 280%; /* fallback for browsers without support for vh units */
+	max-height: calc(95vh - 100%);
 	position: absolute;
 	overflow-x: hidden;
 	overflow-y: scroll;
@@ -138,7 +138,8 @@ html[data-debug-view] #debug-bar-views-toggle:hover {
 #debug-bar-watch-all::before,
 #debug-bar-watch-clear::before,
 #debug-bar-watch-toggle::after,
-#debug-bar-views-toggle::after {
+#debug-bar-views-toggle::after,
+#debug-bar-passage-play::before {
 	@mixin sc-icons-properties;
 }
 #debug-bar-toggle::before {
@@ -168,4 +169,7 @@ html[data-debug-view] #debug-bar-views-toggle:hover {
 html[data-debug-view] #debug-bar-views-toggle::after {
 	content: "\f205";
 	/* margin-left: 0.35em; */
+}
+#debug-bar-passage-play::before {
+	content: "\f04b";
 }

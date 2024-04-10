@@ -7,7 +7,7 @@
 
 ***********************************************************************************************************************/
 /*
-	global Config, DebugView, Engine, L10n, Patterns, State, encodeEntities, getToStringTag, session, triggerEvent
+	global Config, DebugView, Engine, L10n, Patterns, State, Story, getToStringTag, session, triggerEvent
 */
 
 var DebugBar = (() => { // eslint-disable-line no-unused-vars, no-var
@@ -21,17 +21,15 @@ var DebugBar = (() => { // eslint-disable-line no-unused-vars, no-var
 	const variableRE   = new RegExp(`^${Patterns.variable}$`);
 	const numericKeyRE = /^\d+$/;
 	const watchList    = [];
-	let varList      = [];
-	let watchTimerId = null;
-	let listTimerId  = null;
-	let stowed       = true;
-	let $debugBar    = null;
-	let $watchBody   = null;
-	let $varDataList = null;
-	let $turnSelect  = null;
-	// let $watchToggle   = null;
-	// let $turnValue     = null;
-	// let $jumpDatalist  = null;
+	let varList          = [];
+	let watchTimerId     = null;
+	let listTimerId      = null;
+	let stowed           = true;
+	let $debugBar        = null;
+	let $watchBody       = null;
+	let $varDataList     = null;
+	let $turnSelect      = null;
+	let $passageDataList = null;
 
 
 	/*******************************************************************************
@@ -55,6 +53,7 @@ var DebugBar = (() => { // eslint-disable-line no-unused-vars, no-var
 		const watchClearLabel  = L10n.get('debugBarLabelWatchClear');
 		const watchToggleLabel = L10n.get('debugBarLabelWatchToggle');
 		const viewsToggleLabel = L10n.get('debugBarLabelViewsToggle');
+		const passagePlayLabel = L10n.get('debugBarLabelPassagePlay');
 
 		jQuery(document.createDocumentFragment())
 			.append(
@@ -64,7 +63,7 @@ var DebugBar = (() => { // eslint-disable-line no-unused-vars, no-var
 				+         `<div>\u2014\u00A0${L10n.get('debugBarMesgNoWatches')}\u00A0\u2014</div>`
 				+     '</div>'
 				+     '<div>'
-				+         `<label id="debug-bar-watch-label" for="debug-bar-watch-input">${L10n.get('debugBarTextAdd')}</label>`
+				+         `<label id="debug-bar-watch-label" for="debug-bar-watch-input">${L10n.get('debugBarTextWatch')}</label>`
 				+         `<input id="debug-bar-watch-input" name="debug-bar-watch-input" type="text" placeholder="${L10n.get('debugBarLabelWatchPlaceholder')}" list="debug-bar-var-list" tabindex="0">`
 				+         '<datalist id="debug-bar-var-list" aria-hidden="true" hidden="hidden"></datalist>'
 				+         `<button id="debug-bar-watch-add" tabindex="0" title="${watchAddLabel}" aria-label="${watchAddLabel}"></button>`
@@ -74,6 +73,12 @@ var DebugBar = (() => { // eslint-disable-line no-unused-vars, no-var
 				+     '<div>'
 				+         `<label id="debug-bar-turn-label" for="debug-bar-turn-select">${L10n.get('textTurn')}</label>`
 				+         '<select id="debug-bar-turn-select" tabindex="0"></select>'
+				+     '</div>'
+				+     '<div>'
+				+         `<label id="debug-bar-passage-label" for="debug-bar-passage-input">${L10n.get('debugBarTextPassage')}</label>`
+				+         `<input id="debug-bar-passage-input" name="debug-bar-passage-input" type="text" placeholder="${L10n.get('debugBarLabelPassagePlaceholder')}" list="debug-bar-passage-list" tabindex="0">`
+				+         '<datalist id="debug-bar-passage-list" aria-hidden="true" hidden="hidden"></datalist>'
+				+         `<button id="debug-bar-passage-play" tabindex="0" title="${passagePlayLabel}" aria-label="${passagePlayLabel}"></button>`
 				+     '</div>'
 				+     '<div>'
 				+         `<button id="debug-bar-views-toggle" tabindex="0" title="${viewsToggleLabel}" aria-label="${viewsToggleLabel}">${L10n.get('debugBarTextViews')}</button>`
@@ -91,18 +96,21 @@ var DebugBar = (() => { // eslint-disable-line no-unused-vars, no-var
 		// NOTE: We rewrap the elements themselves, rather than simply using
 		// the results of `find()`, so that we cache uncluttered jQuery-wrappers
 		// (i.e. `context` refers to the elements and there is no `prevObject`).
-		$debugBar    = jQuery('#debug-bar');
-		$watchBody   = jQuery($debugBar.find('#debug-bar-watch').get(0));
-		$varDataList = jQuery($debugBar.find('#debug-bar-var-list').get(0));
-		$turnSelect  = jQuery($debugBar.find('#debug-bar-turn-select').get(0));
+		$debugBar        = jQuery('#debug-bar');
+		$watchBody       = jQuery($debugBar.find('#debug-bar-watch').get(0));
+		$varDataList     = jQuery($debugBar.find('#debug-bar-var-list').get(0));
+		$turnSelect      = jQuery($debugBar.find('#debug-bar-turn-select').get(0));
+		$passageDataList = jQuery($debugBar.find('#debug-bar-passage-list').get(0));
 
-		const $watchInput  = jQuery($debugBar.find('#debug-bar-watch-input').get(0));
-		const $watchAdd    = jQuery($debugBar.find('#debug-bar-watch-add').get(0));
-		const $watchAll    = jQuery($debugBar.find('#debug-bar-watch-all').get(0));
-		const $watchClear  = jQuery($debugBar.find('#debug-bar-watch-clear').get(0));
-		const $viewsToggle = jQuery($debugBar.find('#debug-bar-views-toggle').get(0));
-		const $watchToggle = jQuery($debugBar.find('#debug-bar-watch-toggle').get(0));
-		const $barToggle   = jQuery($debugBar.find('#debug-bar-toggle').get(0));
+		const $watchInput      = jQuery($debugBar.find('#debug-bar-watch-input').get(0));
+		const $watchAdd        = jQuery($debugBar.find('#debug-bar-watch-add').get(0));
+		const $watchAll        = jQuery($debugBar.find('#debug-bar-watch-all').get(0));
+		const $watchClear      = jQuery($debugBar.find('#debug-bar-watch-clear').get(0));
+		const $passageInput    = jQuery($debugBar.find('#debug-bar-passage-input').get(0));
+		const $passagePlay     = jQuery($debugBar.find('#debug-bar-passage-play').get(0));
+		const $viewsToggle     = jQuery($debugBar.find('#debug-bar-views-toggle').get(0));
+		const $watchToggle     = jQuery($debugBar.find('#debug-bar-watch-toggle').get(0));
+		const $barToggle       = jQuery($debugBar.find('#debug-bar-toggle').get(0));
 
 		// Set up the debug bar's local event handlers.
 		$watchInput
@@ -126,6 +134,20 @@ var DebugBar = (() => { // eslint-disable-line no-unused-vars, no-var
 			.on('change', function () {
 				Engine.goTo(Number(this.value));
 			});
+		$passageInput
+			.on('sc:debug-passage-play', function () {
+				Engine.play(this.value.trim());
+				this.value = '';
+			})
+			.on('keypress', ev => {
+				if (ev.which === 13) { // 13 is Enter/Return
+					ev.preventDefault();
+					triggerEvent('sc:debug-passage-play', $passageInput);
+				}
+			})
+			.on('focus', updatePassageList);
+		$passagePlay
+			.ariaClick(() => triggerEvent('sc:debug-passage-play', $passageInput));
 		$viewsToggle
 			.ariaClick(() => {
 				DebugView.toggle();
@@ -167,8 +189,9 @@ var DebugBar = (() => { // eslint-disable-line no-unused-vars, no-var
 		}
 
 		// Update the UI.
-		updateTurnSelect();
 		updateVarList();
+		updateTurnSelect();
+		// updatePassageList();
 	}
 
 	function debugBarIsStowed() {
@@ -411,7 +434,7 @@ var DebugBar = (() => { // eslint-disable-line no-unused-vars, no-var
 		}
 
 		// Set up a function to add new watch rows.
-		const delLabel  = L10n.get('debugBarDeleteWatch');
+		const delLabel  = L10n.get('debugBarLabelWatchDelete');
 		const createRow = function (varName, value) {
 			const $row    = jQuery(document.createElement('tr'));
 			const $delBtn = jQuery(document.createElement('button'));
@@ -498,13 +521,16 @@ var DebugBar = (() => { // eslint-disable-line no-unused-vars, no-var
 		// Update the variable names list.
 		varList = names;
 
-		// Update the datalist.
 		const options = document.createDocumentFragment();
+
+		// Generate the <option>s.
 		varList.forEach(name => {
 			jQuery(document.createElement('option'))
 				.val(name)
 				.appendTo(options);
 		});
+
+		// Update the <datalist>.
 		$varDataList
 			.empty()
 			.append(options);
@@ -515,6 +541,7 @@ var DebugBar = (() => { // eslint-disable-line no-unused-vars, no-var
 		const expLen  = State.expired.length;
 		const options = document.createDocumentFragment();
 
+		// Generate the <option>s.
 		for (let i = 0; i < histLen; ++i) {
 			jQuery(document.createElement('option'))
 				.val(i)
@@ -522,11 +549,29 @@ var DebugBar = (() => { // eslint-disable-line no-unused-vars, no-var
 				.appendTo(options);
 		}
 
+		// Update the <select>.
 		$turnSelect
 			.empty()
 			.ariaDisabled(histLen < 2)
 			.append(options)
 			.val(State.activeIndex);
+	}
+
+	function updatePassageList() {
+		const passages = Object.keys(Story.getNormals()).sort();
+		const options  = document.createDocumentFragment();
+
+		// Generate the <option>s.
+		passages.forEach(name => {
+			jQuery(document.createElement('option'))
+				.val(name)
+				.appendTo(options);
+		});
+
+		// Update the <datalist>.
+		$passageDataList
+			.empty()
+			.append(options);
 	}
 
 	function toWatchString(O) {
