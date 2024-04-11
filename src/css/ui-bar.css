@@ -76,51 +76,31 @@
 #ui-bar hr {
 	border-color: #444;
 }
-#ui-bar-toggle,
-#ui-bar-history [id|="history"] {
-	font-size: 1.2em;
-	line-height: inherit;
+#ui-bar-tray button {
 	color: #eee;
 	background-color: transparent;
 	border: 1px solid #444;
 }
-#ui-bar-toggle {
-	display: block;
-	position: absolute;
-	top: 0;
-	right: 0;
-	border-right: none;
-	padding: 0.25em 0.5em 0.35em;
-}
-#ui-bar.stowed #ui-bar-toggle {
-	padding: 0.25em 0.45em 0.35em 0.55em;
-}
-#ui-bar-toggle:hover {
+#ui-bar-tray button:hover {
 	background-color: #444;
 	border-color: #eee;
+}
+#ui-bar-tray button:disabled {
+	color: #444;
+	background-color: transparent;
+	border-color: #444;
+}
+button#ui-bar-toggle {
+	border-right: none;
+	position: absolute;
+	right: 0;
+	top: 0;
 }
 #ui-bar-history {
 	margin: 0 auto;
 }
-#ui-bar-history [id|="history"] {
-	padding: 0.26em 0.35em 0.32em;
-}
-/* legacy */
-#ui-bar-history #history-jumpto {
-	padding: 0.26em 0.5em 0.33em;
-}
-/* /legacy */
-#ui-bar-history [id|="history"]:not(:first-child) {
+#ui-bar-history button:not(:first-child) {
 	margin-left: 1.2em;
-}
-#ui-bar-history [id|="history"]:hover {
-	background-color: #444;
-	border-color: #eee;
-}
-#ui-bar-history [id|="history"]:disabled {
-	color: #444;
-	background-color: transparent;
-	border-color: #444;
 }
 #ui-bar-body > :not(:first-child) {
 	margin-top: 2em;
@@ -161,23 +141,35 @@
 }
 
 /* Stop text selection on certain UI elements. */
-#ui-bar-history [id|="history"],
-#ui-bar-toggle,
+#ui-bar-tray button,
 #menu a {
 	user-select: none;
 }
 
 /* Font icon styles. */
-#ui-bar-toggle::before,
-#ui-bar-history [id|="history"],
+#ui-bar-tray button::before,
 #menu-core li[id|="menu-item"] a::before {
 	@mixin sc-icons-properties;
+}
+#ui-bar-tray button::before {
+	display: block;
+	font-size: 1.1em;
+	width: 1em;
 }
 #ui-bar-toggle::before {
 	content: "\f053";
 }
 #ui-bar.stowed #ui-bar-toggle::before {
 	content: "\f054";
+}
+#ui-bar-tray #history-backward::before {
+	content: "\f060";
+}
+#ui-bar-tray #history-jumpto::before {
+	content: "\f0e7";
+}
+#ui-bar-tray #history-forward::before {
+	content: "\f061";
 }
 #menu-item-continue a::before,
 #menu-item-saves a::before,
