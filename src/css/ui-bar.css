@@ -179,7 +179,7 @@ button#ui-bar-toggle {
 	margin-right: 0.35em;
 }
 #menu-item-continue a::before {
-	content: "\f2f9";
+	content: "\f04b";
 }
 #menu-item-saves a::before {
 	content: "\f0c7";

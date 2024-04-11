@@ -272,7 +272,11 @@ var UIBar = (() => { // eslint-disable-line no-unused-vars, no-var
 					ev.preventDefault();
 					Save.browser.continue()
 						.then(
-							Engine.show,
+							() => {
+								jQuery(document).off('.menu-item-continue');
+								jQuery('#menu-item-continue').remove();
+								Engine.show();
+							},
 							ex => UI.alert(`${ex.message.toUpperFirst()}.</p><p>${L10n.get('textAborting')}.`)
 						);
 				})
