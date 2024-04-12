@@ -145,20 +145,19 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 		}
 
 		function createSaveList() {
-			function createButton(id, classNames, typeLabel, index, callback) {
-				let btnText;
+			function createButton(id, classNames, kind, index, callback) {
+				let text;
 
 				switch (id) {
-					case 'delete': btnText = L10n.get('textDelete'); break;
-					case 'load':   btnText = L10n.get('textLoad'); break;
-					case 'save':   btnText = L10n.get('textSave'); break;
+					case 'delete': text = L10n.get('textDelete'); break;
+					case 'load':   text = L10n.get('textLoad'); break;
+					case 'save':   text = L10n.get('textSave'); break;
 					default:       throw new Error(`buildSaves unknown ID "${id}"`);
 				}
 
 				const $btn = jQuery(document.createElement('button'))
 					.attr('id', `saves-${id}-${index}`)
-					.addClass(id)
-					.text(btnText);
+					.addClass(id);
 
 				if (classNames) {
 					$btn.addClass(classNames);
@@ -166,7 +165,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 
 				if (callback) {
 					$btn.ariaClick({
-						label : `${btnText} ${typeLabel} ${index + 1}`
+						label : `${text} ${kind} ${index + 1}`
 					}, () => {
 						try {
 							callback(index);
@@ -354,11 +353,14 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 					// Add the save button, possibly disabled.
 					$tdLoad.append(createButton(
 						'save',
-						'ui-close',
+						null,
 						L10n.get('savesTextBrowserSlot'),
 						index,
 						index < Config.saves.maxSlotSaves && slotAllowed
-							? Save.browser.slot.save
+							? index => {
+								Save.browser.slot.save(index);
+								buildSaves();
+							}
 							: null
 					));
 
