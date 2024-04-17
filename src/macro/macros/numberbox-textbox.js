@@ -76,7 +76,7 @@ Macro.add(['numberbox', 'textbox'], {
 				name      : `${this.name}-${varId}`,
 				type      : asNumber ? 'number' : 'text',
 				inputmode : asNumber ? 'decimal' : 'text',
-				tabindex  : 0 // for accessiblity
+				tabindex  : 0 // for accessibility
 			})
 			.addClass(`macro-${this.name}`)
 			.on('change.macros', this.shadowHandler(function () {

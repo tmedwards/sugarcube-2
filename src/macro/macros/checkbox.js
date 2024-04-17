@@ -48,7 +48,7 @@ Macro.add('checkbox', {
 				id       : `${this.name}-${varId}`,
 				name     : `${this.name}-${varId}`,
 				type     : 'checkbox',
-				tabindex : 0 // for accessiblity
+				tabindex : 0 // for accessibility
 			})
 			.addClass(`macro-${this.name}`)
 			.on('change.macros', this.shadowHandler(function () {

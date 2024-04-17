@@ -224,7 +224,7 @@ Macro.add(['cycle', 'listbox'], {
 				.attr({
 					id       : `${this.name}-${varId}`,
 					name     : `${this.name}-${varId}`,
-					tabindex : 0 // for accessiblity
+					tabindex : 0 // for accessibility
 				})
 				.addClass(`macro-${this.name}`)
 				.val(index)

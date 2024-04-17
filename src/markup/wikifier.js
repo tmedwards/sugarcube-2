@@ -323,7 +323,7 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 			if (url != null) { // lazy equality for null
 				$link.attr({
 					href     : url,
-					tabindex : 0 // for accessiblity
+					tabindex : 0 // for accessibility
 				});
 			}
 

@@ -57,7 +57,7 @@ Macro.add('radiobutton', {
 				id       : `${this.name}-${varId}-${TempState[this.name][varId]++}`,
 				name     : `${this.name}-${varId}`,
 				type     : 'radio',
-				tabindex : 0 // for accessiblity
+				tabindex : 0 // for accessibility
 			})
 			.addClass(`macro-${this.name}`)
 			.on('change.macros', this.shadowHandler(function () {

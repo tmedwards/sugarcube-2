@@ -51,7 +51,7 @@ Macro.add('textarea', {
 				name     : `${this.name}-${varId}`,
 				rows     : 4,
 				// cols     : 68, // instead of setting "cols" we set the `min-width` in CSS
-				tabindex : 0 // for accessiblity
+				tabindex : 0 // for accessibility
 			})
 			.addClass(`macro-${this.name}`)
 			.on('change.macros', this.shadowHandler(function () {
