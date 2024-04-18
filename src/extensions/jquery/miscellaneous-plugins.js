@@ -14,9 +14,6 @@
 	Returns an array of tag names of restricted elements within the target element(s).
 */
 (() => {
-    // TODO: Add more tag names that should be restricted within the content of interactables.
-	const RESTRICTED_ELEMENT_SELECTOR = 'a,button,form,input,select';
-
 	jQuery.fn.extend({
 		/*
 			Extend jQuery's chainable methods with a `getRestrictedInteractiveContentTagNames()` method.
@@ -31,7 +28,7 @@
 
 			// Populate the set with the restricted tags contained within the targets.
 			this
-				.has(RESTRICTED_ELEMENT_SELECTOR)
+				.find('a,button,fieldset,form,input,menuitem,optgroup,option,select,textarea')
 				.each((_, el) => restricted.add(el.nodeName.toLowerCase()));
 
 			// Return an array of the restricted set.
