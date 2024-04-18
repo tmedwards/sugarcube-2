@@ -30,7 +30,7 @@
 			const restricted = new Set();
 
 			// Populate the set with the restricted tags contained within the targets.
-			sources
+			this
 				.has(RESTRICTED_ELEMENT_SELECTOR)
 				.each((_, el) => restricted.add(el.nodeName.toLowerCase()));
 
