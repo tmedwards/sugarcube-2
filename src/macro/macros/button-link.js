@@ -58,10 +58,10 @@ Macro.add(['button', 'link'], {
 			$frag.wikiWithOptions({ cleanup : false, profile : 'core' }, this.args[0]);
 
 			// Sanity check for interactive content shenanigans.
-			const badTags = $frag.getBadInteractiveContentTags();
+			const restricted = $frag.getRestrictedInteractiveContentTagNames();
 
-			if (badTags.length > 0) {
-				throw new Error(`content contains improper elements: ${badTags.join(', ')}`);
+			if (restricted.length > 0) {
+				throw new Error(`content contains restricted elements: ${restricted.join(', ')}`);
 			}
 
 			$link.append($frag);
