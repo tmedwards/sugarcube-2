@@ -42,6 +42,7 @@ Macro.add('widget', {
 						State.temporary.args = Array.from(this.args);
 						State.temporary.args.raw = this.args.raw;
 						State.temporary.args.full = this.args.full;
+						State.temporary.args.name = this.name;
 						this.addShadow('_args');
 
 						if (isNonVoid) {
