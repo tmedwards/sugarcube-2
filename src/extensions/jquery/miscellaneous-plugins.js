@@ -10,29 +10,29 @@
 /*
 	Miscellaneous methods plugin.
 
-	`<jQuery>.getRestrictedInteractiveContentTagNames()`
-	Returns an array of tag names of restricted elements within the target element(s).
+	`<jQuery>.getForbiddenInteractiveContentTagNames()`
+	Returns an array of tag names of forbidden elements within the target element(s).
 */
 (() => {
 	jQuery.fn.extend({
 		/*
-			Extend jQuery's chainable methods with a `getRestrictedInteractiveContentTagNames()` method.
+			Extend jQuery's chainable methods with a `getForbiddenInteractiveContentTagNames()` method.
 		*/
-		getRestrictedInteractiveContentTagNames() {
+		getForbiddenInteractiveContentTagNames() {
 			// Bail out if there are no target element(s).
 			if (this.length === 0) {
 				return [];
 			}
 
-			const restricted = new Set();
+			const forbidden = new Set();
 
-			// Populate the set with the restricted tags contained within the targets.
+			// Populate the set with the forbidden tags contained within the targets.
 			this
 				.find('a,button,fieldset,form,input,menuitem,optgroup,option,select,textarea')
-				.each((_, el) => restricted.add(el.nodeName.toLowerCase()));
+				.each((_, el) => forbidden.add(el.nodeName.toLowerCase()));
 
-			// Return an array of the restricted set.
-			return Array.from(restricted);
+			// Return an array of the forbidden set.
+			return Array.from(forbidden);
 		}
 	});
 })();
