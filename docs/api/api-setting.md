@@ -161,14 +161,16 @@ A range-type definition object should have some of the following properties:
 
 ```js
 // Setting up a volume control for the settings property 'masterVolume' w/ callback
+var settingMasterVolumeHandler = function () {
+	SimpleAudio.volume(settings.masterVolume / 10);
+};
 Setting.addRange("masterVolume", {
 	label    : "Master volume.",
 	min      : 0,
 	max      : 10,
 	step     : 1,
-	onChange : function () {
-		SimpleAudio.volume(settings.masterVolume / 10);
-	}
+	onInit   : settingMasterVolumeHandler,
+	onChange : settingMasterVolumeHandler
 }); // default value not defined, so max value (10) is used
 ```
 <!--
