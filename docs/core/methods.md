@@ -607,6 +607,25 @@ $pies.shuffle()  → Randomizes the order of the pies in the array
 
 <!-- *********************************************************************** -->
 
+### `<Array>.toUnique()` → *Array&lt;any&gt;* {#methods-array-prototype-method-tounique}
+
+Returns a new copy of the base array created by removing all duplicate members.  Does not modify the original.
+
+#### History:
+
+* `v2.37.0`: Introduced.
+
+#### Parameters: *none*
+
+#### Examples:
+
+```
+// Given: $fruits = ["Apples", "Oranges", "Plums", "Plums", "Apples"]
+$fruits.toUnique()  → Returns ["Apples", "Oranges", "Plums"]
+```
+
+<!-- *********************************************************************** -->
+
 ### `<Array>.unshift(members…)` → *number* {#methods-array-prototype-method-unshift}
 
 Prepends one or more members to the beginning of the base array and returns its new length.
