@@ -2823,6 +2823,7 @@ The array-like object stored in the <code>_args</code> variable should be treate
 
 * `v2.0.0`: Introduced.
 * `v2.36.0`: Added the `container` keyword, `_args` variable, and `_contents` variable.  Deprecated the `$args` variable in favor of `_args`.
+* `v2.37.0`: Added the `_args.name` property.
 
 #### Arguments:
 
@@ -2831,7 +2832,7 @@ The array-like object stored in the <code>_args</code> variable should be treate
 
 #### Special variables, `_args` &amp; `_contents`:
 
-The `_args` special variable is used internally to store arguments passed to the widget—as zero-based indices; i.e., `_args[0]` is the first parsed argument, `_args[1]` is the second, etc—and the full argument string in raw and parsed forms—accessed via the `_args.raw` and `_args.full` properties.
+The `_args` special variable is used internally to store arguments passed to the widget—as zero-based indices; i.e., `_args[0]` is the first parsed argument, `_args[1]` is the second, etc—the full argument string in raw and parsed forms—accessed via the `_args.raw` and `_args.full` properties—and the widgets' name via the `_args.name` property.
 
 The `_contents` special variable is used internally, by container widgets, to store the contents they enclose.
 
