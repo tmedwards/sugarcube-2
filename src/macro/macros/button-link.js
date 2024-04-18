@@ -54,7 +54,17 @@ Macro.add(['button', 'link'], {
 		}
 		// Argument was simply the link text.
 		else {
-			$link.wikiWithOptions({ cleanup : false, profile : 'core' }, this.args[0]);
+			const $frag = jQuery(document.createDocumentFragment());
+			$frag.wikiWithOptions({ cleanup : false, profile : 'core' }, this.args[0]);
+
+			// Sanity check for interactive content shenanigans.
+			const badTags = $frag.getBadInteractiveContentTags();
+
+			if (badTags.length > 0) {
+				throw new Error(`content contains improper elements: ${badTags.join(', ')}`);
+			}
+
+			$link.append($frag);
 			passage = this.args.length > 1 ? this.args[1] : undefined;
 		}
 
