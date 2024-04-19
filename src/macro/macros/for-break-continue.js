@@ -171,7 +171,7 @@ Macro.add('for', {
 		try {
 			TempState.break = null;
 
-			while (true) {
+			for (;;) {
 				const entry = rangeable.next();
 
 				if (entry.done) {
