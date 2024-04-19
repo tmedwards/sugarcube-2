@@ -9,7 +9,7 @@
 
 Returns a deep copy of the given value.
 
-Only primitives, generic objects, <code>Array</code>, <code>Date</code>, <code>Map</code>, <code>RegExp</code>, and <code>Set</code> are supported by default.  Unsupported object types, either native or custom, will need to implement a <code>.clone()</code> method to be properly supported by the <code>clone()</code> function—when called on such an object, it will defer to the local method; see the <a href="#guide-tips-non-generic-object-types"><em>Non-generic object types (a.k.a. classes)</em> guide</a> for more information.
+Only primitives, generic objects, <code>Array</code>, <code>Date</code>, <code>Map</code>, <code>RegExp</code>, and <code>Set</code> are supported by default.  Unsupported object types, either native or custom, will need to implement a <code>.clone()</code> method to be properly supported by the <code>clone()</code> function—when called on such an object, it will defer to the local method; see the <a href="#guide-non-generic-object-types"><em>Non-generic object types (classes)</em> guide</a> for more information.
 
 <p role="note" class="warning"><b>Warning:</b>
 Referential relationships between objects are not maintained—i.e., after cloning multiple references to an object will refer to seperate yet equivalent objects, as each reference receives its own clone of the original.

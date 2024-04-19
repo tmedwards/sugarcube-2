@@ -1,7 +1,7 @@
 <!-- ***********************************************************************************************
 	Guide: Non-generic object types (classes)
 ************************************************************************************************ -->
-# Guide: Non-generic object types (classes) {#guide-non-generic-object-types}
+# Guide: Non-generic object types (classes)<!-- legacy --><span id="guide-tips-non-generic-object-types"></span><!-- /legacy --> {#guide-non-generic-object-types}
 
 As a basic working definition, non-generic object types—i.e., classes—are instantiable objects whose own prototype is not `Object`—e.g., `Array` is a native non-generic object type.
 
