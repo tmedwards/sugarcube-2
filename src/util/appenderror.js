@@ -11,11 +11,45 @@
 /*
 	Appends an error view to the given DOM element or fragment and logs a message to the console.
 */
-function appendError(output, message, source) { // eslint-disable-line no-unused-vars
+function appendError(output, error, source) { // eslint-disable-line no-unused-vars
+	let message;
+
+	if (error instanceof Error) {
+		message = error.message;
+
+		// // NOTE: I'm unsure if I trust Babel to do optional chaining sanely, so….
+		// for (
+		// 	let err = error?.cause?.origin;
+		// 	err;
+		// 	err = err?.cause?.origin
+		// ) {
+		// 	message += `: ${err.message}`;
+		// }
+		if (error.cause && error.cause.origin) {
+			for (
+				let err = error.cause.origin;
+				/* empty */;
+				err = err.cause.origin
+			) {
+				message += `: ${err.message}`;
+
+				if (!err.cause || !err.cause.origin) {
+					break;
+				}
+			}
+		}
+
+		// TODO: Handle `hint` properties somehow.
+	}
+	else {
+		message = String(error);
+	}
+
+	message = `${L10n.get('errorViewTitle')}: ${message || 'unknown error'}`;
+
 	const $wrapper = jQuery(document.createElement('div'));
 	const $toggle  = jQuery(document.createElement('button'));
 	const $source  = jQuery(document.createElement('pre'));
-	const mesg     = `${L10n.get('errorViewTitle')}: ${message || 'unknown error'}`;
 
 	$toggle
 		.addClass('error-toggle')
@@ -37,7 +71,7 @@ function appendError(output, message, source) { // eslint-disable-line no-unused
 		.appendTo($wrapper);
 	jQuery(document.createElement('span'))
 		.addClass('error')
-		.text(mesg)
+		.text(message)
 		.appendTo($wrapper);
 	jQuery(document.createElement('code'))
 		.text(source)
@@ -53,7 +87,7 @@ function appendError(output, message, source) { // eslint-disable-line no-unused
 		.addClass('error-view')
 		.appendTo(output);
 
-	console.warn(`${mesg}\n\t${source.replace(/\n/g, '\n\t')}`);
+	console.warn(`${message}\n\t${source.replace(/\n/g, '\n\t')}`);
 
 	return false;
 }
