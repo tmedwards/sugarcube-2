@@ -957,19 +957,19 @@
 		writable     : true,
 
 		value(num, min, max) {
-			if (arguments.length < 3) {
-				throw new Error('Math.clamp called with an incorrect number of parameters (want: 3, received: arguments.length)');
+			if (arguments.length !== 3) {
+				throw new Error(`Math.clamp called with an incorrect number of parameters (want: 3, received: ${arguments.length})`);
 			}
 
 			const value = Number(num);
-			let min = Number(min);
-			let max = Number(max);
+			let minVal = Number(min);
+			let maxVal = Number(max);
 
-			if (min > max) {
-				[min, max] = [max, min];
+			if (minVal > maxVal) {
+				[minVal, maxVal] = [maxVal, minVal];
 			}
 
-			return Math.min(Math.max(this, min), max);
+			return Math.min(Math.max(this, minVal), maxVal);
 		}
 	});
 
@@ -1347,17 +1347,10 @@
 			}
 
 			if (arguments.length !== 2) {
-				throw new Error('Number.prototype.clamp called with an incorrect number of parameters');
+				throw new Error(`Number.prototype.clamp called with an incorrect number of parameters (want: 2, received: ${arguments.length})`);
 			}
 
-			let min = Number(arguments[0]);
-			let max = Number(arguments[1]);
-
-			if (min > max) {
-				[min, max] = [max, min];
-			}
-
-			return Math.min(Math.max(this, min), max);
+			return Math.clamp(this, arguments[0], arguments[1]);
 		}
 	});
 })();
