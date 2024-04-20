@@ -957,8 +957,19 @@
 		writable     : true,
 
 		value(num, min, max) {
+			if (arguments.length < 3) {
+				throw new Error('Math.clamp called with an incorrect number of parameters (want: 3, received: arguments.length)');
+			}
+
 			const value = Number(num);
-			return Number.isNaN(value) ? NaN : value.clamp(min, max);
+			let min = Number(min);
+			let max = Number(max);
+
+			if (min > max) {
+				[min, max] = [max, min];
+			}
+
+			return Math.min(Math.max(this, min), max);
 		}
 	});
 
