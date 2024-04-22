@@ -135,20 +135,13 @@ SimpleStore.adapters.push((() => {
 				this._engine.setItem(this._prefix + key, _WebStorageAdapter._serialize(value));
 			}
 			catch (ex) {
-				/*
-					If the exception is a quota exceeded error, massage it into something
-					a bit nicer for the player.
-
-					NOTE: Ideally, we could simply do something like checking `ex.code`, but
-					it's a non-standard property and not supported in all browsers.  Thus,
-					we have to resort to pattern matching the name and message—the latter being
-					required by Opera (Presto).  I hate the parties responsible for this snafu
-					so much.
-				*/
-				if (/quota.?(?:exceeded|reached)/i.test(ex.name + ex.message)) {
+				// If the exception is a quota exceeded error, massage it into something
+				// a bit nicer for the player.
+				if (isQuotaDOMException(ex)) {
 					throw exceptionFrom(ex, Error, `${this.name} quota exceeded`);
 				}
 
+				// Elsewise, simply rethrow the exception.
 				throw ex;
 			}
 
@@ -206,15 +199,17 @@ SimpleStore.adapters.push((() => {
 		function hasWebStorage(storeId) {
 			try {
 				const store = window[storeId];
-				const tid   = `_sc_${String(Date.now())}`;
-				store.setItem(tid, tid);
-				const result = store.getItem(tid) === tid;
-				store.removeItem(tid);
+				const val   = `_sc_${String(Date.now())}`;
+				store.setItem(val, val);
+				const result = store.getItem(val) === val;
+				store.removeItem(val);
 				return result;
 			}
-			catch (ex) { /* no-op */ }
-
-			return false;
+			catch (ex) {
+				// Attempt to ensure that the exception was due to feature failure rather
+				// than simply a quota error, which is possible due to browser stupidity.
+				return isQuotaDOMException(ex) && store && store.length !== 0;
+			}
 		}
 
 		/*
@@ -232,6 +227,21 @@ SimpleStore.adapters.push((() => {
 		}
 
 		return new _WebStorageAdapter(storageId, persistent);
+	}
+
+	function isQuotaDOMException(ex) {
+		return ex instanceof DOMException
+			&& (
+				// The `.code` property, and its value, is non-standard and not supported
+				// by all browsers, but test it first anyway.
+				//
+				// Non-Firefox (22) and Firefox (1014).
+				ex.code === 22 || ex.code === 1014
+
+				// If the `.code` test failed, resort to pattern matching the `.name` and
+				// `.message` properties—the latter being required by Opera (Presto).
+				|| /quota.?(?:exceeded|reached)/i.test(ex.name + ex.message)
+			);
 	}
 
 
