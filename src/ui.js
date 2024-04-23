@@ -95,15 +95,6 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 	function buildSaves() {
-		function showAlert(message) {
-			if (Dialog.isOpen()) {
-				$(document).one(':dialogclosed', () => openAlert(message));
-			}
-			else {
-				openAlert(message);
-			}
-		}
-
 		function $createFileInput(id, callback) {
 			return jQuery(document.createElement('input'))
 				.attr({
@@ -171,7 +162,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 							callback(index);
 						}
 						catch (ex) {
-							showAlert(ex.message);
+							openAlert(ex.message);
 						}
 					});
 				}
@@ -229,7 +220,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 							Save.browser.auto.load(index)
 								.then(
 									Engine.show,
-									ex => showAlert(`${ex.message.toUpperFirst()}.</p><p>${L10n.get('textAborting')}.`)
+									ex => openAlert(`${ex.message.toUpperFirst()}.</p><p>${L10n.get('textAborting')}.`)
 								);
 						});
 					}
@@ -315,7 +306,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 								Save.browser.slot.load(index)
 									.then(
 										Engine.show,
-										ex => showAlert(`${ex.message.toUpperFirst()}.</p><p>${L10n.get('textAborting')}.`)
+										ex => openAlert(`${ex.message.toUpperFirst()}.</p><p>${L10n.get('textAborting')}.`)
 									);
 							});
 						}
@@ -394,7 +385,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 
 		// Bail out if both saves and the file API are disabled/missing.
 		if (!browserEnabled && !Has.fileAPI) {
-			showAlert(L10n.get('warningNoSaves'));
+			openAlert(L10n.get('warningNoSaves'));
 			return false;
 		}
 
@@ -420,10 +411,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 					Save.browser.import(ev)
 						.then(
 							buildSaves,
-							ex => {
-								Dialog.close();
-								showAlert(`${ex.message.toUpperFirst()}.</p><p>${L10n.get('textAborting')}.`);
-							}
+							ex => openAlert(`${ex.message.toUpperFirst()}.</p><p>${L10n.get('textAborting')}.`)
 						);
 				});
 
@@ -478,10 +466,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 					Save.disk.load(ev)
 						.then(
 							Engine.show,
-							ex => {
-								Dialog.close();
-								showAlert(`${ex.message.toUpperFirst()}.</p><p>${L10n.get('textAborting')}.`);
-							}
+							ex => openAlert(`${ex.message.toUpperFirst()}.</p><p>${L10n.get('textAborting')}.`)
 						);
 				});
 				Dialog.close();
