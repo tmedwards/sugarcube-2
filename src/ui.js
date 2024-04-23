@@ -162,7 +162,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 							callback(index);
 						}
 						catch (ex) {
-							openAlert(ex.message);
+							openAlert(`${ex.message}.</p><p>${L10n.get('textAborting')}.`);
 						}
 					});
 				}
