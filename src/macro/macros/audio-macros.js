@@ -279,6 +279,13 @@
 
 				const id = String(this.args[0]).trim();
 
+				try {
+					SimpleAudio.tracks.add(id, this.args.slice(1));
+				}
+				catch (ex) {
+					return this.error(ex.message);
+				}
+
 				// If in Test Mode and no supported sources were specified, return an error.
 				if (Config.debug && !SimpleAudio.tracks.get(id).hasSource()) {
 					return this.error(`track ID "${id}": no supported audio sources found`);
