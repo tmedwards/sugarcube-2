@@ -138,7 +138,10 @@ SimpleStore.adapters.push((() => {
 				// If the exception is a quota exceeded error, massage it into something
 				// a bit nicer for the player.
 				if (isQuotaDOMException(ex)) {
-					throw exceptionFrom(ex, Error, `${this.name} quota exceeded`);
+					throw exceptionFrom(ex, Error, {
+						cause   : { origin : ex },
+						message : `${this.name} quota exceeded`
+					});
 				}
 
 				// Elsewise, simply rethrow the exception.
@@ -228,19 +231,23 @@ SimpleStore.adapters.push((() => {
 
 		return new _WebStorageAdapter(storageId, persistent);
 	}
+	const isQuotaErrorRE = /quota.?(?:exceeded|reached)/i;
 
 	function isQuotaDOMException(ex) {
 		return ex instanceof DOMException
 			&& (
-				// The `.code` property, and its value, is non-standard and not supported
-				// by all browsers, but test it first anyway.
+				// The `.code` property is non-standard and not supported by all browsers,
+				// but for legacy support test it first anyway.
 				//
-				// Non-Firefox (22) and Firefox (1014).
+				// Legacy codes: `22` (non-Firefox) and `1014` (Firefox).
 				ex.code === 22 || ex.code === 1014
 
 				// If the `.code` test failed, resort to pattern matching the `.name` and
-				// `.message` properties—the latter being required by Opera (Presto).
-				|| /quota.?(?:exceeded|reached)/i.test(ex.name + ex.message)
+				// `.message` properties—the latter being required only by Opera (Presto).
+				//
+				// NOTE: The current standards compliant name is `"QuotaExceededError"`.
+				// Legacy names: `"QUOTA_EXCEEDED_ERR"` (non-Firefox) and `"NS_ERROR_DOM_QUOTA_REACHED"` (Firefox).
+				|| isQuotaErrorRE.test(ex.name) || isQuotaErrorRE.test(ex.message)
 			);
 	}
 
