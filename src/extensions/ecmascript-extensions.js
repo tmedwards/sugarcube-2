@@ -969,7 +969,7 @@
 				[minVal, maxVal] = [maxVal, minVal];
 			}
 
-			return Math.min(Math.max(this, minVal), maxVal);
+			return Math.min(Math.max(value, minVal), maxVal);
 		}
 	});
 
