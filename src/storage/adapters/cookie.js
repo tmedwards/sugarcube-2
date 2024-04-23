@@ -18,10 +18,10 @@ SimpleStore.adapters.push((() => {
 
 
 	/*******************************************************************************
-		_CookieAdapter Class.
+		CookieAdapter Class.
 	*******************************************************************************/
 
-	class _CookieAdapter {
+	class CookieAdapter {
 		constructor(storageId, persistent) {
 			const prefix = `${storageId}${persistent ? '!' : '*'}.`;
 
@@ -43,7 +43,7 @@ SimpleStore.adapters.push((() => {
 				},
 
 				persistent : {
-					value : !!persistent
+					value : Boolean(persistent)
 				}
 			});
 		}
@@ -52,7 +52,7 @@ SimpleStore.adapters.push((() => {
 		get length() {
 			if (BUILD_DEBUG) { console.log(`[<SimpleStore:${this.name}>.length : Number]`); }
 
-			return this.keys().length;
+			return this.size();
 		}
 		/* /legacy */
 
@@ -77,11 +77,10 @@ SimpleStore.adapters.push((() => {
 				const key    = decodeURIComponent(kvPair[0]);
 
 				if (this._prefixRe.test(key)) {
-					/*
-						All stored values are serialized and an empty string serializes to a non-empty
-						string.  Therefore, receiving an empty string here signifies a deleted value,
-						not a serialized empty string, so we should omit such pairs.
-					*/
+					// NOTE: All stored values are serialized and an empty string will
+					// always serialize to a non-empty string.  Therefore, receiving an
+					// empty string here denotes a deleted value rather than a serialized
+					// empty string, so we omit such pairs.
 					const value = decodeURIComponent(kvPair[1]);
 
 					if (value !== '') {
@@ -100,7 +99,7 @@ SimpleStore.adapters.push((() => {
 				return false;
 			}
 
-			return _CookieAdapter._getCookie(this._prefix + key) !== null;
+			return CookieAdapter._getCookie(this._prefix + key) !== null;
 		}
 
 		get(key) {
@@ -110,9 +109,9 @@ SimpleStore.adapters.push((() => {
 				return null;
 			}
 
-			const value = _CookieAdapter._getCookie(this._prefix + key);
+			const value = CookieAdapter._getCookie(this._prefix + key);
 
-			return value === null ? null : _CookieAdapter._deserialize(value);
+			return value === null ? null : CookieAdapter._deserialize(value);
 		}
 
 		set(key, value) {
@@ -123,9 +122,9 @@ SimpleStore.adapters.push((() => {
 			}
 
 			try {
-				_CookieAdapter._setCookie(
+				CookieAdapter._setCookie(
 					this._prefix + key,
-					_CookieAdapter._serialize(value),
+					CookieAdapter._serialize(value),
 
 					// An undefined expiry denotes a session cookie.
 					this.persistent ? _MAX_EXPIRY : undefined
@@ -137,7 +136,10 @@ SimpleStore.adapters.push((() => {
 			}
 			catch (ex) {
 				// Massage the cookie exception into something a bit nicer for the player.
-				throw exceptionFrom(ex, Error, `cookie error: ${ex.message}`);
+				throw exceptionFrom(ex, Error, {
+					cause   : { origin : ex },
+					message : `cookie error: ${ex.message}`
+				});
 			}
 
 			return true;
@@ -155,7 +157,7 @@ SimpleStore.adapters.push((() => {
 			}
 
 			try {
-				_CookieAdapter._setCookie(
+				CookieAdapter._setCookie(
 					this._prefix + key,
 
 					// Use `undefined` as the value.
@@ -171,7 +173,10 @@ SimpleStore.adapters.push((() => {
 			}
 			catch (ex) {
 				// Massage the cookie exception into something a bit nicer for the player.
-				throw exceptionFrom(ex, Error, `cookie error: ${ex.message}`);
+				throw exceptionFrom(ex, Error, {
+					cause   : { origin : ex },
+					message : `cookie error: ${ex.message}`
+				});
 			}
 
 			return true;
@@ -182,17 +187,11 @@ SimpleStore.adapters.push((() => {
 
 			const keys = this.keys();
 
-			for (let i = 0, iend = keys.length; i < iend; ++i) {
+			for (let i = 0, length = keys.length; i < length; ++i) {
 				if (BUILD_DEBUG) { console.log('\tdeleting key:', keys[i]); }
 
 				this.delete(keys[i]);
 			}
-
-			// this.keys().forEach(key => {
-			// 	if (BUILD_DEBUG) { console.log('\tdeleting key:', key); }
-			//
-			// 	this.delete(key);
-			// });
 
 			return true;
 		}
@@ -211,11 +210,10 @@ SimpleStore.adapters.push((() => {
 				if (prefixedKey === key) {
 					const value = decodeURIComponent(kvPair[1]);
 
-					/*
-						All stored values are serialized and an empty string serializes to a non-empty
-						string.  Therefore, receiving an empty string here signifies a deleted value,
-						not a serialized empty string, so we should yield `null` for such pairs.
-					*/
+					// NOTE: All stored values are serialized and an empty string will
+					// always serialize to a non-empty string.  Therefore, receiving an
+					// empty string here denotes a deleted value rather than a serialized
+					// empty string, so we return `null` for such pairs.
 					return value || null;
 				}
 			}
@@ -256,7 +254,15 @@ SimpleStore.adapters.push((() => {
 		Adapter Utility Functions.
 	*******************************************************************************/
 
-	function adapterInit(
+	function create(storageId, persistent) {
+		if (!_ok) {
+			throw new Error('adapter not initialized');
+		}
+
+		return new CookieAdapter(storageId, persistent);
+	}
+
+	function init(
 		// Only used for stores updates.
 		storageId
 	) {
@@ -265,9 +271,9 @@ SimpleStore.adapters.push((() => {
 			const tid = `_sc_${String(Date.now())}`;
 
 			// We only test a session cookie as that should suffice.
-			_CookieAdapter._setCookie(tid, _CookieAdapter._serialize(tid), undefined);
-			_ok = _CookieAdapter._deserialize(_CookieAdapter._getCookie(tid)) === tid;
-			_CookieAdapter._setCookie(tid, undefined, _MIN_EXPIRY);
+			CookieAdapter._setCookie(tid, CookieAdapter._serialize(tid), undefined);
+			_ok = CookieAdapter._deserialize(CookieAdapter._getCookie(tid)) === tid;
+			CookieAdapter._setCookie(tid, undefined, _MIN_EXPIRY);
 		}
 		catch (ex) {
 			_ok = false;
@@ -281,14 +287,6 @@ SimpleStore.adapters.push((() => {
 		/* /legacy */
 
 		return _ok;
-	}
-
-	function adapterCreate(storageId, persistent) {
-		if (!_ok) {
-			throw new Error('adapter not initialized');
-		}
-
-		return new _CookieAdapter(storageId, persistent);
 	}
 
 	/* legacy */
@@ -310,25 +308,24 @@ SimpleStore.adapters.push((() => {
 			const key    = decodeURIComponent(kvPair[0]);
 
 			if (oldPrefixRe.test(key)) {
-				/*
-					All stored values are serialized and an empty string serializes to a non-empty
-					string.  Therefore, receiving an empty string here signifies a deleted value,
-					not a serialized empty string, so we should skip processing such pairs.
-				*/
+				// NOTE: All stored values are serialized and an empty string will always
+				// serialize to a non-empty string.  Therefore, receiving an empty string
+				// here denotes a deleted value rather than a serialized empty string, so
+				// we skip processing of such pairs.
 				const value = decodeURIComponent(kvPair[1]);
 
 				if (value !== '') {
 					const persist = !sessionTestRe.test(key);
 
 					// Delete the old k/v pair.
-					_CookieAdapter._setCookie(
+					CookieAdapter._setCookie(
 						key,
 						undefined,
 						_MIN_EXPIRY
 					);
 
 					// Set the new k/v pair.
-					_CookieAdapter._setCookie(
+					CookieAdapter._setCookie(
 						key.replace(oldPrefixRe, () => persist ? persistPrefix : sessionPrefix),
 						value,
 						persist ? _MAX_EXPIRY : undefined
@@ -345,7 +342,7 @@ SimpleStore.adapters.push((() => {
 	*******************************************************************************/
 
 	return Object.preventExtensions(Object.create(null, {
-		init   : { value : adapterInit },
-		create : { value : adapterCreate }
+		init   : { value : init },
+		create : { value : create }
 	}));
 })());

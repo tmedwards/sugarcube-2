@@ -14,10 +14,10 @@ SimpleStore.adapters.push((() => {
 
 
 	/*******************************************************************************
-		_WebStorageAdapter Class.
+		WebStorageAdapter Class.
 	*******************************************************************************/
 
-	class _WebStorageAdapter {
+	class WebStorageAdapter {
 		constructor(storageId, persistent) {
 			const prefix = `${storageId}.`;
 			let engine = null;
@@ -54,7 +54,7 @@ SimpleStore.adapters.push((() => {
 				},
 
 				persistent : {
-					value : !!persistent
+					value : Boolean(persistent)
 				}
 			});
 		}
@@ -63,23 +63,15 @@ SimpleStore.adapters.push((() => {
 		get length() {
 			if (BUILD_DEBUG) { console.log(`[<SimpleStore:${this.name}>.length : Number]`); }
 
-			/*
-				NOTE: DO NOT do something like `return this._engine.length;` here,
-				as that will return the length of the entire store, rather than
-				just our prefixed keys.
-			*/
-			return this.keys().length;
+			return this.size();
 		}
 		/* /legacy */
 
 		size() {
 			if (BUILD_DEBUG) { console.log(`[<SimpleStore:${this.name}>.size() : Number]`); }
 
-			/*
-				NOTE: DO NOT do something like `return this._engine.length;` here,
-				as that will return the length of the entire store, rather than
-				just our prefixed keys.
-			*/
+			// WARNING: Do not return `this._engine.length` here as that will return the
+			// length of the entire store, rather than just our prefixed keys.
 			return this.keys().length;
 		}
 
@@ -106,9 +98,8 @@ SimpleStore.adapters.push((() => {
 				return false;
 			}
 
-			// // FIXME: This method should probably check for the key, rather than comparing its value.
-			// return this._engine.getItem(this._prefix + key) != null; // lazy equality for null
-
+			// NOTE: Do not call `this._engine.getItem()` and check its value here as we
+			// do not need to be making copies of values.
 			return Object.hasOwn(this._engine, this._prefix + key);
 		}
 
@@ -121,7 +112,10 @@ SimpleStore.adapters.push((() => {
 
 			const value = this._engine.getItem(this._prefix + key);
 
-			return value == null ? null : _WebStorageAdapter._deserialize(value); // lazy equality for null
+			// QUESTION: Has `<Storage>.getItem()` ever returned any value other than
+			// `null` for non-existent keys?  I seem to recall a browser bug where
+			// `undefined` was returned, but I can't find any details about it now.
+			return value == null ? null : WebStorageAdapter._deserialize(value); // lazy equality for null
 		}
 
 		set(key, value) {
@@ -132,7 +126,7 @@ SimpleStore.adapters.push((() => {
 			}
 
 			try {
-				this._engine.setItem(this._prefix + key, _WebStorageAdapter._serialize(value));
+				this._engine.setItem(this._prefix + key, WebStorageAdapter._serialize(value));
 			}
 			catch (ex) {
 				// If the exception is a quota exceeded error, massage it into something
@@ -166,19 +160,16 @@ SimpleStore.adapters.push((() => {
 		clear() {
 			if (BUILD_DEBUG) { console.log(`[<SimpleStore:${this.name}>.clear() : Boolean]`); }
 
+			// WARNING: Do not call `this._engine.clear()` here as that will remove all
+			// keys within the entire store, rather than just our prefixed keys.
+
 			const keys = this.keys();
 
-			for (let i = 0, iend = keys.length; i < iend; ++i) {
+			for (let i = 0, length = keys.length; i < length; ++i) {
 				if (BUILD_DEBUG) { console.log('\tdeleting key:', keys[i]); }
 
 				this.delete(keys[i]);
 			}
-
-			// return this.keys().forEach(key => {
-			// 	if (BUILD_DEBUG) { console.log('\tdeleting key:', key); }
-			//
-			// 	this.delete(key);
-			// });
 
 			return true;
 		}
@@ -197,12 +188,22 @@ SimpleStore.adapters.push((() => {
 		Adapter Utility Functions.
 	*******************************************************************************/
 
-	function adapterInit() {
+	function create(storageId, persistent) {
+		if (!_ok) {
+			throw new Error('adapter not initialized');
+		}
+
+		return new WebStorageAdapter(storageId, persistent);
+	}
+
+	function init() {
 		// Web Storage feature test.
 		function hasWebStorage(storeId) {
+			let store;
+
 			try {
-				const store = window[storeId];
-				const val   = `_sc_${String(Date.now())}`;
+				store = window[storeId];
+				const val = `_sc_${String(Date.now())}`;
 				store.setItem(val, val);
 				const result = store.getItem(val) === val;
 				store.removeItem(val);
@@ -211,26 +212,17 @@ SimpleStore.adapters.push((() => {
 			catch (ex) {
 				// Attempt to ensure that the exception was due to feature failure rather
 				// than simply a quota error, which is possible due to browser stupidity.
-				return isQuotaDOMException(ex) && store && store.length !== 0;
+				return store && store.length !== 0 && isQuotaDOMException(ex);
 			}
 		}
 
-		/*
-			Just to be safe, we feature test for both `localStorage` and `sessionStorage`,
-			as you never know what browser implementation bugs you're going to run into.
-		*/
+		// Just to be safe, we feature test for both `localStorage` and `sessionStorage`,
+		// as you never know what browser implementation bugs you're going to run into.
 		_ok = hasWebStorage('localStorage') && hasWebStorage('sessionStorage');
 
 		return _ok;
 	}
 
-	function adapterCreate(storageId, persistent) {
-		if (!_ok) {
-			throw new Error('adapter not initialized');
-		}
-
-		return new _WebStorageAdapter(storageId, persistent);
-	}
 	const isQuotaErrorRE = /quota.?(?:exceeded|reached)/i;
 
 	function isQuotaDOMException(ex) {
@@ -257,7 +249,7 @@ SimpleStore.adapters.push((() => {
 	*******************************************************************************/
 
 	return Object.preventExtensions(Object.create(null, {
-		init   : { value : adapterInit },
-		create : { value : adapterCreate }
+		init   : { value : init },
+		create : { value : create }
 	}));
 })());

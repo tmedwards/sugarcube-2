@@ -19,7 +19,7 @@ var SimpleStore = (() => { // eslint-disable-line no-unused-vars, no-var
 		SimpleStore Functions.
 	*******************************************************************************/
 
-	function storeCreate(storageId, persistent) {
+	function create(storageId, persistent) {
 		if (_initialized) {
 			return _initialized.create(storageId, persistent);
 		}
@@ -41,16 +41,12 @@ var SimpleStore = (() => { // eslint-disable-line no-unused-vars, no-var
 	*******************************************************************************/
 
 	return Object.preventExtensions(Object.create(null, {
-		/*
-			Adapters List.
-
-			TODO: This should probably have a getter, rather than being exported directly.
-		*/
+		// Adapters List.
+		//
+		// QUESTION: Should this be a getter, rather than being exported directly?
 		adapters : { value : _adapters },
 
-		/*
-			Core Functions.
-		*/
-		create : { value : storeCreate }
+		// Core Functions.
+		create : { value : create }
 	}));
 })();
