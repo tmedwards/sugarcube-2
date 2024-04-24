@@ -1900,6 +1900,7 @@ var SimpleAudio = (() => { // eslint-disable-line no-unused-vars, no-var
 					case ':muted':   ids = allIds.filter(id => _tracks.get(id).mute()); break;
 					case ':paused':  ids = allIds.filter(id => _tracks.get(id).isPaused()); break;
 					case ':playing': ids = allIds.filter(id => _tracks.get(id).isPlaying()); break;
+					case ':stopped': ids = allIds.filter(id => _tracks.get(id).isStopped()); break;
 					default:         ids = id[0] === ':' ? _groups.get(id) : [id]; break;
 				}
 

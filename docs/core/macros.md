@@ -2088,6 +2088,7 @@ The <a href="#config-api-property-audio-pauseonfadetozero"><code>Config.audio.pa
 * `v2.1.0`: Added `fadeoverto` action.
 * `v2.8.0`: Added group ID(s).
 * `v2.28.0`: Added `load` and `unload` actions.
+* `v2.37.0`: Added `:stopped` predefined group ID.
 
 #### Arguments:
 
@@ -2112,7 +2113,7 @@ The <a href="#config-api-property-audio-pauseonfadetozero"><code>Config.audio.pa
 
 #### Group IDs:
 
-Group IDs allow several tracks to be selected simultaneously without needing to specify each one individually.  There are several predefined group IDs (`:all`, `:looped`, `:muted`, `:paused`, `:playing`) and custom IDs may be defined via [`<<createaudiogroup>>`](#macros-macro-createaudiogroup).  The `:not()` group modifier syntax (`groupId:not(trackIdList)`) allows a group to have some of its tracks excluded from selection.
+Group IDs allow several tracks to be selected simultaneously without needing to specify each one individually.  There are several predefined group IDs (`:all`, `:looped`, `:muted`, `:paused`, `:playing`, `:stopped`) and custom IDs may be defined via [`<<createaudiogroup>>`](#macros-macro-createaudiogroup).  The `:not()` group modifier syntax (`groupId:not(trackIdList)`) allows a group to have some of its tracks excluded from selection.
 
 #### Examples:
 
@@ -2254,12 +2255,13 @@ The <a href="#special-passage-storyinit"><code>StoryInit</code> special passage<
 #### History:
 
 * `v2.19.0`: Introduced.
+* `v2.37.0`: Added `:stopped` predefined group ID.
 
 #### Arguments:
 
 ##### `<<createaudiogroup>>`
 
-* **`groupId`:** The ID of the group that will be used to reference it and *must* begin with a colon.  **NOTE:** There are several predefined group IDs (`:all`, `:looped`, `:muted`, `:paused`, `:playing`) and the `:not` group modifier that cannot be reused/overwritten.
+* **`groupId`:** The ID of the group that will be used to reference it and *must* begin with a colon.  **NOTE:** There are several predefined group IDs (`:all`, `:looped`, `:muted`, `:paused`, `:playing`, `:stopped`) and the `:not` group modifier that cannot be reused/overwritten.
 
 ##### `<<track>>`
 
@@ -2523,12 +2525,13 @@ blazing fast internet with unlimited data—especially true for mobile users.  P
 Removes the audio group with the given ID.
 
 <p role="note"><b>Note:</b>
-You may not remove the predefined group IDs (<code>:all</code>, <code>:looped</code>, <code>:muted</code>, <code>:paused</code>, <code>:playing</code>) or the <code>:not</code> group modifier.
+You may not remove the predefined group IDs (<code>:all</code>, <code>:looped</code>, <code>:muted</code>, <code>:paused</code>, <code>:playing</code>, <code>:stopped</code>) or the <code>:not</code> group modifier.
 </p>
 
 #### History:
 
 * `v2.28.0`: Introduced.
+* `v2.37.0`: Added `:stopped` predefined group ID.
 
 #### Arguments:
 
