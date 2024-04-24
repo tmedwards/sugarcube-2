@@ -10,7 +10,7 @@
 
 var SimpleAudio = (() => { // eslint-disable-line no-unused-vars, no-var
 	// Special group IDs.
-	const _specialIds = Object.freeze([':not', ':all', ':looped', ':muted', ':paused', ':playing']);
+	const _specialIds = Object.freeze([':not', ':all', ':looped', ':muted', ':paused', ':playing', ':stopped']);
 
 	// Format specifier regular expression.
 	const _formatSpecRe = /^([\w-]+)\s*\|\s*(\S.*)$/; // e.g. 'mp3|https://audiohost.tld/id'
