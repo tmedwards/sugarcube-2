@@ -1548,7 +1548,7 @@ var SimpleAudio = (() => { // eslint-disable-line no-unused-vars, no-var
 		const id   = String(arguments[0]).trim();
 		const what = `group ID "${id}"`;
 
-		if (id[0] !== ':' || _badIdRe.test(id.slice(1))) {
+		if (!id.startsWith(':') || _badIdRe.test(id.slice(1))) {
 			throw new Error(`invalid ${what}: group IDs must start with a colon and must not contain colons or whitespace`);
 		}
 
@@ -1801,7 +1801,7 @@ var SimpleAudio = (() => { // eslint-disable-line no-unused-vars, no-var
 			match = notWsRe.exec(str);
 
 			if (match === null || match[0] !== '(') {
-				throw new Error('invalid ":not()" syntax: missing parentheticals');
+				throw new Error('invalid ":not()" syntax: missing parenthesis');
 			}
 
 			parenRe.lastIndex = notWsRe.lastIndex;
@@ -1843,7 +1843,7 @@ var SimpleAudio = (() => { // eslint-disable-line no-unused-vars, no-var
 
 					const parent = ids[ids.length - 1];
 
-					if (parent.id[0] !== ':') {
+					if (!parent.id.startsWith(':')) {
 						throw new Error(`invalid negation of track "${parent.id}": only groups may be negated with ":not()"`);
 					}
 
@@ -1901,7 +1901,22 @@ var SimpleAudio = (() => { // eslint-disable-line no-unused-vars, no-var
 					case ':paused':  ids = allIds.filter(id => _tracks.get(id).isPaused()); break;
 					case ':playing': ids = allIds.filter(id => _tracks.get(id).isPlaying()); break;
 					case ':stopped': ids = allIds.filter(id => _tracks.get(id).isStopped()); break;
-					default:         ids = id[0] === ':' ? _groups.get(id) : [id]; break;
+					default: {
+						if (id.startsWith(':')) {
+							const group = _groups.get(id);
+
+							if (!group) {
+								throw new Error(`group "${id}" does not exist`);
+							}
+
+							ids = group;
+						}
+						else {
+							ids = [id];
+						}
+
+						break;
+					}
 				}
 
 				if (Object.hasOwn(idObj, 'not')) {
