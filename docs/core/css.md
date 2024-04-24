@@ -25,7 +25,7 @@ For example, if the passage name was `Gone fishin'`, then:
 When displaying a passage, its tags are:
 
 1. Added to the active passage's container element, `<html>` element, and `<body>` element as a space separated list within the `data-tags` attribute.
-2. Added to the active passage's container element and `<body>` element as classes.  The following special tags are excluded from this mapping:  
+2. Added to the active passage's container element and `<body>` element as classes.  The following special tags are excluded from this mapping:
 	<table class="list-table">
 	<tbody>
 		<tr>
@@ -170,16 +170,20 @@ body.forest a:hover { color: lime; }
 **************************************************************************** -->
 ## Built-in Stylesheets {#css-built-ins}
 
-These are SugarCube's built-in stylesheets, in order of load/cascade.  The most interesting of which, from an end-user's standpoint, are 4–10.  The links go to the most recent release versions of each in SugarCube's [source code repository](https://github.com/tmedwards/sugarcube-2).
+These are SugarCube's built-in stylesheets, in order of load/cascade.  The most interesting of which, from an end-user's standpoint, are 5–13.  The links go to the most recent release versions of each in SugarCube's [source code repository](https://github.com/tmedwards/sugarcube-2).
 
-1. [normalize.css](https://raw.githubusercontent.com/tmedwards/sugarcube-2/master/src/vendor/normalize.css)
-2. [init-screen.css](https://raw.githubusercontent.com/tmedwards/sugarcube-2/master/src/css/init-screen.css)
-3. [font.css](https://raw.githubusercontent.com/tmedwards/sugarcube-2/master/src/css/font.css)
-4. [core.css](https://raw.githubusercontent.com/tmedwards/sugarcube-2/master/src/css/core.css)
-5. [core-display.css](https://raw.githubusercontent.com/tmedwards/sugarcube-2/master/src/css/core-display.css)
-6. [core-passage.css](https://raw.githubusercontent.com/tmedwards/sugarcube-2/master/src/css/core-passage.css)
-7. [core-macro.css](https://raw.githubusercontent.com/tmedwards/sugarcube-2/master/src/css/core-macro.css)
-8. [ui-dialog.css](https://raw.githubusercontent.com/tmedwards/sugarcube-2/master/src/css/ui-dialog.css)
-9. [ui.css](https://raw.githubusercontent.com/tmedwards/sugarcube-2/master/src/css/ui.css)
-10. [ui-bar.css](https://raw.githubusercontent.com/tmedwards/sugarcube-2/master/src/css/ui-bar.css)
-11. [ui-debug.css](https://raw.githubusercontent.com/tmedwards/sugarcube-2/master/src/css/ui-debug.css)
+1. [`normalize.css`](https://raw.githubusercontent.com/tmedwards/sugarcube-2/master/vendor/normalize.css)
+2. [`init-screen.css`](https://raw.githubusercontent.com/tmedwards/sugarcube-2/master/src/css/init-screen.css)
+3. [`font-icons.css`](https://raw.githubusercontent.com/tmedwards/sugarcube-2/master/src/css/font-icons.css)
+4. [`font-emoji.css`](https://raw.githubusercontent.com/tmedwards/sugarcube-2/master/src/css/font-emoji.css)
+5. [`core.css`](https://raw.githubusercontent.com/tmedwards/sugarcube-2/master/src/css/core.css)
+6. [`core-display.css`](https://raw.githubusercontent.com/tmedwards/sugarcube-2/master/src/css/core-display.css)
+7. [`core-passage.css`](https://raw.githubusercontent.com/tmedwards/sugarcube-2/master/src/css/core-passage.css)
+8. [`core-macro.css`](https://raw.githubusercontent.com/tmedwards/sugarcube-2/master/src/css/core-macro.css)
+9. [`ui-dialog.css`](https://raw.githubusercontent.com/tmedwards/sugarcube-2/master/src/css/ui-dialog.css)
+10. [`ui-dialog-saves.css`](https://raw.githubusercontent.com/tmedwards/sugarcube-2/master/src/css/ui-dialog-saves.css)
+11. [`ui-dialog-settings.css`](https://raw.githubusercontent.com/tmedwards/sugarcube-2/master/src/css/ui-dialog-settings.css)
+12. [`ui-dialog-legacy.css`](https://raw.githubusercontent.com/tmedwards/sugarcube-2/master/src/css/ui-dialog-legacy.css)
+13. [`ui-bar.css`](https://raw.githubusercontent.com/tmedwards/sugarcube-2/master/src/css/ui-bar.css)
+14. [`ui-debug-bar.css`](https://raw.githubusercontent.com/tmedwards/sugarcube-2/master/src/css/ui-debug-bar.css)
+15. [`ui-debug-views.css`](https://raw.githubusercontent.com/tmedwards/sugarcube-2/master/src/css/ui-debug-views.css)
