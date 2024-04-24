@@ -59,16 +59,8 @@ SimpleStore.adapters.push((() => {
 			});
 		}
 
-		/* legacy */
-		get length() {
-			if (BUILD_DEBUG) { console.log(`[<SimpleStore:${this.name}>.length : Number]`); }
-
-			return this.size();
-		}
-		/* /legacy */
-
-		size() {
-			if (BUILD_DEBUG) { console.log(`[<SimpleStore:${this.name}>.size() : Number]`); }
+		get size() {
+			if (BUILD_DEBUG) { console.log(`[<SimpleStore:${this.name}>.size : Number]`); }
 
 			// WARNING: Do not return `this._engine.length` here as that will return the
 			// length of the entire store, rather than just our prefixed keys.

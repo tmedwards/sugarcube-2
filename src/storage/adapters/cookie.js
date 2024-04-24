@@ -48,16 +48,8 @@ SimpleStore.adapters.push((() => {
 			});
 		}
 
-		/* legacy */
-		get length() {
-			if (BUILD_DEBUG) { console.log(`[<SimpleStore:${this.name}>.length : Number]`); }
-
-			return this.size();
-		}
-		/* /legacy */
-
-		size() {
-			if (BUILD_DEBUG) { console.log(`[<SimpleStore:${this.name}>.size() : Number]`); }
+		get size() {
+			if (BUILD_DEBUG) { console.log(`[<SimpleStore:${this.name}>.size : Number]`); }
 
 			return this.keys().length;
 		}
