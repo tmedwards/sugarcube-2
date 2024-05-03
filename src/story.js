@@ -379,11 +379,11 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 				}
 
 				if (key === Config.passages.start || codePassageNames.includes(key)) {
-					throw new Error(`Story.delete() passage object "${key}" must not be a code passage`);
+					throw new Error(`Story.delete() passage "${key}" must not be a code passage`);
 				}
 
 				if (_passages[key].tags.includesAny(codeTagNames)) {
-					throw new Error(`Story.delete() passage object "${key}" must not include code tags`);
+					throw new Error(`Story.delete() passage "${key}" must not include code tags`);
 				}
 
 				delete _passages[key];
