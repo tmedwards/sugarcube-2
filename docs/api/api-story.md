@@ -52,7 +52,7 @@ The `string` name of the story.
 Adds the passage to the passage store.
 
 <p role="note"><b>Note:</b>
-This method cannot add passages tagged with <a href="#code-tags">code tags</a>.
+This method cannot add <a href="#code-passages">code passages</a> or passages tagged with <a href="#code-tags">code tags</a>.
 </p>
 
 #### History:
@@ -97,7 +97,7 @@ if (Story.add(descriptor)) {
 Deletes the `Passage` instance with the given name.
 
 <p role="note"><b>Note:</b>
-This method cannot delete passages tagged with <a href="#code-tags">code tags</a>.
+This method cannot add <a href="#code-passages">code passages</a> or passages tagged with <a href="#code-tags">code tags</a>.
 </p>
 
 #### History:
@@ -118,66 +118,6 @@ Boolean `true` if a `Passage` instance with the given name was deleted, elsewise
 // Delete the Passage instance with the name "The Ducky"
 if (Story.delete("The Ducky")) {
 	/* The "The Ducky" passage was deleted. */
-}
-```
-
-<!-- *********************************************************************** -->
-
-### `Story.get(name)` → *`Passage`* {#story-api-method-get}
-
-Gets the `Passage` instance with the given name.
-
-<p role="note"><b>Note:</b>
-This method cannot retrieve passages tagged with <a href="#code-tags">code tags</a>.
-</p>
-
-#### History:
-
-* `v2.0.0`: Introduced.
-
-#### Parameters:
-
-* **`name`:** (*string*) The name of the `Passage` instance.
-
-#### Returns:
-
-The `Passage` instance with the given name, or a new empty `Passage` instance if no such passage exists.
-
-#### Examples:
-
-```js
-// Get the Passage instance with the name "The Ducky"
-const theDucky = Story.get("The Ducky");
-```
-
-<!-- *********************************************************************** -->
-
-### `Story.has(name)` → *boolean* {#story-api-method-has}
-
-Determines whether a `Passage` instance with the given name exists.
-
-<p role="note"><b>Note:</b>
-This method does not check passages tagged with <a href="#code-tags">code tags</a>.
-</p>
-
-#### History:
-
-* `v2.0.0`: Introduced.
-
-#### Parameters:
-
-* **`name`:** (*string*) The name of the `Passage` instance.
-
-#### Returns:
-
-Boolean `true` if a `Passage` instance with the given name exists, elsewise `false`.
-
-#### Examples:
-
-```js
-// Returns whether a "The Ducky" Passage instance exists
-if (Story.has("The Ducky")) {
-	/* The "The Ducky" passage exists. */
 }
 ```
 
@@ -255,6 +195,66 @@ var hasWhitespaceRegExp = /\s/;
 Story.find(function (p) {
 	return hasWhitespaceRegExp.test(p.name);
 });
+```
+
+<!-- *********************************************************************** -->
+
+### `Story.get(name)` → *`Passage`* {#story-api-method-get}
+
+Gets the `Passage` instance with the given name.
+
+<p role="note"><b>Note:</b>
+This method cannot retrieve passages tagged with <a href="#code-tags">code tags</a>.
+</p>
+
+#### History:
+
+* `v2.0.0`: Introduced.
+
+#### Parameters:
+
+* **`name`:** (*string*) The name of the `Passage` instance.
+
+#### Returns:
+
+The `Passage` instance with the given name, or a new empty `Passage` instance if no such passage exists.
+
+#### Examples:
+
+```js
+// Get the Passage instance with the name "The Ducky"
+const theDucky = Story.get("The Ducky");
+```
+
+<!-- *********************************************************************** -->
+
+### `Story.has(name)` → *boolean* {#story-api-method-has}
+
+Determines whether a `Passage` instance with the given name exists.
+
+<p role="note"><b>Note:</b>
+This method does not check passages tagged with <a href="#code-tags">code tags</a>.
+</p>
+
+#### History:
+
+* `v2.0.0`: Introduced.
+
+#### Parameters:
+
+* **`name`:** (*string*) The name of the `Passage` instance.
+
+#### Returns:
+
+Boolean `true` if a `Passage` instance with the given name exists, elsewise `false`.
+
+#### Examples:
+
+```js
+// Returns whether a "The Ducky" Passage instance exists
+if (Story.has("The Ducky")) {
+	/* The "The Ducky" passage exists. */
+}
 ```
 
 <!-- *********************************************************************** -->
