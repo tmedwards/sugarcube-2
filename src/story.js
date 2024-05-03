@@ -518,10 +518,6 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 		throw new TypeError(`Story.has name parameter cannot be ${type}`);
 	}
 
-	function noCodes(passage) {
-		return !codePassageNames.includes(passage.name);
-	}
-
 
 	/*******************************************************************************
 		Deprecated Functions.
@@ -586,7 +582,6 @@ var Story = (() => { // eslint-disable-line no-unused-vars, no-var
 		getStyles  : { value : getStyles },
 		getWidgets : { value : getWidgets },
 		has        : { value : has },
-		noCodes    : { value : noCodes },
 
 		/* legacy */
 		domId : {
