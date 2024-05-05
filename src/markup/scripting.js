@@ -329,7 +329,7 @@ var Scripting = (() => { // eslint-disable-line no-unused-vars, no-var
 		Returns the title of the current passage.
 	*/
 	function passage() {
-		return State.passage;
+		return Engine.currentPassageTitle ?? State.passage;
 	}
 
 	/*

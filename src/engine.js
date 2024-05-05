@@ -39,6 +39,8 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 	// List of objects describing `StoryInterface` elements to update via passages during navigation.
 	let _updating = null;
 
+	// Store current passage title regardless of whether we save it to history
+	let _currentPassageTitle = null;
 
 	/*******************************************************************************************************************
 		Engine Functions.
@@ -457,6 +459,8 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 			}
 		});
 
+		_currentPassageTitle = passage.title;
+
 		// Create a new entry in the history.
 		if (!noHistory) {
 			State.create(passage.title);
@@ -794,6 +798,8 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 		*/
 		States            : { value : States },
 		minDomActionDelay : { value : minDomActionDelay },
+
+		currentPassageTitle : _currentPassageTitle,
 
 		/*
 			Core Functions.
