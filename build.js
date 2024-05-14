@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /***********************************************************************************************************************
 
-	build.js (v1.9.2, 2024-04-09)
+	build.js (v1.9.3, 2024-05-14)
 		A Node.js-hosted build script for SugarCube.
 
 	Copyright © 2013–2024 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
@@ -224,7 +224,7 @@ if (_opts.build) {
 
 			toString() {
 				const prerelease = this.prerelease ? `-${this.prerelease}` : '';
-				const build = `+${this.build}`;
+				const build = this.prerelease ? `+${this.build}` : '';
 				return `${this.major}.${this.minor}.${this.patch}${prerelease}${build}`;
 			}
 		};
