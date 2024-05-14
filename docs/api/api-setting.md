@@ -22,7 +22,7 @@ Adds a header to the Settings dialog.
 #### Parameters:
 
 * **`name`:** (*string*) Name of the header.
-* **`desc`:** (optional, *string*) Description explaining the header in greater detail.
+* **`desc`:** (optional, *string*) Description explaining the header in greater detail.  May contain markup.
 
 #### Examples:
 
@@ -56,7 +56,7 @@ A list-type definition object should have some of the following properties:
 
 * **`label`:** (*string*) Label to use for the control.
 * **`list`:** (*Array&lt;string&gt;*) The array of members.
-* **`desc`:** (optional, *string*) Description explaining the control in greater detail.
+* **`desc`:** (optional, *string*) Description explaining the control in greater detail.  May contain markup.
 * **`default`:** (optional, *[as **`list`** array]*) The default value for the setting and default state of the control.  It should have the same value as one of the members of the **`list`** array.  Leaving it undefined means to use the first array member as the default.
 * **`onInit`:** (optional, *function*) The function to call during initialization.  It is called with a result object as its sole parameter and, if possible, set as its `this`.
 * **`onChange`:** (optional, *function*) The function to call when the control's state is changed.  It is called with a result object as its sole parameter and, if possible, set as its `this`.
@@ -143,7 +143,7 @@ A range-type definition object should have some of the following properties:
 * **`max`:** (*number*) The maximum value.
 * **`min`:** (*number*) The minimum value.
 * **`step`:** (*number*) Limits the increments to which the value may be set.  It must be evenly divisible into the full range—i.e., `max - min`.
-* **`desc`:** (optional, *string*) Description explaining the control in greater detail.
+* **`desc`:** (optional, *string*) Description explaining the control in greater detail.  May contain markup.
 * **`default`:** (optional, *number*) The default value for the setting and default state of the control.  Leaving it undefined means to use the value of `max` as the default.
 * **`onInit`:** (optional, *function*) The function to call during initialization.  It is called with a result object as its sole parameter and, if possible, set as its `this`.
 * **`onChange`:** (optional, *function*) The function to call when the control's state is changed.  It is called with a result object as its sole parameter and, if possible, set as its `this`.
@@ -201,7 +201,7 @@ Adds the named property to the `settings` object and a toggle control for it to 
 A toggle-type definition object should have some of the following properties:
 
 * **`label`:** (*string*) Label to use for the control.
-* **`desc`:** (optional, *string*) Description explaining the control in greater detail.
+* **`desc`:** (optional, *string*) Description explaining the control in greater detail.  May contain markup.
 * **`default`:** (optional, *boolean*) The default value for the setting and default state of the control.  Leaving it undefined means to use `false` as the default.
 * **`onInit`:** (optional, *function*) The function to call during initialization.  It is called with a result object as its sole parameter and, if possible, set as its `this`.
 * **`onChange`:** (optional, *function*) The function to call when the control's state is changed.  It is called with a result object as its sole parameter and, if possible, set as its `this`.
