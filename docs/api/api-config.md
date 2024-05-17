@@ -346,6 +346,33 @@ Config.navigation.override = function (dest) {
 };
 ```
 
+### `Config.navigation.disallow` ↔ *function* (default: *none*) {#config-api-property-navigation-disallow}
+
+Allows passage navigation to be prevented. The callback is passed one parameter, the original destination passage title.  If its return value is true, the transition is cancelled and navigation is aborted.
+
+#### History:
+
+* `v2.37.0`: Introduced.
+
+#### Examples:
+
+```js
+Config.navigation.disallow = function (destinationPassage) {
+	/* code that returns a passage name or a falsy value */
+};
+```
+
+##### Based upon a story variable
+
+```js
+// Force the player to wear a snowsuit before going outside
+Config.navigation.disallow = function (dest) {
+	return (tags().includes('indoors') && 
+	    tags(dest).includes('outdoors') &&
+		!State.variables.player.wearsSnowSuit())
+};
+```
+
 
 <!-- ***************************************************************************
 	Passages

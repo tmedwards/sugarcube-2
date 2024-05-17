@@ -60,7 +60,7 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 		// Get the user's UI markup, if any.
 		const markup = Story.has('StoryInterface') && Story.get('StoryInterface').text.trim();
 
-		// If user markup exists, remove unnecessary default UI and process the markup.
+		// If user markup exists, remove unnecessay default UI and process the markup.
 		if (markup) {
 			// Disable updates on default UI elements.
 			Config.ui.updateStoryElements = false;
@@ -73,11 +73,6 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 
 			// Append the user's UI elements to the main UI container.
 			$main.append(markup);
-
-			// Bail out if a child `#story` exists.
-			if ($main.find('#story').length > 0) {
-				throw new Error('element with ID "story" found within "StoryInterface" special passage');
-			}
 
 			// Cache the `#passages` element.
 			const $passages = $main.find('#passages');
@@ -465,6 +460,18 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 		if (BUILD_DEBUG) { console.log(`[Engine/enginePlay(title: "${title}", noHistory: ${noHistory})]`); }
 
 		let passageTitle = title;
+		
+		// Execute the navigation disallow callback.
+		if (typeof Config.navigation.disallow === 'function') {
+			try {
+				const disallowTransition = Config.navigation.disallow(passageTitle);
+
+				if (disallowTransition) {
+					return false;
+				}
+			}
+			catch (ex) { /* no-op */ }
+		}
 
 		// Update the engine state.
 		_state = States.Playing;

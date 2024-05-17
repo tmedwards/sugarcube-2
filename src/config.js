@@ -30,6 +30,7 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 	let _macrosTypeVisitedPassages = true;
 
 	// Navigation settings.
+	let _navigationDisallow;
 	let _navigationOverride;
 
 	// Passages settings.
@@ -183,7 +184,16 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 				}
 
 				_navigationOverride = value;
+			},
+			get disallow() { return _navigationDisallow; },
+			set disallow(value) {
+				if (!(value == null || value instanceof Function)) { // lazy equality for null
+					throw new TypeError(`Config.navigation.disallow must be a function or null/undefined (received: ${getTypeOf(value)})`);
+				}
+				_navigationDisallow = value;
 			}
+
+
 		}),
 
 		/*
