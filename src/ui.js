@@ -95,8 +95,10 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 	function buildSaves() {
-		function $createFileInput(id, callback) {
-			return jQuery(document.createElement('input'))
+		function createFileInput(id, callback) {
+			const input = document.createElement('input');
+
+			jQuery(input)
 				.attr({
 					id,
 					type          : 'file',
@@ -113,6 +115,8 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 					height     : '1px'
 				})
 				.on('change', callback);
+
+			return input;
 		}
 
 		function createActionItem(id, classNames, text, label, callback) {
@@ -407,7 +411,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 			if (Has.fileAPI) {
 				// Add the browser export/import buttons and the hidden `input[type=file]`
 				// element that will be triggered by the `#saves-import` button.
-				const $slotImportInput = $createFileInput('saves-import-handler', ev => {
+				const slotImportInput = createFileInput('saves-import-handler', ev => {
 					Save.browser.import(ev)
 						.then(
 							buildSaves,
@@ -428,10 +432,10 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 						null,
 						`${L10n.get('textImport')}\u2026`,
 						L10n.get('savesLabelBrowserImport'),
-						() => triggerEvent('click', $slotImportInput)
+						() => slotImportInput.click()
 					));
 
-				$slotImportInput.appendTo($dialogBody);
+				jQuery(slotImportInput).appendTo($dialogBody);
 			}
 
 			// Add the slots clear button.
@@ -449,7 +453,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 			));
 		}
 
-		// Add button bar items (export, import, and clear).
+		// Add the disk export and import buttons.
 		if (Has.fileAPI) {
 			jQuery(document.createElement('h2'))
 				.text(L10n.get('savesHeaderDisk'))
@@ -461,7 +465,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 
 			// Add the disk save/load buttons and the hidden `input[type=file]`
 			// element that will be triggered by the `#saves-disk-load` button.
-			const $diskLoadInput = $createFileInput('saves-disk-load-handler', ev => {
+			const diskLoadInput = createFileInput('saves-disk-load-handler', ev => {
 				jQuery(document).one(':dialogclosed', () => {
 					Save.disk.load(ev)
 						.then(
@@ -487,10 +491,10 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 					null,
 					`${L10n.get('textLoad')}\u2026`,
 					L10n.get('savesLabelDiskLoad'),
-					() => triggerEvent('click', $diskLoadInput)
+					() => diskLoadInput.click()
 				));
 
-			$diskLoadInput.appendTo($dialogBody);
+			jQuery(diskLoadInput).appendTo($dialogBody);
 		}
 
 		return true;
