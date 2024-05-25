@@ -1,6 +1,6 @@
 {
   "name": "SugarCube",
-  "version": "2.37.0-alpha.20",
+  "version": "2.37.0-alpha.21",
   "author": "Thomas Michael Edwards <thomasmedwards@gmail.com>",
   "description": "Dependency install configuration for SugarCube's Node.js-hosted build script, build.js.",
   "license": "BSD-2-Clause",
