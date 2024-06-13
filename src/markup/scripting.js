@@ -385,6 +385,21 @@ var Scripting = (() => { // eslint-disable-line no-unused-vars, no-var
 		// Add a <script> element which will load the script from the given URL.
 		function addScript(url) {
 			return new Promise((resolve, reject) => {
+				let kind;
+				let src;
+
+				if (typeof url === 'string') {
+					kind = url.trim().toLowerCase().endsWith('.mjs') ? 'module' : 'text/javascript';
+					src  = url;
+				}
+				else if (typeof url === 'object') {
+					kind = url.type;
+					src  = url.src;
+				}
+				else {
+					throw new Error('importScripts url parameter unrecognized.');
+				}
+
 				/*
 					WARNING: The ordering of the code within this function is important,
 					as some browsers don't play well with different arrangements, so
@@ -400,14 +415,14 @@ var Scripting = (() => { // eslint-disable-line no-unused-vars, no-var
 							resolve(ev.target);
 						}
 						else {
-							reject(new Error(`importScripts failed to load the script "${url}".`));
+							reject(new Error(`importScripts failed to load the script "${src}".`));
 						}
 					})
 					.appendTo(document.head)
 					.attr({
-						id   : `script-imported-${slugifyUrl(url)}`,
-						type : 'text/javascript',
-						src  : url
+						id   : `script-imported-${slugifyUrl(src)}`,
+						type : kind,
+						src
 					});
 			});
 		}
