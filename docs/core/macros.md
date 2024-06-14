@@ -2845,12 +2845,10 @@ When a widget is called, any existing `_args` variable, and for container widget
 <p>When calling one container widget directly from within another container widget, the <code>_contents</code> special variable of the outer widget <strong><em>must not</em></strong> be included within the body of the call of the inner widget.  Doing so will cause uncontrolled recursion.  E.g.,</p>
 <pre><code>&lt;&lt;widget "inner" container&gt;&gt;
 _contents
-&lt;&lt;/widget&gt;&gt;
-
+&lt;&lt;/widget&gt;&gt;<br>
 &lt;&lt;widget "outer" container&gt;&gt;
 &lt;&lt;inner&gt;&gt;_contents&lt;&lt;/inner&gt;&gt;
-&lt;&lt;/widget&gt;&gt;
-
+&lt;&lt;/widget&gt;&gt;<br>
 &lt;&lt;outer&gt;&gt;ford&lt;&lt;/outer&gt;&gt;</code></pre>
 </div>
 

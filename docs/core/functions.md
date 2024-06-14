@@ -5,7 +5,7 @@
 
 <!-- *********************************************************************** -->
 
-### `clone(original)` → *any* {#functions-function-clone}
+### `clone(original)` → `any` {#functions-function-clone}
 
 Returns a deep copy of the given value.
 
@@ -25,7 +25,13 @@ Generic objects have only their own enumerable properties copied.  Non-enumerabl
 
 #### Parameters:
 
-* **`original`:** (*any*) The object to value.
+* **`original`:** (`any`) The value to clone.
+
+#### Returns:
+
+A deep copy (`any`) of the original value.
+
+#### Throws: *none*
 
 #### Examples:
 
@@ -45,7 +51,7 @@ $bar.id  → Returns: 5
 
 <!-- *********************************************************************** -->
 
-### `either(list…)` → *any* {#functions-function-either}
+### `either(list…)` → `any` {#functions-function-either}
 
 Returns a random value from its given arguments.
 
@@ -55,7 +61,13 @@ Returns a random value from its given arguments.
 
 #### Parameters:
 
-* **`list`:** (*any*) The list of values to operate on.  May be any combination of singular values, actual arrays, or array-like objects.  All values will be concatenated into a single list for selection.  **NOTE:** Does not flatten nested arrays—if this is required, the [`<Array>.flat()`](#methods-array-prototype-method-flat) method may be used to flatten the nested arrays prior to passing them to `either()`.
+* **`list`:** (`any`) The list of values to operate on.  May be any combination of singular values, actual arrays, or array-like objects.  All values will be concatenated into a single list for selection.  **NOTE:** Does not flatten nested arrays—if this is required, the [`<Array>.flat()`](#methods-array-prototype-method-flat) method may be used to flatten the nested arrays prior to passing them to `either()`.
+
+#### Returns:
+
+A random value from its given arguments.
+
+#### Throws: *none*
 
 #### Examples:
 
@@ -89,7 +101,13 @@ Removes the specified key, and its associated value, from the story metadata sto
 
 #### Parameters:
 
-* **`key`:** (*string*) The key to remove.
+* **`key`:** (`string`) The key to remove.
+
+#### Returns: *none*
+
+#### Throws:
+
+An `Error` or `TypeError` instance.
 
 #### Examples:
 
@@ -99,9 +117,9 @@ Removes the specified key, and its associated value, from the story metadata sto
 
 <!-- *********************************************************************** -->
 
-### `hasVisited(passages…)` → *boolean* {#functions-function-hasvisited}
+### `hasVisited(passages…)` → `boolean` {#functions-function-hasvisited}
 
-Returns whether the passage with the given title occurred within the story history.  If multiple passage titles are given, returns the logical-AND aggregate of the set—i.e., `true` if all were found, `false` if any were not found.
+Returns whether the passage with the given name occurred within the story history.  If multiple passage names are given, returns the logical-AND aggregate of the set—i.e., `true` if all were found, `false` if any were not found.
 
 #### History:
 
@@ -109,7 +127,15 @@ Returns whether the passage with the given title occurred within the story histo
 
 #### Parameters:
 
-* **`passages`:** (*string* | *Array&lt;string&gt;*) The title(s) of the passage(s) to search for.  May be a list or an array of passages.
+* **`passages`:** (`string` | `Array<string>`) The name(s) of the passage(s) to search for.  May be a list or an array of passages.
+
+#### Returns:
+
+Boolean `true` if all were found, elsewise `false`.
+
+#### Throws:
+
+An `Error` instance.
 
 #### Examples:
 
@@ -122,9 +148,9 @@ Returns whether the passage with the given title occurred within the story histo
 
 <!-- *********************************************************************** -->
 
-### `lastVisited(passages…)` → *integer* {#functions-function-lastvisited}
+### `lastVisited(passages…)` → `integer` {#functions-function-lastvisited}
 
-Returns the number of turns that have passed since the last instance of the passage with the given title occurred within the story history or `-1` if it does not exist.  If multiple passage titles are given, returns the lowest count (which can be `-1`).
+Returns the number of turns that have passed since the last instance of the passage with the given name occurred within the story history or `-1` if it does not exist.  If multiple passage names are given, returns the lowest count (which can be `-1`).
 
 #### History:
 
@@ -132,7 +158,15 @@ Returns the number of turns that have passed since the last instance of the pass
 
 #### Parameters:
 
-* **`passages`:** (*string* | *Array&lt;string&gt;*) The title(s) of the passage(s) to search for.  May be a list or an array of passages.
+* **`passages`:** (`string` | `Array<string>`) The name(s) of the passage(s) to search for.  May be a list or an array of passages.
+
+#### Returns:
+
+The lowest count (`integer`), elsewise `-1`.
+
+#### Throws:
+
+An `Error` instance.
 
 #### Examples:
 
@@ -146,7 +180,7 @@ Returns the number of turns that have passed since the last instance of the pass
 
 <!-- *********************************************************************** -->
 
-### `importScripts(urls…)` → *`Promise` object* {#functions-function-importscripts}
+### `importScripts(urls…)` → `Promise` {#functions-function-importscripts}
 
 Load and integrate external JavaScript scripts.
 
@@ -165,7 +199,19 @@ Your project's JavaScript section (Twine&nbsp;2: the Story JavaScript; Twine&nbs
 
 #### Parameters:
 
-* **`urls`:** (*string* | *object* | *Array&lt;string | object&gt;*) The URLs of the external scripts to import.  Loose URLs are imported concurrently, arrays of URLs are imported sequentially.  **NOTE:** URLs ending in `.mjs` are imported as modules.  URLs can also be specified as objects with a `type` and a `src` property.
+* **`urls`:** (`string` | `object` | `Array<string | object>`) The URLs of the external scripts to import.  Loose URLs are imported concurrently, arrays of URLs are imported sequentially.  URLs may also be specified as objects with a `type` and a `src` property.
+
+<p role="note"><b>Note:</b>
+URLs ending in <code>.mjs</code> are imported as modules.
+</p>
+
+#### Returns:
+
+A `Promise` that simply resolves, or rejects with an error if the script could not be loaded.
+
+#### Throws:
+
+An `Error` instance.
 
 #### Examples:
 
@@ -218,10 +264,10 @@ importScripts(
 // the script has been fully loaded before executing dependent code
 importScripts("https://somesite/a/path/a.js")
 	.then(function () {
-		// Code that depends on the script goes here.
+		// Code that depends on the script goes here
 	})
 	.catch(function (err) {
-		// There was an error loading the script, log it to the console.
+		// There was an error loading the script, log it to the console
 		console.log(err);
 	});
 ```
@@ -236,17 +282,17 @@ setup.aScriptImport = importScripts("https://somesite/a/path/aScript.js");
 // loaded before executing dependent code
 setup.aScriptImport
 	.then(function () {
-		// Code that depends on the script goes here.
+		// Code that depends on the script goes here
 	})
 	.catch(function (err) {
-		// There was an error loading the script, log it to the console.
+		// There was an error loading the script, log it to the console
 		console.log(err);
 	});
 ```
 
 <!-- *********************************************************************** -->
 
-### `importStyles(urls…)` → *`Promise` object* {#functions-function-importstyles}
+### `importStyles(urls…)` → `Promise` {#functions-function-importstyles}
 
 Load and integrate external CSS stylesheets.
 
@@ -264,7 +310,15 @@ Your project's JavaScript section (Twine&nbsp;2: the Story JavaScript; Twine&nbs
 
 #### Parameters:
 
-* **`urls`:** (*string* | *Array&lt;string&gt;*) The URLs of the external stylesheets to import.  Loose URLs are imported concurrently, arrays of URLs are imported sequentially.
+* **`urls`:** (`string` | `Array<string>`) The URLs of the external stylesheets to import.  Loose URLs are imported concurrently, arrays of URLs are imported sequentially.
+
+#### Returns:
+
+A `Promise` that simply resolves, or rejects with an error if the style could not be loaded.
+
+#### Throws:
+
+An `Error` instance.
 
 #### Examples:
 
@@ -309,11 +363,11 @@ var lsLockId = LoadScreen.lock();
 // stylesheet has been fully loaded before unlocking the loading screen
 importStyles("https://somesite/a/path/a.css")
 	.then(function () {
-		// The stylesheet has been loaded, release the loading screen lock.
+		// The stylesheet has been loaded, release the loading screen lock
 		LoadScreen.unlock(lsLockId);
 	})
 	.catch(function (err) {
-		// There was an error loading the stylesheet, log it to the console.
+		// There was an error loading the stylesheet, log it to the console
 		console.log(err);
 	});
 ```
@@ -346,8 +400,14 @@ This feature is largely incompatible with private browsing modes, which cause al
 
 #### Parameters:
 
-* **`key`:** (*string*) The key that should be set.
-* **`value`:** (*any*) The value to set.
+* **`key`:** (`string`) The key that should be set.
+* **`value`:** (`any`) The value to set.
+
+#### Returns: *none*
+
+#### Throws:
+
+An `TypeError` instance.
 
 #### Examples:
 
@@ -361,15 +421,21 @@ This feature is largely incompatible with private browsing modes, which cause al
 
 <!-- *********************************************************************** -->
 
-### `passage()` → *string* {#functions-function-passage}
+### `passage()` → `string` {#functions-function-passage}
 
-Returns the title of the active (present) passage.
+Returns the name of the active (present) passage.
 
 #### History:
 
 * `v2.0.0`: Introduced.
 
 #### Parameters: *none*
+
+#### Returns:
+
+The name (`string`) of the passage.
+
+#### Throws: *none*
 
 #### Examples:
 
@@ -379,15 +445,21 @@ Returns the title of the active (present) passage.
 
 <!-- *********************************************************************** -->
 
-### `previous()` → *string* {#functions-function-previous}
+### `previous()` → `string` {#functions-function-previous}
 
-Returns the title of the most recent previous passage whose title does not match that of the active passage or an empty string, if there is no such passage.
+Returns the name of the most recent previous passage whose name does not match that of the active passage or an empty string, if there is no such passage.
 
 #### History:
 
 * `v2.0.0`: Introduced.
 
 #### Parameters: *none*
+
+#### Returns:
+
+The name (`string`) of the passage, elsewise an empty string (`''`).
+
+#### Throws: *none*
 
 #### Examples:
 
@@ -400,7 +472,7 @@ Returns the title of the most recent previous passage whose title does not match
 
 <!-- *********************************************************************** -->
 
-### `random([min ,] max)` → *integer* {#functions-function-random}
+### `random([min ,] max)` → `integer` {#functions-function-random}
 
 Returns a pseudo-random whole number (integer) within the range of the given bounds (inclusive)—i.e., [min,&nbsp;max].
 
@@ -414,8 +486,16 @@ By default, it uses <a href="https://developer.mozilla.org/en-US/docs/Web/JavaSc
 
 #### Parameters:
 
-* **`min`:** (optional, *integer*) The lower bound of the random number (inclusive).  If omitted, will default to `0`.
-* **`max`:** (*integer*) The upper bound of the random number (inclusive).
+* **`min`:** (optional, `integer`) The lower bound of the random number (inclusive).  If omitted, will default to `0`.
+* **`max`:** (`integer`) The upper bound of the random number (inclusive).
+
+#### Returns:
+
+A random whole number (`integer`).
+
+#### Throws:
+
+An `Error` or `TypeError` instance.
 
 #### Examples:
 
@@ -426,7 +506,7 @@ random(1, 6)  → Returns a number in the range 1–6
 
 <!-- *********************************************************************** -->
 
-### `randomFloat([min ,] max)` → *float* {#functions-function-randomfloat}
+### `randomFloat([min ,] max)` → `decimal` {#functions-function-randomfloat}
 
 Returns a pseudo-random decimal number (floating-point) within the range of the given bounds (inclusive for the minimum, exclusive for the maximum)—i.e., [min,&nbsp;max).
 
@@ -440,8 +520,16 @@ By default, it simply returns non-deterministic results from <a href="https://de
 
 #### Parameters:
 
-* **`min`:** (optional, *float*) The lower bound of the random number (inclusive).  If omitted, will default to `0.0`.
-* **`max`:** (*float*) The upper bound of the random number (exclusive).
+* **`min`:** (optional, `decimal`) The lower bound of the random number (inclusive).  If omitted, will default to `0.0`.
+* **`max`:** (`decimal`) The upper bound of the random number (exclusive).
+
+#### Returns:
+
+A random floating-point number (`decimal`).
+
+#### Throws:
+
+An `Error` or `TypeError` instance.
 
 #### Examples:
 
@@ -452,7 +540,7 @@ randomFloat(1.0, 6.0)  → Returns a number in the range 1.0–5.9999999…
 
 <!-- *********************************************************************** -->
 
-### `recall(key [, defaultValue])` → *any* {#functions-function-recall}
+### `recall(key [, defaultValue])` → `any` {#functions-function-recall}
 
 Returns the value associated with the specified key from the story metadata store or, if no such key exists, the specified default value, if any.
 
@@ -466,8 +554,16 @@ Returns the value associated with the specified key from the story metadata stor
 
 #### Parameters:
 
-* **`key`:** (*string*) The key whose value should be returned.
-* **`defaultValue`:** (optional, *any*) The value to return if the key doesn't exist.
+* **`key`:** (`string`) The key whose value should be returned.
+* **`defaultValue`:** (optional, `any`) The value to return if the key doesn't exist.
+
+#### Returns:
+
+A value (`any`) from the specified key, elsewise the default value if specified.
+
+#### Throws:
+
+A `TypeError` instance.
 
 #### Examples:
 
@@ -481,7 +577,7 @@ Returns the value associated with the specified key from the story metadata stor
 
 <!-- *********************************************************************** -->
 
-### `setPageElement(idOrElement , passages [, defaultText])` → *`HTMLElement` object* | *null* {#functions-function-setpageelement}
+### `setPageElement(idOrElement , passages [, defaultText])` → `HTMLElement` | `null` {#functions-function-setpageelement}
 
 Renders the selected passage into the target element, replacing any existing content, and returns the element.  If no passages are found and default text is specified, it will be used instead.
 
@@ -491,9 +587,15 @@ Renders the selected passage into the target element, replacing any existing con
 
 #### Parameters:
 
-* **`idOrElement`:** (*string* | *`HTMLElement` object*) The ID of the element or the element itself.
-* **`passages`:** (*string* | *Array&lt;string&gt;*) The name(s) of the passage(s) to search for.  May be a single passage or an array of passages.  If an array of passage names is specified, the first passage to be found is used.
-* **`defaultText`:** (optional, *string*) The default text to use if no passages are found.
+* **`idOrElement`:** (`string` | `HTMLElement`) The ID of the element or the element itself.
+* **`passages`:** (`string` | `Array<string>`) The name(s) of the passage(s) to search for.  May be a single passage or an array of passages.  If an array of passage names is specified, the first passage to be found is used.
+* **`defaultText`:** (optional, `string`) The default text to use if no passages are found.
+
+#### Returns:
+
+An `HTMLElement`, elsewise `null`.
+
+#### Throws: *none*
 
 #### Examples:
 
@@ -511,7 +613,7 @@ setPageElement(myElement, "MyPassage");
 
 <!-- *********************************************************************** -->
 
-### `tags([passages…])` → *Array&lt;string&gt;* {#functions-function-tags}
+### `tags([passages…])` → `Array<string>` {#functions-function-tags}
 
 Returns a new array consisting of all of the tags of the given passages.
 
@@ -521,7 +623,13 @@ Returns a new array consisting of all of the tags of the given passages.
 
 #### Parameters:
 
-* **`passages`:** (optional, *string* | *Array&lt;string&gt;*) The passages from which to collect tags.  May be a list or an array of passages.  If omitted, will default to the active (present) passage—included passages do not count for this purpose; e.g., passages pulled in via `<<include>>`, `PassageHeader`, etc.
+* **`passages`:** (optional, `string` | `Array<string>`) The passages from which to collect tags.  May be a list or an array of passages.  If omitted, will default to the active (present) passage—included passages do not count for this purpose; e.g., passages pulled in via `<<include>>`, `PassageHeader`, etc.
+
+#### Returns:
+
+The tags (`Array<string>`).
+
+#### Throws: *none*
 
 #### Examples:
 
@@ -532,7 +640,7 @@ Returns a new array consisting of all of the tags of the given passages.
 
 <!-- *********************************************************************** -->
 
-### `temporary()` → *object* {#functions-function-temporary}
+### `temporary()` → `object` {#functions-function-temporary}
 
 Returns a reference to the current temporary variables store (equivalent to: [`State.temporary`](#state-api-getter-temporary)).  This is only really useful within pure JavaScript code, as within TwineScript you may simply access temporary variables natively.
 
@@ -541,6 +649,12 @@ Returns a reference to the current temporary variables store (equivalent to: [`S
 * `v2.19.0`: Introduced.
 
 #### Parameters: *none*
+
+#### Returns:
+
+A reference to the temporary variable store (`object`).
+
+#### Throws: *none*
 
 #### Examples:
 
@@ -553,7 +667,7 @@ if (temporary().selection === 'Zagnut Bar') {
 
 <!-- *********************************************************************** -->
 
-### `time()` → *integer* {#functions-function-time}
+### `time()` → `integer` {#functions-function-time}
 
 Returns the number of milliseconds that have passed since the current passage was rendered to the page.
 
@@ -562,6 +676,12 @@ Returns the number of milliseconds that have passed since the current passage wa
 * `v2.0.0`: Introduced.
 
 #### Parameters: *none*
+
+#### Returns:
+
+The number of milliseconds (`integer`) since the passage was rendered.
+
+#### Throws: *none*
 
 #### Examples:
 
@@ -596,9 +716,9 @@ Dispatches a synthetic event with the given name, optionally on the given target
 If dispatching custom events, it is recommended that you limit your custom event names to the following characters: letters, digits, periods (<kbd>.</kbd>), hyphens (<kbd>-</kbd>), underscores (<kbd>_</kbd>), and colons (<kbd>:</kbd>).
 </p>
 
-* **`name`:** (*string*) The name of the event to trigger.  Both native and custom events are supported.
-* **`targets`:** (optional, *`Document`|`HTMLElement`|`jQuery`|`NodeList`|`Array<HTMLElement>`*) The target(s) to trigger the event on.  If omitted, will default to `document`.
-* **`options`:** (optional, *object*) The options to be used when dispatching the event.  See below for details.
+* **`name`:** (`string`) The name of the event to trigger.  Both native and custom events are supported.
+* **`targets`:** (optional, `Document` | `HTMLElement` | `jQuery` | `NodeList` | `Array<HTMLElement>`) The target(s) to trigger the event on.  If omitted, will default to `document`.
+* **`options`:** (optional, `object`) The options to be used when dispatching the event.  See below for details.
 
 #### Options object:
 
@@ -608,10 +728,14 @@ Adding additional properties directly to event options objects is not recommende
 
 An event options object should have some of the following properties:
 
-* **`bubbles`:** (optional, *boolean*) Whether the event bubbles (default: `true`).
-* **`cancelable`:** (optional, *boolean*) Whether the event is cancelable (default: `true`).
-* **`composed`:** (optional, *boolean*) Whether the event triggers listeners outside of a shadow root (default: `false`).
-* **`detail`:** (optional, *any*) Custom data sent with the event (default: `undefined`).  Although any type is allowable, an object is often the most practical.
+* **`bubbles`:** (optional, `boolean`) Whether the event bubbles (default: `true`).
+* **`cancelable`:** (optional, `boolean`) Whether the event is cancelable (default: `true`).
+* **`composed`:** (optional, `boolean`) Whether the event triggers listeners outside of a shadow root (default: `false`).
+* **`detail`:** (optional, `any`) Custom data sent with the event (default: `undefined`).  Although any type is allowable, an object is often the most practical.
+
+#### Returns: *none*
+
+#### Throws: *none*
 
 #### Examples:
 
@@ -649,7 +773,7 @@ triggerEvent('mouseover', jQuery('.flippable'));
 
 <!-- *********************************************************************** -->
 
-### `turns()` → *integer* {#functions-function-turns}
+### `turns()` → `integer` {#functions-function-turns}
 
 Returns the total number (count) of played turns currently in effect—i.e., the number of played moments up to the present moment; future (rewound/undone) moments are not included within the total.
 
@@ -659,6 +783,12 @@ Returns the total number (count) of played turns currently in effect—i.e., the
 
 #### Parameters: *none*
 
+#### Returns:
+
+The turn count (`integer`).
+
+#### Throws: *none*
+
 #### Examples:
 
 ```
@@ -667,7 +797,7 @@ Returns the total number (count) of played turns currently in effect—i.e., the
 
 <!-- *********************************************************************** -->
 
-### `variables()` → *object* {#functions-function-variables}
+### `variables()` → `object` {#functions-function-variables}
 
 Returns a reference to the active (present) story variables store (equivalent to: [`State.variables`](#state-api-getter-variables)).  This is only really useful within pure JavaScript code, as within TwineScript you may simply access story variables natively.
 
@@ -676,6 +806,12 @@ Returns a reference to the active (present) story variables store (equivalent to
 * `v2.0.0`: Introduced.
 
 #### Parameters: *none*
+
+#### Returns:
+
+A reference to the story variable store (`object`).
+
+#### Throws: *none*
 
 #### Examples:
 
@@ -688,7 +824,7 @@ if (variables().hasGoldenKey) {
 
 <!-- *********************************************************************** -->
 
-### `visited([passages…])` → *integer* {#functions-function-visited}
+### `visited([passages…])` → `integer` {#functions-function-visited}
 
 Returns the number of times that the passage with the given title occurred within the story history.  If multiple passage titles are given, returns the lowest count.
 
@@ -698,7 +834,13 @@ Returns the number of times that the passage with the given title occurred withi
 
 #### Parameters:
 
-* **`passages`:** (optional, *string* | *Array&lt;string&gt;*) The title(s) of the passage(s) to search for.  May be a list or an array of passages.  If omitted, will default to the current passage.
+* **`passages`:** (optional, `string` | `Array<string>`) The title(s) of the passage(s) to search for.  May be a list or an array of passages.  If omitted, will default to the current passage.
+
+#### Returns:
+
+The passage count (`integer`).
+
+#### Throws: *none*
 
 #### Examples:
 
@@ -711,7 +853,7 @@ Returns the number of times that the passage with the given title occurred withi
 
 <!-- *********************************************************************** -->
 
-### `visitedTags(tags…)` → *integer* {#functions-function-visitedtags}
+### `visitedTags(tags…)` → `integer` {#functions-function-visitedtags}
 
 Returns the number of passages within the story history that are tagged with all of the given tags.
 
@@ -721,7 +863,15 @@ Returns the number of passages within the story history that are tagged with all
 
 #### Parameters:
 
-* **`tags`:** (*string* | *Array&lt;string&gt;*) The tags to search for.  May be a list or an array of tags.
+* **`tags`:** (`string` | `Array<string>`) The tags to search for.  May be a list or an array of tags.
+
+#### Returns:
+
+The number (`integer`) of passages that are tagged with the given tags.
+
+#### Throws:
+
+An `Error` instance.
 
 #### Examples:
 

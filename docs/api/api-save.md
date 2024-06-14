@@ -292,7 +292,7 @@ A `Promise` that simply resolves, or rejects with an error if the browser saves 
 
 #### Examples:
 
-##### Bssic usage
+##### Basic usage
 
 Import the browser saves bundle, only handling failure.  This should be sufficient in the majority of cases.
 
