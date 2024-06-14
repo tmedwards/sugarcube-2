@@ -71,7 +71,7 @@ var Scripting = (() => { // eslint-disable-line no-unused-vars, no-var
 		const needles = Array.prototype.concat.apply([], arguments);
 		const played  = State.passages;
 
-		for (let i = 0, iend = needles.length; i < iend; ++i) {
+		for (let i = 0; i < needles.length; ++i) {
 			if (!played.includes(needles[i])) {
 				return false;
 			}
@@ -99,7 +99,7 @@ var Scripting = (() => { // eslint-disable-line no-unused-vars, no-var
 		const uBound  = played.length - 1;
 		let turns = State.turns;
 
-		for (let i = 0, iend = needles.length; i < iend && turns > -1; ++i) {
+		for (let i = 0; i < needles.length && turns > -1; ++i) {
 			const lastIndex = played.lastIndexOf(needles[i]);
 			turns = Math.min(turns, lastIndex === -1 ? -1 : uBound - lastIndex);
 		}
@@ -175,10 +175,10 @@ var Scripting = (() => { // eslint-disable-line no-unused-vars, no-var
 		}
 
 		if (!Number.isInteger(min)) {
-			throw new Error('random min parameter must be an integer');
+			throw new TypeError('random min parameter must be an integer');
 		}
 		if (!Number.isInteger(max)) {
-			throw new Error('random max parameter must be an integer');
+			throw new TypeError('random max parameter must be an integer');
 		}
 
 		if (min > max) {
@@ -213,10 +213,10 @@ var Scripting = (() => { // eslint-disable-line no-unused-vars, no-var
 		}
 
 		if (Number.isNaN(min) || !Number.isFinite(min)) {
-			throw new Error('randomFloat min parameter must be a number');
+			throw new TypeError('randomFloat min parameter must be a number');
 		}
 		if (Number.isNaN(max) || !Number.isFinite(max)) {
-			throw new Error('randomFloat max parameter must be a number');
+			throw new TypeError('randomFloat max parameter must be a number');
 		}
 
 		if (min > max) {
@@ -249,7 +249,7 @@ var Scripting = (() => { // eslint-disable-line no-unused-vars, no-var
 		const passages = Array.prototype.concat.apply([], arguments);
 		let tags = [];
 
-		for (let i = 0, iend = passages.length; i < iend; ++i) {
+		for (let i = 0; i < passages.length; ++i) {
 			tags = tags.concat(Story.get(passages[i]).tags);
 		}
 
@@ -302,7 +302,7 @@ var Scripting = (() => { // eslint-disable-line no-unused-vars, no-var
 		const played  = State.passages;
 		let count = State.turns;
 
-		for (let i = 0, iend = needles.length; i < iend && count > 0; ++i) {
+		for (let i = 0; i < needles.length && count > 0; ++i) {
 			count = Math.min(count, played.count(needles[i]));
 		}
 
@@ -327,7 +327,7 @@ var Scripting = (() => { // eslint-disable-line no-unused-vars, no-var
 		const seen    = new Map();
 		let count = 0;
 
-		for (let i = 0, iend = played.length; i < iend; ++i) {
+		for (let i = 0; i < played.length; ++i) {
 			const title = played[i];
 
 			if (seen.has(title)) {

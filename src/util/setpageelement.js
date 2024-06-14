@@ -25,7 +25,7 @@ function setPageElement(idOrElement, titles, defaultText) { // eslint-disable-li
 
 	jQuery(el).empty();
 
-	for (let i = 0, iend = ids.length; i < iend; ++i) {
+	for (let i = 0; i < ids.length; ++i) {
 		if (Story.has(ids[i])) {
 			new Wikifier(el, Story.get(ids[i]).processText().trim());
 			return el;
