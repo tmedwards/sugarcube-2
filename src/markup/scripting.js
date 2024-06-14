@@ -397,7 +397,7 @@ var Scripting = (() => { // eslint-disable-line no-unused-vars, no-var
 					src  = url.src;
 				}
 				else {
-					throw new Error('importScripts url parameter unrecognized.');
+					throw new Error('importScripts url parameter must be a string or object');
 				}
 
 				/*
@@ -415,7 +415,7 @@ var Scripting = (() => { // eslint-disable-line no-unused-vars, no-var
 							resolve(ev.target);
 						}
 						else {
-							reject(new Error(`importScripts failed to load the script "${src}".`));
+							reject(new Error(`importScripts failed to load the script "${src}"`));
 						}
 					})
 					.appendTo(document.head)
@@ -430,6 +430,10 @@ var Scripting = (() => { // eslint-disable-line no-unused-vars, no-var
 		// Add a <link> element which will load the stylesheet from the given URL.
 		function addStyle(url) {
 			return new Promise((resolve, reject) => {
+				if (typeof url !== 'string') {
+					throw new Error('importStyles url parameter must be a string');
+				}
+
 				/*
 					WARNING: The ordering of the code within this function is important,
 					as some browsers don't play well with different arrangements, so
@@ -445,7 +449,7 @@ var Scripting = (() => { // eslint-disable-line no-unused-vars, no-var
 							resolve(ev.target);
 						}
 						else {
-							reject(new Error(`importStyles failed to load the stylesheet "${url}".`));
+							reject(new Error(`importStyles failed to load the stylesheet "${url}"`));
 						}
 					})
 					.appendTo(document.head)
