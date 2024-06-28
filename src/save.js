@@ -778,7 +778,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			return { index, info, data };
 		});
 
-		return LZString.compressToBase64(Serial.stringify({ auto, slot })),
+		return LZString.compressToBase64(Serial.stringify({ auto, slot }));
 	}
 
 	function base64Import(base64) {
