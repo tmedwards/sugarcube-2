@@ -578,7 +578,20 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			: slotLoad(newest.index);
 	}
 
-	function browserExport(filename) {
+	function browserIsEnabled() {
+		return autoIsEnabled() || slotIsEnabled();
+	}
+
+	function browserSize() {
+		return getKeys(isInfoKey).length;
+	}
+
+
+	/*******************************************************************************
+		Disk Saves Functions.
+	*******************************************************************************/
+
+	function diskExport(filename) {
 		if (filename == null) { // lazy equality for null
 			throw new Error('Save.browser.export filename parameter is required');
 		}
@@ -613,7 +626,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 		);
 	}
 
-	function browserImport(event) {
+	function diskImport(event) {
 		return new Promise((resolve, reject) => {
 			const reader = new FileReader();
 
@@ -680,19 +693,6 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 		});
 	}
 
-	function browserIsEnabled() {
-		return autoIsEnabled() || slotIsEnabled();
-	}
-
-	function browserSize() {
-		return getKeys(isInfoKey).length;
-	}
-
-
-	/*******************************************************************************
-		Disk Saves Functions.
-	*******************************************************************************/
-
 	function diskLoad(event) {
 		return new Promise((resolve, reject) => {
 			const reader = new FileReader();
@@ -702,7 +702,6 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 				try {
 					if (reader.error) {
 						throw new Error(`${L10n.get('saveErrorDiskLoadFail')}: ${reader.error}`);
-						// throw reader.error;
 					}
 
 					let save;
@@ -754,6 +753,82 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 	/*******************************************************************************
 		Base64 Saves Functions.
 	*******************************************************************************/
+
+	function base64Export() {
+		const auto = getKeys(isAutoInfoKey).map(infoKey => {
+			const index = getIndexFromKey(infoKey);
+			const info  = storage.get(infoKey);
+			const data  = storage.get(getAutoDataKeyFromIndex(index));
+
+			if (!info || !data) {
+				throw new Error('during saves export auto save info or data nonexistent');
+			}
+
+			return { index, info, data };
+		});
+		const slot = getKeys(isSlotInfoKey).map(infoKey => {
+			const index = getIndexFromKey(infoKey);
+			const info  = storage.get(infoKey);
+			const data  = storage.get(getSlotDataKeyFromIndex(index));
+
+			if (!info || !data) {
+				throw new Error('during saves export slot save info or data nonexistent');
+			}
+
+			return { index, info, data };
+		});
+
+		return LZString.compressToBase64(Serial.stringify({ auto, slot })),
+	}
+
+	function base64Import(base64) {
+		return new Promise(resolve => {
+			const badSave = O => !Object.hasOwn(O, 'index')
+				|| !Object.hasOwn(O, 'info')
+				|| !Object.hasOwn(O, 'data');
+			let bundle;
+
+			try {
+				bundle = Serial.parse(LZString.decompressFromBase64(base64));
+			}
+			catch (ex) {
+				throw new Error(L10n.get('saveErrorDecodeFail'));
+			}
+
+			if (
+				bundle == null // lazy equality for null
+				|| typeof bundle !== 'object'
+				|| !Object.hasOwn(bundle, 'auto')
+				|| !(bundle.auto instanceof Array)
+				|| bundle.auto.some(badSave)
+				|| !Object.hasOwn(bundle, 'slot')
+				|| !(bundle.slot instanceof Array)
+				|| bundle.slot.some(badSave)
+			) {
+				throw new Error(L10n.get('saveErrorInvalidData'));
+			}
+
+			// Delete all existing saves before storing the imports.
+			autoClear();
+			slotClear();
+
+			// Attempt to store each of the imported browser saves.
+			bundle.auto.forEach(save => saveToBrowserStorage({
+				data    : save.data,
+				dataKey : getAutoDataKeyFromIndex(save.index),
+				info    : save.info,
+				infoKey : getAutoInfoKeyFromIndex(save.index)
+			}));
+			bundle.slot.forEach(save => saveToBrowserStorage({
+				data    : save.data,
+				dataKey : getSlotDataKeyFromIndex(save.index),
+				info    : save.info,
+				infoKey : getSlotInfoKeyFromIndex(save.index)
+			}));
+
+			resolve(true);
+		});
+	}
 
 	function base64Load(base64) {
 		return new Promise(resolve => {
@@ -957,8 +1032,6 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 				// Browser General Saves Functions.
 				clear     : { value : browserClear },
 				continue  : { value : browserContinue },
-				export    : { value : browserExport },
-				import    : { value : browserImport },
 				isEnabled : { value : browserIsEnabled },
 				size      : { get : browserSize }
 			}))
@@ -967,16 +1040,20 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 		// Disk Saves Functions.
 		disk : {
 			value : Object.preventExtensions(Object.create(null, {
-				load : { value : diskLoad },
-				save : { value : diskSave }
+				export : { value : diskExport },
+				import : { value : diskImport },
+				load   : { value : diskLoad },
+				save   : { value : diskSave }
 			}))
 		},
 
 		// Base64 Saves Functions.
 		base64 : {
 			value : Object.preventExtensions(Object.create(null, {
-				load : { value : base64Load },
-				save : { value : base64Save }
+				export : { value : base64Export },
+				import : { value : base64Import },
+				load   : { value : base64Load },
+				save   : { value : base64Save }
 			}))
 		},
 
