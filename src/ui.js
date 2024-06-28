@@ -409,10 +409,10 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 				.appendTo($dialogBody);
 
 			if (Has.fileAPI) {
-				// Add the browser export/import buttons and the hidden `input[type=file]`
+				// Add the disk export/import buttons and the hidden `input[type=file]`
 				// element that will be triggered by the `#saves-import` button.
 				const slotImportInput = createFileInput('saves-import-handler', ev => {
-					Save.browser.import(ev)
+					Save.disk.import(ev)
 						.then(
 							buildSaves,
 							ex => openAlert(`${ex.message.toUpperFirst()}.</p><p>${L10n.get('textAborting')}.`)
@@ -425,7 +425,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 						null,
 						`${L10n.get('textExport')}\u2026`,
 						L10n.get('savesLabelBrowserExport'),
-						() => Save.browser.export(`saves-export-${Story.name}`)
+						() => Save.disk.export(`saves-export-${Story.name}`)
 					))
 					.append(createActionItem(
 						'import',
@@ -453,7 +453,7 @@ var UI = (() => { // eslint-disable-line no-unused-vars, no-var
 			));
 		}
 
-		// Add the disk export and import buttons.
+		// Add the disk load and save buttons.
 		if (Has.fileAPI) {
 			jQuery(document.createElement('h2'))
 				.text(L10n.get('savesHeaderDisk'))
