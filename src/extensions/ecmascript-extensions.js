@@ -847,13 +847,29 @@
 					continue;
 				}
 
-				// [this[i], this[j]] = [this[j], this[i]];
 				const swap = this[i];
 				this[i] = this[j];
 				this[j] = swap;
 			}
 
 			return this;
+		}
+	});
+
+	/*
+		Creates a copy of the base array where all elements shuffled
+		and returns the new array.
+	*/
+	Object.defineProperty(Array.prototype, 'toShuffled', {
+		configurable : true,
+		writable     : true,
+
+		value() {
+			if (this == null) { // lazy equality for null
+				throw new TypeError('Array.prototype.toShuffled called on null or undefined');
+			}
+
+			return Array.from(this).shuffle();
 		}
 	});
 
