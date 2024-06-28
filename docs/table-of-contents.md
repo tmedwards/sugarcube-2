@@ -159,6 +159,7 @@
 	* [`<Array>.randomMany()`](#methods-array-prototype-method-randommany)
 	* [`<Array>.shift()`](#methods-array-prototype-method-shift)
 	* [`<Array>.shuffle()`](#methods-array-prototype-method-shuffle)
+	* [`<Array>.toShuffled()`](#methods-array-prototype-method-toshuffled)
 	* [`<Array>.toUnique()`](#methods-array-prototype-method-tounique)
 	* [`<Array>.unshift()`](#methods-array-prototype-method-unshift)
 	* [`<Array>.unshiftUnique()`](#methods-array-prototype-method-unshiftunique)
