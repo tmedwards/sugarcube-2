@@ -190,7 +190,7 @@ A `Promise` that simply resolves, or rejects with an error if the save could not
 
 #### Examples:
 
-##### Bssic usage
+##### Basic usage
 
 Load the most recent browser save, only handling failure.  This should be sufficient in the majority of cases.
 
@@ -225,116 +225,6 @@ if (Save.browser.size > 0) {
 else {
 	/* No browser saves exist. */
 }
-```
-
-<!-- *********************************************************************** -->
-
-### `Save.browser.export(filename)` {#save-api-browser-method-export}
-
-Exports all existing browser saves, both auto and slot, as a bundle, which may be restored via [`Save.browser.import()`](#save-api-browser-method-import).
-
-#### History:
-
-* `v2.37.0`: Introduced.
-
-#### Parameters:
-
-* **`filename`:** (`string`) The base filename of the browser save export, which gets slugified to remove most symbols.  Appended to this is a datestamp (format: `YYYMMDD-hhmmss`) and the file extension `.savesexport`—e.g., `"The Scooby Chronicles"` would result in the full filename: `the-scooby-chronicles-{datestamp}.savesexport`.
-
-#### Returns: *none*
-
-#### Throws:
-
-An `Error` instance.
-
-#### Examples:
-
-Export all browser saves with a base filename, handling failure.
-
-```js
-try {
-	Save.browser.export("The 6th Fantasy");
-}
-catch (error) {
-	/* Failure.  Handle the error. */
-	console.error(error);
-	UI.alert(error);
-}
-```
-
-<!-- *********************************************************************** -->
-
-### `Save.browser.import(event)` → `Promise` {#save-api-browser-method-import}
-
-Restores browser saves, both auto and slot, from an exported save bundle, created via [`Save.browser.export()`](#save-api-browser-method-export).
-
-<p role="note"><b>Note:</b>
-This method <em>must</em> be used as, or be called by, the <code>change</code> event handler of an <code>&lt;input type="file"&gt;</code> element.
-</p>
-
-<p role="note" class="warning"><b>Warning:</b>
-All existing browser saves will be deleted as part of restoring the exported save bundle.
-</p>
-
-#### History:
-
-* `v2.37.0`: Introduced.
-
-#### Parameters:
-
-* **`event`:** (`Event`) The event object that was passed to the `change` event handler of the associated `<input type="file">` element.
-
-#### Returns:
-
-A `Promise` that simply resolves, or rejects with an error if the browser saves bundle could not be imported.
-
-#### Throws: *none*
-
-#### Examples:
-
-##### Basic usage
-
-Import the browser saves bundle, only handling failure.  This should be sufficient in the majority of cases.
-
-```js
-jQuery(document.createElement('input'))
-	.prop({
-		id   : 'saves-browser-import-file',
-		name : 'saves-browser-import-file',
-		type : 'file'
-	})
-	.on('change', ev => {
-		// You must provide the event to Save.browser.import()
-		Save.browser.import(ev)
-			.catch(error => {
-				/* Failure.  Handle the error. */
-				console.error(error);
-				UI.alert(error);
-			});
-	});
-```
-
-Import the browser saves bundle, handling both success and failure.
-
-```js
-jQuery(document.createElement('input'))
-	.prop({
-		id   : 'saves-browser-import-file',
-		name : 'saves-browser-import-file',
-		type : 'file'
-	})
-	.on('change', function (ev) {
-		// You must provide the event to Save.browser.import()
-		Save.browser.import(ev)
-			.then(() => {
-				/* Success.  Do something special. */
-			})
-			.catch(error => {
-				/* Failure.  Handle the error. */
-				console.error(error);
-				UI.alert(error);
-			});
-	});
 ```
 
 <!-- *********************************************************************** -->
@@ -1060,9 +950,119 @@ catch (error) {
 
 <!-- *********************************************************************** -->
 
+### `Save.disk.export(filename)` {#save-api-disk-method-export}
+
+Exports all existing browser saves as a bundle to disk, which may be restored via [`Save.disk.import()`](#save-api-disk-method-import).
+
+#### History:
+
+* `v2.37.0`: Introduced.
+
+#### Parameters:
+
+* **`filename`:** (`string`) The base filename of the browser save export, which gets slugified to remove most symbols.  Appended to this is a datestamp (format: `YYYMMDD-hhmmss`) and the file extension `.savesexport`—e.g., `"The Scooby Chronicles"` would result in the full filename: `the-scooby-chronicles-{datestamp}.savesexport`.
+
+#### Returns: *none*
+
+#### Throws:
+
+An `Error` instance.
+
+#### Examples:
+
+Export all saves as a bundle with a base filename, handling failure.
+
+```js
+try {
+	Save.disk.export('The 6th Fantasy');
+}
+catch (error) {
+	/* Failure.  Handle the error. */
+	console.error(error);
+	UI.alert(error);
+}
+```
+
+<!-- *********************************************************************** -->
+
+### `Save.disk.import(event)` → `Promise` {#save-api-disk-method-import}
+
+Imports a saves bundle from disk, created via [`Save.disk.export()`](#save-api-disk-method-export).
+
+<p role="note"><b>Note:</b>
+This method <em>must</em> be used as, or be called by, the <code>change</code> event handler of an <code>&lt;input type="file"&gt;</code> element.
+</p>
+
+<p role="note" class="warning"><b>Warning:</b>
+All existing browser saves will be deleted as part of restoring the exported save bundle.
+</p>
+
+#### History:
+
+* `v2.37.0`: Introduced.
+
+#### Parameters:
+
+* **`event`:** (`Event`) The event object that was passed to the `change` event handler of the associated `<input type="file">` element.
+
+#### Returns:
+
+A `Promise` that simply resolves, or rejects with an error if the browser saves bundle could not be imported.
+
+#### Throws: *none*
+
+#### Examples:
+
+##### Basic usage
+
+Import the saves bundle from disk, only handling failure.  This should be sufficient in the majority of cases.
+
+```js
+jQuery(document.createElement('input'))
+	.prop({
+		id   : 'saves-import-file',
+		name : 'saves-import-file',
+		type : 'file'
+	})
+	.on('change', ev => {
+		// You must provide the event to Save.disk.import()
+		Save.disk.import(ev)
+			.catch(error => {
+				/* Failure.  Handle the error. */
+				console.error(error);
+				UI.alert(error);
+			});
+	});
+```
+
+Import the saves bundle from disk, handling both success and failure.
+
+```js
+jQuery(document.createElement('input'))
+	.prop({
+		id   : 'saves-import-file',
+		name : 'saves-import-file',
+		type : 'file'
+	})
+	.on('change', function (ev) {
+		// You must provide the event to Save.browser.import()
+		Save.disk.import(ev)
+			.then(() => {
+				/* Success.  Do something special. */
+			})
+			.catch(error => {
+				/* Failure.  Handle the error. */
+				console.error(error);
+				UI.alert(error);
+			});
+	});
+```
+
+<!-- *********************************************************************** -->
+
 ### `Save.disk.load(event)` → `Promise` {#save-api-disk-method-load}
 
-Loads a save, created via [`Save.disk.save()`](#save-api-disk-method-save), from disk.
+Loads a save from disk, created via [`Save.disk.save()`](#save-api-disk-method-save).
 
 <p role="note"><b>Note:</b>
 This method <em>must</em> be used as, or be called by, the <code>change</code> event handler of an <code>&lt;input type="file"&gt;</code> element.
@@ -1084,7 +1084,7 @@ A `Promise` that resolves with the save's metadata (`any`), or rejects with an e
 
 #### Examples:
 
-##### Bssic usage
+##### Basic usage
 
 Load the disk save, only handling failure.  This should be sufficient in the majority of cases.
 
@@ -1211,6 +1211,93 @@ catch (error) {
 
 <!-- *********************************************************************** -->
 
+### `Save.base64.export()` → `string` {#save-api-base64-method-export}
+
+Exports all existing browser saves as a bundle to a Base64 string, which may be restored via [`Save.base64.import()`](#save-api-base64-method-import).
+
+#### History:
+
+* `v2.37.0`: Introduced.
+
+#### Parameters: *none*
+
+#### Returns: *none*
+
+#### Throws:
+
+An `Error` instance.
+
+#### Examples:
+
+Export all saves as a bundle, handling failure.
+
+```js
+try {
+	const base64Save = Save.base64.export();
+	/* Do something with the saves bundle. */
+}
+catch (error) {
+	/* Failure.  Handle the error. */
+	console.error(error);
+	UI.alert(error);
+}
+```
+
+<!-- *********************************************************************** -->
+
+### `Save.base64.import(bundle)` → `Promise` {#save-api-base64-method-import}
+
+Imports the given Base64 saves bundle string, created via [`Save.base64.export()`](#save-api-base64-method-export).
+
+<p role="note" class="warning"><b>Warning:</b>
+All existing browser saves will be deleted as part of restoring the exported save bundle.
+</p>
+
+#### History:
+
+* `v2.37.0`: Introduced.
+
+#### Parameters:
+
+* **`bundle`:** (`string`) The Base64 saves bundle string.
+
+#### Returns:
+
+A `Promise` that simply resolves, or rejects with an error if the browser saves bundle could not be imported.
+
+#### Throws: *none*
+
+#### Examples:
+
+##### Basic usage
+
+Import the saves bundle, only handling failure.  This should be sufficient in the majority of cases.
+
+```js
+Save.base64.import(base64Bundle)
+	.catch(error => {
+		/* Failure.  Handle the error. */
+		console.error(error);
+		UI.alert(error);
+	});
+```
+
+Import the saves bundle, handling both success and failure.
+
+```js
+Save.base64.import(base64Bundle)
+	.then(() => {
+		/* Success.  Do something special. */
+	})
+	.catch(error => {
+		/* Failure.  Handle the error. */
+		console.error(error);
+		UI.alert(error);
+	});
+```
+
+<!-- *********************************************************************** -->
+
 ### `Save.base64.load(save)` → `Promise` {#save-api-base64-method-load}
 
 Loads the given Base64 save string, created via [`Save.base64.save()`](#save-api-base64-method-save).
@@ -1231,7 +1318,7 @@ A `Promise` that resolves with the save's metadata (`any`), or rejects with an e
 
 #### Examples:
 
-##### Bssic usage
+##### Basic usage
 
 Load the save string, only handling failure.  This should be sufficient in the majority of cases.
 
