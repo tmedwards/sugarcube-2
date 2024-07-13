@@ -1154,7 +1154,7 @@ jQuery(document.createElement('input'))
 
 ### `Save.disk.save(filename [, metadata])` {#save-api-disk-method-save}
 
-Saves to disk, which may be restored via [`Save.disk.load()`](#save-api-disk-method-load).
+Saves the current moment to disk, which may be restored via [`Save.disk.load()`](#save-api-disk-method-load).
 
 #### History:
 
