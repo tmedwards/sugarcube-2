@@ -199,7 +199,7 @@ Engine.play("Foo", true)  → Renders and displays the passage "Foo", but does n
 
 ### `Engine.restart()` {#engine-api-method-restart}
 
-Restarts the story.
+Causes the browser to immediately attempt to reload the window, thus restarting the story.
 
 <p role="note" class="warning"><b>Warning:</b>
 The player will <em>not</em> be prompted and all unsaved state will be lost.
