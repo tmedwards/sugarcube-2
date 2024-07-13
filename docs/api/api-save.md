@@ -1062,7 +1062,7 @@ jQuery(document.createElement('input'))
 
 ### `Save.disk.load(event)` → `Promise` {#save-api-disk-method-load}
 
-Loads a save from disk, created via [`Save.disk.save()`](#save-api-disk-method-save).
+Loads the given save from disk, created via [`Save.disk.save()`](#save-api-disk-method-save).
 
 <p role="note"><b>Note:</b>
 This method <em>must</em> be used as, or be called by, the <code>change</code> event handler of an <code>&lt;input type="file"&gt;</code> element.
@@ -1154,7 +1154,7 @@ jQuery(document.createElement('input'))
 
 ### `Save.disk.save(filename [, metadata])` {#save-api-disk-method-save}
 
-Saves to disk, which may be restored via [`Save.disk.load()`](#save-api-disk-method-load).
+Saves the current story state to disk, which may be restored via [`Save.disk.load()`](#save-api-disk-method-load).
 
 #### History:
 
