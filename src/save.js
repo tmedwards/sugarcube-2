@@ -95,6 +95,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			// Property updates.
 			info.desc = info.title;
 			delete info.title;
+			info.type = Type.Auto;
 
 			const infoKey = getAutoInfoKeyFromIndex(0);
 			const dataKey = getAutoDataKeyFromIndex(0);
@@ -119,6 +120,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			// Property updates.
 			info.desc = info.title;
 			delete info.title;
+			info.type = Type.Slot;
 
 			const infoKey = getSlotInfoKeyFromIndex(index);
 			const dataKey = getSlotDataKeyFromIndex(index);
