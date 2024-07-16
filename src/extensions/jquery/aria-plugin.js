@@ -232,10 +232,10 @@
 			const $disableable    = this.filter('button,fieldset,input,menuitem,optgroup,option,select,textarea');
 
 			if (disable) {
-				// Add boolean content attribute `disabled` and set non-boolean content attribute
-				// `aria-disabled` to `'true'`, for non-disableable elements.
+				// Set boolean content attribute `disabled` to `'disabled'` and set non-boolean
+				// content attribute `aria-disabled` to `'true'`, for non-disableable elements.
 				$nonDisableable.each(function () {
-					this.setAttribute('disabled', '');
+					this.setAttribute('disabled', 'disabled');
 					this.setAttribute('aria-disabled', 'true');
 					disableTabindex(this);
 				});
