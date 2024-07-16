@@ -9,19 +9,24 @@
 /* global Config, L10n, Serial, State, createFilename, enumFrom, getTypeOf, storage */
 
 /*
-	Save API static object.
+	Save API (v3) static object.
 */
 var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 	// Save type pseudo-enumeration.
 	const Type = enumFrom({
-		Auto   : 'auto',
-		Base64 : 'base64',
-		Disk   : 'disk',
-		Slot   : 'slot',
+		Unknown : 0,
+		Auto    : 1,
+		Slot    : 2,
+		Disk    : 3,
+		Base64  : 4
 
 		/* legacy */
-		// Duplicate `Base64`.
-		Serialize : 'base64' // Originally: `'serialize'`
+		/* eslint-disable comma-style */
+		// Duplicate `Auto` for v2 `'autosave'` compatibility.
+		, Autosave : 1
+		// Duplicate `Base64` for v2 `'serialize'` compatibility.
+		, Serialize : 4
+		/* eslint-enable comma-style */
 		/* /legacy */
 	});
 
@@ -53,14 +58,14 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 	function init() {
 		if (BUILD_DEBUG) { console.log('[Save/init()]'); }
 
-		// Migrate browser saves from the old monolithic v2 save object
-		// to the new v3 style with separate entries for each save.
-		migrateV2BrowserSaves();
+		// Migrate legacy browser saves from the old monolithic v2 save
+		// object to the new v3 style with separate entries for each save.
+		migrateLegacyV2BrowserSaves();
 
 		return true;
 	}
 
-	function migrateV2BrowserSaves() {
+	function migrateLegacyV2BrowserSaves() {
 		const oldSaves = storage.get('saves');
 
 		// Bail out if no old saves object exists.
@@ -332,6 +337,37 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 
 
 	/*******************************************************************************
+		Browser General Saves Functions.
+	*******************************************************************************/
+
+	function browserClear() {
+		autoClear();
+		slotClear();
+		return true;
+	}
+
+	function browserContinue() {
+		const newest = findNewest();
+
+		if (newest.index === -1) {
+			return Promise.reject(new Error(L10n.get('saveErrorNonexistent')));
+		}
+
+		return newest.type === Type.Auto
+			? autoLoad(newest.index)
+			: slotLoad(newest.index);
+	}
+
+	function browserIsEnabled() {
+		return autoIsEnabled() || slotIsEnabled();
+	}
+
+	function browserSize() {
+		return getKeys(isInfoKey).length;
+	}
+
+
+	/*******************************************************************************
 		Browser Auto Saves Functions.
 	*******************************************************************************/
 
@@ -559,37 +595,6 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 
 
 	/*******************************************************************************
-		Browser General Saves Functions.
-	*******************************************************************************/
-
-	function browserClear() {
-		autoClear();
-		slotClear();
-		return true;
-	}
-
-	function browserContinue() {
-		const newest = findNewest();
-
-		if (newest.index === -1) {
-			return Promise.reject(new Error(L10n.get('saveErrorNonexistent')));
-		}
-
-		return newest.type === Type.Auto
-			? autoLoad(newest.index)
-			: slotLoad(newest.index);
-	}
-
-	function browserIsEnabled() {
-		return autoIsEnabled() || slotIsEnabled();
-	}
-
-	function browserSize() {
-		return getKeys(isInfoKey).length;
-	}
-
-
-	/*******************************************************************************
 		Disk Saves Functions.
 	*******************************************************************************/
 
@@ -624,7 +629,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 		saveBlobToDiskAs(
 			LZString.compressToBase64(Serial.stringify({ auto, slot })),
 			filename,
-			'savesexport'
+			'savesbundle'
 		);
 	}
 
@@ -843,13 +848,6 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 				throw new Error(L10n.get('saveErrorDecodeFail'));
 			}
 
-			/* legacy */
-			// Convert legacy `Type.Serialize` value to `Type.Base64`.
-			if (save.type === 'serialize') {
-				save.type = Type.Save.Base64;
-			}
-			/* /legacy */
-
 			// NOTE: May throw exceptions.
 			unmarshal(save);
 
@@ -875,6 +873,19 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 		Marshaling Functions.
 	*******************************************************************************/
 
+	/* legacy */
+	function migrateLegacyV2SaveDetail(save) {
+		switch (save.type) {
+			case Type.Auto:   return { type : 'autosave' };
+			case Type.Slot:   return { type : 'slot' };
+			case Type.Disk:   return { type : 'disk' };
+			case Type.Base64: return { type : 'serialize' };
+		}
+
+		throw new Error(`save.type must be an integer (received: ${typeof save.type})`);
+	}
+	/* /legacy */
+
 	function marshal(details) {
 		if (BUILD_DEBUG) { console.log(`[Save/marshal({ type : "${details.type}" })]`); }
 
@@ -889,7 +900,12 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 		}
 
 		// Call any `onSave` handlers.
-		onSaveHandlers.forEach(fn => fn(save));
+		onSaveHandlers.forEach(fn => fn(
+			save
+			/* legacy */
+			, migrateLegacyV2SaveDetail(save)
+			/* /legacy */
+		));
 
 		// Delta encode the state history and delete the non-encoded property.
 		save.state.delta = State.deltaEncode(save.state.history);
@@ -926,6 +942,26 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 		save.state.history = State.deltaDecode(save.state.delta);
 		delete save.state.delta;
 		/* eslint-enable no-param-reassign */
+
+		/* legacy */
+		// TODO: Delete this in January 2025.
+		//
+		// Replace a string `save.type`, from the `alpha` releases, with an integer.
+		if (typeof save.type === 'string') {
+			/* eslint-disable no-param-reassign */
+			switch (save.type) {
+				case 'auto':   save.type = Type.Auto; break;
+				case 'slot':   save.type = Type.Slot; break;
+				case 'disk':   save.type = Type.Disk; break;
+				case 'base64': save.type = Type.Base64; break;
+			}
+			/* eslint-enable no-param-reassign */
+
+			if (typeof save.type !== 'number') {
+				throw new Error('save.type is unknown');
+			}
+		}
+		/* /legacy */
 
 		// Call any `onLoad` handlers.
 		onLoadHandlers.forEach(fn => fn(save));
