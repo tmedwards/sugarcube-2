@@ -960,7 +960,7 @@ Exports all existing browser saves as a bundle to disk, which may be restored vi
 
 #### Parameters:
 
-* **`filename`:** (`string`) The base filename of the browser save export, which gets slugified to remove most symbols.  Appended to this is a datestamp (format: `YYYMMDD-hhmmss`) and the file extension `.savesexport`—e.g., `"The Scooby Chronicles"` would result in the full filename: `the-scooby-chronicles-{datestamp}.savesexport`.
+* **`filename`:** (`string`) The base filename of the browser save export, which gets slugified to remove most symbols.  Appended to this is a datestamp (format: `YYYMMDD-hhmmss`) and the file extension `.savesbundle`—e.g., `"The Scooby Chronicles"` would result in the full filename: `the-scooby-chronicles-{datestamp}.savesbundle`.
 
 #### Returns: *none*
 
@@ -1455,9 +1455,39 @@ An `Error` instance.
 
 #### Examples:
 
+##### Basic usage
+
 ```js
 Save.onLoad.add(function (save) {
 	/* code to process the save object before it's loaded */
+});
+```
+
+##### Using save objects' `type` property and the `Save.Type` pseudo-enumeration
+
+```js
+Save.onLoad.add(function (save) {
+	switch (save.type) {
+		case Save.Type.Auto: {
+			/* code to process an auto save object before it's loaded */
+			break;
+		}
+
+		case Save.Type.Base64: {
+			/* code to process a base64 save object before it's loaded */
+			break;
+		}
+
+		case Save.Type.Disk: {
+			/* code to process a disk save object before it's loaded */
+			break;
+		}
+
+		case Save.Type.Slot: {
+			/* code to process a slot save object before it's loaded */
+			break;
+		}
+	}
 });
 ```
 
@@ -1570,27 +1600,27 @@ Save.onSave.add(function (save) {
 });
 ```
 
-##### Using save objects' `type` property
+##### Using save objects' `type` property and the `Save.Type` pseudo-enumeration
 
 ```js
 Save.onSave.add(function (save) {
 	switch (save.type) {
-		case Type.Auto: {
+		case Save.Type.Auto: {
 			/* code to process an auto save object before it's saved */
 			break;
 		}
 
-		case Type.Base64: {
+		case Save.Type.Base64: {
 			/* code to process a base64 save object before it's saved */
 			break;
 		}
 
-		case Type.Disk: {
+		case Save.Type.Disk: {
 			/* code to process a disk save object before it's saved */
 			break;
 		}
 
-		case Type.Slot: {
+		case Save.Type.Slot: {
 			/* code to process a slot save object before it's saved */
 			break;
 		}
@@ -1644,7 +1674,7 @@ Boolean `true` if the handler existed, elsewise `false`.
 
 ```js
 // Given:
-// 	let myOnSaveHandler = function (save, details) {
+// 	let myOnSaveHandler = function (save) {
 // 		/* code to process the save object before it's saved */
 // 	};
 // 	Save.onSave.add(myOnSaveHandler);

@@ -586,6 +586,7 @@ Determines whether saving is allowed within the current context.  If unset, save
 #### History:
 
 * `v2.0.0`: Introduced.
+* `v2.37.0`: Added save type parameter.
 
 #### Examples:
 
@@ -599,7 +600,7 @@ Config.saves.isAllowed = function (saveType) {
 };
 ```
 
-Disallow saving on passages tagged wtih `menu`.
+Disallow saving on passages tagged with `menu`.
 
 ```js
 Config.saves.isAllowed = function (saveType) {
@@ -609,7 +610,7 @@ Config.saves.isAllowed = function (saveType) {
 
 ##### Using the save type parameter
 
-Attempt a new auto save only on passages tagged wtih `autosave`.  Other save types are not limited.
+Attempt a new auto save only on passages tagged with `autosave`.  Other save types are not limited.
 
 ```js
 Config.saves.isAllowed = function (saveType) {
@@ -621,7 +622,7 @@ Config.saves.isAllowed = function (saveType) {
 };
 ```
 
-Attempt a new auto save only on every eighth turn and limit all other save types to passages tagged wtih `cansave`.
+Attempt a new auto save only on every eighth turn and limit all other save types to passages tagged with `cansave`.
 
 ```js
 // Using an `if` statement
@@ -634,7 +635,11 @@ Config.saves.isAllowed = function (saveType) {
 };
 ```
 
-Different logic for most save types.  **NOTE:** For example purposes, not really recommended.
+Different logic for most save types.
+
+<p role="note"><b>Note:</b>
+For example purposes only, not really recommended.
+</p>
 
 ```js
 Config.saves.isAllowed = function (saveType) {
