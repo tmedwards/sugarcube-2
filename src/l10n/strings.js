@@ -66,14 +66,11 @@ var l10nStrings = { // eslint-disable-line no-unused-vars, no-var
 		Warnings.
 	*******************************************************************************/
 
-	// Degraded experience outro template.
-	_warningOutroDegraded : ', so this {textIdentity} is running in a degraded mode. You may be able to continue, however, some parts may not work properly.',
-
 	warningNoStorage : 'All usable storage APIs are missing. Possible causes are a disabled third-party cookie setting, which also affects Web Storage, or a private browsing mode.',
 
-	warningNoWebStorage : 'The Web Storage API is missing{_warningOutroDegraded}',
+	warningNoWebStorage : 'The Web Storage API is missing, so this {textIdentity} is running in a degraded mode. You may be able to continue, however, some parts may not work properly.',
 
-	warningDegraded : 'Some capabilities required by this {textIdentity} are missing{_warningOutroDegraded}',
+	warningDegraded : 'Some capabilities required to support this {textIdentity} are missing, so it is running in a degraded mode. You may be able to continue, however, some parts may not work properly.',
 
 	warningNoSaves : 'Some capabilities required to support saves are missing, so saves have been disabled for this session.',
 
