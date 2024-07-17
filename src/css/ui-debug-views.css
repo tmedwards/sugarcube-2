@@ -1,0 +1,63 @@
+/***********************************************************************************************************************
+
+	css/ui-debug-views.css
+
+	Copyright © 2013–2024 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
+	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
+
+***********************************************************************************************************************/
+
+/* Debug view styles. */
+html[data-debug-view] .debug {
+	padding: 0.25em;
+	background-color: #234; /* #541, #151 */
+}
+html[data-debug-view] .debug[title] {
+	cursor: help;
+}
+html[data-debug-view] .debug.block {
+	display: inline-block;
+	vertical-align: middle;
+}
+html[data-debug-view] .debug.invalid {
+	text-decoration: line-through;
+}
+html[data-debug-view] .debug.hidden,
+html[data-debug-view] .debug.hidden .debug {
+	background-color: #555;
+}
+html:not([data-debug-view]) .debug.hidden {
+	display: none;
+}
+
+html[data-debug-view] .debug[data-name][data-type]::before,
+html[data-debug-view] .debug[data-name][data-type].nonvoid::after {
+	background-color: rgba(0, 0, 0, 0.25);
+	font-family: monospace, monospace;
+	white-space: pre;
+}
+html[data-debug-view] .debug[data-name][data-type]::before {
+	content: attr(data-name);
+}
+html[data-debug-view] .debug[data-name][data-type|="macro"]::before {
+	content: "<<" attr(data-name) ">>";
+}
+html[data-debug-view] .debug[data-name][data-type|="macro"].nonvoid::after {
+	content: "<</" attr(data-name) ">>";
+}
+html[data-debug-view] .debug[data-name][data-type|="html"]::before {
+	content: "<" attr(data-name) ">";
+}
+html[data-debug-view] .debug[data-name][data-type|="html"].nonvoid::after {
+	content: "</" attr(data-name) ">";
+}
+html[data-debug-view] .debug[data-name][data-type]:not(:empty)::before {
+	margin-right: 0.25em;
+}
+html[data-debug-view] .debug[data-name][data-type].nonvoid:not(:empty)::after {
+	margin-left: 0.25em;
+}
+html[data-debug-view] .debug[data-name][data-type|="special"],
+html[data-debug-view] .debug[data-name][data-type|="special"]::before {
+	display: block;
+}

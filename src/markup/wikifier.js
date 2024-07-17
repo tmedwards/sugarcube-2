@@ -2,13 +2,13 @@
 
 	markup/wikifier.js
 
-	Copyright © 2013–2021 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
+	Copyright © 2013–2024 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
 /*
-	global Config, EOF, Engine, Lexer, Patterns, Scripting, State, Story, TempState, Util, convertBreaks,
-	       errorPrologRegExp
+	global Config, EOF, Engine, Lexer, Patterns, Scripting, State, Story, TempState, convertBreaks,
+	       cssPropToDOMProp, errorPrologRegExp, getTypeOf, isExternalLink
 */
 
 /*
@@ -16,15 +16,14 @@
 */
 /* eslint-disable max-len */
 var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
-	'use strict';
-
 	// Wikifier call depth.
 	let _callDepth = 0;
 
 
-	/*******************************************************************************************************************
+	/*******************************************************************************
 		Wikifier Class.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	class Wikifier {
 		constructor(destination, source, options) {
 			if (Wikifier.Parser.Profile.isEmpty()) {
@@ -67,7 +66,7 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 			}
 
 			// jQuery-wrapped destination.  Grab the first element.
-			else if (destination.jquery) { // cannot use `hasOwnProperty()` here as `jquery` is from jQuery's prototype
+			else if (destination instanceof jQuery) {
 				this.output = destination[0];
 			}
 
@@ -90,7 +89,15 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 				this.subWikify(this.output);
 
 				// Limit line break conversion to non-recursive calls.
-				if (_callDepth === 1 && Config.cleanupWikifierOutput) {
+				if (
+					_callDepth === 1
+					&& (
+						Object.hasOwn(this.options, 'cleanup')
+						&& this.options.cleanup != null // lazy equality for null
+							? this.options.cleanup
+							: Config.cleanupWikifierOutput
+					)
+				) {
 					convertBreaks(this.output);
 				}
 			}
@@ -206,7 +213,7 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 
 			// In case of <<break>>/<<continue>>, remove the last <br>.
 			else if (
-				   this.output.lastChild
+				this.output.lastChild
 				&& this.output.lastChild.nodeType === Node.ELEMENT_NODE
 				&& this.output.lastChild.nodeName.toUpperCase() === 'BR'
 			) {
@@ -230,15 +237,19 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 			text given to the currently executing macro.
 		*/
 		rawArgs() {
+			console.warn('[DEPRECATED] Wikifier.rawArgs() is deprecated.');
+
 			return this._rawArgs;
 		}
 
 		/*
 			[DEPRECATED] Meant to be called by legacy macros, this returns the text given to
-			the currently executing macro after doing TwineScript-to-JavaScript transformations.
+			the currently executing macro after doing TwineScript to JavaScript desugaring.
 		*/
 		fullArgs() {
-			return Scripting.parse(this._rawArgs);
+			console.warn('[DEPRECATED] Wikifier.fullArgs() is deprecated.');
+
+			return Scripting.desugar(this._rawArgs);
 		}
 
 		/*
@@ -312,31 +323,20 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 			if (url != null) { // lazy equality for null
 				$link.attr({
 					href     : url,
-					tabindex : 0 // for accessiblity
+					tabindex : 0 // for accessibility
 				});
 			}
 
 			// For legacy-compatibility we must return the DOM node.
 			return $link[0];
 		}
-
-		/*
-			Returns whether the given link source is external (probably).
-		*/
-		static isExternalLink(link) {
-			if (Story.has(link)) {
-				return false;
-			}
-
-			const urlRegExp = new RegExp(`^${Patterns.url}`, 'gim');
-			return urlRegExp.test(link) || /[/.?#]/.test(link);
-		}
 	}
 
 
-	/*******************************************************************************************************************
+	/*******************************************************************************
 		Option Static Object.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	Object.defineProperty(Wikifier, 'Option', {
 		value : (() => {
 			// Options array (stack).
@@ -358,8 +358,8 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 				_optionsStack = [];
 			}
 
-			function optionGet(idx) {
-				return _optionsStack[idx];
+			function optionGet(index) {
+				return _optionsStack[index];
 			}
 
 			function optionPop() {
@@ -368,7 +368,7 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 
 			function optionPush(options) {
 				if (typeof options !== 'object' || options === null) {
-					throw new TypeError(`Wikifier.Option.push options parameter must be an object (received: ${Util.getType(options)})`);
+					throw new TypeError(`Wikifier.Option.push options parameter must be an object (received: ${getTypeOf(options)})`);
 				}
 
 				return _optionsStack.push(options);
@@ -378,7 +378,7 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 			/*
 				Exports.
 			*/
-			return Object.freeze(Object.defineProperties({}, {
+			return Object.preventExtensions(Object.create(null, {
 				length  : { get : optionLength },
 				options : { get : optionGetter },
 				clear   : { value : optionClear },
@@ -390,9 +390,10 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 	});
 
 
-	/*******************************************************************************************************************
+	/*******************************************************************************
 		Parser Static Object.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	Object.defineProperty(Wikifier, 'Parser', {
 		value : (() => {
 			// Parser definition array.  Ordering matters, so this must be an ordered list.
@@ -415,28 +416,28 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 					throw new Error('Wikifier.Parser.add parser parameter must be an object');
 				}
 
-				if (!parser.hasOwnProperty('name')) {
+				if (!Object.hasOwn(parser, 'name')) {
 					throw new Error('parser object missing required "name" property');
 				}
 				else if (typeof parser.name !== 'string') {
 					throw new Error('parser object "name" property must be a string');
 				}
 
-				if (!parser.hasOwnProperty('match')) {
+				if (!Object.hasOwn(parser, 'match')) {
 					throw new Error('parser object missing required "match" property');
 				}
 				else if (typeof parser.match !== 'string') {
 					throw new Error('parser object "match" property must be a string');
 				}
 
-				if (!parser.hasOwnProperty('handler')) {
+				if (!Object.hasOwn(parser, 'handler')) {
 					throw new Error('parser object missing required "handler" property');
 				}
 				else if (typeof parser.handler !== 'function') {
 					throw new Error('parser object "handler" property must be a function');
 				}
 
-				if (parser.hasOwnProperty('profiles') && !Array.isArray(parser.profiles)) {
+				if (Object.hasOwn(parser, 'profiles') && !Array.isArray(parser.profiles)) {
 					throw new Error('parser object "profiles" property must be an array');
 				}
 
@@ -478,7 +479,7 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 			}
 
 			function profilesCompile() {
-				if (DEBUG) { console.log('[Wikifier.Parser/profilesCompile()]'); }
+				if (BUILD_DEBUG) { console.log('[Wikifier.Parser/profilesCompile()]'); }
 
 				const all  = _parsers;
 				const core = all.filter(parser => !Array.isArray(parser.profiles) || parser.profiles.includes('core'));
@@ -502,7 +503,7 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 			}
 
 			function profilesGet(profile) {
-				if (typeof _profiles !== 'object' || !_profiles.hasOwnProperty(profile)) {
+				if (typeof _profiles !== 'object' || !Object.hasOwn(_profiles, profile)) {
 					throw new Error(`nonexistent parser profile "${profile}"`);
 				}
 
@@ -510,14 +511,14 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 			}
 
 			function profilesHas(profile) {
-				return typeof _profiles === 'object' && _profiles.hasOwnProperty(profile);
+				return typeof _profiles === 'object' && Object.hasOwn(_profiles, profile);
 			}
 
 
 			/*
 				Exports.
 			*/
-			return Object.freeze(Object.defineProperties({}, {
+			return Object.preventExtensions(Object.create(null, {
 				/*
 					Parser Containers.
 				*/
@@ -536,7 +537,7 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 					Parser Profile.
 				*/
 				Profile : {
-					value : Object.freeze(Object.defineProperties({}, {
+					value : Object.preventExtensions(Object.create(null, {
 						/*
 							Profiles Containers.
 						*/
@@ -556,27 +557,30 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 	});
 
 
-	/*******************************************************************************************************************
+	/*******************************************************************************
 		Additional Static Properties.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	Object.defineProperties(Wikifier, {
 		helpers : { value : {} },
 
 		/*
 			Legacy Aliases.
 		*/
+		isExternalLink : { value : isExternalLink },
 		getValue       : { value : State.getVar },              // SEE: `state.js`.
 		setValue       : { value : State.setVar },              // SEE: `state.js`.
-		parse          : { value : Scripting.parse },           // SEE: `markup/scripting.js`.
+		parse          : { value : Scripting.desugar },         // SEE: `markup/scripting.js`.
 		evalExpression : { value : Scripting.evalTwineScript }, // SEE: `markup/scripting.js`.
 		evalStatements : { value : Scripting.evalTwineScript }, // SEE: `markup/scripting.js`.
 		textPrimitives : { value : Patterns }                   // SEE: `lib/patterns.js`.
 	});
 
 
-	/*******************************************************************************************************************
+	/*******************************************************************************
 		Helper Static Methods.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	Object.defineProperties(Wikifier.helpers, {
 		inlineCss : {
 			value : (() => {
@@ -596,10 +600,10 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 
 						if (matched) {
 							if (match[1]) {
-								css.styles[Util.fromCssProperty(match[1])] = match[2].trim();
+								css.styles[cssPropToDOMProp(match[1])] = match[2].trim();
 							}
 							else if (match[3]) {
-								css.styles[Util.fromCssProperty(match[3])] = match[4].trim();
+								css.styles[cssPropToDOMProp(match[3])] = match[4].trim();
 							}
 							else if (match[5]) {
 								let subMatch;
@@ -643,17 +647,17 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 						still leak through—e.g. `window.status` → string.
 					*/
 					switch (typeof result) {
-					case 'string':
-						if (result.trim() === '') {
+						case 'string':
+							if (result.trim() === '') {
+								result = text;
+							}
+							break;
+						case 'number':
+							result = String(result);
+							break;
+						default:
 							result = text;
-						}
-						break;
-					case 'number':
-						result = String(result);
-						break;
-					default:
-						result = text;
-						break;
+							break;
 					}
 				}
 				catch (ex) {
@@ -682,8 +686,7 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 					const node = nodes[i];
 
 					switch (node.nodeType) {
-					case Node.ELEMENT_NODE:
-						{
+						case Node.ELEMENT_NODE: {
 							const tagName = node.nodeName.toUpperCase();
 
 							if (tagName === 'BR') {
@@ -708,43 +711,43 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 								element.
 							*/
 							switch (tagName) {
-							case 'ADDRESS':
-							case 'ARTICLE':
-							case 'ASIDE':
-							case 'BLOCKQUOTE':
-							case 'CENTER':
-							case 'DIV':
-							case 'DL':
-							case 'FIGURE':
-							case 'FOOTER':
-							case 'FORM':
-							case 'H1':
-							case 'H2':
-							case 'H3':
-							case 'H4':
-							case 'H5':
-							case 'H6':
-							case 'HEADER':
-							case 'HR':
-							case 'MAIN':
-							case 'NAV':
-							case 'OL':
-							case 'P':
-							case 'PRE':
-							case 'SECTION':
-							case 'TABLE':
-							case 'UL':
-								return true;
+								case 'ADDRESS':
+								case 'ARTICLE':
+								case 'ASIDE':
+								case 'BLOCKQUOTE':
+								case 'CENTER':
+								case 'DIV':
+								case 'DL':
+								case 'FIGURE':
+								case 'FOOTER':
+								case 'FORM':
+								case 'H1':
+								case 'H2':
+								case 'H3':
+								case 'H4':
+								case 'H5':
+								case 'H6':
+								case 'HEADER':
+								case 'HR':
+								case 'MAIN':
+								case 'NAV':
+								case 'OL':
+								case 'P':
+								case 'PRE':
+								case 'SECTION':
+								case 'TABLE':
+								case 'UL':
+									return true;
 							}
+
+							return false;
 						}
 
-						return false;
+						case Node.COMMENT_NODE:
+							continue;
 
-					case Node.COMMENT_NODE:
-						continue;
-
-					default:
-						return false;
+						default:
+							return false;
 					}
 				}
 
@@ -752,7 +755,7 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 			}
 		},
 
-		createShadowSetterCallback : {
+		shadowHandler : {
 			value : (() => {
 				let macroParser = null;
 
@@ -768,27 +771,20 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 					return macroParser;
 				}
 
-				function getMacroContextShadowView() {
-					const macro = macroParser || cacheMacroParser();
-					const view  = new Set();
+				function helperShadowHandler(code) {
+					const shadowStore = Object.create(null);
 
-					for (let context = macro.context; context !== null; context = context.parent) {
-						if (context._shadows) {
-							context._shadows.forEach(name => view.add(name));
-						}
+					if (!macroParser) {
+						cacheMacroParser();
 					}
 
-					return [...view];
-				}
-
-				function helperCreateShadowSetterCallback(code) {
-					const shadowStore = {};
-
-					getMacroContextShadowView().forEach(varName => {
-						const varKey = varName.slice(1);
-						const store  = varName[0] === '$' ? State.variables : State.temporary;
-						shadowStore[varName] = store[varKey];
-					});
+					if (macroParser.context) {
+						macroParser.context.shadowView.forEach(varName => {
+							const varKey = varName.slice(1);
+							const store  = varName[0] === '$' ? State.variables : State.temporary;
+							shadowStore[varName] = store[varKey];
+						});
+					}
 
 					return function () {
 						const shadowNames = Object.keys(shadowStore);
@@ -808,7 +804,7 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 								const varKey = varName.slice(1);
 								const store  = varName[0] === '$' ? State.variables : State.temporary;
 
-								if (store.hasOwnProperty(varKey)) {
+								if (Object.hasOwn(store, varKey)) {
 									valueCache[varKey] = store[varKey];
 								}
 
@@ -830,7 +826,7 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 								*/
 								shadowStore[varName] = store[varKey];
 
-								if (valueCache.hasOwnProperty(varKey)) {
+								if (Object.hasOwn(valueCache, varKey)) {
 									store[varKey] = valueCache[varKey];
 								}
 								else {
@@ -841,14 +837,21 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 					};
 				}
 
-				return helperCreateShadowSetterCallback;
+				return helperShadowHandler;
 			})()
 		},
+
+		/* legacy */
+		// createShadowSetterCallback : {
+		// 	value : Wikifier.helpers.shadowHandler
+		// },
+		/* /legacy */
 
 		parseSquareBracketedMarkup : {
 			value : (() => {
 				/* eslint-disable no-param-reassign */
-				const Item = Lexer.enumFromNames([ // lex item types object (pseudo-enumeration)
+				// Lex item types object.
+				const Item = Lexer.enumFromNames([
 					'Error',     // error
 					'DelimLTR',  // '|' or '->'
 					'DelimRTL',  // '<-'
@@ -861,7 +864,9 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 					'Source',    // image source
 					'Text'       // link text or image alt text
 				]);
-				const Delim = Lexer.enumFromNames([ // delimiter state object (pseudo-enumeration)
+
+				// Delimiter state object.
+				const Delim = Lexer.enumFromNames([
 					'None', // no delimiter encountered
 					'LTR',  // '|' or '->'
 					'RTL'   // '<-'
@@ -927,101 +932,103 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 
 					for (;;) {
 						switch (lexer.next()) {
-						case EOF:
-						case '\n':
-							return lexer.error(Item.Error, `unterminated ${what} markup`);
+							case EOF:
+							case '\n':
+								return lexer.error(Item.Error, `unterminated ${what} markup`);
 
-						case '"':
-							/*
-								This is not entirely reliable within sections that allow raw strings, since
-								it's possible, however unlikely, for a raw string to contain unpaired double
-								quotes.  The likelihood is low enough, however, that I'm deeming the risk as
-								acceptable—for now, at least.
-							*/
-							if (slurpQuote(lexer, '"') === EOF) {
-								return lexer.error(Item.Error, `unterminated double quoted string in ${what} markup`);
-							}
-							break;
-
-						case '|': // possible pipe ('|') delimiter
-							if (delim === Delim.None) {
-								delim = Delim.LTR;
-								lexer.backup();
-								lexer.emit(Item.Text);
-								lexer.forward();
-								lexer.emit(Item.DelimLTR);
-								// lexer.ignore();
-							}
-							break;
-
-						case '-': // possible right arrow ('->') delimiter
-							if (delim === Delim.None && lexer.peek() === '>') {
-								delim = Delim.LTR;
-								lexer.backup();
-								lexer.emit(Item.Text);
-								lexer.forward(2);
-								lexer.emit(Item.DelimLTR);
-								// lexer.ignore();
-							}
-							break;
-
-						case '<': // possible left arrow ('<-') delimiter
-							if (delim === Delim.None && lexer.peek() === '-') {
-								delim = Delim.RTL;
-								lexer.backup();
-								lexer.emit(lexer.data.isLink ? Item.Link : Item.Source);
-								lexer.forward(2);
-								lexer.emit(Item.DelimRTL);
-								// lexer.ignore();
-							}
-							break;
-
-						case '[':
-							++lexer.depth;
-							break;
-
-						case ']':
-							--lexer.depth;
-
-							if (lexer.depth === 1) {
-								switch (lexer.peek()) {
-								case '[':
-									++lexer.depth;
-									lexer.backup();
-
-									if (delim === Delim.RTL) {
-										lexer.emit(Item.Text);
-									}
-									else {
-										lexer.emit(lexer.data.isLink ? Item.Link : Item.Source);
-									}
-
-									lexer.forward(2);
-									lexer.emit(Item.InnerMeta);
-									// lexer.ignore();
-									return lexer.data.isLink ? lexSetter : lexImageLink;
-
-								case ']':
-									--lexer.depth;
-									lexer.backup();
-
-									if (delim === Delim.RTL) {
-										lexer.emit(Item.Text);
-									}
-									else {
-										lexer.emit(lexer.data.isLink ? Item.Link : Item.Source);
-									}
-
-									lexer.forward(2);
-									lexer.emit(Item.RightMeta);
-									// lexer.ignore();
-									return null;
-
-								default:
-									return lexer.error(Item.Error, `malformed ${what} markup`);
+							case '"':
+								/*
+									This is not entirely reliable within sections that allow raw strings, since
+									it's possible, however unlikely, for a raw string to contain unpaired double
+									quotes.  The likelihood is low enough, however, that I'm deeming the risk as
+									acceptable—for now, at least.
+								*/
+								if (slurpQuote(lexer, '"') === EOF) {
+									return lexer.error(Item.Error, `unterminated double quoted string in ${what} markup`);
 								}
+								break;
+
+							case '|': // possible pipe ('|') delimiter
+								if (delim === Delim.None) {
+									delim = Delim.LTR;
+									lexer.backup();
+									lexer.emit(Item.Text);
+									lexer.forward();
+									lexer.emit(Item.DelimLTR);
+									// lexer.ignore();
+								}
+								break;
+
+							case '-': // possible right arrow ('->') delimiter
+								if (delim === Delim.None && lexer.peek() === '>') {
+									delim = Delim.LTR;
+									lexer.backup();
+									lexer.emit(Item.Text);
+									lexer.forward(2);
+									lexer.emit(Item.DelimLTR);
+									// lexer.ignore();
+								}
+								break;
+
+							case '<': // possible left arrow ('<-') delimiter
+								if (delim === Delim.None && lexer.peek() === '-') {
+									delim = Delim.RTL;
+									lexer.backup();
+									lexer.emit(lexer.data.isLink ? Item.Link : Item.Source);
+									lexer.forward(2);
+									lexer.emit(Item.DelimRTL);
+									// lexer.ignore();
+								}
+								break;
+
+							case '[':
+								++lexer.depth;
+								break;
+
+							case ']': {
+								--lexer.depth;
+
+								if (lexer.depth === 1) {
+									switch (lexer.peek()) {
+										case '[':
+											++lexer.depth;
+											lexer.backup();
+
+											if (delim === Delim.RTL) {
+												lexer.emit(Item.Text);
+											}
+											else {
+												lexer.emit(lexer.data.isLink ? Item.Link : Item.Source);
+											}
+
+											lexer.forward(2);
+											lexer.emit(Item.InnerMeta);
+											// lexer.ignore();
+											return lexer.data.isLink ? lexSetter : lexImageLink;
+
+										case ']':
+											--lexer.depth;
+											lexer.backup();
+
+											if (delim === Delim.RTL) {
+												lexer.emit(Item.Text);
+											}
+											else {
+												lexer.emit(lexer.data.isLink ? Item.Link : Item.Source);
+											}
+
+											lexer.forward(2);
+											lexer.emit(Item.RightMeta);
+											// lexer.ignore();
+											return null;
+
+										default:
+											return lexer.error(Item.Error, `malformed ${what} markup`);
+									}
+								}
+
+								break;
 							}
-							break;
 						}
 					}
 				}
@@ -1031,54 +1038,58 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 
 					for (;;) {
 						switch (lexer.next()) {
-						case EOF:
-						case '\n':
-							return lexer.error(Item.Error, `unterminated ${what} markup`);
+							case EOF:
+							case '\n':
+								return lexer.error(Item.Error, `unterminated ${what} markup`);
 
-						case '"':
-							/*
-								This is not entirely reliable within sections that allow raw strings, since
-								it's possible, however unlikely, for a raw string to contain unpaired double
-								quotes.  The likelihood is low enough, however, that I'm deeming the risk as
-								acceptable—for now, at least.
-							*/
-							if (slurpQuote(lexer, '"') === EOF) {
-								return lexer.error(Item.Error, `unterminated double quoted string in ${what} markup link component`);
-							}
-							break;
-
-						case '[':
-							++lexer.depth;
-							break;
-
-						case ']':
-							--lexer.depth;
-
-							if (lexer.depth === 1) {
-								switch (lexer.peek()) {
-								case '[':
-									++lexer.depth;
-									lexer.backup();
-									lexer.emit(Item.Link);
-									lexer.forward(2);
-									lexer.emit(Item.InnerMeta);
-									// lexer.ignore();
-									return lexSetter;
-
-								case ']':
-									--lexer.depth;
-									lexer.backup();
-									lexer.emit(Item.Link);
-									lexer.forward(2);
-									lexer.emit(Item.RightMeta);
-									// lexer.ignore();
-									return null;
-
-								default:
-									return lexer.error(Item.Error, `malformed ${what} markup`);
+							case '"':
+								/*
+									This is not entirely reliable within sections that allow raw strings, since
+									it's possible, however unlikely, for a raw string to contain unpaired double
+									quotes.  The likelihood is low enough, however, that I'm deeming the risk as
+									acceptable—for now, at least.
+								*/
+								if (slurpQuote(lexer, '"') === EOF) {
+									return lexer.error(Item.Error, `unterminated double quoted string in ${what} markup link component`);
 								}
+								break;
+
+							case '[':
+								++lexer.depth;
+								break;
+
+							case ']': {
+								--lexer.depth;
+
+								if (lexer.depth === 1) {
+									switch (lexer.peek()) {
+										case '[': {
+											++lexer.depth;
+											lexer.backup();
+											lexer.emit(Item.Link);
+											lexer.forward(2);
+											lexer.emit(Item.InnerMeta);
+											// lexer.ignore();
+											return lexSetter;
+										}
+
+										case ']': {
+											--lexer.depth;
+											lexer.backup();
+											lexer.emit(Item.Link);
+											lexer.forward(2);
+											lexer.emit(Item.RightMeta);
+											// lexer.ignore();
+											return null;
+										}
+
+										default:
+											return lexer.error(Item.Error, `malformed ${what} markup`);
+									}
+								}
+
+								break;
 							}
-							break;
 						}
 					}
 				}
@@ -1088,43 +1099,45 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 
 					for (;;) {
 						switch (lexer.next()) {
-						case EOF:
-						case '\n':
-							return lexer.error(Item.Error, `unterminated ${what} markup`);
+							case EOF:
+							case '\n':
+								return lexer.error(Item.Error, `unterminated ${what} markup`);
 
-						case '"':
-							if (slurpQuote(lexer, '"') === EOF) {
-								return lexer.error(Item.Error, `unterminated double quoted string in ${what} markup setter component`);
-							}
-							break;
+							case '"':
+								if (slurpQuote(lexer, '"') === EOF) {
+									return lexer.error(Item.Error, `unterminated double quoted string in ${what} markup setter component`);
+								}
+								break;
 
-						case "'":
-							if (slurpQuote(lexer, "'") === EOF) {
-								return lexer.error(Item.Error, `unterminated single quoted string in ${what} markup setter component`);
-							}
-							break;
+							case "'":
+								if (slurpQuote(lexer, "'") === EOF) {
+									return lexer.error(Item.Error, `unterminated single quoted string in ${what} markup setter component`);
+								}
+								break;
 
-						case '[':
-							++lexer.depth;
-							break;
+							case '[':
+								++lexer.depth;
+								break;
 
-						case ']':
-							--lexer.depth;
+							case ']': {
+								--lexer.depth;
 
-							if (lexer.depth === 1) {
-								if (lexer.peek() !== ']') {
-									return lexer.error(Item.Error, `malformed ${what} markup`);
+								if (lexer.depth === 1) {
+									if (lexer.peek() !== ']') {
+										return lexer.error(Item.Error, `malformed ${what} markup`);
+									}
+
+									--lexer.depth;
+									lexer.backup();
+									lexer.emit(Item.Setter);
+									lexer.forward(2);
+									lexer.emit(Item.RightMeta);
+									// lexer.ignore();
+									return null;
 								}
 
-								--lexer.depth;
-								lexer.backup();
-								lexer.emit(Item.Setter);
-								lexer.forward(2);
-								lexer.emit(Item.RightMeta);
-								// lexer.ignore();
-								return null;
+								break;
 							}
-							break;
 						}
 					}
 				}
@@ -1150,42 +1163,42 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 							const text = item.text.trim();
 
 							switch (item.type) {
-							case Item.ImageMeta:
-								markup.isImage = true;
+								case Item.ImageMeta:
+									markup.isImage = true;
 
-								if (text[1] === '<') {
-									markup.align = 'left';
-								}
-								else if (text[1] === '>') {
-									markup.align = 'right';
-								}
-								break;
+									if (text[1] === '<') {
+										markup.align = 'left';
+									}
+									else if (text[1] === '>') {
+										markup.align = 'right';
+									}
+									break;
 
-							case Item.LinkMeta:
-								markup.isLink = true;
-								break;
+								case Item.LinkMeta:
+									markup.isLink = true;
+									break;
 
-							case Item.Link:
-								if (text[0] === '~') {
-									markup.forceInternal = true;
-									markup.link = text.slice(1);
-								}
-								else {
-									markup.link = text;
-								}
-								break;
+								case Item.Link:
+									if (text[0] === '~') {
+										markup.forceInternal = true;
+										markup.link = text.slice(1);
+									}
+									else {
+										markup.link = text;
+									}
+									break;
 
-							case Item.Setter:
-								markup.setter = text;
-								break;
+								case Item.Setter:
+									markup.setter = text;
+									break;
 
-							case Item.Source:
-								markup.source = text;
-								break;
+								case Item.Source:
+									markup.source = text;
+									break;
 
-							case Item.Text:
-								markup.text = text;
-								break;
+								case Item.Text:
+									markup.text = text;
+									break;
 							}
 						});
 					}
@@ -1201,9 +1214,10 @@ var Wikifier = (() => { // eslint-disable-line no-unused-vars, no-var
 	});
 
 
-	/*******************************************************************************************************************
-		Module Exports.
-	*******************************************************************************************************************/
+	/*******************************************************************************
+		Object Exports.
+	*******************************************************************************/
+
 	return Wikifier;
 })();
 /* eslint-enable max-len */

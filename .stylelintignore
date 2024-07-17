@@ -1,7 +1,8 @@
 # JavaScript
 **/*.js
 
-# Vendored
+# Templates & Vendored
+template/
 vendor/
 
 # Development

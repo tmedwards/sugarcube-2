@@ -101,9 +101,13 @@ The variable <code>$name</code> is set to: Mr. Freeman
 **************************************************************************** -->
 ## Link {#markup-link}
 
-SugarCube's link markup consists of a required `Link` component and optional `Text` and `Setter` components.  The `Link` and `Text` components may be either plain text or any valid TwineScript expression, which will be evaluated early—i.e., when the link is initially processed.  The `Setter` component, which only works with passage links, must be a valid [TwineScript expression](#twinescript-expressions), of the [`<<set>>` macro](#macros-macro-set) variety, which will be evaluated late—i.e., when the link is clicked on.
+SugarCube's link markup consists of a required `Link` component and optional `Text` and `Setter` components.
 
-The `Link` component value may be the title of a passage or any valid URL to a resource (local or remote).
+The `Link` component may be either plain text or any valid TwineScript expression, which will be evaluated early—i.e., when the link is initially processed.  Its value should be the title of a passage or any valid URL to a resource (local or remote).
+
+The optional `Text` component may be either plain text or any valid TwineScript expression, which will be evaluated early—i.e., when the link is initially processed.
+
+The optional `Setter` component, which only works with passage links, must be a valid [TwineScript expression](#twinescript-expressions), of the [`<<set>>` macro](#macros-macro-set) variety, which will be evaluated late—i.e., when the link is clicked on.  If you need to specify multiple expressions, then they should be separated by semi-colons (`;`)—e.g., `$a to 5; $b to true`.
 
 In addition to the standard pipe separator (`|`) used to separate the `Link` and `Text` components (as seen below), SugarCube also supports the arrow separators (`->` &amp; `<-`).  Particular to the arrow separators, the arrows' direction determines the order of the components, with the arrow always pointing at the `Link` component—i.e., the right arrow works like the pipe separator, `Text->Link`, while the left arrow is reversed, `Link<-Text`.
 
@@ -157,9 +161,15 @@ Due to how the Twine&nbsp;2 automatic passage creation feature currently works, 
 **************************************************************************** -->
 ## Image {#markup-image}
 
-SugarCube's image markup consists of a required `Image` component and optional `Title`, `Link`, and `Setter` components.  The `Image`, `Title`, and `Link` components may be either plain text or any valid TwineScript expression, which will be evaluated early—i.e., when the link is initially processed.  The `Setter` component, which only works with passage links, must be a valid [TwineScript expression](#twinescript-expressions), of the [`<<set>>` macro](#macros-macro-set) variety, which will be evaluated late—i.e., when the link is clicked on.
+SugarCube's image markup consists of a required `Image` component and optional `Title`, `Link`, and `Setter` components.
 
-The `Image` component value may be any valid URL to an image resource (local or remote) or the title of an [embedded image passage (Twine&nbsp;1 &amp; Tweego only)](http://twinery.org/wiki/image).  The `Link` component value may be the title of a passage or any valid URL to a resource (local or remote).
+The `Image` component may be either plain text or any valid TwineScript expression, which will be evaluated early—i.e., when the link is initially processed.  Its value may be any valid URL to an image resource (local or remote) or the title of an [media (image) passage](#guide-media-passages).
+
+The optional `Title` component may be either plain text or any valid TwineScript expression, which will be evaluated early—i.e., when the link is initially processed.  Its value will be used as the alt text of the image.
+
+The optional `Link` component may be either plain text or any valid TwineScript expression, which will be evaluated early—i.e., when the link is initially processed.  Its value may be the title of a passage or any valid URL to a resource (local or remote).
+
+The optional `Setter` component, which only works with passage links, must be a valid [TwineScript expression](#twinescript-expressions), of the [`<<set>>` macro](#macros-macro-set) variety, which will be evaluated late—i.e., when the link is clicked on.  If you need to specify multiple expressions, then they should be separated by semi-colons (`;`)—e.g., `$a to 5; $b to true`.
 
 In addition to the standard pipe separator (`|`) used to separate the `Image` and `Title` components (as seen below), SugarCube also supports the arrow separators (`->` &amp; `<-`).  Particular to the arrow separators, the arrows' direction determines the order of the components, with the arrow always pointing at the `Image` component—i.e., the right arrow works like the pipe separator, `Title->Image`, while the left arrow is reversed, `Image<-Title`.
 
@@ -223,7 +233,7 @@ Due to how the Twine&nbsp;2 automatic passage creation feature currently works, 
 
 #### Within stylesheets
 
-A restricted subset of the image markup, allowing only the `Image` component, may be used within stylesheets—primarily to allow the easy use of [image passages](#guide-media-passages).  For example:
+A restricted subset of the image markup, allowing only the `Image` component, may be used within stylesheets—primarily to allow the easy use of [media (image) passages](#guide-media-passages).  For example:
 
 ```
 /* Using the external image "forest.png" as the <body> background. */
@@ -239,9 +249,9 @@ body {
 
 
 <!-- ***************************************************************************
-	HTML Attribute
+	HTML &amp; SVG Attribute
 **************************************************************************** -->
-## HTML Attribute {#markup-html-attribute}
+## HTML &amp; SVG Attribute<!-- legacy --><span id="markup-html-attribute"></span><!-- /legacy --> {#markup-html-svg-attribute}
 
 <p role="note" class="warning"><b>Warning:</b>
 None of these features work within the <a href="#markup-verbatim-html">verbatim HTML markup</a>.
@@ -249,9 +259,9 @@ None of these features work within the <a href="#markup-verbatim-html">verbatim 
 
 <!-- *********************************************************************** -->
 
-### Special Attribute {#markup-html-attribute-special}
+### Special Attribute<!-- legacy --><span id="markup-html-attribute-special"></span><!-- /legacy --> {#markup-html-svg-attribute-special}
 
-SugarCube provides a few special HTML attributes, which you may add to HTML tags to enable special behaviors.  There are attributes for passage links, media passages, and setters.
+SugarCube provides a few special HTML &amp; SVG attributes, which you may add to tags to enable special behaviors.  There are attributes for passage links, media passages, and setters.
 
 <table>
 <thead>
@@ -279,7 +289,10 @@ SugarCube provides a few special HTML attributes, which you may add to HTML tags
 	<tr>
 		<td>Passage, Image</td>
 		<td><pre><code>data-passage</code></pre></td>
-		<td><pre><code>&lt;img data-passage=&quot;ImagePassageName&quot;&gt;</code></pre></td>
+		<td>
+			<pre><code>&lt;img data-passage=&quot;ImagePassageName&quot;&gt;</code></pre>
+			<pre><code>&lt;image data-passage=&quot;ImagePassageName&quot; /&gt;</code></pre>
+		</td>
 	</tr>
 	<tr>
 		<td>Passage, Source</td>
@@ -311,16 +324,16 @@ SugarCube provides a few special HTML attributes, which you may add to HTML tags
 
 <!-- *********************************************************************** -->
 
-### Attribute Directive {#markup-html-attribute-directive}
+### Attribute Directive<!-- legacy --><span id="markup-html-attribute-directive"></span><!-- /legacy --> {#markup-html-svg-attribute-directive}
 
-HTML attributes may be prefixed with directives, special text, which trigger special processing of such attributes.
+HTML &amp; SVG attributes may be prefixed with directives, special text, which trigger special processing of such attributes.
 
 <dl>
 <dt>Evaluation directive: <code>sc-eval:</code>, <code>@</code></dt>
 <dd>
 	<p>	The evaluation directive causes the attribute's value to be evaluated as TwineScript.  Post-evaluation, the directive will be removed from the attribute's name and the result of the evaluation will be used as the actual value of the attribute.</p>
 	<p role="note" class="warning"><b>Warning:</b>
-	The evaluation directive is not allowed on the <a href="#markup-html-attribute-special"><code>data-setter</code> attribute</a>—as its function is to evaluate its contents upon activation of its own element—and any such attempt will cause an error.
+	The evaluation directive is not allowed on the <a href="#markup-html-svg-attribute-special"><code>data-setter</code> attribute</a>—as its function is to evaluate its contents upon activation of its own element—and any such attempt will cause an error.
 	</p>
 	<table>
 	<caption>For the following examples assume: <code>_id</code> is <code>&quot;foo&quot;</code></caption>
@@ -338,9 +351,19 @@ HTML attributes may be prefixed with directives, special text, which trigger spe
 			<td><pre><code>&lt;span id=&quot;foo&quot;&gt;…&lt;/span&gt;</code></pre></td>
 		</tr>
 		<tr>
+			<td><pre><code>sc-eval:<i>attribute-name</i></code></pre></td>
+			<td><pre><code>&lt;span sc-eval:id=&quot;'pre-' + _id + '-suf'&quot;&gt;…&lt;/span&gt;</code></pre></td>
+			<td><pre><code>&lt;span id=&quot;pre-foo-suf&quot;&gt;…&lt;/span&gt;</code></pre></td>
+		</tr>
+		<tr>
 			<td><pre><code>@<i>attribute-name</i></code></pre></td>
 			<td><pre><code>&lt;span @id=&quot;_id&quot;&gt;…&lt;/span&gt;</code></pre></td>
 			<td><pre><code>&lt;span id=&quot;foo&quot;&gt;…&lt;/span&gt;</code></pre></td>
+		</tr>
+		<tr>
+			<td><pre><code>@<i>attribute-name</i></code></pre></td>
+			<td><pre><code>&lt;span @id=&quot;'pre-' + _id + '-suf'&quot;&gt;…&lt;/span&gt;</code></pre></td>
+			<td><pre><code>&lt;span id=&quot;pre-foo-suf&quot;&gt;…&lt;/span&gt;</code></pre></td>
 		</tr>
 	</tbody>
 	</table>

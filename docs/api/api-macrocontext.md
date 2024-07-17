@@ -23,10 +23,10 @@ An array of discrete arguments parsed from the argument string.
 
 ```
 // Given: <<someMacro "a" "b" "c">>
-this.args.length  → Returns 3
-this.args[0]      → Returns 'a'
-this.args[1]      → Returns 'b'
-this.args[2]      → Returns 'c'
+this.args.length  // Returns 3
+this.args[0]      // Returns 'a'
+this.args[1]      // Returns 'b'
+this.args[2]      // Returns 'c'
 ```
 
 <!-- *********************************************************************** -->
@@ -42,8 +42,8 @@ The argument string after converting all TwineScript syntax elements into their 
 #### Examples:
 
 ```
-// Given: <<if "a" is "b">>
-this.args.full  → Returns '"a" === "b"'
+// Given: <<if $a is "b">>
+this.args.full  // Returns 'State.variables.a === "b"'
 ```
 
 <!-- *********************************************************************** -->
@@ -60,7 +60,7 @@ The unprocessed argument string.
 
 ```
 // Given: <<if "a" is "b">>
-this.args.raw  → Returns '"a" is "b"'
+this.args.raw  // Returns '"a" is "b"'
 ```
 
 <!-- *********************************************************************** -->
@@ -77,7 +77,7 @@ The name of the macro.
 
 ```
 // Given: <<someMacro …>>
-this.name  → Returns 'someMacro'
+this.name  // Returns 'someMacro'
 ```
 
 <!-- *********************************************************************** -->
@@ -138,129 +138,65 @@ The macro's definition—created via [`Macro.add()`](#macro-api-method-add).
 
 <!-- *********************************************************************** -->
 
-### `<MacroContext>.contextHas(filter)` → *boolean* {#macrocontext-api-prototype-method-contexthas}
+### `<MacroContext>.contextFilter(predicate)` → *Array&lt;object&gt;* {#macrocontext-api-prototype-method-contextfilter}
 
-Returns whether any of the macro's ancestors passed the test implemented by the given filter function.
+Returns a new array containing all of the macro's ancestors that passed the test implemented by the given predicate function or an empty array, if no members pass.
 
 #### History:
 
-* `v2.0.0`: Introduced.
+* `v2.37.0`: Introduced.
 
 #### Parameters:
 
-* **`filter`:** (*function*) The function used to test each ancestor execution context object, which is passed in as its sole parameter.
+* **`predicate`:** (*function*) The function used to test each ancestor execution context object, which is passed in as its sole parameter.
 
 #### Examples:
 
 ```
-var includeAncestor = function (ctx) { return ctx.name === "include"; };
-this.contextHas(includeAncestor);  → Returns true if any ancestor was an <<include>> macro
+var isInclude = function (ctx) { return ctx.name === "include"; };
+this.contextFilter(isInclude); // Returns an array of all <<include>> macro ancestors
 ```
 
 <!-- *********************************************************************** -->
 
-### `<MacroContext>.contextSelect(filter)` → *null* | *object* {#macrocontext-api-prototype-method-contextselect}
+### `<MacroContext>.contextFind(predicate)` → *object* | *undefined* {#macrocontext-api-prototype-method-contextfind}
 
-Returns the first of the macro's ancestors that passed the test implemented by the given filter function or `null`, if no members pass.
+Returns the first of the macro's ancestors that passed the test implemented by the given predicate function or `undefined`, if no members pass.
 
 #### History:
 
-* `v2.0.0`: Introduced.
+* `v2.37.0`: Introduced.
 
 #### Parameters:
 
-* **`filter`:** (*function*) The function used to test each ancestor execution context object, which is passed in as its sole parameter.
+* **`predicate`:** (*function*) The function used to test each ancestor execution context object, which is passed in as its sole parameter.
 
 #### Examples:
 
 ```
-var includeAncestor = function (ctx) { return ctx.name === "include"; };
-this.contextSelect(includeAncestor);  → Returns the first <<include>> macro ancestor
+var isInclude = function (ctx) { return ctx.name === "include"; };
+this.contextFind(isInclude); // Returns the first <<include>> macro ancestor
 ```
 
 <!-- *********************************************************************** -->
 
-### `<MacroContext>.contextSelectAll(filter)` → *Array&lt;object&gt;* {#macrocontext-api-prototype-method-contextselectall}
+### `<MacroContext>.contextSome(predicate)` → *boolean* {#macrocontext-api-prototype-method-contextsome}
 
-Returns a new array containing all of the macro's ancestors that passed the test implemented by the given filter function or an empty array, if no members pass.
+Returns whether any of the macro's ancestors passed the test implemented by the given predicate function.
 
 #### History:
 
-* `v2.0.0`: Introduced.
+* `v2.37.0`: Introduced.
 
 #### Parameters:
 
-* **`filter`:** (*function*) The function used to test each ancestor execution context object, which is passed in as its sole parameter.
+* **`predicate`:** (*function*) The function used to test each ancestor execution context object, which is passed in as its sole parameter.
 
 #### Examples:
 
 ```
-var includeAncestor = function (ctx) { return ctx.name === "include"; };
-this.contextSelectAll(includeAncestor);  → Returns an array of all <<include>> macro ancestors
-```
-
-<!-- *********************************************************************** -->
-
-### `<MacroContext>.createShadowWrapper(callback [, doneCallback [, startCallback]])` → *function* {#macrocontext-api-prototype-method-createshadowwrapper}
-
-Returns a callback function that wraps the specified callback functions to provide access to the variable shadowing system used by the [`<<capture>>` macro](#macros-macro-capture).
-
-<p role="note" class="note"><b>Note:</b>
-All of the specified callbacks are invoked as the wrapper is invoked—meaning, with their <code>this</code> set to the <code>this</code> of the wrapper and with whatever parameters were passed to the wrapper.
-</p>
-
-<p role="note" class="warning"><b>Warning:</b>
-Only useful when you have an asynchronous callback that invokes code/content that needs to access story and/or temporary variables shadowed by <code>&lt;&lt;capture&gt;&gt;</code>.  If you don't know what that means, then this API is likely not for you.
-</p>
-
-#### History:
-
-* `v2.14.0`: Introduced.
-* `v2.23.3`: Fixed an issue where shadows would fail for multiple layers of nested asynchronous code due to loss of context.
-
-#### Parameters:
-
-* **`callback`:** (*function*) The main callback function, executed when the wrapper is invoked.  Receives access to variable shadows.
-* **`doneCallback`:** (optional, *function*) The finalization callback function, executed after the main `callback` returns.  Does not receive access to variable shadows.
-* **`startCallback`:** (optional, *function*) The initialization callback function, executed before the main `callback` is invoked.  Does not receive access to variable shadows.
-
-#### Examples:
-
-##### Basic usage
-
-```
-$someElement.on('some_event', this.createShadowWrapper(function (ev) {
-	/* main asynchronous code */
-}));
-```
-
-##### With an optional `doneCallback`
-
-```
-$someElement.on('some_event', this.createShadowWrapper(
-	function (ev) {
-		/* main asynchronous code */
-	},
-	function (ev) {
-		/* asynchronous code invoked after the main code */
-	}
-));
-```
-
-##### With an optional `doneCallback` and `startCallback`
-
-```
-$someElement.on('some_event', this.createShadowWrapper(
-	function (ev) {
-		/* main asynchronous code */
-	},
-	function (ev) {
-		/* asynchronous code invoked after the main code */
-	},
-	function (ev) {
-		/* asynchronous code invoked before the main code */
-	}
-));
+var isInclude = function (ctx) { return ctx.name === "include"; };
+this.contextSome(isInclude);  // Returns true if any ancestor was an <<include>> macro
 ```
 
 <!-- *********************************************************************** -->
@@ -281,5 +217,121 @@ Renders the message prefixed with the name of the macro and returns `false`.
 
 ```
 // Given: <<someMacro …>>
-return this.error("oops");  → Outputs '<<someMacro>>: oops'
+return this.error("oops"); // Outputs '<<someMacro>>: oops'
 ```
+
+<!-- *********************************************************************** -->
+
+### `<MacroContext>.shadowHandler(callback [, doneCallback [, startCallback]])` → *function* {#macrocontext-api-prototype-method-shadowhandler}
+
+Returns a callback function that wraps the specified callback functions to provide access to the variable shadowing system used by the [`<<capture>>` macro](#macros-macro-capture).
+
+<p role="note" class="note"><b>Note:</b>
+All of the specified callbacks are invoked as the wrapper is invoked—meaning, with their <code>this</code> set to the <code>this</code> of the wrapper and with whatever parameters were passed to the wrapper.
+</p>
+
+<p role="note" class="warning"><b>Warning:</b>
+Only useful when you have an asynchronous callback that invokes code/content that needs to access story and/or temporary variables shadowed by <code>&lt;&lt;capture&gt;&gt;</code>.  If you don't know what that means, then this API is likely not for you.
+</p>
+
+#### History:
+
+* `v2.37.0`: Introduced.
+
+#### Parameters:
+
+* **`callback`:** (*function*) The main callback function, executed when the wrapper is invoked.  Receives access to variable shadows.
+* **`doneCallback`:** (optional, *function*) The finalization callback function, executed after the main `callback` returns.  Does not receive access to variable shadows.
+* **`startCallback`:** (optional, *function*) The initialization callback function, executed before the main `callback` is invoked.  Does not receive access to variable shadows.
+
+#### Examples:
+
+##### Basic usage
+
+```
+$someElement.on('some_event', this.shadowHandler(function (ev) {
+	/* main asynchronous code */
+}));
+```
+
+##### With an optional `doneCallback`
+
+```
+$someElement.on('some_event', this.shadowHandler(
+	function (ev) {
+		/* main asynchronous code */
+	},
+	function (ev) {
+		/* asynchronous code invoked after the main code */
+	}
+));
+```
+
+##### With an optional `doneCallback` and `startCallback`
+
+```
+$someElement.on('some_event', this.shadowHandler(
+	function (ev) {
+		/* main asynchronous code */
+	},
+	function (ev) {
+		/* asynchronous code invoked after the main code */
+	},
+	function (ev) {
+		/* asynchronous code invoked before the main code */
+	}
+));
+```
+
+<!-- *********************************************************************** -->
+
+### <span class="deprecated">`<MacroContext>.contextHas(filter)` → *boolean*</span> {#macrocontext-api-prototype-method-contexthas}
+
+<p role="note" class="warning"><b>Deprecated:</b>
+This method has been deprecated and should no longer be used.  See the <a href="#macrocontext-api-prototype-method-contextsome"><code>&lt;MacroContext&gt;.contextSome()</code></a> method for its replacement.
+</p>
+
+#### History:
+
+* `v2.0.0`: Introduced.
+* `v2.37.0`: Deprecated in favor of `<MacroContext>.contextSome()`.
+
+<!-- *********************************************************************** -->
+
+### <span class="deprecated">`<MacroContext>.contextSelect(filter)` → *null* | *object*</span> {#macrocontext-api-prototype-method-contextselect}
+
+<p role="note" class="warning"><b>Deprecated:</b>
+This method has been deprecated and should no longer be used.  See the <a href="#macrocontext-api-prototype-method-contextfind"><code>&lt;MacroContext&gt;.contextFind()</code></a> method for its replacement.
+</p>
+
+#### History:
+
+* `v2.0.0`: Introduced.
+* `v2.37.0`: Deprecated in favor of `<MacroContext>.contextFind()`.
+
+<!-- *********************************************************************** -->
+
+### <span class="deprecated">`<MacroContext>.contextSelectAll(filter)` → *Array&lt;object&gt;*</span> {#macrocontext-api-prototype-method-contextselectall}
+
+<p role="note" class="warning"><b>Deprecated:</b>
+This method has been deprecated and should no longer be used.  See the <a href="#macrocontext-api-prototype-method-contextfilter"><code>&lt;MacroContext&gt;.contextFilter()</code></a> method for its replacement.
+</p>
+
+#### History:
+
+* `v2.0.0`: Introduced.
+* `v2.37.0`: Deprecated in favor of `<MacroContext>.contextFilter()`.
+
+<!-- *********************************************************************** -->
+
+### <span class="deprecated">`<MacroContext>.createShadowWrapper(callback [, doneCallback [, startCallback]])` → *function*</span> {#macrocontext-api-prototype-method-createshadowwrapper}
+
+<p role="note" class="warning"><b>Deprecated:</b>
+This method has been deprecated and should no longer be used.  See the <a href="#macrocontext-api-prototype-method-shadowhandler"><code>&lt;MacroContext&gt;.shadowHandler()</code></a> method for its replacement.
+</p>
+
+#### History:
+
+* `v2.14.0`: Introduced.
+* `v2.23.3`: Fixed an issue where shadows would fail for multiple layers of nested asynchronous code due to loss of context.
+* `v2.37.0`: Deprecated in favor of `<MacroContext>.shadowHandler()`.

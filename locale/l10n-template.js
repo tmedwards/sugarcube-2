@@ -47,90 +47,229 @@
 	You will likely want to use the development version.
 */
 (function () {
-	/* General. */
-	l10nStrings.identity = 'game';
-	l10nStrings.aborting = 'Aborting';
-	l10nStrings.cancel   = 'Cancel';
-	l10nStrings.close    = 'Close';
-	l10nStrings.ok       = 'OK';
+	/*******************************************************************************
+		General.
+	*******************************************************************************/
 
-	/* Errors. */
-	l10nStrings.errorTitle              = 'Error';
-	l10nStrings.errorToggle             = 'Toggle the error view';
-	l10nStrings.errorNonexistentPassage = 'the passage "{passage}" does not exist'; // NOTE: `passage` is supplied locally
-	l10nStrings.errorSaveDiskLoadFailed = 'failed to load save file from disk';
-	l10nStrings.errorSaveMissingData    = 'save is missing required data. Either the loaded file is not a save or the save has become corrupted';
-	l10nStrings.errorSaveIdMismatch     = 'save is from the wrong {identity}';
+	l10nStrings.textAbort = 'Abort';
 
-	/* Warnings. */
-	l10nStrings._warningIntroLacking  = 'Your browser either lacks or has disabled';
-	l10nStrings._warningOutroDegraded = ', so this {identity} is running in a degraded mode. You may be able to continue, however, some parts may not work properly.';
-	l10nStrings.warningNoWebStorage   = '{_warningIntroLacking} the Web Storage API{_warningOutroDegraded}';
-	l10nStrings.warningDegraded       = '{_warningIntroLacking} some of the capabilities required by this {identity}{_warningOutroDegraded}';
+	l10nStrings.textAborting = 'Aborting';
 
-	/* Debug bar. */
-	l10nStrings.debugBarToggle      = 'Toggle the debug bar';
-	l10nStrings.debugBarNoWatches   = '\u2014 no watches set \u2014';
-	l10nStrings.debugBarAddWatch    = 'Add watch';
-	l10nStrings.debugBarDeleteWatch = 'Delete watch';
-	l10nStrings.debugBarWatchAll    = 'Watch all';
-	l10nStrings.debugBarWatchNone   = 'Delete all';
-	l10nStrings.debugBarLabelAdd    = 'Add';
-	l10nStrings.debugBarLabelWatch  = 'Watch';
-	l10nStrings.debugBarLabelTurn   = 'Turn'; // (noun) chance to act (in a game), moment, period
-	l10nStrings.debugBarLabelViews  = 'Views';
-	l10nStrings.debugBarViewsToggle = 'Toggle the debug views';
-	l10nStrings.debugBarWatchToggle = 'Toggle the watch panel';
+	l10nStrings.textCancel = 'Cancel';
 
-	/* UI bar. */
-	l10nStrings.uiBarToggle   = 'Toggle the UI bar';
-	l10nStrings.uiBarBackward = 'Go backward within the {identity} history';
-	l10nStrings.uiBarForward  = 'Go forward within the {identity} history';
-	l10nStrings.uiBarJumpto   = 'Jump to a specific point within the {identity} history';
+	l10nStrings.textClear = 'Clear';
 
-	/* Jump To. */
-	l10nStrings.jumptoTitle       = 'Jump To';
-	l10nStrings.jumptoTurn        = 'Turn'; // (noun) chance to act (in a game), moment, period
-	l10nStrings.jumptoUnavailable = 'No jump points currently available\u2026';
+	l10nStrings.textClose = 'Close';
 
-	/* Saves. */
-	l10nStrings.savesTitle       = 'Saves';
-	l10nStrings.savesDisallowed  = 'Saving has been disallowed on this passage.';
-	l10nStrings.savesIncapable   = '{_warningIntroLacking} the capabilities required to support saves, so saves have been disabled for this session.';
-	l10nStrings.savesLabelAuto   = 'Autosave';
-	l10nStrings.savesLabelDelete = 'Delete';
-	l10nStrings.savesLabelExport = 'Save to Disk\u2026';
-	l10nStrings.savesLabelImport = 'Load from Disk\u2026';
-	l10nStrings.savesLabelLoad   = 'Load';
-	l10nStrings.savesLabelClear  = 'Delete All';
-	l10nStrings.savesLabelSave   = 'Save';
-	l10nStrings.savesLabelSlot   = 'Slot';
-	l10nStrings.savesUnavailable = 'No save slots found\u2026';
-	l10nStrings.savesUnknownDate = 'unknown';
+	l10nStrings.textDelete = 'Delete';
 
-	/* Settings. */
-	l10nStrings.settingsTitle = 'Settings';
-	l10nStrings.settingsOff   = 'Off';
-	l10nStrings.settingsOn    = 'On';
-	l10nStrings.settingsReset = 'Reset to Defaults';
+	l10nStrings.textExport = 'Export';
 
-	/* Restart. */
-	l10nStrings.restartTitle  = 'Restart';
-	l10nStrings.restartPrompt = 'Are you sure that you want to restart? Unsaved progress will be lost.';
+	// In lowercase, if possible.
+	l10nStrings.textIdentity = 'game';
 
-	/* Share. */
-	l10nStrings.shareTitle = 'Share';
+	l10nStrings.textImport = 'Import';
 
-	/* Alert. */
+	l10nStrings.textLoad = 'Load';
+
+	l10nStrings.textOff = 'Off';
+
+	l10nStrings.textOk = 'OK';
+
+	l10nStrings.textOn = 'On';
+
+	l10nStrings.textSave = 'Save';
+
+	// (noun) chance to act (in a game), moment, period
+	l10nStrings.textTurn = 'Turn';
+
+
+	/*******************************************************************************
+		Errors.
+	*******************************************************************************/
+
+	// NOTE: `passage` is supplied locally.
+	l10nStrings.errorNonexistentPassage = 'the passage "{passage}" does not exist';
+
+
+	/*******************************************************************************
+		Warnings.
+	*******************************************************************************/
+
+	l10nStrings.warningNoStorage = 'All usable storage APIs are missing. Possible causes are a disabled third-party cookie setting, which also affects Web Storage, or a private browsing mode.';
+
+	l10nStrings.warningNoWebStorage = 'The Web Storage API is missing, so this {textIdentity} is running in a degraded mode. You may be able to continue, however, some parts may not work properly.';
+
+	l10nStrings.warningDegraded = 'Some capabilities required to support this {textIdentity} are missing, so it is running in a degraded mode. You may be able to continue, however, some parts may not work properly.';
+
+	l10nStrings.warningNoSaves = 'Some capabilities required to support saves are missing, so saves have been disabled for this session.';
+
+
+	/*******************************************************************************
+		API: Save.
+	*******************************************************************************/
+
+	l10nStrings.saveErrorDisallowed = 'Saving is currently disallowed.';
+
+	l10nStrings.saveErrorDecodeFail = 'unable to decode save, likely due to corruption';
+
+	l10nStrings.saveErrorDiskLoadFail = 'failed to load save file from disk';
+
+	l10nStrings.saveErrorIdMismatch = 'save is from the wrong {textIdentity}';
+
+	l10nStrings.saveErrorInvalidData = 'save is missing required data, likely due to corruption';
+
+	l10nStrings.saveErrorNonexistent = 'save does not exist';
+
+
+	/*******************************************************************************
+		Base UI.
+	*******************************************************************************/
+
+	l10nStrings.uiBarLabelToggle = 'Toggle the UI bar';
+
+	l10nStrings.uiBarLabelBackward = 'Go backward within the {textIdentity} history';
+
+	l10nStrings.uiBarLabelForward = 'Go forward within the {textIdentity} history';
+
+	// [DEPRECATED]
+	l10nStrings.uiBarLabelJumpto = 'Jump to a specific point within the {textIdentity} history';
+
+
+	/*******************************************************************************
+		Dialog: Alert.
+	*******************************************************************************/
+
 	l10nStrings.alertTitle = 'Alert';
 
-	/* Autoload. */
-	l10nStrings.autoloadTitle  = 'Autoload';
-	l10nStrings.autoloadCancel = 'Go to start';
-	l10nStrings.autoloadOk     = 'Load autosave';
-	l10nStrings.autoloadPrompt = 'An autosave exists. Load it now or go to the start?';
 
-	/* Macros. */
-	l10nStrings.macroBackText   = 'Back'; // (verb) rewind, revert
-	l10nStrings.macroReturnText = 'Return'; // (verb) go/send back
+	/*******************************************************************************
+		Dialog: Restart.
+	*******************************************************************************/
+
+	l10nStrings.restartTitle = 'Restart';
+
+	l10nStrings.restartMesgPrompt = 'All unsaved progress will be lost. Are you sure that you want to restart?';
+
+
+	/*******************************************************************************
+		Dialog: Saves.
+	*******************************************************************************/
+
+	l10nStrings.continueTitle = 'Continue';
+
+	l10nStrings.savesTitle = 'Saves';
+
+	l10nStrings.savesHeaderBrowser = 'In Browser';
+
+	l10nStrings.savesHeaderDisk = 'On Disk';
+
+	l10nStrings.savesLabelBrowserClear = 'Clear all browser saves';
+
+	l10nStrings.savesLabelBrowserExport = 'Export browser saves to bundle';
+
+	l10nStrings.savesLabelBrowserImport = 'Import browser saves from bundle';
+
+	l10nStrings.savesLabelDiskLoad = 'Load from disk';
+
+	l10nStrings.savesLabelDiskSave = 'Save to disk';
+
+	l10nStrings.savesTextBrowserAuto = 'Auto';
+
+	l10nStrings.savesTextBrowserSlot = 'Slot';
+
+	l10nStrings.savesTextNoDate = 'unknown date';
+
+
+	/*******************************************************************************
+		Dialog: Settings.
+	*******************************************************************************/
+
+	l10nStrings.settingsTitle = 'Settings';
+
+	l10nStrings.settingsTextReset = 'Reset to Defaults';
+
+
+	/*******************************************************************************
+		Debugging: Error Views.
+	*******************************************************************************/
+
+	l10nStrings.errorViewTitle = 'Error';
+
+	l10nStrings.errorViewLabelToggle = 'Toggle the error view';
+
+
+	/*******************************************************************************
+		Debugging: Debug bar.
+	*******************************************************************************/
+
+	l10nStrings.debugBarLabelToggle = 'Toggle the debug bar';
+
+	l10nStrings.debugBarLabelViewsToggle = 'Toggle the debug views';
+
+	l10nStrings.debugBarLabelWatchAdd = 'Add a new watch';
+
+	l10nStrings.debugBarLabelWatchAll = 'Watch all';
+
+	l10nStrings.debugBarLabelWatchClear = 'Clear all watches';
+
+	l10nStrings.debugBarLabelWatchDelete = 'Delete this watch';
+
+	l10nStrings.debugBarLabelWatchPlaceholder = 'variable name';
+
+	l10nStrings.debugBarLabelPassagePlaceholder = 'passage name';
+
+	l10nStrings.debugBarLabelPassagePlay = 'Play passage';
+
+	l10nStrings.debugBarLabelWatchToggle = 'Toggle the watch panel';
+
+	l10nStrings.debugBarMesgNoWatches = 'No watches set';
+
+	l10nStrings.debugBarTextAdd = 'Add';
+
+	l10nStrings.debugBarTextPassage = 'Passage';
+
+	l10nStrings.debugBarTextViews = 'Views';
+
+	l10nStrings.debugBarTextWatch = 'Watch';
+
+
+	/*******************************************************************************
+		Macros.
+	*******************************************************************************/
+
+	// (verb) rewind, revert
+	l10nStrings.macroBackText = 'Back';
+
+	// (verb) go/send back
+	l10nStrings.macroReturnText = 'Return';
+
+
+	/*******************************************************************************
+		[DEPRECATED] Dialog: Autoload.
+	*******************************************************************************/
+
+	l10nStrings.autoloadTitle = 'Autoload';
+
+	l10nStrings.autoloadMesgPrompt = 'An autosave exists. Load it now or go to the start?';
+
+	l10nStrings.autoloadTextCancel = 'Go to start';
+
+	l10nStrings.autoloadTextOk = 'Load autosave';
+
+
+	/*******************************************************************************
+		[DEPRECATED] Dialog: Jump To.
+	*******************************************************************************/
+
+	l10nStrings.jumptoTitle = 'Jump To';
+
+	l10nStrings.jumptoMesgUnavailable = 'No jump points currently available\u2026';
+
+
+	/*******************************************************************************
+		[DEPRECATED] Dialog: Share.
+	*******************************************************************************/
+
+	l10nStrings.shareTitle = 'Share';
 })();

@@ -133,13 +133,13 @@ $items.countWith(function (item) { return item.kind === 'junk'; })  → Returns 
 
 <!-- *********************************************************************** -->
 
-### `<Array>.delete(needles…)` → *Array&lt;any&gt;* {#methods-array-prototype-method-delete}
+### `<Array>.deleteAll(needles…)` → *Array&lt;any&gt;* {#methods-array-prototype-method-deleteall}
 
 Removes all instances of the given members from the array and returns a new array containing the removed members.
 
 #### History:
 
-* `v2.5.0`: Introduced.
+* `v2.37.0`: Introduced.
 
 #### Parameters:
 
@@ -149,8 +149,8 @@ Removes all instances of the given members from the array and returns a new arra
 
 ```
 // Given: $fruits = ["Apples", "Oranges", "Plums", "Oranges"]
-$fruits.delete("Oranges")          → Returns ["Oranges", "Oranges"]; $fruits ["Apples", "Plums"]
-$fruits.delete("Apples", "Plums")  → Returns ["Apples", "Plums"]; $fruits ["Oranges", "Oranges"]
+$fruits.deleteAll("Oranges")          → Returns ["Oranges", "Oranges"]; $fruits ["Apples", "Plums"]
+$fruits.deleteAll("Apples", "Plums")  → Returns ["Apples", "Plums"]; $fruits ["Oranges", "Oranges"]
 ```
 
 <!-- *********************************************************************** -->
@@ -174,6 +174,50 @@ Removes all of the members at the given indices from the array and returns a new
 $fruits.deleteAt(2)     → Returns ["Plums"]; $fruits ["Apples", "Oranges", "Oranges"]
 $fruits.deleteAt(1, 3)  → Returns ["Oranges", "Oranges"]; $fruits ["Apples", "Plums"]
 $fruits.deleteAt(0, 2)  → Returns ["Apples", "Plums"]; $fruits ["Oranges", "Oranges"]
+```
+
+<!-- *********************************************************************** -->
+
+### `<Array>.deleteFirst(needles…)` → *Array&lt;any&gt;* {#methods-array-prototype-method-deletefirst}
+
+Removes the first instance of the given members from the array and returns a new array containing the removed members.
+
+#### History:
+
+* `v2.37.0`: Introduced.
+
+#### Parameters:
+
+* **`needles`:** (*any*… | *Array&lt;any&gt;*) The members to remove.  May be a list of members or an array.
+
+#### Examples:
+
+```
+// Given: $fruits = ["Apples", "Oranges", "Plums", "Oranges"]
+$fruits.deleteFirst("Oranges")          → Returns ["Oranges"]; $fruits ["Apples", "Plums", "Oranges"]
+$fruits.deleteFirst("Apples", "Plums")  → Returns ["Apples", "Plums"]; $fruits ["Oranges", "Oranges"]
+```
+
+<!-- *********************************************************************** -->
+
+### `<Array>.deleteLast(needles…)` → *Array&lt;any&gt;* {#methods-array-prototype-method-deletelast}
+
+Removes the last instance of the given members from the array and returns a new array containing the removed members.
+
+#### History:
+
+* `v2.37.0`: Introduced.
+
+#### Parameters:
+
+* **`needles`:** (*any*… | *Array&lt;any&gt;*) The members to remove.  May be a list of members or an array.
+
+#### Examples:
+
+```
+// Given: $fruits = ["Apples", "Oranges", "Plums", "Oranges"]
+$fruits.deleteLast("Oranges")          → Returns ["Oranges"]; $fruits ["Apples", "Oranges", "Plums"]
+$fruits.deleteLast("Apples", "Plums")  → Returns ["Apples", "Plums"]; $fruits ["Oranges", "Oranges"]
 ```
 
 <!-- *********************************************************************** -->
@@ -413,7 +457,7 @@ Randomly removes the given number of members from the base array and returns the
 
 #### Parameters:
 
-* **`want`:** (optional, *integer*) The number of members to pluck.  Cannot pluck more members than the base array contains.
+* **`want`:** (*integer*) The number of members to pluck.  Cannot pluck more members than the base array contains.
 
 #### Examples:
 
@@ -516,7 +560,7 @@ Randomly selects the given number of unique members from the base array and retu
 
 #### Parameters:
 
-* **`want`:** (optional, *integer*) The number of members to select.  Cannot select more members than the base array contains.
+* **`want`:** (*integer*) The number of members to select.  Cannot select more members than the base array contains.
 
 #### Examples:
 
@@ -559,6 +603,44 @@ Randomly shuffles the array.
 ```
 // Given: $pies = ["Blueberry", "Cherry", "Cream", "Pecan", "Pumpkin"]
 $pies.shuffle()  → Randomizes the order of the pies in the array
+```
+
+<!-- *********************************************************************** -->
+
+### `<Array>.toShuffled()` → *Array&lt;any&gt;* {#methods-array-prototype-method-toshuffled}
+
+Returns a new copy of the base array created by shuffling the array.  Does not modify the original.
+
+#### History:
+
+* `v2.37.0`: Introduced.
+
+#### Parameters: *none*
+
+#### Examples:
+
+```
+// Given: $pies = ["Blueberry", "Cherry", "Cream", "Pecan", "Pumpkin"]
+$pies.toShuffled()  → Randomizes the order of the pies in the array w/o modifying the original
+```
+
+<!-- *********************************************************************** -->
+
+### `<Array>.toUnique()` → *Array&lt;any&gt;* {#methods-array-prototype-method-tounique}
+
+Returns a new copy of the base array created by removing all duplicate members.  Does not modify the original.
+
+#### History:
+
+* `v2.37.0`: Introduced.
+
+#### Parameters: *none*
+
+#### Examples:
+
+```
+// Given: $fruits = ["Apples", "Oranges", "Plums", "Plums", "Apples"]
+$fruits.toUnique()  → Returns ["Apples", "Oranges", "Plums"]
 ```
 
 <!-- *********************************************************************** -->
@@ -609,113 +691,16 @@ $fruits.unshiftUnique("Apples", "Apples")  → Returns 3; $fruits ["Apples", "Or
 
 <!-- *********************************************************************** -->
 
-### <span class="deprecated">`<Array>.contains(needle [, position])` → *boolean*</span> {#methods-array-prototype-method-contains}
+### <span class="deprecated">`<Array>.delete(needles…)` → *Array&lt;any&gt;* {#methods-array-prototype-method-delete}
 
 <p role="note" class="warning"><b>Deprecated:</b>
-This method has been deprecated and should no longer be used.  See the <a href="#methods-array-prototype-method-includes"><code>&lt;Array&gt;.includes()</code></a> method for its replacement.
+This instance method has been deprecated and should no longer be used.  See the <a href="#methods-array-prototype-method-deleteall"><code>&lt;Array&gt;.deleteAll()</code></a> instance method.
 </p>
 
 #### History:
 
-* `v2.0.0`: Introduced.
-* `v2.10.0`: Deprecated in favor of `<Array>.includes()`.
-
-<!-- *********************************************************************** -->
-
-### <span class="deprecated">`<Array>.containsAll(needles…)` → *boolean*</span> {#methods-array-prototype-method-containsall}
-
-<p role="note" class="warning"><b>Deprecated:</b>
-This method has been deprecated and should no longer be used.  See the <a href="#methods-array-prototype-method-includesall"><code>&lt;Array&gt;.includesAll()</code></a> method for its replacement.
-</p>
-
-#### History:
-
-* `v2.0.0`: Introduced.
-* `v2.10.0`: Deprecated in favor of `<Array>.includesAll()`.
-
-<!-- *********************************************************************** -->
-
-### <span class="deprecated">`<Array>.containsAny(needles…)` → *boolean*</span> {#methods-array-prototype-method-containsany}
-
-<p role="note" class="warning"><b>Deprecated:</b>
-This method has been deprecated and should no longer be used.  See the <a href="#methods-array-prototype-method-includesany"><code>&lt;Array&gt;.includesAny()</code></a> method for its replacement.
-</p>
-
-#### History:
-
-* `v2.0.0`: Introduced.
-* `v2.10.0`: Deprecated in favor of `<Array>.includesAny()`.
-
-<!-- *********************************************************************** -->
-
-### <span class="deprecated">`<Array>.flatten()` → *Array&lt;any&gt;*</span> {#methods-array-prototype-method-flatten}
-
-<p role="note" class="warning"><b>Deprecated:</b>
-This method has been deprecated and should no longer be used.  See the <a href="#methods-array-prototype-method-flat"><code>&lt;Array&gt;.flat()</code></a> method for its replacement.  The exactly equivalent call is: <code>&lt;Array&gt;.flat(Infinity)</code>.
-</p>
-
-Returns a new array consisting of the flattened source array.  Does not modify the original.
-
-#### History:
-
-* `v2.0.0`: Introduced.
-* `v2.29.0`: Deprecated in favor of `<Array>.flat()`.
-
-
-<!-- *********************************************************************** -->
-
-### <span class="deprecated">`Array.random(array)` → *any*</span> {#methods-array-method-random}
-
-<p role="note" class="warning"><b>Deprecated:</b>
-This method has been deprecated and should no longer be used.  In general, look to the <a href="#methods-array-prototype-method-random"><code>&lt;Array&gt;.random()</code></a> method instead.  If you need a random member from an array-like object, use the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from"><code>Array.from()</code></a> method to convert it to an array, then use <code>&lt;Array&gt;.random()</code>.
-</p>
-
-Returns a random member from the array or array-like object.  Does not modify the original.
-
-#### History:
-
-* `v2.0.0`: Introduced.
-* `v2.20.0`: Deprecated.
-
-
-<!-- ***************************************************************************
-	JSON
-**************************************************************************** -->
-## JSON Methods {#methods-json}
-
-<!-- *********************************************************************** -->
-
-### `JSON.reviveWrapper(codeString [, reviveData])` → *array* {#methods-json-method-revivewrapper}
-
-Returns the given code string, and optional data chunk, wrapped within the JSON deserialization revive wrapper.  Intended to allow authors to easily wrap their custom object types (a.k.a. classes) revival code and associated data within the revive wrapper, which should be returned from an object instance's `.toJSON()` method, so that the instance may be properly revived upon deserialization.
-
-<p role="note" class="see"><b>See:</b>
-The <a href="#guide-tips-non-generic-object-types"><em>Non-generic object types (a.k.a. classes)</em> guide</a> for more detailed information.
-</p>
-
-#### History:
-
-* `v2.0.0`: Introduced.
-* `v2.9.0`: Added `reviveData` parameter.
-
-#### Parameters:
-
-* **`codeString`:** (*string*) The revival code string to wrap.
-* **`reviveData`:** (optional, *any*) The data that should be made available to the evaluated revival code during deserialization via the special `$ReviveData$` variable.  **WARNING:** Attempting to pass the value of an object instance's `this` directly as the `reviveData` parameter will trigger out of control recursion in the serializer, so a clone of the instance's own data must be passed instead.
-
-#### Examples:
-
-```
-JSON.reviveWrapper( /* valid JavaScript code string */ );             → Without data chunk
-JSON.reviveWrapper( /* valid JavaScript code string */ , myOwnData);  → With data chunk
-
-// E.g., Assume that you're attempting to revive an instance of a custom class named
-//       `Character`, which is assigned to a story variable named `$pc`.  The call
-//       to `JSON.reviveWrapper()` might look something like the following.
-var ownData = {};
-Object.keys(this).forEach(function (pn) { ownData[pn] = clone(this[pn]); }, this);
-return JSON.reviveWrapper('new Character($ReviveData$)', ownData);
-```
+* `v2.5.0`: Introduced.
+* `v2.37.0`: Deprecated in favor of `<Array>.deleteAll()`.
 
 
 <!-- ***************************************************************************
@@ -732,10 +717,11 @@ Makes the target element(s) WAI-ARIA-compatible clickables—meaning that variou
 #### History:
 
 * `v2.0.0`: Introduced.
+* `v2.37.0`: Add `tabindex` option.
 
 #### Parameters:
 
-* **`options`:** (optional, *object*) The options to be used when creating the clickables.
+* **`options`:** (optional, *object*) The options to be used when creating the clickables.  See below for details.
 * **`handler`:** (*function*) The callback to invoke when the target element(s) are activated.
 
 #### Options object:
@@ -746,6 +732,7 @@ An options object should have some of the following properties:
 * **`one`:** (*boolean*) Whether the clickables are single-use—i.e., the handler callback runs only once and then removes itself.  If omitted, defaults to `false`.
 * **`selector`:** (*string*) A selector applied to the target element(s) to filter the descendants that triggered the event. If omitted or `null`, the event is always handled when it reaches the target element(s).
 * **`data`:** (*any*) Data to be passed to the handler in [`event.data`](http://api.jquery.com/event.data/) when an event is triggered.
+* **`tabindex`:** (*integer*) Value for the `tabindex` attribute.  If omitted, defaults to `0`.
 * **`controls`:** (*string*) Value for the `aria-controls` attribute.
 * **`pressed`:** (*string*) Value for the `aria-pressed` attribute (valid values: `"true"`, `"false"`).
 * **`label`:** (*string*) Value for the `aria-label` and `title` attributes.
@@ -858,6 +845,26 @@ $.wiki('<<somemacro>>');  → Invokes the <<somemacro>> macro, discarding any ou
 
 <!-- *********************************************************************** -->
 
+### `jQuery.wikiPassage(name)` {#methods-jquery-method-wikipassage}
+
+Wikifies the passage by the given name and discards the result.  If there were errors, an exception is thrown.  This is only really useful when you want to invoke a macro for its side-effects and aren't interested in its output.
+
+#### History:
+
+* `v2.37.0`: Introduced.
+
+#### Parameters:
+
+* **`name`:** (*string*) The name of the passage.
+
+#### Examples:
+
+```
+$.wikiPassage('Fight Init');  → Renders the passage, discarding any output
+```
+
+<!-- *********************************************************************** -->
+
 ### `<jQuery>.wiki(sources…)` → *`jQuery` object* {#methods-jquery-prototype-method-wiki}
 
 Wikifies the given content source(s) and appends the result to the target element(s).  Returns a reference to the current `jQuery` object for chaining.
@@ -876,6 +883,47 @@ Wikifies the given content source(s) and appends the result to the target elemen
 // Given an element: <div id="the-box"></div>
 $('#the-box').wiki('Who //are// you?');  → Appends "Who <em>are</em> you?" to the target element
 ```
+
+<!-- *********************************************************************** -->
+
+### `<jQuery>.wikiPassage(name)` → *`jQuery` object* {#methods-jquery-prototype-method-wikipassage}
+
+Wikifies the passage by the given name and appends the result to the target element(s).  Returns a reference to the current `jQuery` object for chaining.
+
+#### History:
+
+* `v2.37.0`: Introduced.
+
+#### Parameters:
+
+* **`name`:** (*string*) The name of the passage.
+
+#### Examples:
+
+```
+// Given an element: <div id="notebook"></div>
+$('#notebook').wikiPassage('Notes');  → Appends the rendered passage to the target element
+```
+
+
+<!-- ***************************************************************************
+	JSON
+**************************************************************************** -->
+## JSON Methods {#methods-json}
+
+<!-- *********************************************************************** -->
+
+### <span class="deprecated">`JSON.reviveWrapper(code [, data])` → *array*</span> {#methods-json-method-revivewrapper}
+
+<p role="note" class="warning"><b>Deprecated:</b>
+This static method has been deprecated and should no longer be used.  See the <a href="#methods-serial-method-createreviver"><code>Serial.createReviver()</code></a> static method.
+</p>
+
+#### History:
+
+* `v2.0.0`: Introduced.
+* `v2.9.0`: Added `data` parameter.
+* `v2.37.0`: Deprecated in favor of `Serial.createReviver()`.
 
 
 <!-- ***************************************************************************
@@ -933,25 +981,16 @@ Math.trunc(-12.7)  → Returns -12
 
 <!-- *********************************************************************** -->
 
-### `<Number>.clamp(min , max)` → *number* {#methods-number-prototype-method-clamp}
+### <span class="deprecated">`<Number>.clamp(min , max)` → *number*</span> {#methods-number-prototype-method-clamp}
 
-Returns the number clamped to the specified bounds.  Does not modify the original.
+<p role="note" class="warning"><b>Deprecated:</b>
+This static method has been deprecated and should no longer be used.  See the <a href="#methods-math-method-clamp"><code>Math.clamp()</code></a> static method.
+</p>
 
 #### History:
 
 * `v2.0.0`: Introduced.
-
-#### Parameters:
-
-* **`min`:** (*number*) The lower bound of the number.
-* **`max`:** (*number*) The upper bound of the number.
-
-#### Examples:
-
-```
-$stat.clamp(0, 200)  → Clamps $stat to the bounds 0–200 and returns the new value
-$stat.clamp(1, 6.6)  → Clamps $stat to the bounds 1–6.6 and returns the new value
-```
+* `v2.37.0`: Deprecated.
 
 
 <!-- ***************************************************************************
@@ -977,6 +1016,45 @@ Returns the given string with all regular expression metacharacters escaped.  Do
 
 ```
 RegExp.escape('That will be $5 (cash only)')   → Returns 'That will be \$5 \(cash only\)'
+```
+
+
+<!-- ***************************************************************************
+	Serial
+**************************************************************************** -->
+## `Serial` Methods {#methods-serial}
+
+<!-- *********************************************************************** -->
+
+### `Serial.createReviver(code [, data])` → *Array<any>* {#methods-serial-method-createreviver}
+
+Returns the given code string, and optional data, wrapped within the deserialization reviver.  Intended to allow authors to easily create the reviver required to revive their custom object types (classes).  The reviver should be returned from an object instance's `.toJSON()` method, so that the instance may be properly revived upon deserialization.
+
+<p role="note" class="see"><b>See:</b>
+The <a href="#guide-non-generic-object-types"><em>Non-generic object types (classes)</em> guide</a> for more detailed information.
+</p>
+
+#### History:
+
+* `v2.37.0`: Introduced.
+
+#### Parameters:
+
+* **`code`:** (*string*) The revival code string.
+* **`data`:** (optional, *any*) The data that should be made available to the evaluated revival code during deserialization via the special `$ReviveData$` variable.  **WARNING:** Attempting to pass the value of an object instance's `this` directly as the `reviveData` parameter will trigger out of control recursion in the serializer, so a clone of the instance's own data must be passed instead.
+
+#### Examples:
+
+```
+Serial.createReviver( /* valid JavaScript code string */ );             → Without data chunk
+Serial.createReviver( /* valid JavaScript code string */ , myOwnData);  → With data chunk
+
+// E.g., Assume that you're attempting to revive an instance of a custom class named
+//       `Character`, which is assigned to a story variable named `$pc`.  The call
+//       to `Serial.createReviver()` might look something like the following.
+var ownData = {};
+Object.keys(this).forEach(function (pn) { ownData[pn] = clone(this[pn]); }, this);
+return Serial.createReviver('new Character($ReviveData$)', ownData);
 ```
 
 

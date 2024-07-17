@@ -2,22 +2,21 @@
 
 	markup/parserlib.js
 
-	Copyright © 2013–2021 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
+	Copyright © 2013–2024 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
 /*
 	global Config, DebugView, EOF, Engine, Lexer, Macro, MacroContext, Patterns, Scripting, State, Story, Template,
-	       Wikifier, stringFrom, throwError
+	       Wikifier, stringFrom, appendError
 */
 /* eslint "no-param-reassign": [ 2, { "props" : false } ] */
 
 (() => {
-	'use strict';
-
-	/*******************************************************************************************************************
+	/*******************************************************************************
 		Utility Functions.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	function _verbatimTagHandler(w) {
 		this.lookahead.lastIndex = w.matchStart;
 
@@ -33,9 +32,10 @@
 	}
 
 
-	/*******************************************************************************************************************
+	/*******************************************************************************
 		Parsers.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	Wikifier.Parser.add({
 		name       : 'quoteByBlock',
 		profiles   : ['block'],
@@ -142,7 +142,7 @@
 
 							if (!payload) {
 								w.nextMatch = nextMatch; // we must reset `w.nextMatch` here, as `parseBody()` modifies it
-								return throwError(
+								return appendError(
 									w.output,
 									`cannot find a closing tag for macro <<${name}>>`,
 									`${w.source.slice(matchStart, w.nextMatch)}\u2026`
@@ -199,6 +199,8 @@
 								[DEPRECATED] Old-style/legacy macros.
 							*/
 							else {
+								console.warn(`[DEPRECATED] The legacy macro API, used by <<${name}>>, is deprecated.`);
+
 								/*
 									Set up the raw arguments string.
 								*/
@@ -221,7 +223,7 @@
 							}
 						}
 						else {
-							return throwError(
+							return appendError(
 								w.output,
 								`macro <<${name}>> handler function ${typeof macro.handler === 'undefined' ? 'does not exist' : 'is not a function'}`,
 								w.source.slice(matchStart, w.nextMatch)
@@ -230,14 +232,14 @@
 					}
 					else if (Macro.tags.has(name)) {
 						const tags = Macro.tags.get(name);
-						return throwError(
+						return appendError(
 							w.output,
 							`child tag <<${name}>> was found outside of a call to its parent macro${tags.length === 1 ? '' : 's'} <<${tags.join('>>, <<')}>>`,
 							w.source.slice(matchStart, w.nextMatch)
 						);
 					}
 					else {
-						return throwError(
+						return appendError(
 							w.output,
 							`macro <<${name}>> does not exist`,
 							w.source.slice(matchStart, w.nextMatch)
@@ -245,7 +247,7 @@
 					}
 				}
 				catch (ex) {
-					return throwError(
+					return appendError(
 						w.output,
 						`cannot execute ${macro && macro.isWidget ? 'widget' : 'macro'} <<${name}>>: ${ex.message}`,
 						w.source.slice(matchStart, w.nextMatch)
@@ -307,44 +309,50 @@
 				const hasArgs   = tagArgs.trim() !== '';
 
 				switch (tagName) {
-				case openTag:
-					++opened;
-					break;
+					case openTag:
+						++opened;
+						break;
 
-				case closeAlt:
-				case closeTag:
-					if (hasArgs) {
-						// Skip over malformed closing tags and throw.
-						w.nextMatch = tagBegin + 2 + tagName.length;
-						throw new Error(`malformed closing tag: "${tagSource}"`);
-					}
-					--opened;
-					break;
+					case closeAlt:
+					case closeTag: {
+						if (hasArgs) {
+							// Skip over malformed closing tags and throw.
+							w.nextMatch = tagBegin + 2 + tagName.length;
+							throw new Error(`malformed closing tag: "${tagSource}"`);
+						}
 
-				default:
-					if (hasArgs && (tagName.startsWith('/') || tagName.startsWith('end'))) {
-						// Skip over malformed alien closing tags.
-						this.lookahead.lastIndex = w.nextMatch = tagBegin + 2 + tagName.length;
-						continue;
+						--opened;
+
+						break;
 					}
-					if (opened === 1 && bodyTags) {
-						for (let i = 0, iend = bodyTags.length; i < iend; ++i) {
-							if (tagName === bodyTags[i]) {
-								payload.push({
-									source    : curSource,
-									name      : curTag,
-									arguments : curArgument,
-									args      : this.createArgs(curArgument, this.skipArgs(macro, curTag)),
-									contents  : w.source.slice(contentStart, tagBegin)
-								});
-								curSource    = tagSource;
-								curTag       = tagName;
-								curArgument  = tagArgs;
-								contentStart = tagEnd;
+
+					default: {
+						if (hasArgs && (tagName.startsWith('/') || tagName.startsWith('end'))) {
+							// Skip over malformed alien closing tags.
+							this.lookahead.lastIndex = w.nextMatch = tagBegin + 2 + tagName.length;
+							continue;
+						}
+
+						if (opened === 1 && bodyTags) {
+							for (let i = 0, iend = bodyTags.length; i < iend; ++i) {
+								if (tagName === bodyTags[i]) {
+									payload.push({
+										source    : curSource,
+										name      : curTag,
+										arguments : curArgument,
+										args      : this.createArgs(curArgument, this.skipArgs(macro, curTag)),
+										contents  : w.source.slice(contentStart, tagBegin)
+									});
+									curSource    = tagSource;
+									curTag       = tagName;
+									curArgument  = tagArgs;
+									contentStart = tagEnd;
+								}
 							}
 						}
+
+						break;
 					}
-					break;
 				}
 
 				if (opened === 0) {
@@ -377,7 +385,7 @@
 					value : rawArgsString
 				},
 				full : {
-					value : Scripting.parse(rawArgsString)
+					value : Scripting.desugar(rawArgsString)
 				}
 			});
 
@@ -400,7 +408,8 @@
 		},
 
 		parseArgs : (() => {
-			const Item = Lexer.enumFromNames([ // lex item types object (pseudo-enumeration)
+			// Lex item types object.
+			const Item = Lexer.enumFromNames([
 				'Error',        // error
 				'Bareword',     // bare identifier
 				'Expression',   // expression (backquoted)
@@ -452,16 +461,11 @@
 
 				// determine what the next state is
 				switch (lexer.next()) {
-				case '`':
-					return lexExpression;
-				case '"':
-					return lexDoubleQuote;
-				case "'":
-					return lexSingleQuote;
-				case '[':
-					return lexSquareBracket;
-				default:
-					return lexBareword;
+					case '`': return lexExpression;
+					case '"': return lexDoubleQuote;
+					case "'": return lexSingleQuote;
+					case '[': return lexSquareBracket;
+					default:  return lexBareword;
 				}
 			}
 
@@ -571,102 +575,107 @@
 					let arg = item.text;
 
 					switch (item.type) {
-					case Item.Error:
-						throw new Error(`unable to parse macro argument "${arg}": ${item.message}`);
+						case Item.Error:
+							throw new Error(`unable to parse macro argument "${arg}": ${item.message}`);
 
-					case Item.Bareword:
-						// A variable, so substitute its value.
-						if (varTest.test(arg)) {
-							arg = State.getVar(arg);
+						case Item.Bareword: {
+							// A variable, so substitute its value.
+							if (varTest.test(arg)) {
+								arg = State.getVar(arg);
+							}
+
+							// Property access on the settings or setup objects, so try to evaluate it.
+							else if (/^(?:settings|setup)[.[]/.test(arg)) {
+								try {
+									arg = Scripting.evalTwineScript(arg);
+								}
+								catch (ex) {
+									throw new Error(`unable to parse macro argument "${arg}": ${ex.message}`);
+								}
+							}
+
+							// Null literal, so convert it into null.
+							else if (arg === 'null') {
+								arg = null;
+							}
+
+							// Undefined literal, so convert it into undefined.
+							else if (arg === 'undefined') {
+								arg = undefined;
+							}
+
+							// Boolean true literal, so convert it into true.
+							else if (arg === 'true') {
+								arg = true;
+							}
+
+							// Boolean false literal, so convert it into false.
+							else if (arg === 'false') {
+								arg = false;
+							}
+
+							// NaN literal, so convert it into NaN.
+							else if (arg === 'NaN') {
+								arg = NaN;
+							}
+
+							// Attempt to convert it into a number, in case it's a numeric literal.
+							else {
+								const argAsNum = Number(arg);
+
+								if (!Number.isNaN(argAsNum)) {
+									arg = argAsNum;
+								}
+							}
+
+							break;
 						}
 
-						// Property access on the settings or setup objects, so try to evaluate it.
-						else if (/^(?:settings|setup)[.[]/.test(arg)) {
+						case Item.Expression: {
+							arg = arg.slice(1, -1).trim(); // remove the backquotes and trim the expression
+
+							// Empty backquotes.
+							if (arg === '') {
+								arg = undefined;
+							}
+
+							// Evaluate the expression.
+							else {
+								try {
+									/*
+										The enclosing parenthesis here are necessary to force a code string
+										consisting solely of an object literal to be evaluated as such, rather
+										than as a code block.
+									*/
+									arg = Scripting.evalTwineScript(`(${arg})`);
+								}
+								catch (ex) {
+									throw new Error(`unable to parse macro argument expression "${arg}": ${ex.message}`);
+								}
+							}
+
+							break;
+						}
+
+						case Item.String: {
+							// Evaluate the string to handle escaped characters.
 							try {
-								arg = Scripting.evalTwineScript(arg);
+								arg = Scripting.evalJavaScript(arg);
 							}
 							catch (ex) {
-								throw new Error(`unable to parse macro argument "${arg}": ${ex.message}`);
+								throw new Error(`unable to parse macro argument string "${arg}": ${ex.message}`);
 							}
+
+							break;
 						}
 
-						// Null literal, so convert it into null.
-						else if (arg === 'null') {
-							arg = null;
-						}
-
-						// Undefined literal, so convert it into undefined.
-						else if (arg === 'undefined') {
-							arg = undefined;
-						}
-
-						// Boolean true literal, so convert it into true.
-						else if (arg === 'true') {
-							arg = true;
-						}
-
-						// Boolean false literal, so convert it into false.
-						else if (arg === 'false') {
-							arg = false;
-						}
-
-						// NaN literal, so convert it into NaN.
-						else if (arg === 'NaN') {
-							arg = NaN;
-						}
-
-						// Attempt to convert it into a number, in case it's a numeric literal.
-						else {
-							const argAsNum = Number(arg);
-
-							if (!Number.isNaN(argAsNum)) {
-								arg = argAsNum;
-							}
-						}
-						break;
-
-					case Item.Expression:
-						arg = arg.slice(1, -1).trim(); // remove the backquotes and trim the expression
-
-						// Empty backquotes.
-						if (arg === '') {
-							arg = undefined;
-						}
-
-						// Evaluate the expression.
-						else {
-							try {
-								/*
-									The enclosing parenthesis here are necessary to force a code string
-									consisting solely of an object literal to be evaluated as such, rather
-									than as a code block.
-								*/
-								arg = Scripting.evalTwineScript(`(${arg})`);
-							}
-							catch (ex) {
-								throw new Error(`unable to parse macro argument expression "${arg}": ${ex.message}`);
-							}
-						}
-						break;
-
-					case Item.String:
-						// Evaluate the string to handle escaped characters.
-						try {
-							arg = Scripting.evalJavaScript(arg);
-						}
-						catch (ex) {
-							throw new Error(`unable to parse macro argument string "${arg}": ${ex.message}`);
-						}
-						break;
-
-					case Item.SquareBracket:
-						{
+						case Item.SquareBracket: {
 							const markup = Wikifier.helpers.parseSquareBracketedMarkup({
 								source     : arg,
 								matchStart : 0
 							});
 
-							if (markup.hasOwnProperty('error')) {
+							if (Object.hasOwn(markup, 'error')) {
 								throw new Error(`unable to parse macro argument "${arg}": ${markup.error}`);
 							}
 
@@ -678,12 +687,12 @@
 							if (markup.isLink) {
 								// .isLink, [.text], [.forceInternal], .link, [.setter]
 								arg = { isLink : true };
-								arg.count    = markup.hasOwnProperty('text') ? 2 : 1;
+								arg.count    = Object.hasOwn(markup, 'text') ? 2 : 1;
 								arg.link     = Wikifier.helpers.evalPassageId(markup.link);
-								arg.text     = markup.hasOwnProperty('text') ? Wikifier.helpers.evalText(markup.text) : arg.link;
+								arg.text     = Object.hasOwn(markup, 'text') ? Wikifier.helpers.evalText(markup.text) : arg.link;
 								arg.external = !markup.forceInternal && Wikifier.isExternalLink(arg.link);
-								arg.setFn    = markup.hasOwnProperty('setter')
-									? Wikifier.helpers.createShadowSetterCallback(Scripting.parse(markup.setter))
+								arg.setFn    = Object.hasOwn(markup, 'setter')
+									? Wikifier.helpers.shadowHandler(Scripting.desugar(markup.setter))
 									: null;
 							}
 							else if (markup.isImage) {
@@ -700,32 +709,33 @@
 
 										if (passage.tags.includes('Twine.image')) {
 											imgObj.source  = passage.text;
-											imgObj.passage = passage.title;
+											imgObj.passage = passage.name;
 										}
 									}
 
 									return imgObj;
 								})(Wikifier.helpers.evalPassageId(markup.source));
 
-								if (markup.hasOwnProperty('align')) {
+								if (Object.hasOwn(markup, 'align')) {
 									arg.align = markup.align;
 								}
 
-								if (markup.hasOwnProperty('text')) {
+								if (Object.hasOwn(markup, 'text')) {
 									arg.title = Wikifier.helpers.evalText(markup.text);
 								}
 
-								if (markup.hasOwnProperty('link')) {
+								if (Object.hasOwn(markup, 'link')) {
 									arg.link     = Wikifier.helpers.evalPassageId(markup.link);
 									arg.external = !markup.forceInternal && Wikifier.isExternalLink(arg.link);
 								}
 
-								arg.setFn = markup.hasOwnProperty('setter')
-									? Wikifier.helpers.createShadowSetterCallback(Scripting.parse(markup.setter))
+								arg.setFn = Object.hasOwn(markup, 'setter')
+									? Wikifier.helpers.shadowHandler(Scripting.desugar(markup.setter))
 									: null;
 							}
+
+							break;
 						}
-						break;
 					}
 
 					args.push(arg);
@@ -746,7 +756,7 @@
 		handler(w) {
 			const markup = Wikifier.helpers.parseSquareBracketedMarkup(w);
 
-			if (markup.hasOwnProperty('error')) {
+			if (Object.hasOwn(markup, 'error')) {
 				w.outputText(w.output, w.matchStart, w.nextMatch);
 				return;
 			}
@@ -755,9 +765,9 @@
 
 			// text=(text), forceInternal=(~), link=link, setter=(setter)
 			const link  = Wikifier.helpers.evalPassageId(markup.link);
-			const text  = markup.hasOwnProperty('text') ? Wikifier.helpers.evalText(markup.text) : link;
-			const setFn = markup.hasOwnProperty('setter')
-				? Wikifier.helpers.createShadowSetterCallback(Scripting.parse(markup.setter))
+			const text  = Object.hasOwn(markup, 'text') ? Wikifier.helpers.evalText(markup.text) : link;
+			const setFn = Object.hasOwn(markup, 'setter')
+				? Wikifier.helpers.shadowHandler(Scripting.desugar(markup.setter))
 				: null;
 
 			// Debug view setup.
@@ -793,7 +803,7 @@
 		handler(w) {
 			const markup = Wikifier.helpers.parseSquareBracketedMarkup(w);
 
-			if (markup.hasOwnProperty('error')) {
+			if (Object.hasOwn(markup, 'error')) {
 				w.outputText(w.output, w.matchStart, w.nextMatch);
 				return;
 			}
@@ -807,20 +817,20 @@
 				debugView = new DebugView(
 					w.output,
 					'image-markup',
-					markup.hasOwnProperty('link') ? '[img[][link]]' : '[img[]]',
+					Object.hasOwn(markup, 'link') ? '[img[][link]]' : '[img[]]',
 					w.source.slice(w.matchStart, w.nextMatch)
 				);
 				debugView.modes({ block : true });
 			}
 
 			// align=(left|right), title=(title), source=source, forceInternal=(~), link=(link), setter=(setter)
-			const setFn = markup.hasOwnProperty('setter')
-				? Wikifier.helpers.createShadowSetterCallback(Scripting.parse(markup.setter))
+			const setFn = Object.hasOwn(markup, 'setter')
+				? Wikifier.helpers.shadowHandler(Scripting.desugar(markup.setter))
 				: null;
 			let el     = (Config.debug ? debugView : w).output;
 			let source;
 
-			if (markup.hasOwnProperty('link')) {
+			if (Object.hasOwn(markup, 'link')) {
 				const link = Wikifier.helpers.evalPassageId(markup.link);
 
 				if (markup.forceInternal || !Wikifier.isExternalLink(link)) {
@@ -843,18 +853,18 @@
 				const passage = Story.get(source);
 
 				if (passage.tags.includes('Twine.image')) {
-					el.setAttribute('data-passage', passage.title);
+					el.setAttribute('data-passage', passage.name);
 					source = passage.text.trim();
 				}
 			}
 
 			el.src = source;
 
-			if (markup.hasOwnProperty('text')) {
+			if (Object.hasOwn(markup, 'text')) {
 				el.title = Wikifier.helpers.evalText(markup.text);
 			}
 
-			if (markup.hasOwnProperty('align')) {
+			if (Object.hasOwn(markup, 'align')) {
 				el.align = markup.align;
 			}
 		}
@@ -889,32 +899,31 @@
 
 		handler(w) {
 			switch (w.matchText) {
-			case "''":
-				w.subWikify(jQuery(document.createElement('strong')).appendTo(w.output).get(0), "''");
-				break;
+				case "''":
+					w.subWikify(jQuery(document.createElement('strong')).appendTo(w.output).get(0), "''");
+					break;
 
-			case '//':
-				w.subWikify(jQuery(document.createElement('em')).appendTo(w.output).get(0), '//');
-				break;
+				case '//':
+					w.subWikify(jQuery(document.createElement('em')).appendTo(w.output).get(0), '//');
+					break;
 
-			case '__':
-				w.subWikify(jQuery(document.createElement('u')).appendTo(w.output).get(0), '__');
-				break;
+				case '__':
+					w.subWikify(jQuery(document.createElement('u')).appendTo(w.output).get(0), '__');
+					break;
 
-			case '^^':
-				w.subWikify(jQuery(document.createElement('sup')).appendTo(w.output).get(0), '\\^\\^');
-				break;
+				case '^^':
+					w.subWikify(jQuery(document.createElement('sup')).appendTo(w.output).get(0), '\\^\\^');
+					break;
 
-			case '~~':
-				w.subWikify(jQuery(document.createElement('sub')).appendTo(w.output).get(0), '~~');
-				break;
+				case '~~':
+					w.subWikify(jQuery(document.createElement('sub')).appendTo(w.output).get(0), '~~');
+					break;
 
-			case '==':
-				w.subWikify(jQuery(document.createElement('s')).appendTo(w.output).get(0), '==');
-				break;
+				case '==':
+					w.subWikify(jQuery(document.createElement('s')).appendTo(w.output).get(0), '==');
+					break;
 
-			case '{{{':
-				{
+				case '{{{': {
 					const lookahead = /\{\{\{((?:.|\n)*?)\}\}\}/gm;
 
 					lookahead.lastIndex = w.matchStart;
@@ -927,8 +936,9 @@
 							.appendTo(w.output);
 						w.nextMatch = lookahead.lastIndex;
 					}
+
+					break;
 				}
-				break;
 			}
 		}
 	});
@@ -999,7 +1009,7 @@
 	Wikifier.Parser.add({
 		name     : 'horizontalRule',
 		profiles : ['core'],
-		match    : '^----+$\\n?|<[Hh][Rr]\\s*/?>\\n?',
+		match    : '^----+\\s*$',
 
 		handler(w) {
 			jQuery(document.createElement('hr')).appendTo(w.output);
@@ -1076,21 +1086,23 @@
 			}
 
 			switch (typeof template) {
-			case 'function':
-				try {
-					result = stringFrom(template.call({ name }));
+				case 'function': {
+					try {
+						result = stringFrom(template.call({ name }));
+					}
+					catch (ex) {
+						return appendError(
+							w.output,
+							`cannot execute function template ?${name}: ${ex.message}`,
+							w.source.slice(w.matchStart, w.nextMatch)
+						);
+					}
+					break;
 				}
-				catch (ex) {
-					return throwError(
-						w.output,
-						`cannot execute function template ?${name}: ${ex.message}`,
-						w.source.slice(w.matchStart, w.nextMatch)
-					);
-				}
-				break;
-			case 'string':
-				result = template;
-				break;
+
+				case 'string':
+					result = template;
+					break;
 			}
 
 			if (result === null) {
@@ -1394,7 +1406,7 @@
 	Wikifier.Parser.add({
 		name     : 'lineBreak',
 		profiles : ['core'],
-		match    : '\\n|<[Bb][Rr]\\s*/?>',
+		match    : '\\n',
 
 		handler(w) {
 			if (!w.options.nobr) {
@@ -1437,7 +1449,7 @@
 		name      : 'verbatimScriptTag',
 		profiles  : ['core'],
 		match     : '<[Ss][Cc][Rr][Ii][Pp][Tt][^>]*>',
-		lookahead : /(<[Ss][Cc][Rr][Ii][Pp][Tt]*>(?:.|\n)*?<\/[Ss][Cc][Rr][Ii][Pp][Tt]>)/gm,
+		lookahead : /(<[Ss][Cc][Rr][Ii][Pp][Tt][^>]*>(?:.|\n)*?<\/[Ss][Cc][Rr][Ii][Pp][Tt]>)/gm,
 		handler   : _verbatimTagHandler
 	});
 
@@ -1445,7 +1457,7 @@
 		name           : 'styleTag',
 		profiles       : ['core'],
 		match          : '<[Ss][Tt][Yy][Ll][Ee][^>]*>',
-		lookahead      : /(<[Ss][Tt][Yy][Ll][Ee]*>)((?:.|\n)*?)(<\/[Ss][Tt][Yy][Ll][Ee]>)/gm,
+		lookahead      : /(<[Ss][Tt][Yy][Ll][Ee][^>]*>)((?:.|\n)*?)(<\/[Ss][Tt][Yy][Ll][Ee]>)/gm,
 		imageMarkup    : new RegExp(Patterns.cssImage, 'g'),
 		hasImageMarkup : new RegExp(Patterns.cssImage),
 
@@ -1469,11 +1481,11 @@
 							matchStart : 0
 						});
 
-						if (markup.hasOwnProperty('error') || markup.pos < wikiImage.length) {
+						if (Object.hasOwn(markup, 'error') || markup.pos < wikiImage.length) {
 							return wikiImage;
 						}
 
-						let source = markup.source;
+						let source = Wikifier.helpers.evalPassageId(markup.source);
 
 						// Handle image passage transclusion.
 						if (source.slice(0, 5) !== 'data:' && Story.has(source)) {
@@ -1531,7 +1543,7 @@
 						this.processAttributeDirectives(el);
 					}
 					catch (ex) {
-						return throwError(
+						return appendError(
 							w.output,
 							`svg|<${tagName}>: ${ex.message}`,
 							`${w.matchText}\u2026`
@@ -1551,7 +1563,7 @@
 			// NOTE: The `.attributes` property yields a live collection, so we
 			// must make a non-live copy of it as we will be adding and removing
 			// members of said collection if any directives are found.
-			[...el.attributes].forEach(({ name, value }) => {
+			Array.from(el.attributes).forEach(({ name, value }) => {
 				const evalShorthand = name[0] === '@';
 
 				if (evalShorthand || name.startsWith('sc-eval:')) {
@@ -1628,7 +1640,7 @@
 						setter = String(setter).trim();
 
 						if (setter !== '') {
-							setFn = Wikifier.helpers.createShadowSetterCallback(Scripting.parse(setter));
+							setFn = Wikifier.helpers.shadowHandler(Scripting.desugar(setter));
 						}
 					}
 
@@ -1709,7 +1721,7 @@
 						this.processAttributeDirectives(el);
 					}
 					catch (ex) {
-						return throwError(
+						return appendError(
 							w.output,
 							`<${tagName}>: ${ex.message}`,
 							`${w.matchText}\u2026`
@@ -1717,6 +1729,14 @@
 					}
 
 					if (el.hasAttribute('data-passage')) {
+						if (el.hasAttribute('href')) {
+							return appendError(
+								w.output,
+								`<${tagName}>: elements may not include both "data-passage" and "href" atttributes`,
+								`${w.matchText}\u2026`
+							);
+						}
+
 						this.processDataAttributes(el, tagName);
 
 						// Debug view setup.
@@ -1732,6 +1752,12 @@
 								nonvoid : terminatorMatch
 							});
 							output = debugView.output;
+						}
+					}
+					else if (el.hasAttribute('href')) {
+						// WARNING: Do not replace `el.getAttribute('href')` with `el.href`.
+						if (Wikifier.isExternalLink(el.getAttribute('href'))) {
+							el.classList.add('link-external');
 						}
 					}
 
@@ -1767,7 +1793,7 @@
 					output.appendChild(tagName === 'track' ? el.cloneNode(true) : el);
 				}
 				else {
-					return throwError(
+					return appendError(
 						w.output,
 						`cannot find a closing tag for HTML <${tag}>`,
 						`${w.matchText}\u2026`
@@ -1780,7 +1806,7 @@
 			// NOTE: The `.attributes` property yields a live collection, so we
 			// must make a non-live copy of it as we will be adding and removing
 			// members of said collection if any directives are found.
-			[...el.attributes].forEach(({ name, value }) => {
+			Array.from(el.attributes).forEach(({ name, value }) => {
 				const evalShorthand = name[0] === '@';
 
 				if (evalShorthand || name.startsWith('sc-eval:')) {
@@ -1844,26 +1870,29 @@
 						let twineTag;
 
 						switch (tagName) {
-						case 'audio':
-						case 'video':
-							twineTag = `Twine.${tagName}`;
-							break;
-						case 'img':
-							twineTag = 'Twine.image';
-							break;
-						case 'track':
-							twineTag = 'Twine.vtt';
-							break;
-						case 'source':
-							{
+							case 'audio':
+							case 'video':
+								twineTag = `Twine.${tagName}`;
+								break;
+
+							case 'img':
+								twineTag = 'Twine.image';
+								break;
+
+							case 'track':
+								twineTag = 'Twine.vtt';
+								break;
+
+							case 'source': {
 								const $parent = $(el).closest('audio,picture,video');
 
-								if ($parent.length) {
+								if ($parent.length > 0) {
 									parentName = $parent.get(0).tagName.toLowerCase();
 									twineTag = `Twine.${parentName === 'picture' ? 'image' : parentName}`;
 								}
+
+								break;
 							}
-							break;
 						}
 
 						if (passage.tags.includes(twineTag)) {
@@ -1881,7 +1910,7 @@
 						setter = String(setter).trim();
 
 						if (setter !== '') {
-							setFn = Wikifier.helpers.createShadowSetterCallback(Scripting.parse(setter));
+							setFn = Wikifier.helpers.shadowHandler(Scripting.desugar(setter));
 						}
 					}
 

@@ -131,10 +131,11 @@ Returns an [`AudioRunner` instance](#audiorunner-api) for the tracks matching th
 #### History:
 
 * `v2.28.0`: Introduced.
+* `v2.37.0`: Added `:stopped` predefined group ID.
 
 #### Parameters:
 
-* **`selector`:** (*string*) The list of audio track(s) and/or group ID(s), separated by spaces.  There are several predefined group IDs (`:all`, `:looped`, `:muted`, `:paused`, `:playing`).  The `:not()` group modifier syntax (`groupId:not(selector)`) allows a group to have some of its tracks excluded from selection.
+* **`selector`:** (*string*) The list of audio track(s) and/or group ID(s), separated by spaces.  There are several predefined group IDs (`:all`, `:looped`, `:muted`, `:paused`, `:playing`, `:stopped`).  The `:not()` group modifier syntax (`groupId:not(selector)`) allows a group to have some of its tracks excluded from selection.
 
 #### Examples:
 
@@ -395,10 +396,11 @@ If you want to play tracks in a sequence, then you want a <a href="#simpleaudio-
 #### History:
 
 * `v2.28.0`: Introduced.
+* `v2.37.0`: Added `:stopped` predefined group ID.
 
 #### Parameters:
 
-* **`groupId`:** (*string*) The ID of the group, which will be used to reference it and *must* begin with a colon.  **NOTE:** There are several predefined group IDs (`:all`, `:looped`, `:muted`, `:paused`, `:playing`) and the `:not` group modifier that cannot be reused/overwritten.
+* **`groupId`:** (*string*) The ID of the group, which will be used to reference it and *must* begin with a colon.  **NOTE:** There are several predefined group IDs (`:all`, `:looped`, `:muted`, `:paused`, `:playing`, `:stopped`) and the `:not` group modifier that cannot be reused/overwritten.
 * **`trackIds`:** (*string*… | *Array&lt;string&gt;*) The IDs of the tracks to make part of the group, which may be a list of track IDs or an array.
 
 #### Examples:

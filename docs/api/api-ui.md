@@ -19,31 +19,12 @@ Opens the built-in alert dialog, displaying the given message to the player.
 * **`options`:** (optional, *null* | *object*) The options object.  See [`Dialog.open()`](#dialog-api-method-open) for more information.
 * **`closeFn`:** (optional, *null* | *function*) The function to execute whenever the dialog is closed.
 
+#### Returns: *none*
+
 #### Examples:
 
-```
+```js
 UI.alert("You smell of elderberries!");
-```
-
-<!-- *********************************************************************** -->
-
-### `UI.jumpto([options [, closeFn]])` {#ui-api-method-jumpto}
-
-Opens the built-in jump to dialog, which is populated via the [`bookmark` tag](#special-tag-bookmark).
-
-#### History:
-
-* `v2.0.0`: Introduced.
-
-#### Parameters:
-
-* **`options`:** (optional, *null* | *object*) The options object.  See [`Dialog.open()`](#dialog-api-method-open) for more information.
-* **`closeFn`:** (optional, *null* | *function*) The function to execute whenever the dialog is closed.
-
-#### Examples:
-
-```
-UI.jumpto();
 ```
 
 <!-- *********************************************************************** -->
@@ -60,9 +41,11 @@ Opens the built-in restart dialog, prompting the player to restart the story.
 
 * **`options`:** (optional, *null* | *object*) The options object.  See [`Dialog.open()`](#dialog-api-method-open) for more information.
 
+#### Returns: *none*
+
 #### Examples:
 
-```
+```js
 UI.restart();
 ```
 
@@ -81,9 +64,11 @@ Opens the built-in saves dialog.
 * **`options`:** (optional, *null* | *object*) The options object.  See [`Dialog.open()`](#dialog-api-method-open) for more information.
 * **`closeFn`:** (optional, *null* | *function*) The function to execute whenever the dialog is closed.
 
+#### Returns: *none*
+
 #### Examples:
 
-```
+```js
 UI.saves();
 ```
 
@@ -102,29 +87,61 @@ Opens the built-in settings dialog, which is populated from the [`Setting` API](
 * **`options`:** (optional, *null* | *object*) The options object.  See [`Dialog.open()`](#dialog-api-method-open) for more information.
 * **`closeFn`:** (optional, *null* | *function*) The function to execute whenever the dialog is closed.
 
+#### Returns: *none*
+
 #### Examples:
 
-```
+```js
 UI.settings();
 ```
 
 <!-- *********************************************************************** -->
 
-### `UI.share([options [, closeFn]])` {#ui-api-method-share}
+### `UI.update()` {#ui-api-method-update}
 
-Opens the built-in share dialog, which is populated from the [`StoryShare` passage](#special-passage-storyshare).
+Triggers a [`:uiupdate` event](#events-system-event-uiupdate) that causes the update of the dynamically updated sections built-in user interface—e.g., those populated by code passages, like `StoryCaption` and `StoryMenu`.  Automatically invoked during passage navigation.
+
+<div role="note" class="warning"><b>Warning:</b>
+<p>As <em>all</em> dynamically updated sections of the built-in UI are updated, save for the main passage display, it is recommended that this method be used sparingly.</p>
+<p>Ideally, if you need to update these sections of the built-in UI outside of the normal passage navigation update, then you should update only the specific areas you need to rather than the entire UI.</p>
+</div>
+
+#### History:
+
+* `v2.37.0`: Introduced.
+
+#### Parameters: *none*
+
+#### Returns: *none*
+
+#### Examples:
+
+```js
+UI.update();
+```
+
+<!-- *********************************************************************** -->
+
+### <span class="deprecated">`UI.jumpto([options [, closeFn]])`</span> {#ui-api-method-jumpto}
+
+<p role="note" class="warning"><b>Deprecated:</b>
+This method has been deprecated and should no longer be used.
+</p>
 
 #### History:
 
 * `v2.0.0`: Introduced.
+* `v2.37.0`: Deprecated.
 
-#### Parameters:
+<!-- *********************************************************************** -->
 
-* **`options`:** (optional, *null* | *object*) The options object.  See [`Dialog.open()`](#dialog-api-method-open) for more information.
-* **`closeFn`:** (optional, *null* | *function*) The function to execute whenever the dialog is closed.
+### <span class="deprecated">`UI.share([options [, closeFn]])`</span> {#ui-api-method-share}
 
-#### Examples:
+<p role="note" class="warning"><b>Deprecated:</b>
+This method has been deprecated and should no longer be used.
+</p>
 
-```
-UI.share();
-```
+#### History:
+
+* `v2.0.0`: Introduced.
+* `v2.37.0`: Deprecated.

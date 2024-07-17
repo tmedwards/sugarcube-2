@@ -2,18 +2,16 @@
 
 	lib/has.js
 
-	Copyright © 2013–2021 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
+	Copyright © 2013–2024 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
 /* global Browser */
 
 var Has = (() => { // eslint-disable-line no-unused-vars, no-var
-	'use strict';
-
 	/*
-		NOTE: The aggressive try/catch feature tests are necessitated by implementation
-		bugs in various browsers.
+		NOTE: The aggressive try/catch feature tests are necessitated by
+		implementation bugs in various browsers.
 	*/
 
 	// Is the `HTMLAudioElement` API available?
@@ -29,11 +27,11 @@ var Has = (() => { // eslint-disable-line no-unused-vars, no-var
 	// Is the `File` API available?
 	const hasFile = (() => {
 		try {
-			return 'Blob' in window &&
-				'File' in window &&
-				'FileList' in window &&
-				'FileReader' in window &&
-				(!Browser.isOpera || Browser.operaVersion >= 15);
+			return 'Blob' in window
+				&& 'File' in window
+				&& 'FileList' in window
+				&& 'FileReader' in window
+				&& (!Browser.isOpera || Browser.operaVersion >= 15);
 		}
 		catch (ex) { /* no-op */ }
 
@@ -43,9 +41,9 @@ var Has = (() => { // eslint-disable-line no-unused-vars, no-var
 	// Is the `geolocation` API available?
 	const hasGeolocation = (() => {
 		try {
-			return 'geolocation' in navigator &&
-				typeof navigator.geolocation.getCurrentPosition === 'function' &&
-				typeof navigator.geolocation.watchPosition === 'function';
+			return 'geolocation' in navigator
+				&& typeof navigator.geolocation.getCurrentPosition === 'function'
+				&& typeof navigator.geolocation.watchPosition === 'function';
 		}
 		catch (ex) { /* no-op */ }
 
@@ -55,8 +53,8 @@ var Has = (() => { // eslint-disable-line no-unused-vars, no-var
 	// Is the `MutationObserver` API available?
 	const hasMutationObserver = (() => {
 		try {
-			return 'MutationObserver' in window &&
-				typeof window.MutationObserver === 'function';
+			return 'MutationObserver' in window
+				&& typeof window.MutationObserver === 'function';
 		}
 		catch (ex) { /* no-op */ }
 
@@ -66,8 +64,8 @@ var Has = (() => { // eslint-disable-line no-unused-vars, no-var
 	// Is the `performance` API available?
 	const hasPerformance = (() => {
 		try {
-			return 'performance' in window &&
-				typeof window.performance.now === 'function';
+			return 'performance' in window
+				&& typeof window.performance.now === 'function';
 		}
 		catch (ex) { /* no-op */ }
 
@@ -77,11 +75,10 @@ var Has = (() => { // eslint-disable-line no-unused-vars, no-var
 	// Is the platform a touch device?
 	const hasTouch = (() => {
 		try {
-			return 'ontouchstart' in window ||
-				!!window.DocumentTouch &&
-				document instanceof window.DocumentTouch ||
-				!!navigator.maxTouchPoints ||
-				!!navigator.msMaxTouchPoints;
+			return 'ontouchstart' in window
+				|| !!window.DocumentTouch && document instanceof window.DocumentTouch
+				|| !!navigator.maxTouchPoints
+				|| !!navigator.msMaxTouchPoints;
 		}
 		catch (ex) { /* no-op */ }
 
@@ -97,7 +94,7 @@ var Has = (() => { // eslint-disable-line no-unused-vars, no-var
 				['WebkitTransition', 'webkitTransitionEnd'],
 				['MozTransition',    'transitionend']
 			]);
-			const teKeys = [...teMap.keys()];
+			const teKeys = Array.from(teMap.keys());
 			const el     = document.createElement('div');
 
 			for (let i = 0; i < teKeys.length; ++i) {
@@ -111,8 +108,12 @@ var Has = (() => { // eslint-disable-line no-unused-vars, no-var
 		return false;
 	})();
 
-	// Module Exports.
-	return Object.freeze({
+
+	/*******************************************************************************
+		Object Exports.
+	*******************************************************************************/
+
+	return Object.freeze(Object.assign(Object.create(null), {
 		audio              : hasAudioElement,
 		fileAPI            : hasFile,
 		geolocation        : hasGeolocation,
@@ -120,5 +121,5 @@ var Has = (() => { // eslint-disable-line no-unused-vars, no-var
 		performance        : hasPerformance,
 		touch              : hasTouch,
 		transitionEndEvent : hasTransitionEndEvent
-	});
+	}));
 })();

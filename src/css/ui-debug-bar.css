@@ -1,0 +1,175 @@
+/***********************************************************************************************************************
+
+	css/ui-debug-bar.css
+
+	Copyright © 2013–2024 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
+	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
+
+***********************************************************************************************************************/
+
+/* Base styles. */
+#debug-bar {
+	background-color: #222;
+	border-left: 1px solid #444;
+	border-top: 1px solid #444;
+	bottom: 0;
+	margin: 0;
+	max-height: 95%;
+	max-width: 66em;
+	min-width: 300px;
+	padding: 0.5em;
+	position: fixed;
+	right: 0;
+	z-index: 99900;
+}
+#debug-bar > div:not([id]) + div {
+	margin-top: 0.5em;
+}
+#debug-bar > div > label {
+	margin-right: 0.5em;
+}
+#debug-bar > div > input[type="text"] {
+	min-width: 8em;
+	width: 14em;
+}
+#debug-bar > div > select {
+	width: 22em;
+}
+
+#debug-bar-toggle {
+	color: #eee;
+	background-color: #222;
+	border: 1px solid #444;
+	height: calc(100% + 1px);
+	left: calc(-2em - 1px);
+	position: absolute;
+	top: -1px;
+	width: 2em;
+}
+#debug-bar-toggle:hover {
+	background-color: #333;
+	border-color: #eee;
+}
+
+#debug-bar-hint {
+	bottom: 0.75em;
+	font-size: 4.5em;
+	opacity: 0.33;
+	pointer-events: none;
+	position: fixed;
+	right: 0.6em;
+	user-select: none;
+	white-space: nowrap;
+}
+
+#debug-bar-watch {
+	background-color: #222;
+	border-left: 1px solid #444;
+	border-top: 1px solid #444;
+	bottom: calc(100% + 1px);
+	font-size: 0.9em;
+	left: -1px;
+	max-height: 280%; /* fallback for browsers without support for vh units */
+	max-height: calc(95vh - 100%);
+	position: absolute;
+	overflow-x: hidden;
+	overflow-y: scroll;
+	right: 0;
+	z-index: 99800;
+}
+#debug-bar-watch[hidden] {
+	display: none;
+}
+#debug-bar-watch div {
+	color: #999;
+	font-style: italic;
+	margin: 1em auto;
+	text-align: center;
+}
+#debug-bar-watch table {
+	width: 100%;
+}
+#debug-bar-watch tr:nth-child(2n) {
+	background-color: rgba(127, 127, 127, 0.15);
+}
+#debug-bar-watch td {
+	padding: 0.2em 0;
+}
+#debug-bar-watch td:first-child + td {
+	padding: 0.2em 0.3em 0.2em 0.1em;
+}
+#debug-bar-watch .watch-delete {
+	background-color: transparent;
+	border: none;
+	color: #c00;
+}
+#debug-bar-watch-all,
+#debug-bar-watch-clear {
+	margin-left: 0.5em;
+}
+#debug-bar-watch-toggle,
+#debug-bar-views-toggle {
+	color: #eee;
+	background-color: transparent;
+	border: 1px solid #444;
+	margin-right: 1em;
+	padding: 0.4em;
+}
+#debug-bar-watch-toggle:hover,
+#debug-bar-views-toggle:hover {
+	background-color: #333;
+	border-color: #eee;
+}
+#debug-bar-watch:not([hidden]) ~ div #debug-bar-watch-toggle,
+html[data-debug-view] #debug-bar-views-toggle {
+	background-color: #282;
+	border-color: #4a4;
+}
+#debug-bar-watch:not([hidden]) ~ div #debug-bar-watch-toggle:hover,
+html[data-debug-view] #debug-bar-views-toggle:hover {
+	background-color: #4a4;
+	border-color: #6c6;
+}
+
+#debug-bar-toggle::before,
+#debug-bar-hint::after,
+#debug-bar-watch .watch-delete::before,
+#debug-bar-watch-add::before,
+#debug-bar-watch-all::before,
+#debug-bar-watch-clear::before,
+#debug-bar-watch-toggle::after,
+#debug-bar-views-toggle::after,
+#debug-bar-passage-play::before {
+	@mixin sc-icons-properties;
+}
+#debug-bar-toggle::before {
+	content: "\f188";
+}
+#debug-bar-hint::after {
+	content: "\f188\202f\f061";
+}
+#debug-bar-watch .watch-delete::before {
+	content: "\f00d";
+}
+#debug-bar-watch-add::before {
+	content: "\f067";
+}
+#debug-bar-watch-all::before {
+	content: "\f0d0";
+}
+#debug-bar-watch-clear::before {
+	content: "\f2ed";
+}
+#debug-bar-watch-toggle::after,
+#debug-bar-views-toggle::after {
+	content: "\f204";
+	margin-left: 0.35em;
+}
+#debug-bar-watch:not([hidden]) ~ div #debug-bar-watch-toggle::after,
+html[data-debug-view] #debug-bar-views-toggle::after {
+	content: "\f205";
+	/* margin-left: 0.35em; */
+}
+#debug-bar-passage-play::before {
+	content: "\f04b";
+}

@@ -11,6 +11,142 @@ The `Config` object controls various aspects of SugarCube's behavior.
 
 
 <!-- ***************************************************************************
+	General
+**************************************************************************** -->
+## General Settings<!-- legacy --><span id="config-api-miscellaneous"></span><!-- /legacy --> {#config-api-general}
+
+<!-- *********************************************************************** -->
+
+### `Config.addVisitedLinkClass` ↔ *boolean* (default: `false`) {#config-api-property-addvisitedlinkclass}
+
+Determines whether the `link-visited` class is added to internal passage links that go to previously visited passages—i.e., the passage already exists within the story history.
+
+<p role="note"><b>Note:</b>
+You <em>must</em> provide your own styling for the <code>link-visited</code> class as none is provided by default.
+</p>
+
+#### History:
+
+* `v2.0.0`: Introduced.
+
+#### Examples:
+
+```js
+Config.addVisitedLinkClass = true;
+```
+
+#### CSS styles:
+
+You will also need to specify a `.link-visited` style that defines the properties visited links should have. For example:
+
+```css
+.link-visited {
+	color: purple;
+}
+```
+
+<!-- *********************************************************************** -->
+
+### `Config.cleanupWikifierOutput` ↔ *boolean* (default: `false`) {#config-api-property-cleanupwikifieroutput}
+
+Determines whether the output of the Wikifier is post-processed into more sane markup—i.e., where appropriate, it tries to transition the plethora of `<br>` elements into `<p>` elements.
+
+#### History:
+
+* `v2.0.0`: Introduced.
+
+#### Examples:
+
+```js
+Config.cleanupWikifierOutput = true;
+```
+
+<!-- *********************************************************************** -->
+
+### `Config.debug` ↔ *boolean* (default: `false`) {#config-api-property-debug}
+
+Indicates whether SugarCube is running in test mode, which enables debug views and various optional debugging errors and warnings.  See the [*Test Mode* guide](#guide-test-mode) for more information.
+
+<p role="note"><b>Note:</b>
+This setting is automatically set based on whether you're using a testing mode in a Twine compiler—i.e., <em>Test</em> mode in Twine&nbsp;2, <em>Test Play From Here</em> in Twine&nbsp;1, or the test mode option (<code>-t</code>, <code>--test</code>) in Tweego.  You may, however, forcibly enable it if you need to for some reason—e.g., if you're using another compiler, which doesn't offer a way to enable test mode.
+</p>
+
+<p role="note" class="see"><b>See Also:</b>
+<a href="#config-api-property-enableoptionaldebugging"><code>Config.enableOptionalDebugging</code> setting</a>.
+</p>
+
+#### History:
+
+* `v2.2.0`: Introduced.
+
+#### Examples:
+
+##### Forcibly enabling test mode
+
+```js
+// Forcibly enable test mode
+Config.debug = true;
+```
+
+##### Check if test mode is enabled via JavaScript
+
+```js
+if (Config.debug) {
+	/* do something debug related */
+}
+```
+
+##### Check if test mode is enabled via macros
+
+```
+<<if Config.debug>>
+	/* do something debug related */
+<</if>>
+```
+
+<!-- *********************************************************************** -->
+
+### `Config.enableOptionalDebugging` ↔ *boolean* (default: `false`) {#config-api-property-enableoptionaldebugging}
+
+Determines whether various optional debugging errors and warnings are enabled outside of test mode.
+
+<p role="note" class="see"><b>See Also:</b>
+<a href="#config-api-property-debug"><code>Config.debug</code> setting</a>.
+</p>
+
+List of optional errors and warnings: *(not exhaustive)*
+
+* [`<<if>>` macro](#macros-macro-if) assignment error.  If enabled, returns an error when the `=` assignment operator is used within its conditional—e.g., `<<if $suspect = "Bob">>`.  Does not flag other assignment operators.
+
+#### History:
+
+* `v2.37.0`: Introduced.
+
+#### Examples:
+
+```js
+Config.enableOptionalDebugging = true;
+```
+
+<!-- *********************************************************************** -->
+
+### `Config.loadDelay` ↔ *integer* (default: `0`) {#config-api-property-loaddelay}
+
+Sets the integer delay (in milliseconds) before the loading screen is dismissed, once the document has signaled its readiness.  Not generally necessary, however, some browsers render slower than others and may need a little extra time to get a media-heavy page done.  This allows you to fine tune for those cases.
+
+#### History:
+
+* `v2.0.0`: Introduced.
+
+#### Examples:
+
+```js
+// Delay the dismissal of the loading screen by 2000ms (2s)
+Config.loadDelay = 2000;
+```
+
+
+<!-- ***************************************************************************
 	Audio
 **************************************************************************** -->
 ## Audio Settings {#config-api-audio}
@@ -27,7 +163,7 @@ Determines whether the audio subsystem automatically pauses tracks that have bee
 
 #### Examples:
 
-```
+```js
 Config.audio.pauseOnFadeToZero = false;
 ```
 
@@ -47,7 +183,7 @@ It is unlikely that you will ever want to disable this setting.
 
 #### Examples:
 
-```
+```js
 Config.audio.preloadMetadata = false;
 ```
 
@@ -69,7 +205,7 @@ Determines whether the story's history controls (Backward, Jump To, & Forward bu
 
 #### Examples:
 
-```
+```js
 Config.history.controls = false;
 ```
 
@@ -90,12 +226,12 @@ For game-oriented projects, as opposed to more story-oriented interactive fictio
 
 #### Examples:
 
-```
+```js
 // Limit the history to a single state (recommended for games)
 Config.history.maxStates = 1;
 
-// Limit the history to 80 states
-Config.history.maxStates = 80;
+// Limit the history to 25 states
+Config.history.maxStates = 25;
 ```
 
 
@@ -103,27 +239,6 @@ Config.history.maxStates = 80;
 	Macros
 **************************************************************************** -->
 ## Macros Settings {#config-api-macros}
-
-<!-- *********************************************************************** -->
-
-### `Config.macros.ifAssignmentError` ↔ *boolean* (default: `true`) {#config-api-property-macros-ifassignmenterror}
-
-Determines whether the [`<<if>>` macro](#macros-macro-if) returns an error when the `=` assignment operator is used within its conditional—e.g., `<<if $suspect = "Bob">>`.  Does not flag other assignment operators.
-
-<p role="note"><b>Note:</b>
-This setting exists because it's unlikely that you'll ever want to actually perform an assignment within a conditional expression and typing <code>=</code> when you meant <code>===</code> (or <code>==</code>) is a fairly easy to mistake make—either from a finger slip or because you just don't know the difference between the operators.
-</p>
-
-#### History:
-
-* `v2.0.0`: Introduced.
-
-#### Examples:
-
-```
-// No error is returned when = is used within an <<if>> or <<elseif>> conditional
-Config.macros.ifAssignmentError = false;
-```
 
 <!-- *********************************************************************** -->
 
@@ -141,7 +256,7 @@ This setting exists to prevent a misconfigured loop from making the browser unre
 
 #### Examples:
 
-```
+```js
 // Allow only 5000 iterations
 Config.macros.maxLoopIterations = 5000;
 ```
@@ -158,7 +273,7 @@ Sets the default [`KeyboardEvent.key`](https://developer.mozilla.org/en-US/docs/
 
 #### Examples:
 
-```
+```js
 // Change the default skip key to Control (CTRL)
 Config.macros.typeSkipKey = "Control";
 ```
@@ -175,10 +290,23 @@ Determines whether the [`<<type>>` macro](#macros-macro-type) types out content 
 
 #### Examples:
 
-```
+```js
 // Do not type on previously visited passages
 Config.macros.typeVisitedPassages = false;
 ```
+
+<!-- *********************************************************************** -->
+
+### <span class="deprecated">`Config.macros.ifAssignmentError` ↔ *boolean* (default: `true`)</span> {#config-api-property-macros-ifassignmenterror}
+
+<p role="note" class="warning"><b>Deprecated:</b>
+This setting has been deprecated and should no longer be used.  See the <a href="#config-api-property-enableoptionaldebugging"><code>Config.enableOptionalDebugging</code></a> setting for its replacement.
+</p>
+
+#### History:
+
+* `v2.0.0`: Introduced.
+* `v2.37.0`: Deprecated in favor of the `Config.enableOptionalDebugging` setting.
 
 
 <!-- ***************************************************************************
@@ -198,15 +326,15 @@ Allows the destination of passage navigation to be overridden.  The callback is 
 
 #### Examples:
 
-```
+```js
 Config.navigation.override = function (destinationPassage) {
-	/* code */
+	/* code that returns a passage name or a falsy value */
 };
 ```
 
 ##### Based upon a story variable
 
-```
+```js
 // Force the player to the "You Died" passage if they let $health get too low.
 Config.navigation.override = function (dest) {
 	var sv = State.variables;
@@ -226,43 +354,6 @@ Config.navigation.override = function (dest) {
 
 <!-- *********************************************************************** -->
 
-### `Config.passages.descriptions` ↔ *boolean* | *object* | *function* (default: *none*) {#config-api-property-passages-descriptions}
-
-Determines whether alternate passage descriptions are used by the *Saves* and *Jump To* menus—by default an excerpt from the passage is used.  Valid values are boolean `true`, which simply causes the passages' titles to be used, an object, which maps passages' titles to their descriptions, or a function, which should return the passages' description.
-
-<div role="note"><b>Note:</b>
-<ul class="asnote">
-<li><b>As boolean:</b> You should ensure that all encounterable passage titles are meaningful.</li>
-<li><b>As object:</b> If the mapping object does not contain an entry for the passage in question, then the passage's excerpt is used instead.</li>
-<li><b>As function:</b> The function is called with the passage in question as its <code>this</code> value.  If the function returns falsy, then the passage's excerpt is used instead.</li>
-</ul>
-</div>
-
-#### History:
-
-* `v2.0.0`: Introduced.
-
-#### Examples:
-
-```
-// Uses passages' titles
-Config.passages.descriptions = true;
-
-// Uses the description mapped by the title
-Config.passages.descriptions = {
-	"title" : "description"
-};
-
-// Returns the description to be used
-Config.passages.descriptions = function () {
-	if (this.title === "title") {
-		return "description";
-	}
-};
-```
-
-<!-- *********************************************************************** -->
-
 ### `Config.passages.displayTitles` ↔ *boolean* (default: `false`) {#config-api-property-passages-displaytitles}
 
 Determines whether passage titles are combined with the story title, within the browser's/tab's titlebar, when passages are displayed.
@@ -273,7 +364,7 @@ Determines whether passage titles are combined with the story title, within the 
 
 #### Examples:
 
-```
+```js
 Config.passages.displayTitles = true;
 ```
 
@@ -293,7 +384,7 @@ Does not affect <code>script</code> or <code>stylesheet</code> tagged passages, 
 
 #### Examples:
 
-```
+```js
 Config.passages.nobr = true;
 ```
 
@@ -317,10 +408,10 @@ The function will be called just before the built-in no-break passage processing
 
 #### Examples:
 
-```
-/* Change instancess of "cat" to "dog". */
+```js
+// Change instancess of "cat" to "dog"
 Config.passages.onProcess = function (p) {
-	return p.text.replace(/\bcat(s?)\b/g, 'dog$1');
+	return p.text.replace(/\bcat(s?)\b/g, "dog$1");
 };
 ```
 
@@ -336,7 +427,7 @@ Sets the starting passage, the very first passage that will be displayed.
 
 #### Examples:
 
-```
+```js
 Config.passages.start = "That Other Starting Passage";
 ```
 
@@ -356,7 +447,7 @@ If using an integer delay, ideally, it should probably be slightly longer than t
 
 #### Examples:
 
-```
+```js
 // Remove outgoing elements when their opacity animation ends
 Config.passages.transitionOut = "opacity";
 
@@ -368,7 +459,7 @@ Config.passages.transitionOut = 1010;
 
 At the very least you will need to specify a `.passage-out` style that defines the transition's end state.  For example:
 
-```
+```css
 .passage-out {
 	opacity: 0;
 }
@@ -376,7 +467,7 @@ At the very least you will need to specify a `.passage-out` style that defines t
 
 That probably won't be very pleasing to the eye, however, so you will likely need several styles to make something that looks half-decent.  For example, the following will give you a basic crossfade:
 
-```
+```css
 #passages {
 	position: relative;
 }
@@ -391,6 +482,19 @@ That probably won't be very pleasing to the eye, however, so you will likely nee
 }
 ```
 
+<!-- *********************************************************************** -->
+
+### <span class="deprecated">`Config.passages.descriptions` ↔ *boolean* | *object* | *function* (default: *none*)</span> {#config-api-property-passages-descriptions}
+
+<p role="note" class="warning"><b>Deprecated:</b>
+This setting has been deprecated and should no longer be used.  See the <a href="#config-api-property-saves-descriptions"><code>Config.saves.descriptions</code></a> setting for its replacement.
+</p>
+
+#### History:
+
+* `v2.0.0`: Introduced.
+* `v2.37.0`: Deprecated in favor of the `Config.saves.descriptions` setting.
+
 
 <!-- ***************************************************************************
 	Saves
@@ -399,70 +503,57 @@ That probably won't be very pleasing to the eye, however, so you will likely nee
 
 <!-- *********************************************************************** -->
 
-### `Config.saves.autoload` ↔ *boolean* | *string* | *function* (default: *none*) {#config-api-property-saves-autoload}
+### `Config.saves.descriptions` ↔ *function* (default: *none*) {#config-api-property-saves-descriptions}
 
-Determines whether the autosave, if it exists, is automatically loaded upon story startup.  Valid values are boolean `true`, which simply causes the autosave to be loaded, the string `"prompt"`, which prompts the player via a dialog to load the autosave, or a function, which causes the autosave to be loaded if its return value is truthy.
+Sets browser saves descriptions.  If unset, a brief description of the current turn is used.  If a callback function is assigned, it is passed one parameter, the type of save being attempted.  If its return value is truthy, the returned description is used, elsewise the default description is used.
 
-<p role="note"><b>Note:</b>
-If the autosave cannot be loaded, for any reason, then the start passage is loaded instead.
+<p role="note" class="see"><b>See:</b>
+<a href="#save-api-constants-type"><code>Save.Type</code> pseudo-enumeration</a> for more information on save types.
 </p>
 
 #### History:
 
-* `v2.0.0`: Introduced.
+* `v2.37.0`: Introduced.
 
 #### Examples:
 
-```
-// Automatically loads the autosave
-Config.saves.autoload = true;
+##### Using passages' names
 
-// Prompts the player about loading the autosave
-Config.saves.autoload = "prompt";
-
-// Loads the autosave if it returns a truthy value
-Config.saves.autoload = function () {
-	/* code */
+```js
+Config.saves.descriptions = function (saveType) {
+	return passage();
 };
 ```
 
-<!-- *********************************************************************** -->
+##### Using descriptions mapped by passages' names
 
-### `Config.saves.autosave` ↔ *boolean* | *Array&lt;string&gt;* | *function* (default: *none*) {#config-api-property-saves-autosave}
-
-Determines whether the autosave is created/updated when passages are displayed.
-
-Valid values are:
-
-* Boolean `true`, which causes the autosave to be updated with every passage.
-* Boolean `false`, which causes the autosave to never update automatically—i.e., you must do it manually via the <a href="#save-api-method-autosave-save"><code>Save.autosave.save()</code> static method</a>.
-* An array of strings, which causes the autosave to be updated for each passage with at least one matching tag.
-* A function, which causes the autosave to be updated for each passage where its return value is truthy.
-
-<p role="note" class="warning"><b>Warning:</b>
-When setting the value to boolean <code>true</code>, you will likely also need to use the <a href="#config-api-property-saves-isallowed"><code>Config.saves.isAllowed</code> property</a> to disallow saving on the start passage.  Or, if you use the start passage as real part of your story and allow the player to reenter it, rather than just as the initial landing/cover page, then you may wish to only disallow saving on the start passage the very first time it's displayed—i.e., at story startup.
-</p>
-
-#### History:
-
-* `v2.0.0`: Introduced.
-* `v2.30.0`: Added function values and deprecated string values.
-
-#### Examples:
-
+```js
+var saveDescriptions = {
+	"passage_title_a" : "description text a…",
+	"passage_title_b" : "description text b…",
+	"passage_title_c" : "description text c…"
+};
+Config.saves.descriptions = function (saveType) {
+	return saveDescriptions[passage()];
+};
 ```
-// Autosaves every passage
-Config.saves.autosave = true;
 
-// Allows manual autosaving
-Config.saves.autosave = false;
+##### Using the provided save type
 
-// Autosaves on passages tagged with any of "bookmark" or "autosave"
-Config.saves.autosave = ["bookmark", "autosave"];
+```js
+Config.saves.descriptions = function (saveType) {
+	const base = `(${L10n.get("turn")} ${State.turns})`;
 
-// Autosaves on passages if it returns a truthy value
-Config.saves.autosave = function () {
-	/* code */
+	switch (saveType) {
+		case Save.Type.Auto:
+			return `${base} A browser auto save…`;
+		case Save.Type.Base64:
+			return `${base} A base64 save…`;
+		case Save.Type.Disk:
+			return `${base} A local disk save…`;
+		case Save.Type.Slot:
+			return `${base} A browser slot save…`;
+	}
 };
 ```
 
@@ -478,7 +569,7 @@ Sets the story ID associated with saves.
 
 #### Examples:
 
-```
+```js
 Config.saves.id = "a-big-huge-story-part-1";
 ```
 
@@ -486,55 +577,131 @@ Config.saves.id = "a-big-huge-story-part-1";
 
 ### `Config.saves.isAllowed` ↔ *function* (default: *none*) {#config-api-property-saves-isallowed}
 
-Determines whether saving is allowed within the current context.  The callback is invoked each time a save is requested.  If its return value is falsy, the save is disallowed.  If its return value is truthy, the save is allowed to continue unperturbed.
+Determines whether saving is allowed within the current context.  If unset, saves are always allowed.  If a callback function is assigned, it is passed one parameter, the type of save being attempted.  If its return value is truthy, the save is allowed, elsewise it is disallowed.
+
+<p role="note" class="see"><b>See:</b>
+<a href="#save-api-constants-type"><code>Save.Type</code> pseudo-enumeration</a> for more information on save types.
+</p>
 
 #### History:
 
 * `v2.0.0`: Introduced.
+* `v2.37.0`: Added save type parameter.
 
 #### Examples:
 
+##### Basic usage
+
+Allows saves on passages if it returns a truthy value.
+
+```js
+Config.saves.isAllowed = function (saveType) {
+	/* code returning a boolean value */
+};
 ```
-Config.saves.isAllowed = function () {
-	/* code */
+
+Disallow saving on passages tagged with `menu`.
+
+```js
+Config.saves.isAllowed = function (saveType) {
+	return !tags().includes("menu");
+};
+```
+
+##### Using the save type parameter
+
+Attempt a new auto save only on passages tagged with `autosave`.  Other save types are not limited.
+
+```js
+Config.saves.isAllowed = function (saveType) {
+	if (saveType === Save.Type.Auto) {
+		return tags().includes("autosave");
+	}
+
+	return true;
+};
+```
+
+Attempt a new auto save only on every eighth turn and limit all other save types to passages tagged with `cansave`.
+
+```js
+// Using an `if` statement
+Config.saves.isAllowed = function (saveType) {
+	if (saveType === Save.Type.Auto) {
+		return turns() % 8 === 0;
+	}
+
+	return tags().includes("cansave");
+};
+```
+
+Different logic for most save types.
+
+<p role="note"><b>Note:</b>
+For example purposes only, not really recommended.
+</p>
+
+```js
+Config.saves.isAllowed = function (saveType) {
+	switch (saveType) {
+		case Save.Type.Auto:
+			// Only every tenth turn
+			return turns() % 10 === 0;
+
+		case Save.Type.Disk:
+		case Save.Type.Slot:
+			// Only on passages tagged `cansave`
+			return tags().includes("cansave");
+
+		case Save.Type.Base64:
+			// Always
+			return true;
+	}
 };
 ```
 
 <!-- *********************************************************************** -->
 
-### `Config.saves.slots` *integer* (default: `8`) {#config-api-property-saves-slots}
+### `Config.saves.maxAutoSaves` *integer* (default: `0`) {#config-api-property-saves-maxautosaves}
 
-Sets the maximum number of available save slots.
+Sets the maximum number of available auto saves.  Using a value of `0` disables auto saves.
 
-#### History:
-
-* `v2.0.0`: Introduced.
-
-#### Examples:
-
-```
-Config.saves.slots = 4;
-```
-
-<!-- *********************************************************************** -->
-
-### `Config.saves.tryDiskOnMobile` ↔ *boolean* (default: `true`) {#config-api-property-saves-trydiskonmobile}
-
-Determines whether saving to disk is enabled on mobile devices—i.e., smartphones, tablets, etc.
+<p role="note"><b>Note:</b>
+When enabled, an auto save is attempted each turn by default.  Thus, it is recommended that the <a href="#config-api-property-saves-isallowed"><code>Config.saves.isAllowed</code> setting</a> be used to limit the frequency.
+</p>
 
 <p role="note" class="warning"><b>Warning:</b>
-Mobile browsers can be fickle, so saving to disk may not work as expected in all browsers.
+As available browser-based storage is very limited, it is <strong><em>strongly recommended</em></strong> that the number of available saves not be set too high.  A range of <code>1</code>–<code>10</code> is suggested.
 </p>
 
 #### History:
 
-* `v2.34.0`: Introduced.
+* `v2.37.0`: Introduced.
 
 #### Examples:
 
+```js
+Config.saves.maxAutoSaves = 3;
 ```
-/* To disable saving to disk on mobile devices. */
-Config.saves.tryDiskOnMobile = false;
+
+<!-- *********************************************************************** -->
+
+### `Config.saves.maxSlotSaves` *integer* (default: `8`) {#config-api-property-saves-maxslotsaves}
+
+Sets the maximum number of available slot saves.  Using a value of `0` disables slot saves.
+
+<p role="note" class="warning"><b>Warning:</b>
+As available browser-based storage is very limited, it is <strong><em>strongly recommended</em></strong> that the number of available saves not be set too high.  A range of <code>1</code>–<code>10</code> is suggested.
+</p>
+
+#### History:
+
+* `v2.37.0`: Introduced.
+
+#### Examples:
+
+```js
+Config.saves.maxSlotSaves = 4;
 ```
 
 <!-- *********************************************************************** -->
@@ -544,7 +711,7 @@ Config.saves.tryDiskOnMobile = false;
 Sets the `version` property of saves.
 
 <p role="note"><b>Note:</b>
-This setting is only used to set the <code>version</code> property of saves.  Thus, it is only truly useful if you plan to upgrade out-of-date saves via a <a href="#config-api-property-saves-onload"><code>Config.saves.onLoad</code></a> callback.
+This setting is only used to set the <code>version</code> property of saves.  Thus, it is only truly useful if you plan to upgrade out-of-date saves via the <a href="#save-api-events"><code>Save</code> Events API</a>—specifically the <a href="#save-api-method-onload-add"><code>Save.onLoad.add()</code> static method</a>.
 </p>
 
 #### History:
@@ -553,20 +720,47 @@ This setting is only used to set the <code>version</code> property of saves.  Th
 
 #### Examples:
 
-```
+```js
 // As an integer (recommended)
 Config.saves.version = 3;
 
-// As a string (not recommended)
+// As a string (strongly not recommended)
 Config.saves.version = "v3";
 ```
+
+<!-- *********************************************************************** -->
+
+### <span class="deprecated">`Config.saves.autoload` ↔ *boolean* | *string* | *function* (default: *none*)</span> {#config-api-property-saves-autoload}
+
+<p role="note" class="warning"><b>Deprecated:</b>
+This setting has been deprecated and should no longer be used.  The default UI now includes a <i>Continue</i> button, which loads the latest save.  If disabling or replacing the default UI, see the <a href="#save-api-browser-method-continue"><code>Save.browser.continue()</code> method</a> to replicate the functionality.
+</p>
+
+#### History:
+
+* `v2.0.0`: Introduced.
+* `v2.37.0`: Deprecated.
+
+<!-- *********************************************************************** -->
+
+### <span class="deprecated">`Config.saves.autosave` ↔ *boolean* | *Array&lt;string&gt;* | *function* (default: *none*)</span> {#config-api-property-saves-autosave}
+
+<p role="note" class="warning"><b>Deprecated:</b>
+This setting has been deprecated and should no longer be used.  See the <a href="#config-api-property-saves-maxautosaves"><code>Config.saves.maxAutoSaves</code></a> setting to set the number of available auto saves and the <a href="#config-api-property-saves-isallowed"><code>Config.saves.isAllowed</code></a> setting to control when new auto saves are created.
+</p>
+
+#### History:
+
+* `v2.0.0`: Introduced.
+* `v2.30.0`: Added function values and deprecated string values.
+* `v2.37.0`: Deprecated.
 
 <!-- *********************************************************************** -->
 
 ### <span class="deprecated">`Config.saves.onLoad` ↔ *function* (default: *none*)</span> {#config-api-property-saves-onload}
 
 <p role="note" class="warning"><b>Deprecated:</b>
-This setting has been deprecated and should no longer be used.  See the <a href="#save-api-method-onload-add"><code>Save.onLoad.add()</code></a> method for its replacement.
+This setting has been deprecated and should no longer be used.  See the <a href="#save-api-onload-method-add"><code>Save.onLoad.add()</code></a> method for its replacement.
 </p>
 
 #### History:
@@ -579,7 +773,7 @@ This setting has been deprecated and should no longer be used.  See the <a href=
 ### <span class="deprecated">`Config.saves.onSave` ↔ *function* (default: *none*)</span> {#config-api-property-saves-onsave}
 
 <p role="note" class="warning"><b>Deprecated:</b>
-This setting has been deprecated and should no longer be used.  See the <a href="#save-api-method-onsave-add"><code>Save.onSave.add()</code></a> method for its replacement.
+This setting has been deprecated and should no longer be used.  See the <a href="#save-api-onsave-method-add"><code>Save.onSave.add()</code></a> method for its replacement.
 </p>
 
 #### History:
@@ -587,6 +781,32 @@ This setting has been deprecated and should no longer be used.  See the <a href=
 * `v2.0.0`: Introduced.
 * `v2.33.0`: Added save operation details object parameter to the callback function.
 * `v2.36.0`: Deprecated in favor of the [`Save` Events API](#save-api-events).
+
+<!-- *********************************************************************** -->
+
+### <span class="deprecated">`Config.saves.slots` *integer* (default: `8`)</span> {#config-api-property-saves-slots}
+
+<p role="note" class="warning"><b>Deprecated:</b>
+This setting has been deprecated and should no longer be used.  See the <a href="#config-api-property-saves-maxslotsaves"><code>Config.saves.maxSlotSaves</code></a> setting for its replacement.
+</p>
+
+#### History:
+
+* `v2.0.0`: Introduced.
+* `v2.37.0`: Deprecated in favor of the `Config.saves.maxSlotSaves` setting.
+
+<!-- *********************************************************************** -->
+
+### <span class="deprecated">`Config.saves.tryDiskOnMobile` ↔ *boolean* (default: `true`)</span> {#config-api-property-saves-trydiskonmobile}
+
+<p role="note" class="warning"><b>Deprecated:</b>
+This setting has been deprecated and should no longer be used.  Saving to disk on mobile devices is now unconditionally enabled.
+</p>
+
+#### History:
+
+* `v2.34.0`: Introduced.
+* `v2.37.0`: Deprecated.
 
 
 <!-- ***************************************************************************
@@ -606,7 +826,7 @@ Determines whether the UI bar (sidebar) starts in the stowed (shut) state initia
 
 #### Examples:
 
-```
+```js
 // As a boolean; always start stowed
 Config.ui.stowBarInitially = true;
 
@@ -633,107 +853,7 @@ The story title is not included in updates because SugarCube uses it as the basi
 
 #### Examples:
 
-```
+```js
 // If you don't need those elements to update
 Config.ui.updateStoryElements = false;
-```
-
-
-<!-- ***************************************************************************
-	Miscellaneous
-**************************************************************************** -->
-## Miscellaneous Settings {#config-api-miscellaneous}
-
-<!-- *********************************************************************** -->
-
-### `Config.addVisitedLinkClass` ↔ *boolean* (default: `false`) {#config-api-property-addvisitedlinkclass}
-
-Determines whether the `link-visited` class is added to internal passage links that go to previously visited passages—i.e., the passage already exists within the story history.
-
-<p role="note"><b>Note:</b>
-You <em>must</em> provide your own styling for the <code>link-visited</code> class as none is provided by default.
-</p>
-
-#### History:
-
-* `v2.0.0`: Introduced.
-
-#### Examples:
-
-```
-Config.addVisitedLinkClass = true;
-```
-
-#### CSS styles:
-
-You will also need to specify a `.link-visited` style that defines the properties visited links should have. For example:
-
-```
-.link-visited {
-	color: purple;
-}
-```
-
-<!-- *********************************************************************** -->
-
-### `Config.cleanupWikifierOutput` ↔ *boolean* (default: `false`) {#config-api-property-cleanupwikifieroutput}
-
-Determines whether the output of the Wikifier is post-processed into more sane markup—i.e., where appropriate, it tries to transition the plethora of `<br>` elements into `<p>` elements.
-
-#### History:
-
-* `v2.0.0`: Introduced.
-
-#### Examples:
-
-```
-Config.cleanupWikifierOutput = true;
-```
-
-<!-- *********************************************************************** -->
-
-### `Config.debug` ↔ *boolean* (default: `false`) {#config-api-property-debug}
-
-Indicates whether SugarCube is running in test mode, which enables debug views.  See the [*Test Mode* guide](#guide-test-mode) for more information.
-
-<p role="note"><b>Note:</b>
-This property is automatically set based on whether you're using a testing mode in a Twine compiler—i.e., <em>Test</em> mode in Twine&nbsp;2, <em>Test Play From Here</em> in Twine&nbsp;1, or the test mode option (<code>-t</code>, <code>--test</code>) in Tweego.  You may, however, forcibly enable it if you need to for some reason—e.g., if you're using another compiler, which doesn't offer a way to enable test mode.
-</p>
-
-#### History:
-
-* `v2.2.0`: Introduced.
-
-#### Examples:
-
-```
-// Forcibly enable test mode
-Config.debug = true;
-
-// Check if test mode is enabled in JavaScript
-if (Config.debug) {
-	/* do something debug related */
-}
-
-// Check if test mode is enabled via the <<if>> macro
-<<if Config.debug>>
-	/* do something debug related */
-<</if>>
-```
-
-<!-- *********************************************************************** -->
-
-### `Config.loadDelay` ↔ *integer* (default: `0`) {#config-api-property-loaddelay}
-
-Sets the integer delay (in milliseconds) before the loading screen is dismissed, once the document has signaled its readiness.  Not generally necessary, however, some browsers render slower than others and may need a little extra time to get a media-heavy page done.  This allows you to fine tune for those cases.
-
-#### History:
-
-* `v2.0.0`: Introduced.
-
-#### Examples:
-
-```
-// Delay the dismissal of the loading screen by 2000ms (2s)
-Config.loadDelay = 2000;
 ```

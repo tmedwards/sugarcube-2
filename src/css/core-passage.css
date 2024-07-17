@@ -2,14 +2,12 @@
 
 	css/core-passage.css
 
-	Copyright © 2013–2021 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
+	Copyright © 2013–2024 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
 
-/*
-	Default appearance styles.
-*/
+/* Base styles. */
 .passage {
 	line-height: 1.75;
 	text-align: left;
@@ -18,7 +16,8 @@
 .passage-in {
 	opacity: 0;
 }
-.passage ul, .passage ol {
+.passage ul,
+.passage ol {
 	margin-left: 0.5em;
 	padding-left: 1.5em;
 }
@@ -27,14 +26,14 @@
 	border-collapse: collapse;
 	font-size: 100%;
 }
-.passage tr, .passage th, .passage td, .passage caption {
+.passage tr,
+.passage th,
+.passage td,
+.passage caption {
 	padding: 3px;
 }
 
-
-/*
-	Accessibility styles.
-*/
+/* Accessibility styles. */
 @media (prefers-reduced-motion: reduce) {
 	.passage {
 		transition: opacity 0s;

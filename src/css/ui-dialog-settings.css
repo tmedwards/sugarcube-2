@@ -1,0 +1,92 @@
+/***********************************************************************************************************************
+
+	css/ui-dialog-settings.css
+
+	Copyright © 2013–2024 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
+	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
+
+***********************************************************************************************************************/
+
+/* Base styles. */
+#ui-dialog-body.settings [id|="setting-body"] > div:first-child {
+	display: table;
+	width: 100%;
+}
+#ui-dialog-body.settings [id|="setting-label"] {
+	display: table-cell;
+	padding: 0.4em 2em 0.4em 0;
+}
+#ui-dialog-body.settings [id|="setting-label"] + div {
+	display: table-cell;
+	min-width: 8em;
+	text-align: right;
+	vertical-align: middle;
+	white-space: nowrap;
+}
+#ui-dialog-body.settings div[id|="header-body"] {
+	margin: 1em 0;
+}
+#ui-dialog-body.settings div[id|="header-body"]:first-child {
+	margin-top: 0;
+}
+#ui-dialog-body.settings div[id|="header-body"]:not(:first-child) {
+	border-top: 1px solid #444;
+	padding-top: 1em;
+}
+#ui-dialog-body.settings div[id|="header-body"] > * {
+	margin: 0;
+}
+#ui-dialog-body.settings h2[id|="header-heading"] {
+	font-size: 1.375em;
+}
+#ui-dialog-body.settings p[id|="header-desc"],
+#ui-dialog-body.settings p[id|="setting-desc"] {
+	font-size: 87.5%;
+	margin: 0 0 0 0.5em;
+}
+#ui-dialog-body.settings div[id|="setting-body"] + div[id|="setting-body"] {
+	margin: 1em 0;
+}
+#ui-dialog-body.settings [id|="setting-control"] {
+	white-space: nowrap;
+}
+#ui-dialog-body.settings button[id|="setting-control"] {
+	color: #eee;
+	background-color: transparent;
+	border: 1px solid #444;
+	padding: 0.4em;
+}
+#ui-dialog-body.settings button[id|="setting-control"]:hover {
+	background-color: #333;
+	border-color: #eee;
+}
+#ui-dialog-body.settings button[id|="setting-control"].enabled {
+	background-color: #282;
+	border-color: #4a4;
+}
+#ui-dialog-body.settings button[id|="setting-control"].enabled:hover {
+	background-color: #4a4;
+	border-color: #6c6;
+}
+#ui-dialog-body.settings input[type="range"][id|="setting-control"] {
+	max-width: 35vw;
+}
+
+/* QUESTION: Is this both a valid selector and a necessary rule? */
+#ui-dialog-body.settings span[id|="setting-input"] {
+	user-select: none;
+}
+
+/* Font icon styles. */
+#ui-dialog-body.settings button[id|="setting-control"]::after,
+#ui-dialog-body.settings button[id|="setting-control"].enabled::after {
+	@mixin sc-icons-properties;
+
+	margin-left: 0.35em;
+}
+#ui-dialog-body.settings button[id|="setting-control"]::after {
+	content: "\f204";
+}
+#ui-dialog-body.settings button[id|="setting-control"].enabled::after {
+	content: "\f205";
+}

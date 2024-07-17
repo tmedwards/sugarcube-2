@@ -2,15 +2,13 @@
 
 	loadscreen.js
 
-	Copyright © 2013–2021 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
+	Copyright © 2013–2024 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* global Config, Engine */
+/* global Config, Engine, triggerEvent */
 
 var LoadScreen = (() => { // eslint-disable-line no-unused-vars, no-var
-	'use strict';
-
 	// Locks collection.
 	const _locks = new Set();
 
@@ -18,18 +16,19 @@ var LoadScreen = (() => { // eslint-disable-line no-unused-vars, no-var
 	let _autoId = 0;
 
 
-	/*******************************************************************************************************************
+	/*******************************************************************************
 		LoadScreen Functions.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	/*
 		Initialize management of the loading screen.
 	*/
 	function loadScreenInit() {
-		if (DEBUG) { console.log('[LoadScreen/loadScreenInit()]'); }
+		if (BUILD_DEBUG) { console.log('[LoadScreen/loadScreenInit()]'); }
 
 		// Add a `readystatechange` listener for hiding/showing the loading screen.
 		jQuery(document).on('readystatechange.SugarCube', () => {
-			if (DEBUG) { console.log(`[LoadScreen/<readystatechange>] document.readyState: "${document.readyState}"; locks(${_locks.size}):`, _locks); }
+			if (BUILD_DEBUG) { console.log(`[LoadScreen/<readystatechange>] document.readyState: "${document.readyState}"; locks(${_locks.size}):`, _locks); }
 
 			if (_locks.size > 0) {
 				return;
@@ -44,7 +43,7 @@ var LoadScreen = (() => { // eslint-disable-line no-unused-vars, no-var
 							if (_locks.size === 0) {
 								loadScreenHide();
 							}
-						}, Math.max(Engine.minDomActionDelay, Config.loadDelay));
+						}, Math.max(Engine.DOM_DELAY, Config.loadDelay));
 					}
 					else {
 						loadScreenHide();
@@ -61,7 +60,7 @@ var LoadScreen = (() => { // eslint-disable-line no-unused-vars, no-var
 		Clear the loading screen.
 	*/
 	function loadScreenClear() {
-		if (DEBUG) { console.log('[LoadScreen/loadScreenClear()]'); }
+		if (BUILD_DEBUG) { console.log('[LoadScreen/loadScreenClear()]'); }
 
 		// Remove the event listener.
 		jQuery(document).off('readystatechange.SugarCube');
@@ -77,7 +76,7 @@ var LoadScreen = (() => { // eslint-disable-line no-unused-vars, no-var
 		Hide the loading screen.
 	*/
 	function loadScreenHide() {
-		if (DEBUG) { console.log('[LoadScreen/loadScreenHide()]'); }
+		if (BUILD_DEBUG) { console.log('[LoadScreen/loadScreenHide()]'); }
 
 		jQuery(document.documentElement).removeAttr('data-init');
 	}
@@ -86,7 +85,7 @@ var LoadScreen = (() => { // eslint-disable-line no-unused-vars, no-var
 		Show the loading screen.
 	*/
 	function loadScreenShow() {
-		if (DEBUG) { console.log('[LoadScreen/loadScreenShow()]'); }
+		if (BUILD_DEBUG) { console.log('[LoadScreen/loadScreenShow()]'); }
 
 		jQuery(document.documentElement).attr('data-init', 'loading');
 	}
@@ -95,12 +94,12 @@ var LoadScreen = (() => { // eslint-disable-line no-unused-vars, no-var
 		Returns a new lock ID after locking and showing the loading screen.
 	*/
 	function loadScreenLock() {
-		if (DEBUG) { console.log('[LoadScreen/loadScreenLock()]'); }
+		if (BUILD_DEBUG) { console.log('[LoadScreen/loadScreenLock()]'); }
 
 		++_autoId;
 		_locks.add(_autoId);
 
-		if (DEBUG) { console.log(`\tacquired loading screen lock; id: ${_autoId}`); }
+		if (BUILD_DEBUG) { console.log(`\tacquired loading screen lock; id: ${_autoId}`); }
 
 		loadScreenShow();
 		return _autoId;
@@ -111,7 +110,7 @@ var LoadScreen = (() => { // eslint-disable-line no-unused-vars, no-var
 		trigger a `readystatechange` event.
 	*/
 	function loadScreenUnlock(id) {
-		if (DEBUG) { console.log(`[LoadScreen/loadScreenUnlock(id: ${id})]`); }
+		if (BUILD_DEBUG) { console.log(`[LoadScreen/loadScreenUnlock(id: ${id})]`); }
 
 		if (id == null) { // lazy equality for null
 			throw new Error('LoadScreen.unlock called with a null or undefined ID');
@@ -120,24 +119,33 @@ var LoadScreen = (() => { // eslint-disable-line no-unused-vars, no-var
 		if (_locks.has(id)) {
 			_locks.delete(id);
 
-			if (DEBUG) { console.log(`\treleased loading screen lock; id: ${id}`); }
+			if (BUILD_DEBUG) { console.log(`\treleased loading screen lock; id: ${id}`); }
 		}
 
 		if (_locks.size === 0) {
-			jQuery(document).trigger('readystatechange');
+			triggerEvent('readystatechange');
 		}
 	}
 
+	/*
+		Returns the current number of locks.
+	*/
+	function loadScreenLockSize() {
+		return _locks.size;
+	}
 
-	/*******************************************************************************************************************
-		Module Exports.
-	*******************************************************************************************************************/
-	return Object.freeze(Object.defineProperties({}, {
+
+	/*******************************************************************************
+		Object Exports.
+	*******************************************************************************/
+
+	return Object.preventExtensions(Object.create(null, {
 		init   : { value : loadScreenInit },
 		clear  : { value : loadScreenClear },
 		hide   : { value : loadScreenHide },
 		show   : { value : loadScreenShow },
 		lock   : { value : loadScreenLock },
-		unlock : { value : loadScreenUnlock }
+		unlock : { value : loadScreenUnlock },
+		size   : { get : loadScreenLockSize }
 	}));
 })();

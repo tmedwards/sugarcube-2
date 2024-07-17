@@ -1,13 +1,14 @@
 /***********************************************************************************************************************
 
-	scripts/build-utils.js (v1.1.1, 2021-12-21)
+	scripts/build-utils.js (v1.2.2, 2021-10-07)
 		Build utility functions for SugarCube.
 
-	Copyright © 2020–2021 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
+	Copyright © 2020–2022 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
 /* eslint-env node, es2021 */
+/* eslint-disable strict */
 'use strict';
 
 const _fs     = require('fs');
@@ -32,6 +33,26 @@ function die(message, error) {
 
 function fileExists(pathname) {
 	return _fs.existsSync(pathname);
+}
+
+function walkPaths(paths) {
+	return paths.reduce((acc, path) => {
+		const stats = _fs.statSync(path);
+
+		if (stats?.isDirectory()) {
+			acc.push(...walkPaths(
+				_fs.readdirSync(path)
+					// QUESTION: Do we actually need to defend against dot files?
+					.filter(fname => fname !== '.' && fname !== '..')
+					.map(fname => _path.join(path, fname))
+			));
+		}
+		else if (stats?.isFile()) {
+			acc.push(path);
+		}
+
+		return acc;
+	}, []);
 }
 
 function makePath(pathname) {
@@ -105,6 +126,7 @@ function concatFiles(filenames, callback) {
 exports.log               = log;
 exports.die               = die;
 exports.fileExists        = fileExists;
+exports.walkPaths         = walkPaths;
 exports.makePath          = makePath;
 exports.copyFile          = copyFile;
 exports.readFileContents  = readFileContents;

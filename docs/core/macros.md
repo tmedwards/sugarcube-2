@@ -106,83 +106,26 @@ Sets story $variables and temporary \_variables based on the given expression.
 
 #### Arguments:
 
-* **`expression`:** A valid expression.  See [Variables](#twinescript-variables) and [Expressions](#twinescript-expressions) for more information.
-
-#### TwineScript assignment operators:
-
-<table>
-<thead>
-<tr>
-<th>Operator</th>
-<th>Description</th>
-<th>Example</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<th><code>to</code></th>
-<td>Assigns the value on the right-hand side of the operator to the left-hand side.</td>
-<td><pre><code>&lt;&lt;set $apples to 6&gt;&gt;</code></pre></td>
-</tr>
-</tbody>
-</table>
-
-#### JavaScript assignment operators: *(not an exhaustive list)*
-
-<table>
-<thead>
-<tr>
-<th>Operator</th>
-<th>Description</th>
-<th>Example</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<th><code>=</code></th>
-<td>Assigns the value on the right-hand side of the operator to the left-hand side.</td>
-<td><pre><code>&lt;&lt;set $apples = 6&gt;&gt;</code></pre></td>
-</tr>
-<tr>
-<th><code>+=</code></th>
-<td>Adds the value on the right-hand side of the operator to the current value on the left-hand side and assigns the result to the left-hand side.</td>
-<td><pre><code>&lt;&lt;set $apples += 1&gt;&gt;</code></pre></td>
-</tr>
-<tr>
-<th><code>-=</code></th>
-<td>Subtracts the value on the right-hand side of the operator from the current value on the left-hand side and assigns the result to the left-hand side.</td>
-<td><pre><code>&lt;&lt;set $apples -= 1&gt;&gt;</code></pre></td>
-</tr>
-<tr>
-<th><code>&#x2a;=</code></th>
-<td>Multiplies the current value on the left-hand side of the operator by the value on the right-hand side and assigns the result to the left-hand side.</td>
-<td><pre><code>&lt;&lt;set $apples &#x2a;= 2&gt;&gt;</code></pre></td>
-</tr>
-<tr>
-<th><code>/=</code></th>
-<td>Divides the current value on the left-hand side of the operator by the value on the right-hand side and assigns the result to the left-hand side.</td>
-<td><pre><code>&lt;&lt;set $apples /= 2&gt;&gt;</code></pre></td>
-</tr>
-<tr>
-<th><code>%=</code></th>
-<td>Divides the current value on the left-hand side of the operator by the value on the right-hand side and assigns the remainder to the left-hand side.</td>
-<td><pre><code>&lt;&lt;set $apples %= 10&gt;&gt;</code></pre></td>
-</tr>
-</tbody>
-</table>
+* **`expression`:** A valid expression.  See [Variables](#twinescript-variables), [Expressions](#twinescript-expressions), [Operators](#twinescript-operators) for more information.
 
 #### Examples:
 
+##### Using the TwineScript "to" operator
+
 ```
-→ Using the TwineScript "to" operator
 <<set $cheese to "a nice, sharp cheddar">>  → Assigns "a nice, sharp cheddar" to story variable $cheese
 <<set $chestEmpty to true>>                 → Assigns boolean true to story variable $chestEmpty
+<<set $sum to $a + $b>>                     → Assigns the summation of story variables $a and $b to $sum
 <<set $gold to $gold + 5>>                  → Adds 5 to the value of story variable $gold
 <<set _counter to _counter + 1>>            → Adds 1 to the value of temporary variable _counter
+```
 
-→ Using standard JavaScript operators
+##### Using the standard JavaScript operators
+
+```
 <<set $cheese = "a nice, sharp cheddar">>   → Assigns "a nice, sharp cheddar" to story variable $cheese
 <<set $chestEmpty = true>>                  → Assigns boolean true to story variable $chestEmpty
+<<set $sum = $a + $b>>                      → Assigns the summation of story variables $a and $b to $sum
 <<set $gold += 5>>                          → Adds 5 to the value of story variable $gold
 <<set _counter += 1>>                       → Adds 1 to the value of temporary variable _counter
 ```
@@ -191,48 +134,36 @@ Sets story $variables and temporary \_variables based on the given expression.
 
 ### `<<unset variableList>>` {#macros-macro-unset}
 
-Unsets story $variables and temporary \_variables.
+Unsets story $variables, temporary \_variables, and properties of objects stored within either.
 
 #### History:
 
 * `v2.0.0`: Introduced.
+* `v2.37.0`: Added ability to unset object properties.
 
 #### Arguments:
 
-* **`variableList`:** A list of story $variables and/or temporary \_variables.
+* **`variableList`:** A list of story $variables, temporary variables, or properties of objects stored within either.
 
 #### Examples:
 
+Basic usage, unsetting story and temporary variables.
+
 ```
-<<unset $cheese, $chestEmpty, $gold>>
-<<unset _someTempVar>>
+<<unset $rumors>>
+<<unset _npc>>
+
+<<unset $rumors, _npc, _choices, $job>>
 ```
 
-<!-- *********************************************************************** -->
+Unsetting object properties.
 
-### <span class="deprecated">`<<remember expression>>`</span> {#macros-macro-remember}
+```
+<<unset _choices.b>>
+<<unset $towns['port ulster'].rumors>>
 
-<p role="note" class="warning"><b>Deprecated:</b>
-This macro has been deprecated and should no longer be used.  See the <a href="#functions-function-memorize"><code>memorize()</code></a> and <a href="#functions-function-recall"><code>recall()</code></a> functions for its replacement.
-</p>
-
-#### History:
-
-* `v2.0.0`: Introduced.
-* `v2.29.0`: Deprecated in favor of `memorize()` and `recall()`.
-
-<!-- *********************************************************************** -->
-
-### <span class="deprecated">`<<forget variableList>>`</span> {#macros-macro-forget}
-
-<p role="note" class="warning"><b>Deprecated:</b>
-This macro has been deprecated and should no longer be used.  See the <a href="#functions-function-forget"><code>forget()</code></a> function for its replacement.
-</p>
-
-#### History:
-
-* `v2.0.0`: Introduced.
-* `v2.29.0`: Deprecated in favor of `forget()`.
+<<unset _choices.b, $towns['port ulster'].rumors, $pc.notes, _park.rides['wheel of death']>>
+```
 
 
 <!-- ***************************************************************************
@@ -248,9 +179,9 @@ This macro has been deprecated and should no longer be used.  See the <a href="#
 
 <!-- *********************************************************************** -->
 
-### `<<script>> … <</script>>` {#macros-macro-script}
+### `<<script [language]>> … <</script>>` {#macros-macro-script}
 
-Silently executes its contents as *pure* JavaScript code—i.e., it performs no story or temporary variable substitution or TwineScript operator processing.  For instances where you need to run some pure JavaScript and don't want to waste time performing extra processing on code that has no story or temporary variables or TwineScript operators in it and/or worry about the parser possibly clobbering the code.
+Silently executes its contents as either JavaScript or [TwineScript](#twinescript) code (default: JavaScript).
 
 <p role="note"><b>Note:</b>
 The predefined variable <code>output</code>, which is a reference to a local content buffer, is available for use within the macro's code contents.  Once the code has been fully executed, the contents of the buffer, if any, will be output.
@@ -259,18 +190,66 @@ The predefined variable <code>output</code>, which is a reference to a local con
 #### History:
 
 * `v2.0.0`: Introduced.
+* `v2.37.0`: Added optional `language` argument.
 
-#### Arguments: *none*
+#### Arguments:
+
+* **`language`:** (optional) The language to evaluate the given code as; case-insensitive options: `JavaScript`, `TwineScript`.  If omitted, defaults to `JavaScript`.
 
 #### Examples:
 
-```
-→ Basic
-<<script>>
-	/* pure JavaScript code */
-<</script>>
+##### Basic usage
 
-→ Modifying the content buffer
+```
+<<script>>
+	/* JavaScript code */
+<</script>>
+```
+
+```
+<<script TwineScript>>
+	/* TwineScript code */
+<</script>>
+```
+
+##### Accessing managed variables
+
+```
+<<script>>
+	/*
+		When accessing managed variables in JavaScript, it's often a good idea
+		to cache references to whichever variable store you happen to be using.
+	*/
+	const svars = State.variables;
+	const tvars = State.temporary;
+
+	/* Access the `$items` story variable. */
+	if (svars.items.includes('bloody knife')) {
+		/* Has a bloody knife. */
+	}
+
+	/* Access the `_hit` temporary variable. */
+	tvars.hit += 1;
+<</script>>
+```
+
+```
+<<script TwineScript>>
+	/* Access the `$items` story variable. */
+	if ($items.includes('bloody knife')) {
+		/* Has a bloody knife. */
+	}
+
+	/* Access the `_hit` temporary variable. */
+	_hit += 1;
+<</script>>
+```
+
+##### Modifying the content buffer
+
+There's no difference between JavaScript and TwineScript here.
+
+```
 <<script>>
 	/* Parse some markup and append the result to the output buffer. */
 	$(output).wiki("Cry 'Havoc!', and let slip the //ponies// of ''friendship''.");
@@ -337,6 +316,73 @@ You found <<- $gold>> gold.             → Outputs: You found 5 gold.
 
 → Assuming $weight is 74.6466266
 You weigh <<- $weight.toFixed(2)>> kg.  → Outputs: You weigh 74.65 kg.
+```
+
+<!-- *********************************************************************** -->
+
+### `<<do [tag tags] [element tag]>> … <</do>>` {#macros-macro-do}
+
+Displays its contents.  Listens for [`<<redo>>` macro](#macros-macro-redo) commands upon which it updates its contents.
+
+#### History:
+
+* `v2.37.0`: Introduced.
+
+#### Arguments:
+
+* **`tag` *`tags`*:** (optional) The space separated list of tags used to filter `<<redo>>` commands.
+* **`element` *`tag`*:** (optional) The element to use as the content container—e.g., `div` and `span`.  If omitted, defaults to `span`.
+
+#### Examples:
+
+##### Basic usage
+
+```
+<<set $money to 10>>
+
+''Money:'' <<do>>$money<</do>>
+
+<<link "Update money display">>
+	<<set $money += 10>>
+	<<redo>>
+<</link>>
+```
+
+```
+<<set $key to "">> /* no key */
+
+<<do>>
+	<<if $key>>
+		You have the $key key.
+	<<else>>
+		You do not have a key.
+	<</if>>
+<</do>>
+
+<<link "Update key display">>
+	<<set $key to ["", "red", "blue", "skull"].random()>>
+	<<redo>>
+<</link>>
+```
+
+##### Filtering updates
+
+```
+''Foo:'' <<do tag "foo foobar">><<= ["fee", "fie", "foe", "fum"].random()>><</do>>
+''Bar:'' <<do tag "bar foobar">><<= ["alfa", "bravo", "charlie", "delta"].random()>><</do>>
+
+<<link "Update foo">>
+	<<redo "foo">>
+<</link>>
+<<link "Update bar">>
+	<<redo "bar">>
+<</link>>
+<<link "Update foo & bar (1)">>
+	<<redo "foo bar">>
+<</link>>
+<<link "Update foo & bar (2)">>
+	<<redo "foobar">>
+<</link>>
 ```
 
 <!-- *********************************************************************** -->
@@ -429,13 +475,33 @@ You weigh <<print $weight.toFixed(2)>> kg.  → Outputs: You weigh 74.65 kg.
 
 <!-- *********************************************************************** -->
 
-### `<<silently>> … <</silently>>` {#macros-macro-silently}
+### `<<redo [tags]>>` {#macros-macro-redo}
+
+Causes one or more [`<<do>>` macros](#macros-macro-do) to update their contents.
+
+#### History:
+
+* `v2.37.0`: Introduced.
+
+#### Arguments:
+
+* **`tags`:** (optional) The space separated list of tags corresponding to tagged `<<do>>` macros to send update commands to.  If omitted, sends update commands to all `<<do>>` macros.
+
+#### Examples:
+
+<p role="note" class="see"><b>See:</b>
+<a href="#macros-macro-do"><code>&lt;&lt;do&gt;&gt;</code> macro</a> for examples.
+</p>
+
+<!-- *********************************************************************** -->
+
+### `<<silent>> … <</silent>>` {#macros-macro-silent}
 
 Causes any output generated within its body to be discarded, except for errors (which will be displayed).  Generally, only really useful for formatting blocks of macros for ease of use/readability, while ensuring that no output is generated, from spacing or whatnot.
 
 #### History:
 
-* `v2.0.0`: Introduced.
+* `v2.37.0`: Introduced.
 
 #### Arguments: *none*
 
@@ -443,16 +509,16 @@ Causes any output generated within its body to be discarded, except for errors (
 
 ```
 → Basic
-<<silently>>
+<<silent>>
 
 	You'll never see any of this!
 
-<</silently>>
+<</silent>>
 
 → Hiding the guts of a countdown timer
 <<set $seconds to 10>>\
 Countdown: <span id="countdown">$seconds seconds remaining</span>!\
-<<silently>>
+<<silent>>
 	<<repeat 1s>>
 		<<set $seconds to $seconds - 1>>
 		<<if $seconds gt 0>>
@@ -463,7 +529,7 @@ Countdown: <span id="countdown">$seconds seconds remaining</span>!\
 			<<stop>>
 		<</if>>
 	<</repeat>>
-<</silently>>
+<</silent>>
 ```
 
 <!-- *********************************************************************** -->
@@ -485,10 +551,11 @@ Interactions with macros or other code that inject content only after some exter
 * `v2.32.0`: Introduced.
 * `v2.33.0`: Added `class`, `element`, and `id` options and `macro-type-done` class.
 * `v2.33.1`: Added `skipkey` option.
+* `v2.37.0`: Updated `speed` argument so `0s` and `0ms` skip.
 
 #### Arguments:
 
-* **`speed`:** The rate at which characters are typed, as a valid [CSS time value](https://developer.mozilla.org/en-US/docs/Web/CSS/time)—e.g., `1s` and `40ms`.  Values in the range `20–60ms` are a good starting point.
+* **`speed`:** The rate at which characters are typed, as a valid [CSS time value](https://developer.mozilla.org/en-US/docs/Web/CSS/time)—e.g., `1s` and `40ms`.  Values in the range `20–60ms` are a good starting point.  Values of `0s` and `0ms` cause typing to finish immediately.
 * **`start` *`delay`*:** (optional) The amount of time to delay the start of typing, as a valid [CSS time value](https://developer.mozilla.org/en-US/docs/Web/CSS/time)—e.g., `5s` and `500ms`.  If omitted, defaults to `400ms`.
 * **`class` *`classes`*:** (optional) The space separated list of classes to be added to the typing container.
 * **`element` *`tag`*:** (optional) The element to use as the typing container—e.g., `div` and `span`.  If omitted, defaults to `div`.
@@ -554,16 +621,16 @@ The default cursor is the block element character **Right Half Block (U+2590)** 
 
 <!-- *********************************************************************** -->
 
-### <span class="deprecated">`<<display passageName [elementName]>>`<br>`<<display linkMarkup [elementName]>>`</span> {#macros-macro-display}
+### <span class="deprecated">`<<silently>> … <</silently>>`</span> {#macros-macro-silently}
 
 <p role="note" class="warning"><b>Deprecated:</b>
-This macro has been deprecated and should no longer be used.  See the <a href="#macros-macro-include"><code>&lt;&lt;include&gt;&gt;</code></a> macro for its replacement.
+This macro has been deprecated and should no longer be used.  See the <a href="#macros-macro-silent"><code>&lt;&lt;silent&gt;&gt;</code></a> macro for its replacement.
 </p>
 
 #### History:
 
 * `v2.0.0`: Introduced.
-* `v2.15.0`: Deprecated in favor of `<<include>>`.
+* `v2.37.0`: Deprecated in favor of `<<silent>>`.
 
 
 <!-- ***************************************************************************
@@ -587,159 +654,7 @@ SugarCube does not trim whitespace from the contents of <code>&lt;&lt;if&gt;&gt;
 
 #### Arguments:
 
-* **`conditional`:** A valid conditional expression, evaluating to either `true` or `false`.  See [Expressions](#twinescript-expressions) for more information.
-
-#### TwineScript conditional operators:
-
-<table>
-<thead>
-<tr>
-<th>Operator</th>
-<th>Description</th>
-<th>Example</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<th><code>is</code></th>
-<td>Evaluates to <code>true</code> if both sides are <span title="Both sides have the same type and value." class="info"><em>strictly</em> equal</span>.</td>
-<td><pre><code>&lt;&lt;if $bullets is 6&gt;&gt;</code></pre></td>
-</tr>
-<tr>
-<th><code>isnot</code></th>
-<td>Evaluates to <code>true</code> if both sides are <span title="Both sides do not have the same type and/or value." class="info"><em>strictly</em> not equal</span>.</td>
-<td><pre><code>&lt;&lt;if $pie isnot "cherry"&gt;&gt;</code></pre></td>
-</tr>
-<tr>
-<th><code>eq</code></th>
-<td>Evaluates to <code>true</code> if both sides are <span title="Both sides have the same value or coerce into the same value." class="info">equivalent</span>.</td>
-<td><pre><code>&lt;&lt;if $bullets eq 6&gt;&gt;</code></pre></td>
-</tr>
-<tr>
-<th><code>neq</code></th>
-<td>Evaluates to <code>true</code> if both sides are <span title="Both sides do not have the same value nor do they coerce into the same value." class="info">not equivalent</span>.</td>
-<td><pre><code>&lt;&lt;if $pie neq "cherry"&gt;&gt;</code></pre></td>
-</tr>
-<tr>
-<th><code>gt</code></th>
-<td>Evaluates to <code>true</code> if the left side is greater than the right side.</td>
-<td><pre><code>&lt;&lt;if $cash gt 5&gt;&gt;</code></pre></td>
-</tr>
-<tr>
-<th><code>gte</code></th>
-<td>Evaluates to <code>true</code> if the left side is greater than or equal to the right side.</td>
-<td><pre><code>&lt;&lt;if $foundStars gte $neededStars&gt;&gt;</code></pre></td>
-</tr>
-<tr>
-<th><code>lt</code></th>
-<td>Evaluates to <code>true</code> if the left side is less than the right side.</td>
-<td><pre><code>&lt;&lt;if $shoeCount lt ($peopleCount * 2)&gt;&gt;</code></pre></td>
-</tr>
-<tr>
-<th><code>lte</code></th>
-<td>Evaluates to <code>true</code> if the left side is less than or equal to the right side.</td>
-<td><pre><code>&lt;&lt;if $level lte 30&gt;&gt;</code></pre></td>
-</tr>
-<tr>
-<th><code>not</code></th>
-<td>Flips a <code>true</code> evaluation to <code>false</code>, and vice versa.</td>
-<td><pre><code>&lt;&lt;if not $hungry&gt;&gt;</code></pre></td>
-</tr>
-<tr>
-<th><code>and</code></th>
-<td>Evaluates to <code>true</code> if all subexpressions evaluate to <code>true</code>.</td>
-<td><pre><code>&lt;&lt;if $age gte 20 and $age lte 30&gt;&gt;</code></pre></td>
-</tr>
-<tr>
-<th><code>or</code></th>
-<td>Evaluates to <code>true</code> if any subexpressions evaluate to <code>true</code>.</td>
-<td><pre><code>&lt;&lt;if $friend is "Sue" or $friend is "Dan"&gt;&gt;</code></pre></td>
-</tr>
-<tr>
-<th><code>def</code></th>
-<td>Evaluates to <code>true</code> if the right side is defined.</td>
-<td><pre><code>&lt;&lt;if def $mushrooms&gt;&gt;</code></pre></td>
-</tr>
-<tr>
-<th><code>ndef</code></th>
-<td>Evaluates to <code>true</code> if the right side is not defined.</td>
-<td><pre><code>&lt;&lt;if ndef $bottlecaps&gt;&gt;</code></pre></td>
-</tr>
-</tbody>
-</table>
-
-<p role="note" class="warning"><b>Warning:</b>
-The <code>def</code> and <code>ndef</code> operators have very low precedence, so it is <strong><em>strongly</em></strong> recommended that if you mix them with other operators, that you wrap them in parentheses—e.g., <code>(def $style) and ($style is "girly")</code>.
-</p>
-
-#### JavaScript conditional operators: *(not an exhaustive list)*
-
-<table>
-<thead>
-<tr>
-<th>Operator</th>
-<th>Description</th>
-<th>Example</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<th><code>===</code></th>
-<td>Evaluates to <code>true</code> if both sides are <span title="Both sides have the same type and value." class="info"><em>strictly</em> equal</span>.</td>
-<td><pre><code>&lt;&lt;if $bullets === 6&gt;&gt;</code></pre></td>
-</tr>
-<tr>
-<th><code>!==</code></th>
-<td>Evaluates to <code>true</code> if both sides are <span title="Both sides do not have the same type and/or value." class="info"><em>strictly</em> not equal</span>.</td>
-<td><pre><code>&lt;&lt;if $pie !== "cherry"&gt;&gt;</code></pre></td>
-</tr>
-<tr>
-<th><code>==</code></th>
-<td>Evaluates to <code>true</code> if both sides are <span title="Both sides have the same value or coerce into the same value." class="info">equivalent</span>.</td>
-<td><pre><code>&lt;&lt;if $bullets == 6&gt;&gt;</code></pre></td>
-</tr>
-<tr>
-<th><code>!=</code></th>
-<td>Evaluates to <code>true</code> if both sides are <span title="Both sides do not have the same value nor do they coerce into the same value." class="info">not equivalent</span>.</td>
-<td><pre><code>&lt;&lt;if $pie != "cherry"&gt;&gt;</code></pre></td>
-</tr>
-<tr>
-<th><code>&gt;</code></th>
-<td>Evaluates to <code>true</code> if the left side is greater than the right side.</td>
-<td><pre><code>&lt;&lt;if $cash &gt; 5&gt;&gt;</code></pre></td>
-</tr>
-<tr>
-<th><code>&gt;=</code></th>
-<td>Evaluates to <code>true</code> if the left side is greater than or equal to the right side.</td>
-<td><pre><code>&lt;&lt;if $foundStars &gt;= $neededStars&gt;&gt;</code></pre></td>
-</tr>
-<tr>
-<th><code>&lt;</code></th>
-<td>Evaluates to <code>true</code> if the left side is less than the right side.</td>
-<td><pre><code>&lt;&lt;if $shoeCount &lt; ($peopleCount * 2)&gt;&gt;</code></pre></td>
-</tr>
-<tr>
-<th><code>&lt;=</code></th>
-<td>Evaluates to <code>true</code> if the left side is less than or equal to the right side.</td>
-<td><pre><code>&lt;&lt;if $level &lt;= 30&gt;&gt;</code></pre></td>
-</tr>
-<tr>
-<th><code>!</code></th>
-<td>Flips a <code>true</code> evaluation to <code>false</code>, and vice versa.</td>
-<td><pre><code>&lt;&lt;if !$hungry&gt;&gt;</code></pre></td>
-<tr>
-<th><code>&amp;&amp;</code></th>
-<td>Evaluates to <code>true</code> if all subexpressions evaluate to <code>true</code>.</td>
-<td><pre><code>&lt;&lt;if $age &gt;= 20 &amp;&amp; $age &lt;= 30&gt;&gt;</code></pre></td>
-</tr>
-<tr>
-<th><code>||</code></th>
-<td>Evaluates to <code>true</code> if any subexpressions evaluate to <code>true</code>.</td>
-<td><pre><code>&lt;&lt;if $friend === "Sue" || $friend === "Dan"&gt;&gt;</code></pre></td>
-</tr>
-</tr>
-</tbody>
-</table>
+* **`conditional`:** A valid conditional expression, evaluating to either `true` or `false`.  See [Expressions](#twinescript-expressions) and [Operators](#twinescript-operators) for more information.
 
 #### Examples:
 
@@ -776,7 +691,7 @@ The <code>def</code> and <code>ndef</code> operators have very low precedence, s
 
 <!-- *********************************************************************** -->
 
-### `<<for [conditional]>> … <</for>>`<br>`<<for [init] ; [conditional] ; [post]>> … <</for>>`<br>`<<for [keyVariable ,] valueVariable range collection>> … <</for>>` {#macros-macro-for}
+### `<<for [conditional]>> … <</for>>`<br>`<<for [init] ; [conditional] ; [post]>> … <</for>>`<br>`<<for [[keyVariable ,] valueVariable] range collection>> … <</for>>` {#macros-macro-for}
 
 Repeatedly executes its contents. There are three forms: a conditional-only form, a 3-part conditional form, and a range form.
 
@@ -788,6 +703,7 @@ Repeatedly executes its contents. There are three forms: a conditional-only form
 
 * `v2.0.0`: Introduced.
 * `v2.20.0`: Added range form.
+* `v2.37.0`: Added range over integers and made range value variable optional.
 
 #### Notes
 
@@ -831,12 +747,12 @@ The maximum number of loop iterations in the conditional forms is not unlimited 
 
 #### Range form
 
-Iterates through all enumerable entries of the given collection.  For each iteration, it assigns the key/value pair of the associated entry in the collection to the iteration variables and then executes its contents.  Valid collection types are: arrays, generic objects, maps, sets, and strings.
+Iterates through all enumerable entries of the given collection.  For each iteration, it assigns the key/value pair of the associated entry in the collection to the iteration variables and then executes its contents.  Valid collection types are: arrays, generic objects, integers, maps, sets, and strings.
 
 ##### Arguments:
 
 * **`keyVariable`:** (optional) A story or temporary variable that will be set to the iteration key.
-* **`valueVariable`:** A story or temporary variable that will be set to the iteration value.
+* **`valueVariable`:** (optional) A story or temporary variable that will be set to the iteration value.
 * **`range`:** Keyword, used to signify that the loop is using the range form syntax.
 * **`collection`:** An expression that yields a valid collection type, evaluated once at loop initialization.
 
@@ -849,7 +765,7 @@ Iterates through all enumerable entries of the given collection.  For each itera
 		<th>Iteration: key, value</th>
 	</tr>
 	<tr>
-		<td>Arrays &amp; Sets</td>
+		<td>Arrays, Integers, &amp; Sets</td>
 		<td style="text-align: center;">Member: index, value</td>
 	</tr>
 	<tr>
@@ -873,6 +789,8 @@ Strings are iterated by Unicode code point, however, due to historic reasons the
 
 ##### Examples:
 
+###### Range over array
+
 ```
 → Example setup
 <<set $dwarves to ["Doc", "Dopey", "Bashful", "Grumpy", "Sneezy", "Sleepy", "Happy"]>>
@@ -890,6 +808,24 @@ Strings are iterated by Unicode code point, however, due to historic reasons the
 5. Sneezy
 6. Sleepy
 7. Happy
+```
+
+###### Range over integer
+
+```
+→ Loop
+<<for _value range 7>>
+<<print _value + 1>>.
+<</for>>
+
+→ Result
+1.
+2.
+3.
+4.
+5.
+6.
+7.
 ```
 
 <!-- *********************************************************************** -->
@@ -1585,19 +1521,6 @@ What's your favorite pie? <<textbox "$pie" "Blueberry" "Cakes">>
 What's your favorite pie? <<textbox "$pie" "Blueberry" "Cakes" autofocus>>
 ```
 
-<!-- *********************************************************************** -->
-
-### <span class="deprecated">`<<click linkText [passageName]>> … <</click>>`<br>`<<click linkMarkup>>`<br>`<<click imageMarkup>>`</span> {#macros-macro-click}
-
-<p role="note" class="warning"><b>Deprecated:</b>
-This macro has been deprecated and should no longer be used.  See the <a href="#macros-macro-link"><code>&lt;&lt;link&gt;&gt;</code></a> macro for its replacement.
-</p>
-
-#### History:
-
-* `v2.0.0`: Introduced.
-* `v2.8.0`: Deprecated in favor of `<<link>>`.
-
 
 <!-- ***************************************************************************
 	Links Macros
@@ -1606,47 +1529,9 @@ This macro has been deprecated and should no longer be used.  See the <a href="#
 
 <!-- *********************************************************************** -->
 
-### `<<actions passageList>>`<br>`<<actions linkMarkupList>>`<br>`<<actions imageMarkupList>>` {#macros-macro-actions}
+### `<<back [linkText [passageName]]>>`<br>`<<back linkMarkup>>`<br>`<<back imageMarkup>>` {#macros-macro-back}
 
-Creates a list of single-use passage links.  Each link removes itself and all other `<<actions>>` links to the same passage after being activated.  May be called either with a list of passages, with a list of link markup, or with a list of image markup.  Probably most useful when paired with [`<<include>>`](#macros-macro-include).  See the [`<<actions>>`](https://twinery.org/wiki/actions) section of the [Twine&nbsp;1 reference documentation](https://twinery.org/wiki/twine1:reference) for more information.
-
-#### History:
-
-* `v2.0.0`: Introduced.
-
-#### Arguments:
-
-##### Passage list form
-
-* **`passageList`:** A space separated list of passage names.
-
-##### Link markup list form
-
-* **`linkMarkupList`:** A space separated list of link markup to use (full syntax supported, including setters).
-
-##### Image markup list form
-
-* **`imageMarkupList`:** A space separated list of image markup to use (full syntax supported, including setters).
-
-#### Examples:
-
-```
-→ Passage list form
-<<actions "Look at the pie" "Smell the pie" "Taste the pie">>
-
-→ Link markup list form
-<<actions [[Look at the pie]] [[Smell the pie]] [[Taste the pie]]>>
-<<actions [[Look|Look at the pie]] [[Smell|Smell the pie]] [[Taste|Taste the pie]]>>
-
-→ Image markup list form
-<<actions [img[look.png][Look at the pie]] [img[smell.png][Smell the pie]] [img[taste.png][Taste the pie]]>>
-```
-
-<!-- *********************************************************************** -->
-
-### `<<back [linkText]>>`<br>`<<back linkMarkup>>`<br>`<<back imageMarkup>>` {#macros-macro-back}
-
-Creates a link that undoes past moments within the story history.  May be called with, optional, link text or with a link or image markup.
+Creates a link that undoes past moments within the story history.  May be called with, optional, the link text and passage name as separate arguments, a link markup, or an image markup.
 
 <p role="note"><b>Note:</b>
 If you want to return to a previously visited passage, rather than undo a moment within the history, see the <a href="#macros-macro-return"><code>&lt;&lt;return&gt;&gt;</code> macro</a> or the <a href="#functions-function-previous"><code>previous()</code> function</a>.
@@ -1655,12 +1540,14 @@ If you want to return to a previously visited passage, rather than undo a moment
 #### History:
 
 * `v2.0.0`: Introduced.
+* `v2.37.0`: Added optional passage name argument in separate argument form.
 
 #### Arguments:
 
-##### Link text form
+##### Separate argument form
 
-* **`linkText`:** (optional) The text of the link.
+* **`linkText`:** (optional if `passageName` is not specified) The text of the link.  May contain markup.
+* **`passageName`:** (optional) The name of the moment to undo to until it's reached.
 
 ##### Link markup form
 
@@ -1672,6 +1559,20 @@ If you want to return to a previously visited passage, rather than undo a moment
 
 #### Examples:
 
+##### Visual aid
+
+Assume your story history consists of three moments:
+```
+A, B, [C]
+```
+N.b., the square brackets there denote the active moment.
+
+Using `<<back>>` once upon that history will change it to be thus:
+```
+A, [B], C
+```
+I.e., the history was rolled back to the previous moment.
+
 ##### Basic usage
 
 ```
@@ -1679,11 +1580,14 @@ If you want to return to a previously visited passage, rather than undo a moment
 <<back>>
 ```
 
-##### Link text form
+##### Separate argument form
 
 ```
 → Creates a link that undoes the most recent moment, with text "Home."
 <<back "Home.">>
+
+→ Creates a link that undoes past moments until the most recent "HQ" moment is reached, with text "Home."
+<<back "Home." "HQ">>
 ```
 
 ##### Link markup form
@@ -1708,60 +1612,9 @@ If you want to return to a previously visited passage, rather than undo a moment
 
 <!-- *********************************************************************** -->
 
-### `<<choice passageName [linkText]>>`<br>`<<choice linkMarkup>>`<br>`<<choice imageMarkup>>` {#macros-macro-choice}
+### `<<return [linkText [passageName]]>>`<br>`<<return linkMarkup>>`<br>`<<return imageMarkup>>` {#macros-macro-return}
 
-Creates a single-use passage link that deactivates itself and all other `<<choice>>` links within the originating passage when activated.  May be called either with the passage name and link text as separate arguments, with a link markup, or with a image markup.
-
-<p role="note" class="warning"><b>Warning:</b>
-Normally, when both link and text arguments are accepted, the order is text then link.  However, due to a historical artifact, the arguments for the separate argument form of <code>&lt;&lt;choice&gt;&gt;</code> are in the reverse order (link then text).
-</p>
-
-#### History:
-
-* `v2.0.0`: Introduced.
-
-#### Arguments:
-
-##### Separate argument form
-
-* **`passageName`:** The name of the passage to go to.
-* **`linkText`:** (optional) The text of the link.  If omitted, the `passageName` will be used instead.
-
-##### Link markup form
-
-* **`linkMarkup`:** The link markup to use (full syntax supported, including setters).
-
-##### Image markup form
-
-* **`imageMarkup`:** The image markup to use (full syntax supported, including setters).
-
-#### Examples:
-
-```
-→ Separate argument form
-<<choice "Take the red pill">>
-<<choice $someAction>>
-<<choice "Entered magic mirror" "Touch the strange mirror.">>
-<<choice $go $show>>
-
-→ Link markup form
-<<choice [[Take the red pill]]>>
-<<choice [[$someAction]]>>
-<<choice [[Touch the strange mirror.|Entered magic mirror]]>>
-<<choice [[$show|$go]]>>
-
-→ Image markup form
-<<choice [img[redpill.png][Take the red pill]]>>
-<<choice [img[some-image.jpg][$someAction]]>>
-<<choice [img[mirror.jpg][Entered magic mirror]]>>
-<<choice [img[$show][$go]]>>
-```
-
-<!-- *********************************************************************** -->
-
-### `<<return [linkText]>>`<br>`<<return linkMarkup>>`<br>`<<return imageMarkup>>` {#macros-macro-return}
-
-Creates a link that navigates forward to a previously visited passage.  May be called with, optional, link text or with a link or image markup.
+Creates a link that navigates forward to a previously visited passage.  May be called with, optional, the link text and passage name as separate arguments, a link markup, or an image markup.
 
 <p role="note"><b>Note:</b>
 If you want to undo previous moments within the history, rather than return to a passage, see the <a href="#macros-macro-back"><code>&lt;&lt;back&gt;&gt;</code> macro</a>.
@@ -1770,12 +1623,14 @@ If you want to undo previous moments within the history, rather than return to a
 #### History:
 
 * `v2.0.0`: Introduced.
+* `v2.37.0`: Added optional passage name argument in separate argument form.
 
 #### Arguments:
 
-##### Link text form
+##### Separate argument form
 
-* **`linkText`:** (optional) The text of the link.
+* **`linkText`:** (optional if `passageName` is not specified) The text of the link.  May contain markup.
+* **`passageName`:** (optional) The name of the passage to go to.
 
 ##### Link markup form
 
@@ -1791,6 +1646,20 @@ If you want to undo previous moments within the history, rather than return to a
 The versions that forward to a specific passage are largely unnecessary, as you could simply use a normal link, and exist solely for compatibility with the <a href="#macros-macro-back"><code>&lt;&lt;back&gt;&gt;</code> macro</a>.
 </p>
 
+##### Visual aid
+
+Assume your story history consists of three moments:
+```
+A, B, [C]
+```
+N.b., the square brackets there denote the active moment.
+
+Using `<<return>>` once upon that history will change it to be thus:
+```
+A, B, C, [B]
+```
+I.e., a new moment, to the same passage as the previous moment, was added to the history.
+
 ##### Basic usage
 
 ```
@@ -1798,11 +1667,14 @@ The versions that forward to a specific passage are largely unnecessary, as you 
 <<return>>
 ```
 
-##### Link text form
+##### Separate argument form
 
 ```
 → Creates a link that forwards to the previous passage, with text "Home."
 <<return "Home.">>
+
+→ Creates a link that forwards to the "HQ" passage, with text "Home."
+<<return "Home." "HQ">>
 ```
 
 ##### Link markup form
@@ -1824,6 +1696,32 @@ The versions that forward to a specific passage are largely unnecessary, as you 
 → Creates a link that forwards to the "HQ" passage, with image "home.png"
 <<return [img[home.png][HQ]]>>
 ```
+
+<!-- *********************************************************************** -->
+
+### <span class="deprecated">`<<actions passageList>>`<br>`<<actions linkMarkupList>>`<br>`<<actions imageMarkupList>>`</span> {#macros-macro-actions}
+
+<p role="note" class="warning"><b>Deprecated:</b>
+This macro has been deprecated and should no longer be used.
+</p>
+
+#### History:
+
+* `v2.0.0`: Introduced.
+* `v2.37.0`: Deprecated.
+
+<!-- *********************************************************************** -->
+
+### <span class="deprecated">`<<choice passageName [linkText]>>`<br>`<<choice linkMarkup>>`<br>`<<choice imageMarkup>>`</span> {#macros-macro-choice}
+
+<p role="note" class="warning"><b>Deprecated:</b>
+This macro has been deprecated and should no longer be used.
+</p>
+
+#### History:
+
+* `v2.0.0`: Introduced.
+* `v2.37.0`: Deprecated.
 
 
 <!-- ***************************************************************************
@@ -2177,7 +2075,7 @@ Controls the playback of audio tracks, which must be set up via [`<<cacheaudio>>
 </p>
 
 <p role="note"><b>Note:</b>
-The <code>&lt;&lt;audio&gt;&gt;</code> macro cannot affect playlist tracks that have been copied into their respective playlist—meaning those set up via <a href="#macros-macro-createplaylist"><code>&lt;&lt;createplaylist&gt;&gt;</code></a> with its <code>copy</code> action or all tracks set up via, the deprecated, <a href="#macros-macro-setplaylist"><code>&lt;&lt;setplaylist&gt;&gt;</code></a>—as playlist copies are solely under the control of their playlist.
+The <code>&lt;&lt;audio&gt;&gt;</code> macro cannot affect playlist tracks whose ownership has been transferred to their respective playlist.  Meaning those set up via <a href="#macros-macro-createplaylist"><code>&lt;&lt;createplaylist&gt;&gt;</code></a> with its <code>own</code> action, as owned playlist tracks are solely under the control of their playlist.
 </p>
 
 <p role="note"><b>Note:</b>
@@ -2190,6 +2088,7 @@ The <a href="#config-api-property-audio-pauseonfadetozero"><code>Config.audio.pa
 * `v2.1.0`: Added `fadeoverto` action.
 * `v2.8.0`: Added group ID(s).
 * `v2.28.0`: Added `load` and `unload` actions.
+* `v2.37.0`: Added `:stopped` predefined group ID.
 
 #### Arguments:
 
@@ -2214,7 +2113,7 @@ The <a href="#config-api-property-audio-pauseonfadetozero"><code>Config.audio.pa
 
 #### Group IDs:
 
-Group IDs allow several tracks to be selected simultaneously without needing to specify each one individually.  There are several predefined group IDs (`:all`, `:looped`, `:muted`, `:paused`, `:playing`) and custom IDs may be defined via [`<<createaudiogroup>>`](#macros-macro-createaudiogroup).  The `:not()` group modifier syntax (`groupId:not(trackIdList)`) allows a group to have some of its tracks excluded from selection.
+Group IDs allow several tracks to be selected simultaneously without needing to specify each one individually.  There are several predefined group IDs (`:all`, `:looped`, `:muted`, `:paused`, `:playing`, `:stopped`) and custom IDs may be defined via [`<<createaudiogroup>>`](#macros-macro-createaudiogroup).  The `:not()` group modifier syntax (`groupId:not(trackIdList)`) allows a group to have some of its tracks excluded from selection.
 
 #### Examples:
 
@@ -2321,7 +2220,6 @@ The <a href="#special-passage-storyinit"><code>StoryInit</code> special passage<
 #### History:
 
 * `v2.0.0`: Introduced.
-* `v2.28.0`: Deprecated the old optional format specifier syntax in favor of a new syntax (`formatId|`).
 
 #### Arguments:
 
@@ -2357,12 +2255,13 @@ The <a href="#special-passage-storyinit"><code>StoryInit</code> special passage<
 #### History:
 
 * `v2.19.0`: Introduced.
+* `v2.37.0`: Added `:stopped` predefined group ID.
 
 #### Arguments:
 
 ##### `<<createaudiogroup>>`
 
-* **`groupId`:** The ID of the group that will be used to reference it and *must* begin with a colon.  **NOTE:** There are several predefined group IDs (`:all`, `:looped`, `:muted`, `:paused`, `:playing`) and the `:not` group modifier that cannot be reused/overwritten.
+* **`groupId`:** The ID of the group that will be used to reference it and *must* begin with a colon.  **NOTE:** There are several predefined group IDs (`:all`, `:looped`, `:muted`, `:paused`, `:playing`, `:stopped`) and the `:not` group modifier that cannot be reused/overwritten.
 
 ##### `<<track>>`
 
@@ -2397,7 +2296,6 @@ The <a href="#special-passage-storyinit"><code>StoryInit</code> special passage<
 #### History:
 
 * `v2.8.0`: Introduced.
-* `v2.29.0`: Deprecated `<<track>>` `copy` keyword in favor of `own`.
 
 #### Arguments:
 
@@ -2498,9 +2396,9 @@ blazing fast internet with unlimited data—especially true for mobile users.  P
 
 <!-- *********************************************************************** -->
 
-### `<<playlist listId actionList>>`<br><span class="deprecated">`<<playlist actionList>>`</span> {#macros-macro-playlist}
+### `<<playlist listId actionList>>` {#macros-macro-playlist}
 
-Controls the playback of the playlist, which must be set up via [`<<createplaylist>>`](#macros-macro-createplaylist)—the deprecated [`<<setplaylist>>`](#macros-macro-setplaylist) may be used instead, though it is not recommended.
+Controls the playback of the playlist, which must be set up via [`<<createplaylist>>`](#macros-macro-createplaylist).
 
 <p role="note" class="see"><b>See:</b>
 <a href="#macros-audio-limitations">Audio macro limitations</a>.
@@ -2514,7 +2412,7 @@ The <a href="#config-api-property-audio-pauseonfadetozero"><code>Config.audio.pa
 
 * `v2.0.0`: Introduced, compatible with `<<setplaylist>>`.
 * `v2.1.0`: Added `fadeoverto` action.
-* `v2.8.0`: Added `listId` argument, compatible with `<<createplaylist>>`.  Deprecated `<<setplaylist>>` compatible form.
+* `v2.8.0`: Added `listId` argument, compatible with `<<createplaylist>>`.
 * `v2.28.0`: Added `load` and `unload` actions.
 
 #### Arguments:
@@ -2627,12 +2525,13 @@ blazing fast internet with unlimited data—especially true for mobile users.  P
 Removes the audio group with the given ID.
 
 <p role="note"><b>Note:</b>
-You may not remove the predefined group IDs (<code>:all</code>, <code>:looped</code>, <code>:muted</code>, <code>:paused</code>, <code>:playing</code>) or the <code>:not</code> group modifier.
+You may not remove the predefined group IDs (<code>:all</code>, <code>:looped</code>, <code>:muted</code>, <code>:paused</code>, <code>:playing</code>, <code>:stopped</code>) or the <code>:not</code> group modifier.
 </p>
 
 #### History:
 
 * `v2.28.0`: Introduced.
+* `v2.37.0`: Added `:stopped` predefined group ID.
 
 #### Arguments:
 
@@ -2708,32 +2607,6 @@ This macro should be invoked <strong><em>once</em></strong> following any invoca
 <<cacheaudio "c" "c_track.…">>
 <<cacheaudio "d" "d_track.…">>
 ```
-
-<!-- *********************************************************************** -->
-
-### <span class="deprecated">`<<setplaylist trackIdList>>`</span> {#macros-macro-setplaylist}
-
-<p role="note" class="warning"><b>Deprecated:</b>
-This macro has been deprecated and should no longer be used.  See the <a href="#macros-macro-createplaylist"><code>&lt;&lt;createplaylist&gt;&gt;</code></a> macro for its replacement.
-</p>
-
-#### History:
-
-* `v2.0.0`: Introduced.
-* `v2.8.0`: Deprecated in favor of `<<createplaylist>>`.
-
-<!-- *********************************************************************** -->
-
-### <span class="deprecated">`<<stopallaudio>>`</span> {#macros-macro-stopallaudio}
-
-<p role="note" class="warning"><b>Deprecated:</b>
-This macro has been deprecated and should no longer be used.  See the <a href="#macros-macro-audio"><code>&lt;&lt;audio&gt;&gt;</code></a> macro for its replacement.
-</p>
-
-#### History:
-
-* `v2.0.0`: Introduced.
-* `v2.8.0`: Deprecated in favor of `<<audio ":all" stop>>`.
 
 
 <!-- ***************************************************************************
@@ -2838,7 +2711,7 @@ Passage navigation terminates all pending timed executions.
 → A countdown timer
 <<set $seconds to 10>>\
 Countdown: <span id="countdown">$seconds seconds remaining</span>!\
-<<silently>>
+<<silent>>
 	<<repeat 1s>>
 		<<set $seconds to $seconds - 1>>
 		<<if $seconds gt 0>>
@@ -2849,7 +2722,7 @@ Countdown: <span id="countdown">$seconds seconds remaining</span>!\
 			<<stop>>
 		<</if>>
 	<</repeat>>
-<</silently>>
+<</silent>>
 ```
 
 <!-- *********************************************************************** -->
@@ -2910,7 +2783,7 @@ I like green <span id="eggs">eggs</span> and ham!\
 <</timed>>
 
 → Set a $variable after 4 seconds, 3 seconds, 2 seconds, and 1 second
-<<silently>>
+<<silent>>
 <<set $choice to 0>>
 <<timed 4s>>
 	<<set $choice to 1>>
@@ -2921,7 +2794,7 @@ I like green <span id="eggs">eggs</span> and ham!\
 <<next 1s>>
 	<<set $choice to 4>>
 <</timed>>
-<<silently>>
+<</silent>>
 
 → Replace some text with a variable interval
 → Given: _delay is "2s" the interval will be 2 seconds
@@ -2953,6 +2826,7 @@ The array-like object stored in the <code>_args</code> variable should be treate
 
 * `v2.0.0`: Introduced.
 * `v2.36.0`: Added the `container` keyword, `_args` variable, and `_contents` variable.  Deprecated the `$args` variable in favor of `_args`.
+* `v2.37.0`: Added the `_args.name` property.
 
 #### Arguments:
 
@@ -2961,11 +2835,22 @@ The array-like object stored in the <code>_args</code> variable should be treate
 
 #### Special variables, `_args` &amp; `_contents`:
 
-The `_args` special variable is used internally to store arguments passed to the widget—as zero-based indices; i.e., `_args[0]` is the first parsed argument, `_args[1]` is the second, etc—and the full argument string in raw and parsed forms—accessed via the `_args.raw` and `_args.full` properties.
+The `_args` special variable is used internally to store arguments passed to the widget—as zero-based indices; i.e., `_args[0]` is the first parsed argument, `_args[1]` is the second, etc—the full argument string in raw and parsed forms—accessed via the `_args.raw` and `_args.full` properties—and the widgets' name via the `_args.name` property.
 
 The `_contents` special variable is used internally, by container widgets, to store the contents they enclose.
 
 When a widget is called, any existing `_args` variable, and for container widgets `_contents`, is stored for the duration of the call and restored after.  This means that non-widget uses of these special variable are completely safe, though this does have the effect that uses external to widgets are inaccessible within them unless passed in as arguments.
+
+<div role="note" class="warning"><b>Warning:</b>
+<p>When calling one container widget directly from within another container widget, the <code>_contents</code> special variable of the outer widget <strong><em>must not</em></strong> be included within the body of the call of the inner widget.  Doing so will cause uncontrolled recursion.  E.g.,</p>
+<pre><code>&lt;&lt;widget "inner" container&gt;&gt;
+_contents
+&lt;&lt;/widget&gt;&gt;<br>
+&lt;&lt;widget "outer" container&gt;&gt;
+&lt;&lt;inner&gt;&gt;_contents&lt;&lt;/inner&gt;&gt;
+&lt;&lt;/widget&gt;&gt;<br>
+&lt;&lt;outer&gt;&gt;ford&lt;&lt;/outer&gt;&gt;</code></pre>
+</div>
 
 <p role="note" class="warning"><b>Warning:</b>
 Unless localized by use of the <a href="#macros-macro-capture"><code>&lt;&lt;capture&gt;&gt;</code> macro</a>, any story or other temporary variables used within widgets are part of a story's normal variable store, so care <em>must be</em> taken not to accidentally either overwrite or pick up an existing value.

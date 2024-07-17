@@ -2,14 +2,12 @@
 
 	lib/visibility.js
 
-	Copyright © 2018–2021 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
+	Copyright © 2018–2024 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
 
 var Visibility = (() => { // eslint-disable-line no-unused-vars, no-var
-	'use strict';
-
 	/*
 		There are two versions of the Page Visibility API: First Edition and, the current,
 		Second Edition (i.e. "Level 2").  First Edition is mentioned here only because some
@@ -87,10 +85,10 @@ var Visibility = (() => { // eslint-disable-line no-unused-vars, no-var
 
 
 	/*******************************************************************************
-		Module Exports.
+		Object Exports.
 	*******************************************************************************/
 
-	return Object.freeze(Object.defineProperties({}, {
+	return Object.preventExtensions(Object.create(null, {
 		// Functions.
 		vendor    : { get : getVendor },
 		state     : { get : getVisibility },

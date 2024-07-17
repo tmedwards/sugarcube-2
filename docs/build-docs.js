@@ -1,14 +1,15 @@
 #!/usr/bin/env node
 /***********************************************************************************************************************
 
-	build-docs.js (v1.2.0, 2021-12-21)
+	build-docs.js (v1.3.3, 2023-07-25)
 		A Node.js-hosted build script for SugarCube's documentation.
 
-	Copyright © 2020–2021 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
+	Copyright © 2020–2024 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
 /* eslint-env node, es2021 */
+/* eslint-disable strict */
 'use strict';
 
 
@@ -60,8 +61,10 @@ const CONFIG = {
 
 			// Guides
 			'guides/guide-state-sessions-and-saving.md',
+			'guides/guide-non-generic-object-types.md',
 			'guides/guide-tips.md',
 			'guides/guide-media-passages.md',
+			'guides/guide-icon-font.md',
 			'guides/guide-harlowe-to-sugarcube.md',
 			'guides/guide-test-mode.md',
 			'guides/guide-typescript.md',
@@ -124,12 +127,12 @@ const {
 	concatFiles
 } = require('../scripts/build-utils');
 const _path = require('path');
-const _opt  = require('node-getopt').create([
-	['h', 'help',       'Print this help, then exit.'],
-	['u', 'unminified', 'Suppress minification stages.']
-])
-	.bindHelp()
-	.parseSystem();
+const _opts = require('commander')
+	.program
+	.option('-u, --unminified', 'Suppress minification stages.')
+	.helpOption('-h, --help', 'Print this help, then exit.')
+	.parse()
+	.opts();
 
 // Build the documentation.
 (async () => {
@@ -191,13 +194,10 @@ const _opt  = require('node-getopt').create([
 	Utility Functions
 *******************************************************************************/
 function compileMarkdown(sourceConfig) {
-	const { execFileSync } = require('child_process');
+	const gfm = require('cmark-gfm-js');
 	return concatFiles(sourceConfig.files, (contents /* , filename */) => {
 		try {
-			// TODO: Replace `cmark-gfm` with a JavaScript solution.
-			return execFileSync('cmark-gfm', ['-t', 'html'], {
-				input : contents
-			});
+			return gfm.convertUnsafe(contents);
 		}
 		catch (ex) {
 			die(`markdown error: ${ex.message}`, ex);
@@ -207,7 +207,7 @@ function compileMarkdown(sourceConfig) {
 
 function compileJavaScript(sourceConfig) {
 	return (async source => {
-		if (_opt.options.unminified) {
+		if (_opts.unminified) {
 			return source;
 		}
 
@@ -225,7 +225,7 @@ function compileJavaScript(sourceConfig) {
 			die(`JavaScript minification error: ${message}\n[@: ${line}/${col}/${pos}]`);
 		}
 
-		return minified.code;
+		return `<script type="text/javascript">${minified.code}</script>`;
 	})(
 		  readFileContents(sourceConfig.intro)
 		+ concatFiles(sourceConfig.files)
@@ -243,7 +243,7 @@ function compileStyles(sourceConfig) {
 
 		let css = processed.css;
 
-		if (!_opt.options.unminified) {
+		if (!_opts.unminified) {
 			css = new CleanCss({
 				level         : 1,
 				compatibility : 'ie9'

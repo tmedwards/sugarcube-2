@@ -2,7 +2,7 @@
 
 	markup/lexer.js
 
-	Copyright © 2013–2021 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
+	Copyright © 2013–2024 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
@@ -13,15 +13,14 @@ var { // eslint-disable-line no-var
 	Lexer
 	/* eslint-enable no-unused-vars */
 } = (() => {
-	'use strict';
-
 	// End of file (string, actually).
 	const EOF = -1;
 
 
-	/*******************************************************************************************************************
+	/*******************************************************************************
 		Lexer Class.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	class Lexer {
 		constructor(source, initialState) {
 			if (arguments.length < 2) {
@@ -245,9 +244,10 @@ var { // eslint-disable-line no-var
 	}
 
 
-	/*******************************************************************************************************************
-		Module Exports.
-	*******************************************************************************************************************/
+	/*******************************************************************************
+		Object Exports.
+	*******************************************************************************/
+
 	return {
 		EOF,
 		Lexer

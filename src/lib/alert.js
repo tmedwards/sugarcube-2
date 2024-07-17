@@ -2,7 +2,7 @@
 
 	lib/alert.js
 
-	Copyright © 2013–2021 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
+	Copyright © 2013–2024 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
@@ -20,11 +20,10 @@
 var errorPrologRegExp = /^(?:(?:uncaught\s+(?:exception:\s+)?)?\w*(?:error|exception|_err):\s+)+/i; // eslint-disable-line no-unused-vars, no-var
 
 var Alert = (() => { // eslint-disable-line no-unused-vars, no-var
-	'use strict';
-
-	/*******************************************************************************************************************
+	/*******************************************************************************
 		Error Functions.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	function mesg(where, error, isFatal, isUncaught) {
 		let mesg = 'Error';
 		let nice = `A${isFatal ? ' fatal' : 'n'} error has occurred.`;
@@ -74,9 +73,10 @@ var Alert = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 
-	/*******************************************************************************************************************
+	/*******************************************************************************
 		Error Event.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	/*
 		Set up a global error handler for uncaught exceptions.
 	*/
@@ -102,10 +102,11 @@ var Alert = (() => { // eslint-disable-line no-unused-vars, no-var
 	})(window.onerror);
 
 
-	/*******************************************************************************************************************
-		Module Exports.
-	*******************************************************************************************************************/
-	return Object.freeze(Object.defineProperties({}, {
+	/*******************************************************************************
+		Object Exports.
+	*******************************************************************************/
+
+	return Object.preventExtensions(Object.create(null, {
 		error : { value : alertError },
 		fatal : { value : alertFatal }
 	}));

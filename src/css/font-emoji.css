@@ -1,0 +1,34 @@
+/***********************************************************************************************************************
+
+	css/font-emoji.css
+
+	Copyright © 2023–2024 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
+	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
+
+***********************************************************************************************************************/
+
+@font-face {
+	/*
+		Emoji font-family to standardize appearance across platforms.
+
+		SEE:
+			* https://www.client9.com/css-color-emoji-stack/
+			* https://nolanlawson.com/2022/04/08/the-struggle-of-using-native-emoji-on-the-web/
+	*/
+	font-family: "color-emoji";
+	src:
+		/* Firefox (via Twitter) */
+		local("Twemoji Mozilla"),
+		/* iOS and macOS */
+		local("Apple Color Emoji"),
+		/* Windows ≥10 */
+		local("Segoe UI Emoji"),
+		/* Windows ≤8 */
+		local("Segoe UI Symbol"),
+		/* ChromeOS & Android */
+		local("Noto Color Emoji"),
+		/* Adobe */
+		local("EmojiOne Color"),
+		/* Android */
+		local("Android Emoji");
+}

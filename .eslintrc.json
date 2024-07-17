@@ -1,17 +1,20 @@
 {
     "parserOptions" : {
-        "ecmaVersion": 2021
+        "ecmaVersion"  : 2022,
+        "ecmaFeatures" : {
+            "impliedStrict": true
+        }
     },
     "env" : {
         "browser" : true,
-        "es2021"  : true,
+        "es2022"  : true,
         "jquery"  : true
     },
     "globals": {
-        "DEBUG"    : false,
-        "TWINE1"   : false,
-        "LZString" : false,
-        "saveAs"   : false
+        "BUILD_DEBUG"  : false,
+        "BUILD_TWINE1" : false,
+        "LZString"     : false,
+        "saveAs"       : false
     },
     "rules" : {
         "array-bracket-spacing"            : ["error", "never"],
@@ -33,7 +36,7 @@
         "func-name-matching"               : ["error", "always"],
         "generator-star-spacing"           : ["error", "after"],
         "id-length"                        : ["error", { "exceptions": ["O", "P", "T", "_", "a", "b", "i", "j", "m", "w", "x", "y"] }],
-        "indent"                           : ["error", "tab", { "ArrayExpression" : "first", "CallExpression" : { "arguments" : "first" }, "FunctionDeclaration" : { "body" : 1, "parameters" : "first" }, "FunctionExpression" : { "body" : 1, "parameters" : "first" }, "ObjectExpression" : "first", "SwitchCase" : 0, "VariableDeclarator" : 1 }],
+        "indent"                           : ["error", "tab", { "ArrayExpression" : "first", "CallExpression" : { "arguments" : "first" }, "FunctionDeclaration" : { "body" : 1, "parameters" : "first" }, "FunctionExpression" : { "body" : 1, "parameters" : "first" }, "ObjectExpression" : "first", "SwitchCase" : 1, "VariableDeclarator" : 1 }],
         "key-spacing"                      : ["error", { "align" : "colon", "beforeColon" : true, "afterColon" : true }],
         "keyword-spacing"                  : "error",
         "linebreak-style"                  : ["error", "unix"],
@@ -106,6 +109,7 @@
         "no-unneeded-ternary"              : "error",
         "no-unsafe-finally"                : "error",
         "no-unsafe-negation"               : "error",
+        "no-unsafe-optional-chaining"      : ["error", { "disallowArithmeticOperators" : true }],
         "no-unused-vars"                   : ["error", { "vars" : "all", "args" : "after-used" }],
         "no-use-before-define"             : ["error", { "functions" : false, "classes" : true, "variables" : true }],
         "no-useless-call"                  : "error",
@@ -121,6 +125,7 @@
         "object-curly-spacing"             : ["error", "always"],
         "object-shorthand"                 : ["error", "always", { "ignoreConstructors" : false }],
         "one-var"                          : ["error", "never"],
+        "operator-linebreak"               : ["warn", "before"],
         "padded-blocks"                    : ["error", "never"],
         "prefer-arrow-callback"            : "error",
         "prefer-const"                     : "error",
@@ -149,6 +154,7 @@
         "symbol-description"               : "error",
         "template-curly-spacing"           : ["error", "never"],
         "template-tag-spacing"             : ["error", "never"],
+        "use-isnan"                        : ["error", { "enforceForIndexOf" : true, "enforceForSwitchCase" : true }],
         "valid-typeof"                     : ["error", { "requireStringLiterals" : true }],
         "wrap-iife"                        : ["error", "inside", { "functionPrototypeMethods" : true }],
         "wrap-regex"                       : "off",

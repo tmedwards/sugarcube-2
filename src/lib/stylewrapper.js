@@ -2,22 +2,21 @@
 
 	lib/stylewrapper.js
 
-	Copyright © 2013–2021 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
+	Copyright © 2013–2024 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
 /* global Patterns, Story, Wikifier */
 
 var StyleWrapper = (() => { // eslint-disable-line no-unused-vars, no-var
-	'use strict';
-
 	const _imageMarkupRe    = new RegExp(Patterns.cssImage, 'g');
 	const _hasImageMarkupRe = new RegExp(Patterns.cssImage);
 
 
-	/*******************************************************************************************************************
+	/*******************************************************************************
 		StyleWrapper Class.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	class StyleWrapper {
 		constructor(style) {
 			if (style == null) { // lazy equality for null
@@ -67,7 +66,7 @@ var StyleWrapper = (() => { // eslint-disable-line no-unused-vars, no-var
 						matchStart : 0
 					});
 
-					if (markup.hasOwnProperty('error') || markup.pos < wikiImage.length) {
+					if (Object.hasOwn(markup, 'error') || markup.pos < wikiImage.length) {
 						return wikiImage;
 					}
 
@@ -116,8 +115,9 @@ var StyleWrapper = (() => { // eslint-disable-line no-unused-vars, no-var
 	}
 
 
-	/*******************************************************************************************************************
-		Module Exports.
-	*******************************************************************************************************************/
+	/*******************************************************************************
+		Object Exports.
+	*******************************************************************************/
+
 	return StyleWrapper;
 })();

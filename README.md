@@ -50,9 +50,9 @@ You should now have SugarCube and all dependencies downloaded, so you may build 
 node build.js
 ```
 
-Assuming that completed with no errors, the story format, in Twine 1 and Twine 2 flavors, should be output to the `dist` directory.  Congratulations!
+Assuming that completed with no errors, the story format, in both Twine 1 and Twine 2 flavors, should be output to the `build` directory.  Congratulations!
 
-**NOTE:** SugarCube's development dependencies are occasionally updated.  If you receive errors when attempting to build, then you probably need to update your cached dependencies.  You may do this via the `npm update` command or, in extreme cases, by running `npm uninstall` and `npm install` in order.
+**NOTE:** SugarCube's development dependencies are occasionally updated.  If you receive errors when attempting to build, then you probably need to update your cached dependencies.  You may do this via the `npm update --save -D` command or, in extreme cases, by first running `npm uninstall` and then `npm install`.
 
 **TIP:** If you'd like additional options when building—e.g., debug builds, limiting the build to a particular version of Twine, etc.—then you may request help from `build.js` by specifying the help (`-h`, `--help`) option.  For example:
 

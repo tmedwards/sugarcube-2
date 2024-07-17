@@ -2,189 +2,221 @@
 
 	engine.js
 
-	Copyright © 2013–2021 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
+	Copyright © 2013–2024 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
 /*
-	global Alert, Config, DebugView, Dialog, Has, LoadScreen, Save, State, Story, StyleWrapper, UI, UIBar, Util,
-	       Wikifier, postdisplay, postrender, predisplay, prehistory, prerender, setDisplayTitle
+	global Alert, Config, DebugView, Dialog, Has, LoadScreen, Save, Scripting, State, Story, StyleWrapper, UI,
+	       UIBar, Wikifier, enumFrom, getErrorMessage, now, postdisplay, postrender, predisplay, prehistory,
+	       prerender, triggerEvent
 */
 
 var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
-	'use strict';
-
-	// Engine state types object (pseudo-enumeration).
-	const States = Util.toEnum({
+	// Engine state types object.
+	const States = enumFrom({
+		Init      : 'init',
 		Idle      : 'idle',
 		Playing   : 'playing',
 		Rendering : 'rendering'
 	});
 
 	// Minimum delay for DOM actions (in milliseconds).
-	const minDomActionDelay = 40;
+	const DOM_DELAY = 40;
 
 	// Cache of the debug view(s) for initialization special passage(s).
 	const _initDebugViews = [];
 
-	// Current state of the engine (default: `Engine.States.Idle`).
-	let _state = States.Idle;
+	// Current state of the engine.
+	let _state = States.Init;
 
 	// Last time `enginePlay()` was called (in milliseconds).
 	let _lastPlay = null;
 
-	// Cache of the outline patching <style> element (`StyleWrapper`-wrapped).
-	let _outlinePatch = null;
-
-	// List of objects describing `StoryInterface` elements to update via passages during navigation.
-	let _updating = null;
+	// jQuery event namespace.
+	const EVENT_NS = '.engine';
 
 
-	/*******************************************************************************************************************
+	/*******************************************************************************
 		Engine Functions.
-	*******************************************************************************************************************/
+	*******************************************************************************/
+
 	/*
 		Initialize the core story elements and perform some bookkeeping.
 	*/
 	function engineInit() {
-		if (DEBUG) { console.log('[Engine/engineInit()]'); }
+		if (BUILD_DEBUG) { console.log('[Engine/engineInit()]'); }
 
-		/*
-			Remove #init-no-js & #init-lacking from #init-screen.
-		*/
+		if (_state !== States.Init) {
+			return;
+		}
+
+		// Remove #init-no-js & #init-lacking from #init-screen.
 		jQuery('#init-no-js,#init-lacking').remove();
 
-		/*
-			Generate the core story elements and insert them into the page before the store area.
-		*/
-		(() => {
-			const $elems = jQuery(document.createDocumentFragment());
-			const markup = Story.has('StoryInterface') && Story.get('StoryInterface').text.trim();
+		// Generate the main UI container.
+		const $main = jQuery('<div id="story" role="main"></div>');
 
-			if (markup) {
-				// Remove the UI bar, its styles, and events.
-				UIBar.destroy();
+		// Get the user's UI markup, if any.
+		const markup = Story.has('StoryInterface') && Story.get('StoryInterface').text.trim();
 
-				// Remove the core display area styles.
-				jQuery(document.head).find('#style-core-display').remove();
+		// If user markup exists, remove unnecessary default UI and process the markup.
+		if (markup) {
+			// Disable updates on default UI elements.
+			Config.ui.updateStoryElements = false;
 
-				$elems.append(markup);
+			// Remove the default UI bar, including its styles and events.
+			UIBar.destroy();
 
-				const $passages = $elems.find('#passages');
+			// Remove the default passage display area styles.
+			jQuery(document.head).find('#style-core-display').remove();
 
-				if ($passages.length === 0) {
-					throw new Error('no element with ID "passages" found within "StoryInterface" special passage');
-				}
+			// Append the user's UI elements to the main UI container.
+			$main.append(markup);
 
-				// Empty `#passages` and set the `aria-live` content attribute to `'polite'` if necessary.
-				$passages
-					.empty()
-
-					// Without an existing `aria-live`.
-					.not('[aria-live]')
-					.attr('aria-live', 'polite')
-					.end();
-
-				// Data passage elements updated once during initialization.
-				$elems.find('[data-init-passage]').each((i, el) => {
-					if (el.id === 'passages') {
-						throw new Error(`"StoryInterface" element <${el.nodeName.toLowerCase()} id="passages"> must not contain a "data-init-passage" content attribute`);
-					}
-
-					const passage = el.getAttribute('data-init-passage').trim();
-
-					if (el.hasAttribute('data-passage')) {
-						throw new Error(`"StoryInterface" element <${el.nodeName.toLowerCase()} data-init-passage="${passage}"> must not contain a "data-passage" content attribute`);
-					}
-
-					if (el.firstElementChild !== null) {
-						throw new Error(`"StoryInterface" element <${el.nodeName.toLowerCase()} data-init-passage="${passage}"> contains child elements`);
-					}
-
-					if (Story.has(passage)) {
-						jQuery(el).empty().wiki(Story.get(passage).processText().trim());
-					}
-				});
-
-				// Data passage elements updated upon navigation.
-				const updating = [];
-				$elems.find('[data-passage]').each((i, el) => {
-					if (el.id === 'passages') {
-						throw new Error(`"StoryInterface" element <${el.nodeName.toLowerCase()} id="passages"> must not contain a "data-passage" content attribute`);
-					}
-
-					const passage = el.getAttribute('data-passage').trim();
-
-					if (el.firstElementChild !== null) {
-						throw new Error(`"StoryInterface" element <${el.nodeName.toLowerCase()} data-passage="${passage}"> contains child elements`);
-					}
-
-					if (Story.has(passage)) {
-						updating.push({
-							passage,
-							element : el
-						});
-					}
-				});
-
-				if (updating.length > 0) {
-					_updating = updating;
-				}
-
-				Config.ui.updateStoryElements = false;
-			}
-			else {
-				$elems.append('<div id="story" role="main"><div id="passages" aria-live="polite"></div></div>');
+			// Bail out if a child `#story` exists.
+			if ($main.find('#story').length > 0) {
+				throw new Error('element with ID "story" found within "StoryInterface" special passage');
 			}
 
-			// Insert the core UI elements into the page before the main script.
-			$elems.insertBefore('body>script#script-sugarcube');
-		})();
+			// Cache the `#passages` element.
+			const $passages = $main.find('#passages');
 
-		/*
-			Generate and cache the ARIA outlines <style> element (`StyleWrapper`-wrapped)
-			and set up the handler to manipulate the outlines.
-
-			IDEA: http://www.paciellogroup.com/blog/2012/04/how-to-remove-css-outlines-in-an-accessible-manner/
-		*/
-		_outlinePatch = new StyleWrapper((
-			() => jQuery(document.createElement('style'))
-				.attr({
-					id   : 'style-aria-outlines',
-					type : 'text/css'
-				})
-				.appendTo(document.head)
-				.get(0) // return the <style> element itself
-		)());
-		_hideOutlines(); // initially hide outlines
-		let _lastOutlineEvent;
-		jQuery(document).on(
-			'mousedown.aria-outlines keydown.aria-outlines',
-			ev => {
-				if (ev.type !== _lastOutlineEvent) {
-					_lastOutlineEvent = ev.type;
-
-					if (ev.type === 'keydown') {
-						_showOutlines();
-					}
-					else {
-						_hideOutlines();
-					}
-				}
+			// Bail out if `#passages` is nonexistent.
+			if ($passages.length === 0) {
+				throw new Error('no element with ID "passages" found within "StoryInterface" special passage');
 			}
-		);
+
+			// Empty `#passages` and, if necessary, add an `aria-live="polite"` content attribute.
+			$passages
+				.empty()
+				// Without an existing `aria-live`.
+				.not('[aria-live]')
+				.attr('aria-live', 'polite')
+				.end();
+
+			// Cache the data passage elements now to prevent recursive processing.
+			const $dataInitPassages = $main.find('[data-init-passage]');
+			const $dataPassages     = $main.find('[data-passage]');
+
+			// Data passage elements updated once during initialization.
+			$dataInitPassages.each((i, el) => {
+				if (el.id === 'passages') {
+					throw new Error(`"StoryInterface" element <${el.nodeName.toLowerCase()} id="passages"> must not contain a "data-init-passage" content attribute`);
+				}
+
+				const passage = el.getAttribute('data-init-passage').trim();
+
+				if (el.hasAttribute('data-passage')) {
+					throw new Error(`"StoryInterface" element <${el.nodeName.toLowerCase()} data-init-passage="${passage}"> must not contain a "data-passage" content attribute`);
+				}
+
+				if (el.firstElementChild !== null) {
+					throw new Error(`"StoryInterface" element <${el.nodeName.toLowerCase()} data-init-passage="${passage}"> contains child elements`);
+				}
+
+				if (Story.has(passage)) {
+					jQuery(document).one(`:uiupdate${EVENT_NS}`, () => {
+						const frag = document.createDocumentFragment();
+						new Wikifier(frag, Story.get(passage).processText().trim());
+						jQuery(el).empty().append(frag);
+					});
+				}
+			});
+
+			// Data passage elements updated upon navigation.
+			$dataPassages.each((i, el) => {
+				if (el.id === 'passages') {
+					throw new Error(`"StoryInterface" element <${el.nodeName.toLowerCase()} id="passages"> must not contain a "data-passage" content attribute`);
+				}
+
+				const passage = el.getAttribute('data-passage').trim();
+
+				if (el.firstElementChild !== null) {
+					throw new Error(`"StoryInterface" element <${el.nodeName.toLowerCase()} data-passage="${passage}"> contains child elements`);
+				}
+
+				if (Story.has(passage)) {
+					jQuery(document).on(`:uiupdate${EVENT_NS}`, () => {
+						const frag = document.createDocumentFragment();
+						new Wikifier(frag, Story.get(passage).processText().trim());
+						jQuery(el).empty().append(frag);
+					});
+				}
+			});
+		}
+
+		// Elsewise, generate the default passage display area UI elements.
+		else {
+			$main.append('<div id="passages" aria-live="polite"></div>');
+		}
+
+		// Insert the main UI into the page before the main script.
+		$main.insertBefore('body>script#script-sugarcube');
 	}
 
 	/*
-		Starts the story.
+		Run user scripts (user stylesheet, JavaScript, and widgets).
 	*/
-	function engineStart() {
-		if (DEBUG) { console.log('[Engine/engineStart()]'); }
+	function engineRunUserScripts() {
+		if (BUILD_DEBUG) { console.log('[Engine/engineRunUserScripts()]'); }
+
+		if (_state !== States.Init) {
+			return;
+		}
+
+		// Load the user styles.
+		(() => {
+			const storyStyle = document.createElement('style');
+
+			new StyleWrapper(storyStyle)
+				.add(Story.getStyles().map(style => style.text.trim()).join('\n'));
+
+			jQuery(storyStyle)
+				.appendTo(document.head)
+				.attr({
+					id   : 'style-story',
+					type : 'text/css'
+				});
+		})();
+
+		// Load the user scripts.
+		Story.getScripts().forEach(script => {
+			try {
+				Scripting.evalJavaScript(script.text);
+			}
+			catch (ex) {
+				console.error(ex);
+				Alert.error(script.name, getErrorMessage(ex));
+			}
+		});
+
+		// Load the user widgets.
+		Story.getWidgets().forEach(widget => {
+			try {
+				Wikifier.wikifyEval(widget.processText());
+			}
+			catch (ex) {
+				console.error(ex);
+				Alert.error(widget.name, getErrorMessage(ex));
+			}
+		});
+	}
+
+	/*
+		Run the user init passages.
+	*/
+	function engineRunUserInit() {
+		if (BUILD_DEBUG) { console.log('[Engine/engineRunUserInit()]'); }
+
+		if (_state !== States.Init) {
+			return;
+		}
 
 		/*
 			Execute `init`-tagged special passages.
 		*/
-		Story.getAllInit().forEach(passage => {
+		Story.getInits().forEach(passage => {
 			try {
 				const debugBuffer = Wikifier.wikifyEval(passage.text);
 
@@ -192,8 +224,8 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 					const debugView = new DebugView(
 						document.createDocumentFragment(),
 						'special',
-						`${passage.title} [init-tagged]`,
-						`${passage.title} [init-tagged]`
+						`${passage.name} [init-tagged]`,
+						`${passage.name} [init-tagged]`
 					);
 					debugView.modes({ hidden : true });
 					debugView.append(debugBuffer);
@@ -202,7 +234,7 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 			}
 			catch (ex) {
 				console.error(ex);
-				Alert.error(`${passage.title} [init-tagged]`, typeof ex === 'object' ? ex.message : ex);
+				Alert.error(`${passage.name} [init-tagged]`, getErrorMessage(ex));
 			}
 		});
 
@@ -227,8 +259,19 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 			}
 			catch (ex) {
 				console.error(ex);
-				Alert.error('StoryInit', typeof ex === 'object' ? ex.message : ex);
+				Alert.error('StoryInit', getErrorMessage(ex));
 			}
+		}
+	}
+
+	/*
+		Starts the story.
+	*/
+	function engineStart() {
+		if (BUILD_DEBUG) { console.log('[Engine/engineStart()]'); }
+
+		if (_state !== States.Init) {
+			return;
 		}
 
 		// Sanity checks.
@@ -239,47 +282,51 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 			throw new Error(`starting passage ("${Config.passages.start}") not found`);
 		}
 
-		// Focus the document element initially.
-		jQuery(document.documentElement).focus();
+		// Update the engine state.
+		_state = States.Idle;
 
-		/*
-			Attempt to restore an active session.  Failing that, attempt to autoload the autosave,
-			if requested.  Failing that, display the starting passage.
-		*/
+		// Focus the document element initially.
+		document.documentElement.focus();
+
+		// Attempt to restore an active session.  Failing that, attempt to
+		// autoload the autosave, if requested.  Failing that, display the
+		// starting passage.
 		if (State.restore()) {
 			engineShow();
 		}
 		else {
-			let loadStart = true;
+			const autoloadType = typeof Config.saves._internal_autoload_;
 
-			switch (typeof Config.saves.autoload) {
-			case 'boolean':
-				if (Config.saves.autoload && Save.autosave.ok() && Save.autosave.has()) {
-					if (DEBUG) { console.log(`\tattempting autoload: "${Save.autosave.get().title}"`); }
-
-					loadStart = !Save.autosave.load();
-				}
-				break;
-			case 'string':
-				if (Config.saves.autoload === 'prompt' && Save.autosave.ok() && Save.autosave.has()) {
-					loadStart = false;
+			if (autoloadType === 'string') {
+				if (Config.saves._internal_autoload_ === 'prompt') {
 					UI.buildAutoload();
 					Dialog.open();
 				}
-				break;
-			case 'function':
-				if (Save.autosave.ok() && Save.autosave.has() && !!Config.saves.autoload()) {
-					if (DEBUG) { console.log(`\tattempting autoload: "${Save.autosave.get().title}"`); }
-
-					loadStart = !Save.autosave.load();
-				}
-				break;
 			}
+			else {
+				new Promise((resolve, reject) => {
+					if (
+						Save.browser.hasContinue()
+						&& (
+							autoloadType === 'boolean' && Config.saves._internal_autoload_
+							|| autoloadType === 'function' && Config.saves._internal_autoload_()
+						)
+					) {
+						return resolve();
+					}
 
-			if (loadStart) {
-				if (DEBUG) { console.log(`\tstarting passage: "${Config.passages.start}"`); }
+					reject(); // eslint-disable-line prefer-promise-reject-errors
+				})
+					.then(() => {
+						if (BUILD_DEBUG) { console.log('\tattempting autoload of browser continue'); }
 
-				enginePlay(Config.passages.start);
+						return Save.browser.continue();
+					})
+					.catch(() => {
+						if (BUILD_DEBUG) { console.log(`\tstarting passage: "${Config.passages.start}"`); }
+
+						enginePlay(Config.passages.start);
+					});
 			}
 		}
 	}
@@ -288,7 +335,7 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 		Restarts the story.
 	*/
 	function engineRestart() {
-		if (DEBUG) { console.log('[Engine/engineRestart()]'); }
+		if (BUILD_DEBUG) { console.log('[Engine/engineRestart()]'); }
 
 		/*
 			Show the loading screen to hide any unsightly rendering shenanigans during the
@@ -314,7 +361,7 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 		/*
 			Trigger an ':enginerestart' event.
 		*/
-		jQuery.event.trigger(':enginerestart');
+		triggerEvent(':enginerestart');
 
 		/*
 			Reload the page.
@@ -360,8 +407,8 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 	/*
 		Activate the moment at the given index within the state history and show it.
 	*/
-	function engineGoTo(idx) {
-		const succeded = State.goTo(idx);
+	function engineGoTo(index) {
+		const succeded = State.goTo(index);
 
 		if (succeded) {
 			engineShow();
@@ -411,7 +458,11 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 		adding a new moment to the history.
 	*/
 	function enginePlay(title, noHistory) {
-		if (DEBUG) { console.log(`[Engine/enginePlay(title: "${title}", noHistory: ${noHistory})]`); }
+		if (_state === States.Init) {
+			return false;
+		}
+
+		if (BUILD_DEBUG) { console.log(`[Engine/enginePlay(title: "${title}", noHistory: ${noHistory})]`); }
 
 		let passageTitle = title;
 
@@ -443,13 +494,19 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 		// NOTE: The values of the `title` parameter and `passageTitle` variable
 		// may be empty, strings, or numbers (though using a number as reference
 		// to a numeric title should be discouraged), so after loading the passage,
-		// always refer to `passage.title` and never to the others.
+		// always refer to `passage.name` and never to the others.
 		const passage = Story.get(passageTitle);
 
 		// Execute the pre-history events and tasks.
 		jQuery.event.trigger({
-			type : ':passageinit',
-			passage
+			/* legacy */
+			passage,
+			/* /legacy */
+
+			type   : ':passageinit',
+			detail : {
+				passage
+			}
 		});
 		Object.keys(prehistory).forEach(task => {
 			if (typeof prehistory[task] === 'function') {
@@ -459,7 +516,7 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 
 		// Create a new entry in the history.
 		if (!noHistory) {
-			State.create(passage.title);
+			State.create(passage.name);
 		}
 
 		// Clear the document body's classes.
@@ -472,7 +529,7 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 		// NOTE: This is mostly for event, task, and special passage code,
 		// though the likelihood of it being needed this early is low.  This
 		// will be updated again later at the end.
-		_lastPlay = Util.now();
+		_lastPlay = now();
 
 		// Execute pre-display tasks and the `PassageReady` special passage.
 		Object.keys(predisplay).forEach(task => {
@@ -501,11 +558,11 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 		const passageEl = document.createElement('div');
 		jQuery(passageEl)
 			.attr({
-				id             : passage.domId,
-				'data-passage' : passage.title,
+				id             : passage.id,
+				'data-passage' : passage.name,
 				'data-tags'    : dataTags
 			})
-			.addClass(`passage ${passage.className}`);
+			.addClass(`passage passage-in ${passage.className}`);
 
 		// Add the passage's classes and tags to the document body.
 		jQuery(document.body)
@@ -518,9 +575,16 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 
 		// Execute pre-render events and tasks.
 		jQuery.event.trigger({
-			type    : ':passagestart',
+			/* legacy */
 			content : passageEl,
-			passage
+			passage,
+			/* /legacy */
+
+			type   : ':passagestart',
+			detail : {
+				content : passageEl,
+				passage
+			}
 		});
 		Object.keys(prerender).forEach(task => {
 			if (typeof prerender[task] === 'function') {
@@ -543,9 +607,16 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 
 		// Execute post-render events and tasks.
 		jQuery.event.trigger({
-			type    : ':passagerender',
+			/* legacy */
 			content : passageEl,
-			passage
+			passage,
+			/* /legacy */
+
+			type   : ':passagerender',
+			detail : {
+				content : passageEl,
+				passage
+			}
 		});
 		Object.keys(postrender).forEach(task => {
 			if (typeof postrender[task] === 'function') {
@@ -559,12 +630,12 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 		// Empty the passage container.
 		if (containerEl.hasChildNodes()) {
 			if (
-				   typeof Config.passages.transitionOut === 'number'
+				typeof Config.passages.transitionOut === 'number'
 				|| typeof Config.passages.transitionOut === 'string'
 				&& Config.passages.transitionOut !== ''
 				&& Has.transitionEndEvent
 			) {
-				[...containerEl.childNodes].forEach(outgoing => {
+				Array.from(containerEl.childNodes).forEach(outgoing => {
 					const $outgoing = jQuery(outgoing);
 
 					if (outgoing.nodeType === Node.ELEMENT_NODE && $outgoing.hasClass('passage')) {
@@ -574,14 +645,15 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 
 						$outgoing
 							.attr({
-								id          : `out-${$outgoing.attr('id')}`,
-								'aria-live' : 'off'
+								id            : `out-${$outgoing.attr('id')}`,
+								'aria-hidden' : 'true',
+								'aria-live'   : 'off'
 							})
 							.addClass('passage-out');
 
 						if (typeof Config.passages.transitionOut === 'string') {
 							$outgoing.on(Has.transitionEndEvent, ev => {
-								if (ev.propertyName === Config.passages.transitionOut) {
+								if (ev.originalEvent.propertyName === Config.passages.transitionOut) {
 									$outgoing.remove();
 								}
 							});
@@ -589,7 +661,7 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 						else {
 							setTimeout(
 								() => $outgoing.remove(),
-								Math.max(minDomActionDelay, Config.passages.transitionOut)
+								Math.max(DOM_DELAY, Config.passages.transitionOut)
 							);
 						}
 					}
@@ -603,22 +675,10 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 			}
 		}
 
-		// Append the passage element to the passage container and set up its transition.
-		jQuery(passageEl)
-			.addClass('passage-in')
-			.appendTo(containerEl);
-		setTimeout(() => jQuery(passageEl).removeClass('passage-in'), minDomActionDelay);
-
-		// Update the story display title, if necessary.
-		if (Story.has('StoryDisplayTitle')) {
-			// NOTE: We don't have an `else` here because that case will be handled later (below).
-			if (_updating !== null || !Config.ui.updateStoryElements) {
-				setDisplayTitle(Story.get('StoryDisplayTitle').processText());
-			}
-		}
-		else if (Config.passages.displayTitles && passage.title !== Config.passages.start) {
-			document.title = `${passage.title} | ${Story.title}`;
-		}
+		// Append the passage element to the passage container and initiate
+		// its transition animation.
+		jQuery(passageEl).appendTo(containerEl);
+		setTimeout(() => jQuery(passageEl).removeClass('passage-in'), DOM_DELAY / 2);
 
 		// Scroll the window to the top.
 		window.scroll(0, 0);
@@ -638,9 +698,16 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 		}
 
 		jQuery.event.trigger({
-			type    : ':passagedisplay',
+			/* legacy */
 			content : passageEl,
-			passage
+			passage,
+			/* /legacy */
+
+			type   : ':passagedisplay',
+			detail : {
+				content : passageEl,
+				passage
+			}
 		});
 		Object.keys(postdisplay).forEach(task => {
 			if (typeof postdisplay[task] === 'function') {
@@ -648,16 +715,8 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 			}
 		});
 
-		// Update the other interface elements, if necessary.
-		if (_updating !== null) {
-			_updating.forEach(pair => {
-				jQuery(pair.element).empty();
-				new Wikifier(pair.element, Story.get(pair.passage).processText().trim());
-			});
-		}
-		else if (Config.ui.updateStoryElements) {
-			UIBar.update();
-		}
+		// Execute UI update events.
+		UI.update();
 
 		// Add the completed debug views for `StoryInit`, `PassageReady`, and `PassageDone`
 		// to the incoming passage element.
@@ -698,124 +757,102 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 
 		// Last second post-processing for accessibility and other things.
 		jQuery('#story')
-			// Add `link-external` to all `href` bearing `<a>` elements which don't have it.
-			.find('a[href]:not(.link-external)')
-			.addClass('link-external')
-			.end()
-			// Add `tabindex=0` to all interactive elements which don't have it.
+			// Add `tabindex=0` to all interactive elements that don't have it.
 			.find('a,link,button,input,select,textarea')
 			.not('[tabindex]')
 			.attr('tabindex', 0);
 
 		// Handle autosaves.
-		switch (typeof Config.saves.autosave) {
-		case 'boolean':
-			if (Config.saves.autosave) {
-				Save.autosave.save();
-			}
-			break;
-		case 'object':
-			if (passage.tags.some(tag => Config.saves.autosave.includes(tag))) {
-				Save.autosave.save();
-			}
-			break;
-		case 'function':
-			if (Config.saves.autosave()) {
-				Save.autosave.save();
-			}
-			break;
+		if (State.turns > 1 && Save.browser.auto.isEnabled()) {
+			Save.browser.auto.save();
 		}
 
 		// Execute post-play events.
 		jQuery.event.trigger({
-			type    : ':passageend',
+			/* legacy */
 			content : passageEl,
-			passage
+			passage,
+			/* /legacy */
+
+			type   : ':passageend',
+			detail : {
+				content : passageEl,
+				passage
+			}
 		});
 
 		// Reset the engine state.
 		_state = States.Idle;
 
 		// Update the last play time.
-		_lastPlay = Util.now();
+		_lastPlay = now();
 
 		return passageEl;
 	}
 
 
-	/*******************************************************************************************************************
-		Legacy Functions.
-	*******************************************************************************************************************/
+	/*******************************************************************************
+		Deprecated Functions.
+	*******************************************************************************/
+
 	/*
 		[DEPRECATED] Play the given passage, optionally without altering the history.
 	*/
 	function engineDisplay(title, link, option) {
-		if (DEBUG) { console.log('[Engine/engineDisplay()]'); }
+		if (BUILD_DEBUG) { console.log('[Engine/engineDisplay()]'); }
+
+		console.warn('[DEPRECATED] Engine.display() is deprecated.');
 
 		let noHistory = false;
 
 		// Process the option parameter.
 		switch (option) {
-		case undefined:
-			/* no-op */
-			break;
+			case undefined:
+				/* no-op */
+				break;
 
-		case 'replace':
-		case 'back':
-			noHistory = true;
-			break;
+			case 'replace':
+			case 'back':
+				noHistory = true;
+				break;
 
-		default:
-			throw new Error(`Engine.display option parameter called with obsolete value "${option}"; please notify the developer`);
+			default:
+				throw new Error(`Engine.display option parameter called with obsolete value "${option}"; please notify the developer`);
 		}
 
 		enginePlay(title, noHistory);
 	}
 
 
-	/*******************************************************************************************************************
-		Utility Functions.
-	*******************************************************************************************************************/
-	function _hideOutlines() {
-		_outlinePatch.set('*:focus{outline:none;}');
-	}
+	/*******************************************************************************
+		Object Exports.
+	*******************************************************************************/
 
-	function _showOutlines() {
-		_outlinePatch.clear();
-	}
+	return Object.preventExtensions(Object.create(null, {
+		// Constants.
+		States    : { value : States },
+		DOM_DELAY : { get : () => DOM_DELAY },
 
+		// Core Functions.
+		init           : { value : engineInit },
+		runUserScripts : { value : engineRunUserScripts },
+		runUserInit    : { value : engineRunUserInit },
+		start          : { value : engineStart },
+		restart        : { value : engineRestart },
+		state          : { get : engineState },
+		isIdle         : { value : engineIsIdle },
+		isPlaying      : { value : engineIsPlaying },
+		isRendering    : { value : engineIsRendering },
+		lastPlay       : { get : engineLastPlay },
+		goTo           : { value : engineGoTo },
+		go             : { value : engineGo },
+		backward       : { value : engineBackward },
+		forward        : { value : engineForward },
+		show           : { value : engineShow },
+		play           : { value : enginePlay },
 
-	/*******************************************************************************************************************
-		Module Exports.
-	*******************************************************************************************************************/
-	return Object.freeze(Object.defineProperties({}, {
-		/*
-			Constants.
-		*/
-		States            : { value : States },
-		minDomActionDelay : { value : minDomActionDelay },
-
-		/*
-			Core Functions.
-		*/
-		init        : { value : engineInit },
-		start       : { value : engineStart },
-		restart     : { value : engineRestart },
-		state       : { get : engineState },
-		isIdle      : { value : engineIsIdle },
-		isPlaying   : { value : engineIsPlaying },
-		isRendering : { value : engineIsRendering },
-		lastPlay    : { get : engineLastPlay },
-		goTo        : { value : engineGoTo },
-		go          : { value : engineGo },
-		backward    : { value : engineBackward },
-		forward     : { value : engineForward },
-		show        : { value : engineShow },
-		play        : { value : enginePlay },
-
-		/*
-			Legacy Functions.
-		*/
-		display : { value : engineDisplay }
+		// Deprecated Functions.
+		display           : { value : engineDisplay },
+		minDomActionDelay : { get : () => DOM_DELAY }
 	}));
 })();

@@ -2,11 +2,15 @@
 
 This directory contains a collection of localizations for SugarCube's default UI strings.  They are the source from which the packaged versions, available on [SugarCube's website](http://www.motoslave.net/sugarcube/2/#downloads) (under *Downloads > Localizations*), are built.  If you're simply looking for downloads, see the website.
 
+The subdirectory `outdated` contains localizations that are out-of-date and should not be used.  They are kept here with the hope the they can be useful for future localizations.
+
 For more information about the guidelines used to create these localizations, see the [*Localization* guide](http://www.motoslave.net/sugarcube/2/docs/#guide-localization).
 
 For the template that should be used as the basis of localizations, see the `l10n-template.js` file within this directory.
 
 ## Contributors
+
+## Past Contributors
 
 * `ar-EG.js` – العربية (مصر), by: Mustafa Rawi.
 * `chs.js` – 简体中文, by: Liyro Pen.

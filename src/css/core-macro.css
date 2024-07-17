@@ -2,14 +2,11 @@
 
 	css/core-macro.css
 
-	Copyright © 2013–2021 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
+	Copyright © 2013–2024 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
 
-/*
-	Default appearance styles.
-*/
 @keyframes cursor-blink {
 	0% { opacity: 1; }
 	50% { opacity: 0; }
@@ -37,7 +34,7 @@
 	opacity: 0;
 }
 
-.macro-type-cursor:after {
+.macro-type-cursor::after {
 	animation: cursor-blink 1s infinite;
 	content: "\2590"; /* "\2588" */
 	opacity: 1;

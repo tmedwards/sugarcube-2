@@ -2,14 +2,12 @@
 
 	css/ui-bar.css
 
-	Copyright © 2013–2021 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
+	Copyright © 2013–2024 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
 
-/*
-	Patches to the core styles.
-*/
+/* Core styles patches. */
 #story {
 	margin-left: 20em;
 	transition: margin-left 200ms ease-in;
@@ -26,9 +24,9 @@
 	}
 }
 /*
-	At very narrow viewport widths, set `#story{margin-left}` equal to the value
-	of `#ui-bar.stowed~#story{margin-left}`, so that `#ui-bar` will side over top
-	of `#story` when unstowed, rather than shoving it over.
+	At narrow viewport widths, set `#story{margin-left}` equal to the value
+	of `#ui-bar.stowed~#story{margin-left}`, so that `#ui-bar` will side
+	over top of `#story` when unstowed, rather than shoving it over.
 */
 @media screen and (max-width: 768px) {
 	#story {
@@ -36,20 +34,20 @@
 	}
 }
 
-
-/*
-	Default structural styles.
-*/
+/* Base styles. */
 #ui-bar {
-	position: fixed;
-	z-index: 50;
-	top: 0;
-	left: 0;
-	width: 17.5em;
+	background-color: #222;
+	border-right: 1px solid #444;
 	height: 100%;
+	left: 0;
 	margin: 0;
 	padding: 0;
+	position: fixed;
+	text-align: center;
+	top: 0;
 	transition: left 200ms ease-in;
+	width: 17.5em;
+	z-index: 50;
 }
 #ui-bar.stowed {
 	left: -15.5em;
@@ -61,9 +59,10 @@
 	right: 0;
 }
 #ui-bar-body {
-	height: 90%; /* fallback for browsers without support for calc() */
 	height: calc(100% - 2.5em);
+	line-height: 1.5;
 	margin: 2.5em 0;
+	overflow: auto;
 	padding: 0 1.5em;
 }
 #ui-bar.stowed #ui-bar-history,
@@ -71,82 +70,37 @@
 	visibility: hidden;
 	transition: visibility 200ms step-end;
 }
-
-
-/*
-	Accessibility styles.
-*/
-@media (prefers-reduced-motion: reduce) {
-	#story {
-		transition: margin-left 0s;
-	}
-	#ui-bar {
-		transition: left 0s;
-	}
-}
-
-
-/*
-	Default appearance styles.
-*/
-#ui-bar {
-	background-color: #222;
-	border-right: 1px solid #444;
-	text-align: center;
-}
 #ui-bar a {
 	text-decoration: none;
 }
 #ui-bar hr {
 	border-color: #444;
 }
-#ui-bar-toggle,
-#ui-bar-history [id|="history"] {
-	font-size: 1.2em;
-	line-height: inherit;
+#ui-bar-tray button {
 	color: #eee;
 	background-color: transparent;
 	border: 1px solid #444;
 }
-#ui-bar-toggle {
-	display: block;
-	position: absolute;
-	top: 0;
-	right: 0;
-	border-right: none;
-	padding: 0.3em 0.45em 0.25em;
-}
-#ui-bar.stowed #ui-bar-toggle {
-	padding: 0.3em 0.35em 0.25em 0.55em;
-}
-#ui-bar-toggle:hover {
+#ui-bar-tray button:hover {
 	background-color: #444;
 	border-color: #eee;
 }
-#ui-bar-history {
-	margin: 0 auto;
-}
-#ui-bar-history [id|="history"] {
-	padding: 0.2em 0.45em 0.35em;
-}
-#ui-bar-history #history-jumpto {
-	padding: 0.2em 0.665em 0.35em;
-}
-#ui-bar-history [id|="history"]:not(:first-child) {
-	margin-left: 1.2em;
-}
-#ui-bar-history [id|="history"]:hover {
-	background-color: #444;
-	border-color: #eee;
-}
-#ui-bar-history [id|="history"]:disabled {
+#ui-bar-tray button:disabled {
 	color: #444;
 	background-color: transparent;
 	border-color: #444;
 }
-#ui-bar-body {
-	line-height: 1.5;
-	overflow: auto;
+button#ui-bar-toggle {
+	border-right: none;
+	position: absolute;
+	right: 0;
+	top: 0;
+}
+#ui-bar-history {
+	margin: 0 auto;
+}
+#ui-bar-history button:not(:first-child) {
+	margin-left: 1.2em;
 }
 #ui-bar-body > :not(:first-child) {
 	margin-top: 2em;
@@ -187,36 +141,67 @@
 }
 
 /* Stop text selection on certain UI elements. */
-#ui-bar-history [id|="history"],
-#ui-bar-toggle,
+#ui-bar-tray button,
 #menu a {
 	user-select: none;
 }
 
+/* Font icon styles. */
+#ui-bar-tray button::before,
+#menu-core li[id|="menu-item"] a::before {
+	@mixin sc-icons-properties;
+}
+#ui-bar-tray button::before {
+	display: block;
+	font-size: 1.1em;
+	width: 1em;
+}
+#ui-bar-toggle::before {
+	content: "\f053";
+}
+#ui-bar.stowed #ui-bar-toggle::before {
+	content: "\f054";
+}
+#ui-bar-tray #history-backward::before {
+	content: "\f060";
+}
+#ui-bar-tray #history-jumpto::before {
+	content: "\f0e7";
+}
+#ui-bar-tray #history-forward::before {
+	content: "\f061";
+}
+#menu-item-continue a::before,
+#menu-item-saves a::before,
+#menu-item-settings a::before,
+#menu-item-restart a::before /* legacy */,
+#menu-item-share a::before /* /legacy */ {
+	margin-right: 0.35em;
+}
+#menu-item-continue a::before {
+	content: "\f04b";
+}
+#menu-item-saves a::before {
+	content: "\f0c7";
+}
+#menu-item-settings a::before {
+	content: "\f013";
+}
+#menu-item-restart a::before {
+	content: "\f011";
+}
+/* legacy */
+#menu-item-share a::before {
+	content: "\f1e0";
+}
+/* legacy */
 
-/*
-	Default font icon styles.
-*/
-#ui-bar-toggle:before,
-#ui-bar-history [id|="history"],
-#menu-core li[id|="menu-item"] a:before {
-	@mixin tme-fa-icons-properties;
-}
-#ui-bar-toggle:before {
-	content: "\e81d";
-}
-#ui-bar.stowed #ui-bar-toggle:before {
-	content: "\e81e";
-}
-#menu-item-saves a:before {
-	content: "\e82b\00a0";
-}
-#menu-item-settings a:before {
-	content: "\e82d\00a0";
-}
-#menu-item-restart a:before {
-	content: "\e82c\00a0";
-}
-#menu-item-share a:before {
-	content: "\e82f\00a0";
+/* Accessibility styles. */
+@media (prefers-reduced-motion: reduce) {
+	#story {
+		transition: margin-left 0s;
+	}
+	#ui-bar {
+		transition: left 0s;
+	}
 }

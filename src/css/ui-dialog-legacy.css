@@ -1,0 +1,41 @@
+/***********************************************************************************************************************
+
+	css/ui-dialog-legacy.css
+
+	Copyright © 2013–2024 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
+	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
+
+***********************************************************************************************************************/
+
+/* legacy */
+/* List-based dialog styles (primarily for the Jumpto & Share dialogs). */
+#ui-dialog-body.list {
+	padding: 0;
+}
+#ui-dialog-body.list ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	border: 1px solid transparent;
+}
+#ui-dialog-body.list li {
+	margin: 0;
+}
+#ui-dialog-body.list li:not(:first-child) {
+	border-top: 1px solid #444;
+}
+#ui-dialog-body.list li a {
+	display: block;
+	padding: 0.25em 0.75em;
+	border: 1px solid transparent;
+	color: #eee;
+	text-decoration: none;
+}
+#ui-dialog-body.list li a:hover {
+	background-color: #333;
+	border-color: #eee;
+}
+#ui-dialog-body.list a {
+	user-select: none;
+}
+/* /legacy */

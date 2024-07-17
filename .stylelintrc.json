@@ -4,14 +4,18 @@
     ],
     "reportNeedlessDisables" : true,
     "rules"   : {
-        "at-rule-no-unknown"        : [true, { "ignoreAtRules": ["define-mixin", "mixin"] }],
-        "at-rule-empty-line-before" : null,
-        "comment-empty-line-before" : null,
-        "indentation"               : "tab",
-        "linebreaks"                : "unix",
-        "max-empty-lines"           : 2,
-        "no-descending-specificity" : null,
-        "rule-empty-line-before"    : null,
-        "selector-class-pattern"    : "^([a-z][a-z0-9]*)(-[a-z0-9]+)*$"
+        "alpha-value-notation"             : "number",
+        "at-rule-no-unknown"               : [true, { "ignoreAtRules" : ["define-mixin", "mixin"] }],
+        "at-rule-empty-line-before"        : null,
+        "block-opening-brace-space-before" : ["always", { "ignoreSelectors" : ["/^(?:\\d+%|to|from)$/"] }],
+        "color-function-notation"          : "legacy",
+        "comment-empty-line-before"        : null,
+        "font-family-no-duplicate-names"   : [true, { "ignoreFontFamilyNames" : ["monospace"] }],
+        "indentation"                      : "tab",
+        "linebreaks"                       : "unix",
+        "max-empty-lines"                  : 2,
+        "no-descending-specificity"        : null,
+        "rule-empty-line-before"           : null,
+        "selector-class-pattern"           : "^([a-z][a-z0-9]*)(-[a-z0-9]+)*$"
     }
 }

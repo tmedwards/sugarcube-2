@@ -1,0 +1,144 @@
+/***********************************************************************************************************************
+
+	css/ui-dialog-saves.css
+
+	Copyright © 2013–2024 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
+	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
+
+***********************************************************************************************************************/
+
+/* Base styles. */
+#ui-dialog-body.saves {
+	/*
+		NOTE: Older versions of Webkit/Blink need `1px` bottom padding
+		or they'll trigger the scroll bar for some odd reason.
+	*/
+	padding: 0 0 1px;
+}
+#ui-dialog-body.saves > *:not(:first-child) {
+	border-top: 1px solid #444;
+}
+#ui-dialog-body.saves > h2 {
+	background-color: #222;
+	font-size: inherit;
+	margin: 0;
+	padding: 0.1em 0 0.1em 0.4em;
+}
+#ui-dialog-body.saves table {
+	border-spacing: 0;
+	width: 100%;
+}
+#ui-dialog-body.saves tr:not(:first-child) {
+	border-top: 1px solid #444;
+}
+#ui-dialog-body.saves td {
+	padding: 0.33em;
+}
+#ui-dialog-body.saves td:first-child {
+	/* min-width: 1.5em;
+	text-align: center; */
+	display: none !important;
+}
+#ui-dialog-body.saves td:nth-child(3) {
+	line-height: 1.2;
+	width: 100%;
+}
+#ui-dialog-body.saves td:last-child {
+	text-align: right;
+}
+#ui-dialog-body.saves .empty {
+	color: #999;
+	speak: none;
+	user-select: none;
+}
+#ui-dialog-body.saves .details {
+	font-size: 75%;
+	margin-left: 0.25em;
+}
+#ui-dialog-body.saves #saves-list button {
+	color: #eee;
+	background-color: transparent;
+	border: 1px solid #444;
+	height: 2.237em;
+	width: 2.237em;
+}
+#ui-dialog-body.saves #saves-list button:disabled {
+	color: #444;
+	border-color: #444;
+}
+#ui-dialog-body.saves #saves-list button:not(:disabled):hover {
+	background-color: #222;
+	border-color: #ddd;
+}
+#ui-dialog-body.saves #saves-list button.delete:not(:disabled),
+#ui-dialog-body.saves button[id="saves-clear"]:not(:disabled) {
+	background-color: #911;
+	border-color: #b33;
+}
+#ui-dialog-body.saves #saves-list button.delete:not(:disabled):hover,
+#ui-dialog-body.saves button[id="saves-clear"]:not(:disabled):hover {
+	background-color: #b33;
+	border-color: #d55;
+}
+#ui-dialog-body.saves #saves-list button.load:not(:disabled) {
+	background-color: #161;
+	border-color: #383;
+}
+#ui-dialog-body.saves #saves-list button.load:not(:disabled):hover {
+	background-color: #383;
+	border-color: #5a5;
+}
+#ui-dialog-body.saves .buttons li {
+	padding: 0.4em;
+}
+#ui-dialog-body.saves .buttons > li + li > button {
+	margin-left: 0.2em;
+}
+#ui-dialog-body.saves .buttons.slots > li:last-child {
+	/*
+		NOTE: Using `position:absolute;right:0;` here can produce poor
+		results, so we use `float:right;` instead.
+	*/
+	float: right;
+}
+
+/* Font icon styles. */
+#ui-dialog-body.saves #saves-list button::before,
+#ui-dialog-body.saves .buttons button::before {
+	@mixin sc-icons-properties;
+}
+#ui-dialog-body.saves .buttons button::before {
+	margin-right: 0.35em;
+}
+#ui-dialog-body.saves button.delete::before {
+	content: "\f2ed";
+}
+#ui-dialog-body.saves button.delete:disabled::before {
+	content: "\f1f8";
+}
+#ui-dialog-body.saves button.load::before {
+	content: "\f04b";
+}
+#ui-dialog-body.saves button.save::before {
+	content: "\f0c7";
+}
+#ui-dialog-body.saves button[id="saves-export"]::before {
+	content: "\f56e";
+}
+#ui-dialog-body.saves button[id="saves-import"]::before {
+	content: "\f56f";
+}
+#ui-dialog-body.saves button[id="saves-clear"]::before {
+	content: "\f2ed";
+}
+#ui-dialog-body.saves button[id="saves-clear"]:disabled::before {
+	content: "\f1f8";
+}
+#ui-dialog-body.saves button[id="saves-disk-save"]::before {
+	/* content: "\f019"; */
+	content: "\f56d";
+}
+#ui-dialog-body.saves button[id="saves-disk-load"]::before {
+	/* content: "\f093"; */
+	content: "\f574";
+}

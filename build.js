@@ -1,14 +1,15 @@
 #!/usr/bin/env node
 /***********************************************************************************************************************
 
-	build.js (v1.7.1, 2021-12-21)
+	build.js (v1.9.3, 2024-05-14)
 		A Node.js-hosted build script for SugarCube.
 
-	Copyright © 2013–2021 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
+	Copyright © 2013–2024 Thomas Michael Edwards <thomasmedwards@gmail.com>. All rights reserved.
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
 /* eslint-env node, es2021 */
+/* eslint-disable strict */
 'use strict';
 
 
@@ -22,36 +23,37 @@ const CONFIG = {
 			// The ordering herein is significant.
 			'src/lib/alert.js',
 			'src/lib/patterns.js',
-			'src/lib/extensions.js',
+			'src/extensions/ecmascript-polyfills.js',
+			'src/extensions/ecmascript-extensions.js',
+			'src/extensions/jquery/',
 			'src/lib/browser.js',
 			'src/lib/has.js',
-			'src/lib/visibility.js',
 			'src/lib/fullscreen.js',
-			'src/lib/helpers.js',
-			'src/lib/jquery-plugins.js',
-			'src/lib/util.js',
-			'src/lib/simplestore/simplestore.js',
-			'src/lib/simplestore/adapters/webstorage.js',
-			'src/lib/simplestore/adapters/cookie.js',
+			'src/lib/outliner.js',
+			'src/lib/serial.js',
+			'src/lib/visibility.js',
+			'src/util/',
+			'src/storage/simplestore.js',
+			'src/storage/adapters/webstorage.js',
+			'src/storage/adapters/cookie.js',
 			'src/lib/debugview.js',
 			'src/lib/nodetyper.js',
-			'src/lib/prngwrapper.js',
 			'src/lib/stylewrapper.js',
 			'src/lib/diff.js',
 			'src/l10n/l10n.js',
-			'src/l10n/legacy.js',
 			'src/l10n/strings.js',
 			'src/config.js',
-			'src/simpleaudio.js',
+			'src/audio/simpleaudio.js',
 			'src/state.js',
 			'src/markup/scripting.js',
 			'src/markup/lexer.js',
 			'src/markup/wikifier.js',
 			'src/markup/parserlib.js',
 			'src/markup/template.js',
-			'src/macros/macro.js',
-			'src/macros/macrocontext.js',
-			'src/macros/macrolib.js',
+			'src/macro/macro.js',
+			'src/macro/macrocontext.js',
+			'src/macro/macros/',
+			'src/macro/deprecated-macros.js',
 			'src/dialog.js',
 			'src/engine.js',
 			'src/passage.js',
@@ -62,51 +64,56 @@ const CONFIG = {
 			'src/uibar.js',
 			'src/debugbar.js',
 			'src/loadscreen.js',
+			'src/lib/deprecated-util.js',
 			'src/sugarcube.js'
 		],
 		wrap : {
-			intro : 'src/templates/intro.js',
-			outro : 'src/templates/outro.js'
+			intro : 'template/intro.js',
+			outro : 'template/outro.js'
 		}
 	},
 	css : {
 		mixins : 'src/css/_mixins.css',
 		files  : [
 			// The ordering herein is significant.
-			'src/vendor/normalize.css',
+			'vendor/normalize.css',
 			'src/css/init-screen.css',
-			'src/css/font.css',
+			'src/css/font-icons.css',
+			'src/css/font-emoji.css',
 			'src/css/core.css',
 			'src/css/core-display.css',
 			'src/css/core-passage.css',
 			'src/css/core-macro.css',
 			'src/css/ui-dialog.css',
-			'src/css/ui.css',
+			'src/css/ui-dialog-saves.css',
+			'src/css/ui-dialog-settings.css',
+			'src/css/ui-dialog-legacy.css',
 			'src/css/ui-bar.css',
-			'src/css/ui-debug.css'
+			'src/css/ui-debug-bar.css',
+			'src/css/ui-debug-views.css'
 		]
 	},
 	libs : [
 		// The ordering herein is significant.
-		'src/vendor/classList.min.js',
-		'src/vendor/es5-shim.min.js',
-		'src/vendor/es6-shim.min.js',
-		'src/vendor/jquery.min.js',
-		'src/vendor/jquery.ba-throttle-debounce.min.js',
-		'src/vendor/imagesloaded.pkgd.min.js',
-		'src/vendor/lz-string.min.js',
-		'src/vendor/FileSaver.min.js',
-		'src/vendor/seedrandom.min.js',
-		'src/vendor/console-hack.min.js'
+		'vendor/classList.min.js',
+		'vendor/es5-shim.min.js',
+		'vendor/es6-shim.min.js',
+		'vendor/jquery.min.js',
+		'vendor/jquery.ba-throttle-debounce.min.js',
+		'vendor/imagesloaded.pkgd.min.js',
+		'vendor/lz-string.min.js',
+		'vendor/FileSaver.min.js',
+		'vendor/seedrandom.min.js',
+		'vendor/console-hack.min.js'
 	],
 	twine1 : {
 		build : {
-			src  : 'src/templates/twine1/html.tpl',
+			src  : 'template/twine1/html.tpl',
 			dest : 'build/twine1/sugarcube-2/header.html'
 		},
 		copy : [
 			{
-				src  : 'src/templates/twine1/sugarcube-2.py',
+				src  : 'template/twine1/sugarcube-2.py',
 				dest : 'build/twine1/sugarcube-2/sugarcube-2.py'
 			},
 			{
@@ -117,9 +124,9 @@ const CONFIG = {
 	},
 	twine2 : {
 		build : {
-			src  : 'src/templates/twine2/html.tpl',
+			src  : 'template/twine2/html.tpl',
 			dest : 'build/twine2/sugarcube-2/format.js',
-			json : 'src/templates/twine2/config.json'
+			json : 'template/twine2/config.json'
 		},
 		copy : [
 			{
@@ -149,6 +156,7 @@ const {
 	log,
 	die,
 	fileExists,
+	walkPaths,
 	makePath,
 	copyFile,
 	readFileContents,
@@ -156,32 +164,32 @@ const {
 	concatFiles
 } = require('./scripts/build-utils');
 const _path = require('path');
-const _opt  = require('node-getopt').create([
-	['b', 'build=VERSION', 'Build only for Twine major version: 1 or 2; default: build for all.'],
-	['d', 'debug',         'Keep debugging code; gated by DEBUG symbol.'],
-	['u', 'unminified',    'Suppress minification stages.'],
-	['n', 'no-transpile',  'Suppress JavaScript transpilation stages.'],
-	['h', 'help',          'Print this help, then exit.']
-])
-	.bindHelp()
-	.parseSystem();
+const _opts = require('commander')
+	.program
+	.option('-b, --build <version>', 'Build only for Twine major version: 1 or 2; default: build for all.')
+	.option('-d, --debug', 'Keep debugging code; gated by BUILD_DEBUG symbol.')
+	.option('-u, --unminified', 'Suppress minification stages.')
+	.option('-n, --notranspile', 'Suppress JavaScript transpilation stages.')
+	.helpOption('-h, --help', 'Print this help, then exit.')
+	.parse()
+	.opts();
 
 let _buildForTwine1 = true;
 let _buildForTwine2 = true;
 
-if (_opt.options.build) {
-	switch (_opt.options.build) {
-	case '1':
-		_buildForTwine2 = false;
-		break;
+if (_opts.build) {
+	switch (_opts.build) {
+		case '1':
+			_buildForTwine2 = false;
+			break;
 
-	case '2':
-		_buildForTwine1 = false;
-		break;
+		case '2':
+			_buildForTwine1 = false;
+			break;
 
-	default:
-		die(`unknown Twine major version: ${_opt.options.build}; valid values: 1 or 2`);
-		break;
+		default:
+			die(`unknown Twine major version: ${_opts.build}; valid values: 1 or 2`);
+			break;
 	}
 }
 
@@ -198,20 +206,26 @@ if (_opt.options.build) {
 	const version = (() => {
 		const semver = require('semver');
 		const { name, version } = require('./package.json'); // relative path must be prefixed ('./')
-		const prerelease = semver.prerelease(version);
+		const parsed = semver.parse(version);
+		const build = Number(readFileContents('.build'));
+
+		if (!Number.isInteger(build)) {
+			throw new Error(`invalid build metadata (received: ${build})`);
+		}
 
 		return {
-			title      : name,
-			major      : semver.major(version),
-			minor      : semver.minor(version),
-			patch      : semver.patch(version),
-			prerelease : prerelease && prerelease.length > 0 ? prerelease.join('.') : null,
-			build      : Number(readFileContents('.build')) + 1,
+			name,
+			major      : parsed.major,
+			minor      : parsed.minor,
+			patch      : parsed.patch,
+			prerelease : parsed.prerelease.join('.'),
+			build      : build + 1,
 			date       : new Date().toISOString(),
 
 			toString() {
 				const prerelease = this.prerelease ? `-${this.prerelease}` : '';
-				return `${this.major}.${this.minor}.${this.patch}${prerelease}`;
+				const build = this.prerelease ? `+${this.build}` : '';
+				return `${this.major}.${this.minor}.${this.patch}${prerelease}${build}`;
 			}
 		};
 	})();
@@ -286,14 +300,14 @@ function assembleLibraries(filenames) {
 	return concatFiles(filenames, contents => contents.replace(/^\n+|\n+$/g, ''));
 }
 
-function compileJavaScript(filenameObj, options) {
+function compileJavaScript(config, options) {
 	log('compiling JavaScript...');
 
 	// Join the files.
-	let bundle = concatFiles(filenameObj.files);
+	let bundle = concatFiles(walkPaths(config.files));
 
 	// Transpile to ES5 with Babel.
-	if (!_opt.options.noTranspile) {
+	if (!_opts.notranspile) {
 		const { transform } = require('@babel/core');
 		bundle = transform(bundle, {
 			// babelHelpers : 'bundled',
@@ -304,13 +318,13 @@ function compileJavaScript(filenameObj, options) {
 		}).code;
 	}
 
-	bundle = `${readFileContents(filenameObj.wrap.intro)}\n${bundle}\n${readFileContents(filenameObj.wrap.outro)}`;
+	bundle = `${readFileContents(config.wrap.intro)}\n${bundle}\n${readFileContents(config.wrap.outro)}`;
 
 	return (async source => {
-		if (_opt.options.unminified) {
+		if (_opts.unminified) {
 			return [
-				`window.TWINE1=${Boolean(options.twine1)}`,
-				`window.DEBUG=${_opt.options.debug || false}`,
+				`window.BUILD_TWINE1=${Boolean(options.twine1)}`,
+				`window.BUILD_DEBUG=${_opts.debug || false}`,
 				source
 			].join(';\n');
 		}
@@ -320,8 +334,8 @@ function compileJavaScript(filenameObj, options) {
 		const minified   = await minify(source, {
 			compress : {
 				global_defs : { // eslint-disable-line camelcase
-					TWINE1 : !!options.twine1,
-					DEBUG  : _opt.options.debug || false
+					BUILD_TWINE1 : !!options.twine1,
+					BUILD_DEBUG  : _opts.debug || false
 				}
 			},
 			mangle : false
@@ -360,7 +374,7 @@ function compileStyles(config) {
 			processed.warnings().forEach(mesg => console.warn(mesg.text));
 		}
 
-		if (!_opt.options.unminified) {
+		if (!_opts.unminified) {
 			css = new CleanCSS({
 				level         : 1,
 				compatibility : 'ie9'
