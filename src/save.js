@@ -950,14 +950,27 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 		if (typeof save.type === 'string') {
 			/* eslint-disable no-param-reassign */
 			switch (save.type) {
-				// Update v2.
-				case 'autosave':  save.type = Type.Auto; break;
-				case 'slot':      save.type = Type.Slot; break;
-				case 'disk':      save.type = Type.Disk; break;
-				case 'serialize': save.type = Type.Base64; break;
-				// Update v3 `alpha`.
-				case 'auto':   save.type = Type.Auto; break;
-				case 'base64': save.type = Type.Base64; break;
+				case 'auto':
+				case 'autosave': {
+					save.type = Type.Auto;
+					break;
+				}
+
+				case 'slot': {
+					save.type = Type.Slot;
+					break;
+				}
+
+				case 'disk': {
+					save.type = Type.Disk;
+					break;
+				}
+
+				case 'base64':
+				case 'serialize': {
+					save.type = Type.Base64;
+					break;
+				}
 			}
 			/* eslint-enable no-param-reassign */
 
