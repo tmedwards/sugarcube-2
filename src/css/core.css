@@ -115,6 +115,7 @@ a.link-broken:hover {
 a[disabled],
 span.link-disabled {
 	color: #aaa;
+	cursor: not-allowed !important;
 	/*
 		NOTE: Do not use `pointer-events` here as it disables
 		the display of a cursor in some browsers.
