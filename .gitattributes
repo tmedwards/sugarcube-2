@@ -17,7 +17,9 @@
 *.jpg binary
 *.pdf binary
 *.png binary
-*.ttf binary
+*.tif binary
+*.tiff binary
+*.webp binary
 
 # Archives
 *.7z binary
