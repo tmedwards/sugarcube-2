@@ -289,6 +289,26 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 		return key.startsWith(SLOT_INFO_SUBKEY);
 	}
 
+	function saveBlobToDiskAs(data, filename, extension) {
+		if (typeof filename !== 'string') {
+			throw new Error('filename parameter must be a string');
+		}
+
+		const baseName = createFilename(filename);
+
+		if (baseName === '') {
+			throw new Error('filename parameter must not consist solely of illegal characters');
+		}
+
+		const datestamp = createDatestamp(new Date());
+		const fileExt   = createFilename(extension) || 'save';
+
+		saveAs(
+			new Blob([data], { type : 'text/plain;charset=UTF-8' }),
+			`${baseName}-${datestamp}.${fileExt}`
+		);
+	}
+
 	function saveToBrowserStorage(saveData) {
 		const {
 			data,
@@ -313,26 +333,6 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			storage.delete(infoKey);
 			throw ex;
 		}
-	}
-
-	function saveBlobToDiskAs(data, filename, extension) {
-		if (typeof filename !== 'string') {
-			throw new Error('filename parameter must be a string');
-		}
-
-		const baseName = createFilename(filename);
-
-		if (baseName === '') {
-			throw new Error('filename parameter must not consist solely of illegal characters');
-		}
-
-		const datestamp = createDatestamp(new Date());
-		const fileExt   = createFilename(extension) || 'save';
-
-		saveAs(
-			new Blob([data], { type : 'text/plain;charset=UTF-8' }),
-			`${baseName}-${datestamp}.${fileExt}`
-		);
 	}
 
 
@@ -436,6 +436,10 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 
 			if (index < 0 || index > MAX_INDEX) {
 				throw new RangeError(`auto save index out of bounds (range: 0–${MAX_INDEX}; received: ${index})`);
+			}
+
+			if (State.length === 0) {
+				throw new Error(L10n.get('saveErrorTooEarly'));
 			}
 
 			const info = storage.get(getAutoInfoKeyFromIndex(index));
@@ -546,6 +550,10 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 
 			if (index < 0 || index > MAX_INDEX) {
 				throw new RangeError(`slot save index out of bounds (range: 0–${MAX_INDEX}; received: ${index})`);
+			}
+
+			if (State.length === 0) {
+				throw new Error(L10n.get('saveErrorTooEarly'));
 			}
 
 			const info = storage.get(getSlotInfoKeyFromIndex(index));
@@ -707,6 +715,10 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			// Add the handler that will capture the file data once the load is finished.
 			jQuery(reader).on('loadend', () => {
 				try {
+					if (State.length === 0) {
+						throw new Error(L10n.get('saveErrorTooEarly'));
+					}
+
 					if (reader.error) {
 						throw new Error(`${L10n.get('saveErrorDiskLoadFail')}: ${reader.error}`);
 					}
@@ -839,6 +851,10 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 
 	function base64Load(base64) {
 		return new Promise(resolve => {
+			if (State.length === 0) {
+				throw new Error(L10n.get('saveErrorTooEarly'));
+			}
+
 			let save;
 
 			try {
