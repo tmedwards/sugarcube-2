@@ -89,6 +89,8 @@ var l10nStrings = { // eslint-disable-line no-unused-vars, no-var
 
 	saveErrorInvalidData : 'save is missing required data, likely due to corruption',
 
+	saveErrorLoadTooEarly : 'cannot load save this early',
+
 	saveErrorNonexistent : 'save does not exist',
 
 
