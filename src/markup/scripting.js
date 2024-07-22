@@ -549,16 +549,14 @@ var Scripting = (() => { // eslint-disable-line no-unused-vars, no-var
 			'(?:\\.{3})',                                         //   Spread/rest syntax
 			'([^"\'=+\\-*\\/%<>&\\|\\^~!?:,;\\(\\)\\[\\]{}\\s]+)' // 2=Barewords
 		].join('|'), 'g');
-		const varTest         = new RegExp(`^${Patterns.variable}`);
-		const withColonTestRE = new RegExp(`^${Patterns.space}*:`);
+		const varTest = new RegExp(`^${Patterns.variable}`);
 
-		function desugar(rawCodeString) {
+		function desugar(sugaredCode) {
 			if (desugarRE.lastIndex !== 0) {
 				throw new RangeError('Scripting.desugar last index is non-zero at start');
 			}
 
-			let code      = rawCodeString;
-			let lastMatch = '';
+			let code  = sugaredCode;
 			let match;
 
 			while ((match = desugarRE.exec(code)) !== null) {
@@ -573,7 +571,7 @@ var Scripting = (() => { // eslint-disable-line no-unused-vars, no-var
 						code = code.splice(
 							match.index,        // starting index
 							rawTemplate.length, // replace how many
-							desugaredTemplate      // replacement string
+							desugaredTemplate   // replacement string
 						);
 						desugarRE.lastIndex += desugaredTemplate.length - rawTemplate.length;
 					}
@@ -586,12 +584,6 @@ var Scripting = (() => { // eslint-disable-line no-unused-vars, no-var
 					// If the token is simply a dollar-sign or underscore, then it's either
 					// just the raw character or, probably, a function alias, so skip it.
 					if (token === '$' || token === '_') {
-						continue;
-					}
-
-					// If the token is followed by a colon and not preceeded by a question
-					// mark, then it's likely to be an object property, so skip it.
-					if (withColonTestRE.test(code.slice(desugarRE.lastIndex)) && !lastMatch.endsWith('?')) {
 						continue;
 					}
 
@@ -612,8 +604,6 @@ var Scripting = (() => { // eslint-disable-line no-unused-vars, no-var
 						desugarRE.lastIndex += tokenTable[token].length - token.length;
 					}
 				}
-
-				lastMatch = match[0];
 			}
 
 			return code;
