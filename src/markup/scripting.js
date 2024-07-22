@@ -552,9 +552,7 @@ var Scripting = (() => { // eslint-disable-line no-unused-vars, no-var
 		const varTest = new RegExp(`^${Patterns.variable}`);
 
 		function desugar(sugaredCode) {
-			if (desugarRE.lastIndex !== 0) {
-				throw new RangeError('Scripting.desugar last index is non-zero at start');
-			}
+			desugarRE.lastIndex = 0;
 
 			let code  = sugaredCode;
 			let match;
@@ -564,16 +562,16 @@ var Scripting = (() => { // eslint-disable-line no-unused-vars, no-var
 
 				// Template literal, non-empty.
 				if (match[1]) {
-					const rawTemplate = match[1];
-					const desugaredTemplate = desugarTemplate(rawTemplate);
+					const sugaredTemplate = match[1];
+					const template = desugarTemplate(sugaredTemplate);
 
-					if (desugaredTemplate !== rawTemplate) {
+					if (template !== sugaredTemplate) {
 						code = code.splice(
-							match.index,        // starting index
-							rawTemplate.length, // replace how many
-							desugaredTemplate   // replacement string
+							match.index,            // starting index
+							sugaredTemplate.length, // replace how many
+							template                // replacement string
 						);
-						desugarRE.lastIndex += desugaredTemplate.length - rawTemplate.length;
+						desugarRE.lastIndex += template.length - sugaredTemplate.length;
 					}
 				}
 
@@ -619,12 +617,10 @@ var Scripting = (() => { // eslint-disable-line no-unused-vars, no-var
 		].join('|'), 'g');
 
 		// WARNING: Does not currently handle nested template strings.
-		function desugarTemplate(rawTemplateLiteral) {
-			if (templateGroupStartRE.lastIndex !== 0) {
-				throw new RangeError('Scripting.desugar last index is non-zero at start of template literal');
-			}
+		function desugarTemplate(sugaredLiteral) {
+			templateGroupStartRE.lastIndex = 0;
 
-			let template   = rawTemplateLiteral;
+			let template   = sugaredLiteral;
 			let startMatch;
 
 			while ((startMatch = templateGroupStartRE.exec(template)) !== null) {
@@ -654,19 +650,17 @@ var Scripting = (() => { // eslint-disable-line no-unused-vars, no-var
 				// If the group is not empty, replace it within the template
 				// with its desugared counterpart.
 				if (endIndex > startIndex) {
-					const desugarIndex = desugarRE.lastIndex;
-					const rawGroup     = template.slice(startIndex, endIndex);
-
-					desugarRE.lastIndex = 0;
-					const desugaredGroup = desugar(rawGroup);
-					desugarRE.lastIndex = desugarIndex;
+					const desugarREIndex = desugarRE.lastIndex;
+					const sugaredGroup   = template.slice(startIndex, endIndex);
+					const group          = desugar(sugaredGroup);
+					desugarRE.lastIndex = desugarREIndex;
 
 					template = template.splice(
-						startIndex,      // starting index
-						rawGroup.length, // replace how many
-						desugaredGroup   // replacement string
+						startIndex,          // starting index
+						sugaredGroup.length, // replace how many
+						group                // replacement string
 					);
-					templateGroupStartRE.lastIndex += desugaredGroup.length - rawGroup.length;
+					templateGroupStartRE.lastIndex += group.length - sugaredGroup.length;
 				}
 			}
 
