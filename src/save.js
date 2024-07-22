@@ -1070,6 +1070,12 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 		// Browser Saves Functions.
 		browser : {
 			value : Object.preventExtensions(Object.create(null, {
+				// Browser General Saves Functions.
+				clear     : { value : browserClear },
+				continue  : { value : browserContinue },
+				isEnabled : { value : browserIsEnabled },
+				size      : { get : browserSize },
+
 				// Browser Auto Saves Functions.
 				auto : {
 					value : Object.preventExtensions(Object.create(null, {
@@ -1098,13 +1104,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 						save      : { value : slotSave },
 						size      : { get : slotSize }
 					}))
-				},
-
-				// Browser General Saves Functions.
-				clear     : { value : browserClear },
-				continue  : { value : browserContinue },
-				isEnabled : { value : browserIsEnabled },
-				size      : { get : browserSize }
+				}
 			}))
 		},
 
