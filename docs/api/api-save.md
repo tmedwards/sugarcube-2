@@ -176,6 +176,10 @@ Loads the most recent browser save, either auto or slot.
 The default UI includes a <i>Continue</i> button that makes use of this API.  Thus, unless you disable or replace the default UI, players already have access to this functionality.</td>
 </p>
 
+<p role="note" class="warning"><b>Warning:</b>
+Saves cannot be loaded during startup and any attempt to do so <em>will</em> cause an error.</td>
+</p>
+
 #### History:
 
 * `v2.37.0`: Introduced.
@@ -468,6 +472,10 @@ if (Save.browser.auto.isEnabled()) {
 ### `Save.browser.auto.load(index)` → `Promise` {#save-api-browser-auto-method-load}
 
 Loads the auto save at the given index.
+
+<p role="note" class="warning"><b>Warning:</b>
+Saves cannot be loaded during startup and any attempt to do so <em>will</em> cause an error.</td>
+</p>
 
 #### History:
 
@@ -813,6 +821,10 @@ if (Save.browser.slot.isEnabled()) {
 
 Loads the slot save at the given index.
 
+<p role="note" class="warning"><b>Warning:</b>
+Saves cannot be loaded during startup and any attempt to do so <em>will</em> cause an error.</td>
+</p>
+
 #### History:
 
 * `v2.37.0`: Introduced.
@@ -1068,6 +1080,10 @@ Loads the given save from disk, created via [`Save.disk.save()`](#save-api-disk-
 This method <em>must</em> be used as, or be called by, the <code>change</code> event handler of an <code>&lt;input type="file"&gt;</code> element.
 </p>
 
+<p role="note" class="warning"><b>Warning:</b>
+Saves cannot be loaded during startup and any attempt to do so <em>will</em> cause an error.</td>
+</p>
+
 #### History:
 
 * `v2.37.0`: Introduced.
@@ -1301,6 +1317,10 @@ Save.base64.import(base64Bundle)
 ### `Save.base64.load(save)` → `Promise` {#save-api-base64-method-load}
 
 Loads the given Base64 save string, created via [`Save.base64.save()`](#save-api-base64-method-save).
+
+<p role="note" class="warning"><b>Warning:</b>
+Saves cannot be loaded during startup and any attempt to do so <em>will</em> cause an error.</td>
+</p>
 
 #### History:
 
