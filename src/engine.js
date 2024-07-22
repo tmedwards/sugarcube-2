@@ -306,7 +306,7 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 			else {
 				new Promise((resolve, reject) => {
 					if (
-						Save.browser.hasContinue()
+						Save.browser.size > 0
 						&& (
 							autoloadType === 'boolean' && Config.saves._internal_autoload_
 							|| autoloadType === 'function' && Config.saves._internal_autoload_()
@@ -320,7 +320,8 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 					.then(() => {
 						if (BUILD_DEBUG) { console.log('\tattempting autoload of browser continue'); }
 
-						return Save.browser.continue();
+						Save.browser.continue();
+						engineShow();
 					})
 					.catch(() => {
 						if (BUILD_DEBUG) { console.log(`\tstarting passage: "${Config.passages.start}"`); }
