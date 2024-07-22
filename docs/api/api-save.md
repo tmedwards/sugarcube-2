@@ -176,6 +176,10 @@ Loads the most recent browser save, either auto or slot.
 The default UI includes a <i>Continue</i> button that makes use of this API.  Thus, unless you disable or replace the default UI, players already have access to this functionality.</td>
 </p>
 
+<p role="note" class="warning"><b>Warning:</b>
+Saves cannot be loaded during startup and any attempt to do so <em>will</em> cause an error.</td>
+</p>
+
 #### History:
 
 * `v2.37.0`: Introduced.
@@ -469,6 +473,10 @@ if (Save.browser.auto.isEnabled()) {
 
 Loads the auto save at the given index.
 
+<p role="note" class="warning"><b>Warning:</b>
+Saves cannot be loaded during startup and any attempt to do so <em>will</em> cause an error.</td>
+</p>
+
 #### History:
 
 * `v2.37.0`: Introduced.
@@ -487,23 +495,12 @@ A `Promise` that simply resolves, or rejects with an error if the save could not
 
 ##### Basic usage
 
-Load the auto save at the given index, only handling failure.  This should be sufficient in the majority of cases.
-
-```js
-Save.browser.auto.load(index)
-	.catch(error => {
-		/* Failure.  Handle the error. */
-		console.error(error);
-		UI.alert(error);
-	});
-```
-
-Load the auto save at the given index, handling both success and failure.
+Load the auto save at the given index.  This should be sufficient in the majority of cases.
 
 ```js
 Save.browser.auto.load(index)
 	.then(() => {
-		/* Success.  Do something special. */
+		Engine.show();
 	})
 	.catch(error => {
 		/* Failure.  Handle the error. */
@@ -813,6 +810,10 @@ if (Save.browser.slot.isEnabled()) {
 
 Loads the slot save at the given index.
 
+<p role="note" class="warning"><b>Warning:</b>
+Saves cannot be loaded during startup and any attempt to do so <em>will</em> cause an error.</td>
+</p>
+
 #### History:
 
 * `v2.37.0`: Introduced.
@@ -831,23 +832,12 @@ A `Promise` that simply resolves, or rejects with an error if the save could not
 
 ##### Basic usage
 
-Load the slot save at the given index, only handling failure.  This should be sufficient in the majority of cases.
-
-```js
-Save.browser.slot.load(index)
-	.catch(error => {
-		/* Failure.  Handle the error. */
-		console.error(error);
-		UI.alert(error);
-	});
-```
-
-Load the slot save at the given index, handling both success and failure.
+Load the slot save at the given index.  This should be sufficient in the majority of cases.
 
 ```js
 Save.browser.slot.load(index)
 	.then(() => {
-		/* Success.  Do something special. */
+		Engine.show();
 	})
 	.catch(error => {
 		/* Failure.  Handle the error. */
@@ -1068,6 +1058,10 @@ Loads the given save from disk, created via [`Save.disk.save()`](#save-api-disk-
 This method <em>must</em> be used as, or be called by, the <code>change</code> event handler of an <code>&lt;input type="file"&gt;</code> element.
 </p>
 
+<p role="note" class="warning"><b>Warning:</b>
+Saves cannot be loaded during startup and any attempt to do so <em>will</em> cause an error.</td>
+</p>
+
 #### History:
 
 * `v2.37.0`: Introduced.
@@ -1086,7 +1080,7 @@ A `Promise` that resolves with the save's metadata (`any`), or rejects with an e
 
 ##### Basic usage
 
-Load the disk save, only handling failure.  This should be sufficient in the majority of cases.
+Load the disk save.  This should be sufficient in the majority of cases.
 
 ```js
 jQuery(document.createElement('input'))
@@ -1098,28 +1092,8 @@ jQuery(document.createElement('input'))
 	.on('change', ev => {
 		// You must provide the event to Save.disk.load()
 		Save.disk.load(ev)
-			.catch(error => {
-				/* Failure.  Handle the error. */
-				console.error(error);
-				UI.alert(error);
-			});
-	});
-```
-
-Load the disk save, handling both success and failure.
-
-```js
-jQuery(document.createElement('input'))
-	.prop({
-		id   : 'saves-disk-load-file',
-		name : 'saves-disk-load-file',
-		type : 'file'
-	})
-	.on('change', function (ev) {
-		// You must provide the event to Save.disk.load()
-		Save.disk.load(ev)
 			.then(metadata => {
-				/* Success.  Do something special. */
+				Engine.show();
 			})
 			.catch(error => {
 				/* Failure.  Handle the error. */
@@ -1139,6 +1113,9 @@ jQuery(document.createElement('input'))
 		.on('change', ev => {
 			// You must provide the event to Save.disk.load()
 			Save.disk.load(ev)
+				.then(metadata => {
+					Engine.show();
+				})
 				.catch(error => {
 					/* Failure.  Handle the error. */
 					console.error(error);
@@ -1302,6 +1279,10 @@ Save.base64.import(base64Bundle)
 
 Loads the given Base64 save string, created via [`Save.base64.save()`](#save-api-base64-method-save).
 
+<p role="note" class="warning"><b>Warning:</b>
+Saves cannot be loaded during startup and any attempt to do so <em>will</em> cause an error.</td>
+</p>
+
 #### History:
 
 * `v2.37.0`: Introduced.
@@ -1320,23 +1301,12 @@ A `Promise` that resolves with the save's metadata (`any`), or rejects with an e
 
 ##### Basic usage
 
-Load the save string, only handling failure.  This should be sufficient in the majority of cases.
-
-```js
-Save.base64.load(base64Save)
-	.catch(error => {
-		/* Failure.  Handle the error. */
-		console.error(error);
-		UI.alert(error);
-	});
-```
-
-Load the save string, handling both success and failure.
+Load the save string.  This should be sufficient in the majority of cases.
 
 ```js
 Save.base64.load(base64Save)
 	.then(metadata => {
-		/* Success.  Do something special. */
+		Engine.show();
 	})
 	.catch(error => {
 		/* Failure.  Handle the error. */
