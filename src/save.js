@@ -439,7 +439,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			}
 
 			if (State.length === 0) {
-				throw new Error(L10n.get('saveErrorTooEarly'));
+				throw new Error(L10n.get('saveErrorLoadTooEarly'));
 			}
 
 			const info = storage.get(getAutoInfoKeyFromIndex(index));
@@ -553,7 +553,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			}
 
 			if (State.length === 0) {
-				throw new Error(L10n.get('saveErrorTooEarly'));
+				throw new Error(L10n.get('saveErrorLoadTooEarly'));
 			}
 
 			const info = storage.get(getSlotInfoKeyFromIndex(index));
@@ -716,7 +716,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			jQuery(reader).on('loadend', () => {
 				try {
 					if (State.length === 0) {
-						throw new Error(L10n.get('saveErrorTooEarly'));
+						throw new Error(L10n.get('saveErrorLoadTooEarly'));
 					}
 
 					if (reader.error) {
@@ -852,7 +852,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 	function base64Load(base64) {
 		return new Promise(resolve => {
 			if (State.length === 0) {
-				throw new Error(L10n.get('saveErrorTooEarly'));
+				throw new Error(L10n.get('saveErrorLoadTooEarly'));
 			}
 
 			let save;
