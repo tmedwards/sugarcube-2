@@ -6,7 +6,7 @@
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* global Save, State, getTypeOf */
+/* global Save, State, Story, getTypeOf */
 
 var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 	// General settings.
@@ -356,7 +356,7 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 			set version(value) { _savesVersion = value; },
 
 			/* legacy */
-			get _internal_autoload_() {
+			get _internal_autoload_() { // eslint-disable-line camelcase
 				return _savesAutoload;
 			},
 			// Warn if the deprecated autoload getter is accessed.
@@ -423,10 +423,13 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 						}
 
 						if (!Config.saves.isAllowed) {
-							const tags = value;
+							const userTags = value;
 							Config.saves.isAllowed = function (saveType) {
 								// Allow all other types while testing auto saves.
-								return saveType !== Save.Type.Auto || tags.includesAny(tags());
+								return (
+									saveType !== Save.Type.Auto
+									|| userTags.includesAny(Story.get(State.passage).tags.slice(0))
+								);
 							};
 						}
 
