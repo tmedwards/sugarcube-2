@@ -6,7 +6,7 @@
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* global Config, L10n, Serial, State, createFilename, enumFrom, getTypeOf, storage */
+/* global Config, Engine, L10n, Serial, State, createFilename, enumFrom, getTypeOf, storage */
 
 /*
 	Save API (v3) static object.
@@ -190,7 +190,11 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 		}
 
 		if (!desc && typeof Config.saves.descriptions === 'function') {
-			desc = String(Config.saves.descriptions(saveType)).trim();
+			desc = Config.saves.descriptions(saveType);
+
+			if (typeof desc === 'string') {
+				desc = desc.trim();
+			}
 		}
 
 		details.desc = desc || `${L10n.get('textTurn')} ${State.turns}`;
@@ -289,6 +293,26 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 		return key.startsWith(SLOT_INFO_SUBKEY);
 	}
 
+	function saveBlobToDiskAs(data, filename, extension) {
+		if (typeof filename !== 'string') {
+			throw new Error('filename parameter must be a string');
+		}
+
+		const baseName = createFilename(filename);
+
+		if (baseName === '') {
+			throw new Error('filename parameter must not consist solely of illegal characters');
+		}
+
+		const datestamp = createDatestamp(new Date());
+		const fileExt   = createFilename(extension) || 'save';
+
+		saveAs(
+			new Blob([data], { type : 'text/plain;charset=UTF-8' }),
+			`${baseName}-${datestamp}.${fileExt}`
+		);
+	}
+
 	function saveToBrowserStorage(saveData) {
 		const {
 			data,
@@ -313,26 +337,6 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			storage.delete(infoKey);
 			throw ex;
 		}
-	}
-
-	function saveBlobToDiskAs(data, filename, extension) {
-		if (typeof filename !== 'string') {
-			throw new Error('filename parameter must be a string');
-		}
-
-		const baseName = createFilename(filename);
-
-		if (baseName === '') {
-			throw new Error('filename parameter must not consist solely of illegal characters');
-		}
-
-		const datestamp = createDatestamp(new Date());
-		const fileExt   = createFilename(extension) || 'save';
-
-		saveAs(
-			new Blob([data], { type : 'text/plain;charset=UTF-8' }),
-			`${baseName}-${datestamp}.${fileExt}`
-		);
 	}
 
 
@@ -436,6 +440,10 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 
 			if (index < 0 || index > MAX_INDEX) {
 				throw new RangeError(`auto save index out of bounds (range: 0–${MAX_INDEX}; received: ${index})`);
+			}
+
+			if (Engine.state === Engine.States.Init) {
+				throw new Error(L10n.get('saveErrorLoadTooEarly'));
 			}
 
 			const info = storage.get(getAutoInfoKeyFromIndex(index));
@@ -546,6 +554,10 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 
 			if (index < 0 || index > MAX_INDEX) {
 				throw new RangeError(`slot save index out of bounds (range: 0–${MAX_INDEX}; received: ${index})`);
+			}
+
+			if (Engine.state === Engine.States.Init) {
+				throw new Error(L10n.get('saveErrorLoadTooEarly'));
 			}
 
 			const info = storage.get(getSlotInfoKeyFromIndex(index));
@@ -707,6 +719,10 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 			// Add the handler that will capture the file data once the load is finished.
 			jQuery(reader).on('loadend', () => {
 				try {
+					if (Engine.state === Engine.States.Init) {
+						throw new Error(L10n.get('saveErrorLoadTooEarly'));
+					}
+
 					if (reader.error) {
 						throw new Error(`${L10n.get('saveErrorDiskLoadFail')}: ${reader.error}`);
 					}
@@ -839,6 +855,10 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 
 	function base64Load(base64) {
 		return new Promise(resolve => {
+			if (Engine.state === Engine.States.Init) {
+				throw new Error(L10n.get('saveErrorLoadTooEarly'));
+			}
+
 			let save;
 
 			try {
@@ -1054,6 +1074,12 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 		// Browser Saves Functions.
 		browser : {
 			value : Object.preventExtensions(Object.create(null, {
+				// Browser General Saves Functions.
+				clear     : { value : browserClear },
+				continue  : { value : browserContinue },
+				isEnabled : { value : browserIsEnabled },
+				size      : { get : browserSize },
+
 				// Browser Auto Saves Functions.
 				auto : {
 					value : Object.preventExtensions(Object.create(null, {
@@ -1082,13 +1108,7 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 						save      : { value : slotSave },
 						size      : { get : slotSize }
 					}))
-				},
-
-				// Browser General Saves Functions.
-				clear     : { value : browserClear },
-				continue  : { value : browserContinue },
-				isEnabled : { value : browserIsEnabled },
-				size      : { get : browserSize }
+				}
 			}))
 		},
 

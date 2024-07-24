@@ -284,7 +284,7 @@
 	* [`Config.addVisitedLinkClass`](#config-api-property-addvisitedlinkclass)
 	* [`Config.cleanupWikifierOutput`](#config-api-property-cleanupwikifieroutput)
 	* [`Config.debug`](#config-api-property-debug)
- * [`Config.enableOptionalDebugging`](#config-api-property-enableoptionaldebugging)
+ 	* [`Config.enableOptionalDebugging`](#config-api-property-enableoptionaldebugging)
 	* [`Config.loadDelay`](#config-api-property-loaddelay)
 * [Audio Settings](#config-api-audio)
 	* [`Config.audio.pauseOnFadeToZero`](#config-api-property-audio-pauseonfadetozero)

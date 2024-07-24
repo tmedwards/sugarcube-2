@@ -289,7 +289,7 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 		document.documentElement.focus();
 
 		// Attempt to restore an active session.  Failing that, attempt to
-		// autoload the autosave, if requested.  Failing that, display the
+		// autoload the auto save, if requested.  Failing that, display the
 		// starting passage.
 		if (State.restore()) {
 			engineShow();
@@ -306,7 +306,7 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 			else {
 				new Promise((resolve, reject) => {
 					if (
-						Save.browser.hasContinue()
+						Save.browser.size > 0
 						&& (
 							autoloadType === 'boolean' && Config.saves._internal_autoload_
 							|| autoloadType === 'function' && Config.saves._internal_autoload_()
@@ -320,7 +320,8 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 					.then(() => {
 						if (BUILD_DEBUG) { console.log('\tattempting autoload of browser continue'); }
 
-						return Save.browser.continue();
+						Save.browser.continue();
+						engineShow();
 					})
 					.catch(() => {
 						if (BUILD_DEBUG) { console.log(`\tstarting passage: "${Config.passages.start}"`); }
@@ -337,35 +338,26 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 	function engineRestart() {
 		if (BUILD_DEBUG) { console.log('[Engine/engineRestart()]'); }
 
-		/*
-			Show the loading screen to hide any unsightly rendering shenanigans during the
-			page reload.
-		*/
+		// Show the loading screen to hide any unsightly rendering shenanigans
+		// during the page reload.
 		LoadScreen.show();
 
-		/*
-			Scroll the window to the top.
-
-			This is required by most browsers for the starting passage or it will remain at
-			whatever its current scroll position is after the page reload.  We do it generally,
-			rather than only for the currently set starting passage, since the starting passage
-			may be dynamically manipulated.
-		*/
+		// Scroll the window to the top.
+		//
+		// NOTE: This is required by most browsers for the starting passage or
+		// it will remain at whatever its current scroll position is after the
+		// page reload.  We do it generally, rather than only for the currently
+		// set starting passage, since the starting passage may be dynamically
+		// manipulated.
 		window.scroll(0, 0);
 
-		/*
-			Delete the active session.
-		*/
+		// Delete the active session.
 		State.reset();
 
-		/*
-			Trigger an ':enginerestart' event.
-		*/
+		// Trigger an ':enginerestart' event.
 		triggerEvent(':enginerestart');
 
-		/*
-			Reload the page.
-		*/
+		// Reload the page.
 		window.location.reload();
 	}
 
@@ -408,13 +400,13 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 		Activate the moment at the given index within the state history and show it.
 	*/
 	function engineGoTo(index) {
-		const succeded = State.goTo(index);
+		const succeeded = State.goTo(index);
 
-		if (succeded) {
+		if (succeeded) {
 			engineShow();
 		}
 
-		return succeded;
+		return succeeded;
 	}
 
 	/*
@@ -422,13 +414,13 @@ var Engine = (() => { // eslint-disable-line no-unused-vars, no-var
 		and show it.
 	*/
 	function engineGo(offset) {
-		const succeded = State.go(offset);
+		const succeeded = State.go(offset);
 
-		if (succeded) {
+		if (succeeded) {
 			engineShow();
 		}
 
-		return succeded;
+		return succeeded;
 	}
 
 	/*
