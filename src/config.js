@@ -428,7 +428,7 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 								// Allow all other types while testing auto saves.
 								return (
 									saveType !== Save.Type.Auto
-									|| userTags.includesAny(Story.get(State.passage).tags.slice(0))
+									|| userTags.includesAny(Story.get(State.passage).tags)
 								);
 							};
 						}

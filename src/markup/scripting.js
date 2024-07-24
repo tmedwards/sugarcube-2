@@ -243,7 +243,7 @@ var Scripting = (() => { // eslint-disable-line no-unused-vars, no-var
 	*/
 	function tags(/* variadic */) {
 		if (arguments.length === 0) {
-			return Story.get(State.passage).tags.slice(0);
+			return Story.get(State.passage).tags;
 		}
 
 		const passages = Array.prototype.concat.apply([], arguments);
