@@ -190,7 +190,11 @@ var Save = (() => { // eslint-disable-line no-unused-vars, no-var
 		}
 
 		if (!desc && typeof Config.saves.descriptions === 'function') {
-			desc = String(Config.saves.descriptions(saveType)).trim();
+			desc = Config.saves.descriptions(saveType);
+
+			if (typeof desc === 'string') {
+				desc = desc.trim();
+			}
 		}
 
 		details.desc = desc || `${L10n.get('textTurn')} ${State.turns}`;
