@@ -383,12 +383,6 @@
 					return this.error('no tracks defined via <<track>>');
 				}
 
-				const playlist = Macro.get('playlist');
-
-				if (playlist.from !== null && playlist.from !== 'createplaylist') {
-					return this.error('a playlist has already been defined with <<setplaylist>>');
-				}
-
 				// Initial debug view setup for `<<createplaylist>>`.
 				if (Config.debug) {
 					this.debugView
@@ -480,11 +474,6 @@
 				}
 				catch (ex) {
 					return this.error(ex.message);
-				}
-
-				// Lock `<<playlist>>` into our syntax.
-				if (playlist.from === null) {
-					playlist.from = 'createplaylist';
 				}
 
 				// Custom fake debug view setup for `<</createplaylist>>`.
