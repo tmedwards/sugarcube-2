@@ -143,13 +143,13 @@ var Serial = (() => { // eslint-disable-line no-unused-vars, no-var
 			}
 
 			// Handle supported primitive values unsupported by JSON.
-			switch (typeof value) {
-				case 'undefined':
-					value = ['(revive:)', 'undefined'];
+			switch (value) {
+				case undefined:
+					value = ['(revive:)', ['undefined']];
 					break;
 
-				case 'Infinity':
-					value = ['(revive:)', 'Infinity'];
+				case Infinity:
+					value = ['(revive:)', ['Infinity']];
 					break;
 			}
 
