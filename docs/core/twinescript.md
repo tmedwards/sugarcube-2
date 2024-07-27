@@ -70,7 +70,7 @@ The following types of values are natively supported by SugarCube and may be saf
 ### Primitives
 
 * Booleans—e.g., `true` &amp; `false`
-* Numbers—e.g., `42`, `3.14`,  &amp; `-17.01`
+* Numbers—e.g., `42`, `3.14`, `-24`, `-17.76`, &amp; `Infinity`
 * Strings—e.g., `"I like pie"` &amp; `'You like pie'`
 * `null`
 * `undefined`
