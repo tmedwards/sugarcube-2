@@ -2618,7 +2618,7 @@ This macro should be invoked <strong><em>once</em></strong> following any invoca
 
 ### `<<done>> … <</done>>` {#macros-macro-done}
 
-Silently executes its contents when the incoming passage is done rendering and has been added to the page.  Generally, only really useful for running code that needs to manipulate elements from the incoming passage, since you must wait until they've been added to the page.
+Silently executes its contents when page is done rendering and the engine has become idle.  Generally, only really useful for running code that needs to manipulate elements from the incoming passage, since you must wait until they've been added to the page.
 
 <p role="note" class="tip"><b>Tip:</b>
 If you need to run the same code on multiple passages, consider using the <a href="#special-passage-passagedone"><code>PassageDone</code> special passage</a> or, for a JavaScript/TwineScript solution, a <a href="#events-navigation-event-passagedisplay"><code>:passagedisplay</code> event</a> instead.  They serve the same basic purpose as the <code>&lt;&lt;done&gt;&gt;</code> macro, but are run each time passage navigation occurs.
