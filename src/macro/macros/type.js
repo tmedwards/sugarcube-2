@@ -33,6 +33,8 @@ Macro.add('type', {
 		let elTag   = 'div';
 		let skipKey = Config.macros.typeSkipKey;
 		let start   = 400; // in milliseconds
+		let pause   = speed;
+		let regex   =  RegExp(/[]/);
 
 		// Process optional arguments.
 		const options = this.args.slice(1);
@@ -115,6 +117,36 @@ Macro.add('type', {
 
 					if (start < 0) {
 						throw new Error(`start option time value must be non-negative (received: ${value})`);
+					}
+
+					break;
+				}
+				case 'pause': {
+					if (options.length === 0) {
+						return this.error('pause option missing required time value');
+					}
+
+					const value = options.shift();
+					pause = cssTimeToMS(value);
+
+					if (start < 0) {
+						throw new Error(`pause option time value must be non-negative (received: ${value})`);
+					}
+
+					break;
+				}
+
+
+				case 'regex': {
+					if (options.length === 0) {
+						return this.error('regex option missing required time value');
+					}
+
+					const value = options.shift();
+					const escapedStr = value.replace(/([.*+?^${}()|[\]\\/])/g, '\\$1');
+					regex = RegExp(`[${escapedStr}]`);
+					if (start < 0) {
+						throw new Error(`regex option time value must be non-negative (received: ${value})`);
 					}
 
 					break;
@@ -295,6 +327,15 @@ Macro.add('type', {
 								$wrapper.addClass(`${className}-cursor`);
 							}
 						}
+
+						const lastChar = $wrapper.text().slice(-1);
+
+						let delay = speed;
+						if (regex.test(lastChar)) {
+							delay = pause;
+						}
+
+						setTimeout(typeNodeMember, delay);
 					};
 
 					// Fire the typing start event.
@@ -302,9 +343,6 @@ Macro.add('type', {
 
 					// Type the initial node member.
 					typeNodeMember();
-
-					// Set up the interval to continue typing.
-					const typeNodeMemberId = setInterval(() => typeNodeMember(typeNodeMemberId), speed);
 				};
 
 				// Kick off typing the node.
