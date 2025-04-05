@@ -376,7 +376,13 @@ Allows the destination of passage navigation to be overridden.  The callback is 
 
 The callback value (`Function`).
 
+#### Callback parameters:
+
+* **`destinationPassage`:** (`string`) The original destination passage name.
+
 #### Examples:
+
+##### Basic usage
 
 ```javascript
 Config.navigation.override = (destinationPassage) => {
@@ -470,12 +476,17 @@ Does not affect <code>script</code> or <code>stylesheet</code> tagged passages, 
 
 A callback value (`Function`).
 
+#### Callback parameters:
+
+* **`passage`:** (`Object`) An abbreviated version of the associated passage's [`Passage` instance](#passage-api)—containing only the `name`, `tags`, and `text` properties.
+
 #### Examples:
 
 ```javascript
 // Change instances of "cat" to "dog" in passages
 Config.passages.onProcess = (p) => p.text.replace(/\bcat(s?)\b/g, 'dog$1');
 ```
+
 
 <!-- *********************************************************************** -->
 
@@ -589,6 +600,10 @@ Sets browser saves descriptions.  If unset, a brief description of the current t
 
 A callback value (`Function`).
 
+#### Callback parameters:
+
+* **`saveType`:** (`Save.Type`) The [`Save.Type`](#save-api-constants-type) pseudo-enumeration.  Used to denote the type of save.
+
 #### Examples:
 
 ##### Using passages' names
@@ -601,14 +616,14 @@ Config.saves.descriptions = (saveType) => passage();
 
 ```javascript
 let saveDescriptions = {
-	'passage_title_a' : 'description text a…',
-	'passage_title_b' : 'description text b…',
-	'passage_title_c' : 'description text c…'
+	'passage_name_a' : 'description text a…',
+	'passage_name_b' : 'description text b…',
+	'passage_name_c' : 'description text c…'
 };
 Config.saves.descriptions = (saveType) => saveDescriptions[passage()];
 ```
 
-##### Using the provided save type
+##### Using the `saveType` parameter
 
 ```javascript
 Config.saves.descriptions = (saveType) => {
@@ -665,6 +680,10 @@ Determines whether saving is allowed within the current context.  If unset, save
 #### Value:
 
 A callback value (`Function`).
+
+#### Callback parameters:
+
+* **`saveType`:** (`Save.Type`) The [`Save.Type`](#save-api-constants-type) pseudo-enumeration.  Used to denote the type of save.
 
 #### Examples:
 
