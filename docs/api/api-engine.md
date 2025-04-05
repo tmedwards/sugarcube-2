@@ -3,7 +3,54 @@
 ************************************************************************************************ -->
 # `Engine` API {#engine-api}
 
+<!-- ***************************************************************************
+	Engine Constants
+**************************************************************************** -->
+## Constants {#engine-api-constants}
+
 <!-- *********************************************************************** -->
+
+### `Engine.State` {#engine-api-constants-state}
+
+Engine state pseudo-enumeration.  Used to denote the state of the engine.
+
+As passage navigation occurs the engine cycles through the states thusly: idle (start) → playing → rendering → playing → idle (end).
+
+#### History:
+
+* `v2.0.0`: Introduced.
+* `v2.37.0`: Changed into a public API.
+
+#### Values:
+
+<table>
+<thead>
+	<tr>
+		<th>State</th>
+		<th>Description</th>
+	</tr>
+</thead>
+<tbody>
+	<tr>
+		<th><code>Engine.State.Idle</code></th>
+		<td>The engine is currently idle, awaiting the triggering of passage navigation.  This is the default state.</td>
+	</tr>
+	<tr>
+		<th><code>Engine.State.Playing</code></th>
+		<td>Passage navigation has been triggered and the engine is playing/processing a passage.</td>
+	</tr>
+	<tr>
+		<th><code>Engine.State.Rendering</code></th>
+		<td>The incoming passage is being rendered.  This takes place during and implies `Engine.State.Playing`.
+</td>
+	</tr>
+</tbody>
+</table>
+
+
+<!-- ***************************************************************************
+	Engine Methods
+**************************************************************************** -->
 
 ### `Engine.lastPlay` → `number` {#engine-api-getter-lastplay}
 
@@ -35,21 +82,17 @@ if ((now() - Engine.lastPlay) > 5000) {
 
 <!-- *********************************************************************** -->
 
-### `Engine.state` → `string` {#engine-api-getter-state}
+### `Engine.state` → `Engine.State` {#engine-api-getter-state}
 
-Returns the current state of the engine (`"idle"`, `"playing"`, `"rendering"`).
+Returns the current state of the engine.
 
 #### History:
 
 * `v2.7.0`: Introduced.
 
-#### States:
+#### Value:
 
-* **`"idle"`:** The engine is idle, awaiting the triggering of passage navigation—the default state.
-* **`"playing"`:** Passage navigation has been triggered and a turn is being processed.
-* **`"rendering"`:** The incoming passage is being rendered and added to the page—takes place during turn processing, so implies `"playing"`.
-
-#### Value: ???
+An [`Engine.State`](#engine-api-constants-state) value.
 
 #### Examples:
 
