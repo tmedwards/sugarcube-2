@@ -812,6 +812,10 @@ Config.saves.maxSlotSaves = 4;
 
 Sets the `metadata` property of saves.  The callback is invoked each time a save is made.  It is passed the type of save being attempted.  Its return value should be an `Object` that will serve as the metadata of saves.
 
+<p role="note" class="see"><b>See:</b>
+<a href="#save-api-constants-type"><code>Save.Type</code> pseudo-enumeration</a> for more information on save types.
+</p>
+
 #### History:
 
 * `v2.37.0`: Introduced.
