@@ -51,6 +51,9 @@ As passage navigation occurs the engine cycles through the states thusly: idle (
 <!-- ***************************************************************************
 	Engine Methods
 **************************************************************************** -->
+## Methods {#engine-api-methods}
+
+<!-- *********************************************************************** -->
 
 ### `Engine.lastPlay` → `number` {#engine-api-getter-lastplay}
 
