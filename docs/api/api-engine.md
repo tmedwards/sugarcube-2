@@ -41,7 +41,7 @@ As passage navigation occurs the engine cycles through the states thusly: idle (
 	</tr>
 	<tr>
 		<th><code>Engine.State.Rendering</code></th>
-		<td>The incoming passage is being rendered.  This takes place during and implies `Engine.State.Playing`.
+		<td>The incoming passage is being rendered.  This takes place during and implies <code>Engine.State.Playing</code>.
 </td>
 	</tr>
 </tbody>
