@@ -10,7 +10,7 @@
 
 SugarCube (v'{{BUILD_VERSION_VERSION}}'): A free (gratis and libre) story format.
 
-Copyright © 2013–2021 Thomas Michael Edwards <thomasmedwards@gmail.com>.
+Copyright © 2013–2025 Thomas Michael Edwards <thomasmedwards@gmail.com>.
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
