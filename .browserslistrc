@@ -2,4 +2,4 @@
 # plugins—e.g., `@babel/preset-env`—will not properly process the aggregate
 # query.
 
-> 1% or last 3 versions or last 10 Chrome versions or last 10 Firefox versions or IE >= 9 or Opera >= 12
+> 1% or last 3 versions or last 10 Chrome versions or last 10 Firefox versions
