@@ -935,7 +935,7 @@ This macro is functionally identical to <a href="#macros-macro-link">&lt;&lt;lin
 #### History:
 
 * `v2.8.0`: Introduced.
-* `v2.38.0`: Added `class` and `id` arguments.
+* `v2.38.0`: Added the `class` and `id` options.
 
 #### Arguments:
 
@@ -955,7 +955,7 @@ This macro is functionally identical to <a href="#macros-macro-link">&lt;&lt;lin
 Additionally, all forms may include the following optional arguments:
 
 * **`class` *`classNames`*:** (optional) Sets the classes of the button.
-* **`id` *`identifier`*:** (optional) Sets the identifier of the button, which must be unique.
+* **`id` *`identifier`*:** (optional) Sets the identifier of the button, which must be unique on the page.
 
 #### Examples:
 
@@ -1012,7 +1012,8 @@ Creates a checkbox, used to modify the value of the variable with the given name
 #### History:
 
 * `v2.0.0`: Introduced.
-* `v2.32.0`: Added `autocheck` keyword.
+* `v2.32.0`: Added the `autocheck` option.
+* `v2.38.0`: Added the `class` and `id` options.
 
 #### Arguments:
 
@@ -1021,6 +1022,8 @@ Creates a checkbox, used to modify the value of the variable with the given name
 * **`checkedValue`:** The value set by the checkbox when checked.
 * **`autocheck`:** (optional) Keyword, used to signify that the checkbox should be automatically set to the checked state based on the current value of the receiver variable.  **NOTE:** Automatic checking may fail on non-primitive values—i.e., on arrays and objects.
 * **`checked`:** (optional) Keyword, used to signify that the checkbox should be in the checked state.
+* **`class` *`classNames`*:** (optional) Sets the classes of the button.
+* **`id` *`identifier`*:** (optional) Sets the identifier of the button, which must be unique on the page.
 
 #### Examples:
 
@@ -1062,7 +1065,7 @@ What pies do you enjoy?
 
 <!-- *********************************************************************** -->
 
-### `<<cycle receiverName [once] [autoselect]>>`<br><span class="child">`[<<option label [value [selected]]>> …]`<br>`[<<optionsfrom collection>> …]`</span><br>`<</cycle>>` {#macros-macro-cycle}
+### `<<cycle receiverName [autoselect] [once]>>`<br><span class="child">`[<<option label [value [selected]]>> …]`<br>`[<<optionsfrom collection>> …]`</span><br>`<</cycle>>` {#macros-macro-cycle}
 
 Creates a cycling link, used to modify the value of the variable with the given name.  The cycling options are populated via `<<option>>` and/or `<<optionsfrom>>`.
 
@@ -1073,16 +1076,18 @@ Creates a cycling link, used to modify the value of the variable with the given 
 #### History:
 
 * `v2.29.0`: Introduced.
-* `v2.36.0`: Fixed the `selected` keyword and added the `once` keyword.
-* `v2.38.0`: Changed to fire `change` events upon cycling through values.
+* `v2.36.0`: Fixed the `selected` option; added the `once` option.
+* `v2.38.0`: Added the `class` and `id` options; changed to fire `change` events upon cycling through values.
 
 #### Arguments:
 
 ##### `<<cycle>>`
 
 * **`receiverName`:** The name of the variable to modify, which *must* be quoted—e.g., `"$foo"`.  Object and array property references are also supported—e.g., `"$foo.bar"`, `"$foo['bar']"`, & `"$foo[0]"`.
-* **`once`:** (optional) Keyword, used to signify that the cycle should stop upon reaching the last option and deactivate itself.  **NOTE:** Since you likely want to start at the first option when using this keyword, you should either not select an option, so it defaults to the first, or, if you do, select the first option only.
 * **`autoselect`:** (optional) Keyword, used to signify that an option should be automatically selected as the cycle default based on the current value of the receiver variable.  **NOTE:** Automatic option selection will fail on non-primitive values—i.e., on arrays and objects.
+* **`class` *`classNames`*:** (optional) Sets the classes of the button.
+* **`id` *`identifier`*:** (optional) Sets the identifier of the button, which must be unique on the page.
+* **`once`:** (optional) Keyword, used to signify that the cycle should stop upon reaching the last option and deactivate itself.  **NOTE:** Since you likely want to start at the first option when using this keyword, you should either not select an option, so it defaults to the first, or, if you do, select the first option only.
 
 ##### `<<option>>`
 
@@ -1178,7 +1183,7 @@ If you simply need a passage link that modifies variables, both the <a href="#ma
 #### History:
 
 * `v2.8.0`: Introduced.
-* `v2.38.0`: Added `class` and `id` arguments.
+* `v2.38.0`: Added the `class` and `id` options.
 
 #### Arguments:
 
@@ -1345,11 +1350,12 @@ Creates a listbox, used to modify the value of the variable with the given name.
 #### History:
 
 * `v2.26.0`: Introduced.
-* `v2.27.0`: Added `autoselect` keyword.
-* `v2.28.0`: <s>Added `<<optionsFrom>>` child tag.</s>
-* `v2.28.1`: Fixed name of `<<optionsfrom>>` child tag, which was erroneously added as `<<optionsFrom>>` in `v2.28.0`.
+* `v2.27.0`: Added the `autoselect` option.
+* `v2.28.0`: <s>Added the `<<optionsFrom>>` child tag.</s>
+* `v2.28.1`: Fixed the name of `<<optionsfrom>>` child tag, which was erroneously added as `<<optionsFrom>>` in `v2.28.0`.
 * `v2.29.0`: Made the `<<option>>` child tag's `value` argument optional.
-* `v2.36.0`: Fixed the `selected` keyword.
+* `v2.36.0`: Fixed the `selected` option.
+* `v2.38.0`: Added the `class` and `id` options.
 
 #### Arguments:
 
@@ -1357,6 +1363,8 @@ Creates a listbox, used to modify the value of the variable with the given name.
 
 * **`receiverName`:** The name of the variable to modify, which *must* be quoted—e.g., `"$foo"`.  Object and array property references are also supported—e.g., `"$foo.bar"`, `"$foo['bar']"`, & `"$foo[0]"`.
 * **`autoselect`:** (optional) Keyword, used to signify that an option should be automatically selected as the listbox default based on the current value of the receiver variable.  **NOTE:** Automatic option selection will fail on non-primitive values—i.e., on arrays and objects.
+* **`class` *`classNames`*:** (optional) Sets the classes of the button.
+* **`id` *`identifier`*:** (optional) Sets the identifier of the button, which must be unique on the page.
 
 ##### `<<option>>`
 
@@ -1425,7 +1433,7 @@ What's your favorite pie?
 
 <!-- *********************************************************************** -->
 
-### `<<numberbox receiverName defaultValue [passage] [autofocus]>>` {#macros-macro-numberbox}
+### `<<numberbox receiverName defaultValue [autofocus] [class value] [id value] [max value] [min value] [step value] [passage]>>` {#macros-macro-numberbox}
 
 Creates a number input box, used to modify the value of the variable with the given name, optionally forwarding the player to another passage.
 
@@ -1436,13 +1444,16 @@ Creates a number input box, used to modify the value of the variable with the gi
 #### History:
 
 * `v2.32.0`: Introduced.
+* `v2.38.0`: Added the `class`, `id`, `max`, `min`, and `step` options.
 
 #### Arguments:
 
 * **`receiverName`:** The name of the variable to modify, which *must* be quoted—e.g., `"$foo"`.  Object and array property references are also supported—e.g., `"$foo.bar"`, `"$foo['bar']"`, &amp; `"$foo[0]"`.
 * **`defaultValue`:** The default value of the number box.
-* **`passage`:** (optional) The name of the passage to go to if the return/enter key is pressed.  May be called either with the passage name or with a link markup.
 * **`autofocus`:** (optional) Keyword, used to signify that the number box should automatically receive focus.  Only use the keyword *once* per page; attempting to focus more than one element is undefined behavior.
+* **`class` *`classNames`*:** (optional) Sets the classes of the button.
+* **`id` *`identifier`*:** (optional) Sets the identifier of the button, which must be unique on the page.
+* **`passage`:** (optional) The name of the passage to go to if the return/enter key is pressed.  May be called either with the passage name or with a link markup.
 
 #### Examples:
 
@@ -1473,7 +1484,8 @@ Creates a radio button, used to modify the value of the variable with the given 
 #### History:
 
 * `v2.0.0`: Introduced.
-* `v2.32.0`: Added `autocheck` keyword.
+* `v2.32.0`: Added the `autocheck` option.
+* `v2.38.0`: Added the `class` and `id` options.
 
 #### Arguments:
 
@@ -1533,12 +1545,15 @@ Creates a multiline text input block, used to modify the value of the variable w
 #### History:
 
 * `v2.0.0`: Introduced.
+* `v2.38.0`: Added the `class` and `id` options.
 
 #### Arguments:
 
 * **`receiverName`:** The name of the variable to modify, which *must* be quoted—e.g., `"$foo"`.  Object and array property references are also supported—e.g., `"$foo.bar"`, `"$foo['bar']"`, &amp; `"$foo[0]"`.
 * **`defaultValue`:** The default value of the text block.
 * **`autofocus`:** (optional) Keyword, used to signify that the text block should automatically receive focus.  Only use the keyword *once* per page; attempting to focus more than one element is undefined behavior.
+* **`class` *`classNames`*:** (optional) Sets the classes of the button.
+* **`id` *`identifier`*:** (optional) Sets the identifier of the button, which must be unique on the page.
 
 #### Examples:
 
@@ -1554,7 +1569,7 @@ Write a short essay about pies:
 
 <!-- *********************************************************************** -->
 
-### `<<textbox receiverName defaultValue [passage] [autofocus]>>` {#macros-macro-textbox}
+### `<<textbox receiverName defaultValue [autofocus] [passage]>>` {#macros-macro-textbox}
 
 Creates a text input box, used to modify the value of the variable with the given name, optionally forwarding the player to another passage.
 
@@ -1565,13 +1580,16 @@ Creates a text input box, used to modify the value of the variable with the give
 #### History:
 
 * `v2.0.0`: Introduced.
+* `v2.38.0`: Added the `class`, `id`, `maxlength`, `minlength`, `size`, and `spellcheck` options.
 
 #### Arguments:
 
 * **`receiverName`:** The name of the variable to modify, which *must* be quoted—e.g., `"$foo"`.  Object and array property references are also supported—e.g., `"$foo.bar"`, `"$foo['bar']"`, &amp; `"$foo[0]"`.
 * **`defaultValue`:** The default value of the text box.
-* **`passage`:** (optional) The name of the passage to go to if the return/enter key is pressed.  May be called either with the passage name or with a link markup.
 * **`autofocus`:** (optional) Keyword, used to signify that the text box should automatically receive focus.  Only use the keyword *once* per page; attempting to focus more than one element is undefined behavior.
+* **`class` *`classNames`*:** (optional) Sets the classes of the button.
+* **`id` *`identifier`*:** (optional) Sets the identifier of the button, which must be unique on the page.
+* **`passage`:** (optional) The name of the passage to go to if the return/enter key is pressed.  May be called either with the passage name or with a link markup.
 
 #### Examples:
 
