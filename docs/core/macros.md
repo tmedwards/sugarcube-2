@@ -1446,14 +1446,23 @@ Creates a number input box, used to modify the value of the variable with the gi
 * `v2.32.0`: Introduced.
 * `v2.38.0`: Added the `class`, `id`, `max`, `min`, and `step` options.
 
+#### Syntax:
+
+```
+<<numberbox receiverName defaultValue [autofocus] [class value] [id value] [max value] [min value] [passage] [step value]>>
+```
+
 #### Arguments:
 
 * **`receiverName`:** The name of the variable to modify, which *must* be quoted—e.g., `"$foo"`.  Object and array property references are also supported—e.g., `"$foo.bar"`, `"$foo['bar']"`, &amp; `"$foo[0]"`.
 * **`defaultValue`:** The default value of the number box.
 * **`autofocus`:** (optional) Keyword, used to signify that the number box should automatically receive focus.  Only use the keyword *once* per page; attempting to focus more than one element is undefined behavior.
-* **`class` *`classNames`*:** (optional) Sets the classes of the button.
-* **`id` *`identifier`*:** (optional) Sets the identifier of the button, which must be unique on the page.
+* **`class` *`value`*:** (optional) Sets the classes of the number box to *value*.
+* **`id` *`value`*:** (optional) Sets the identifier of the number box, which must be unique on the page, to *value*.
+* **`max` *`value`*:** (optional) Sets the maximum constraint of the number box to *value*.  Must be greater-than the minimum constraint value, if specified.
+* **`min` *`value`*:** (optional) Sets the minimum constraint of the number box to *value*.  Must be less-than the maximum constraint value, if specified.
 * **`passage`:** (optional) The name of the passage to go to if the return/enter key is pressed.  May be called either with the passage name or with a link markup.
+* **`step` *`value`*:** (optional) Sets the smallest allowable adjustment of the number box to *value*.
 
 #### Examples:
 
