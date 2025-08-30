@@ -954,8 +954,8 @@ This macro is functionally identical to <a href="#macros-macro-link">&lt;&lt;lin
 
 Additionally, all forms may include the following optional arguments:
 
-* **`class` *`classNames`*:** (optional) Sets the classes of the button.
-* **`id` *`identifier`*:** (optional) Sets the identifier of the button, which must be unique on the page.
+* **`class` *`value`*:** (optional) Sets the classes of the button to *value*.
+* **`id` *`value`*:** (optional) Sets the identifier of the button, which must be unique on the page, to *value*.
 
 #### Examples:
 
@@ -1433,7 +1433,7 @@ What's your favorite pie?
 
 <!-- *********************************************************************** -->
 
-### `<<numberbox receiverName defaultValue [autofocus] [class value] [id value] [max value] [min value] [step value] [passage]>>` {#macros-macro-numberbox}
+### `<<numberbox>>` {#macros-macro-numberbox}
 
 Creates a number input box, used to modify the value of the variable with the given name, optionally forwarding the player to another passage.
 
@@ -1449,35 +1449,59 @@ Creates a number input box, used to modify the value of the variable with the gi
 #### Syntax:
 
 ```
-<<numberbox receiverName defaultValue [autofocus] [class value] [id value] [max value] [min value] [passage] [step value]>>
+<<numberbox
+	receiverName defaultValue
+	[autofocus] [class value] [id value] [max value] [min value] [passage] [step value]
+>>
 ```
 
 #### Arguments:
 
-* **`receiverName`:** The name of the variable to modify, which *must* be quoted—e.g., `"$foo"`.  Object and array property references are also supported—e.g., `"$foo.bar"`, `"$foo['bar']"`, &amp; `"$foo[0]"`.
-* **`defaultValue`:** The default value of the number box.
-* **`autofocus`:** (optional) Keyword, used to signify that the number box should automatically receive focus.  Only use the keyword *once* per page; attempting to focus more than one element is undefined behavior.
-* **`class` *`value`*:** (optional) Sets the classes of the number box to *value*.
-* **`id` *`value`*:** (optional) Sets the identifier of the number box, which must be unique on the page, to *value*.
-* **`max` *`value`*:** (optional) Sets the maximum constraint of the number box to *value*.  Must be greater-than the minimum constraint value, if specified.
-* **`min` *`value`*:** (optional) Sets the minimum constraint of the number box to *value*.  Must be less-than the maximum constraint value, if specified.
-* **`passage`:** (optional) The name of the passage to go to if the return/enter key is pressed.  May be called either with the passage name or with a link markup.
-* **`step` *`value`*:** (optional) Sets the smallest allowable adjustment of the number box to *value*.
+##### Required:
+
+1. ***`receiverName`*:** The name of the variable to modify, which *must* be quoted—e.g., `"$foo"`.  Object and array property references are also supported—e.g., `"$foo.bar"`, `"$foo['bar']"`, &amp; `"$foo[0]"`.
+2. ***`defaultValue`*:** The default value of the number box.
+
+##### Optional:
+
+* **`autofocus`:** Keyword, used to signify that the number box should automatically receive focus.  Only use the keyword *once* per page; attempting to focus more than one element is undefined behavior.
+* **`class` *`value`*:** Keyword, used to set the classes of the number box to *value*.
+* **`id` *`value`*:** Keyword, used to set the identifier of the number box, which must be unique on the page, to *value*.
+* **`max` *`value`*:** Keyword, used to set the maximum constraint of the number box to *value*.  Must be greater-than the minimum constraint value, if specified.
+* **`min` *`value`*:** Keyword, used to set the minimum constraint of the number box to *value*.  Must be less-than the maximum constraint value, if specified.
+* ***`passage`*:** The name of the passage to go to if the return/enter key is pressed.  May be called either with the passage name or with a link markup.
+* **`step` *`value`*:** Keyword, used to set the smallest allowable adjustment of the number box to *value*.
 
 #### Examples:
 
+##### Basic usage
+
+Creates a number box that modifies `$wager`, with a default value of `100`.
+
 ```
-→ Creates a number box that modifies $wager
-Wager how much on Buttstallion in the race? <<numberbox "$wager" 100>>
+Wager how much on Buttstallion in the race?
+<<numberbox "$wager" 100>>
+```
 
-→ Creates an automatically focused number box that modifies $wager
-Wager how much on Buttstallion in the race? <<numberbox "$wager" 100 autofocus>>
+Creates an automatically focused number box that modifies `$wager`, with a default value of `100`.
 
-→ Creates a number box that modifies $wager and forwards to the "Result" passage
-Wager how much on Buttstallion in the race? <<numberbox "$wager" 100 "Result">>
+```
+Wager how much on Buttstallion in the race?
+<<numberbox "$wager" 100 autofocus>>
+```
 
-→ Creates an automatically focused number box that modifies $wager and forwards to the "Result" passage
-Wager how much on Buttstallion in the race? <<numberbox "$wager" 100 "Result" autofocus>>
+Creates a number box that modifies `$wager`, with a default value of `100`, and forwards to the `Result` passage.
+
+```
+Wager how much on Buttstallion in the race?
+<<numberbox "$wager" 100 "Result">>
+```
+
+Creates a number box that modifies `$wager`, with a default value of `100`, a minimum value of `100`, and maximum value of `1000`, and a step value of `50`.
+
+```
+Wager how much on Buttstallion in the race?
+<<numberbox "$wager" 100 id "buttstallion" class "wager" min 100 max 1000 step 50>>
 ```
 
 <!-- *********************************************************************** -->
