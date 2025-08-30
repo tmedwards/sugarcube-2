@@ -19,100 +19,74 @@
 	};
 
 	if (
-		   !document.head
-		|| !document.addEventListener
-		|| !document.querySelector
-		|| !Array.prototype.indexOf
-		|| !Object.defineProperties
+		!Object.entries
+		|| !Object.fromEntries
 		|| !hasWebStorage('localStorage')
 	) {
 		return;
 	}
 
-	const storageKey = 'sugarcube-v2-docs-cfg';
-	const SCDocs = Object.freeze(Object.create(null, {
+	const STORAGE_KEY = 'sugarcube-v2-docs-cfg';
+	const SCDocs      = Object.freeze(Object.create(null, {
+		_config : {
+			value() {
+				let config;
+
+				try {
+					config = JSON.parse(localStorage.getItem(STORAGE_KEY));
+				}
+				catch (ex) { /* no-op */ }
+
+				return config || {};
+			}
+		},
 		getConfig : {
 			value(key) {
-				const json = localStorage.getItem(storageKey);
+				const config = this._config();
 
-				if (json) {
-					try {
-						const config = JSON.parse(json);
-
-						if (
-							   config !== null
-							&& typeof config === 'object'
-							&& Object.hasOwn(config, key)
-						) {
-							return config[key];
-						}
-					}
-					catch (ex) { /* no-op */ }
+				if (Object.hasOwn(config, key)) {
+					return config[key];
 				}
 			}
 		},
 		setConfig : {
 			value(key, value) {
-				const json = localStorage.getItem(storageKey);
+				const config = this._config();
+				config[key] = value;
 
-				if (json) {
-					let config;
-
-					try {
-						config = JSON.parse(json);
-					}
-					catch (ex) { /* no-op */ }
-
-					if (config === null || typeof config !== 'object') {
-						config = {};
-					}
-
-					config[key] = value;
-
-					try {
-						localStorage.setItem(storageKey, JSON.stringify(config));
-						return true;
-					}
-					catch (ex) { /* no-op */ }
+				try {
+					localStorage.setItem(STORAGE_KEY, JSON.stringify(config));
+					return true;
 				}
+				catch (ex) { /* no-op */ }
 
 				return false;
 			}
 		},
 		removeConfig : {
 			value(key) {
-				const json = localStorage.getItem(storageKey);
+				const config = this._config();
 
-				if (json) {
-					try {
-						const config = JSON.parse(json);
+				if (Object.hasOwn(config, key)) {
+					delete config[key];
 
-						if (
-							   config !== null
-							&& typeof config === 'object'
-							&& Object.hasOwn(config, key)
-						) {
-							delete config[key];
-
-							if (Object.keys(config).length > 0) {
-								localStorage.setItem(storageKey, JSON.stringify(config));
-							}
-							else {
-								localStorage.removeItem(storageKey);
-							}
+					if (Object.keys(config).length > 0) {
+						try {
+							localStorage.setItem(STORAGE_KEY, JSON.stringify(config));
 						}
-
-						return true;
+						catch (ex) { /* no-op */ }
 					}
-					catch (ex) { /* no-op */ }
+					else {
+						localStorage.removeItem(STORAGE_KEY);
+					}
 				}
 
-				return false;
+				return true;
 			}
 		},
 		clearConfig : {
 			value() {
-				localStorage.removeItem(storageKey);
+				localStorage.removeItem(STORAGE_KEY);
 				return true;
 			}
 		}

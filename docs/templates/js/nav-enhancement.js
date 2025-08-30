@@ -9,38 +9,38 @@
 		return;
 	}
 
-	const storageKey = 'navExpanded';
-	const expanded   = Object.freeze(Object.create(null, {
-		array : {
-			value : SCDocs.getConfig(storageKey) || []
+	const EXPANDED_KEY = 'nav-expanded';
+	const expanded     = Object.freeze(Object.create(null, {
+		_array : {
+			value : SCDocs.getConfig(EXPANDED_KEY) || []
 		},
 		add : {
 			value(listId) {
-				if (this.array.indexOf(listId) === -1) {
-					this.array.push(listId);
-					SCDocs.setConfig(storageKey, this.array);
+				if (this._array.indexOf(listId) === -1) {
+					this._array.push(listId);
+					SCDocs.setConfig(EXPANDED_KEY, this._array);
 				}
 			}
 		},
 		delete : {
 			value(listId) {
-				const pos = this.array.indexOf(listId);
+				const pos = this._array.indexOf(listId);
 
 				if (pos !== -1) {
-					this.array.splice(pos, 1);
+					this._array.splice(pos, 1);
 
-					if (this.array.length > 0) {
-						SCDocs.setConfig(storageKey, this.array);
+					if (this._array.length > 0) {
+						SCDocs.setConfig(EXPANDED_KEY, this._array);
 					}
 					else {
-						SCDocs.removeConfig(storageKey);
+						SCDocs.removeConfig(EXPANDED_KEY);
 					}
 				}
 			}
 		},
 		has : {
 			value(listId) {
-				return this.array.indexOf(listId) !== -1;
+				return this._array.indexOf(listId) !== -1;
 			}
 		}
 	}));
