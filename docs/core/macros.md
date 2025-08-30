@@ -1476,32 +1476,34 @@ Creates a number input box, used to modify the value of the variable with the gi
 
 ##### Basic usage
 
-Creates a number box that modifies `$wager`, with a default value of `100`.
+Creates a number box that modifies `$wager` and has a default value of `100`.
 
 ```
-Wager how much on Buttstallion in the race?
 <<numberbox "$wager" 100>>
 ```
 
-Creates an automatically focused number box that modifies `$wager`, with a default value of `100`.
+Creates a number box that modifies `$wager`, has a default value of `100`, and is automatically focused.
 
 ```
-Wager how much on Buttstallion in the race?
 <<numberbox "$wager" 100 autofocus>>
 ```
 
-Creates a number box that modifies `$wager`, with a default value of `100`, and forwards to the `Result` passage.
+Creates a number box that modifies `$wager`, has a default value of `100`, and forwards the player to the `Result` passage.
 
 ```
-Wager how much on Buttstallion in the race?
 <<numberbox "$wager" 100 "Result">>
 ```
 
-Creates a number box that modifies `$wager`, with a default value of `100`, a minimum value of `100`, and maximum value of `1000`, and a step value of `50`.
+Creates a number box that modifies `$wager`, has a default value of `100`, the ID "buttstallion", and a class "wager".
 
 ```
-Wager how much on Buttstallion in the race?
-<<numberbox "$wager" 100 id "buttstallion" class "wager" min 100 max 1000 step 50>>
+<<numberbox "$wager" 100 id "buttstallion" class "wager">>
+```
+
+Creates a number box that modifies `$wager`, has a default value of `100`, a minimum value of `100`, a maximum value of `1000`, and a step value of `50`.
+
+```
+<<numberbox "$wager" 100 min 100 max 1000 step 50>>
 ```
 
 <!-- *********************************************************************** -->
@@ -1578,7 +1580,7 @@ Creates a multiline text input block, used to modify the value of the variable w
 #### History:
 
 * `v2.0.0`: Introduced.
-* `v2.38.0`: Added the `class` and `id` options.
+* `v2.38.0`: Added the `class`, `id`, and `placeholder` options.
 
 #### Arguments:
 
@@ -1613,7 +1615,7 @@ Creates a text input box, used to modify the value of the variable with the give
 #### History:
 
 * `v2.0.0`: Introduced.
-* `v2.38.0`: Added the `class`, `id`, `maxlength`, `minlength`, `size`, and `spellcheck` options.
+* `v2.38.0`: Added the `class`, `id`, `maxlength`, `minlength`, `placeholder`, `size`, and `spellcheck` options.
 
 #### Arguments:
 
