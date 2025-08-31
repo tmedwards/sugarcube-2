@@ -1604,7 +1604,7 @@ Write a short essay about pies:
 
 <!-- *********************************************************************** -->
 
-### `<<textbox receiverName defaultValue [autofocus] [passage]>>` {#macros-macro-textbox}
+### `<<textbox>>` {#macros-macro-textbox}
 
 Creates a text input box, used to modify the value of the variable with the given name, optionally forwarding the player to another passage.
 
@@ -1617,14 +1617,34 @@ Creates a text input box, used to modify the value of the variable with the give
 * `v2.0.0`: Introduced.
 * `v2.38.0`: Added the `class`, `id`, `maxlength`, `minlength`, `placeholder`, `size`, and `spellcheck` options.
 
+#### Syntax:
+
+```
+<<textbox
+	receiverName defaultValue
+	[autofocus] [class value] [id value] [maxlength value] [minlength value]
+	[placeholder value] [size value] [spellcheck] [passage]
+>>
+```
+
 #### Arguments:
 
-* **`receiverName`:** The name of the variable to modify, which *must* be quoted—e.g., `"$foo"`.  Object and array property references are also supported—e.g., `"$foo.bar"`, `"$foo['bar']"`, &amp; `"$foo[0]"`.
-* **`defaultValue`:** The default value of the text box.
-* **`autofocus`:** (optional) Keyword, used to signify that the text box should automatically receive focus.  Only use the keyword *once* per page; attempting to focus more than one element is undefined behavior.
-* **`class` *`classNames`*:** (optional) Sets the classes of the button.
-* **`id` *`identifier`*:** (optional) Sets the identifier of the button, which must be unique on the page.
-* **`passage`:** (optional) The name of the passage to go to if the return/enter key is pressed.  May be called either with the passage name or with a link markup.
+##### Required:
+
+1. ***`receiverName`*:** The name of the variable to modify, which *must* be quoted—e.g., `"$foo"`.  Object and array property references are also supported—e.g., `"$foo.bar"`, `"$foo['bar']"`, &amp; `"$foo[0]"`.
+2. ***`defaultValue`*:** The default value of the text box.
+
+##### Optional:
+
+* **`autofocus`:** Keyword, used to signify that the text box should automatically receive focus.  Only use the keyword *once* per page; attempting to focus more than one element is undefined behavior.
+* **`class` *`value`*:** Keyword, used to set the classes of the text box to *value*.
+* **`id` *`value`*:** Keyword, used to set the identifier of the text box, which must be unique on the page, to *value*.
+* **`maxlength` *`value`*:** Keyword, used to set the maximum allowed characters of the text box to *value*.  Must be greater-than the minimum allowed characters value, if specified.
+* **`minlength` *`value`*:** Keyword, used to set the minimum allowed characters of the text box to *value*.  Must be less-than the maximum allowed characters value, if specified.
+* **`placeholder` *`value`*:** Keyword, used to set the hint text, which must not contain line breaks, of the text box to *value*.  Should short hint that explains what is expected in the text box.
+* **`size` *`value`*:** Keyword, used to set the width in characters of the text box to *value*.
+* **`spellcheck`:** Keyword, used to signify that the text box should have spellchecking enabled, if possible.
+* ***`passage`*:** The name of the passage to go to if the return/enter key is pressed.  May be called either with the passage name or with a link markup.
 
 #### Examples:
 
