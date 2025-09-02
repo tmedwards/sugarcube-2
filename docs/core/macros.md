@@ -1647,7 +1647,7 @@ Creates a text input box, used to modify the value of the variable with the give
 <<textbox
 	receiverName defaultValue
 	[autofocus] [class value] [id value] [maxlength value] [minlength value]
-	[placeholder value] [size value] [spellcheck] [passage value]
+	[passage value] [placeholder value] [size value] [spellcheck]
 >>
 ```
 
