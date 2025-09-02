@@ -1444,14 +1444,15 @@ Creates a number input box, used to modify the value of the variable with the gi
 #### History:
 
 * `v2.32.0`: Introduced.
-* `v2.38.0`: Added the `class`, `id`, `max`, `min`, and `step` options.
+* `v2.38.0`: Added the `class`, `id`, `max`, `min`, `passage`, and `step` options.  Deprecated the naked passage option.
 
 #### Syntax:
 
 ```
 <<numberbox
 	receiverName defaultValue
-	[autofocus] [class value] [id value] [max value] [min value] [passage] [step value]
+	[autofocus] [class value] [id value] [max value] [min value] [passage value]
+	[step value]
 >>
 ```
 
@@ -1469,7 +1470,7 @@ Creates a number input box, used to modify the value of the variable with the gi
 * **`id` *`value`*:** Keyword, used to set the identifier of the number box, which must be unique on the page, to *value*.
 * **`max` *`value`*:** Keyword, used to set the maximum constraint of the number box to *value*.  Must be greater-than the minimum constraint value, if specified.
 * **`min` *`value`*:** Keyword, used to set the minimum constraint of the number box to *value*.  Must be less-than the maximum constraint value, if specified.
-* ***`passage`*:** The name of the passage to go to if the return/enter key is pressed.  May be called either with the passage name or with a link markup.
+* **`passage` *`value`*:** Keyword, used to set the passage name to *value*; navigation will happen if the return/enter key is pressed.  May be called either with the passage name or with a link markup.
 * **`step` *`value`*:** Keyword, used to set the smallest allowable adjustment of the number box to *value*.
 
 #### Examples:
@@ -1491,13 +1492,13 @@ Creates a number box that modifies `$wager`, has a default value of `100`, and i
 Creates a number box that modifies `$wager`, has a default value of `100`, and forwards the player to the `Result` passage.
 
 ```
-<<numberbox "$wager" 100 "Result">>
+<<numberbox "$wager" 100 passage "Result">>
 ```
 
-Creates a number box that modifies `$wager`, has a default value of `100`, the ID "buttstallion", and a class "wager".
+Creates a number box that modifies `$wager`, has a default value of `100`, the ID `butt-stallion`, and a class `wager`.
 
 ```
-<<numberbox "$wager" 100 id "buttstallion" class "wager">>
+<<numberbox "$wager" 100 id "butt-stallion" class "wager">>
 ```
 
 Creates a number box that modifies `$wager`, has a default value of `100`, a minimum value of `100`, a maximum value of `1000`, and a step value of `50`.
@@ -1569,7 +1570,7 @@ What's your favorite pie?
 
 <!-- *********************************************************************** -->
 
-### `<<textarea receiverName defaultValue [autofocus]>>` {#macros-macro-textarea}
+### `<<textarea>>` {#macros-macro-textarea}
 
 Creates a multiline text input block, used to modify the value of the variable with the given name.
 
@@ -1580,15 +1581,36 @@ Creates a multiline text input block, used to modify the value of the variable w
 #### History:
 
 * `v2.0.0`: Introduced.
-* `v2.38.0`: Added the `class`, `id`, and `placeholder` options.
+* `v2.38.0`: Added the `class`, `cols`, `id`, `maxlength`, `minlength`, `placeholder` `rows`, and `spellcheck` options.
+
+#### Syntax:
+
+```
+<<textarea
+	receiverName defaultValue
+	[autofocus] [class value] [cols value] [id value] [maxlength value]
+	[minlength value] [placeholder value] [rows value] [spellcheck]
+>>
+```
 
 #### Arguments:
 
-* **`receiverName`:** The name of the variable to modify, which *must* be quoted—e.g., `"$foo"`.  Object and array property references are also supported—e.g., `"$foo.bar"`, `"$foo['bar']"`, &amp; `"$foo[0]"`.
-* **`defaultValue`:** The default value of the text block.
-* **`autofocus`:** (optional) Keyword, used to signify that the text block should automatically receive focus.  Only use the keyword *once* per page; attempting to focus more than one element is undefined behavior.
-* **`class` *`classNames`*:** (optional) Sets the classes of the button.
-* **`id` *`identifier`*:** (optional) Sets the identifier of the button, which must be unique on the page.
+##### Required:
+
+1. ***`receiverName`*:** The name of the variable to modify, which *must* be quoted—e.g., `"$foo"`.  Object and array property references are also supported—e.g., `"$foo.bar"`, `"$foo['bar']"`, &amp; `"$foo[0]"`.
+2. ***`defaultValue`*:** The default value of the text block.
+
+##### Optional:
+
+* **`autofocus`:** Keyword, used to signify that the textarea should automatically receive focus.  Only use the keyword *once* per page; attempting to focus more than one element is undefined behavior.
+* **`class` *`value`*:** Keyword, used to set the classes of the textarea to *value*.
+* **`cols` *`value`*:** Keyword, used to set the number of columns of the textarea to *value*.
+* **`id` *`value`*:** Keyword, used to set the identifier of the textarea, which must be unique on the page, to *value*.
+* **`maxlength` *`value`*:** Keyword, used to set the maximum allowed characters of the textarea to *value*.  Must be greater-than the minimum allowed characters value, if specified.
+* **`minlength` *`value`*:** Keyword, used to set the minimum allowed characters of the textarea to *value*.  Must be less-than the maximum allowed characters value, if specified.
+* **`placeholder` *`value`*:** Keyword, used to set the hint text, which must not contain line breaks, of the textarea to *value*.  Should short hint that explains what is expected in the textarea.
+* **`rows` *`value`*:** Keyword, used to set the number of rows of the textarea to *value*.
+* **`spellcheck`:** Keyword, used to signify that the textarea should have spellchecking enabled, if possible.
 
 #### Examples:
 
@@ -1596,7 +1618,9 @@ Creates a multiline text input block, used to modify the value of the variable w
 → Creates a text block that modifies $pieEssay
 Write a short essay about pies:
 <<textarea "$pieEssay" "">>
+```
 
+```
 → Creates an automatically focused text block that modifies $pieEssay
 Write a short essay about pies:
 <<textarea "$pieEssay" "" autofocus>>
@@ -1615,7 +1639,7 @@ Creates a text input box, used to modify the value of the variable with the give
 #### History:
 
 * `v2.0.0`: Introduced.
-* `v2.38.0`: Added the `class`, `id`, `maxlength`, `minlength`, `placeholder`, `size`, and `spellcheck` options.
+* `v2.38.0`: Added the `class`, `id`, `maxlength`, `minlength`, `passage`, `placeholder`, `size`, and `spellcheck` options.  Deprecated the naked passage option.
 
 #### Syntax:
 
@@ -1623,7 +1647,7 @@ Creates a text input box, used to modify the value of the variable with the give
 <<textbox
 	receiverName defaultValue
 	[autofocus] [class value] [id value] [maxlength value] [minlength value]
-	[placeholder value] [size value] [spellcheck] [passage]
+	[placeholder value] [size value] [spellcheck] [passage value]
 >>
 ```
 
@@ -1644,22 +1668,38 @@ Creates a text input box, used to modify the value of the variable with the give
 * **`placeholder` *`value`*:** Keyword, used to set the hint text, which must not contain line breaks, of the text box to *value*.  Should short hint that explains what is expected in the text box.
 * **`size` *`value`*:** Keyword, used to set the width in characters of the text box to *value*.
 * **`spellcheck`:** Keyword, used to signify that the text box should have spellchecking enabled, if possible.
-* ***`passage`*:** The name of the passage to go to if the return/enter key is pressed.  May be called either with the passage name or with a link markup.
+* **`passage` *`value`*:** Keyword, used to set the passage name to *value*; navigation will happen if the return/enter key is pressed.  May be called either with the passage name or with a link markup.
 
 #### Examples:
 
+Creates a text box that modifies `$pie` and has a default value of `Blueberry`.
+
 ```
-→ Creates a text box that modifies $pie
-What's your favorite pie? <<textbox "$pie" "Blueberry">>
+<<textbox "$pie" "Blueberry">>
+```
 
-→ Creates an automatically focused text box that modifies $pie
-What's your favorite pie? <<textbox "$pie" "Blueberry" autofocus>>
+Creates a text box that modifies `$pie`, has a default value of `Blueberry`, and is automatically focused.
 
-→ Creates a text box that modifies $pie and forwards to the "Cakes" passage
-What's your favorite pie? <<textbox "$pie" "Blueberry" "Cakes">>
+```
+<<textbox "$pie" "Blueberry" autofocus>>
+```
 
-→ Creates an automatically focused text box that modifies $pie and forwards to the "Cakes" passage
-What's your favorite pie? <<textbox "$pie" "Blueberry" "Cakes" autofocus>>
+Creates a text box that modifies `$pie`, has a default value of `Blueberry`, and forwards the player to the `Cakes` passage.
+
+```
+<<textbox "$pie" "Blueberry" passage "Cakes">>
+```
+
+Creates a text box that modifies `$pie`, has a default value of `Blueberry`, the ID `pie`, and a class `favorite`.
+
+```
+<<textbox "$pie" "Blueberry" id "pie" class "favorite">>
+```
+
+Creates a text box that modifies `$pie`, has a default value of `Blueberry`, a size value of `16`, a minimum characters value of `2`, and a maximum characters value of `24`.
+
+```
+<<textbox "$pie" "Blueberry" size 16 minlength 2 maxlength 24>>
 ```
 
 
