@@ -2247,7 +2247,7 @@ The audio subsystem that supports the audio macros comes with some built-in <a h
 
 <!-- *********************************************************************** -->
 
-### `<<audio trackIdList actionList>>` {#macros-macro-audio}
+### `<<audio trackIdList optionList>>` {#macros-macro-audio}
 
 Controls the playback of audio tracks, which must be set up via [`<<cacheaudio>>`](#macros-macro-cacheaudio).
 
@@ -2256,7 +2256,7 @@ Controls the playback of audio tracks, which must be set up via [`<<cacheaudio>>
 </p>
 
 <p role="note"><b>Note:</b>
-The <code>&lt;&lt;audio&gt;&gt;</code> macro cannot affect playlist tracks whose ownership has been transferred to their respective playlist.  Meaning those set up via <a href="#macros-macro-createplaylist"><code>&lt;&lt;createplaylist&gt;&gt;</code></a> with its <code>own</code> action, as owned playlist tracks are solely under the control of their playlist.
+The <code>&lt;&lt;audio&gt;&gt;</code> macro cannot affect playlist tracks whose ownership has been transferred to their respective playlist.  Meaning those set up via <a href="#macros-macro-createplaylist"><code>&lt;&lt;createplaylist&gt;&gt;</code></a> with its <code>own</code> option, as owned playlist tracks are solely under the control of their playlist.
 </p>
 
 <p role="note"><b>Note:</b>
@@ -2266,15 +2266,15 @@ The <a href="#config-api-property-audio-pauseonfadetozero"><code>Config.audio.pa
 #### History:
 
 * `v2.0.0`: Introduced.
-* `v2.1.0`: Added `fadeoverto` action.
+* `v2.1.0`: Added `fadeoverto` option.
 * `v2.8.0`: Added group ID(s).
-* `v2.28.0`: Added `load` and `unload` actions.
+* `v2.28.0`: Added `load` and `unload` options.
 * `v2.37.0`: Added `:stopped` predefined group ID.
 
 #### Arguments:
 
 * **`trackIdList`:** The list of track and/or group IDs, separated by spaces.  See below for details on group IDs.
-* **`actionList`:** The list of actions to perform.  Available actions are:
+* **`optionList`:** The list of options.  Available options are:
 	* **`fadein`:** Start playback of the selected tracks and fade them from their current volume level to `1` (loudest) over `5` seconds.
 	* **`fadeout`:** Start playback of the selected tracks and fade them from their current volume level to `0` (silent) over `5` seconds.
 	* **`fadeoverto` *`seconds`* *`level`*:** Start playback of the selected tracks and fade them from their current volume level to the specified level over the specified number of seconds.
@@ -2287,7 +2287,7 @@ The <a href="#config-api-property-audio-pauseonfadetozero"><code>Config.audio.pa
 	* **`play`:** Start playback of the selected tracks.
 	* **`stop`:** Stop playback of the selected tracks.
 	* **`time` *`seconds`*:** Set the current playback time of the selected tracks to the specified number of seconds.  Valid values are floating-point numbers in the range `0` (start) to the maximum duration—e.g., `60` is `60` is sixty seconds in, `90.5` is ninety-point-five seconds in.
-	* **`unload`:** Stop playback of the selected tracks and force them to drop any existing data.  **NOTE:** Once unloaded, playback cannot occur until a `load` action is issued.
+	* **`unload`:** Stop playback of the selected tracks and force them to drop any existing data.  **NOTE:** Once unloaded, playback cannot occur until a `load` option is issued.
 	* **`unloop`:** Set the selected tracks to not repeat playback (this is the default).
 	* **`unmute`:** Unmute the volume of the selected tracks (this is the default).
 	* **`volume` *`level`*:** Set the volume of the selected tracks to the specified level.  Valid values are floating-point numbers in the range `0` (silent) to `1` (loudest)—e.g., `0` is 0%, `0.5` is 50%, `1` is 100%.
@@ -2373,7 +2373,7 @@ Group IDs allow several tracks to be selected simultaneously without needing to 
 <<audio "bgm_space" time 90>>
 ```
 
-##### Using the `load` and `unload` actions
+##### Using the `load` and `unload` options
 
 <p role="note" class="warning"><b>Warning:</b>
 Be <em>very careful</em> with these if your audio sources are on the network, as you are forcing players to begin downloading them.  Not everyone has
@@ -2427,7 +2427,7 @@ The <a href="#special-passage-storyinit"><code>StoryInit</code> special passage<
 
 ### `<<createaudiogroup groupId>>`<br><span class="child">`[<<track trackId>> …]`</span><br>`<</createaudiogroup>>` {#macros-macro-createaudiogroup}
 
-Collects tracks, which must be set up via [`<<cacheaudio>>`](#macros-macro-cacheaudio), into a group via its `<<track>>` children.  Groups are useful for applying actions to multiple tracks simultaneously and/or excluding the included tracks from a larger set when applying actions.
+Collects tracks, which must be set up via [`<<cacheaudio>>`](#macros-macro-cacheaudio), into a group via its `<<track>>` children.  Groups are useful for applying options to multiple tracks simultaneously and/or excluding the included tracks from a larger set when applying options.
 
 <p role="note"><b>Note:</b>
 The <a href="#special-passage-storyinit"><code>StoryInit</code> special passage</a> is normally the best place to set up groups.
@@ -2466,7 +2466,7 @@ The <a href="#special-passage-storyinit"><code>StoryInit</code> special passage<
 
 <!-- *********************************************************************** -->
 
-### `<<createplaylist listId>>`<br><span class="child">`[<<track trackId actionList>> …]`</span><br>`<</createplaylist>>` {#macros-macro-createplaylist}
+### `<<createplaylist listId>>`<br><span class="child">`[<<track trackId optionList>> …]`</span><br>`<</createplaylist>>` {#macros-macro-createplaylist}
 
 Collects tracks, which must be set up via [`<<cacheaudio>>`](#macros-macro-cacheaudio), into a playlist via its `<<track>>` children.
 
@@ -2487,9 +2487,9 @@ The <a href="#special-passage-storyinit"><code>StoryInit</code> special passage<
 ##### `<<track>>`
 
 * **`trackId`:** The ID of the track.
-* **`actionList`:** The list of actions to perform.  Available actions are:
+* **`optionList`:** The list of options.  Available options are:
 	* **`volume` *`level`*:** (optional) Set the base volume of the track within the playlist to the specified level.  If omitted, defaults to the track's current volume.  Valid values are floating-point numbers in the range `0` (silent) to `1` (loudest)—e.g., `0` is 0%, `0.5` is 50%, `1` is 100%.
-	* **`own`:** (optional) Keyword, used to signify that the playlist should create its own independent copy of the track, rather than simply referencing the existing version.  Owned copies are solely under the control of their playlist—meaning [`<<audio>>`](#macros-macro-audio) actions cannot affect them, even when using group IDs.
+	* **`own`:** (optional) Keyword, used to signify that the playlist should create its own independent copy of the track, rather than simply referencing the existing version.  Owned copies are solely under the control of their playlist—meaning [`<<audio>>`](#macros-macro-audio) options cannot affect them, even when using group IDs.
 
 #### Examples:
 
@@ -2511,7 +2511,7 @@ The <a href="#special-passage-storyinit"><code>StoryInit</code> special passage<
 
 <!-- *********************************************************************** -->
 
-### `<<masteraudio actionList>>` {#macros-macro-masteraudio}
+### `<<masteraudio optionList>>` {#macros-macro-masteraudio}
 
 Controls the master audio settings.
 
@@ -2522,17 +2522,17 @@ Controls the master audio settings.
 #### History:
 
 * `v2.8.0`: Introduced.
-* `v2.28.0`: Added `load`, `muteonhide`, `nomuteonhide`, and `unload` actions.
+* `v2.28.0`: Added `load`, `muteonhide`, `nomuteonhide`, and `unload` options.
 
 #### Arguments:
 
-* **`actionList`:** The list of actions to perform.  Available actions are:
+* **`optionList`:** The list of options.  Available options are:
 	* **`load`:** Pause playback of *all* tracks and, if they're not already in the process of loading, force them to drop any existing data and begin loading.  **NOTE:** This *should not* be done lightly if your audio sources are on the network, as it forces the player to begin downloading them.
 	* **`mute`:** Mute the master volume (effectively volume `0`, except without changing the volume level).
 	* **`muteonhide`:** Enable automatic muting of the master volume when losing visibility—i.e., when switched to another tab or the browser window is minimized.
 	* **`nomuteonhide`:** Disable automatic muting of the master volume when losing visibility (this is the default).
 	* **`stop`:** Stop playback of *all* tracks.
-	* **`unload`:** Stop playback of *all* tracks and force them to drop any existing data.  **NOTE:** Once unloaded, playback cannot occur until a `load` action is issued for each track—either a master `load` action, to affect all tracks, or an `<<audio>>`/`<<playlist>>` `load` action, to affect only certain tracks.
+	* **`unload`:** Stop playback of *all* tracks and force them to drop any existing data.  **NOTE:** Once unloaded, playback cannot occur until a `load` option is issued for each track—either a master `load` option, to affect all tracks, or an `<<audio>>`/`<<playlist>>` `load` option, to affect only certain tracks.
 	* **`unmute`:** Unmute the master volume (this is the default).
 	* **`volume` *`level`*:** Set the master volume to the specified level.  Valid values are floating-point numbers in the range `0` (silent) to `1` (loudest)—e.g., `0` is 0%, `0.5` is 50%, `1` is 100%.
 
@@ -2560,7 +2560,7 @@ Controls the master audio settings.
 <<masteraudio nomuteonhide>>
 ```
 
-##### Using the `load` and `unload` actions
+##### Using the `load` and `unload` options
 
 <p role="note" class="warning"><b>Warning:</b>
 Be <em>very careful</em> with these if your audio sources are on the network, as you are forcing players to begin downloading them.  Not everyone has
@@ -2577,7 +2577,7 @@ blazing fast internet with unlimited data—especially true for mobile users.  P
 
 <!-- *********************************************************************** -->
 
-### `<<playlist listId actionList>>` {#macros-macro-playlist}
+### `<<playlist listId optionList>>` {#macros-macro-playlist}
 
 Controls the playback of the playlist, which must be set up via [`<<createplaylist>>`](#macros-macro-createplaylist).
 
@@ -2591,17 +2591,13 @@ The <a href="#config-api-property-audio-pauseonfadetozero"><code>Config.audio.pa
 
 #### History:
 
-* `v2.0.0`: Introduced, compatible with `<<setplaylist>>`.
-* `v2.1.0`: Added `fadeoverto` action.
-* `v2.8.0`: Added `listId` argument, compatible with `<<createplaylist>>`.
-* `v2.28.0`: Added `load` and `unload` actions.
+* `v2.8.0`: Introduced.
+* `v2.28.0`: Added `load` and `unload` options.
 
 #### Arguments:
 
-##### `<<createplaylist>>`-compatible form
-
 * **`listId`:** The ID of the playlist.
-* **`actionList`:** The list of actions to perform.  Available actions are:
+* **`optionList`:** The list of options.  Available options are:
 	* **`fadein`:** Start playback of the playlist and fade the current track from its current volume level to `1` (loudest) over `5` seconds.
 	* **`fadeout`:** Start playback of the playlist and fade the current track from its current volume level to `0` (silent) over `5` seconds.
 	* **`fadeoverto` *`seconds`* *`level`*:** Start playback of the playlist and fade the current track from its current volume level to the specified level over the specified number of seconds.
@@ -2612,19 +2608,15 @@ The <a href="#config-api-property-audio-pauseonfadetozero"><code>Config.audio.pa
 	* **`pause`:** Pause playback of the playlist.
 	* **`play`:** Start playback of the playlist.
 	* **`shuffle`:** Set the playlist to randomly shuffle.
-	* **`skip`:** Skip ahead to the next track in the queue.  An empty queue will not be refilled unless repeat playback has been set.
+	* **`skip`:** Skip ahead to the next track in the queue.  **NOTE:** An empty queue will not be refilled unless repeat playback has been set.
 	* **`stop`:** Stop playback of the playlist.
-	* **`unload`:** Stop playback of the playlist and force its tracks to drop any existing data.  **NOTE:** Once unloaded, playback cannot occur until a `load` action is issued.
+	* **`unload`:** Stop playback of the playlist and force its tracks to drop any existing data.  **NOTE:** Once unloaded, playback cannot occur until a `load` option is issued.
 	* **`unloop`:** Set the playlist to not repeat playback (this is the default).
 	* **`unmute`:** Unmute the volume of the playlist (this is the default).
 	* **`unshuffle`:** Set the playlist to not randomly shuffle (this is the default).
 	* **`volume` *`level`*:** Set the volume of the playlist to the specified level.  Valid values are floating-point numbers in the range `0` (silent) to `1` (loudest)—e.g., `0` is 0%, `0.5` is 50%, `1` is 100%.
 
-##### `<<setplaylist>>`-compatible form
-
-* **`actionList`:** *Identical to the `<<createplaylist>>`-compatible form.*
-
-#### Examples: *(only `<<createplaylist>>`-compatible form shown)*
+#### Examples:
 
 ##### Basic usage
 
@@ -2684,7 +2676,7 @@ The <a href="#config-api-property-audio-pauseonfadetozero"><code>Config.audio.pa
 <<playlist "bgm_lacuna" shuffle>>
 ```
 
-##### Using the `load` and `unload` actions
+##### Using the `load` and `unload` options
 
 <p role="note" class="warning"><b>Warning:</b>
 Be <em>very careful</em> with these if your audio sources are on the network, as you are forcing players to begin downloading them.  Not everyone has
