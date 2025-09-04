@@ -391,7 +391,7 @@ Displays its contents.  Listens for [`<<redo>>` macro](#macros-macro-redo) comma
 
 ### `<<include passageName [elementName]>>`<br>`<<include linkMarkup [elementName]>>` {#macros-macro-include}
 
-Outputs the contents of the passage with the given name, optionally wrapping it within an HTML element.  May be called either with the passage name or with a link markup.
+Outputs the contents of the passage with the given name, optionally wrapping it within an HTML element.  May be called either with a passage name or with a link markup.
 
 #### History:
 
@@ -1339,7 +1339,7 @@ I'll have a <<linkreplace "cupcake">>slice of key lime pie<</linkreplace>>, plea
 
 <!-- *********************************************************************** -->
 
-### `<<listbox receiverName [autoselect]>>`<br><span class="child">`[<<option label [value [selected]]>> …]`<br>`[<<optionsfrom collection>> …]`</span><br>`<</listbox>>` {#macros-macro-listbox}
+### `<<listbox>> … <</listbox>>` {#macros-macro-listbox}
 
 Creates a listbox, used to modify the value of the variable with the given name.  The list options are populated via `<<option>>` and/or `<<optionsfrom>>`.
 
@@ -1357,24 +1357,48 @@ Creates a listbox, used to modify the value of the variable with the given name.
 * `v2.36.0`: Fixed the `selected` option.
 * `v2.38.0`: Added the `class` and `id` options.
 
+#### Syntax:
+
+```
+<<listbox
+	receiverName
+	[autoselect] [class value] [id value]
+>>
+	[<<option label [value [selected]]>> …]
+	[<<optionsfrom collection>> …]
+<</listbox>>
+```
+
 #### Arguments:
 
 ##### `<<listbox>>`
 
-* **`receiverName`:** The name of the variable to modify, which *must* be quoted—e.g., `"$foo"`.  Object and array property references are also supported—e.g., `"$foo.bar"`, `"$foo['bar']"`, & `"$foo[0]"`.
-* **`autoselect`:** (optional) Keyword, used to signify that an option should be automatically selected as the listbox default based on the current value of the receiver variable.  **NOTE:** Automatic option selection will fail on non-primitive values—i.e., on arrays and objects.
-* **`class` *`classNames`*:** (optional) Sets the classes of the button.
-* **`id` *`identifier`*:** (optional) Sets the identifier of the button, which must be unique on the page.
+###### Required:
+
+1. **`receiverName`:** The name of the variable to modify, which *must* be quoted—e.g., `"$foo"`.  Object and array property references are also supported—e.g., `"$foo.bar"`, `"$foo['bar']"`, & `"$foo[0]"`.
+
+###### Optional:
+
+* **`autoselect`:** Signify that an option should be automatically selected as the listbox default, based on the current value of the receiver variable.  **NOTE:** Automatic option selection will fail on non-primitive values—i.e., on arrays and objects.
+* **`class` *`classNames`*:** Set the classes of the listbox to *value*.
+* **`id` *`identifier`*:** Set the identifier of the listbox, which must be unique on the page, to *value*.
 
 ##### `<<option>>`
 
-* **`label`:** The label shown by the listbox for the option.
-* **`value`:** (optional) The value set by the listbox when the option is selected.  If omitted, the label will be used as the value.
-* **`selected`:** (optional) Keyword, used to signify that the option should be the listbox default.  Only one option may be so selected.  If no options are selected as the default, the listbox will default to the first option, unless the listbox `autoselect` keyword is specified.  **NOTE:** If specified, the `value` argument is not optional.
+###### Required:
+
+1. **`label`:** The label shown by the listbox for the option.
+
+###### Optional:
+
+* **`value`:** Set the value of the option to *value*.  If omitted, the label will be used as the value.
+* **`selected`:** Signify that the option should be the listbox default; only one option may be so selected.  If no options are selected as the default, the listbox will default to the first option, unless the listbox `autoselect` keyword is specified.  **NOTE:** If specified, the `value` argument is not optional.
 
 ##### `<<optionsfrom>>`
 
-* **`collection`:** An expression that yields a valid collection type.
+###### Required:
+
+1. **`collection`:** An expression that yields a valid collection type.
 	<table class="list-table">
 	<tbody>
 		<tr>
@@ -1435,7 +1459,7 @@ What's your favorite pie?
 
 ### `<<numberbox>>` {#macros-macro-numberbox}
 
-Creates a number input box, used to modify the value of the variable with the given name, optionally forwarding the player to another passage.
+Creates a number input box, used to modify the value of the variable with the given name.
 
 <p role="note" class="see"><b>See:</b>
 <a href="#macros-interactive-warning">Interactive macro warning</a>.
@@ -1444,15 +1468,14 @@ Creates a number input box, used to modify the value of the variable with the gi
 #### History:
 
 * `v2.32.0`: Introduced.
-* `v2.38.0`: Added the `class`, `id`, `max`, `min`, `passage`, and `step` options.  Deprecated the naked passage option.
+* `v2.38.0`: Added the `class`, `id`, `max`, `min`, and `step` options.  Deprecated the naked passage option.
 
 #### Syntax:
 
 ```
 <<numberbox
 	receiverName defaultValue
-	[autofocus] [class value] [id value] [max value] [min value] [passage value]
-	[step value]
+	[autofocus] [class value] [id value] [max value] [min value] [step value]
 >>
 ```
 
@@ -1465,13 +1488,12 @@ Creates a number input box, used to modify the value of the variable with the gi
 
 ##### Optional:
 
-* **`autofocus`:** Keyword, used to signify that the number box should automatically receive focus.  Only use the keyword *once* per page; attempting to focus more than one element is undefined behavior.
-* **`class` *`value`*:** Keyword, used to set the classes of the number box to *value*.
-* **`id` *`value`*:** Keyword, used to set the identifier of the number box, which must be unique on the page, to *value*.
-* **`max` *`value`*:** Keyword, used to set the maximum constraint of the number box to *value*.  Must be greater-than the minimum constraint value, if specified.
-* **`min` *`value`*:** Keyword, used to set the minimum constraint of the number box to *value*.  Must be less-than the maximum constraint value, if specified.
-* **`passage` *`value`*:** Keyword, used to set the passage name to *value*; navigation will happen if the return/enter key is pressed.  May be called either with the passage name or with a link markup.
-* **`step` *`value`*:** Keyword, used to set the smallest allowable adjustment of the number box to *value*.
+* **`autofocus`:** Signify that the number box should automatically receive focus.  Only use the keyword *once* per page; attempting to focus more than one element is undefined behavior.
+* **`class` *`value`*:** Set the classes of the number box to *value*.
+* **`id` *`value`*:** Set the identifier of the number box, which must be unique on the page, to *value*.
+* **`max` *`value`*:** Set the maximum constraint of the number box to *value*.  Must be greater-than the minimum constraint value, if specified.
+* **`min` *`value`*:** Set the minimum constraint of the number box to *value*.  Must be less-than the maximum constraint value, if specified.
+* **`step` *`value`*:** Set the smallest allowable adjustment of the number box to *value*.
 
 #### Examples:
 
@@ -1489,12 +1511,6 @@ Creates a number box that modifies `$wager`, has a default value of `100`, and i
 <<numberbox "$wager" 100 autofocus>>
 ```
 
-Creates a number box that modifies `$wager`, has a default value of `100`, and forwards the player to the `Result` passage.
-
-```
-<<numberbox "$wager" 100 passage "Result">>
-```
-
 Creates a number box that modifies `$wager`, has a default value of `100`, the ID `butt-stallion`, and a class `wager`.
 
 ```
@@ -1509,7 +1525,7 @@ Creates a number box that modifies `$wager`, has a default value of `100`, a min
 
 <!-- *********************************************************************** -->
 
-### `<<radiobutton receiverName checkedValue [autocheck|checked]>>` {#macros-macro-radiobutton}
+### `<<radiobutton>>` {#macros-macro-radiobutton}
 
 Creates a radio button, used to modify the value of the variable with the given name.  Multiple `<<radiobutton>>` macros may be set up to modify the same variable, which makes them part of a radio button group.
 
@@ -1523,12 +1539,28 @@ Creates a radio button, used to modify the value of the variable with the given 
 * `v2.32.0`: Added the `autocheck` option.
 * `v2.38.0`: Added the `class` and `id` options.
 
+#### Syntax:
+
+```
+<<radiobutton
+	receiverName checkedValue
+	[autocheck|checked] [class value] [id value]
+>>
+```
+
 #### Arguments:
 
-* **`receiverName`:** The name of the variable to modify, which *must* be quoted—e.g., `"$foo"`.  Object and array property references are also supported—e.g., `"$foo.bar"`, `"$foo['bar']"`, &amp; `"$foo[0]"`.
-* **`checkedValue`:** The value set by the radio button when checked.
-* **`autocheck`:** (optional) Keyword, used to signify that the radio button should be automatically set to the checked state based on the current value of the receiver variable.  **NOTE:** Automatic checking may fail on non-primitive values—i.e., on arrays and objects.
-* **`checked`:** (optional) Keyword, used to signify that the radio button should be in the checked state.  **NOTE:** Only one radio button in a group—i.e., those using the same receiver variable—should be so checked.
+##### Required:
+
+1. **`receiverName`:** The name of the variable to modify, which *must* be quoted—e.g., `"$foo"`.  Object and array property references are also supported—e.g., `"$foo.bar"`, `"$foo['bar']"`, &amp; `"$foo[0]"`.
+2. **`checkedValue`:** The value set by the radio button when checked.
+
+##### Optional:
+
+* **`autocheck`:** Signify that the radio button should be automatically set to the checked state, based on the current value of the receiver variable.  **NOTE:** Automatic checking may fail on non-primitive values—i.e., on arrays and objects.
+* **`checked`:** Signify that the radio button should be in the checked state.  **NOTE:** Only one radio button in a group—i.e., those using the same receiver variable—should be so checked.
+* **`class` *`value`*:** Set the classes of the radio button to *value*.
+* **`id` *`value`*:** Set the identifier of the radio button, which must be unique on the page, to *value*.
 
 #### Examples:
 
@@ -1602,15 +1634,15 @@ Creates a multiline text input block, used to modify the value of the variable w
 
 ##### Optional:
 
-* **`autofocus`:** Keyword, used to signify that the textarea should automatically receive focus.  Only use the keyword *once* per page; attempting to focus more than one element is undefined behavior.
-* **`class` *`value`*:** Keyword, used to set the classes of the textarea to *value*.
-* **`cols` *`value`*:** Keyword, used to set the number of columns of the textarea to *value*.
-* **`id` *`value`*:** Keyword, used to set the identifier of the textarea, which must be unique on the page, to *value*.
-* **`maxlength` *`value`*:** Keyword, used to set the maximum allowed characters of the textarea to *value*.  Must be greater-than the minimum allowed characters value, if specified.
-* **`minlength` *`value`*:** Keyword, used to set the minimum allowed characters of the textarea to *value*.  Must be less-than the maximum allowed characters value, if specified.
-* **`placeholder` *`value`*:** Keyword, used to set the hint text, which must not contain line breaks, of the textarea to *value*.  Should short hint that explains what is expected in the textarea.
-* **`rows` *`value`*:** Keyword, used to set the number of rows of the textarea to *value*.
-* **`spellcheck`:** Keyword, used to signify that the textarea should have spellchecking enabled, if possible.
+* **`autofocus`:** Signify that the textarea should automatically receive focus.  Only use the keyword *once* per page; attempting to focus more than one element is undefined behavior.
+* **`class` *`value`*:** Set the classes of the textarea to *value*.
+* **`cols` *`value`*:** Set the number of columns of the textarea to *value*.
+* **`id` *`value`*:** Set the identifier of the textarea, which must be unique on the page, to *value*.
+* **`maxlength` *`value`*:** Set the maximum allowed characters of the textarea to *value*.  Must be greater-than the minimum allowed characters value, if specified.
+* **`minlength` *`value`*:** Set the minimum allowed characters of the textarea to *value*.  Must be less-than the maximum allowed characters value, if specified.
+* **`placeholder` *`value`*:** Set the hint text, which must not contain line breaks, of the textarea to *value*.  Should be a short hint that explains what is expected in the textarea.
+* **`rows` *`value`*:** Set the number of rows of the textarea to *value*.
+* **`spellcheck`:** Signify that the textarea should have spellchecking enabled, if possible.
 
 #### Examples:
 
@@ -1630,7 +1662,7 @@ Write a short essay about pies:
 
 ### `<<textbox>>` {#macros-macro-textbox}
 
-Creates a text input box, used to modify the value of the variable with the given name, optionally forwarding the player to another passage.
+Creates a text input box, used to modify the value of the variable with the given name.
 
 <p role="note" class="see"><b>See:</b>
 <a href="#macros-interactive-warning">Interactive macro warning</a>.
@@ -1639,7 +1671,7 @@ Creates a text input box, used to modify the value of the variable with the give
 #### History:
 
 * `v2.0.0`: Introduced.
-* `v2.38.0`: Added the `class`, `id`, `maxlength`, `minlength`, `passage`, `placeholder`, `size`, and `spellcheck` options.  Deprecated the naked passage option.
+* `v2.38.0`: Added the `class`, `id`, `maxlength`, `minlength`, `placeholder`, `size`, and `spellcheck` options.  Deprecated the naked passage option.
 
 #### Syntax:
 
@@ -1647,7 +1679,7 @@ Creates a text input box, used to modify the value of the variable with the give
 <<textbox
 	receiverName defaultValue
 	[autofocus] [class value] [id value] [maxlength value] [minlength value]
-	[passage value] [placeholder value] [size value] [spellcheck]
+	[placeholder value] [size value] [spellcheck]
 >>
 ```
 
@@ -1660,15 +1692,14 @@ Creates a text input box, used to modify the value of the variable with the give
 
 ##### Optional:
 
-* **`autofocus`:** Keyword, used to signify that the text box should automatically receive focus.  Only use the keyword *once* per page; attempting to focus more than one element is undefined behavior.
-* **`class` *`value`*:** Keyword, used to set the classes of the text box to *value*.
-* **`id` *`value`*:** Keyword, used to set the identifier of the text box, which must be unique on the page, to *value*.
-* **`maxlength` *`value`*:** Keyword, used to set the maximum allowed characters of the text box to *value*.  Must be greater-than the minimum allowed characters value, if specified.
-* **`minlength` *`value`*:** Keyword, used to set the minimum allowed characters of the text box to *value*.  Must be less-than the maximum allowed characters value, if specified.
-* **`placeholder` *`value`*:** Keyword, used to set the hint text, which must not contain line breaks, of the text box to *value*.  Should short hint that explains what is expected in the text box.
-* **`size` *`value`*:** Keyword, used to set the width in characters of the text box to *value*.
-* **`spellcheck`:** Keyword, used to signify that the text box should have spellchecking enabled, if possible.
-* **`passage` *`value`*:** Keyword, used to set the passage name to *value*; navigation will happen if the return/enter key is pressed.  May be called either with the passage name or with a link markup.
+* **`autofocus`:** Signify that the text box should automatically receive focus.  Only use the keyword *once* per page; attempting to focus more than one element is undefined behavior.
+* **`class` *`value`*:** Set the classes of the text box to *value*.
+* **`id` *`value`*:** Set the identifier of the text box, which must be unique on the page, to *value*.
+* **`maxlength` *`value`*:** Set the maximum allowed characters of the text box to *value*.  Must be greater-than the minimum allowed characters value, if specified.
+* **`minlength` *`value`*:** Set the minimum allowed characters of the text box to *value*.  Must be less-than the maximum allowed characters value, if specified.
+* **`placeholder` *`value`*:** Set the hint text, which must not contain line breaks, of the text box to *value*.  Should be a short hint that explains what is expected in the text box.
+* **`size` *`value`*:** Set the width in characters of the text box to *value*.
+* **`spellcheck`:** Signify that the text box should have spellchecking enabled, if possible.
 
 #### Examples:
 
@@ -1682,12 +1713,6 @@ Creates a text box that modifies `$pie`, has a default value of `Blueberry`, and
 
 ```
 <<textbox "$pie" "Blueberry" autofocus>>
-```
-
-Creates a text box that modifies `$pie`, has a default value of `Blueberry`, and forwards the player to the `Cakes` passage.
-
-```
-<<textbox "$pie" "Blueberry" passage "Cakes">>
 ```
 
 Creates a text box that modifies `$pie`, has a default value of `Blueberry`, the ID `pie`, and a class `favorite`.
@@ -2279,7 +2304,7 @@ The <a href="#config-api-property-audio-pauseonfadetozero"><code>Config.audio.pa
 	* **`fadeout`:** Start playback of the selected tracks and fade them from their current volume level to `0` (silent) over `5` seconds.
 	* **`fadeoverto` *`seconds`* *`level`*:** Start playback of the selected tracks and fade them from their current volume level to the specified level over the specified number of seconds.
 	* **`fadeto` *`level`*:** Start playback of the selected tracks and fade them from their current volume level to the specified level over `5` seconds.
-	* **`goto` *`passage`*:** Forwards the player to the passage with the given name when playback of the first of the selected tracks ends normally.  May be called either with the passage name or with a link markup.
+	* **`goto` *`passage`*:** Forwards the player to the passage with the given name when playback of the first of the selected tracks ends normally.  May be called either with a passage name or with a link markup.
 	* **`load`:** Pause playback of the selected tracks and, if they're not already in the process of loading, force them to drop any existing data and begin loading.  **NOTE:** This *should not* be done lightly if your audio sources are on the network, as it forces the player to begin downloading them.
 	* **`loop`:** Set the selected tracks to repeat playback upon ending normally.
 	* **`mute`:** Mute the volume of the selected tracks—effectively volume `0`, except without changing the volume level.
@@ -2818,7 +2843,7 @@ If you need to run the same code on multiple passages, consider using the <a hre
 
 ### `<<goto passageName>>`<br>`<<goto linkMarkup>>` {#macros-macro-goto}
 
-Immediately forwards the player to the passage with the given name.  May be called either with the passage name or with a link markup.
+Immediately forwards the player to the passage with the given name.  May be called either with a passage name or with a link markup.
 
 <p role="note"><b>Note:</b>
 In most cases, you will not need to use <code>&lt;&lt;goto&gt;&gt;</code> as there are often better and easier ways to forward the player.  For example, a common use of <a href="#macros-macro-link"><code>&lt;&lt;link&gt;&gt;</code></a> is to perform various actions before forwarding the player to another passage.  In that case, unless you need to dynamically determine the destination passage within the <code>&lt;&lt;link&gt;&gt;</code> body, <code>&lt;&lt;goto&gt;&gt;</code> is unnecessary as <code>&lt;&lt;link&gt;&gt;</code> already includes the ability to forward the player.
