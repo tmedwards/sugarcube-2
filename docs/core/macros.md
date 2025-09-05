@@ -1374,7 +1374,7 @@ Creates a listbox, used to modify the value of the variable with the given name.
 ##### `<<listbox>>` arguments
 
 ```
-receiverName	[autoselect] [class value] [id value]
+receiverName [autoselect] [class value] [id value]
 ```
 
 ###### Required:
@@ -1700,12 +1700,21 @@ Creates a text input box, used to modify the value of the variable with the give
 
 #### Arguments:
 
-##### Required:
+##### Required arguments
+
+```
+receiverName defaultValue
+```
 
 1. ***`receiverName`*:** The name of the variable to modify, which *must* be quoted—e.g., `"$foo"`.  Object and array property references are also supported—e.g., `"$foo.bar"`, `"$foo['bar']"`, &amp; `"$foo[0]"`.
 2. ***`defaultValue`*:** The default value of the text box.
 
-##### Optional:
+##### Optional arguments
+
+```
+[autofocus] [class value] [id value] [maxlength value] [minlength value]
+[placeholder value] [size value] [spellcheck]
+```
 
 * **`autofocus`:** Signify that the text box should automatically receive focus.  Only use the keyword *once* per page; attempting to focus more than one element is undefined behavior.
 * **`class` *`value`*:** Set the classes of the text box to *value*.
