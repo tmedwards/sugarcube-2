@@ -1371,7 +1371,14 @@ Creates a listbox, used to modify the value of the variable with the given name.
 
 #### Arguments:
 
-##### `<<listbox>>`
+##### `<<listbox>>` arguments
+
+```
+<<listbox
+	receiverName
+	[autoselect] [class value] [id value]
+>> …
+```
 
 ###### Required:
 
@@ -1383,7 +1390,11 @@ Creates a listbox, used to modify the value of the variable with the given name.
 * **`class` *`classNames`*:** Set the classes of the listbox to *value*.
 * **`id` *`identifier`*:** Set the identifier of the listbox, which must be unique on the page, to *value*.
 
-##### `<<option>>`
+##### `<<option>>` arguments
+
+```
+	[<<option label [value [selected]]>> …]
+```
 
 ###### Required:
 
@@ -1394,7 +1405,11 @@ Creates a listbox, used to modify the value of the variable with the given name.
 * **`value`:** Set the value of the option to *value*.  If omitted, the label will be used as the value.
 * **`selected`:** Signify that the option should be the listbox default; only one option may be so selected.  If no options are selected as the default, the listbox will default to the first option, unless the listbox `autoselect` keyword is specified.  **NOTE:** If specified, the `value` argument is not optional.
 
-##### `<<optionsfrom>>`
+##### `<<optionsfrom>>` arguments
+
+```
+	[<<optionsfrom collection>> …]
+```
 
 ###### Required:
 
@@ -1430,7 +1445,6 @@ The answer to the //Ultimate Question of Life, the Universe, and Everything// is
 	<<option "Towel">>
 	<<option "π" 3.14159>>
 	<<option 42>>
-	<<option 69>>
 	<<option "∞" Infinity>>
 <</listbox>>
 ```
@@ -1438,17 +1452,21 @@ The answer to the //Ultimate Question of Life, the Universe, and Everything// is
 ##### Using `<<optionsfrom>>` with an array
 
 ```
-→ Given: _pieOptions = ["blueberry", "cherry", "coconut cream"]
+/* Given the following: */
+<<set _pieOptions to ["blueberry", "cherry", "coconut cream"]>>
+
 What's your favorite pie?
 <<listbox "$pie" autoselect>>
 	<<optionsfrom _pieOptions>>
 <</listbox>>
 ```
 
-##### Using `<<optionsfrom>>` with an generic object
+##### Using `<<optionsfrom>>` with a generic object
 
 ```
-→ Given: _pieOptions = { "Blueberry" : "blueberry", "Cherry" : "cherry", "Coconut cream" : "coconut cream" }
+/* Given the following: */
+<<set _pieOptions to { "Blueberry" : "blueberry", "Cherry" : "cherry", "Coconut cream" : "coconut cream" }>>
+
 What's your favorite pie?
 <<listbox "$pie" autoselect>>
 	<<optionsfrom _pieOptions>>
