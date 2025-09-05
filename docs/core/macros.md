@@ -1371,44 +1371,52 @@ Creates a listbox, used to modify the value of the variable with the given name.
 
 #### Arguments:
 
-##### `<<listbox>>` arguments
+##### `<<listbox>>`:
+
+###### Required arguments
 
 ```
-receiverName [autoselect] [class value] [id value]
+receiverName
 ```
-
-###### Required:
 
 1. **`receiverName`:** The name of the variable to modify, which *must* be quoted—e.g., `"$foo"`.  Object and array property references are also supported—e.g., `"$foo.bar"`, `"$foo['bar']"`, & `"$foo[0]"`.
 
-###### Optional:
+###### Optional arguments
+
+```
+[autoselect] [class value] [id value]
+```
 
 * **`autoselect`:** Signify that an option should be automatically selected as the listbox default, based on the current value of the receiver variable.  **NOTE:** Automatic option selection will fail on non-primitive values—i.e., on arrays and objects.
 * **`class` *`classNames`*:** Set the classes of the listbox to *value*.
 * **`id` *`identifier`*:** Set the identifier of the listbox, which must be unique on the page, to *value*.
 
-##### `<<option>>` arguments
+##### `<<option>>`:
+
+###### Required arguments
 
 ```
-label [value [selected]]
+label
 ```
-
-###### Required:
 
 1. **`label`:** The label shown by the listbox for the option.
 
-###### Optional:
+###### Optional arguments
+
+```
+[value [selected]]
+```
 
 * **`value`:** Set the value of the option to *value*.  If omitted, the label will be used as the value.
 * **`selected`:** Signify that the option should be the listbox default; only one option may be so selected.  If no options are selected as the default, the listbox will default to the first option, unless the listbox `autoselect` keyword is specified.  **NOTE:** If specified, the `value` argument is not optional.
 
-##### `<<optionsfrom>>` arguments
+##### `<<optionsfrom>>`:
+
+###### Required arguments
 
 ```
 collection
 ```
-
-###### Required:
 
 1. **`collection`:** An expression that yields a valid collection type.
 	<table class="list-table">
@@ -1496,12 +1504,20 @@ Creates a number input box, used to modify the value of the variable with the gi
 
 #### Arguments:
 
-##### Required:
+##### Required arguments
+
+```
+receiverName defaultValue
+```
 
 1. ***`receiverName`*:** The name of the variable to modify, which *must* be quoted—e.g., `"$foo"`.  Object and array property references are also supported—e.g., `"$foo.bar"`, `"$foo['bar']"`, &amp; `"$foo[0]"`.
 2. ***`defaultValue`*:** The default value of the number box.
 
-##### Optional:
+##### Optional arguments
+
+```
+[autofocus] [class value] [id value] [max value] [min value] [step value]
+```
 
 * **`autofocus`:** Signify that the number box should automatically receive focus.  Only use the keyword *once* per page; attempting to focus more than one element is undefined behavior.
 * **`class` *`value`*:** Set the classes of the number box to *value*.
@@ -1565,12 +1581,20 @@ Creates a radio button, used to modify the value of the variable with the given 
 
 #### Arguments:
 
-##### Required:
+##### Required arguments
+
+```
+receiverName checkedValue
+```
 
 1. **`receiverName`:** The name of the variable to modify, which *must* be quoted—e.g., `"$foo"`.  Object and array property references are also supported—e.g., `"$foo.bar"`, `"$foo['bar']"`, &amp; `"$foo[0]"`.
 2. **`checkedValue`:** The value set by the radio button when checked.
 
-##### Optional:
+##### Optional arguments
+
+```
+[autocheck|checked] [class value] [id value]
+```
 
 * **`autocheck`:** Signify that the radio button should be automatically set to the checked state, based on the current value of the receiver variable.  **NOTE:** Automatic checking may fail on non-primitive values—i.e., on arrays and objects.
 * **`checked`:** Signify that the radio button should be in the checked state.  **NOTE:** Only one radio button in a group—i.e., those using the same receiver variable—should be so checked.
@@ -1642,12 +1666,21 @@ Creates a multiline text input block, used to modify the value of the variable w
 
 #### Arguments:
 
-##### Required:
+##### Required arguments
+
+```
+receiverName defaultValue
+```
 
 1. ***`receiverName`*:** The name of the variable to modify, which *must* be quoted—e.g., `"$foo"`.  Object and array property references are also supported—e.g., `"$foo.bar"`, `"$foo['bar']"`, &amp; `"$foo[0]"`.
 2. ***`defaultValue`*:** The default value of the text block.
 
-##### Optional:
+##### Optional arguments
+
+```
+[autofocus] [class value] [cols value] [id value] [maxlength value]
+[minlength value] [placeholder value] [rows value] [spellcheck]
+```
 
 * **`autofocus`:** Signify that the textarea should automatically receive focus.  Only use the keyword *once* per page; attempting to focus more than one element is undefined behavior.
 * **`class` *`value`*:** Set the classes of the textarea to *value*.
