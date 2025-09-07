@@ -1339,7 +1339,7 @@ I'll have a <<linkreplace "cupcake">>slice of key lime pie<</linkreplace>>, plea
 
 <!-- *********************************************************************** -->
 
-### `<<listbox>>…<</listbox>>` {#macros-macro-listbox}
+### `<<listbox>> … <</listbox>>` {#macros-macro-listbox}
 
 Creates a listbox, used to modify the value of the variable with the given name.  The list options are populated via `<<option>>` and/or `<<optionsfrom>>`.
 
@@ -1369,9 +1369,7 @@ Creates a listbox, used to modify the value of the variable with the given name.
 <</listbox>>
 ```
 
-#### Arguments:
-
-##### `<<listbox>>`:
+#### Arguments, `<<listbox>>`:
 
 ###### Required arguments
 
@@ -1379,7 +1377,7 @@ Creates a listbox, used to modify the value of the variable with the given name.
 receiverName
 ```
 
-1. **`receiverName`:** The name of the variable to modify, which *must* be quoted—e.g., `"$foo"`.  Object and array property references are also supported—e.g., `"$foo.bar"`, `"$foo['bar']"`, & `"$foo[0]"`.
+1. ***`receiverName`*:** The name of the variable to modify, which *must* be quoted—e.g., `"$foo"`.  Object and array property references are also supported—e.g., `"$foo.bar"`, `"$foo['bar']"`, & `"$foo[0]"`.
 
 ###### Optional arguments
 
@@ -1391,7 +1389,7 @@ receiverName
 * **`class` *`classNames`*:** Set the classes of the listbox to *value*.
 * **`id` *`identifier`*:** Set the identifier of the listbox, which must be unique on the page, to *value*.
 
-##### `<<option>>`:
+#### Arguments, `<<option>>`:
 
 ###### Required arguments
 
@@ -1399,7 +1397,7 @@ receiverName
 label
 ```
 
-1. **`label`:** The label shown by the listbox for the option.
+1. ***`label`*:** The label shown by the listbox for the option.
 
 ###### Optional arguments
 
@@ -1407,10 +1405,10 @@ label
 [value [selected]]
 ```
 
-* **`value`:** Set the value of the option to *value*.  If omitted, the label will be used as the value.
+* ***`value`*:** Set the value of the option to *value*.  If omitted, the label will be used as the value.
 * **`selected`:** Signify that the option should be the listbox default; only one option may be so selected.  If no options are selected as the default, the listbox will default to the first option, unless the listbox `autoselect` keyword is specified.  **NOTE:** If specified, the `value` argument is not optional.
 
-##### `<<optionsfrom>>`:
+#### Arguments, `<<optionsfrom>>`:
 
 ###### Required arguments
 
@@ -1418,7 +1416,7 @@ label
 collection
 ```
 
-1. **`collection`:** An expression that yields a valid collection type.
+1. ***`collection`*:** An expression that yields a valid collection type.
 	<table class="list-table">
 	<tbody>
 		<tr>
@@ -1519,7 +1517,7 @@ receiverName defaultValue
 [autofocus] [class value] [id value] [max value] [min value] [step value]
 ```
 
-* **`autofocus`:** Signify that the number box should automatically receive focus.  Only use the keyword *once* per page; attempting to focus more than one element is undefined behavior.
+* **`autofocus`:** Signify that the number box should automatically receive focus.  **NOTE:** Only use the keyword *once* per page; attempting to focus more than one element is undefined behavior.
 * **`class` *`value`*:** Set the classes of the number box to *value*.
 * **`id` *`value`*:** Set the identifier of the number box, which must be unique on the page, to *value*.
 * **`max` *`value`*:** Set the maximum constraint of the number box to *value*.  Must be greater-than the minimum constraint value, if specified.
@@ -1527,8 +1525,6 @@ receiverName defaultValue
 * **`step` *`value`*:** Set the smallest allowable adjustment of the number box to *value*.
 
 #### Examples:
-
-##### Basic usage
 
 Creates a number box that modifies `$wager` and has a default value of `100`.
 
@@ -1596,7 +1592,7 @@ receiverName checkedValue
 [autocheck|checked] [class value] [id value]
 ```
 
-* **`autocheck`:** Signify that the radio button should be automatically set to the checked state, based on the current value of the receiver variable.  **NOTE:** Automatic checking may fail on non-primitive values—i.e., on arrays and objects.
+* **`autocheck`:** Signify that the radio button should be automatically set to the checked state, based on the current value of the receiver variable.  **NOTE:** Automatic checking will fail on non-primitive values—i.e., on arrays and objects.
 * **`checked`:** Signify that the radio button should be in the checked state.  **NOTE:** Only one radio button in a group—i.e., those using the same receiver variable—should be so checked.
 * **`class` *`value`*:** Set the classes of the radio button to *value*.
 * **`id` *`value`*:** Set the identifier of the radio button, which must be unique on the page, to *value*.
@@ -1682,28 +1678,40 @@ receiverName defaultValue
 [minlength value] [placeholder value] [rows value] [spellcheck]
 ```
 
-* **`autofocus`:** Signify that the textarea should automatically receive focus.  Only use the keyword *once* per page; attempting to focus more than one element is undefined behavior.
+* **`autofocus`:** Signify that the textarea should automatically receive focus.  **NOTE:** Only use the keyword *once* per page; attempting to focus more than one element is undefined behavior.
 * **`class` *`value`*:** Set the classes of the textarea to *value*.
-* **`cols` *`value`*:** Set the number of columns of the textarea to *value*.
+* **`cols` *`value`*:** Set the number of columns of the textarea to *value* (default: `64`).
 * **`id` *`value`*:** Set the identifier of the textarea, which must be unique on the page, to *value*.
 * **`maxlength` *`value`*:** Set the maximum allowed characters of the textarea to *value*.  Must be greater-than the minimum allowed characters value, if specified.
 * **`minlength` *`value`*:** Set the minimum allowed characters of the textarea to *value*.  Must be less-than the maximum allowed characters value, if specified.
 * **`placeholder` *`value`*:** Set the hint text, which must not contain line breaks, of the textarea to *value*.  Should be a short hint that explains what is expected in the textarea.
-* **`rows` *`value`*:** Set the number of rows of the textarea to *value*.
+* **`rows` *`value`*:** Set the number of rows of the textarea to *value* (default: `4`).
 * **`spellcheck`:** Signify that the textarea should have spellchecking enabled, if possible.
 
 #### Examples:
 
+Creates a text box that modifies `$pieEssay` and has no default value.
+
 ```
-→ Creates a text block that modifies $pieEssay
-Write a short essay about pies:
 <<textarea "$pieEssay" "">>
 ```
 
+Creates a text box that modifies `$pieEssay`, has no default value, and is automatically focused.
+
 ```
-→ Creates an automatically focused text block that modifies $pieEssay
-Write a short essay about pies:
 <<textarea "$pieEssay" "" autofocus>>
+```
+
+Creates a text box that modifies `$pieEssay`, has no default value, the ID `pie-essay`, and a class `essay`.
+
+```
+<<textarea "$pieEssay" "" id "pie-essay" class "essay">>
+```
+
+Creates a text box that modifies `$pieEssay`, has no default value, a cols value of `48`, a placeholder value of `Write an essay about pies…`, a rows value of `3`, and is spellchecked.
+
+```
+<<textarea "$pieEssay" "" cols 48 placeholder "Write an essay about pies…" rows 3 spellcheck>>
 ```
 
 <!-- *********************************************************************** -->
@@ -1749,7 +1757,7 @@ receiverName defaultValue
 [placeholder value] [size value] [spellcheck]
 ```
 
-* **`autofocus`:** Signify that the text box should automatically receive focus.  Only use the keyword *once* per page; attempting to focus more than one element is undefined behavior.
+* **`autofocus`:** Signify that the text box should automatically receive focus.  **NOTE:** Only use the keyword *once* per page; attempting to focus more than one element is undefined behavior.
 * **`class` *`value`*:** Set the classes of the text box to *value*.
 * **`id` *`value`*:** Set the identifier of the text box, which must be unique on the page, to *value*.
 * **`maxlength` *`value`*:** Set the maximum allowed characters of the text box to *value*.  Must be greater-than the minimum allowed characters value, if specified.
