@@ -207,7 +207,7 @@ var State = (() => { // eslint-disable-line no-unused-vars, no-var
 	function momentCreate(name, variables) {
 		return {
 			title     : name == null ? '' : String(name),         // nullish test
-			variables : variables == null ? {} : clone(variables) // nullish test
+			variables : variables == null ? {} : Config.history.maxStates > 1 ? clone(variables) : variables // nullish test
 		};
 	}
 
@@ -264,7 +264,7 @@ var State = (() => { // eslint-disable-line no-unused-vars, no-var
 					throw new RangeError(`moment activation attempted with out-of-bounds index (range: 0–${historySize() - 1}; received: ${moment})`);
 				}
 
-				activeMoment = clone(momentHistory[moment]);
+				activeMoment = Config.history.maxStates > 1 ? clone(momentHistory[moment]) : momentHistory[moment];
 				break;
 			}
 
