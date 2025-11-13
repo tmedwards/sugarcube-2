@@ -36,6 +36,7 @@ const CONFIG = {
 			'src/lib/visibility.js',
 			'src/util/',
 			'src/storage/simplestore.js',
+			'src/storage/adapters/indexedDB.js',
 			'src/storage/adapters/webstorage.js',
 			'src/storage/adapters/cookie.js',
 			'src/lib/debugview.js',
@@ -103,7 +104,8 @@ const CONFIG = {
 		'vendor/imagesloaded.pkgd.min.js',
 		'vendor/lz-string.min.js',
 		'vendor/FileSaver.min.js',
-		'vendor/seedrandom.min.js'
+		'vendor/seedrandom.min.js',
+		'vendor/dexie.min.js'
 	],
 	twine1 : {
 		build : {
