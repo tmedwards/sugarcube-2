@@ -9,6 +9,8 @@ node_modules/
 *.code-workspace
 .tern-project
 .vscode
+devcontainer/
+dependabot.yml
 
 # Miscellaneous
 _*
