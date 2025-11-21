@@ -296,7 +296,7 @@ var UIBar = (() => { // eslint-disable-line no-unused-vars, no-var
 			.text(L10n.get('savesTitle'));
 
 		// Set up the Settings menu item.
-		if (!Setting.isEmpty()) {
+		if (Setting.needsMenu()) {
 			jQuery('#menu-item-settings a')
 				.ariaClick({
 					role : 'button'
