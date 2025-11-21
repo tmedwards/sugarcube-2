@@ -397,7 +397,7 @@ var Setting = (() => { // eslint-disable-line no-unused-vars, no-var
 		return definitions.length === 0;
 	}
 
-	function showMenu() {
+	function needsMenu() {
 		return definitions.some(definition => definition.type !== SettingType.Value);
 	}
 
@@ -461,7 +461,7 @@ var Setting = (() => { // eslint-disable-line no-unused-vars, no-var
 		get       : { value : get },
 		has       : { value : has },
 		isEmpty   : { value : isEmpty },
-		showMenu  : { value : showMenu },
+		needsMenu : { value : needsMenu },
 
 		// Values Functions.
 		getValue : { value : getValue },
