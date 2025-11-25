@@ -111,7 +111,7 @@ SimpleStore.adapters.push((() => {
 			// QUESTION: Has `<Storage>.getItem()` ever returned any value other than
 			// `null` for non-existent keys?  I seem to recall a browser bug where
 			// `undefined` was returned, but I can't find any details about it now.
-			if (!Config.sessionCompression && this.#engine === 'sessionStorage') {
+			if (!Config.sessionCompression && this.name === 'sessionStorage') {
 				return value == null ? null : Serial.parse(value); // nullish test
 			}
 			return value == null ? null : WebStorageAdapter.#deserialize(value); // nullish test
@@ -125,7 +125,7 @@ SimpleStore.adapters.push((() => {
 			}
 
 			try {
-				if (!Config.sessionCompression && this.#engine === 'sessionStorage') {
+				if (!Config.sessionCompression && this.name === 'sessionStorage') {
 					this.#engine.setItem(this.#prefix + key, Serial.stringify(value));
 				}
 				else {
