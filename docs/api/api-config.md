@@ -165,6 +165,30 @@ An *integer* `number` value denoting the delay (in milliseconds) before the load
 Config.loadDelay = 2000;
 ```
 
+<!-- *********************************************************************** -->
+
+### `Config.sessionCompression` ↔ * `boolean` (default: `true`) {#config-api-property-sessioncompression}
+
+Determines whether the [Playthrough Session](#guide-state-sessions-and-saving-playthrough-session) data is compressed before being saved to sessionStorage.
+
+<p role="note"><b>Note:</b>
+<code>Config.sessionCompression</code> <em>must be</em> set during story initialization, within either your project's JavaScript section (Twine&nbsp;2: the Story JavaScript; Twine&nbsp;1/Twee: a <code>script</code>-tagged passage) or the <code>StoryInit</code> special passage.  Additionally, it is <strong><em>strongly</em></strong> recommended that you ensure that the size of your Playthrough Session is under 5 MiB at all times.
+</p>
+
+#### History:
+
+* `v2.38.0`: Introduced.
+
+#### Value:
+
+A `boolean` value signifying whether the Playthrough Session data is compressed before being saved to sessionStorage.
+
+#### Examples:
+
+```javascript
+Config.sessionCompression = false;
+```
+
 
 <!-- ***************************************************************************
 	Audio

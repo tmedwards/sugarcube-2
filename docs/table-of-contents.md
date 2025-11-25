@@ -288,6 +288,7 @@
 	* [`Config.debug`](#config-api-property-debug)
  	* [`Config.enableOptionalDebugging`](#config-api-property-enableoptionaldebugging)
 	* [`Config.loadDelay`](#config-api-property-loaddelay)
+	* [`Config.sessionCompression`](#config-api-property-sessioncompression)
 * [Audio Settings](#config-api-audio)
 	* [`Config.audio.pauseOnFadeToZero`](#config-api-property-audio-pauseonfadetozero)
 	* [`Config.audio.preloadMetadata`](#config-api-property-audio-preloadmetadata)
