@@ -6,7 +6,7 @@
 	Use of this source code is governed by a BSD 2-clause "Simplified" License, which may be found in the LICENSE file.
 
 ***********************************************************************************************************************/
-/* global Serial, SimpleStore, exceptionFrom */
+/* global Config, Serial, SimpleStore, exceptionFrom */
 
 SimpleStore.adapters.push((() => {
 	// Adapter readiness state.
@@ -111,6 +111,9 @@ SimpleStore.adapters.push((() => {
 			// QUESTION: Has `<Storage>.getItem()` ever returned any value other than
 			// `null` for non-existent keys?  I seem to recall a browser bug where
 			// `undefined` was returned, but I can't find any details about it now.
+			if (!Config.sessionCompression && this.#engine === 'sessionStorage') {
+				return value == null ? null : Serial.parse(value); // nullish test
+			}
 			return value == null ? null : WebStorageAdapter.#deserialize(value); // nullish test
 		}
 
@@ -122,7 +125,12 @@ SimpleStore.adapters.push((() => {
 			}
 
 			try {
-				this.#engine.setItem(this.#prefix + key, WebStorageAdapter.#serialize(value));
+				if (!Config.sessionCompression && this.#engine === 'sessionStorage') {
+					this.#engine.setItem(this.#prefix + key, Serial.stringify(value));
+				}
+				else {
+					this.#engine.setItem(this.#prefix + key, WebStorageAdapter.#serialize(value));
+				}
 			}
 			catch (ex) {
 				// If the exception is a quota exceeded error, massage it into something

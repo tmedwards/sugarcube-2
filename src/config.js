@@ -15,6 +15,7 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 	let cfgDebug                   = false;
 	let cfgEnableOptionalDebugging = false;
 	let cfgLoadDelay               = 0;
+	let cfgSessionCompression      = true;
 
 	// Audio settings.
 	let cfgAudioPauseOnFadeToZero = true;
@@ -84,6 +85,9 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 
 			cfgLoadDelay = value;
 		},
+
+		get sessionCompression() { return cfgSessionCompression; },
+		set sessionCompression(value) { cfgSessionCompression = Boolean(value); },
 
 		/*
 			Audio settings.
