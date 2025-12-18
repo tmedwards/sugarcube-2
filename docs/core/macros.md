@@ -935,7 +935,7 @@ This macro is functionally identical to <a href="#macros-macro-link">&lt;&lt;lin
 #### History:
 
 * `v2.8.0`: Introduced.
-* `v2.38.0`: Added the `class` and `id` options.
+* `v2.38.0`: Added the `class`, `disabled`, and `id` options.
 
 #### Arguments:
 
@@ -955,6 +955,7 @@ This macro is functionally identical to <a href="#macros-macro-link">&lt;&lt;lin
 Additionally, all forms may include the following optional arguments:
 
 * **`class` *`value`*:** (optional) Sets the classes of the button to *value*.
+* **`disabled`:** Signify that the button should be in the disabled state.
 * **`id` *`value`*:** (optional) Sets the identifier of the button, which must be unique on the page, to *value*.
 
 #### Examples:
@@ -1013,16 +1014,17 @@ Creates a checkbox, used to modify the value of the variable with the given name
 
 * `v2.0.0`: Introduced.
 * `v2.32.0`: Added the `autocheck` option.
-* `v2.38.0`: Added the `class` and `id` options.
+* `v2.38.0`: Added the `class`, `disabled`, and `id` options.
 
 #### Arguments:
 
-* **`receiverName`:** The name of the variable to modify, which *must* be quoted—e.g., `"$foo"`.  Object and array property references are also supported—e.g., `"$foo.bar"`, `"$foo['bar']"`, &amp; `"$foo[0]"`.
+* **`receiverName`:** The name of the variable to modify, which *must* be quoted—e.g., `"$foo"`.  Property references and indices are also supported—e.g., `"$foo.bar"`, `"$foo['bar']"`, and `"$foo[0]"`.
 * **`uncheckedValue`:** The value set by the checkbox when unchecked.
 * **`checkedValue`:** The value set by the checkbox when checked.
 * **`autocheck`:** (optional) Keyword, used to signify that the checkbox should be automatically set to the checked state based on the current value of the receiver variable.  **NOTE:** Automatic checking may fail on non-primitive values—i.e., on arrays and objects.
 * **`checked`:** (optional) Keyword, used to signify that the checkbox should be in the checked state.
 * **`class` *`classNames`*:** (optional) Sets the classes of the button.
+* **`disabled`:** Signify that the checkbox should be in the disabled state.
 * **`id` *`identifier`*:** (optional) Sets the identifier of the button, which must be unique on the page.
 
 #### Examples:
@@ -1077,15 +1079,16 @@ Creates a cycling link, used to modify the value of the variable with the given 
 
 * `v2.29.0`: Introduced.
 * `v2.36.0`: Fixed the `selected` option; added the `once` option.
-* `v2.38.0`: Added the `class` and `id` options; changed to fire `change` events upon cycling through values.
+* `v2.38.0`: Added the `class`, `disabled`, and `id` options; changed to fire `change` events upon cycling through values.
 
 #### Arguments:
 
 ##### `<<cycle>>`
 
-* **`receiverName`:** The name of the variable to modify, which *must* be quoted—e.g., `"$foo"`.  Object and array property references are also supported—e.g., `"$foo.bar"`, `"$foo['bar']"`, & `"$foo[0]"`.
+* **`receiverName`:** The name of the variable to modify, which *must* be quoted—e.g., `"$foo"`.  Property references and indices are also supported—e.g., `"$foo.bar"`, `"$foo['bar']"`, and `"$foo[0]"`.
 * **`autoselect`:** (optional) Keyword, used to signify that an option should be automatically selected as the cycle default based on the current value of the receiver variable.  **NOTE:** Automatic option selection will fail on non-primitive values—i.e., on arrays and objects.
 * **`class` *`classNames`*:** (optional) Sets the classes of the button.
+* **`disabled`:** (optional) Signify that the text box should be in the disabled state.
 * **`id` *`identifier`*:** (optional) Sets the identifier of the button, which must be unique on the page.
 * **`once`:** (optional) Keyword, used to signify that the cycle should stop upon reaching the last option and deactivate itself.  **NOTE:** Since you likely want to start at the first option when using this keyword, you should either not select an option, so it defaults to the first, or, if you do, select the first option only.
 
@@ -1183,7 +1186,7 @@ If you simply need a passage link that modifies variables, both the <a href="#ma
 #### History:
 
 * `v2.8.0`: Introduced.
-* `v2.38.0`: Added the `class` and `id` options.
+* `v2.38.0`: Added the `class`, `disabled`, and `id` options.
 
 #### Arguments:
 
@@ -1203,6 +1206,7 @@ If you simply need a passage link that modifies variables, both the <a href="#ma
 Additionally, all forms may include the following optional arguments:
 
 * **`class` *`classNames`*:** (optional) Sets the classes of the link.
+* **`disabled`:** (optional) Signify that the link should be in the disabled state.
 * **`id` *`identifier`*:** (optional) Sets the identifier of the link, which must be unique.
 
 #### Examples:
@@ -1260,6 +1264,7 @@ Creates a single-use link that deactivates itself and appends its contents to it
 #### History:
 
 * `v2.0.0`: Introduced.
+* `v2.38.0`: Added the `class`, `disabled`, and `id` options.
 
 #### Arguments:
 
@@ -1290,6 +1295,7 @@ Creates a single-use link that deactivates itself and prepends its contents to i
 #### History:
 
 * `v2.0.0`: Introduced.
+* `v2.38.0`: Added the `class`, `disabled`, and `id` options.
 
 #### Arguments:
 
@@ -1320,6 +1326,7 @@ Creates a single-use link that deactivates itself and replaces its link text wit
 #### History:
 
 * `v2.0.0`: Introduced.
+* `v2.38.0`: Added the `class`, `disabled`, and `id` options.
 
 #### Arguments:
 
@@ -1355,7 +1362,7 @@ Creates a listbox, used to modify the value of the variable with the given name.
 * `v2.28.1`: Fixed the name of `<<optionsfrom>>` child tag, which was erroneously added as `<<optionsFrom>>` in `v2.28.0`.
 * `v2.29.0`: Made the `<<option>>` child tag's `value` argument optional.
 * `v2.36.0`: Fixed the `selected` option.
-* `v2.38.0`: Added the `class` and `id` options.
+* `v2.38.0`: Added the `class`, `disabled`, and `id` options.
 
 #### Syntax:
 
@@ -1377,7 +1384,7 @@ Creates a listbox, used to modify the value of the variable with the given name.
 receiverName
 ```
 
-1. ***`receiverName`*:** The name of the variable to modify, which *must* be quoted—e.g., `"$foo"`.  Object and array property references are also supported—e.g., `"$foo.bar"`, `"$foo['bar']"`, & `"$foo[0]"`.
+1. ***`receiverName`*:** The name of the variable to modify, which *must* be quoted—e.g., `"$foo"`.  Property references and indices are also supported—e.g., `"$foo.bar"`, `"$foo['bar']"`, and `"$foo[0]"`.
 
 ###### Optional arguments
 
@@ -1387,6 +1394,7 @@ receiverName
 
 * **`autoselect`:** Signify that an option should be automatically selected as the listbox default, based on the current value of the receiver variable.  **NOTE:** Automatic option selection will fail on non-primitive values—i.e., on arrays and objects.
 * **`class` *`classNames`*:** Set the classes of the listbox to *value*.
+* **`disabled`:** Signify that the listbox should be in the disabled state.
 * **`id` *`identifier`*:** Set the identifier of the listbox, which must be unique on the page, to *value*.
 
 #### Arguments, `<<option>>`:
@@ -1489,7 +1497,7 @@ Creates a number input box, used to modify the value of the variable with the gi
 #### History:
 
 * `v2.32.0`: Introduced.
-* `v2.38.0`: Added the `class`, `id`, `max`, `min`, and `step` options.  Deprecated the naked passage option.
+* `v2.38.0`: Added the `class`, `disabled`, `id`, `max`, `min`, and `step` options.  Deprecated the naked passage option.
 
 #### Syntax:
 
@@ -1508,7 +1516,7 @@ Creates a number input box, used to modify the value of the variable with the gi
 receiverName defaultValue
 ```
 
-1. ***`receiverName`*:** The name of the variable to modify, which *must* be quoted—e.g., `"$foo"`.  Object and array property references are also supported—e.g., `"$foo.bar"`, `"$foo['bar']"`, &amp; `"$foo[0]"`.
+1. ***`receiverName`*:** The name of the variable to modify, which *must* be quoted—e.g., `"$foo"`.  Property references and indices are also supported—e.g., `"$foo.bar"`, `"$foo['bar']"`, and `"$foo[0]"`.
 2. ***`defaultValue`*:** The default value of the number box.
 
 ##### Optional arguments
@@ -1519,6 +1527,7 @@ receiverName defaultValue
 
 * **`autofocus`:** Signify that the number box should automatically receive focus.  **NOTE:** Only use the keyword *once* per page; attempting to focus more than one element is undefined behavior.
 * **`class` *`value`*:** Set the classes of the number box to *value*.
+* **`disabled`:** Signify that the number box should be in the disabled state.
 * **`id` *`value`*:** Set the identifier of the number box, which must be unique on the page, to *value*.
 * **`max` *`value`*:** Set the maximum constraint of the number box to *value*.  Must be greater-than the minimum constraint value, if specified.
 * **`min` *`value`*:** Set the minimum constraint of the number box to *value*.  Must be less-than the maximum constraint value, if specified.
@@ -1564,7 +1573,7 @@ Creates a radio button, used to modify the value of the variable with the given 
 
 * `v2.0.0`: Introduced.
 * `v2.32.0`: Added the `autocheck` option.
-* `v2.38.0`: Added the `class` and `id` options.
+* `v2.38.0`: Added the `class`, `disabled`, and `id` options.
 
 #### Syntax:
 
@@ -1583,7 +1592,7 @@ Creates a radio button, used to modify the value of the variable with the given 
 receiverName checkedValue
 ```
 
-1. **`receiverName`:** The name of the variable to modify, which *must* be quoted—e.g., `"$foo"`.  Object and array property references are also supported—e.g., `"$foo.bar"`, `"$foo['bar']"`, &amp; `"$foo[0]"`.
+1. **`receiverName`:** The name of the variable to modify, which *must* be quoted—e.g., `"$foo"`.  Property references and indices are also supported—e.g., `"$foo.bar"`, `"$foo['bar']"`, and `"$foo[0]"`.
 2. **`checkedValue`:** The value set by the radio button when checked.
 
 ##### Optional arguments
@@ -1595,6 +1604,7 @@ receiverName checkedValue
 * **`autocheck`:** Signify that the radio button should be automatically set to the checked state, based on the current value of the receiver variable.  **NOTE:** Automatic checking will fail on non-primitive values—i.e., on arrays and objects.
 * **`checked`:** Signify that the radio button should be in the checked state.  **NOTE:** Only one radio button in a group—i.e., those using the same receiver variable—should be so checked.
 * **`class` *`value`*:** Set the classes of the radio button to *value*.
+* **`disabled`:** Signify that the radio button should be in the disabled state.
 * **`id` *`value`*:** Set the identifier of the radio button, which must be unique on the page, to *value*.
 
 #### Examples:
@@ -1648,7 +1658,7 @@ Creates a multiline text input block, used to modify the value of the variable w
 #### History:
 
 * `v2.0.0`: Introduced.
-* `v2.38.0`: Added the `class`, `cols`, `id`, `maxlength`, `minlength`, `placeholder` `rows`, and `spellcheck` options.
+* `v2.38.0`: Added the `class`, `cols`, `disabled`, `id`, `maxlength`, `minlength`, `placeholder` `rows`, and `spellcheck` options.
 
 #### Syntax:
 
@@ -1668,7 +1678,7 @@ Creates a multiline text input block, used to modify the value of the variable w
 receiverName defaultValue
 ```
 
-1. ***`receiverName`*:** The name of the variable to modify, which *must* be quoted—e.g., `"$foo"`.  Object and array property references are also supported—e.g., `"$foo.bar"`, `"$foo['bar']"`, &amp; `"$foo[0]"`.
+1. ***`receiverName`*:** The name of the variable to modify, which *must* be quoted—e.g., `"$foo"`.  Property references and indices are also supported—e.g., `"$foo.bar"`, `"$foo['bar']"`, and `"$foo[0]"`.
 2. ***`defaultValue`*:** The default value of the text block.
 
 ##### Optional arguments
@@ -1681,6 +1691,7 @@ receiverName defaultValue
 * **`autofocus`:** Signify that the textarea should automatically receive focus.  **NOTE:** Only use the keyword *once* per page; attempting to focus more than one element is undefined behavior.
 * **`class` *`value`*:** Set the classes of the textarea to *value*.
 * **`cols` *`value`*:** Set the number of columns of the textarea to *value* (default: `64`).
+* **`disabled`:** Signify that the textarea should be in the disabled state.
 * **`id` *`value`*:** Set the identifier of the textarea, which must be unique on the page, to *value*.
 * **`maxlength` *`value`*:** Set the maximum allowed characters of the textarea to *value*.  Must be greater-than the minimum allowed characters value, if specified.
 * **`minlength` *`value`*:** Set the minimum allowed characters of the textarea to *value*.  Must be less-than the maximum allowed characters value, if specified.
@@ -1727,15 +1738,15 @@ Creates a text input box, used to modify the value of the variable with the give
 #### History:
 
 * `v2.0.0`: Introduced.
-* `v2.38.0`: Added the `class`, `id`, `maxlength`, `minlength`, `placeholder`, `size`, and `spellcheck` options.  Deprecated the naked passage option.
+* `v2.38.0`: Added the `class`, `disabled`, `id`, `maxlength`, `minlength`, `placeholder`, `size`, and `spellcheck` options.  Deprecated the naked passage option.
 
 #### Syntax:
 
 ```
 <<textbox
 	receiverName defaultValue
-	[autofocus] [class value] [id value] [maxlength value] [minlength value]
-	[placeholder value] [size value] [spellcheck]
+	[autofocus] [class value] [disabled] [id value] [maxlength value]
+	[minlength value] [placeholder value] [size value] [spellcheck]
 >>
 ```
 
@@ -1747,18 +1758,19 @@ Creates a text input box, used to modify the value of the variable with the give
 receiverName defaultValue
 ```
 
-1. ***`receiverName`*:** The name of the variable to modify, which *must* be quoted—e.g., `"$foo"`.  Object and array property references are also supported—e.g., `"$foo.bar"`, `"$foo['bar']"`, &amp; `"$foo[0]"`.
+1. ***`receiverName`*:** The name of the variable to modify, which *must* be quoted—e.g., `"$foo"`.  Property references and indices are also supported—e.g., `"$foo.bar"`, `"$foo['bar']"`, and `"$foo[0]"`.
 2. ***`defaultValue`*:** The default value of the text box.
 
 ##### Optional arguments
 
 ```
-[autofocus] [class value] [id value] [maxlength value] [minlength value]
-[placeholder value] [size value] [spellcheck]
+[autofocus] [class value] [disabled] [id value] [maxlength value]
+[minlength value] [placeholder value] [size value] [spellcheck]
 ```
 
 * **`autofocus`:** Signify that the text box should automatically receive focus.  **NOTE:** Only use the keyword *once* per page; attempting to focus more than one element is undefined behavior.
 * **`class` *`value`*:** Set the classes of the text box to *value*.
+* **`disabled`:** Signify that the text box should be in the disabled state.
 * **`id` *`value`*:** Set the identifier of the text box, which must be unique on the page, to *value*.
 * **`maxlength` *`value`*:** Set the maximum allowed characters of the text box to *value*.  Must be greater-than the minimum allowed characters value, if specified.
 * **`minlength` *`value`*:** Set the minimum allowed characters of the text box to *value*.  Must be less-than the maximum allowed characters value, if specified.
