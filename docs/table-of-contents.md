@@ -180,6 +180,8 @@
 	* [`RegExp.escape()`](#methods-regexp-method-escape)
 * [Serial Methods](#methods-serial)
 	* [`Serial.createReviver()`](#methods-serial-method-createreviver)
+	* [`Serial.createRegisteredReviver()`](#methods-serial-method-createregisteredreviver)
+	* [`Serial.registerUserType()`](#methods-serial-method-registerusertype)
 * [String Methods](#methods-string)
 	* [`<String>.count()`](#methods-string-prototype-method-count)
 	* [`<String>.first()`](#methods-string-prototype-method-first)
