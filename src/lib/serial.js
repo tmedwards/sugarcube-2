@@ -91,6 +91,16 @@ var Serial = (() => { // eslint-disable-line no-unused-vars, no-var
 
 					case '(revive:eval)': /* legacy */
 					case '(revive:)': {
+						if (!Config.saves.isEvalEnabled) {
+							if (value[1][1] === 'undefined') {
+								value = undefined;
+							} else if (value[1][1] === 'Infinity') {
+								value = Infinity;
+							}
+							/* no-op; though, perhaps we should handle this somehow */
+							break;
+						}
+
 						try {
 							const $ReviveData$ = value[1][1]; // eslint-disable-line no-unused-vars
 							value = eval(value[1][0]); // eslint-disable-line no-eval

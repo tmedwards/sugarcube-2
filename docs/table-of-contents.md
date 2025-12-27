@@ -313,6 +313,7 @@
 	* [`Config.saves.descriptions`](#config-api-property-saves-descriptions)
 	* [`Config.saves.id`](#config-api-property-saves-id)
 	* [`Config.saves.isAllowed`](#config-api-property-saves-isallowed)
+	* [`Config.saves.isEvalEnabled`](#config-api-property-saves-isevalenabled)
 	* [`Config.saves.maxAutoSaves`](#config-api-property-saves-maxautosaves)
 	* [`Config.saves.maxSlotSaves`](#config-api-property-saves-maxslotsaves)
 	* [`Config.saves.metadata`](#config-api-property-saves-metadata)
