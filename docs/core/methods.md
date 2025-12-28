@@ -1946,7 +1946,7 @@ The <a href="#guide-non-generic-object-types"><em>Non-generic object types (clas
 
 #### Returns:
 
-A new `string` containing the serialized code.
+A reviver array containing the serialized code.
 
 #### Examples:
 
@@ -1970,6 +1970,91 @@ Serial.createReviver(/* JavaScript code string */, myOwnData); // with data chun
 const ownData = {};
 Object.keys(this).forEach((pn) => ownData[pn] = clone(this[pn]));
 return Serial.createReviver('new Character($ReviveData$)', ownData);
+```
+
+<!-- *********************************************************************** -->
+
+### `Serial.createRegisteredReviver(name, data)` → *Array<any>* {#methods-serial-method-createregisteredreviver}
+
+Packages the given custom object type (class) name and data chunk for the deserialization reviver.  Intended to allow authors to easily create the reviver required to revive their registered custom object types (classes).  The reviver should be returned from an object instance's `.toJSON()` method, so that the instance may be properly revived upon deserialization.
+
+<p role="note"><b>Note:</b>
+This reviver works even if <a href="#config-api-property-saves-isevalenabled"><code>Config.saves.isEvalEnabled</code></a> is `false`, making it safer to use than the <a href="#methods-serial-method-createreviver"><code>Serial.createReviver()</code></a> method.
+</p>
+
+<p role="note"><b>Note:</b>
+This method requires that the custom object type (class) be registered with the serializer via <a href="#methods-serial-method-registerusertype"><code>Serial.registerUserType()</code></a>.
+</p>
+
+<p role="note" class="see"><b>See:</b>
+<a href="#methods-serial-method-registerusertype"><code>Serial.registerUserType()</code></a> for a more detailed information.
+</p>
+
+#### History:
+
+* `v2.38.0`: Introduced.
+
+#### Parameters:
+
+* **`name`:** (`string`) The name of the custom object type (class). Must match the `name` parameter used when calling <a href="#methods-serial-method-registerusertype"><code>Serial.registerUserType()</code></a>.
+* **`data`:** (`any`) The data chunk that should be passed to the custom object type's (class's) reviver function during deserialization.
+
+#### Returns:
+
+A reviver array containing the serialized data.
+
+<!-- *********************************************************************** -->
+
+### `Serial.registerUserType(name, typeInfo)` {#methods-serial-method-registerusertype}
+
+Registers a custom object type (class) with the serializer, allowing instances of that type to be automatically deserialized.  The object should also implement a `.toJSON()` method that returns the appropriate reviver code via the <a href="#methods-serial-method-createregisteredreviver"><code>Serial.createRegisteredReviver()</code></a> static method.
+
+#### History:
+
+* `v2.38.0`: Introduced.
+
+#### Parameters:
+
+* **`name`:** (`string`) The name of the custom object type (class). Must match the `name` parameter used when calling <a href="#methods-serial-method-createregisteredreviver"><code>Serial.createRegisteredReviver()</code></a>.
+* **`typeInfo`:** (`Object`) The type information object.  See below for details.
+
+#### Type information object:
+
+An type information object should have the following properties:
+
+* **`revive`:** (`Function`) A function that takes a single parameter, the data chunk passed to <a href="#methods-serial-method-createregisteredreviver"><code>Serial.createRegisteredReviver()</code></a>, and returns a new instance of the custom object type (class) initialized with that data.
+
+#### Examples:
+
+##### Basic usage (in macros)
+
+<p role="note"><b>Note:</b>
+The macro examples would be exactly the same as the JavaScript examples, just wrapped in a <code>&lt;&lt;script&gt;&gt;</code> macro.
+</p>
+
+##### Basic usage (in JavaScript)
+
+```javascript
+// Assume that you have a custom class named `Character` that you wish to
+// register with the serializer. Note that the class doesn't need to be in the
+// global scope for this to work.
+class Character {
+	static serialId = 'Character'; // unique identifier for this class, could also be a UUID
+	constructor(data) {
+		// initialize the instance with the given data...
+	}
+	// class implementation...
+	toJSON() {
+		return Serial.createRegisteredReviver(Character.serialId, /* own data chunk */);
+	}
+	// more class implementation...
+}
+// Register the `Character` class with the serializer.
+Serial.registerUserType(Character.serialId, {
+	revive : (data) => {
+		return new Character(data);
+	}
+});
 ```
 
 

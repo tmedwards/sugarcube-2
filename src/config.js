@@ -44,6 +44,7 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 	let cfgSavesDescriptions;
 	let cfgSavesId; // NOTE: Initially set by `Story.init()`
 	let cfgSavesIsAllowed;
+	let cfgSavesEvalEnabled  = true;
 	let cfgSavesMaxAuto      = 0;
 	let cfgSavesMaxSlot      = 8;
 	let cfgSavesMetadata;
@@ -329,6 +330,14 @@ var Config = (() => { // eslint-disable-line no-unused-vars, no-var
 				}
 
 				cfgSavesIsAllowed = value;
+			},
+
+			get isEvalEnabled() { return cfgSavesEvalEnabled; },
+			set isEvalEnabled(value) { 
+				if (typeof value !== 'boolean') {
+					throw new TypeError('Config.saves.isEvalEnabled must be a boolean');
+				}
+				cfgSavesEvalEnabled = value;
 			},
 
 			get maxAutoSaves() { return cfgSavesMaxAuto; },

@@ -56,6 +56,11 @@ var Serial = (() => { // eslint-disable-line no-unused-vars, no-var
 		}
 	]);
 
+	/**
+	 * Map of registered user types for revival.
+	 * @type {Map<string, {revive: function}>}
+	 */
+	const registeredUserTypes = new Map();
 
 	/*******************************************************************************
 		API Functions.
@@ -68,6 +73,37 @@ var Serial = (() => { // eslint-disable-line no-unused-vars, no-var
 		}
 
 		return ['(revive:)', [code, data]];
+	}
+
+	// Allow users to easily prepare their registered user types for revival.
+	function createRegisteredReviver(name, data) {
+		if (typeof name !== 'string') {
+			throw new TypeError('Serial.createRegisteredReviver name parameter must be a string');
+		}
+		if (!registeredUserTypes.has(name)) {
+			throw new Error(`Serial.createRegisteredReviver type name "${name}" is not registered`);
+		}
+
+		return ['(revive:registered)', [name, data]];
+	}
+
+	function registerUserType(name, typeInfo) {
+		if (typeof name !== 'string') {
+			throw new TypeError('Serial.registerUserType name parameter must be a string');
+		}
+		if (registeredUserTypes.has(name)) {
+			throw new Error(`Serial.registerUserType type name "${name}" is already registered`);
+		}
+		if (typeof typeInfo !== 'object' || typeInfo === null) {
+			throw new TypeError('Serial.registerUserType typeInfo parameter must be an object');
+		}
+		if (!('revive' in typeInfo) || typeof typeInfo.revive !== 'function') {
+			throw new TypeError('Serial.registerUserType typeInfo.revive property must be a function');
+		}
+
+		registeredUserTypes.set(name, Object.freeze({
+			revive : typeInfo.revive
+		}));
 	}
 
 	function parse(text, reviver) {
@@ -89,8 +125,33 @@ var Serial = (() => { // eslint-disable-line no-unused-vars, no-var
 						value = new Date(value[1]);
 						break;
 
+					case '(revive:registered)': {
+						const typeInfo = registeredUserTypes.get(value[1][0]);
+						if (typeInfo == null) {
+							break; /* no-op; though, perhaps we should handle this somehow */
+						}
+
+						try {
+							// do not leak the `typeInfo` reference to the revive function
+							value = typeInfo.revive.call(undefined, value[1][1]);
+						}
+						catch (ex) { /* no-op; though, perhaps we should handle this somehow */ }
+
+						break;
+					}
+
 					case '(revive:eval)': /* legacy */
 					case '(revive:)': {
+						if (!Config.saves.isEvalEnabled) {
+							if (value[1][1] === 'undefined') {
+								value = undefined;
+							} else if (value[1][1] === 'Infinity') {
+								value = Infinity;
+							}
+							/* no-op; though, perhaps we should handle this somehow */
+							break;
+						}
+
 						try {
 							const $ReviveData$ = value[1][1]; // eslint-disable-line no-unused-vars
 							value = eval(value[1][0]); // eslint-disable-line no-eval
@@ -180,8 +241,10 @@ var Serial = (() => { // eslint-disable-line no-unused-vars, no-var
 	*******************************************************************************/
 
 	return Object.preventExtensions(Object.create(null, {
-		createReviver : { value : createReviver },
-		parse         : { value : parse },
-		stringify     : { value : stringify }
+		createReviver           : { value : createReviver },
+		createRegisteredReviver : { value : createRegisteredReviver },
+		registerUserType        : { value : registerUserType },
+		parse                   : { value : parse },
+		stringify               : { value : stringify }
 	}));
 })();
