@@ -11,7 +11,7 @@
 /*
 	ATTENTION TRANSLATORS
 
-	Please use the `locale/l10n-template.js` file, from the root of the repository,
+	Please use the `locale/TEMPLATE.js` file, from the root of the repository,
 	as the template for your translation rather than this file.
 
 	SEE: https://github.com/tmedwards/sugarcube-2/tree/develop/locale
