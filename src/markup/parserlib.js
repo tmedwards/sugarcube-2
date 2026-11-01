@@ -948,7 +948,7 @@
 		blockRe    : /\s*\n/gm,
 
 		handler(w) {
-			const css = WikifierUtil.inlineCss(w);
+			const css = WikifierUtil.inlineCss(w, this.terminator);
 
 			this.blockRe.lastIndex = w.nextMatch; // must follow the call to `inlineCss()`
 

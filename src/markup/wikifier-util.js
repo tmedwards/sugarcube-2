@@ -67,14 +67,16 @@ var WikifierUtil = (() => { // eslint-disable-line no-unused-vars, no-var
 		const lookaheadRe = new RegExp(Patterns.inlineCss, 'gm');
 		const idOrClassRe = new RegExp(`(${Patterns.cssIdOrClassSigil})(${Patterns.anyLetter}+)`, 'g');
 
-		function parseInlineCss(w) {
+		function parseInlineCss(w, terminator) {
+			const end = terminator ? w.source.indexOf(terminator, w.nextMatch) : -1;
+			const source = end === -1 ? w.source : w.source.slice(0, end);
 			const css = { classes : [], id : '', styles : {} };
 			let matched;
 
 			do {
 				lookaheadRe.lastIndex = w.nextMatch;
 
-				const match = lookaheadRe.exec(w.source);
+				const match = lookaheadRe.exec(source);
 
 				matched = match && match.index === w.nextMatch;
 
